@@ -58,6 +58,8 @@ setuptools.setup(
 
     # Run-time dependencies
     install_requires=[
+        'arxiv2bib',
+        'requests',
     ],
 
     # Additional groups of dependencies
