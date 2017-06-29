@@ -1,0 +1,12 @@
+dist: trusty
+sudo: false
+language: python
+python:
+  - "3.6"
+addons:
+  apt_packages:
+    - pandoc
+install:
+  - python setup.py install
+  - python setup.py sdist bdist_wheel
+script: py.test
