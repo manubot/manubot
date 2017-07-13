@@ -28,7 +28,7 @@ except Exception as error:
 
 setuptools.setup(
     # Package details
-    name='hetio',
+    name='manubot',
     version=version,
     url='https://github.com/greenelab/manubot',
     description='Manuscript bot for automated scientific publishing',
