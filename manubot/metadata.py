@@ -40,6 +40,8 @@ def get_doi_citeproc(doi):
     if 'URL' in citeproc:
         pattern = re.compile(r'^(https?://d?x?\.?)doi\.org/')
         citeproc['URL'] = pattern.sub('https://doi.org/', citeproc['URL'])
+    else:
+        citeproc['URL'] = f'https://doi.org/{doi}'
     return citeproc
 
 
