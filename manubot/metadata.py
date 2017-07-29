@@ -116,17 +116,3 @@ def get_url_citeproc(url):
         print(f'Error getting {url} from Greycite: {e}')
         # Fallback strategy
         return get_url_citeproc_manual(url)
-
-
-def get_doi_bibtex(doi):
-    """
-    Use DOI Content Negotioation (http://crosscite.org/cn/) to retrieve a
-    string with the bibtex entry.
-    """
-    url = 'https://doi.org/' + urllib.request.quote(doi)
-    header = {
-        'Accept': 'application/x-bibtex',
-    }
-    response = requests.get(url, headers=header)
-    bibtext = response.text
-    return bibtext
