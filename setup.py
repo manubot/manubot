@@ -58,7 +58,9 @@ setuptools.setup(
 
     # Run-time dependencies
     install_requires=[
+        'pybase62',
         'requests',
+        'requests-cache',
     ],
 
     # Additional groups of dependencies
