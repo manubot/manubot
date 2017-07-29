@@ -4,6 +4,8 @@ import urllib.request
 
 import requests
 
+from .arxiv import get_arxiv_citeproc
+
 
 def get_short_doi(doi, cache={}, verbose=False):
     """
@@ -128,14 +130,3 @@ def get_doi_bibtex(doi):
     response = requests.get(url, headers=header)
     bibtext = response.text
     return bibtext
-
-
-def get_arxiv_bibtex(arxiv_id):
-    """
-    Use the arxiv2bib package to get the BibTex for an arXiv preprint.
-    """
-    import arxiv2bib
-    ref, = arxiv2bib.arxiv2bib([arxiv_id])
-    if isinstance(ref, arxiv2bib.ReferenceErrorInfo):
-        raise KeyError(f'{ref.message}: {arxiv_id}')
-    return ref.bibtex()
