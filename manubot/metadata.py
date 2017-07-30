@@ -4,7 +4,7 @@ import urllib.request
 
 import requests
 
-from .arxiv import get_arxiv_citeproc
+from manubot.arxiv import get_arxiv_citeproc
 
 
 def get_short_doi(doi, cache={}, verbose=False):
@@ -116,3 +116,11 @@ def get_url_citeproc(url):
         print(f'Error getting {url} from Greycite: {e}')
         # Fallback strategy
         return get_url_citeproc_manual(url)
+
+
+citeproc_retrievers = {
+    'doi': get_doi_citeproc,
+    'pmid': get_pubmed_citeproc,
+    'arxiv': get_arxiv_citeproc,
+    'url': get_url_citeproc,
+}
