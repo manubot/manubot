@@ -40,14 +40,14 @@ def get_arxiv_citeproc(arxiv_id):
 
     # Create dictionary for CSL Item
     csl_item = collections.OrderedDict()
-    csl_item['arxiv_id'] = arxiv_id
 
     # Extract versioned arXiv ID
     url = entry.findtext(prefix + 'id')
     pattern = re.compile(r'arxiv.org/abs/(.+)')
     match = pattern.search(url)
     versioned_id = match.group(1)
-    csl_item['arxiv_versioned_id'] = versioned_id
+    csl_item['arxiv_id'] = versioned_id
+    _, csl_item['version'] = versioned_id.rsplit('v', 1)
     csl_item['URL'] = 'https://arxiv.org/abs/' + versioned_id
 
     # Extrat CSL title field
