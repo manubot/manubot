@@ -1,4 +1,5 @@
 import json
+import logging
 import re
 import urllib.request
 
@@ -61,7 +62,12 @@ def get_pubmed_citeproc(pubmed_id):
     }
     url = 'https://www.ncbi.nlm.nih.gov/pmc/utils/ctxp'
     response = requests.get(url, params)
-    citeproc = response.json()
+    try:
+        citeproc = response.json()
+    except Exception as error:
+        logging.error(f'Error fetching metadata for pmid:{pubmed_id}.\n'
+                      f'Invalid response from {response.url}\n{response.text}')
+        raise error
     citeproc['URL'] = f'https://www.ncbi.nlm.nih.gov/pubmed/{pubmed_id}'
     return citeproc
 
