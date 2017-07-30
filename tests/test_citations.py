@@ -55,7 +55,6 @@ def test_citation_to_metadata_arxiv():
     assert result['source'] == 'arxiv'
     assert result['identifer'] == 'cond-mat/0703470v2'
     assert result['standard_citation'] == 'arxiv:cond-mat/0703470v2'
-    print(result)
     assert result['citation_id'] == 'ES92tcdg'
     citeproc = result['citeproc']
     assert citeproc['id'] == 'ES92tcdg'
@@ -67,3 +66,21 @@ def test_citation_to_metadata_arxiv():
     authors = citeproc['author']
     assert authors[0]['literal'] == 'J. P. Bagrow'
     assert citeproc['DOI'] == '10.1209/0295-5075/81/68004'
+
+
+def test_citation_to_metadata_pubmed():
+    citation = 'pmid:21347133'
+    result = citation_to_metadata(citation)
+    assert result['source'] == 'pmid'
+    assert result['identifer'] == '21347133'
+    assert result['standard_citation'] == 'pmid:21347133'
+    assert result['citation_id'] == 'y9ONtSZ9'
+    citeproc = result['citeproc']
+    assert citeproc['id'] == 'y9ONtSZ9'
+    assert citeproc['URL'] == 'https://www.ncbi.nlm.nih.gov/pubmed/21347133'
+    assert citeproc['container-title'] == 'Summit on Translational Bioinformatics'
+    assert citeproc['title'] == 'Secondary Use of EHR: Data Quality Issues and Informatics Opportunities'
+    authors = citeproc['author']
+    assert authors[0]['family'] == 'Botsis'
+    assert citeproc['PMID'] == '21347133'
+    assert citeproc['PMCID'] == 'PMC3041534'
