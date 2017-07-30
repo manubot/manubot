@@ -60,7 +60,6 @@ setuptools.setup(
     install_requires=[
         'pybase62',
         'requests',
-        'requests-cache',
     ],
 
     # Additional groups of dependencies
