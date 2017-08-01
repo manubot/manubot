@@ -63,6 +63,7 @@ setuptools.setup(
         'pandas',
         'pybase62',
         'pyyaml',
+        'requests-cache',
         'requests',
     ],
 
