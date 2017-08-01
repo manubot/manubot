@@ -259,5 +259,5 @@ def main():
     prepare_manuscript(args)
 
     if error_handler.fired:
-        print('Failure: exiting with code 1 due to logged errors')
+        logging.critical('Failure: exiting with code 1 due to logged errors')
         raise SystemExit(1)
