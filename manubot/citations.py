@@ -14,13 +14,14 @@ citation_pattern = re.compile(
     r'@[a-zA-Z0-9][a-zA-Z0-9:.#$%&\-+?<>~/]*[a-zA-Z0-9/]')
 
 
-def standardize_identifier(source, identifier):
+def standardize_citation(citation):
     """
-    Standardize idenfiers based on their source
+    Standardize citation idenfiers based on their source
     """
+    source, identifier = citation.split(':', 1)
     if source == 'doi':
         identifier = identifier.lower()
-    return identifier
+    return f'{source}:{identifier}'
 
 
 def is_valid_citation_string(string):
@@ -29,18 +30,18 @@ def is_valid_citation_string(string):
     Return False if improperly formatted or a non-citation.
     """
     if not string.startswith('@'):
-        logging.warning(f'{string} → does not start with @')
+        logging.error(f'{string} → does not start with @')
         return False
 
     try:
         source, identifier = string.lstrip('@').split(':', 1)
     except ValueError as e:
-        logging.warning(f'Citation not splittable: {string}')
+        logging.error(f'Citation not splittable: {string}')
         return False
 
     if not source or not identifier:
         msg = f'{string} → blank source or identifier'
-        logging.warning(msg)
+        logging.error(msg)
         return False
 
     # Exempted non-citation sources used for pandoc-fignos, pandoc-tablenos,
@@ -50,7 +51,7 @@ def is_valid_citation_string(string):
 
     # Check supported source type
     if source != 'tag' and source not in citeproc_retrievers:
-        logging.warning(f'{string} → source "{source}" is not valid')
+        logging.error(f'{string} → source "{source}" is not valid')
         return False
 
     return True
@@ -68,34 +69,23 @@ def get_citation_id(standard_citation):
     return citation_id
 
 
-def citation_to_metadata(citation, override={}):
+def citation_to_citeproc(citation):
     """
     Return a dictionary with citation metadata
     """
-    source, identifer = citation.split(':', 1)
-    identifer = standardize_identifier(source, identifer)
-    standard_citation = f'{source}:{identifer}'
+    assert citation == standardize_citation(citation)
+    source, identifier = citation.split(':', 1)
 
-    result = {
-        'source': source,
-        'identifer': identifer,
-        'standard_citation': standard_citation
-    }
-
-    if standard_citation in override:
-        result['citeproc'] = override[standard_citation]
-    elif source in citeproc_retrievers:
-        result['citeproc'] = citeproc_retrievers[source](identifer)
+    if source in citeproc_retrievers:
+        citeproc = citeproc_retrievers[source](identifier)
     else:
         msg = f'Unsupported citation  source {source} in {citation}'
         raise ValueError(msg)
 
-    citation_id = get_citation_id(standard_citation)
-    result['citation_id'] = citation_id
-    result['citeproc'] = citeproc_passthrough(
-        result['citeproc'], set_id=citation_id)
+    citation_id = get_citation_id(citation)
+    citeproc = citeproc_passthrough(citeproc, set_id=citation_id)
 
-    return result
+    return citeproc
 
 
 citeproc_type_fixer = {

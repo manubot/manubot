@@ -1,5 +1,6 @@
 import collections
 import pathlib
+import re
 
 from manubot.citations import citation_pattern, is_valid_citation_string
 
@@ -22,4 +23,42 @@ def get_text(directory):
     name_to_text = collections.OrderedDict()
     for path in paths:
         name_to_text[path.stem] = path.read_text()
-    return '\n\n'.join(name_to_text.values())
+    return '\n\n'.join(name_to_text.values()) + '\n'
+
+
+def replace_citations_strings_with_ids(text, string_to_id):
+    """
+    Convert citations to their IDs for pandoc.
+
+    `text` is markdown source text
+
+    `string_to_id` is a dictionary like:
+    @10.7287/peerj.preprints.3100v1 → 11cb5HXoY
+    """
+    for old, new in string_to_id.items():
+        text = re.sub(
+            pattern=re.escape(old) + '(?=[^a-zA-Z0-9/])',
+            repl='@' + new,
+            string=text,
+        )
+    return text
+
+
+def get_manuscript_stats(text, citation_df):
+    """
+    Compute manuscript statistics.
+    """
+    stats = collections.OrderedDict()
+
+    # Number of distinct references by type
+    ref_counts = (
+        citation_df
+        .standard_citation
+        .drop_duplicates()
+        .map(lambda x: x.split(':')[0])
+        .pipe(collections.Counter)
+    )
+    ref_counts['total'] = sum(ref_counts.values())
+    stats['reference_counts'] = ref_counts
+    stats['word_count'] = len(text.split())
+    return stats
