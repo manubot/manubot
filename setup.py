@@ -58,11 +58,22 @@ setuptools.setup(
 
     # Run-time dependencies
     install_requires=[
+        'errorhandler',
+        'jinja2',
+        'pandas',
         'pybase62',
+        'pyyaml',
         'requests',
     ],
 
     # Additional groups of dependencies
     extras_require={
-    }
+    },
+
+    # Create command line script
+    entry_points={
+        'console_scripts': [
+            'manubot = manubot.manubot:main',
+        ],
+    },
 )

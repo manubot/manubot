@@ -1,9 +1,9 @@
 import pytest
 
 from manubot.citations import (
-    citation_to_metadata,
+    citation_to_citeproc,
     get_citation_id,
-    standardize_identifier,
+    standardize_citation,
 )
 
 
@@ -18,27 +18,22 @@ def test_get_citation_id(standard_citation, expected):
     assert citation_id == expected
 
 
-@pytest.mark.parametrize("source,identifier,expected", [
-    ('doi', '10.5061/DRYAD.q447c/1', '10.5061/dryad.q447c/1'),
-    ('doi', '10.5061/dryad.q447c/1', '10.5061/dryad.q447c/1'),
-    ('pmid', '24159271', '24159271'),
+@pytest.mark.parametrize("citation,expected", [
+    ('doi:10.5061/DRYAD.q447c/1', 'doi:10.5061/dryad.q447c/1'),
+    ('doi:10.5061/dryad.q447c/1', 'doi:10.5061/dryad.q447c/1'),
+    ('pmid:24159271', 'pmid:24159271'),
 ])
-def test_standardize_identifier(source, identifier, expected):
+def test_standardize_citation(citation, expected):
     """
     Standardize idenfiers based on their source
     """
-    output = standardize_identifier(source, identifier)
+    output = standardize_citation(citation)
     assert output == expected
 
 
-def test_citation_to_metadata_doi_datacite():
-    citation = 'doi:10.7287/PeerJ.Preprints.3100v1'
-    result = citation_to_metadata(citation)
-    assert result['source'] == 'doi'
-    assert result['identifer'] == '10.7287/peerj.preprints.3100v1'
-    assert result['standard_citation'] == 'doi:10.7287/peerj.preprints.3100v1'
-    assert result['citation_id'] == '11cb5HXoY'
-    citeproc = result['citeproc']
+def test_citation_to_citeproc_doi_datacite():
+    citation = 'doi:10.7287/peerj.preprints.3100v1'
+    citeproc = citation_to_citeproc(citation)
     assert citeproc['id'] == '11cb5HXoY'
     assert citeproc['URL'] == 'https://doi.org/10.7287/peerj.preprints.3100v1'
     assert citeproc['DOI'] == '10.7287/peerj.preprints.3100v1'
@@ -49,16 +44,12 @@ def test_citation_to_metadata_doi_datacite():
     assert authors[-1]['family'] == 'Greene'
 
 
-def test_citation_to_metadata_arxiv():
+def test_citation_to_citeproc_arxiv():
     citation = 'arxiv:cond-mat/0703470v2'
-    result = citation_to_metadata(citation)
-    assert result['source'] == 'arxiv'
-    assert result['identifer'] == 'cond-mat/0703470v2'
-    assert result['standard_citation'] == 'arxiv:cond-mat/0703470v2'
-    assert result['citation_id'] == 'ES92tcdg'
-    citeproc = result['citeproc']
+    citeproc = citation_to_citeproc(citation)
     assert citeproc['id'] == 'ES92tcdg'
     assert citeproc['URL'] == 'https://arxiv.org/abs/cond-mat/0703470v2'
+    assert citeproc['arxiv_id'] == 'cond-mat/0703470v2'
     assert citeproc['version'] == '2'
     assert citeproc['type'] == 'report'
     assert citeproc['container-title'] == 'arXiv'
@@ -68,14 +59,9 @@ def test_citation_to_metadata_arxiv():
     assert citeproc['DOI'] == '10.1209/0295-5075/81/68004'
 
 
-def test_citation_to_metadata_pubmed():
+def test_citation_to_citeproc_pubmed():
     citation = 'pmid:21347133'
-    result = citation_to_metadata(citation)
-    assert result['source'] == 'pmid'
-    assert result['identifer'] == '21347133'
-    assert result['standard_citation'] == 'pmid:21347133'
-    assert result['citation_id'] == 'y9ONtSZ9'
-    citeproc = result['citeproc']
+    citeproc = citation_to_citeproc(citation)
     assert citeproc['id'] == 'y9ONtSZ9'
     assert citeproc['URL'] == 'https://www.ncbi.nlm.nih.gov/pubmed/21347133'
     assert citeproc['container-title'] == 'Summit on Translational Bioinformatics'
