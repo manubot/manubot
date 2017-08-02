@@ -8,24 +8,21 @@ import requests
 from manubot.arxiv import get_arxiv_citeproc
 
 
-def get_short_doi(doi, cache={}, verbose=False):
+def get_short_doi_url(doi):
     """
-    Get the shortDOI for a DOI. Providing a cache dictionary will prevent
-    multiple API requests for the same DOI.
+    Get the shortDOI URL for a DOI.
     """
-    if doi in cache:
-        return cache[doi]
     quoted_doi = urllib.request.quote(doi)
     url = 'http://shortdoi.org/{}?format=json'.format(quoted_doi)
     try:
         response = requests.get(url).json()
         short_doi = response['ShortDOI']
-    except Exception as e:
-        if verbose:
-            print(doi, 'failed with', e)
+        short_doi = short_doi[3:]  # Remove "10/" prefix
+        short_url = 'https://doi.org/' + short_doi
+        return short_url
+    except Exception:
+        logging.exception(f'shortDOI lookup failed for {doi}')
         return None
-    cache[doi] = short_doi
-    return short_doi
 
 
 def get_doi_citeproc(doi):
@@ -45,6 +42,9 @@ def get_doi_citeproc(doi):
         citeproc['URL'] = pattern.sub('https://doi.org/', citeproc['URL'])
     else:
         citeproc['URL'] = f'https://doi.org/{doi}'
+    short_doi_url = get_short_doi_url(doi)
+    if short_doi_url:
+        citeproc['short_url'] = short_doi_url
     return citeproc
 
 
