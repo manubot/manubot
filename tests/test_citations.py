@@ -1,10 +1,38 @@
 import pytest
 
 from manubot.citations import (
+    citation_pattern,
     citation_to_citeproc,
     get_citation_id,
     standardize_citation,
 )
+
+
+@pytest.mark.parametrize("citation_string", [
+    ('@doi:10.5061/dryad.q447c/1'),
+    ('@arxiv:1407.3561v1'),
+    ('@doi:10.1007/978-94-015-6859-3_4'),
+    ('@tag:tag_with_underscores'),
+    ('@tag:tag-with-hyphens'),
+    ('@url:https://greenelab.github.io/manubot-rootstock/'),
+    ('@tag:abc123'),
+    ('@tag:123abc'),
+])
+def test_citation_pattern_match(citation_string):
+    match = citation_pattern.fullmatch(citation_string)
+    assert match
+
+
+@pytest.mark.parametrize("citation_string", [
+    ('doi:10.5061/dryad.q447c/1'),
+    ('@tag:abc123-'),
+    ('@tag:abc123_'),
+    ('@-tag:abc123'),
+    ('@_tag:abc123'),
+])
+def test_citation_pattern_no_match(citation_string):
+    match = citation_pattern.fullmatch(citation_string)
+    assert match is None
 
 
 @pytest.mark.parametrize("standard_citation,expected", [

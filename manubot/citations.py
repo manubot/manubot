@@ -6,12 +6,22 @@ import base62
 
 from manubot.metadata import citeproc_retrievers
 
-# Same rules as pandoc, except that final character can be a slash since many
-# URLs end in a slash. If citation_text does not match this regex, it must be
-# defined with in tags.tsv with a tag that does.
-# https://github.com/greenelab/manubot-rootstock/issues/2#issuecomment-312153192
+"""
+Regex to extract citations.
+
+Same rules as pandoc, except more permissive in the following ways:
+
+1. the final character can be a slash because many URLs end in a slash.
+2. underscores are allowed in internal characters because URLs, DOIs, and
+   citation tags often contain underscores.
+
+If a citation string does not match this regex, it can be substituted for a
+tag that does, as defined in citation-tags.tsv.
+
+https://github.com/greenelab/manubot-rootstock/issues/2#issuecomment-312153192
+"""
 citation_pattern = re.compile(
-    r'@[a-zA-Z0-9][a-zA-Z0-9:.#$%&\-+?<>~/]*[a-zA-Z0-9/]')
+    r'@[a-zA-Z0-9][\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/]')
 
 
 def standardize_citation(citation):
