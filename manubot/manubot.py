@@ -50,6 +50,8 @@ def parse_arguments():
 
     # Set paths for content
     content_dir = args.content_directory
+    if not content_dir.is_dir():
+        logging.warning(f'content directory does not exist: {content_dir}')
     args_dict['citation_tags_path'] = content_dir.joinpath('citation-tags.tsv')
     args_dict['meta_yaml_path'] = content_dir.joinpath('metadata.yaml')
     args_dict['manual_references_path'] = content_dir.joinpath('manual-references.json')
@@ -130,8 +132,13 @@ def get_metadata_and_variables(args):
 
     # Read metadata which contains pandoc_yaml_metadata
     # as well as author_info.
-    with args.meta_yaml_path.open() as read_file:
-        metadata = yaml.load(read_file)
+    if args.meta_yaml_path.is_file():
+        with args.meta_yaml_path.open() as read_file:
+            metadata = yaml.load(read_file)
+            assert isinstance(metadata, dict)
+    else:
+        metadata = {}
+        logging.warning(f'missing {args.meta_yaml_path} file with yaml_metadata_block for pandoc')
 
     # Add date to metadata
     today = datetime.date.today()
@@ -139,7 +146,7 @@ def get_metadata_and_variables(args):
     variables['date'] = today.strftime('%B %e, %Y')
 
     # Process authors metadata
-    authors = metadata.pop('author_info')
+    authors = metadata.pop('author_info', [])
     metadata['author-meta'] = [author['name'] for author in authors]
     variables['authors'] = authors
 
@@ -183,7 +190,8 @@ def get_citation_df(args, text):
         citation_df = citation_df.merge(tag_df[['string', 'citation']], how='left')
     else:
         citation_df['citation'] = None
-    citation_df.citation.fillna(citation_df.string.str.lstrip('@'), inplace=True)
+        logging.info(f'missing {args.citation_tags_path} file: no citation tags set')
+    citation_df.citation.fillna(citation_df.string.astype(str).str.lstrip('@'), inplace=True)
     citation_df['standard_citation'] = citation_df.citation.map(standardize_citation)
     citation_df['citation_id'] = citation_df.standard_citation.map(get_citation_id)
     citation_df = citation_df.sort_values(['standard_citation', 'citation'])
@@ -232,6 +240,7 @@ def generate_csl_items(args, citation_df):
     # Write JSON CSL bibliography for Pandoc.
     with args.references_path.open('w') as write_file:
         json.dump(csl_items, write_file, indent=2, ensure_ascii=False)
+        write_file.write('\n')
     return csl_items
 
 
@@ -284,18 +293,18 @@ def main():
     Called as a console_scripts entry point in setup.py. This function defines
     the manubot command line script.
     """
-    args = parse_arguments()
-
     # Track if message gets logged with severity of error or greater
     # See https://stackoverflow.com/a/45446664/4651668
     error_handler = errorhandler.ErrorHandler()
 
     # Log to stderr
     logger = logging.getLogger()
-    logger.setLevel(getattr(logging, args.log_level))
     stream_handler = logging.StreamHandler(stream=sys.stderr)
     stream_handler.setFormatter(logging.Formatter('## {levelname}\n{message}', style='{'))
     logger.addHandler(stream_handler)
+
+    args = parse_arguments()
+    logger.setLevel(getattr(logging, args.log_level))
 
     prepare_manuscript(args)
 
