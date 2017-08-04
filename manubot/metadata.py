@@ -35,7 +35,12 @@ def get_doi_citeproc(doi):
         'Accept': 'application/vnd.citationstyles.csl+json',
     }
     response = requests.get(url, headers=header)
-    citeproc = response.json()
+    try:
+        citeproc = response.json()
+    except Exception as error:
+        logging.error(f'Error fetching metadata for doi:{doi}.\n'
+                      f'Invalid response from {response.url}:\n{response.text}')
+        raise error
     # Upgrade to preferred formatting in DOI resolution URLs
     if 'URL' in citeproc:
         pattern = re.compile(r'^(https?://d?x?\.?)doi\.org/')
@@ -66,7 +71,7 @@ def get_pubmed_citeproc(pubmed_id):
         citeproc = response.json()
     except Exception as error:
         logging.error(f'Error fetching metadata for pmid:{pubmed_id}.\n'
-                      f'Invalid response from {response.url}\n{response.text}')
+                      f'Invalid response from {response.url}:\n{response.text}')
         raise error
     citeproc['URL'] = f'https://www.ncbi.nlm.nih.gov/pubmed/{pubmed_id}'
     return citeproc
@@ -119,7 +124,7 @@ def get_url_citeproc(url):
     try:
         return get_url_citeproc_greycite(url)
     except Exception as e:
-        print(f'Error getting {url} from Greycite: {e}')
+        logging.warning(f'Error getting {url} from Greycite: {e}')
         # Fallback strategy
         return get_url_citeproc_manual(url)
 
