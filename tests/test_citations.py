@@ -31,6 +31,7 @@ def test_standardize_citation(citation, expected):
     assert output == expected
 
 
+@pytest.mark.skip(reason="https://github.com/datacite/datacite/issues/187")
 def test_citation_to_citeproc_doi_datacite():
     citation = 'doi:10.7287/peerj.preprints.3100v1'
     citeproc = citation_to_citeproc(citation)
