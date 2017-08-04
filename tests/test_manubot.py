@@ -1,14 +1,20 @@
 import pathlib
 import subprocess
 
+import pytest
+
 directory = pathlib.Path(__file__).parent.resolve()
 
 
-def test_example_manuscript():
+@pytest.mark.parametrize("manuscript_directory", [
+    ('example-manuscript'),
+    ('example-manuscript-empty'),
+])
+def test_example_manuscript(manuscript_directory):
     """
-    Test command line execution of manubot to build the example-manuscript.
+    Test command line execution of manubot to build an example manuscript.
     """
-    manuscript_dir = directory.joinpath('example-manuscript')
+    manuscript_dir = directory.joinpath(manuscript_directory)
     args = [
         'manubot',
         '--log-level', 'INFO',
