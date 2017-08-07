@@ -5,16 +5,17 @@ import pytest
 
 directory = pathlib.Path(__file__).parent.resolve()
 
+# List of manuscripts for testing. All subdirectories of ./manuscripts
+manuscripts = [path.name for path in
+               directory.joinpath('manuscripts').iterdir() if path.is_dir()]
 
-@pytest.mark.parametrize("manuscript_directory", [
-    ('example-manuscript'),
-    ('example-manuscript-empty'),
-])
-def test_example_manuscript(manuscript_directory):
+
+@pytest.mark.parametrize("manuscript", manuscripts)
+def test_example_manuscript(manuscript):
     """
     Test command line execution of manubot to build an example manuscript.
     """
-    manuscript_dir = directory.joinpath(manuscript_directory)
+    manuscript_dir = directory.joinpath('manuscripts', manuscript)
     args = [
         'manubot',
         '--log-level', 'INFO',
