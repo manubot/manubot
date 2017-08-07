@@ -1,4 +1,6 @@
 import collections
+import json
+import logging
 import pathlib
 import re
 
@@ -23,6 +25,7 @@ def get_text(directory):
     name_to_text = collections.OrderedDict()
     for path in paths:
         name_to_text[path.stem] = path.read_text()
+    logging.info('Manuscript content parts:\n' + '\n'.join(name_to_text))
     return '\n\n'.join(name_to_text.values()) + '\n'
 
 
@@ -61,4 +64,5 @@ def get_manuscript_stats(text, citation_df):
     ref_counts['total'] = sum(ref_counts.values())
     stats['reference_counts'] = ref_counts
     stats['word_count'] = len(text.split())
+    logging.info(f"Generated manscript stats:\n{json.dumps(stats, indent=2)}")
     return stats
