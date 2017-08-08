@@ -41,12 +41,7 @@ def get_doi_citeproc(doi):
         logging.error(f'Error fetching metadata for doi:{doi}.\n'
                       f'Invalid response from {response.url}:\n{response.text}')
         raise error
-    # Upgrade to preferred formatting in DOI resolution URLs
-    if 'URL' in citeproc:
-        pattern = re.compile(r'^(https?://d?x?\.?)doi\.org/')
-        citeproc['URL'] = pattern.sub('https://doi.org/', citeproc['URL'])
-    else:
-        citeproc['URL'] = f'https://doi.org/{doi}'
+    citeproc['URL'] = f'https://doi.org/{doi}'
     short_doi_url = get_short_doi_url(doi)
     if short_doi_url:
         citeproc['short_url'] = short_doi_url
