@@ -283,6 +283,7 @@ def prepare_manuscript(args):
     variables['manuscript_stats'] = get_manuscript_stats(text, citation_df)
     with args.variables_path.open('w') as write_file:
         json.dump(variables, write_file, indent=2)
+        write_file.write('\n')
 
     text = template_with_jinja2(text, variables)
 
