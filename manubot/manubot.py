@@ -77,14 +77,17 @@ def parse_arguments():
 def read_manual_references(path):
     """
     Read manual references (overrides) in JSON CSL specified by a pathlib.Path.
+    Returns a standard_citation to citeproc dictionary.
     """
     if not path.is_file():
         return dict()
     with path.open() as read_file:
-        manual_refs = json.load(read_file)
-    for csl_item in manual_refs:
+        csl_items = json.load(read_file)
+    manual_refs = dict()
+    for csl_item in csl_items:
         standard_citation = csl_item.pop('standard_citation')
         csl_item['id'] = get_citation_id(standard_citation)
+        manual_refs[standard_citation] = csl_item
     return manual_refs
 
 
