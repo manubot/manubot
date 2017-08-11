@@ -1,4 +1,5 @@
 import collections
+import datetime
 import json
 import logging
 import pathlib
@@ -66,3 +67,12 @@ def get_manuscript_stats(text, citation_df):
     stats['word_count'] = len(text.split())
     logging.info(f"Generated manscript stats:\n{json.dumps(stats, indent=2)}")
     return stats
+
+
+def datetime_now():
+    """
+    Return the current datetime, with timezone awareness
+    https://stackoverflow.com/a/39079819/4651668
+    """
+    tzinfo = datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo
+    return datetime.datetime.now(tzinfo)
