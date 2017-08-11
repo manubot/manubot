@@ -151,7 +151,8 @@ def get_metadata_and_variables(args):
 
     # Add date to metadata
     now = datetime_now()
-    logging.info(f'Using {now:%Z} timezone')
+    logging.info(f'Using {now:%Z} timezone.\n'
+        f'Dating manuscript with the current datetime: {now.isoformat()}')
     metadata['date-meta'] = now.date().isoformat()
     variables['date'] = f'{now:%B %e, %Y}'
 
