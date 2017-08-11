@@ -1,6 +1,5 @@
 import argparse
 import collections
-import datetime
 import json
 import logging
 import os
@@ -17,6 +16,7 @@ import requests_cache
 import yaml
 
 from manubot.manuscript import (
+    datetime_now,
     get_citation_strings,
     get_manuscript_stats,
     get_text,
@@ -150,9 +150,11 @@ def get_metadata_and_variables(args):
         logging.warning(f'missing {args.meta_yaml_path} file with yaml_metadata_block for pandoc')
 
     # Add date to metadata
-    today = datetime.date.today()
-    metadata['date-meta'] = today.isoformat()
-    variables['date'] = today.strftime('%B %e, %Y')
+    now = datetime_now()
+    logging.info(f'Using {now:%Z} timezone.\n'
+        f'Dating manuscript with the current datetime: {now.isoformat()}')
+    metadata['date-meta'] = now.date().isoformat()
+    variables['date'] = f'{now:%B %e, %Y}'
 
     # Process authors metadata
     authors = metadata.pop('author_info', [])
