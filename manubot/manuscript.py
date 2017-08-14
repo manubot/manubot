@@ -41,8 +41,7 @@ def replace_citations_strings_with_ids(text, string_to_id):
     """
     for old, new in string_to_id.items():
         text = re.sub(
-            pattern=re.escape(old) + '(?=[^a-zA-Z0-9/])',
-            #pattern=re.escape(old) + r'(?![\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])',
+            pattern=re.escape(old) + r'(?![\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])',
             repl='@' + new,
             string=text,
         )
