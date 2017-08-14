@@ -1,4 +1,7 @@
-from manubot.manuscript import get_citation_strings
+from manubot.manuscript import (
+    get_citation_strings,
+    replace_citations_strings_with_ids
+)
 
 
 def test_get_citation_strings_1():
@@ -18,3 +21,21 @@ def test_get_citation_strings_1():
         '@url:https://www.courtlistener.com/docket/4355308/1/elsevier-inc-v-sci-hub/',
     ])
     assert citations == expected
+
+
+def test_replace_citations_strings_with_ids():
+    """
+    Test that text does not get converted to:
+    
+    > our new Manubot tool [@cTN2TQIL-rootstock; @cTN2TQIL] for automating
+    manuscript generation.
+    
+    See https://github.com/greenelab/manubot/issues/9
+    """
+    string_to_id = {
+        '@url:https://github.com/greenelab/manubot': 'cTN2TQIL',
+        '@url:https://github.com/greenelab/manubot-rootstock': '1B7Y2HVtw',
+    }
+    text = 'our new Manubot tool [@url:https://github.com/greenelab/manubot-rootstock; @url:https://github.com/greenelab/manubot] for automating manuscript generation.'
+    text = replace_citations_strings_with_ids(text, string_to_id)
+    assert '[@1B7Y2HVtw; @cTN2TQIL]' in text
