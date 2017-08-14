@@ -29,7 +29,7 @@ See `manubot --help` for documentation of all command line arguments.
 
 ## Installation
 
-Install version specified by the commit using:
+Install the version specified by a git commit hash using:
 
 ```sh
 COMMIT=33e512d21218263423de5f0d127aac4f8635468f
