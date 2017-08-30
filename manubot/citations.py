@@ -98,12 +98,53 @@ def citation_to_citeproc(citation):
     return citeproc
 
 
+# Valid CSL (citeproc JSON) types as per
+# https://github.com/citation-style-language/schema/blob/4846e02f0a775a8272819204379a4f8d7f45c16c/csl-types.rnc#L5-L39
+citeproc_types = {
+    "article",
+    "article-journal",
+    "article-magazine",
+    "article-newspaper",
+    "bill",
+    "book",
+    "broadcast",
+    "chapter",
+    "dataset",
+    "entry",
+    "entry-dictionary",
+    "entry-encyclopedia",
+    "figure",
+    "graphic",
+    "interview",
+    "legal_case",
+    "legislation",
+    "manuscript",
+    "map",
+    "motion_picture",
+    "musical_score",
+    "pamphlet",
+    "paper-conference",
+    "patent",
+    "personal_communication",
+    "post",
+    "post-weblog",
+    "report",
+    "review",
+    "review-book",
+    "song",
+    "speech",
+    "thesis",
+    "treaty",
+    "webpage",
+}
+
 citeproc_type_fixer = {
     'journal-article': 'article-journal',
     'book-chapter': 'chapter',
     'posted-content': 'manuscript',
     'proceedings-article': 'paper-conference',
     'standard': 'entry',
+    'reference-entry': 'entry',
 }
 
 # Remove citeproc keys to fix pandoc-citeproc errors
@@ -135,7 +176,10 @@ def citeproc_passthrough(csl_item, set_id=None):
     # Correct invalid CSL item types
     # See https://github.com/CrossRef/rest-api-doc/issues/187
     old_type = csl_item['type']
-    csl_item['type'] = citeproc_type_fixer.get(old_type, old_type)
+    csl_type = citeproc_type_fixer.get(old_type, old_type)
+    if csl_type not in citeproc_types:
+        csl_type = 'entry'
+    csl_item['type'] = csl_type
 
     # Remove problematic objects
     for key in citeproc_remove_keys:
