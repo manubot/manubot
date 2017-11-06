@@ -80,9 +80,10 @@ def get_arxiv_citeproc(arxiv_id):
     if DOI:
         csl_item['DOI'] = DOI
         journal_ref = entry.findtext(alt_prefix + 'journal_ref')
-        logging.warning(f'arXiv article {arxiv_id} published in'
-                        f'"{journal_ref}" at https://doi.org/{DOI}')
-
+        msg = f'arXiv article {arxiv_id} published at https://doi.org/{DOI}'
+        if journal_ref:
+            msg += f' — {journal_ref}'
+        logging.warning(msg)
     # Set CSL type to report for preprint
     csl_item['type'] = 'report'
     return csl_item
