@@ -136,6 +136,52 @@ def read_json(path):
     return obj
 
 
+def read_jsons(paths):
+    """
+    Read multiple JSON files into a user_variables dictionary. Provide a list
+    of paths (URLs or filepaths). Paths can optionally have a namespace
+    prepended. For example:
+
+    ```
+    paths = [
+        'https://git.io/vbkqm',  # update the dictionary's top-level
+        'namespace_1:https://git.io/vbkqm',  # store under 'namespace_1' key
+        'namespace_2:some_local_path.json',  # store under 'namespace_2' key
+    ]
+    ```
+
+    If a namespace is not provided, the JSON must contain a dictionary as its
+    top level. Namespaces should consist only of ASCII alphanumeric characters
+    (includes underscores, first character cannot be numeric).
+    """
+    user_variables = collections.OrderedDict()
+    for path in paths:
+        logging.info(f'Read the following user-provided templating variables for {path}')
+        # Match only namespaces that are valid jinja2 variable names
+        # http://jinja.pocoo.org/docs/2.10/api/#identifier-naming
+        match = re.match(r'([a-zA-Z_][a-zA-Z0-9_]*):(.+)', path)
+        if match:
+            namespace, path = match.groups()
+            logging.info(f'Using the "{namespace}" namespace for template variables from {path}')
+        try:
+            obj = read_json(path)
+        except Exception:
+            logging.exception(f'Error reading template variables from {path}')
+            continue
+        if match:
+            obj = {namespace: obj}
+        assert isinstance(obj, dict)
+        conflicts = user_variables.keys() & obj.keys()
+        if conflicts:
+            logging.warning(f'Template variables in {path} overwrite existing '
+                            'values for the following keys:\n' +
+                            '\n'.join(conflicts))
+        user_variables.update(obj)
+    logging.info(f'Reading user-provided templating variables complete:\n'
+                 f'{json.dumps(user_variables, indent=2, ensure_ascii=False)}')
+    return user_variables
+
+
 def get_metadata_and_variables(args):
     """
     Process metadata.yaml and create variables available for jinja2 templating.
@@ -175,31 +221,7 @@ def get_metadata_and_variables(args):
         }
 
     # Update variables with user-provided variables here
-    user_variables = collections.OrderedDict()
-    for path in args.template_variables_path:
-        logging.info(f'Read the following user-provided templating variables for {path}')
-        # Match only namespaces that are valid jinja2 variable names
-        # http://jinja.pocoo.org/docs/2.10/api/#identifier-naming
-        match = re.match(r'([a-zA-Z_][a-zA-Z0-9_]*):(.+)', path)
-        if match:
-            namespace, path = match.groups()
-            logging.info(f'Using the "{namespace}" namespace for template variables from {path}')
-        try:
-            obj = read_json(path)
-        except Exception:
-            logging.exception(f'Error reading template variables from {path}')
-            continue
-        if match:
-            obj = {namespace: obj}
-        assert isinstance(obj, dict)
-        conflicts = user_variables.keys() & obj.keys()
-        if conflicts:
-            logging.warning(f'Template variables in {path} overwrite existing '
-                            'values for the following keys:\n' +
-                            '\n'.join(conflicts))
-        user_variables.update(obj)
-    logging.info(f'Reading user-provided templating variables complete:\n'
-                 f'{json.dumps(user_variables, indent=2, ensure_ascii=False)}')
+    user_variables = read_jsons(args.template_variables_path)
     variables.update(user_variables)
 
     return metadata, variables
