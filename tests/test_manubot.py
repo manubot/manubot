@@ -39,6 +39,12 @@ def test_example_manuscript(manuscript):
     assert process.returncode == 0
 
 
+def test_read_jsons_empty():
+    paths = []
+    user_variables = read_jsons(paths)
+    assert isinstance(user_variables, dict) and not user_variables
+
+
 def test_read_jsons():
     """
     Test reading multiple JSON files, from both local paths and URLs.
