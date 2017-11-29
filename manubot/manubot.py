@@ -43,7 +43,7 @@ def parse_arguments():
                         help='path or URL of a JSON file containing template variables for jinja2. '
                              'Specify this argument multiple times to read multiple files. '
                              'Variables can be applied to a namespace (i.e. stored under a dictionary key) '
-                             'like `--template-variables-path=namespace:path_or_url`. '
+                             'like `--template-variables-path=namespace=path_or_url`. '
                              'Namespaces must match the regex `[a-zA-Z_][a-zA-Z0-9_]*`.')
     parser.add_argument('--cache-directory', type=pathlib.Path,
                         help='Custom cache directory. If not specified, caches to output-directory')
@@ -145,8 +145,8 @@ def read_jsons(paths):
     ```
     paths = [
         'https://git.io/vbkqm',  # update the dictionary's top-level
-        'namespace_1:https://git.io/vbkqm',  # store under 'namespace_1' key
-        'namespace_2:some_local_path.json',  # store under 'namespace_2' key
+        'namespace_1=https://git.io/vbkqm',  # store under 'namespace_1' key
+        'namespace_2=some_local_path.json',  # store under 'namespace_2' key
     ]
     ```
 
@@ -159,7 +159,7 @@ def read_jsons(paths):
         logging.info(f'Read the following user-provided templating variables for {path}')
         # Match only namespaces that are valid jinja2 variable names
         # http://jinja.pocoo.org/docs/2.10/api/#identifier-naming
-        match = re.match(r'([a-zA-Z_][a-zA-Z0-9_]*):(.+)', path)
+        match = re.match(r'([a-zA-Z_][a-zA-Z0-9_]*)=(.+)', path)
         if match:
             namespace, path = match.groups()
             logging.info(f'Using the "{namespace}" namespace for template variables from {path}')

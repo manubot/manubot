@@ -48,10 +48,10 @@ def test_read_jsons():
     paths = [
         'https://git.io/vbkqm',
         'https://git.io/vbkqm',
-        'namespace_1:https://git.io/vbkqm',
-        'namespace_2:https://git.io/vbkqm',
-        f'namespace_2:{local_path}',
-        f'namespace_3:{local_path}',
+        'namespace_1=https://git.io/vbkqm',
+        'namespace_2=https://git.io/vbkqm',
+        f'namespace_2={local_path}',
+        f'namespace_3={local_path}',
     ]
     user_variables = read_jsons(paths)
     assert 'namespace_1' in user_variables
