@@ -102,4 +102,4 @@ def test_add_author_affiliations():
     ]
     authors = variables['authors']
     assert authors[0]['affiliation_numbers'] == [1, 2]
-    assert authors[1]['affiliation_numbers'] == [3, 2]
+    assert authors[1]['affiliation_numbers'] == [2, 3]
