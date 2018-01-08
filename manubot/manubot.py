@@ -193,8 +193,8 @@ def add_author_affiliations(variables):
     for author in variables['authors']:
         name = author['name']
         affiliations = author.get('affiliations', [])
-        affiliations = (affiliations if isinstance(affiliations, list) else
-                        affiliations.split('; '))
+        if not isinstance(affiliations, list):
+            affiliations = affiliations.split('; ')
         for affiliation in affiliations:
             rows.append((name, affiliation))
     if not rows:
