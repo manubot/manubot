@@ -203,11 +203,10 @@ def add_author_affiliations(variables):
     affiliation_df = affil_map_df[['affiliation']].drop_duplicates()
     affiliation_df['affiliation_number'] = range(1, 1 + len(affiliation_df))
     affil_map_df = affil_map_df.merge(affiliation_df)
-    name_to_numbers = {name: list(df.affiliation_number) for name, df in
+    name_to_numbers = {name: sorted(df.affiliation_number) for name, df in
                        affil_map_df.groupby('name')}
     for author in variables['authors']:
-        numbers = name_to_numbers.get(author['name'], [])
-        author['affiliation_numbers'] = numbers
+        author['affiliation_numbers'] = name_to_numbers.get(author['name'], [])
     variables['affiliations'] = affiliation_df.to_dict(orient='records')
     return variables
 
