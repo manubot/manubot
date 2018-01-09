@@ -37,3 +37,24 @@ pip install git+https://github.com/greenelab/manubot@$COMMIT
 ```
 
 Use the `--upgrade` argument to reinstall `manubot` with a different commit hash.
+
+## Development
+
+Create a development environment using:
+
+```sh
+conda create --name=manubot-dev python=3.6 jinja2 pandas pytest
+conda activate manubot-dev  # assumes conda >= 4.4
+pip install --editable .
+```
+
+Inside this environment, use `pytest` to run the test suite.
+You can also use the `manubot` CLI to build manuscripts.
+For example:
+
+```sh
+manubot \
+  --content-directory=tests/manuscripts/example/content \
+  --output-directory=tests/manuscripts/example/output \
+  --log-level=DEBUG
+```
