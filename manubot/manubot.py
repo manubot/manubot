@@ -387,6 +387,10 @@ def main():
     # See https://stackoverflow.com/a/45446664/4651668
     error_handler = errorhandler.ErrorHandler()
 
+    # Log DeprecationWarnings
+    warnings.simplefilter('always', DeprecationWarning)
+    logging.captureWarnings(True)
+
     # Log to stderr
     logger = logging.getLogger()
     stream_handler = logging.StreamHandler(stream=sys.stderr)
