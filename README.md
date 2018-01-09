@@ -44,7 +44,7 @@ Create a development environment using:
 
 ```sh
 conda create --name=manubot-dev python=3.6 jinja2 pandas pytest
-conda activate manubot-dev
+conda activate manubot-dev  # assumes conda >= 4.4
 pip install --editable .
 ```
 
