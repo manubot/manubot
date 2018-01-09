@@ -7,6 +7,7 @@ import pathlib
 import re
 import sys
 import textwrap
+import warnings
 
 import errorhandler
 import jinja2
@@ -194,6 +195,12 @@ def add_author_affiliations(variables):
         if 'affiliations' not in author:
             continue
         if not isinstance(author['affiliations'], list):
+            warnings.warn(
+                f"Expected list for {author['name']}'s affiliations. "
+                f"Assuming multiple affiliations are `; ` separated. "
+                f"Please switch affiliations to a list.",
+                category=DeprecationWarning
+            )
             author['affiliations'] = author['affiliations'].split('; ')
         for affiliation in author['affiliations']:
             rows.append((author['name'], affiliation))

@@ -88,12 +88,13 @@ def test_add_author_affiliations_empty():
 def test_add_author_affiliations():
     variables = {}
     variables['authors'] = [
-        # Legacy affiliations format (as a string that's `: ` separated)
+        # Deprecated affiliations format (as a string that's `; ` separated)
         {'name': 'Jane Roe', 'affiliations': 'Department of Doe, University of Roe; Peppertea University'},
         # Prefered affiliations format as a list
         {'name': 'John Doe', 'affiliations': ['Unique University', 'Peppertea University']},
     ]
-    returned_variables = add_author_affiliations(variables)
+    with pytest.warns(DeprecationWarning):
+        returned_variables = add_author_affiliations(variables)
     assert variables is returned_variables
     assert variables['affiliations'] == [
         {'affiliation': 'Department of Doe, University of Roe', 'affiliation_number': 1},
