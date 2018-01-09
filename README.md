@@ -37,3 +37,13 @@ pip install git+https://github.com/greenelab/manubot@$COMMIT
 ```
 
 Use the `--upgrade` argument to reinstall `manubot` with a different commit hash.
+
+## Development
+
+Create a development environment using:
+
+```sh
+conda create --name=manubot-dev python=3.6 jinja2 pandas pytest
+conda activate manubot-dev
+pip install --editable .
+```
