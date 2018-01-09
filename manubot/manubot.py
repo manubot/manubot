@@ -7,6 +7,7 @@ import pathlib
 import re
 import sys
 import textwrap
+import warnings
 
 import errorhandler
 import jinja2
@@ -182,6 +183,41 @@ def read_jsons(paths):
     return user_variables
 
 
+def add_author_affiliations(variables):
+    """
+    Edit variables to contain numbered author affiliations. Specifically,
+    add a list of affiliation_numbers for each author and add a list of
+    affiliations to the top-level of variables. If no authors have any
+    affiliations, variables is left unmodified.
+    """
+    rows = list()
+    for author in variables['authors']:
+        if 'affiliations' not in author:
+            continue
+        if not isinstance(author['affiliations'], list):
+            warnings.warn(
+                f"Expected list for {author['name']}'s affiliations. "
+                f"Assuming multiple affiliations are `; ` separated. "
+                f"Please switch affiliations to a list.",
+                category=DeprecationWarning
+            )
+            author['affiliations'] = author['affiliations'].split('; ')
+        for affiliation in author['affiliations']:
+            rows.append((author['name'], affiliation))
+    if not rows:
+        return variables
+    affil_map_df = pandas.DataFrame(rows, columns=['name', 'affiliation'])
+    affiliation_df = affil_map_df[['affiliation']].drop_duplicates()
+    affiliation_df['affiliation_number'] = range(1, 1 + len(affiliation_df))
+    affil_map_df = affil_map_df.merge(affiliation_df)
+    name_to_numbers = {name: sorted(df.affiliation_number) for name, df in
+                       affil_map_df.groupby('name')}
+    for author in variables['authors']:
+        author['affiliation_numbers'] = name_to_numbers.get(author['name'], [])
+    variables['affiliations'] = affiliation_df.to_dict(orient='records')
+    return variables
+
+
 def get_metadata_and_variables(args):
     """
     Process metadata.yaml and create variables available for jinja2 templating.
@@ -210,6 +246,7 @@ def get_metadata_and_variables(args):
     authors = metadata.pop('author_info', [])
     metadata['author-meta'] = [author['name'] for author in authors]
     variables['authors'] = authors
+    variables = add_author_affiliations(variables)
 
     # Set repository version metadata for CI builds only
     repo_slug = os.getenv('TRAVIS_REPO_SLUG')
@@ -349,6 +386,10 @@ def main():
     # Track if message gets logged with severity of error or greater
     # See https://stackoverflow.com/a/45446664/4651668
     error_handler = errorhandler.ErrorHandler()
+
+    # Log DeprecationWarnings
+    warnings.simplefilter('always', DeprecationWarning)
+    logging.captureWarnings(True)
 
     # Log to stderr
     logger = logging.getLogger()

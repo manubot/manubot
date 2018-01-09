@@ -59,6 +59,7 @@ def test_standardize_citation(citation, expected):
     assert output == expected
 
 
+@pytest.mark.xfail(reason='https://twitter.com/dhimmel/status/950443969313419264')
 def test_citation_to_citeproc_doi_datacite():
     citation = 'doi:10.7287/peerj.preprints.3100v1'
     citeproc = citation_to_citeproc(citation)
