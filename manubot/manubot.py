@@ -191,12 +191,12 @@ def add_author_affiliations(variables):
     """
     rows = list()
     for author in variables['authors']:
-        name = author['name']
-        affiliations = author.get('affiliations', [])
-        if not isinstance(affiliations, list):
-            affiliations = affiliations.split('; ')
-        for affiliation in affiliations:
-            rows.append((name, affiliation))
+        if 'affiliations' not in author:
+            continue
+        if not isinstance(author['affiliations'], list):
+            author['affiliations'] = author['affiliations'].split('; ')
+        for affiliation in author['affiliations']:
+            rows.append((author['name'], affiliation))
     if not rows:
         return variables
     affil_map_df = pandas.DataFrame(rows, columns=['name', 'affiliation'])
