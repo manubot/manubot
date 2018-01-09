@@ -6,7 +6,7 @@ import urllib.request
 import requests
 
 from manubot.arxiv import get_arxiv_citeproc
-
+from manubot.pubmed import get_pubmed_citeproc
 
 def get_short_doi_url(doi):
     """
@@ -128,6 +128,7 @@ def get_url_citeproc(url):
 
 citeproc_retrievers = {
     'doi': get_doi_citeproc,
+    'pmid': get_pubmed_citeproc,
     'pmcid': get_pmc_citeproc,
     'arxiv': get_arxiv_citeproc,
     'url': get_url_citeproc,
