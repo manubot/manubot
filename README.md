@@ -47,3 +47,14 @@ conda create --name=manubot-dev python=3.6 jinja2 pandas pytest
 conda activate manubot-dev
 pip install --editable .
 ```
+
+Inside this environment, use `pytest` to run the test suite.
+You can also use the `manubot` CLI to build manuscripts.
+For example:
+
+```sh
+manubot \
+  --content-directory=tests/manuscripts/example/content \
+  --output-directory=tests/manuscripts/example/output \
+  --log-level=DEBUG
+```
