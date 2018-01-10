@@ -6,6 +6,7 @@ import urllib.request
 import requests
 
 from manubot.arxiv import get_arxiv_citeproc
+from manubot.pubmed import get_pubmed_citeproc
 
 
 def get_short_doi_url(doi):
@@ -48,27 +49,29 @@ def get_doi_citeproc(doi):
     return citeproc
 
 
-def get_pubmed_citeproc(pubmed_id):
+def get_pmc_citeproc(identifier):
     """
-    Get the citeproc JSON for a PubMed or PubMed Central identifier
+    Get the citeproc JSON for a PubMed Central record by its PMID, PMCID, or
+    DOI, using the NCBI Citation Exporter API.
 
     https://github.com/ncbi/citation-exporter
     https://www.ncbi.nlm.nih.gov/pmc/tools/ctxp/
     https://www.ncbi.nlm.nih.gov/pmc/utils/ctxp/samples
+    https://github.com/greenelab/manubot/issues/21
     """
     params = {
-        'ids': pubmed_id,
-        'report': 'citeproc'
+        'ids': identifier,
+        'report': 'citeproc',
     }
     url = 'https://www.ncbi.nlm.nih.gov/pmc/utils/ctxp'
     response = requests.get(url, params)
     try:
         citeproc = response.json()
     except Exception as error:
-        logging.error(f'Error fetching metadata for pmid:{pubmed_id}.\n'
+        logging.error(f'Error fetching PMC metadata for {identifier}.\n'
                       f'Invalid response from {response.url}:\n{response.text}')
         raise error
-    citeproc['URL'] = f'https://www.ncbi.nlm.nih.gov/pubmed/{pubmed_id}'
+    citeproc['URL'] = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{citeproc['PMCID']}/"
     return citeproc
 
 
@@ -127,6 +130,7 @@ def get_url_citeproc(url):
 citeproc_retrievers = {
     'doi': get_doi_citeproc,
     'pmid': get_pubmed_citeproc,
+    'pmcid': get_pmc_citeproc,
     'arxiv': get_arxiv_citeproc,
     'url': get_url_citeproc,
 }
