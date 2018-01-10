@@ -146,3 +146,13 @@ def test_citation_to_citeproc_pubmed_2():
     assert authors[0]['family'] == 'Greene'
     assert citeproc['PMID'] == '27094199'
     assert citeproc['DOI'] == '10.1161/circgenetics.115.001181'
+
+
+def test_citation_to_citeproc_pubmed_book():
+    """
+    Extracting CSL metadata from books in PubMed is not supported.
+    Logic not implemented to parse XML returned by
+    https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29227604&rettype=full
+    """
+    with pytest.raises(NotImplementedError):
+        citation_to_citeproc('pmid:29227604')

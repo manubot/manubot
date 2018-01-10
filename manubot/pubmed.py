@@ -22,12 +22,17 @@ def get_pubmed_citeproc(pmid):
     response = requests.get(url, params)
     try:
         element_tree = xml.etree.ElementTree.fromstring(response.text)
-        element_tree, = element_tree.findall('PubmedArticle')
+        element_tree, = list(element_tree)
     except Exception as error:
         logging.error(f'Error fetching PubMed metadata for {pmid}.\n'
-                      f'Invalid response from {response.url}:\n{response.text}')
+                      f'Invalid XML response from {response.url}:\n{response.text}')
         raise error
-    citeproc = citeproc_from_pubmed_article(element_tree)
+    try:
+        citeproc = citeproc_from_pubmed_article(element_tree)
+    except Exception as error:
+        msg = f'Error parsing the following PubMed metadata for PMID {pmid}:\n{response.text}'
+        logging.error(msg)
+        raise error
     return citeproc
 
 
@@ -38,6 +43,9 @@ def citeproc_from_pubmed_article(article):
     https://github.com/citation-style-language/schema/blob/master/csl-data.json
     """
     citeproc = collections.OrderedDict()
+
+    if not article.find("MedlineCitation/Article"):
+        raise NotImplementedError('Unsupported PubMed record: no <Article> element')
 
     title = article.findtext("MedlineCitation/Article/ArticleTitle")
     if title:
@@ -118,6 +126,9 @@ month_abbrev_to_int = {
 
 
 def extract_publication_date_parts(article):
+    """
+    Extract date published from a PubmedArticle xml element tree.
+    """
     date_parts = []
 
     # Electronic articles
