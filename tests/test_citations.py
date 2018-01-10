@@ -105,15 +105,44 @@ def test_citation_to_citeproc_pmc(identifier, citation_id):
     assert citeproc['PMCID'] == 'PMC3041534'
 
 
-@pytest.mark.skip
-def test_citation_to_citeproc_pubmed():
+def test_citation_to_citeproc_pubmed_1():
+    """
+    Generated from XML returned by
+    https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=21347133&rettype=full
+    """
     citation = 'pmid:21347133'
     citeproc = citation_to_citeproc(citation)
     assert citeproc['id'] == 'y9ONtSZ9'
+    assert citeproc['type'] == 'article-journal'
     assert citeproc['URL'] == 'https://www.ncbi.nlm.nih.gov/pubmed/21347133'
-    assert citeproc['container-title'] == 'Summit on Translational Bioinformatics'
-    assert citeproc['title'] == 'Secondary Use of EHR: Data Quality Issues and Informatics Opportunities'
+    assert citeproc['container-title'] == 'AMIA Joint Summits on Translational Science proceedings. AMIA Joint Summits on Translational Science'
+    assert citeproc['title'] == 'Secondary Use of EHR: Data Quality Issues and Informatics Opportunities.'
+    assert citeproc['issued']['date-parts'] == [[2010, 3, 1]]
     authors = citeproc['author']
+    assert authors[0]['given'] == 'Taxiarchis'
     assert authors[0]['family'] == 'Botsis'
     assert citeproc['PMID'] == '21347133'
     assert citeproc['PMCID'] == 'PMC3041534'
+
+
+def test_citation_to_citeproc_pubmed_2():
+    """
+    Generated from XML returned by
+    https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=27094199&rettype=full
+    """
+    citation = 'pmid:27094199'
+    citeproc = citation_to_citeproc(citation)
+    print(citeproc)
+    assert citeproc['id'] == 'alaFV9OY'
+    assert citeproc['type'] == 'article-journal'
+    assert citeproc['URL'] == 'https://www.ncbi.nlm.nih.gov/pubmed/27094199'
+    assert citeproc['container-title'] == 'Circulation. Cardiovascular genetics'
+    assert citeproc['container-title-short'] == 'Circ Cardiovasc Genet'
+    assert citeproc['page'] == '179-84'
+    assert citeproc['title'] == 'Genetic Association-Guided Analysis of Gene Networks for the Study of Complex Traits.'
+    assert citeproc['issued']['date-parts'] == [[2016, 4]]
+    authors = citeproc['author']
+    assert authors[0]['given'] == 'Casey S'
+    assert authors[0]['family'] == 'Greene'
+    assert citeproc['PMID'] == '27094199'
+    assert citeproc['DOI'] == '10.1161/circgenetics.115.001181'

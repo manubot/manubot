@@ -65,11 +65,11 @@ def citeproc_from_pubmed_article(article):
 
     issn = article.findtext("MedlineCitation/Article/Journal/ISSN")
     if issn:
-        citeproc['issn'] = issn
+        citeproc['ISSN'] = issn
 
     date_parts = extract_publication_date_parts(article)
     if date_parts:
-        citeproc['issued'] = [date_parts]
+        citeproc['issued'] = {'date-parts': [date_parts]}
 
     authors_csl = list()
     authors = article.findall("MedlineCitation/Article/AuthorList/Author")
