@@ -8,6 +8,7 @@ import requests
 from manubot.arxiv import get_arxiv_citeproc
 from manubot.pubmed import get_pubmed_citeproc
 
+
 def get_short_doi_url(doi):
     """
     Get the shortDOI URL for a DOI.
