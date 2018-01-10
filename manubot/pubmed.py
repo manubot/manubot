@@ -96,6 +96,7 @@ def citeproc_from_pubmed_article(article):
         citeproc['abstract'] = abstract
 
     citeproc['URL'] = f"https://www.ncbi.nlm.nih.gov/pubmed/{citeproc['PMID']}"
+    citeproc['type'] = 'article-journal'
 
     return citeproc
 
@@ -144,7 +145,7 @@ def extract_publication_date_parts(article):
 
 
 if __name__ == '__main__':
-    for pmid in 25648772, 27094199, 11234041:
+    for pmid in 25648772, 27094199, 11234041, 14728133:
         print(pmid)
         citeproc = get_pubmed_citeproc(pmid)
         print(citeproc)
