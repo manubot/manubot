@@ -19,9 +19,11 @@ If a citation string does not match this regex, it can be substituted for a
 tag that does, as defined in citation-tags.tsv.
 
 https://github.com/greenelab/manubot-rootstock/issues/2#issuecomment-312153192
+
+Prototyped at https://regex101.com/r/s3Asz3/2
 """
 citation_pattern = re.compile(
-    r'@[a-zA-Z0-9][\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/]')
+    r'(?<!\w)@[a-zA-Z0-9][\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/]')
 
 
 def standardize_citation(citation):
