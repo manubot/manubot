@@ -273,6 +273,10 @@ def get_citation_df(args, text):
     )
     if args.citation_tags_path.is_file():
         tag_df = pandas.read_table(args.citation_tags_path)
+        na_rows_df = tag_df[tag_df.isnull().any(axis='columns')]
+        if not na_rows_df.empty:
+            logging.error(f'{args.citation_tags_path} contains rows with missing values:\n{na_rows_df}\nThis error can be caused by using spaces rather than tabs to delimit fields.\nProceeding to reread TSV with delim_whitespace=True.')
+            tag_df = pandas.read_table(args.citation_tags_path, delim_whitespace=True)
         tag_df['string'] = '@tag:' + tag_df.tag
         for citation in tag_df.citation:
             is_valid_citation_string('@' + citation)
