@@ -240,7 +240,7 @@ def get_metadata_and_variables(args):
     logging.info(f'Using {now:%Z} timezone.\n'
         f'Dating manuscript with the current datetime: {now.isoformat()}')
     metadata['date-meta'] = now.date().isoformat()
-    variables['date'] = f'{now:%B %e, %Y}'
+    variables['date'] = f'{now:%B} {now.day}, {now.year}'
 
     # Process authors metadata
     authors = metadata.pop('author_info', [])
