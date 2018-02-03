@@ -248,13 +248,16 @@ def get_metadata_and_variables(args):
     variables['authors'] = authors
     variables = add_author_affiliations(variables)
 
-    # Set repository version metadata for CI builds only
-    repo_slug = os.getenv('TRAVIS_REPO_SLUG')
-    commit = os.getenv('TRAVIS_COMMIT')
-    if repo_slug and commit:
+    # Set repository version metadata for Travis CI builds only
+    # https://docs.travis-ci.com/user/environment-variables/
+    if os.getenv('TRAVIS', 'false') == 'true':
+        repo_slug = os.environ['TRAVIS_REPO_SLUG']
+        repo_owner, repo_name = repo_slug.split('/')
         variables['ci_source'] = {
             'repo_slug': repo_slug,
-            'commit': commit,
+            'repo_owner': repo_owner,
+            'repo_name': repo_name,
+            'commit': os.environ['TRAVIS_COMMIT'],
         }
 
     # Update variables with user-provided variables here
