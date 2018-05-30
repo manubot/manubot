@@ -24,13 +24,13 @@ def test_example_manuscript(manuscript):
     args = [
         'manubot',
         '--log-level', 'INFO',
-        '--content-directory', manuscript_dir.joinpath('content'),
-        '--output-directory', manuscript_dir.joinpath('output'),
+        '--content-directory', str(manuscript_dir.joinpath('content')),
+        '--output-directory', str(manuscript_dir.joinpath('output')),
     ]
     if manuscript == 'variables':
         args.extend([
             '--template-variables-path',
-            manuscript_dir.joinpath('content/template-variables.json'),
+            str(manuscript_dir.joinpath('content/template-variables.json')),
         ])
     process = subprocess.run(
         args,
