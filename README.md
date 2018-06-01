@@ -1,7 +1,7 @@
 # The manuscript bot for automated scholarly publishing
 
 [![Travis Linux Build Status](https://travis-ci.org/greenelab/manubot.svg?branch=master)](https://travis-ci.org/greenelab/manubot)
-[![AppVeyor Windows Build Status](https://ci.appveyor.com/api/projects/status/b5fhj40rj3h1aanw/branch/master?svg=true)](https://ci.appveyor.com/project/dhimmel/manubot/branch/master)
+[![AppVeyor Windows Build Status](https://ci.appveyor.com/api/projects/status/d3wp5usbyargy4ut/branch/master?svg=true)](https://ci.appveyor.com/project/dhimmel/manubot-5ft6w/branch/master)
 
 The Manubot Python package prepares scholarly manuscripts for Pandoc consumption.
 It automates and scripts several aspects of manuscript creation, including fetching bibliographic metadata for citations.
