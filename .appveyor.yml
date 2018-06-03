@@ -1,0 +1,26 @@
+environment:
+
+  image: Visual Studio 2017
+
+  matrix:
+    - PYTHON: "C:\\Python36"
+      PYTHON_VERSION: "3.6.x"
+      PYTHON_ARCH: "32"
+    - PYTHON: "C:\\Python36-x64"
+      PYTHON_VERSION: "3.6.x"
+      PYTHON_ARCH: "64"
+
+build: off
+
+install:
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - "python -m pip install --upgrade pip"
+  - "%CMD_IN_ENV% pip install ."
+
+before_test:
+  - "%CMD_IN_ENV% pip install pytest"
+  - cinst pandoc
+  - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\"
+
+test_script:
+  - "%CMD_IN_ENV% pytest"
