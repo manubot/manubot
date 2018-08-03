@@ -59,3 +59,21 @@ manubot \
   --output-directory=tests/manuscripts/example/output \
   --log-level=DEBUG
 ```
+
+## Release instructions
+
+[![PyPI](https://img.shields.io/pypi/v/manubot.svg)](https://pypi.python.org/pypi/manubot)
+
+This section is only relevant for project maintainers.
+Travis CI deployments are used to upload releases to [PyPI](https://pypi.org/project/manubot).
+To create a new release, bump the `__version__` in [`manubot/__init__.py`](manubot/__init__.py).
+Then run the following commands:
+
+```sh
+TAG=v`python setup.py --version`
+git add manubot/__init__.py
+git commit --message="Upgrade to $TAG"
+git push
+git tag --annotate $TAG --message="Upgrade to $TAG"
+git push --tags
+```
