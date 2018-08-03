@@ -1,6 +1,5 @@
 import pathlib
 import re
-import subprocess
 
 import setuptools
 
@@ -14,17 +13,7 @@ version = pattern.search(text).group(1)
 
 # long_description
 readme_path = directory.joinpath('README.md')
-try:
-    # Try to create an reStructuredText long_description from README.md
-    args = 'pandoc', '--from', 'markdown', '--to', 'rst', readme_path
-    long_description = subprocess.check_output(args)
-    long_description = long_description.decode()
-except Exception as error:
-    # Fallback to markdown (unformatted on PyPI) long_description
-    print('README.md conversion to reStructuredText failed. Error:')
-    print(error)
-    long_description = readme_path.read_text()
-
+long_description = readme_path.read_text()
 
 setuptools.setup(
     # Package details
@@ -32,6 +21,7 @@ setuptools.setup(
     version=version,
     url='https://github.com/greenelab/manubot',
     description='Manuscript bot for automated scientific publishing',
+    long_description_content_type='text/markdown',
     long_description=long_description,
     license='BSD 3-Clause',
 
