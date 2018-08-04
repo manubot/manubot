@@ -62,7 +62,7 @@ manubot \
 
 ## Release instructions
 
-[![PyPI](https://img.shields.io/pypi/v/manubot.svg)](https://pypi.python.org/pypi/manubot)
+[![PyPI](https://img.shields.io/pypi/v/manubot.svg)](https://pypi.org/project/manubot/)
 
 This section is only relevant for project maintainers.
 Travis CI deployments are used to upload releases to [PyPI](https://pypi.org/project/manubot).
@@ -71,9 +71,11 @@ Then run the following commands:
 
 ```sh
 TAG=v`python setup.py --version`
+# Commit updated __version__ info
 git add manubot/__init__.py
-git commit --message="Upgrade to $TAG"
+git commit --message="Set __version__ to $TAG"
 git push
+# Create & push tag (assuming upstream is greenelab remote)
 git tag --annotate $TAG --message="Upgrade to $TAG"
-git push --tags
+git push upstream $TAG
 ```
