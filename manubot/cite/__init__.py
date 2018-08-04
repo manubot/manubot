@@ -4,7 +4,21 @@ import re
 
 import base62
 
-from manubot.cite.metadata import citeproc_retrievers
+from manubot.cite.arxiv import get_arxiv_citeproc
+from manubot.cite.doi import get_doi_citeproc
+from manubot.cite.pubmed import (
+    get_pmc_citeproc,
+    get_pubmed_citeproc,
+)
+from manubot.cite.url import get_url_citeproc
+
+citeproc_retrievers = {
+    'doi': get_doi_citeproc,
+    'pmid': get_pubmed_citeproc,
+    'pmcid': get_pmc_citeproc,
+    'arxiv': get_arxiv_citeproc,
+    'url': get_url_citeproc,
+}
 
 """
 Regex to extract citations.

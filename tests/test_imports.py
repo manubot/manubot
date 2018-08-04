@@ -2,7 +2,8 @@
 def test_imports():
     import manubot.cite
     import manubot.cite.arxiv
-    import manubot.cite.metadata
+    import manubot.cite.doi
+    import manubot.cite.pubmed
+    import manubot.cite.url
     import manubot.manuscript
-    manubot.cite.metadata
-    assert True
+    assert isinstance(manubot.cite.citeproc_retrievers, dict)
