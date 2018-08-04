@@ -1,8 +1,8 @@
 
 def test_imports():
-    import manubot.arxiv
-    import manubot.citations
+    import manubot.cite
+    import manubot.cite.arxiv
+    import manubot.cite.metadata
     import manubot.manuscript
-    import manubot.metadata
-    manubot.metadata
+    manubot.cite.metadata
     assert True

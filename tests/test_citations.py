@@ -1,6 +1,6 @@
 import pytest
 
-from manubot.citations import (
+from manubot.cite import (
     citation_pattern,
     citation_to_citeproc,
     get_citation_id,

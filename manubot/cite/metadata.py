@@ -5,8 +5,8 @@ import urllib.request
 
 import requests
 
-from manubot.arxiv import get_arxiv_citeproc
-from manubot.pubmed import get_pubmed_citeproc
+from manubot.cite.arxiv import get_arxiv_citeproc
+from manubot.cite.pubmed import get_pubmed_citeproc
 
 
 def get_short_doi_url(doi):

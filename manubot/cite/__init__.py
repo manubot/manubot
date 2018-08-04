@@ -4,7 +4,7 @@ import re
 
 import base62
 
-from manubot.metadata import citeproc_retrievers
+from manubot.cite.metadata import citeproc_retrievers
 
 """
 Regex to extract citations.
