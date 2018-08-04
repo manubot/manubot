@@ -41,7 +41,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3.6',
     ],
 
-    packages=setuptools.find_packages(where='manubot'),
+    packages=setuptools.find_packages(),
 
     # Specify python version
     python_requires='>=3.6',
