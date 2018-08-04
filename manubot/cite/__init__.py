@@ -11,7 +11,7 @@ from manubot.cite.pubmed import (
     get_pubmed_citeproc,
 )
 from manubot.cite.url import get_url_citeproc
-from manubot.citeproc import citeproc_passthrough
+from manubot.cite.citeproc import citeproc_passthrough
 
 citeproc_retrievers = {
     'doi': get_doi_citeproc,
