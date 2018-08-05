@@ -54,7 +54,7 @@ You can also use the `manubot` CLI to build manuscripts.
 For example:
 
 ```sh
-manubot build \
+manubot process \
   --content-directory=tests/manuscripts/example/content \
   --output-directory=tests/manuscripts/example/output \
   --log-level=DEBUG
