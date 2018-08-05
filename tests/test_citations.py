@@ -188,7 +188,7 @@ def test_cite_command_stdout():
 def test_cite_command_file(tmpdir):
     path = pathlib.Path(tmpdir) / 'csl-items.json'
     process = subprocess.run(
-        ['manubot', 'cite', '--file', path, 'arxiv:1806.05726v1'],
+        ['manubot', 'cite', '--file', str(path), 'arxiv:1806.05726v1'],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
