@@ -64,7 +64,7 @@ setuptools.setup(
     # Create command line script
     entry_points={
         'console_scripts': [
-            'manubot = manubot.manubot:main',
+            'manubot = manubot.command:main',
         ],
     },
 )
