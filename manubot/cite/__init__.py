@@ -1,7 +1,9 @@
+import argparse
 import hashlib
 import json
 import logging
 import re
+import sys
 
 import base62
 
@@ -119,6 +121,8 @@ def citation_to_citeproc(citation):
 def configure_cite_argparser(parser):
     parser.add_argument('citations', nargs='+',
                         help='one or more (space separated) citations to produce CSL for')
+    parser.add_argument('--file', type=argparse.FileType('w'), default=sys.stdout,
+                        help='specify a file to write CSL output, otherwise default to stdout')
     return parser
 
 
@@ -127,5 +131,5 @@ def cli_cite(args):
     for citation in args.citations:
         citation = standardize_citation(citation)
         csl_list.append(citation_to_citeproc(citation))
-    csl = json.dumps(csl_list, ensure_ascii=False, indent=2)
-    print(csl)
+    with args.file as write_file:
+        json.dump(csl_list, write_file, ensure_ascii=False, indent=2)
