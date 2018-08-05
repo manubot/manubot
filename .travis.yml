@@ -1,13 +1,11 @@
-dist: trusty
-sudo: false
+os:
+  - linux
+  - osx
 language: python
 python:
   - "3.6"
 cache:
   - pip
-addons:
-  apt_packages:
-    - pandoc
 install:
   - python setup.py install
   - python setup.py sdist bdist_wheel
@@ -18,7 +16,8 @@ deploy:
   password:
     secure: E3bvTC2qidIVwwHPxLo6PHUU494Rh97ZmtiOSeANmAMQDRM21x3HrMF2Wu7DzSPmel8Vw3Fh3TEim6QN8ngJXAWNmGOlKEt4JC6siA3NfPpENxkp+GHtD6+VhCSY+PEAwyAlpFzLa8oHXQtJSJ3+ieO0UBAGdGVolbieDOSlMyhGdQOau/WhjMxYlkSY97Sbp/1iugGZe47VMoo78PmOj/tU2x/hubCslhQP3V5HTOsEhYc97FqMCd/jwpjKKXwJU6D62o7eperQjmKc9ghBl2GQAiH44iF+Rvdyxm2N8z4rtSRrhAyfk40o/uLXNw9+Wt2Q9mkFXQLMUMmHcb9I+oEG8pBi/VhuW8Ee2dyjtHEs1Ycdx4fitd29lXpl+GqnwDlCU9pEg6t//E4sgaVTh/KCB/r5b33FxRPQXHN7UGWdwKlPCpO4qIH7yQmvN2Ow8AJJYQbr2UFJrAUie4OZAhB+2SXn10BaXqjOuuILmUktE5bhwuKw52tKLu9mglBL3644qj9dkRwoIQyi/RX/WjrFUW4ilPHqajfiwTmHFYyzqxrwpxUgA9uox6yZAq4bYr810kqJEjmCfu7ZOSl6aEcD6YCyzGEDJeqwTyXlMQabPeaZwQXFgioOwqYm2TQh2woFsukg7Bztqg+XHxowQqdGw279O+vb0uq7RfAe850=
   on:
-    python: '3.6'
     repo: greenelab/manubot
     tags: true
-    distributions: sdist bdist_wheel
+    condition: $TRAVIS_OS_NAME = linux
+    python: '3.6'
+  distributions: sdist bdist_wheel
