@@ -29,6 +29,9 @@ def parse_arguments():
                         choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
                         help='Set the logging level for stderr logging')
     subparsers = parser.add_subparsers()
+    # Require specifying a sub-command
+    subparsers.required = True  # https://bugs.python.org/issue26510
+    subparsers.dest = 'command'  # https://bugs.python.org/msg186387
     # manubot parse
     parser_process = subparsers.add_parser('process', help='Process manuscript content')
     configure_process_argparser(parser_process)
