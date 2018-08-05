@@ -21,7 +21,7 @@ One common setup is to create a directory for a manuscript that contains both th
 Under this setup, you can run the Manubot using:
 
 ```sh
-manubot \
+manubot process \
   --content-directory=content \
   --output-directory=output
 ```
@@ -54,7 +54,7 @@ You can also use the `manubot` CLI to build manuscripts.
 For example:
 
 ```sh
-manubot \
+manubot build \
   --content-directory=tests/manuscripts/example/content \
   --output-directory=tests/manuscripts/example/output \
   --log-level=DEBUG

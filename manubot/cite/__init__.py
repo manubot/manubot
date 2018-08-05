@@ -1,4 +1,5 @@
 import hashlib
+import json
 import logging
 import re
 
@@ -113,3 +114,18 @@ def citation_to_citeproc(citation):
     citeproc = citeproc_passthrough(citeproc, set_id=citation_id)
 
     return citeproc
+
+
+def configure_cite_argparser(parser):
+    parser.add_argument('citations', nargs='+',
+                        help='one or more (space separated) citations to produce CSL for')
+    return parser
+
+
+def cli_cite(args):
+    csl_list = list()
+    for citation in args.citations:
+        citation = standardize_citation(citation)
+        csl_list.append(citation_to_citeproc(citation))
+    csl = json.dumps(csl_list, ensure_ascii=False, indent=2)
+    print(csl)

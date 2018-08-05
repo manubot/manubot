@@ -16,6 +16,7 @@ import requests
 import requests_cache
 import yaml
 
+import manubot
 from manubot.manuscript import (
     datetime_now,
     get_citation_strings,
@@ -25,17 +26,15 @@ from manubot.manuscript import (
 )
 from manubot.cite import (
     citation_to_citeproc,
+    cli_cite,
+    configure_cite_argparser,
     get_citation_id,
     is_valid_citation_string,
     standardize_citation,
 )
 
 
-def parse_arguments():
-    """
-    Read and process command line arguments.
-    """
-    parser = argparse.ArgumentParser()
+def configure_process_argparser(parser):
     parser.add_argument('--content-directory', type=pathlib.Path, required=True,
                         help='directory where manuscript content files are located')
     parser.add_argument('--output-directory', type=pathlib.Path, required=True,
@@ -49,10 +48,10 @@ def parse_arguments():
     parser.add_argument('--cache-directory', type=pathlib.Path,
                         help='Custom cache directory. If not specified, caches to output-directory')
     parser.add_argument('--clear-requests-cache', action='store_true')
-    parser.add_argument('--log-level', default='WARNING',
-                        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
-                        help='Set the logging level for stderr logging')
-    args = parser.parse_args()
+    return parser
+
+
+def cli_process(args):
     args_dict = vars(args)
 
     # Set paths for content
@@ -76,6 +75,29 @@ def parse_arguments():
     args.cache_directory.mkdir(exist_ok=True)
     args_dict['requests_cache_path'] = str(args.cache_directory.joinpath('requests-cache'))
 
+    prepare_manuscript(args)
+
+
+def parse_arguments():
+    """
+    Read and process command line arguments.
+    """
+    parser = argparse.ArgumentParser(description='Manubot: the manuscript bot for scholarly writing')
+    parser.add_argument('--version', action='version', version=f'v{manubot.__version__}')
+    parser.add_argument('--log-level', default='WARNING',
+                        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
+                        help='Set the logging level for stderr logging')
+    subparsers = parser.add_subparsers()
+    # manubot parse
+    parser_process = subparsers.add_parser('process', help='Process manuscript content')
+    configure_process_argparser(parser_process)
+    parser_process.set_defaults(function=cli_process)
+    # manubot cite
+    parser_cite = subparsers.add_parser('cite', help='Citation to CSL command line utility')
+    configure_cite_argparser(parser_cite)
+    parser_cite.set_defaults(function=cli_cite)
+    # Parse args
+    args = parser.parse_args()
     return args
 
 
@@ -408,7 +430,7 @@ def main():
     args = parse_arguments()
     logger.setLevel(getattr(logging, args.log_level))
 
-    prepare_manuscript(args)
+    args.function(args)
 
     if error_handler.fired:
         logging.critical('Failure: exiting with code 1 due to logged errors')
