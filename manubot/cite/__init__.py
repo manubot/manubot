@@ -119,10 +119,10 @@ def citation_to_citeproc(citation):
 
 
 def configure_cite_argparser(parser):
-    parser.add_argument('citations', nargs='+',
-                        help='one or more (space separated) citations to produce CSL for')
     parser.add_argument('--file', type=argparse.FileType('w'), default=sys.stdout,
                         help='specify a file to write CSL output, otherwise default to stdout')
+    parser.add_argument('citations', nargs='+',
+                        help='one or more (space separated) citations to produce CSL for')
     return parser
 
 
