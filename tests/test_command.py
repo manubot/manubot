@@ -1,7 +1,21 @@
 import subprocess
 
+import manubot
 
-def test_command_without_subcommand():
+
+def test_version():
+    process = subprocess.run(
+        ['manubot', '--version'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    print(process.stderr.decode())
+    assert process.returncode == 0
+    version_str = f'v{manubot.__version__}'
+    assert version_str == process.stdout.decode().strip()
+
+
+def test_missing_subcommand():
     process = subprocess.run(
         ['manubot'],
         stdout=subprocess.PIPE,
