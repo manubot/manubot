@@ -5,6 +5,32 @@ import xml.etree.ElementTree
 import requests
 
 
+def get_pmc_citeproc(identifier):
+    """
+    Get the citeproc JSON for a PubMed Central record by its PMID, PMCID, or
+    DOI, using the NCBI Citation Exporter API.
+
+    https://github.com/ncbi/citation-exporter
+    https://www.ncbi.nlm.nih.gov/pmc/tools/ctxp/
+    https://www.ncbi.nlm.nih.gov/pmc/utils/ctxp/samples
+    https://github.com/greenelab/manubot/issues/21
+    """
+    params = {
+        'ids': identifier,
+        'report': 'citeproc',
+    }
+    url = 'https://www.ncbi.nlm.nih.gov/pmc/utils/ctxp'
+    response = requests.get(url, params)
+    try:
+        citeproc = response.json()
+    except Exception as error:
+        logging.error(f'Error fetching PMC metadata for {identifier}.\n'
+                      f'Invalid response from {response.url}:\n{response.text}')
+        raise error
+    citeproc['URL'] = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{citeproc['PMCID']}/"
+    return citeproc
+
+
 def get_pubmed_citeproc(pmid):
     """
     Query NCBI E-Utilities to create CSL Items for PubMed IDs.
@@ -39,7 +65,7 @@ def get_pubmed_citeproc(pmid):
 def citeproc_from_pubmed_article(article):
     """
     article is a PubmedArticle xml element tree
-    
+
     https://github.com/citation-style-language/schema/blob/master/csl-data.json
     """
     citeproc = collections.OrderedDict()
