@@ -175,20 +175,20 @@ def test_cite_command_empty():
 
 def test_cite_command_stdout():
     process = subprocess.run(
-        ['manubot', 'cite', 'arxiv:1803.04487v1'],
+        ['manubot', 'cite', 'arxiv:1806.05726v1'],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
     print(process.stderr.decode())
     assert process.returncode == 0
     csl, = json.loads(process.stdout)
-    assert csl['URL'] == 'https://arxiv.org/abs/1803.04487v1'
+    assert csl['URL'] == 'https://arxiv.org/abs/1806.05726v1'
 
 
 def test_cite_command_file(tmpdir):
     path = pathlib.Path(tmpdir) / 'csl-items.json'
     process = subprocess.run(
-        ['manubot', 'cite', '--file', path, 'arxiv:1803.04487v1'],
+        ['manubot', 'cite', '--file', path, 'arxiv:1806.05726v1'],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
@@ -196,4 +196,4 @@ def test_cite_command_file(tmpdir):
     assert process.returncode == 0
     with path.open() as read_file:
         csl, = json.load(read_file)
-    assert csl['URL'] == 'https://arxiv.org/abs/1803.04487v1'
+    assert csl['URL'] == 'https://arxiv.org/abs/1806.05726v1'
