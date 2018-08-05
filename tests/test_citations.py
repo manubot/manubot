@@ -1,3 +1,5 @@
+import subprocess
+
 import pytest
 
 from manubot.cite import (
@@ -156,3 +158,15 @@ def test_citation_to_citeproc_pubmed_book():
     """
     with pytest.raises(NotImplementedError):
         citation_to_citeproc('pmid:29227604')
+
+
+def test_cite_cli_empty():
+    process = subprocess.run(
+        ['manubot', 'cite'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    print(process.args)
+    print(process.stderr.decode())
+    assert process.returncode == 2
+    assert 'the following arguments are required: citations' in process.stderr.decode()
