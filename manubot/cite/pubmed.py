@@ -181,8 +181,83 @@ def extract_publication_date_parts(article):
     return date_parts
 
 
-if __name__ == '__main__':
-    for pmid in 25648772, 27094199, 11234041, 14728133:
-        print(pmid)
-        citeproc = get_pubmed_citeproc(pmid)
-        print(citeproc)
+def get_pmcid_and_pmid_for_doi(doi):
+    """
+    Query PMC's ID Converter API to retrieve the PMCID and PMID for a DOI.
+    Does not work for DOIs that are in Pubmed but not PubMed Central.
+    https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/
+    """
+    assert isinstance(doi, str)
+    assert doi.startswith('10.')
+    params = {
+        'ids': doi,
+        'tool': 'manubot',
+    }
+    url = 'https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/'
+    response = requests.get(url, params)
+    if not response.ok:
+        logging.warning(f'Status code {response.status_code} querying {response.url}\n')
+        return {}
+    try:
+        element_tree = xml.etree.ElementTree.fromstring(response.text)
+    except Exception as error:
+        logging.warning(f'Error fetching PMC ID conversion for {doi}.\n'
+                        f'Response from {response.url}:\n{response.text}')
+        return {}
+    records = element_tree.findall('record')
+    if len(records) != 1:
+        logging.warning(f'Excpected PubMed Central ID converter to return a single XML record for {doi}.\n'
+                        f'Response from {response.url}:\n{response.text}')
+        return {}
+    record, = records
+    if record.findtext('status', default='okay') == 'error':
+        return {}
+    id_dict = {}
+    for id_type in 'pmcid', 'pmid':
+        id_ = record.get(id_type)
+        if id_:
+            id_dict[id_type.upper()] = id_
+    return id_dict
+
+
+def get_pmid_for_doi(doi):
+    """
+    Query NCBI's E-utilities to retrieve the PMID for a DOI.
+    """
+    assert isinstance(doi, str)
+    assert doi.startswith('10.')
+    params = {
+        'db': 'pubmed',
+        'term': f'{doi}[DOI]',
+    }
+    url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi'
+    response = requests.get(url, params)
+    if not response.ok:
+        logging.warning(f'Status code {response.status_code} querying {response.url}\n')
+        return None
+    try:
+        element_tree = xml.etree.ElementTree.fromstring(response.text)
+    except Exception as error:
+        logging.warning(f'Error in ESearch XML for DOI: {doi}.\n'
+                        f'Response from {response.url}:\n{response.text}')
+        return None
+    id_elems = element_tree.findall('IdList/Id')
+    if len(id_elems) != 1:
+        logging.debug(f'No PMIDs found for {doi}.\n'
+                      f'Response from {response.url}:\n{response.text}')
+        return None
+    id_elem, = id_elems
+    return id_elem.text
+
+
+def get_pubmed_ids_for_doi(doi):
+    """
+    Return a dictionary with PMCID and PMID, if they exist, for the specified
+    DOI. See https://github.com/greenelab/manubot/issues/45.
+    """
+    pubmed_ids = get_pmcid_and_pmid_for_doi(doi)
+    if not pubmed_ids:
+        pmid = get_pmid_for_doi(doi)
+        if pmid:
+            pubmed_ids['PMID'] = pmid
+    return pubmed_ids
