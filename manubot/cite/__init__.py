@@ -133,3 +133,4 @@ def cli_cite(args):
         csl_list.append(citation_to_citeproc(citation))
     with args.file as write_file:
         json.dump(csl_list, write_file, ensure_ascii=False, indent=2)
+        write_file.write('\n')
