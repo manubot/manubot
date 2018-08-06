@@ -43,5 +43,8 @@ def get_doi_citeproc(doi):
     short_doi_url = get_short_doi_url(doi)
     if short_doi_url:
         citeproc['short_url'] = short_doi_url
-    citeproc.update(get_pubmed_ids_for_doi(doi))
+    try:
+        citeproc.update(get_pubmed_ids_for_doi(doi))
+    except Exception:
+        logging.warning(f'Error calling get_pubmed_ids_for_doi for {doi}', exc_info=True)
     return citeproc
