@@ -3,6 +3,8 @@ import urllib.request
 
 import requests
 
+from manubot.cite.pubmed import get_pubmed_ids_for_doi
+
 
 def get_short_doi_url(doi):
     """
@@ -41,4 +43,5 @@ def get_doi_citeproc(doi):
     short_doi_url = get_short_doi_url(doi)
     if short_doi_url:
         citeproc['short_url'] = short_doi_url
+    citeproc.update(get_pubmed_ids_for_doi(doi))
     return citeproc
