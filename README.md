@@ -62,6 +62,9 @@ usage: manubot process [-h] --content-directory CONTENT_DIRECTORY
                        [--cache-directory CACHE_DIRECTORY]
                        [--clear-requests-cache]
 
+Process manuscript content to create outputs for Pandoc consumption. Performs
+bibliographic processing and templating.
+
 optional arguments:
   -h, --help            show this help message and exit
   --content-directory CONTENT_DIRECTORY
@@ -96,6 +99,8 @@ Additional usage information is available from `manubot cite --help`:
 
 ```
 usage: manubot cite [-h] [--file FILE] citations [citations ...]
+
+Retrieve bibliographic metadata for one or more citation identifiers.
 
 positional arguments:
   citations    one or more (space separated) citations to produce CSL for

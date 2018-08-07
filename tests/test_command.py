@@ -24,4 +24,4 @@ def test_missing_subcommand():
     stderr = process.stderr.decode()
     print(stderr)
     assert process.returncode == 2
-    assert 'error: the following arguments are required: command' in stderr
+    assert 'error: the following arguments are required: subcommand' in stderr

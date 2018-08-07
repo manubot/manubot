@@ -118,11 +118,24 @@ def citation_to_citeproc(citation):
     return citeproc
 
 
-def configure_cite_argparser(parser):
-    parser.add_argument('--file', type=argparse.FileType('w'), default=sys.stdout,
-                        help='specify a file to write CSL output, otherwise default to stdout')
-    parser.add_argument('citations', nargs='+',
-                        help='one or more (space separated) citations to produce CSL for')
+def add_subparser_cite(subparsers):
+    parser = subparsers.add_parser(
+        name='cite',
+        help='citation to CSL command line utility',
+        description='Retrieve bibliographic metadata for one or more citation identifiers.',
+    )
+    parser.add_argument(
+        '--file',
+        type=argparse.FileType('w'),
+        default=sys.stdout,
+        help='specify a file to write CSL output, otherwise default to stdout',
+    )
+    parser.add_argument(
+        'citations',
+        nargs='+',
+        help='one or more (space separated) citations to produce CSL for',
+    )
+    parser.set_defaults(function=cli_cite)
     return parser
 
 

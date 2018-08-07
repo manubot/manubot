@@ -9,14 +9,8 @@ import warnings
 import errorhandler
 
 import manubot
-from manubot.cite import (
-    cli_cite,
-    configure_cite_argparser,
-)
-from manubot.process import (
-    cli_process,
-    configure_process_argparser,
-)
+from manubot.cite import add_subparser_cite
+from manubot.process import add_subparser_process
 
 
 def parse_arguments():
@@ -35,15 +29,8 @@ def parse_arguments():
     # Require specifying a sub-command
     subparsers.required = True  # https://bugs.python.org/issue26510
     subparsers.dest = 'subcommand'  # https://bugs.python.org/msg186387
-    # manubot parse
-    parser_process = subparsers.add_parser('process', help='process manuscript content')
-    configure_process_argparser(parser_process)
-    parser_process.set_defaults(function=cli_process)
-    # manubot cite
-    parser_cite = subparsers.add_parser('cite', help='citation to CSL command line utility')
-    configure_cite_argparser(parser_cite)
-    parser_cite.set_defaults(function=cli_cite)
-    # Parse args
+    add_subparser_process(subparsers)
+    add_subparser_cite(subparsers)
     args = parser.parse_args()
     return args
 
