@@ -50,6 +50,8 @@ setuptools.setup(
     install_requires=[
         'errorhandler',
         'jinja2',
+        'jsonref',
+        'jsonschema',
         'pandas',
         'pybase62',
         'pyyaml',
