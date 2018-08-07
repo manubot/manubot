@@ -1,3 +1,7 @@
+import json
+import pathlib
+import subprocess
+
 import pytest
 
 from manubot.cite import (
@@ -156,3 +160,40 @@ def test_citation_to_citeproc_pubmed_book():
     """
     with pytest.raises(NotImplementedError):
         citation_to_citeproc('pmid:29227604')
+
+
+def test_cite_command_empty():
+    process = subprocess.run(
+        ['manubot', 'cite'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    print(process.stderr.decode())
+    assert process.returncode == 2
+    assert 'the following arguments are required: citations' in process.stderr.decode()
+
+
+def test_cite_command_stdout():
+    process = subprocess.run(
+        ['manubot', 'cite', 'arxiv:1806.05726v1'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    print(process.stderr.decode())
+    assert process.returncode == 0
+    csl, = json.loads(process.stdout)
+    assert csl['URL'] == 'https://arxiv.org/abs/1806.05726v1'
+
+
+def test_cite_command_file(tmpdir):
+    path = pathlib.Path(tmpdir) / 'csl-items.json'
+    process = subprocess.run(
+        ['manubot', 'cite', '--file', str(path), 'arxiv:1806.05726v1'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    print(process.stderr.decode())
+    assert process.returncode == 0
+    with path.open() as read_file:
+        csl, = json.load(read_file)
+    assert csl['URL'] == 'https://arxiv.org/abs/1806.05726v1'

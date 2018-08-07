@@ -3,7 +3,7 @@ import subprocess
 
 import pytest
 
-from manubot.manubot import (
+from manubot.process import (
     add_author_affiliations,
     read_jsons,
 )
@@ -24,6 +24,7 @@ def test_example_manuscript(manuscript):
     args = [
         'manubot',
         '--log-level', 'INFO',
+        'process',
         '--content-directory', str(manuscript_dir.joinpath('content')),
         '--output-directory', str(manuscript_dir.joinpath('output')),
     ]

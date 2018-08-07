@@ -1,6 +1,9 @@
+import argparse
 import hashlib
+import json
 import logging
 import re
+import sys
 
 import base62
 
@@ -106,10 +109,41 @@ def citation_to_citeproc(citation):
     if source in citeproc_retrievers:
         citeproc = citeproc_retrievers[source](identifier)
     else:
-        msg = f'Unsupported citation  source {source} in {citation}'
+        msg = f'Unsupported citation source {source} in {citation}'
         raise ValueError(msg)
 
     citation_id = get_citation_id(citation)
     citeproc = citeproc_passthrough(citeproc, set_id=citation_id)
 
     return citeproc
+
+
+def add_subparser_cite(subparsers):
+    parser = subparsers.add_parser(
+        name='cite',
+        help='citation to CSL command line utility',
+        description='Retrieve bibliographic metadata for one or more citation identifiers.',
+    )
+    parser.add_argument(
+        '--file',
+        type=argparse.FileType('w'),
+        default=sys.stdout,
+        help='specify a file to write CSL output, otherwise default to stdout',
+    )
+    parser.add_argument(
+        'citations',
+        nargs='+',
+        help='one or more (space separated) citations to produce CSL for',
+    )
+    parser.set_defaults(function=cli_cite)
+    return parser
+
+
+def cli_cite(args):
+    csl_list = list()
+    for citation in args.citations:
+        citation = standardize_citation(citation)
+        csl_list.append(citation_to_citeproc(citation))
+    with args.file as write_file:
+        json.dump(csl_list, write_file, ensure_ascii=False, indent=2)
+        write_file.write('\n')
