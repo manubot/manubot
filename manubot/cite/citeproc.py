@@ -19,6 +19,7 @@ def citeproc_passthrough(csl_item, set_id=None):
     Fix errors in a CSL item, according to the CSL JSON schema, and optionally
     change its id.
 
+    http://docs.citationstyles.org/en/1.0.1/specification.html
     http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
     https://github.com/citation-style-language/schema/blob/master/csl-data.json
     """

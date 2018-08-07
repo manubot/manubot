@@ -46,7 +46,7 @@ def get_arxiv_citeproc(arxiv_id):
     pattern = re.compile(r'arxiv.org/abs/(.+)')
     match = pattern.search(url)
     versioned_id = match.group(1)
-    csl_item['arxiv_id'] = versioned_id
+    csl_item['archive_location'] = versioned_id
     _, csl_item['version'] = versioned_id.rsplit('v', 1)
     csl_item['URL'] = 'https://arxiv.org/abs/' + versioned_id
 
