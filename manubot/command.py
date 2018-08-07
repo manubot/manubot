@@ -28,16 +28,19 @@ def parse_arguments():
     parser.add_argument('--log-level', default='WARNING',
                         choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
                         help='Set the logging level for stderr logging')
-    subparsers = parser.add_subparsers()
+    subparsers = parser.add_subparsers(
+        title='subcommands',
+        description='All operations are done through subcommands:',
+    )
     # Require specifying a sub-command
     subparsers.required = True  # https://bugs.python.org/issue26510
-    subparsers.dest = 'command'  # https://bugs.python.org/msg186387
+    subparsers.dest = 'subcommand'  # https://bugs.python.org/msg186387
     # manubot parse
-    parser_process = subparsers.add_parser('process', help='Process manuscript content')
+    parser_process = subparsers.add_parser('process', help='process manuscript content')
     configure_process_argparser(parser_process)
     parser_process.set_defaults(function=cli_process)
     # manubot cite
-    parser_cite = subparsers.add_parser('cite', help='Citation to CSL command line utility')
+    parser_cite = subparsers.add_parser('cite', help='citation to CSL command line utility')
     configure_cite_argparser(parser_cite)
     parser_cite.set_defaults(function=cli_cite)
     # Parse args

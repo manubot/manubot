@@ -109,7 +109,7 @@ def citation_to_citeproc(citation):
     if source in citeproc_retrievers:
         citeproc = citeproc_retrievers[source](identifier)
     else:
-        msg = f'Unsupported citation  source {source} in {citation}'
+        msg = f'Unsupported citation source {source} in {citation}'
         raise ValueError(msg)
 
     citation_id = get_citation_id(citation)
