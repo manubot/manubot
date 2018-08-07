@@ -206,7 +206,7 @@ def get_pmcid_and_pmid_for_doi(doi):
         return {}
     records = element_tree.findall('record')
     if len(records) != 1:
-        logging.warning(f'Excpected PubMed Central ID converter to return a single XML record for {doi}.\n'
+        logging.warning(f'Expected PubMed Central ID converter to return a single XML record for {doi}.\n'
                         f'Response from {response.url}:\n{response.text}')
         return {}
     record, = records
