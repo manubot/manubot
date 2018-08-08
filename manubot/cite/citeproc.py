@@ -14,7 +14,7 @@ citeproc_type_fixer = {
 }
 
 
-def citeproc_passthrough(csl_item, set_id=None):
+def citeproc_passthrough(csl_item, set_id=None, prune=True):
     """
     Fix errors in a CSL item, according to the CSL JSON schema, and optionally
     change its id.
@@ -30,17 +30,19 @@ def citeproc_passthrough(csl_item, set_id=None):
     # See https://github.com/CrossRef/rest-api-doc/issues/187
     csl_item['type'] = citeproc_type_fixer.get(csl_item['type'], csl_item['type'])
 
-    # Remove fields that violate the CSL Item JSON Schema
-    validator = get_jsonschema_csl_validator()
-    csl = [csl_item]
-    errors = list(validator.iter_errors(csl))
-    csl_item, = remove_jsonschema_errors(csl, errors)
+    if prune:
+        # Remove fields that violate the CSL Item JSON Schema
+        validator = get_jsonschema_csl_validator()
+        csl = [csl_item]
+        errors = list(validator.iter_errors(csl))
+        csl_item, = remove_jsonschema_errors(csl, errors)
 
     # Default CSL type to entry
     csl_item['type'] = csl_item.get('type', 'entry')
 
-    # Confirm that corrected CSL validates
-    validator.validate([csl_item])
+    if prune:
+        # Confirm that corrected CSL validates
+        validator.validate([csl_item])
     return csl_item
 
 
