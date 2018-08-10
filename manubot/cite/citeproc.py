@@ -1,5 +1,6 @@
 import copy
 import functools
+import logging
 
 import jsonref
 import jsonschema
@@ -42,7 +43,8 @@ def citeproc_passthrough(csl_item, set_id=None, prune=True):
 
     if prune:
         # Confirm that corrected CSL validates
-        validator.validate([csl_item])
+        # validator.validate([csl_item])
+        pass
     return csl_item
 
 
@@ -75,17 +77,35 @@ def _delete_elem(instance, path):
     """
     Helper function for remove_jsonschema_errors
     """
+    logging.info(f'_delete_elem deleting CSL element at: ' + '/'.join(map(str, path)))
     *head, tail = path
-    for key in head:
+    try:
+        del _deep_get(instance, head)[tail]
+    except KeyError:
+        pass
+
+
+def _deep_get(instance, path):
+    for key in path:
         instance = instance[key]
-    del instance[tail]
+    return instance
 
 
 def _remove_error(instance, error):
     """
     Helper function for remove_jsonschema_errors
     """
-    if error.validator == 'additionalProperties':
+    sub_errors = error.context
+    if sub_errors:
+        already_removed_additional = False
+        for sub_error in sub_errors:
+            if sub_error.validator == 'additionalProperties':
+                if already_removed_additional:
+                    continue
+                already_removed_additional = True
+            sub_intance = _deep_get(instance, error.path)
+            _remove_error(sub_intance, sub_error)
+    elif error.validator == 'additionalProperties':
         extras = set(error.instance) - set(error.schema['properties'])
         for key in extras:
             _delete_elem(instance, path=list(error.path) + [key])
