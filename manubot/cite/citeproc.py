@@ -53,12 +53,12 @@ def get_jsonschema_csl_validator():
     """
     Return a jsonschema validator for the CSL Item JSON Schema
     """
-    url = 'https://github.com/citation-style-language/schema/raw/4846e02f0a775a8272819204379a4f8d7f45c16c/csl-data.json'
+    url = 'https://github.com/dhimmel/schema/raw/manubot/csl-data.json'
     # Use jsonref to workaround https://github.com/Julian/jsonschema/issues/447
     schema = jsonref.load_uri(url, jsonschema=True)
-    # Cannot yet infer draft from schema https://github.com/citation-style-language/schema/pull/153
-    jsonschema.Draft3Validator.check_schema(schema)
-    return jsonschema.Draft3Validator(schema)
+    Validator = jsonschema.validators.validator_for(schema)
+    Validator.check_schema(schema)
+    return Validator(schema)
 
 
 def remove_jsonschema_errors(instance, errors):
