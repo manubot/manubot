@@ -33,10 +33,7 @@ def citeproc_passthrough(csl_item, set_id=None, prune=True):
 
     if prune:
         # Remove fields that violate the CSL Item JSON Schema
-        validator = get_jsonschema_csl_validator()
-        csl = [csl_item]
-        errors = list(validator.iter_errors(csl))
-        csl_item, = remove_jsonschema_errors(csl, errors)
+        csl_item, = remove_jsonschema_errors([csl_item])
 
     # Default CSL type to entry
     csl_item['type'] = csl_item.get('type', 'entry')
@@ -61,11 +58,13 @@ def get_jsonschema_csl_validator():
     return Validator(schema)
 
 
-def remove_jsonschema_errors(instance, errors):
+def remove_jsonschema_errors(instance):
     """
     Remove fields that produced JSON Schema errors.
     https://github.com/Julian/jsonschema/issues/448
     """
+    validator = get_jsonschema_csl_validator()
+    errors = list(validator.iter_errors(instance))
     instance = copy.deepcopy(instance)
     errors = sorted(errors, key=lambda e: e.path, reverse=True)
     for error in errors:
