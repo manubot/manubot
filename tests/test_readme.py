@@ -33,6 +33,5 @@ def test_readme_codeblock_contains_output_from(command, expected):
     {expected}
     ```
     """
-    output = subprocess.check_output(command, shell=True)
-    output = output.decode().rstrip()
-    assert output == expected
+    output = subprocess.check_output(command, shell=True, universal_newlines=True)
+    assert output.rstrip() == expected
