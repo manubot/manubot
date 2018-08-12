@@ -131,9 +131,9 @@ def add_subparser_cite(subparsers):
         help='specify a file to write CSL output, otherwise default to stdout',
     )
     parser.add_argument(
-        '--prune-csl',
+        '--bad-csl',
         action='store_true',
-        help='remove invalid fields according to the CSL JSON schema',
+        help='allow CSL Items that do not conform to the JSON Schema. Skips CSL pruning.',
     )
     parser.add_argument(
         'citations',
@@ -148,7 +148,7 @@ def cli_cite(args):
     csl_list = list()
     for citation in args.citations:
         citation = standardize_citation(citation)
-        csl_list.append(citation_to_citeproc(citation, prune=args.prune_csl))
+        csl_list.append(citation_to_citeproc(citation, prune=not args.bad_csl))
     with args.file as write_file:
         json.dump(csl_list, write_file, ensure_ascii=False, indent=2)
         write_file.write('\n')
