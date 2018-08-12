@@ -14,6 +14,7 @@ See the Manubot Rootstock [usage guide](https://github.com/greenelab/manubot-roo
 Installing the python package creates the `manubot` command line program.
 Here is the usage information as per `manubot --help`:
 
+<!-- test codeblock contains output of `manubot --help` -->
 ```
 usage: manubot [-h] [--version]
                [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
@@ -55,6 +56,7 @@ manubot process \
 
 See `manubot process --help` for documentation of all command line arguments:
 
+<!-- test codeblock contains output of `manubot process --help` -->
 ```
 usage: manubot process [-h] --content-directory CONTENT_DIRECTORY
                        --output-directory OUTPUT_DIRECTORY
@@ -97,6 +99,7 @@ manubot cite doi:10.1098/rsif.2017.0387 pmid:29424689 pmcid:PMC5640425 arxiv:180
 
 Additional usage information is available from `manubot cite --help`:
 
+<!-- test codeblock contains output of `manubot cite --help` -->
 ```
 usage: manubot cite [-h] [--file FILE] citations [citations ...]
 
