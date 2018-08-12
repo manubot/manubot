@@ -56,7 +56,7 @@ def get_arxiv_citeproc(arxiv_id):
     # Extract CSL date field
     published = entry.findtext(prefix + 'published')
     published, _ = published.split('T', 1)
-    csl_item['issued'] = {'date-parts': [published.split('-')]}
+    csl_item['issued'] = {'date-parts': [[int(x) for x in published.split('-')]]}
 
     # Extract authors
     authors = list()
