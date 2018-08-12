@@ -98,7 +98,7 @@ manubot cite doi:10.1098/rsif.2017.0387 pmid:29424689 pmcid:PMC5640425 arxiv:180
 Additional usage information is available from `manubot cite --help`:
 
 ```
-usage: manubot cite [-h] [--file FILE] citations [citations ...]
+usage: manubot cite [-h] [--file FILE] [--bad-csl] citations [citations ...]
 
 Retrieve bibliographic metadata for one or more citation identifiers.
 
@@ -108,6 +108,8 @@ positional arguments:
 optional arguments:
   -h, --help   show this help message and exit
   --file FILE  specify a file to write CSL output, otherwise default to stdout
+  --bad-csl    allow CSL Items that do not conform to the JSON Schema. Skips
+               CSL pruning.
 ```
 
 ## Installation
