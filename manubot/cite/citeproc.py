@@ -40,8 +40,8 @@ def citeproc_passthrough(csl_item, set_id=None, prune=True):
 
     if prune:
         # Confirm that corrected CSL validates
-        # validator.validate([csl_item])
-        pass
+        validator = get_jsonschema_csl_validator()
+        validator.validate([csl_item])
     return csl_item
 
 
@@ -60,8 +60,14 @@ def get_jsonschema_csl_validator():
 
 def remove_jsonschema_errors(instance):
     """
-    Remove fields that produced JSON Schema errors.
+    Remove fields in CSL Items that produce JSON Schema errors. Note that this
+    method may not be work for all types of JSON Schema errors and users
+    looking to adapt it for other applications should write task-specific tests
+    to provide empirical evaluate that it works as intended.
+
+    See also:
     https://github.com/Julian/jsonschema/issues/448
+    https://stackoverflow.com/questions/44694835
     """
     validator = get_jsonschema_csl_validator()
     errors = list(validator.iter_errors(instance))
@@ -72,11 +78,21 @@ def remove_jsonschema_errors(instance):
     return instance
 
 
-def _delete_elem(instance, path):
+def _delete_elem(instance, path, absolute_path=None, message=''):
     """
-    Helper function for remove_jsonschema_errors
+    Helper function for remove_jsonschema_errors that deletes an element in the
+    JSON-like input instance at the specified path. absolute_path is relative
+    to the original validated instance for logging purposes. Defaults to path,
+    if not specified. message is an optional string with additional error
+    information to log.
     """
-    logging.info(f'_delete_elem deleting CSL element at: ' + '/'.join(map(str, path)))
+    if absolute_path is None:
+        absolute_path = path
+    logging.info(
+        (f'{message}\n' if message else message) +
+        '_delete_elem deleting CSL element at: ' +
+        '/'.join(map(str, absolute_path))
+    )
     *head, tail = path
     try:
         del _deep_get(instance, head)[tail]
@@ -85,6 +101,9 @@ def _delete_elem(instance, path):
 
 
 def _deep_get(instance, path):
+    """
+    Descend path to return a deep element in the JSON object instance.
+    """
     for key in path:
         instance = instance[key]
     return instance
@@ -92,23 +111,35 @@ def _deep_get(instance, path):
 
 def _remove_error(instance, error):
     """
-    Helper function for remove_jsonschema_errors
+    Remove a jsonschema ValidationError from the JSON-like instance.
+
+    See ValidationError documentation at
+    http://python-jsonschema.readthedocs.io/en/latest/errors/#jsonschema.exceptions.ValidationError
     """
     sub_errors = error.context
     if sub_errors:
+        # already_removed_additional was neccessary to workaround https://github.com/citation-style-language/schema/issues/154
         already_removed_additional = False
         for sub_error in sub_errors:
             if sub_error.validator == 'additionalProperties':
                 if already_removed_additional:
                     continue
                 already_removed_additional = True
-            sub_intance = _deep_get(instance, error.path)
-            _remove_error(sub_intance, sub_error)
+            sub_instance = _deep_get(instance, error.path)
+            _remove_error(sub_instance, sub_error)
     elif error.validator == 'additionalProperties':
         extras = set(error.instance) - set(error.schema['properties'])
+        logging.info(
+            error.message +
+            f'\nWill now remove these {len(extras)} additional properties.'
+        )
         for key in extras:
-            _delete_elem(instance, path=list(error.path) + [key])
+            _delete_elem(
+                instance=instance,
+                path=list(error.path) + [key],
+                absolute_path=list(error.absolute_path) + [key]
+            )
     elif error.validator in {'enum', 'type'}:
-        _delete_elem(instance, error.path)
+        _delete_elem(instance, error.path, error.absolute_path, error.message)
     else:
         raise NotImplementedError(f'{error.validator} is not yet supported')
