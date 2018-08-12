@@ -26,6 +26,7 @@ def citeproc_passthrough(csl_item, set_id=None, prune=True):
     """
     if set_id is not None:
         csl_item['id'] = set_id
+    logging.debug(f"Starting citeproc_passthrough with{'' if prune else 'out'} CSL pruning for id: {csl_item.get('id', 'id not specified')}")
 
     # Correct invalid CSL item types
     # See https://github.com/CrossRef/rest-api-doc/issues/187
@@ -88,7 +89,7 @@ def _delete_elem(instance, path, absolute_path=None, message=''):
     """
     if absolute_path is None:
         absolute_path = path
-    logging.info(
+    logging.debug(
         (f'{message}\n' if message else message) +
         '_delete_elem deleting CSL element at: ' +
         '/'.join(map(str, absolute_path))
@@ -129,7 +130,7 @@ def _remove_error(instance, error):
             _remove_error(sub_instance, sub_error)
     elif error.validator == 'additionalProperties':
         extras = set(error.instance) - set(error.schema['properties'])
-        logging.info(
+        logging.debug(
             error.message +
             f'\nWill now remove these {len(extras)} additional properties.'
         )
