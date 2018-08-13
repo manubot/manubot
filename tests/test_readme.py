@@ -7,12 +7,15 @@ import pytest
 readme_path = pathlib.Path(__file__).parent.parent / 'README.md'
 readme = readme_path.read_text()
 
-pattern = r'''\
-<!-- test codeblock contains output of `(?P<command>.+?)` -->
+template = r'''
+<!-- test codeblock contains output of `{command}` -->
 ```
-(?P<output>.+?)
-```
+{output}```
 '''
+pattern = template.format(
+    command=r"(?P<command>.+?)",
+    output=r"(?P<output>.+?)",
+)
 pattern = re.compile(pattern, re.DOTALL)
 matches = list(pattern.finditer(readme))
 
@@ -33,5 +36,24 @@ def test_readme_codeblock_contains_output_from(command, expected):
     {expected}
     ```
     """
-    output = subprocess.check_output(command, shell=True, universal_newlines=True)
-    assert output.rstrip() == expected
+    output = _get_output_from(command)
+    assert output == expected
+
+
+def _get_output_from(command):
+    return subprocess.check_output(command, shell=True, universal_newlines=True)
+
+
+def _match_to_repl(match):
+    template_dict = match.groupdict()
+    template_dict['output'] = _get_output_from(template_dict['command'])
+    return template.format(**template_dict)
+
+
+if __name__ == '__main__':
+    """
+    Run `python tests/test_readme.py` to populate README codeblocks with
+    output from the specified commands.
+    """
+    repl_readme = pattern.sub(repl=_match_to_repl, string=readme)
+    readme_path.write_text(repl_readme)
