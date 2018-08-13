@@ -126,19 +126,18 @@ def add_subparser_cite(subparsers):
         description='Retrieve bibliographic metadata for one or more citation identifiers.',
     )
     parser.add_argument(
-        '--produce',
-        default='csl-data',
-        choices=['csl-data', 'references'],
-        help='Type of output to produce: CSL Data or formatted reference list',
+        '--render',
+        action='store_true',
+        help='Whether to render CSL Data into a formatted reference list using Pandoc',
     )
     parser.add_argument(
         '--csl',
         default='https://github.com/greenelab/manubot-rootstock/raw/master/build/assets/style.csl',
-        help="When --produce=references, specify an XML CSL definition to style references. Pandoc's --csl option",
+        help="When --render, specify an XML CSL definition to style references. Pandoc's --csl option",
     )
     parser.add_argument(
         '--refs-format',
-        help="When --produce=references, which Pandoc output format to use, i.e. Pandoc's --to option.",
+        help="When --render, which Pandoc output format to use, i.e. Pandoc's --to option.",
     )
     parser.add_argument(
         '--output',
@@ -192,7 +191,7 @@ def cli_cite(args):
     for citation in args.citations:
         citation = standardize_citation(citation)
         csl_list.append(citation_to_citeproc(citation, prune=args.prune_csl))
-    if args.produce == 'csl-data':
+    if not args.render:
         write_file = args.output.open('w') if args.output else sys.stdout
         with write_file:
             json.dump(csl_list, write_file, ensure_ascii=False, indent=2)
