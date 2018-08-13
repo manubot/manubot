@@ -1,8 +1,9 @@
-import argparse
 import hashlib
 import json
 import logging
+import pathlib
 import re
+import subprocess
 import sys
 
 import base62
@@ -125,10 +126,24 @@ def add_subparser_cite(subparsers):
         description='Retrieve bibliographic metadata for one or more citation identifiers.',
     )
     parser.add_argument(
-        '--file',
-        type=argparse.FileType('w'),
-        default=sys.stdout,
-        help='specify a file to write CSL output, otherwise default to stdout',
+        '--produce',
+        default='csl-data',
+        choices=['csl-data', 'references'],
+        help='Type of output to produce: CSL Data or formatted reference list',
+    )
+    parser.add_argument(
+        '--csl',
+        default='https://github.com/greenelab/manubot-rootstock/raw/master/build/assets/style.csl',
+        help="When --produce=references, specify an XML CSL definition to style references. Pandoc's --csl option",
+    )
+    parser.add_argument(
+        '--refs-format',
+        help="When --produce=references, which Pandoc output format to use, i.e. Pandoc's --to option.",
+    )
+    parser.add_argument(
+        '--output',
+        type=pathlib.Path,
+        help='specify a file to write output, otherwise default to stdout',
     )
     parser.add_argument(
         '--allow-invalid-csl-data',
@@ -145,11 +160,51 @@ def add_subparser_cite(subparsers):
     return parser
 
 
+def call_pandoc(metadata, output, to_format=None):
+    metadata_block = '---\n{yaml}\n...\n'.format(
+        yaml=json.dumps(metadata, ensure_ascii=False, indent=2)
+    )
+    args = [
+        'pandoc',
+        '--filter', 'pandoc-citeproc',
+    ]
+    if to_format:
+        args.extend(['--to', to_format])
+    if output:
+        args.extend(['--output', str(output)])
+    subprocess.run(
+        args=args,
+        input=metadata_block.encode(),
+        stdout=subprocess.PIPE if output else sys.stdout,
+        stderr=sys.stderr,
+    )
+
+
 def cli_cite(args):
+    """
+    WARNING: this function is not yet user ready due to
+    https://github.com/jgm/pandoc/issues/4834
+    """
+    if not args.output and not args.refs_format:
+        vars(args)['refs_format'] = 'plain'
+
     csl_list = list()
     for citation in args.citations:
         citation = standardize_citation(citation)
         csl_list.append(citation_to_citeproc(citation, prune=args.prune_csl))
-    with args.file as write_file:
-        json.dump(csl_list, write_file, ensure_ascii=False, indent=2)
-        write_file.write('\n')
+    if args.produce == 'csl-data':
+        write_file = args.output.open('w') if args.output else sys.stdout
+        with write_file:
+            json.dump(csl_list, write_file, ensure_ascii=False, indent=2)
+            write_file.write('\n')
+        return
+    pandoc_metadata = {
+        'nocite': '@*',
+        'csl': args.csl,
+        'references': csl_list,
+    }
+    call_pandoc(
+        metadata=pandoc_metadata,
+        output=args.output,
+        to_format=args.refs_format,
+    )
