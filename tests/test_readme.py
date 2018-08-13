@@ -15,12 +15,12 @@ pattern = r'''\
 '''
 pattern = re.compile(pattern, re.DOTALL)
 matches = list(pattern.finditer(readme))
-matches
 
 
 @pytest.mark.parametrize(
-    ['command', 'expected'],
-    [match.groups() for match in matches],
+    argnames=['command', 'expected'],
+    argvalues=[match.groups() for match in matches],
+    ids=[match.group('command') for match in matches],
 )
 def test_readme_codeblock_contains_output_from(command, expected):
     """
