@@ -69,4 +69,9 @@ setuptools.setup(
             'manubot = manubot.command:main',
         ],
     },
+
+    # Specify additional patterns to match files
+    package_data={
+        'manubot': 'cite/*.lua'
+    },
 )

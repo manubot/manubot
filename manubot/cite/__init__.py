@@ -119,6 +119,16 @@ def citation_to_citeproc(citation, prune=True):
     return citeproc
 
 
+# For manubot cite, infer --format from --output filename extensions
+extension_to_format = {
+    '.txt': 'plain',
+    '.md': 'markdown',
+    '.docx': 'docx',
+    '.html': 'html',
+    '.xml': 'jats',
+}
+
+
 def add_subparser_cite(subparsers):
     parser = subparsers.add_parser(
         name='cite',
@@ -136,8 +146,9 @@ def add_subparser_cite(subparsers):
         help="When --render, specify an XML CSL definition to style references. Pandoc's --csl option",
     )
     parser.add_argument(
-        '--refs-format',
-        help="When --render, which Pandoc output format to use, i.e. Pandoc's --to option.",
+        '--format',
+        choices=list(extension_to_format.values()),
+        help="Format to use for output file. If not specified, attempt to infer this from filename extension. Otherwise, default to plain",
     )
     parser.add_argument(
         '--output',
@@ -159,45 +170,72 @@ def add_subparser_cite(subparsers):
     return parser
 
 
-def call_pandoc(metadata, output, to_format=None):
+def call_pandoc(metadata, path, format='plain'):
+    """
+    path is the path to write to.
+    """
     metadata_block = '---\n{yaml}\n...\n'.format(
         yaml=json.dumps(metadata, ensure_ascii=False, indent=2)
     )
     args = [
         'pandoc',
         '--filter', 'pandoc-citeproc',
+        '--output', str(path) if path else '-',
     ]
-    if to_format:
-        args.extend(['--to', to_format])
-    if output:
-        args.extend(['--output', str(output)])
-    subprocess.run(
+    if format == 'markdown':
+        args.extend(['--to', 'markdown_strict'])
+    elif format == 'jats':
+        args.extend(['--to', 'jats', '--standalone'])
+    elif format == 'docx':
+        args.extend(['--to', 'docx'])
+    elif format == 'html':
+        args.extend(['--to', 'html'])
+    elif format == 'plain':
+        # Do not use ALL_CAPS for bold & underscores for italics
+        # https://github.com/jgm/pandoc/issues/4834#issuecomment-412972008
+        filter_path = pathlib.Path(__file__).joinpath('..', 'plain-pandoc-filter.lua').resolve()
+        args.extend([
+            '--to', 'plain',
+            '--lua-filter', str(filter_path),
+        ])
+    process = subprocess.run(
         args=args,
         input=metadata_block.encode(),
-        stdout=subprocess.PIPE if output else sys.stdout,
+        stdout=subprocess.PIPE if path else sys.stdout,
         stderr=sys.stderr,
     )
+    logging.info(
+        'call_pandoc subprocess args:\n' + ' '.join(process.args))
 
 
 def cli_cite(args):
     """
-    WARNING: this function is not yet user ready due to
+    Main function for the manubot cite command-line interface.
+
+    Does not allow user to directly specify Pandoc's --to argument, due to
+    inconsistent citaiton renderring by output format. See
     https://github.com/jgm/pandoc/issues/4834
     """
-    if not args.output and not args.refs_format:
-        vars(args)['refs_format'] = 'plain'
-
+    # generate CSL JSON data
     csl_list = list()
     for citation in args.citations:
         citation = standardize_citation(citation)
         csl_list.append(citation_to_citeproc(citation, prune=args.prune_csl))
+
+    # output CSL JSON data, if --render is False
     if not args.render:
         write_file = args.output.open('w') if args.output else sys.stdout
         with write_file:
             json.dump(csl_list, write_file, ensure_ascii=False, indent=2)
             write_file.write('\n')
         return
+
+    # use Pandoc to render citations
     _check_pandoc_installation()
+    if not args.format and args.output:
+        vars(args)['format'] = extension_to_format.get(args.output.suffix)
+    if not args.format:
+        vars(args)['format'] = 'plain'
     pandoc_metadata = {
         'nocite': '@*',
         'csl': args.csl,
@@ -205,8 +243,8 @@ def cli_cite(args):
     }
     call_pandoc(
         metadata=pandoc_metadata,
-        output=args.output,
-        to_format=args.refs_format,
+        path=args.output,
+        format=args.format,
     )
 
 
