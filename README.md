@@ -101,7 +101,9 @@ Additional usage information is available from `manubot cite --help`:
 
 <!-- test codeblock contains output of `manubot cite --help` -->
 ```
-usage: manubot cite [-h] [--file FILE] [--allow-invalid-csl-data]
+usage: manubot cite [-h] [--render] [--csl CSL]
+                    [--format {plain,markdown,docx,html,jats}]
+                    [--output OUTPUT] [--bad-csl]
                     citations [citations ...]
 
 Retrieve bibliographic metadata for one or more citation identifiers.
@@ -112,10 +114,17 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  --file FILE           specify a file to write CSL output, otherwise default
-                        to stdout
-  --allow-invalid-csl-data
-                        allow CSL Items that do not conform to the JSON
+  --render              Whether to render CSL Data into a formatted reference
+                        list using Pandoc
+  --csl CSL             When --render, specify an XML CSL definition to style
+                        references. Pandoc's --csl option
+  --format {plain,markdown,docx,html,jats}
+                        Format to use for output file. If not specified,
+                        attempt to infer this from filename extension.
+                        Otherwise, default to plain
+  --output OUTPUT       specify a file to write output, otherwise default to
+                        stdout
+  --bad-csl             allow CSL Items that do not conform to the JSON
                         Schema. Skips CSL pruning.
 ```
 
