@@ -4,15 +4,12 @@ import manubot
 
 
 def test_version():
-    process = subprocess.run(
+    stdout = subprocess.check_output(
         ['manubot', '--version'],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        universal_newlines=True,
     )
-    print(process.stderr.decode())
-    assert process.returncode == 0
     version_str = f'v{manubot.__version__}'
-    assert version_str == process.stdout.decode().strip()
+    assert version_str == stdout.rstrip()
 
 
 def test_missing_subcommand():
@@ -20,8 +17,8 @@ def test_missing_subcommand():
         ['manubot'],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        universal_newlines=True,
     )
-    stderr = process.stderr.decode()
-    print(stderr)
+    print(process.stderr)
     assert process.returncode == 2
-    assert 'error: the following arguments are required: subcommand' in stderr
+    assert 'error: the following arguments are required: subcommand' in process.stderr

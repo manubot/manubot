@@ -206,10 +206,11 @@ def test_cite_command_empty():
         ['manubot', 'cite'],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        universal_newlines=True,
     )
-    print(process.stderr.decode())
+    print(process.stderr)
     assert process.returncode == 2
-    assert 'the following arguments are required: citations' in process.stderr.decode()
+    assert 'the following arguments are required: citations' in process.stderr
 
 
 def test_cite_command_stdout():
@@ -217,8 +218,9 @@ def test_cite_command_stdout():
         ['manubot', 'cite', 'arxiv:1806.05726v1'],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        universal_newlines=True,
     )
-    print(process.stderr.decode())
+    print(process.stderr)
     assert process.returncode == 0
     csl, = json.loads(process.stdout)
     assert csl['URL'] == 'https://arxiv.org/abs/1806.05726v1'
