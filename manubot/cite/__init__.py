@@ -197,6 +197,7 @@ def cli_cite(args):
             json.dump(csl_list, write_file, ensure_ascii=False, indent=2)
             write_file.write('\n')
         return
+    _check_pandoc_installation()
     pandoc_metadata = {
         'nocite': '@*',
         'csl': args.csl,
@@ -207,3 +208,22 @@ def cli_cite(args):
         output=args.output,
         to_format=args.refs_format,
     )
+
+
+def _check_pandoc_installation():
+    """
+    Log the system's pandoc and pandoc-citeproc versions if installed, otherwise exit program.
+    """
+    try:
+        for command in 'pandoc', 'pandoc-citeproc':
+            output = subprocess.check_output(
+                args=[command, '--version'],
+                universal_newlines=True
+            )
+            logging.info(output)
+    except FileNotFoundError as error:
+        logging.critical(
+            f'FileNotFoundError error for system command "{command}". '
+            f'Check that Pandoc is installed.'
+        )
+        raise SystemExit(1)
