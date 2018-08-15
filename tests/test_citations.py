@@ -238,3 +238,85 @@ def test_cite_command_file(tmpdir):
     with path.open() as read_file:
         csl, = json.load(read_file)
     assert csl['URL'] == 'https://arxiv.org/abs/1806.05726v1'
+
+
+references_plain = '''\
+1. Generalization of the Fermi Pseudopotential
+Trang T. Le, Zach Osman, D. K. Watson, Martin Dunn, B. A. McKinney
+arXiv (2018-06-14) https://arxiv.org/abs/1806.05726v1
+
+2. Vagelos Report Summer 2017
+Michael Zietz
+Figshare (2017) https://doi.org/gdz6dd
+'''
+
+references_markdown = '''\
+1. **Generalization of the Fermi Pseudopotential**  
+Trang T. Le, Zach Osman, D. K. Watson, Martin Dunn, B. A. McKinney  
+*arXiv* (2018-06-14) <https://arxiv.org/abs/1806.05726v1>
+
+2. **Vagelos Report Summer 2017**  
+Michael Zietz  
+*Figshare* (2017) <https://doi.org/gdz6dd>
+'''
+
+references_jats = '''\
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.0 20120330//EN"
+                  "JATS-journalpublishing1.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.0" article-type="other">
+<front>
+<journal-meta>
+<journal-title-group>
+</journal-title-group>
+<publisher>
+<publisher-name></publisher-name>
+</publisher>
+</journal-meta>
+<article-meta>
+</article-meta>
+</front>
+<body>
+
+</body>
+<back>
+<ref-list>
+  <ref id="ref-1"><element-citation publication-type="report"><person-group person-group-type="author"><name><surname>Trang
+  T. Le</surname></name>, <name><surname>Zach Osman</surname></name>,
+  <name><surname>D. K. Watson</surname></name>, <name><surname>Martin
+  Dunn</surname></name>, <name><surname>B. A.
+  McKinney</surname></name></person-group><article-title>Generalization
+  of the Fermi
+  Pseudopotential</article-title><source>arXiv</source><publisher-name>arXiv</publisher-name><date><day>14</day><month>06</month><year>2018</year></date><ext-link ext-link-type="uri" xlink:href="https://arxiv.org/abs/1806.05726v1">https://arxiv.org/abs/1806.05726v1</ext-link></element-citation></ref>
+  <ref id="ref-2"><element-citation publication-type="journal"><person-group person-group-type="author"><name><surname>Zietz</surname>,
+  <given-names>Michael</given-names></name></person-group><article-title>Vagelos
+  Report Summer
+  2017</article-title><publisher-name>Figshare</publisher-name><date><year>2017</year></date><pub-id pub-id-type="doi"><ext-link ext-link-type="uri" xlink:href="https://doi.org/10.6084/m9.figshare.5346577.v1">10.6084/m9.figshare.5346577.v1</ext-link></pub-id><ext-link ext-link-type="uri" xlink:href="https://doi.org/gdz6dd">https://doi.org/gdz6dd</ext-link></element-citation></ref>
+</ref-list>
+</back>
+</article>
+'''
+
+
+@pytest.mark.parametrize(['args', 'expected'], [
+    ([], references_plain),
+    (['--format', 'plain'], references_plain),
+    (['--format', 'markdown'], references_markdown),
+    (['--format', 'jats'], references_jats),
+])
+def test_cite_command_render_stdout(args, expected):
+    args = [
+        'manubot', 'cite', '--render',
+        '--csl', 'https://github.com/greenelab/manubot-rootstock/raw/22b526073e0fe7a96cc35b612c47c371c92333df/build/assets/style.csl',
+        'arxiv:1806.05726v1', 'doi:10.6084/m9.figshare.5346577.v1',
+    ] + args
+    process = subprocess.run(
+        args,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+    )
+    print(' '.join(process.args))
+    print(process.stdout)
+    print(process.stderr)
+    assert process.stdout == expected
