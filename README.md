@@ -98,18 +98,22 @@ manubot cite doi:10.1098/rsif.2017.0387 pmid:29424689 pmcid:PMC5640425 arxiv:180
 Additional usage information is available from `manubot cite --help`:
 
 ```
-usage: manubot cite [-h] [--file FILE] [--bad-csl] citations [citations ...]
+usage: manubot cite [-h] [--file FILE] [--allow-invalid-csl-data]
+                    citations [citations ...]
 
 Retrieve bibliographic metadata for one or more citation identifiers.
 
 positional arguments:
-  citations    one or more (space separated) citations to produce CSL for
+  citations             one or more (space separated) citations to produce CSL
+                        for
 
 optional arguments:
-  -h, --help   show this help message and exit
-  --file FILE  specify a file to write CSL output, otherwise default to stdout
-  --bad-csl    allow CSL Items that do not conform to the JSON Schema. Skips
-               CSL pruning.
+  -h, --help            show this help message and exit
+  --file FILE           specify a file to write CSL output, otherwise default
+                        to stdout
+  --allow-invalid-csl-data
+                        allow CSL Items that do not conform to the JSON
+                        Schema. Skips CSL pruning.
 ```
 
 ## Installation
