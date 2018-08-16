@@ -1,5 +1,6 @@
 import json
 import pathlib
+import shutil
 import subprocess
 
 import pytest
@@ -304,6 +305,7 @@ references_jats = '''\
     (['--format', 'markdown'], references_markdown),
     (['--format', 'jats'], references_jats),
 ])
+@pytest.mark.skipif(not shutil.which('pandoc'))
 def test_cite_command_render_stdout(args, expected):
     args = [
         'manubot', 'cite', '--render',
