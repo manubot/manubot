@@ -99,7 +99,7 @@ def get_citation_id(standard_citation):
     return citation_id
 
 
-def citation_to_citeproc(citation):
+def citation_to_citeproc(citation, prune=True):
     """
     Return a dictionary with citation metadata
     """
@@ -113,7 +113,7 @@ def citation_to_citeproc(citation):
         raise ValueError(msg)
 
     citation_id = get_citation_id(citation)
-    citeproc = citeproc_passthrough(citeproc, set_id=citation_id)
+    citeproc = citeproc_passthrough(citeproc, set_id=citation_id, prune=prune)
 
     return citeproc
 
@@ -131,6 +131,12 @@ def add_subparser_cite(subparsers):
         help='specify a file to write CSL output, otherwise default to stdout',
     )
     parser.add_argument(
+        '--allow-invalid-csl-data',
+        dest='prune_csl',
+        action='store_false',
+        help='allow CSL Items that do not conform to the JSON Schema. Skips CSL pruning.',
+    )
+    parser.add_argument(
         'citations',
         nargs='+',
         help='one or more (space separated) citations to produce CSL for',
@@ -143,7 +149,7 @@ def cli_cite(args):
     csl_list = list()
     for citation in args.citations:
         citation = standardize_citation(citation)
-        csl_list.append(citation_to_citeproc(citation))
+        csl_list.append(citation_to_citeproc(citation, prune=args.prune_csl))
     with args.file as write_file:
         json.dump(csl_list, write_file, ensure_ascii=False, indent=2)
         write_file.write('\n')

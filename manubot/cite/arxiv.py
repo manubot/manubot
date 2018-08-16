@@ -46,7 +46,7 @@ def get_arxiv_citeproc(arxiv_id):
     pattern = re.compile(r'arxiv.org/abs/(.+)')
     match = pattern.search(url)
     versioned_id = match.group(1)
-    csl_item['arxiv_id'] = versioned_id
+    csl_item['number'] = versioned_id
     _, csl_item['version'] = versioned_id.rsplit('v', 1)
     csl_item['URL'] = 'https://arxiv.org/abs/' + versioned_id
 
@@ -56,7 +56,7 @@ def get_arxiv_citeproc(arxiv_id):
     # Extract CSL date field
     published = entry.findtext(prefix + 'published')
     published, _ = published.split('T', 1)
-    csl_item['issued'] = {'date-parts': [published.split('-')]}
+    csl_item['issued'] = {'date-parts': [[int(x) for x in published.split('-')]]}
 
     # Extract authors
     authors = list()

@@ -19,7 +19,7 @@ def get_short_doi_url(doi):
         short_url = 'https://doi.org/' + short_doi
         return short_url
     except Exception:
-        logging.exception(f'shortDOI lookup failed for {doi}')
+        logging.warning(f'shortDOI lookup failed for {doi}', exc_info=True)
         return None
 
 
@@ -42,7 +42,7 @@ def get_doi_citeproc(doi):
     citeproc['URL'] = f'https://doi.org/{doi}'
     short_doi_url = get_short_doi_url(doi)
     if short_doi_url:
-        citeproc['short_url'] = short_doi_url
+        citeproc['URL'] = short_doi_url
     try:
         citeproc.update(get_pubmed_ids_for_doi(doi))
     except Exception:

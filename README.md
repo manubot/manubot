@@ -101,16 +101,22 @@ Additional usage information is available from `manubot cite --help`:
 
 <!-- test codeblock contains output of `manubot cite --help` -->
 ```
-usage: manubot cite [-h] [--file FILE] citations [citations ...]
+usage: manubot cite [-h] [--file FILE] [--allow-invalid-csl-data]
+                    citations [citations ...]
 
 Retrieve bibliographic metadata for one or more citation identifiers.
 
 positional arguments:
-  citations    one or more (space separated) citations to produce CSL for
+  citations             one or more (space separated) citations to produce CSL
+                        for
 
 optional arguments:
-  -h, --help   show this help message and exit
-  --file FILE  specify a file to write CSL output, otherwise default to stdout
+  -h, --help            show this help message and exit
+  --file FILE           specify a file to write CSL output, otherwise default
+                        to stdout
+  --allow-invalid-csl-data
+                        allow CSL Items that do not conform to the JSON
+                        Schema. Skips CSL pruning.
 ```
 
 ## Installation

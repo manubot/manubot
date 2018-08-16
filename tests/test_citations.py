@@ -87,7 +87,7 @@ def test_citation_to_citeproc_arxiv():
     citeproc = citation_to_citeproc(citation)
     assert citeproc['id'] == 'ES92tcdg'
     assert citeproc['URL'] == 'https://arxiv.org/abs/cond-mat/0703470v2'
-    assert citeproc['arxiv_id'] == 'cond-mat/0703470v2'
+    assert citeproc['number'] == 'cond-mat/0703470v2'
     assert citeproc['version'] == '2'
     assert citeproc['type'] == 'report'
     assert citeproc['container-title'] == 'arXiv'
