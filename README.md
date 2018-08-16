@@ -103,7 +103,7 @@ Additional usage information is available from `manubot cite --help`:
 ```
 usage: manubot cite [-h] [--render] [--csl CSL]
                     [--format {plain,markdown,docx,html,jats}]
-                    [--output OUTPUT] [--bad-csl]
+                    [--output OUTPUT] [--allow-invalid-csl-data]
                     citations [citations ...]
 
 Retrieve bibliographic metadata for one or more citation identifiers.
@@ -124,7 +124,8 @@ optional arguments:
                         Otherwise, default to plain
   --output OUTPUT       specify a file to write output, otherwise default to
                         stdout
-  --bad-csl             allow CSL Items that do not conform to the JSON
+  --allow-invalid-csl-data
+                        allow CSL Items that do not conform to the JSON
                         Schema. Skips CSL pruning.
 ```
 
