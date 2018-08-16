@@ -309,6 +309,10 @@ references_jats = '''\
     not shutil.which('pandoc'),
     reason='pandoc installation not found on system'
 )
+@pytest.mark.skipif(
+    not shutil.which('pandoc-citeproc'),
+    reason='pandoc-citeproc installation not found on system'
+)
 def test_cite_command_render_stdout(args, expected):
     args = [
         'manubot', 'cite', '--render',
