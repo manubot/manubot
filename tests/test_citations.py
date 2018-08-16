@@ -305,7 +305,10 @@ references_jats = '''\
     (['--format', 'markdown'], references_markdown),
     (['--format', 'jats'], references_jats),
 ])
-@pytest.mark.skipif(not shutil.which('pandoc'))
+@pytest.mark.skipif(
+    not shutil.which('pandoc'),
+    reason='pandoc installation not found on system'
+)
 def test_cite_command_render_stdout(args, expected):
     args = [
         'manubot', 'cite', '--render',
