@@ -314,6 +314,10 @@ references_jats = '''\
     reason='pandoc-citeproc installation not found on system'
 )
 def test_cite_command_render_stdout(args, expected):
+    """
+    Note that this test may fail if the Pandoc version is not recent enough to
+    support --lua-filter (introduced in pandoc 2.0) or URLs for --csl.
+    """
     args = [
         'manubot', 'cite', '--render',
         '--csl', 'https://github.com/greenelab/manubot-rootstock/raw/22b526073e0fe7a96cc35b612c47c371c92333df/build/assets/style.csl',
