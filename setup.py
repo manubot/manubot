@@ -71,9 +71,6 @@ setuptools.setup(
         ],
     },
 
-    # Specify additional patterns to match files
+    # Include package data files from MANIFEST.in
     include_package_data=True,
-    package_data={
-        'manubot': os.path.join('cite', '*.lua'),
-    },
 )
