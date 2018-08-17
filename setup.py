@@ -73,6 +73,6 @@ setuptools.setup(
 
     # Specify additional patterns to match files
     package_data={
-        'manubot': os.path.join('manubot', 'cite', '*.lua'),
+        'manubot': os.path.join('cite', '*.lua'),
     },
 )
