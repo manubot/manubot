@@ -72,6 +72,6 @@ setuptools.setup(
 
     # Specify additional patterns to match files
     package_data={
-        'manubot': 'cite/*.lua',
+        'manubot': str(pathlib.Path('cite/*.lua')),
     },
 )
