@@ -1,3 +1,4 @@
+import os
 import pathlib
 import re
 
@@ -72,6 +73,6 @@ setuptools.setup(
 
     # Specify additional patterns to match files
     package_data={
-        'manubot': str(pathlib.Path('cite/*.lua')),
+        'manubot': os.path.join('cite', '*.lua'),
     },
 )
