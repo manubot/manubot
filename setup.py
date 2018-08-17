@@ -1,5 +1,4 @@
 import pathlib
-import platform
 import re
 
 import setuptools
@@ -15,14 +14,6 @@ version = pattern.search(text).group(1)
 # long_description
 readme_path = directory.joinpath('README.md')
 long_description = readme_path.read_text()
-
-# package_data (non-py files to include in distribution)
-package_data = {
-    'manubot': 'cite/*.lua',
-}
-if platform.system() == 'Windows':
-    # Workaround https://github.com/greenelab/manubot/pull/51#issuecomment-413615230
-    package_data = {}
 
 setuptools.setup(
     # Package details
@@ -80,5 +71,7 @@ setuptools.setup(
     },
 
     # Specify additional patterns to match files
-    package_data=package_data,
+    package_data={
+        'manubot': 'cite/*.lua',
+    },
 )
