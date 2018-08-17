@@ -72,6 +72,7 @@ setuptools.setup(
     },
 
     # Specify additional patterns to match files
+    include_package_data=True,
     package_data={
         'manubot': os.path.join('cite', '*.lua'),
     },
