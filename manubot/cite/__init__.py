@@ -194,18 +194,20 @@ def call_pandoc(metadata, path, format='plain'):
         # Do not use ALL_CAPS for bold & underscores for italics
         # https://github.com/jgm/pandoc/issues/4834#issuecomment-412972008
         filter_path = pathlib.Path(__file__).joinpath('..', 'plain-pandoc-filter.lua').resolve()
+        assert filter_path.exists()
         args.extend([
             '--to', 'plain',
             '--lua-filter', str(filter_path),
         ])
+    _check_pandoc_installation()
+    logging.info('call_pandoc subprocess args:\n' + ' '.join(args))
     process = subprocess.run(
         args=args,
         input=metadata_block.encode(),
         stdout=subprocess.PIPE if path else sys.stdout,
         stderr=sys.stderr,
     )
-    logging.info(
-        'call_pandoc subprocess args:\n' + ' '.join(process.args))
+    process.check_returncode()
 
 
 def cli_cite(args):
@@ -231,7 +233,6 @@ def cli_cite(args):
         return
 
     # use Pandoc to render citations
-    _check_pandoc_installation()
     if not args.format and args.output:
         vars(args)['format'] = extension_to_format.get(args.output.suffix)
     if not args.format:
