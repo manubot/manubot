@@ -304,7 +304,7 @@ references_jats = '''\
     (['--format', 'plain'], references_plain),
     (['--format', 'markdown'], references_markdown),
     (['--format', 'jats'], references_jats),
-])
+], ids=['no-args', '--format=plain', '--format=markdown', '--format=jats'])
 @pytest.mark.skipif(
     not shutil.which('pandoc'),
     reason='pandoc installation not found on system'
