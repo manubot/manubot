@@ -3,6 +3,7 @@ import json
 import logging
 import pathlib
 import re
+import shutil
 import subprocess
 import sys
 
@@ -256,16 +257,23 @@ def _check_pandoc_installation():
     """
     Log the system's pandoc and pandoc-citeproc versions if installed, otherwise exit program.
     """
-    try:
-        for command in 'pandoc', 'pandoc-citeproc':
-            output = subprocess.check_output(
-                args=[command, '--version'],
-                universal_newlines=True
+    stats = dict()
+    for command in 'pandoc', 'pandoc-citeproc':
+        path = shutil.which(command)
+        if not path:
+            logging.critical(
+                f'"{command}" not found on system. '
+                f'Check that Pandoc is installed.'
             )
-            logging.info(output)
-    except FileNotFoundError as error:
-        logging.critical(
-            f'FileNotFoundError error for system command "{command}". '
-            f'Check that Pandoc is installed.'
+            raise SystemExit(1)
+        version = subprocess.check_output(
+            args=[command, '--version'],
+            universal_newlines=True,
         )
-        raise SystemExit(1)
+        logging.debug(version)
+        version, *discard = version.splitlines()
+        discard, version = version.strip().split()
+        stats[f'{command} version'] = version
+        stats[f'{command} path'] = path
+    logging.info('\n'.join(f'{k}: {v}' for k, v in stats.items()))
+    return stats
