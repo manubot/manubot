@@ -117,11 +117,12 @@ optional arguments:
   --render              Whether to render CSL Data into a formatted reference
                         list using Pandoc
   --csl CSL             When --render, specify an XML CSL definition to style
-                        references. Pandoc's --csl option
+                        references (i.e. Pandoc's --csl option). Defaults to
+                        Manubot's style.
   --format {plain,markdown,docx,html,jats}
-                        Format to use for output file. If not specified,
-                        attempt to infer this from filename extension.
-                        Otherwise, default to plain
+                        When --render, format to use for output file. If not
+                        specified, attempt to infer this from filename
+                        extension. Otherwise, default to plain
   --output OUTPUT       specify a file to write output, otherwise default to
                         stdout
   --allow-invalid-csl-data

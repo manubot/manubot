@@ -143,12 +143,15 @@ def add_subparser_cite(subparsers):
     parser.add_argument(
         '--csl',
         default='https://github.com/greenelab/manubot-rootstock/raw/master/build/assets/style.csl',
-        help="When --render, specify an XML CSL definition to style references. Pandoc's --csl option",
+        help="When --render, specify an XML CSL definition to style references (i.e. Pandoc's --csl option). "
+             "Defaults to Manubot's style.",
     )
     parser.add_argument(
         '--format',
         choices=list(extension_to_format.values()),
-        help="Format to use for output file. If not specified, attempt to infer this from filename extension. Otherwise, default to plain",
+        help="When --render, format to use for output file. "
+             "If not specified, attempt to infer this from filename extension. "
+             "Otherwise, default to plain",
     )
     parser.add_argument(
         '--output',
@@ -215,7 +218,7 @@ def cli_cite(args):
     Main function for the manubot cite command-line interface.
 
     Does not allow user to directly specify Pandoc's --to argument, due to
-    inconsistent citaiton renderring by output format. See
+    inconsistent citaiton rendering by output format. See
     https://github.com/jgm/pandoc/issues/4834
     """
     # generate CSL JSON data
