@@ -178,6 +178,7 @@ def call_pandoc(metadata, path, format='plain'):
     """
     path is the path to write to.
     """
+    info = _get_pandoc_info()
     metadata_block = '---\n{yaml}\n...\n'.format(
         yaml=json.dumps(metadata, ensure_ascii=False, indent=2)
     )
@@ -195,15 +196,13 @@ def call_pandoc(metadata, path, format='plain'):
     elif format == 'html':
         args.extend(['--to', 'html'])
     elif format == 'plain':
-        # Do not use ALL_CAPS for bold & underscores for italics
-        # https://github.com/jgm/pandoc/issues/4834#issuecomment-412972008
-        filter_path = pathlib.Path(__file__).joinpath('..', 'plain-pandoc-filter.lua').resolve()
-        assert filter_path.exists()
-        args.extend([
-            '--to', 'plain',
-            '--lua-filter', str(filter_path),
-        ])
-    _check_pandoc_installation()
+        args.extend(['--to', 'plain'])
+        if info['pandoc version'] >= (2,):
+            # Do not use ALL_CAPS for bold & underscores for italics
+            # https://github.com/jgm/pandoc/issues/4834#issuecomment-412972008
+            filter_path = pathlib.Path(__file__).joinpath('..', 'plain-pandoc-filter.lua').resolve()
+            assert filter_path.exists()
+            args.extend(['--lua-filter', str(filter_path)])
     logging.info('call_pandoc subprocess args:\n' + ' '.join(args))
     process = subprocess.run(
         args=args,
@@ -246,6 +245,7 @@ def cli_cite(args):
         'csl': args.csl,
         'references': csl_list,
     }
+    _check_pandoc_version(args)
     call_pandoc(
         metadata=pandoc_metadata,
         path=args.output,
@@ -253,9 +253,10 @@ def cli_cite(args):
     )
 
 
-def _check_pandoc_installation():
+def _get_pandoc_info():
     """
-    Log the system's pandoc and pandoc-citeproc versions if installed, otherwise exit program.
+    Return path and version information for the system's pandoc and
+    pandoc-citeproc commands. If not available, exit program.
     """
     stats = dict()
     for command in 'pandoc', 'pandoc-citeproc':
@@ -273,7 +274,23 @@ def _check_pandoc_installation():
         logging.debug(version)
         version, *discard = version.splitlines()
         discard, version = version.strip().split()
+        version = tuple(map(int, version.split('.')))
         stats[f'{command} version'] = version
         stats[f'{command} path'] = path
     logging.info('\n'.join(f'{k}: {v}' for k, v in stats.items()))
     return stats
+
+
+def _check_pandoc_version(args):
+    """
+    Work in progress function to
+    """
+    info = _get_pandoc_info()
+    issues = list()
+    if args.format == 'jats' and info['pandoc version'] < (2,):
+        issues.append('--jats requires pandoc ≥ v2.0.')
+    # if args.csl.startswith('http') and pandoc_version < (2,):
+    #     issues.append('--csl requires pandoc ≥ v2.0.')
+    issues = '\n'.join(issues)
+    if issues:
+        logging.critical(f'issues with pandoc version detected:\n{issues}')
