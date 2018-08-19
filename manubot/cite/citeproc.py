@@ -2,9 +2,6 @@ import copy
 import functools
 import logging
 
-import jsonref
-import jsonschema
-
 citeproc_type_fixer = {
     'journal-article': 'article-journal',
     'book-chapter': 'chapter',
@@ -51,6 +48,9 @@ def get_jsonschema_csl_validator():
     """
     Return a jsonschema validator for the CSL Item JSON Schema
     """
+    import jsonref
+    import jsonschema
+
     url = 'https://github.com/dhimmel/schema/raw/manubot/csl-data.json'
     # Use jsonref to workaround https://github.com/Julian/jsonschema/issues/447
     schema = jsonref.load_uri(url, jsonschema=True)
