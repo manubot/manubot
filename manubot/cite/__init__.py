@@ -139,7 +139,8 @@ def add_subparser_cite(subparsers):
     parser.add_argument(
         '--render',
         action='store_true',
-        help='Whether to render CSL Data into a formatted reference list using Pandoc',
+        help='Whether to render CSL Data into a formatted reference list using Pandoc. '
+             'Pandoc version ≥ 2.0 is required for complete support of available output formats.',
     )
     parser.add_argument(
         '--csl',
@@ -179,6 +180,7 @@ def call_pandoc(metadata, path, format='plain'):
     path is the path to write to.
     """
     info = _get_pandoc_info()
+    _check_pandoc_version(info, metadata, format)
     metadata_block = '---\n{yaml}\n...\n'.format(
         yaml=json.dumps(metadata, ensure_ascii=False, indent=2)
     )
@@ -245,7 +247,6 @@ def cli_cite(args):
         'csl': args.csl,
         'references': csl_list,
     }
-    _check_pandoc_version(args)
     call_pandoc(
         metadata=pandoc_metadata,
         path=args.output,
@@ -281,16 +282,19 @@ def _get_pandoc_info():
     return stats
 
 
-def _check_pandoc_version(args):
+def _check_pandoc_version(info, metadata, format):
     """
-    Work in progress function to
+    Given info from _get_pandoc_info, check that Pandoc's version is sufficient
+    to perform the citation rendering command specified by metadata and format.
+    Please add additional minimum version information to this function, as its
+    discovered.
     """
-    info = _get_pandoc_info()
     issues = list()
-    if args.format == 'jats' and info['pandoc version'] < (2,):
+    if format == 'jats' and info['pandoc version'] < (2,):
         issues.append('--jats requires pandoc ≥ v2.0.')
-    # if args.csl.startswith('http') and pandoc_version < (2,):
-    #     issues.append('--csl requires pandoc ≥ v2.0.')
+    # --csl=URL did not work in https://travis-ci.org/greenelab/manubot/builds/417314743#L796, but exact version where this fails unknown
+    # if metadata.get('csl', '').startswith('http') and pandoc_version < (2,):
+    #     issues.append('--csl=URL requires pandoc ≥ v2.0.')
     issues = '\n'.join(issues)
     if issues:
         logging.critical(f'issues with pandoc version detected:\n{issues}')
