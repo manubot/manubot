@@ -41,7 +41,7 @@ def test_readme_codeblock_contains_output_from(command, expected):
 
 
 def _get_output_from(command):
-    return subprocess.check_output(command, shell=True, universal_newlines=True)
+    return subprocess.check_output(command, shell=True, encoding='utf-8')
 
 
 def _match_to_repl(match):
