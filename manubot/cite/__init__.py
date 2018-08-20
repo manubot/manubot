@@ -153,23 +153,23 @@ def add_subparser_cite(subparsers):
         choices=list(extension_to_format.values()),
         help="When --render, format to use for output file. "
              "If not specified, attempt to infer this from filename extension. "
-             "Otherwise, default to plain",
+             "Otherwise, default to plain.",
     )
     parser.add_argument(
         '--output',
         type=pathlib.Path,
-        help='specify a file to write output, otherwise default to stdout',
+        help='Specify a file to write output, otherwise default to stdout.',
     )
     parser.add_argument(
         '--allow-invalid-csl-data',
         dest='prune_csl',
         action='store_false',
-        help='allow CSL Items that do not conform to the JSON Schema. Skips CSL pruning.',
+        help='Allow CSL Items that do not conform to the JSON Schema. Skips CSL pruning.',
     )
     parser.add_argument(
         'citations',
         nargs='+',
-        help='one or more (space separated) citations to produce CSL for',
+        help='One or more (space separated) citations to produce CSL for.',
     )
     parser.set_defaults(function=cli_cite)
     return parser

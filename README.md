@@ -109,8 +109,8 @@ usage: manubot cite [-h] [--render] [--csl CSL]
 Retrieve bibliographic metadata for one or more citation identifiers.
 
 positional arguments:
-  citations             one or more (space separated) citations to produce CSL
-                        for
+  citations             One or more (space separated) citations to produce CSL
+                        for.
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -124,11 +124,11 @@ optional arguments:
   --format {plain,markdown,docx,html,jats}
                         When --render, format to use for output file. If not
                         specified, attempt to infer this from filename
-                        extension. Otherwise, default to plain
-  --output OUTPUT       specify a file to write output, otherwise default to
-                        stdout
+                        extension. Otherwise, default to plain.
+  --output OUTPUT       Specify a file to write output, otherwise default to
+                        stdout.
   --allow-invalid-csl-data
-                        allow CSL Items that do not conform to the JSON
+                        Allow CSL Items that do not conform to the JSON
                         Schema. Skips CSL pruning.
 ```
 
