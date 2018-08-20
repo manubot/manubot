@@ -140,7 +140,7 @@ def add_subparser_cite(subparsers):
         '--render',
         action='store_true',
         help='Whether to render CSL Data into a formatted reference list using Pandoc. '
-             'Pandoc version ≥ 2.0 is required for complete support of available output formats.',
+             'Pandoc version 2.0 or higher is required for complete support of available output formats.',
     )
     parser.add_argument(
         '--csl',

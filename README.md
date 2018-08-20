@@ -115,8 +115,9 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   --render              Whether to render CSL Data into a formatted reference
-                        list using Pandoc. Pandoc version ≥ 2.0 is required
-                        for complete support of available output formats.
+                        list using Pandoc. Pandoc version 2.0 or higher is
+                        required for complete support of available output
+                        formats.
   --csl CSL             When --render, specify an XML CSL definition to style
                         references (i.e. Pandoc's --csl option). Defaults to
                         Manubot's style.
