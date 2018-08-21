@@ -9,7 +9,7 @@ import warnings
 import errorhandler
 
 import manubot
-from manubot.cite import add_subparser_cite
+from manubot.cite.cite_command import add_subparser_cite
 from manubot.process import add_subparser_process
 
 
