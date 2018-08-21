@@ -148,7 +148,8 @@ Use the `--upgrade` argument to reinstall `manubot` with a different commit hash
 Create a development environment using:
 
 ```sh
-conda create --name=manubot-dev python=3.6 jinja2 pandas pytest
+conda create --name manubot-dev --channel conda-forge \
+  python=3.6 jinja2 pandas pytest pandoc
 conda activate manubot-dev  # assumes conda >= 4.4
 pip install --editable .
 ```
