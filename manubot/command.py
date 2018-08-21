@@ -10,7 +10,7 @@ import errorhandler
 
 import manubot
 from manubot.cite.cite_command import add_subparser_cite
-from manubot.process import add_subparser_process
+from manubot.process_command import add_subparser_process
 
 
 def parse_arguments():

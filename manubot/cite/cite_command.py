@@ -5,11 +5,6 @@ import shutil
 import subprocess
 import sys
 
-from manubot.cite import (
-    citation_to_citeproc,
-    standardize_citation,
-)
-
 # For manubot cite, infer --format from --output filename extensions
 extension_to_format = {
     '.txt': 'plain',
@@ -113,6 +108,11 @@ def cli_cite(args):
     inconsistent citaiton rendering by output format. See
     https://github.com/jgm/pandoc/issues/4834
     """
+    from manubot.cite import (
+        citation_to_citeproc,
+        standardize_citation,
+    )
+
     # generate CSL JSON data
     csl_list = list()
     for citation in args.citations:
