@@ -1,5 +1,6 @@
 import pathlib
 import re
+import shlex
 import subprocess
 
 import pytest
@@ -41,7 +42,7 @@ def test_readme_codeblock_contains_output_from(command, expected):
 
 
 def _get_output_from(command):
-    return subprocess.check_output(command, shell=True, universal_newlines=True)
+    return subprocess.check_output(shlex.split(command), universal_newlines=True)
 
 
 def _match_to_repl(match):

@@ -69,4 +69,7 @@ setuptools.setup(
             'manubot = manubot.command:main',
         ],
     },
+
+    # Include package data files from MANIFEST.in
+    include_package_data=True,
 )

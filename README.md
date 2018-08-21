@@ -101,21 +101,34 @@ Additional usage information is available from `manubot cite --help`:
 
 <!-- test codeblock contains output of `manubot cite --help` -->
 ```
-usage: manubot cite [-h] [--file FILE] [--allow-invalid-csl-data]
+usage: manubot cite [-h] [--render] [--csl CSL]
+                    [--format {plain,markdown,docx,html,jats}]
+                    [--output OUTPUT] [--allow-invalid-csl-data]
                     citations [citations ...]
 
 Retrieve bibliographic metadata for one or more citation identifiers.
 
 positional arguments:
-  citations             one or more (space separated) citations to produce CSL
-                        for
+  citations             One or more (space separated) citations to produce CSL
+                        for.
 
 optional arguments:
   -h, --help            show this help message and exit
-  --file FILE           specify a file to write CSL output, otherwise default
-                        to stdout
+  --render              Whether to render CSL Data into a formatted reference
+                        list using Pandoc. Pandoc version 2.0 or higher is
+                        required for complete support of available output
+                        formats.
+  --csl CSL             When --render, specify an XML CSL definition to style
+                        references (i.e. Pandoc's --csl option). Defaults to
+                        Manubot's style.
+  --format {plain,markdown,docx,html,jats}
+                        When --render, format to use for output file. If not
+                        specified, attempt to infer this from filename
+                        extension. Otherwise, default to plain.
+  --output OUTPUT       Specify a file to write output, otherwise default to
+                        stdout.
   --allow-invalid-csl-data
-                        allow CSL Items that do not conform to the JSON
+                        Allow CSL Items that do not conform to the JSON
                         Schema. Skips CSL pruning.
 ```
 
@@ -135,7 +148,8 @@ Use the `--upgrade` argument to reinstall `manubot` with a different commit hash
 Create a development environment using:
 
 ```sh
-conda create --name=manubot-dev python=3.6 jinja2 pandas pytest
+conda create --name manubot-dev --channel conda-forge \
+  python=3.6 jinja2 pandas pytest pandoc
 conda activate manubot-dev  # assumes conda >= 4.4
 pip install --editable .
 ```
