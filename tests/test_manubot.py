@@ -23,8 +23,8 @@ def test_example_manuscript(manuscript):
     manuscript_dir = directory.joinpath('manuscripts', manuscript)
     args = [
         'manubot',
-        '--log-level', 'INFO',
         'process',
+        '--log-level', 'INFO',
         '--content-directory', str(manuscript_dir.joinpath('content')),
         '--output-directory', str(manuscript_dir.joinpath('output')),
     ]

@@ -19,9 +19,6 @@ def parse_arguments():
     """
     parser = argparse.ArgumentParser(description='Manubot: the manuscript bot for scholarly writing')
     parser.add_argument('--version', action='version', version=f'v{manubot.__version__}')
-    parser.add_argument('--log-level', default='WARNING',
-                        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
-                        help='Set the logging level for stderr logging')
     subparsers = parser.add_subparsers(
         title='subcommands',
         description='All operations are done through subcommands:',
@@ -31,6 +28,13 @@ def parse_arguments():
     subparsers.dest = 'subcommand'  # https://bugs.python.org/msg186387
     add_subparser_process(subparsers)
     add_subparser_cite(subparsers)
+    for subparser in subparsers.choices.values():
+        subparser.add_argument(
+            '--log-level',
+            default='WARNING',
+            choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
+            help='Set the logging level for stderr logging',
+        )
     args = parser.parse_args()
     return args
 

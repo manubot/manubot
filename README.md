@@ -16,24 +16,20 @@ Here is the usage information as per `manubot --help`:
 
 <!-- test codeblock contains output of `manubot --help` -->
 ```
-usage: manubot [-h] [--version]
-               [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
-               {process,cite} ...
+usage: manubot [-h] [--version] {process,cite} ...
 
 Manubot: the manuscript bot for scholarly writing
 
 optional arguments:
-  -h, --help            show this help message and exit
-  --version             show program's version number and exit
-  --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
-                        Set the logging level for stderr logging
+  -h, --help      show this help message and exit
+  --version       show program's version number and exit
 
 subcommands:
   All operations are done through subcommands:
 
   {process,cite}
-    process             process manuscript content
-    cite                citation to CSL command line utility
+    process       process manuscript content
+    cite          citation to CSL command line utility
 ```
 
 Note that all operations are done through the following sub-commands.
@@ -63,6 +59,7 @@ usage: manubot process [-h] --content-directory CONTENT_DIRECTORY
                        [--template-variables-path TEMPLATE_VARIABLES_PATH]
                        [--cache-directory CACHE_DIRECTORY]
                        [--clear-requests-cache]
+                       [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
 
 Process manuscript content to create outputs for Pandoc consumption. Performs
 bibliographic processing and templating.
@@ -85,6 +82,8 @@ optional arguments:
                         Custom cache directory. If not specified, caches to
                         output-directory
   --clear-requests-cache
+  --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
+                        Set the logging level for stderr logging
 ```
 
 ### Cite
@@ -104,6 +103,7 @@ Additional usage information is available from `manubot cite --help`:
 usage: manubot cite [-h] [--render] [--csl CSL]
                     [--format {plain,markdown,docx,html,jats}]
                     [--output OUTPUT] [--allow-invalid-csl-data]
+                    [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
                     citations [citations ...]
 
 Retrieve bibliographic metadata for one or more citation identifiers.
@@ -130,6 +130,8 @@ optional arguments:
   --allow-invalid-csl-data
                         Allow CSL Items that do not conform to the JSON
                         Schema. Skips CSL pruning.
+  --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
+                        Set the logging level for stderr logging
 ```
 
 ## Installation
