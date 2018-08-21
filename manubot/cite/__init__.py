@@ -7,8 +7,6 @@ import shutil
 import subprocess
 import sys
 
-import base62
-
 from manubot.cite.arxiv import get_arxiv_citeproc
 from manubot.cite.doi import get_doi_citeproc
 from manubot.cite.pubmed import (
@@ -93,6 +91,7 @@ def get_citation_id(standard_citation):
     """
     Get the citation_id for a standard_citation.
     """
+    import base62
     assert '@' not in standard_citation
     as_bytes = standard_citation.encode()
     blake_hash = hashlib.blake2b(as_bytes, digest_size=6)
