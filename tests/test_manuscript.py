@@ -1,4 +1,4 @@
-from manubot.manuscript import (
+from manubot.process.manuscript import (
     get_citation_strings,
     replace_citations_strings_with_ids
 )

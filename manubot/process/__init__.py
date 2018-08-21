@@ -13,7 +13,7 @@ import requests
 import requests_cache
 import yaml
 
-from manubot.manuscript import (
+from manubot.process.manuscript import (
     datetime_now,
     get_citation_strings,
     get_manuscript_stats,
