@@ -1,4 +1,4 @@
-from manubot.manuscript import (
+from manubot.process.manuscript import (
     get_citation_strings,
     replace_citations_strings_with_ids
 )
@@ -26,10 +26,10 @@ def test_get_citation_strings_1():
 def test_replace_citations_strings_with_ids():
     """
     Test that text does not get converted to:
-    
+
     > our new Manubot tool [@cTN2TQIL-rootstock; @cTN2TQIL] for automating
     manuscript generation.
-    
+
     See https://github.com/greenelab/manubot/issues/9
     """
     string_to_id = {

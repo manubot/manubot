@@ -5,5 +5,5 @@ def test_imports():
     import manubot.cite.doi
     import manubot.cite.pubmed
     import manubot.cite.url
-    import manubot.manuscript
+    import manubot.process.manuscript
     assert isinstance(manubot.cite.citeproc_retrievers, dict)
