@@ -35,7 +35,7 @@ def call_pandoc(metadata, path, format='plain'):
         '--output', str(path) if path else '-',
     ]
     if format == 'markdown':
-        args.extend(['--to', 'markdown_strict'])
+        args.extend(['--to', 'markdown_strict', '--wrap', 'none'])
     elif format == 'jats':
         args.extend(['--to', 'jats', '--standalone'])
     elif format == 'docx':
