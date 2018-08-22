@@ -190,7 +190,7 @@ git push upstream $TAG
 ## Goals & Acknowledgments
 
 Our goal is to create scholarly infrastructure that encourages open science and assists reproducibility.
-As such, we hope for the Manubot software and philosophy to be adopted widely, by both non-profit and commercial entities.
+As such, we hope for the Manubot software and philosophy to be adopted widely, by both academic and commercial entities.
 As such, Manubot is free/libre and open source software (see [`LICENSE.md`](LICENSE.md)).
 
 We would like to thank the contributors and funders whose support makes this project possible.
