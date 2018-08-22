@@ -186,3 +186,15 @@ git push
 git tag --annotate $TAG --message="Upgrade to $TAG"
 git push upstream $TAG
 ```
+
+## Goals & Acknowledgments
+
+Our goal is to create scholarly infrastructure that encourages open science and assists reproducibility.
+As such, we hope for the Manubot software and philosophy to be adopted widely, by both non-profit and commercial entities.
+As such, Manubot is free/libre and open source software (see [`LICENSE.md`](LICENSE.md)).
+
+We would like to thank the contributors and funders whose support makes this project possible.
+Specifically, Manubot development has been funded by:
+
+- the Alfred P. Sloan Foundation by [Grant G-2018-11163](https://sloan.org/grant-detail/11163) to [**@dhimmel**](https://github.com/dhimmel).
+- the Gordon and Betty Moore Foundation ([**@DDD-Moore**](https://github.com/DDD-Moore)) by [Grant GBMF4552](https://www.moore.org/grant-detail?grantId=GBMF4552) to [**@cgreene**](https://github.com/cgreene).
