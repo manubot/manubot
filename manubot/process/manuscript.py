@@ -5,7 +5,10 @@ import logging
 import pathlib
 import re
 
-from manubot.cite import citation_pattern, is_valid_citation_string
+from manubot.cite.cite import (
+    citation_pattern,
+    is_valid_citation_string,
+)
 
 
 def get_citation_strings(text):

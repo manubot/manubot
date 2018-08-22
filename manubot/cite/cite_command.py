@@ -108,7 +108,7 @@ def cli_cite(args):
     inconsistent citaiton rendering by output format. See
     https://github.com/jgm/pandoc/issues/4834
     """
-    from manubot.cite import (
+    from manubot.cite.cite import (
         citation_to_citeproc,
         standardize_citation,
     )
