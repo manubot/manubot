@@ -196,5 +196,5 @@ As such, Manubot is free/libre and open source software (see [`LICENSE.md`](LICE
 We would like to thank the contributors and funders whose support makes this project possible.
 Specifically, Manubot development has been financially supported by:
 
-- the **Alfred P. Sloan Foundation** in [Grant G-2018-11163](https://sloan.org/grant-detail/11163) to [**@dhimmel**](https://github.com/dhimmel).
+- the **Alfred P. Sloan Foundation** in [Grant G-2018-11163](https://sloan.org/grant-detail/8501) to [**@dhimmel**](https://github.com/dhimmel).
 - the **Gordon & Betty Moore Foundation** ([**@DDD-Moore**](https://github.com/DDD-Moore)) in [Grant GBMF4552](https://www.moore.org/grant-detail?grantId=GBMF4552) to [**@cgreene**](https://github.com/cgreene).
