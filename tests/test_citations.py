@@ -5,7 +5,7 @@ import subprocess
 
 import pytest
 
-from manubot.cite.cite import (
+from manubot.cite.util import (
     citation_pattern,
     citation_to_citeproc,
     get_citation_id,

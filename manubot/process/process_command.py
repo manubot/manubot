@@ -60,5 +60,5 @@ def cli_process(args):
     args.cache_directory.mkdir(exist_ok=True)
     args_dict['requests_cache_path'] = str(args.cache_directory.joinpath('requests-cache'))
 
-    from manubot.process.process import prepare_manuscript
+    from manubot.process.util import prepare_manuscript
     prepare_manuscript(args)

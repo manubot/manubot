@@ -3,7 +3,7 @@ import subprocess
 
 import pytest
 
-from manubot.process.process import (
+from manubot.process.util import (
     add_author_affiliations,
     read_jsons,
 )

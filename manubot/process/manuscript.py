@@ -5,7 +5,7 @@ import logging
 import pathlib
 import re
 
-from manubot.cite.cite import (
+from manubot.cite.util import (
     citation_pattern,
     is_valid_citation_string,
 )

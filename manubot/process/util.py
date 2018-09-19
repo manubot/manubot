@@ -20,7 +20,7 @@ from manubot.process.manuscript import (
     get_text,
     replace_citations_strings_with_ids,
 )
-from manubot.cite.cite import (
+from manubot.cite.util import (
     citation_to_citeproc,
     get_citation_id,
     is_valid_citation_string,
