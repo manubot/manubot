@@ -191,7 +191,7 @@ git add manubot/__init__.py
 git commit --message="Set __version__ to $TAG"
 git push
 # Create & push tag (assuming upstream is greenelab remote)
-git tag --annotate $TAG --file=$TAG.md
+git tag --annotate $TAG --file=release-notes/$TAG.md
 git push upstream $TAG
 ```
 
