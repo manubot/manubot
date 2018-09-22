@@ -2,13 +2,13 @@
 Manubot's command line interface
 """
 import argparse
-import importlib
 import logging
 import pathlib
 import sys
 import warnings
 
 import manubot
+from manubot.util import import_function
 
 
 def parse_arguments():
@@ -112,17 +112,6 @@ def add_subparser_cite(subparsers):
         help='One or more (space separated) citations to produce CSL for.',
     )
     parser.set_defaults(function='manubot.cite.cite_command.cli_cite')
-
-
-def import_function(name):
-    """
-    Import a function in a module specified by name. For example, if name were
-    'manubot.cite.cite_command.cli_cite', the cli_cite function would be
-    returned as an object. See https://stackoverflow.com/a/8790232/4651668.
-    """
-    module_name, function_name = name.rsplit('.', 1)
-    module = importlib.import_module(module_name)
-    return getattr(module, function_name)
 
 
 def main():

@@ -1,22 +1,15 @@
-import hashlib
 import logging
 import re
 
-from manubot.cite.arxiv import get_arxiv_citeproc
-from manubot.cite.doi import get_doi_citeproc
-from manubot.cite.pubmed import (
-    get_pmc_citeproc,
-    get_pubmed_citeproc,
-)
-from manubot.cite.url import get_url_citeproc
-from manubot.cite.citeproc import citeproc_passthrough
+from manubot.util import import_function
+
 
 citeproc_retrievers = {
-    'doi': get_doi_citeproc,
-    'pmid': get_pubmed_citeproc,
-    'pmcid': get_pmc_citeproc,
-    'arxiv': get_arxiv_citeproc,
-    'url': get_url_citeproc,
+    'doi': 'manubot.cite.doi.get_doi_citeproc',
+    'pmid': 'manubot.cite.pubmed.get_pubmed_citeproc',
+    'pmcid': 'manubot.cite.pubmed.get_pmc_citeproc',
+    'arxiv': 'manubot.cite.arxiv.get_arxiv_citeproc',
+    'url': 'manubot.cite.url.get_url_citeproc',
 }
 
 """
@@ -86,6 +79,7 @@ def get_citation_id(standard_citation):
     """
     Get the citation_id for a standard_citation.
     """
+    import hashlib
     import base62
     assert '@' not in standard_citation
     as_bytes = standard_citation.encode()
@@ -103,12 +97,14 @@ def citation_to_citeproc(citation, prune=True):
     source, identifier = citation.split(':', 1)
 
     if source in citeproc_retrievers:
-        citeproc = citeproc_retrievers[source](identifier)
+        citeproc_retriever = import_function(citeproc_retrievers[source])
+        citeproc = citeproc_retriever(identifier)
     else:
         msg = f'Unsupported citation source {source} in {citation}'
         raise ValueError(msg)
 
     citation_id = get_citation_id(citation)
+    from manubot.cite.citeproc import citeproc_passthrough
     citeproc = citeproc_passthrough(citeproc, set_id=citation_id, prune=prune)
 
     return citeproc
