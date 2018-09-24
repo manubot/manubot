@@ -5,6 +5,11 @@ import shutil
 import subprocess
 import sys
 
+from manubot.cite import (
+    citation_to_citeproc,
+    standardize_citation,
+)
+
 # For manubot cite, infer --format from --output filename extensions
 extension_to_format = {
     '.txt': 'plain',
@@ -13,51 +18,6 @@ extension_to_format = {
     '.html': 'html',
     '.xml': 'jats',
 }
-
-
-def add_subparser_cite(subparsers):
-    parser = subparsers.add_parser(
-        name='cite',
-        help='citation to CSL command line utility',
-        description='Retrieve bibliographic metadata for one or more citation identifiers.',
-    )
-    parser.add_argument(
-        '--render',
-        action='store_true',
-        help='Whether to render CSL Data into a formatted reference list using Pandoc. '
-             'Pandoc version 2.0 or higher is required for complete support of available output formats.',
-    )
-    parser.add_argument(
-        '--csl',
-        default='https://github.com/greenelab/manubot-rootstock/raw/master/build/assets/style.csl',
-        help="When --render, specify an XML CSL definition to style references (i.e. Pandoc's --csl option). "
-             "Defaults to Manubot's style.",
-    )
-    parser.add_argument(
-        '--format',
-        choices=list(extension_to_format.values()),
-        help="When --render, format to use for output file. "
-             "If not specified, attempt to infer this from filename extension. "
-             "Otherwise, default to plain.",
-    )
-    parser.add_argument(
-        '--output',
-        type=pathlib.Path,
-        help='Specify a file to write output, otherwise default to stdout.',
-    )
-    parser.add_argument(
-        '--allow-invalid-csl-data',
-        dest='prune_csl',
-        action='store_false',
-        help='Allow CSL Items that do not conform to the JSON Schema. Skips CSL pruning.',
-    )
-    parser.add_argument(
-        'citations',
-        nargs='+',
-        help='One or more (space separated) citations to produce CSL for.',
-    )
-    parser.set_defaults(function=cli_cite)
-    return parser
 
 
 def call_pandoc(metadata, path, format='plain'):
@@ -108,11 +68,6 @@ def cli_cite(args):
     inconsistent citaiton rendering by output format. See
     https://github.com/jgm/pandoc/issues/4834
     """
-    from manubot.cite import (
-        citation_to_citeproc,
-        standardize_citation,
-    )
-
     # generate CSL JSON data
     csl_list = list()
     for citation in args.citations:
