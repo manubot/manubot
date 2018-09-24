@@ -9,6 +9,14 @@ It automates and scripts several aspects of manuscript creation, including fetch
 This program is designed to be used with clones of [Manubot Rootstock](https://github.com/greenelab/manubot-rootstock), which perform Pandoc conversion and continuous deployment.
 See the Manubot Rootstock [usage guide](https://github.com/greenelab/manubot-rootstock/blob/master/USAGE.md) for more information.
 
+To cite the Manubot project or for more information on its design and history, see:
+
+> **Open collaborative writing with Manubot**<br>
+Daniel S. Himmelstein, David R. Slochower, Venkat S. Malladi, Casey S.
+Greene, Anthony Gitter<br>
+_Manubot Preprint_ (2018) <https://greenelab.github.io/meta-review/>
+
+
 ## Usage
 
 Installing the python package creates the `manubot` command line program.
