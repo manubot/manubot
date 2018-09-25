@@ -249,16 +249,56 @@ arXiv (2018-06-14) https://arxiv.org/abs/1806.05726v1
 2. Vagelos Report Summer 2017
 Michael Zietz
 Figshare (2017) https://doi.org/gdz6dd
+DOI: 10.6084/m9.figshare.5346577.v1
+
+3. Opportunities and obstacles for deep learning in biology and medicine.
+Travers Ching, Daniel S Himmelstein, Brett K Beaulieu-Jones, Alexandr A Kalinin, Brian T Do, Gregory P Way, Enrico Ferrero, Paul-Michael Agapow, Michael Zietz, Michael M Hoffman, … Casey S Greene
+Journal of the Royal Society, Interface (2018-04) https://www.ncbi.nlm.nih.gov/pubmed/29618526
+DOI: 10.1098/rsif.2017.0387 · PMID: 29618526 · PMCID: PMC5938574
 '''
 
 references_markdown = '''\
 1. **Generalization of the Fermi Pseudopotential**  
 Trang T. Le, Zach Osman, D. K. Watson, Martin Dunn, B. A. McKinney  
+  
 *arXiv* (2018-06-14) <https://arxiv.org/abs/1806.05726v1>
 
 2. **Vagelos Report Summer 2017**  
 Michael Zietz  
-*Figshare* (2017) <https://doi.org/gdz6dd>
+  
+*Figshare* (2017) <https://doi.org/gdz6dd>  
+DOI: [10.6084/m9.figshare.5346577.v1](https://doi.org/10.6084/m9.figshare.5346577.v1)
+
+3. **Opportunities and obstacles for deep learning in biology and medicine.**  
+Travers Ching, Daniel S Himmelstein, Brett K Beaulieu-Jones, Alexandr A Kalinin, Brian T Do, Gregory P Way, Enrico Ferrero, Paul-Michael Agapow, Michael Zietz, Michael M Hoffman, … Casey S Greene  
+  
+*Journal of the Royal Society, Interface* (2018-04) <https://www.ncbi.nlm.nih.gov/pubmed/29618526>  
+DOI: [10.1098/rsif.2017.0387](https://doi.org/10.1098/rsif.2017.0387) · PMID: [29618526](http://www.ncbi.nlm.nih.gov/pubmed/29618526) · PMCID: [PMC5938574](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC5938574)
+'''
+
+references_html = '''\
+<div id="refs" class="references">
+<div id="ref-s33GCagP">
+<p>1. <strong>Generalization of the Fermi Pseudopotential</strong><br />
+Trang T. Le, Zach Osman, D. K. Watson, Martin Dunn, B. A. McKinney<br />
+<br />
+<em>arXiv</em> (2018-06-14) <a href="https://arxiv.org/abs/1806.05726v1" class="uri">https://arxiv.org/abs/1806.05726v1</a></p>
+</div>
+<div id="ref-vbapKMop">
+<p>2. <strong>Vagelos Report Summer 2017</strong><br />
+Michael Zietz<br />
+<br />
+<em>Figshare</em> (2017) <a href="https://doi.org/gdz6dd" class="uri">https://doi.org/gdz6dd</a><br />
+DOI: <a href="https://doi.org/10.6084/m9.figshare.5346577.v1">10.6084/m9.figshare.5346577.v1</a></p>
+</div>
+<div id="ref-HgEQEBcy">
+<p>3. <strong>Opportunities and obstacles for deep learning in biology and medicine.</strong><br />
+Travers Ching, Daniel S Himmelstein, Brett K Beaulieu-Jones, Alexandr A Kalinin, Brian T Do, Gregory P Way, Enrico Ferrero, Paul-Michael Agapow, Michael Zietz, Michael M Hoffman, … Casey S Greene<br />
+<br />
+<em>Journal of the Royal Society, Interface</em> (2018-04) <a href="https://www.ncbi.nlm.nih.gov/pubmed/29618526" class="uri">https://www.ncbi.nlm.nih.gov/pubmed/29618526</a><br />
+DOI: <a href="https://doi.org/10.1098/rsif.2017.0387">10.1098/rsif.2017.0387</a> · PMID: <a href="http://www.ncbi.nlm.nih.gov/pubmed/29618526">29618526</a> · PMCID: <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC5938574">PMC5938574</a></p>
+</div>
+</div>
 '''
 
 references_jats = '''\
@@ -293,6 +333,66 @@ references_jats = '''\
   <given-names>Michael</given-names></name></person-group><article-title>Vagelos
   Report Summer
   2017</article-title><publisher-name>Figshare</publisher-name><date><year>2017</year></date><pub-id pub-id-type="doi"><ext-link ext-link-type="uri" xlink:href="https://doi.org/10.6084/m9.figshare.5346577.v1">10.6084/m9.figshare.5346577.v1</ext-link></pub-id><ext-link ext-link-type="uri" xlink:href="https://doi.org/gdz6dd">https://doi.org/gdz6dd</ext-link></element-citation></ref>
+  <ref id="ref-3"><element-citation publication-type="journal"><person-group person-group-type="author"><name><surname>Ching</surname>,
+  <given-names>Travers</given-names></name>,
+  <name><surname>Himmelstein</surname>, <given-names>Daniel
+  S</given-names></name>, <name><surname>Beaulieu-Jones</surname>,
+  <given-names>Brett K</given-names></name>,
+  <name><surname>Kalinin</surname>, <given-names>Alexandr
+  A</given-names></name>, <name><surname>Do</surname>,
+  <given-names>Brian T</given-names></name>,
+  <name><surname>Way</surname>, <given-names>Gregory
+  P</given-names></name>, <name><surname>Ferrero</surname>,
+  <given-names>Enrico</given-names></name>,
+  <name><surname>Agapow</surname>,
+  <given-names>Paul-Michael</given-names></name>,
+  <name><surname>Zietz</surname>,
+  <given-names>Michael</given-names></name>,
+  <name><surname>Hoffman</surname>, <given-names>Michael
+  M</given-names></name>, <name><surname>Xie</surname>,
+  <given-names>Wei</given-names></name>, <name><surname>Rosen</surname>,
+  <given-names>Gail L</given-names></name>,
+  <name><surname>Lengerich</surname>, <given-names>Benjamin
+  J</given-names></name>, <name><surname>Israeli</surname>,
+  <given-names>Johnny</given-names></name>,
+  <name><surname>Lanchantin</surname>,
+  <given-names>Jack</given-names></name>,
+  <name><surname>Woloszynek</surname>,
+  <given-names>Stephen</given-names></name>,
+  <name><surname>Carpenter</surname>, <given-names>Anne
+  E</given-names></name>, <name><surname>Shrikumar</surname>,
+  <given-names>Avanti</given-names></name>, <name><surname>Xu</surname>,
+  <given-names>Jinbo</given-names></name>,
+  <name><surname>Cofer</surname>, <given-names>Evan
+  M</given-names></name>, <name><surname>Lavender</surname>,
+  <given-names>Christopher A</given-names></name>,
+  <name><surname>Turaga</surname>, <given-names>Srinivas
+  C</given-names></name>, <name><surname>Alexandari</surname>,
+  <given-names>Amr M</given-names></name>, <name><surname>Lu</surname>,
+  <given-names>Zhiyong</given-names></name>,
+  <name><surname>Harris</surname>, <given-names>David
+  J</given-names></name>, <name><surname>DeCaprio</surname>,
+  <given-names>Dave</given-names></name>, <name><surname>Qi</surname>,
+  <given-names>Yanjun</given-names></name>,
+  <name><surname>Kundaje</surname>,
+  <given-names>Anshul</given-names></name>,
+  <name><surname>Peng</surname>,
+  <given-names>Yifan</given-names></name>,
+  <name><surname>Wiley</surname>, <given-names>Laura
+  K</given-names></name>, <name><surname>Segler</surname>,
+  <given-names>Marwin H S</given-names></name>,
+  <name><surname>Boca</surname>, <given-names>Simina
+  M</given-names></name>, <name><surname>Swamidass</surname>,
+  <given-names>S Joshua</given-names></name>,
+  <name><surname>Huang</surname>,
+  <given-names>Austin</given-names></name>,
+  <name><surname>Gitter</surname>,
+  <given-names>Anthony</given-names></name>,
+  <name><surname>Greene</surname>, <given-names>Casey
+  S</given-names></name></person-group><article-title>Opportunities and
+  obstacles for deep learning in biology and
+  medicine.</article-title><source>J R Soc
+  Interface</source><date><month>04</month><year>2018</year></date><volume>15</volume><issue>141</issue><pub-id pub-id-type="doi"><ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1098/rsif.2017.0387">10.1098/rsif.2017.0387</ext-link></pub-id><ext-link ext-link-type="pmid" xlink:href="http://www.ncbi.nlm.nih.gov/pubmed/<ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/pubmed/29618526">29618526</ext-link>" xlink:type="simple"><ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/pubmed/29618526">29618526</ext-link></ext-link><ext-link ext-link-type="uri" xlink:href="https://www.ncbi.nlm.nih.gov/pubmed/29618526">https://www.ncbi.nlm.nih.gov/pubmed/29618526</ext-link></element-citation></ref>
 </ref-list>
 </back>
 </article>
@@ -303,8 +403,9 @@ references_jats = '''\
     ([], references_plain),
     (['--format', 'plain'], references_plain),
     (['--format', 'markdown'], references_markdown),
+    (['--format', 'html'], references_html),
     (['--format', 'jats'], references_jats),
-], ids=['no-args', '--format=plain', '--format=markdown', '--format=jats'])
+], ids=['no-args', '--format=plain', '--format=markdown', '--format=html', '--format=jats'])
 @pytest.mark.skipif(
     not shutil.which('pandoc'),
     reason='pandoc installation not found on system'
@@ -320,8 +421,8 @@ def test_cite_command_render_stdout(args, expected):
     """
     args = [
         'manubot', 'cite', '--render',
-        '--csl', 'https://github.com/greenelab/manubot-rootstock/raw/22b526073e0fe7a96cc35b612c47c371c92333df/build/assets/style.csl',
-        'arxiv:1806.05726v1', 'doi:10.6084/m9.figshare.5346577.v1',
+        '--csl', 'https://github.com/greenelab/manubot-rootstock/raw/3df864ecda8e22e738bf6f7f24833799b99cd961/build/assets/style.csl',
+        'arxiv:1806.05726v1', 'doi:10.6084/m9.figshare.5346577.v1', 'pmid:29618526',
     ] + args
     process = subprocess.run(
         args,
