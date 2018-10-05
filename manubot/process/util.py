@@ -27,6 +27,8 @@ from manubot.cite.util import (
     standardize_citation,
 )
 
+from manubot.cite.citeproc import citeproc_passthrough
+
 
 def read_manual_references(path):
     """
@@ -40,7 +42,7 @@ def read_manual_references(path):
     manual_refs = dict()
     for csl_item in csl_items:
         standard_citation = csl_item.pop('standard_citation')
-        csl_item['id'] = get_citation_id(standard_citation)
+        csl_item = citeproc_passthrough(csl_item, set_id=get_citation_id(standard_citation))
         manual_refs[standard_citation] = csl_item
     return manual_refs
 
