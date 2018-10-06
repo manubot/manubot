@@ -35,7 +35,7 @@ def call_pandoc(metadata, path, format='plain'):
         '--output', str(path) if path else '-',
     ]
     if format == 'markdown':
-        args.extend(['--to', 'markdown_strict'])
+        args.extend(['--to', 'markdown_strict', '--wrap', 'none'])
     elif format == 'jats':
         args.extend(['--to', 'jats', '--standalone'])
     elif format == 'docx':
@@ -43,7 +43,7 @@ def call_pandoc(metadata, path, format='plain'):
     elif format == 'html':
         args.extend(['--to', 'html'])
     elif format == 'plain':
-        args.extend(['--to', 'plain'])
+        args.extend(['--to', 'plain', '--wrap', 'none'])
         if info['pandoc version'] >= (2,):
             # Do not use ALL_CAPS for bold & underscores for italics
             # https://github.com/jgm/pandoc/issues/4834#issuecomment-412972008
