@@ -104,6 +104,10 @@ For example, the following example generates CSL JSON for four references:
 manubot cite doi:10.1098/rsif.2017.0387 pmid:29424689 pmcid:PMC5640425 arxiv:1806.05726
 ```
 
+The following [terminal recording](https://asciinema.org/a/205085?speed=2) demonstrates the main features of `manubot cite`:
+
+![manubot cite demonstration](media/terminal-recordings/manubot-cite-cast.gif)
+
 Additional usage information is available from `manubot cite --help`:
 
 <!-- test codeblock contains output of `manubot cite --help` -->
