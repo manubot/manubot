@@ -158,6 +158,19 @@ def test_citation_to_citeproc_pubmed_2():
     assert citeproc['DOI'] == '10.1161/circgenetics.115.001181'
 
 
+def test_citation_to_citeproc_pubmed_with_numeric_month():
+    """
+    Generated from XML returned by
+    https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29028984&rettype=full
+
+    See https://github.com/greenelab/manubot/issues/69
+    """
+    citation = 'pmid:29028984'
+    citeproc = citation_to_citeproc(citation)
+    print(citeproc)
+    assert citeproc['issued']['date-parts'] == [[2018, 3, 15]]
+
+
 @pytest.mark.parametrize(('doi', 'pmid'), [
     ('10.1098/rsif.2017.0387', '29618526'),  # in PubMed and PMC
     ('10.1161/CIRCGENETICS.115.001181', '27094199'),  # in PubMed but not PMC
