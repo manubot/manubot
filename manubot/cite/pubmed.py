@@ -174,7 +174,10 @@ def extract_publication_date_parts(article):
         date_parts.append(int(year))
     month = date.findtext('Month')
     if month:
-        date_parts.append(month_abbrev_to_int[month])
+        try:
+            date_parts.append(month_abbrev_to_int[month])
+        except KeyError:
+            date_parts.append(int(month))
     day = date.findtext('Day')
     if day:
         date_parts.append(int(day))
