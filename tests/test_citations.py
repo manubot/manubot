@@ -158,6 +158,34 @@ def test_citation_to_citeproc_pubmed_2():
     assert citeproc['DOI'] == '10.1161/circgenetics.115.001181'
 
 
+def test_citation_to_citeproc_pubmed_3():
+    """
+    Generated from XML returned by
+    https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29028984&rettype=full
+    """
+    citation = 'pmid:29028984'
+    citeproc = citation_to_citeproc(citation)
+    print(citeproc)
+    assert citeproc['id'] == 'BtHCUchH'
+    assert citeproc['type'] == 'article-journal'
+    assert citeproc['URL'] == 'https://www.ncbi.nlm.nih.gov/pubmed/29028984'
+    assert citeproc['container-title'] == 'Bioinformatics (Oxford, England)'
+    assert citeproc['container-title-short'] == 'Bioinformatics'
+    assert citeproc['ISSN'] == '1367-4811'
+    assert citeproc['volume'] == '34'
+    assert citeproc['issue'] == '6'
+    assert citeproc['page'] == '964-970'
+    assert citeproc['title'] == 'A Bayesian framework for the inference of gene regulatory networks from time and pseudo-time series data.'
+    assert citeproc['issued']['date-parts'] == [[2018, 3, 15]]
+    authors = citeproc['author']
+    assert authors[0]['given'] == 'M'
+    assert authors[0]['family'] == 'Sanchez-Castillo'
+    assert authors[4]['given'] == 'Yufei'
+    assert authors[4]['family'] == 'Huang'
+    assert citeproc['PMID'] == '29028984'
+    assert citeproc['DOI'] == '10.1093/bioinformatics/btx605'
+
+
 @pytest.mark.parametrize(('doi', 'pmid'), [
     ('10.1098/rsif.2017.0387', '29618526'),  # in PubMed and PMC
     ('10.1161/CIRCGENETICS.115.001181', '27094199'),  # in PubMed but not PMC
