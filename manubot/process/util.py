@@ -270,6 +270,12 @@ def generate_csl_items(args, citation_df):
         if citation in manual_refs:
             csl_items.append(manual_refs[citation])
             continue
+        elif citation.startswith('raw:'):
+            logging.error(
+                f'CSL JSON data with a standard_citation of {citation} not found in manual-references.json. '
+                'Metadata must be provided for raw citations.'
+            )
+            failures.append(citation)
         try:
             citeproc = citation_to_citeproc(citation)
             csl_items.append(citeproc)
@@ -281,7 +287,7 @@ def generate_csl_items(args, citation_df):
     requests_cache.uninstall_cache()
 
     if failures:
-        message = 'Citeproc retrieval failed for:\n{}'.format(
+        message = 'CSL JSON Data retrieval failed for:\n{}'.format(
             '\n'.join(failures))
         logging.error(message)
 
