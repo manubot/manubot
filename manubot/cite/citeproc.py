@@ -51,7 +51,7 @@ def get_jsonschema_csl_validator():
     import jsonref
     import jsonschema
 
-    url = 'https://github.com/dhimmel/schema/raw/manubot/csl-data.json'
+    url = 'https://github.com/dhimmel/csl-schema/raw/empty-date-parts/csl-data.json'
     # Use jsonref to workaround https://github.com/Julian/jsonschema/issues/447
     schema = jsonref.load_uri(url, jsonschema=True)
     Validator = jsonschema.validators.validator_for(schema)
@@ -59,12 +59,17 @@ def get_jsonschema_csl_validator():
     return Validator(schema)
 
 
-def remove_jsonschema_errors(instance):
+def remove_jsonschema_errors(instance, recurse_depth=5):
     """
-    Remove fields in CSL Items that produce JSON Schema errors. Note that this
-    method may not be work for all types of JSON Schema errors and users
-    looking to adapt it for other applications should write task-specific tests
-    to provide empirical evaluate that it works as intended.
+    Remove fields in CSL Items that produce JSON Schema errors. Should errors
+    be removed, but the JSON instance still fails to validate, recursively call
+    remove_jsonschema_errors until the instance validates or the recursion
+    depth limit is reached.
+
+    Note that this method may not be work for all types of JSON Schema errors
+    and users looking to adapt it for other applications should write
+    task-specific tests to provide empirical evaluate that it works as
+    intended.
 
     See also:
     https://github.com/Julian/jsonschema/issues/448
@@ -76,7 +81,9 @@ def remove_jsonschema_errors(instance):
     errors = sorted(errors, key=lambda e: e.path, reverse=True)
     for error in errors:
         _remove_error(instance, error)
-    return instance
+    if validator.is_valid(instance) or recurse_depth < 1:
+        return instance
+    return remove_jsonschema_errors(instance, recurse_depth - 1)
 
 
 def _delete_elem(instance, path, absolute_path=None, message=''):
@@ -140,7 +147,13 @@ def _remove_error(instance, error):
                 path=list(error.path) + [key],
                 absolute_path=list(error.absolute_path) + [key]
             )
-    elif error.validator in {'enum', 'type'}:
+    elif error.validator in {'enum', 'type', 'minItems', 'maxItems'}:
         _delete_elem(instance, error.path, error.absolute_path, error.message)
+    elif error.validator == 'required':
+        logging.warning(
+            (f'{error.message}\n' if error.message else error.message) +
+            'requried element missing at: ' +
+            '/'.join(map(str, error.absolute_path))
+        )
     else:
         raise NotImplementedError(f'{error.validator} is not yet supported')
