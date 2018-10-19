@@ -54,7 +54,10 @@ def is_valid_citation_string(string):
     try:
         source, identifier = string.lstrip('@').split(':', 1)
     except ValueError as e:
-        logging.error(f'Citation not splittable: {string}')
+        logging.error(
+            f'Citation not splittable via a single colon: {string}. '
+            'Citation strings must be in the format of `@source:identifier`.'
+        )
         return False
 
     if not source or not identifier:
