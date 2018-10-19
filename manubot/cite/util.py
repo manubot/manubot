@@ -42,6 +42,48 @@ def standardize_citation(citation):
     return f'{source}:{identifier}'
 
 
+regexes = {
+    'pmid': re.compile(r'[0-9]{1,8}'),
+    'doi': re.compile(r'10\.[0-9]{4,9}/\S+'),
+}
+
+
+def validate_citation(citation):
+    source, identifier = citation.split(':', 1)
+    if source == 'pmid':
+        # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmid
+        if identifier.startswith('PMC'):
+            logging.warning(
+                'PubMed Identifiers should start with digits rather than PMC. '
+                f'Should {citation} switch the citation source to `pmcid`?'
+            )
+        elif not regexes['pmid'].fullmatch(identifier):
+            logging.warning(
+                f'Invalid PMID citation: {citation}\n'
+                'PubMed Identifiers should be 1-8 digits with no leading zeros. '
+            )
+    if source == 'pmcid':
+        # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc
+        if not identifier.startswith('PMC'):
+            logging.warning(
+                f'Invalid PMCID citation: {citation}\n'
+                f'Pubmed Central Identifiers must start with `PMC`.'
+            )
+    if source == 'doi':
+        # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
+        if not identifier.startswith('10.'):
+            logging.warning(
+                f'Invalid DOI citation: {citation}\n'
+                'DOIs must start with `10.`.'
+            )
+        elif not regexes['doi'].fullmatch(identifier):
+            logging.warning(
+                f'Invalid DOI citation: {citation}\n'
+                'identifier does not conform to the DOI regex. '
+                'Double check the DOI.'
+            )
+
+
 def is_valid_citation_string(string):
     """
     Return True if the citation string is a properly formatted citation.
