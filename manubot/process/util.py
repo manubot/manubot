@@ -272,7 +272,7 @@ def generate_csl_items(args, citation_df):
             continue
         elif citation.startswith('raw:'):
             logging.error(
-                f'CSL JSON data with a standard_citation of {citation} not found in manual-references.json. '
+                f'CSL JSON Data with a standard_citation of {citation} not found in manual-references.json. '
                 'Metadata must be provided for raw citations.'
             )
             failures.append(citation)
