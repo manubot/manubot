@@ -68,7 +68,7 @@ def is_valid_citation_string(string):
         return False
 
     # Check supported source type
-    if source != 'tag' and source not in citeproc_retrievers:
+    if source not in {'tag', 'raw'} and source not in citeproc_retrievers:
         logging.error(f'{string} → source "{source}" is not valid')
         return False
 

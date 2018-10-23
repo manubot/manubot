@@ -27,6 +27,8 @@ from manubot.cite.util import (
     standardize_citation,
 )
 
+from manubot.cite.citeproc import citeproc_passthrough
+
 
 def read_manual_references(path):
     """
@@ -40,7 +42,7 @@ def read_manual_references(path):
     manual_refs = dict()
     for csl_item in csl_items:
         standard_citation = csl_item.pop('standard_citation')
-        csl_item['id'] = get_citation_id(standard_citation)
+        csl_item = citeproc_passthrough(csl_item, set_id=get_citation_id(standard_citation))
         manual_refs[standard_citation] = csl_item
     return manual_refs
 
@@ -268,6 +270,12 @@ def generate_csl_items(args, citation_df):
         if citation in manual_refs:
             csl_items.append(manual_refs[citation])
             continue
+        elif citation.startswith('raw:'):
+            logging.error(
+                f'CSL JSON Data with a standard_citation of {citation} not found in manual-references.json. '
+                'Metadata must be provided for raw citations.'
+            )
+            failures.append(citation)
         try:
             citeproc = citation_to_citeproc(citation)
             csl_items.append(citeproc)
@@ -279,7 +287,7 @@ def generate_csl_items(args, citation_df):
     requests_cache.uninstall_cache()
 
     if failures:
-        message = 'Citeproc retrieval failed for:\n{}'.format(
+        message = 'CSL JSON Data retrieval failed for:\n{}'.format(
             '\n'.join(failures))
         logging.error(message)
 
