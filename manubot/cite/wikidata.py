@@ -44,55 +44,38 @@ Examples
 
 """
 
-
-from __future__ import print_function
-
 import requests
-
-from six import u
 
 
 HEADERS = {
     'User-Agent': 'Scholia',
 }
 
-# Must be indexed from zero
-MONTH_NUMBER_TO_MONTH = {
-    'en': ['January', 'February', 'March', 'April', 'May', 'June', 'July',
-           'August', 'September', 'October', 'November', 'December']
-}
 
-
-def entity_to_smiles(entity):
-    """Extract SMILES of a chemical.
-
-    Parameters
-    ----------
-    entity : dict
-        Dictionary with Wikidata item
-
-    Returns
-    -------
-    smiles : str
-        SMILES as string.
-
-    Examples
-    --------
-    >>> entities = wb_get_entities(['Q48791494'])
-    >>> smiles = entity_to_smiles(entities['Q48791494'])
-    >>> smiles == 'CC(C)[C@H]1CC[C@@]2(CO2)[C@@H]3[C@@H]1C=C(COC3=O)C(=O)O'
-    True
-
+def get_wikidata_citeproc(wikidata_id):
     """
-    for statement in entity['claims'].get('P2017', []):
-        smiles = statement['mainsnak']['datavalue']['value']
-        return smiles
-    else:
-        for statement in entity['claims'].get('P233', []):
-            smiles = statement['mainsnak']['datavalue']['value']
-            return smiles
-        else:
-            return ''
+    Return a CSL JSON Item for a Wikidata bibliographic entity.
+    """
+    entity, = wb_get_entities([wikidata_id]).values()
+    return entity_to_csl_item(entity)
+
+
+def entity_to_csl_item(entity):
+    """
+    Convert Wikidata entry into a CSL JSON Data Item.
+    """
+    csl_item = dict()
+    csl_item['author'] = [{'literal': author} for author in entity_to_authors(entity)]
+    csl_item['title'] = entity_to_title(entity)
+    csl_item['container'] = entity_to_journal_title(entity)
+    csl_item['volume'] = entity_to_volume(entity)
+    csl_item['page'] = entity_to_pages(entity)
+    csl_item['DOI'] = entity_to_doi(entity)
+    csl_item['URL'] = entity_to_full_text_url(entity)
+    csl_item['locator'] = entity['id']
+    csl_item['source'] = 'Wikidata'
+    csl_item['issued'] = {'date-parts': [entity_to_year_month_day(entity)]}
+    return csl_item
 
 
 def is_human(entity):
@@ -392,6 +375,28 @@ def entity_to_label(entity):
     return ''
 
 
+def entity_to_year_month_day(entity):
+    """Extract month of publication from entity.
+
+    Parameters
+    ----------
+    entity : dict
+        Dictionary with Wikidata item.
+    language : str
+        Language, if none, returns the month as a string with the month number.
+
+    Returns
+    -------
+    year, month, day : tuple
+        year, month, day as ints
+
+    """
+    for statement in entity['claims'].get('P577', []):
+        timestamp = statement['mainsnak']['datavalue']['value']['time']
+        year, month, day = map(int, timestamp[1:11].split('-'))
+        return [year, month, day]
+
+
 def entity_to_month(entity, language='en'):
     """Extract month of publication from entity.
 
@@ -616,7 +621,7 @@ def main():
         limit = int(arguments['--limit'])
         results = search(query, limit=limit)
         for item in results:
-            print(u("{q} {description}").format(**item).encode('utf-8'))
+            print("{q} {description}".format(**item).encode('utf-8'))
 
 
 if __name__ == '__main__':
