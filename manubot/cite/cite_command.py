@@ -72,7 +72,12 @@ def cli_cite(args):
     csl_list = list()
     for citation in args.citations:
         citation = standardize_citation(citation)
-        csl_list.append(citation_to_citeproc(citation, prune=args.prune_csl))
+        try:
+            csl_item = citation_to_citeproc(citation, prune=args.prune_csl)
+            csl_list.append(csl_item)
+        except Exception as error:
+            logging.error(error)
+            logging.info(error, exc_info=True)
 
     # output CSL JSON data, if --render is False
     if not args.render:
