@@ -48,40 +48,37 @@ regexes = {
 }
 
 
-def validate_citation(citation):
+def inspect_citation_identifier(citation):
+    """
+    Check citation identifiers adhere to expected formats. If an issue is
+    detected a string describing the issue is returned. Otherwise returns None.
+    """
     source, identifier = citation.split(':', 1)
     if source == 'pmid':
         # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmid
         if identifier.startswith('PMC'):
-            logging.warning(
+            return (
                 'PubMed Identifiers should start with digits rather than PMC. '
                 f'Should {citation} switch the citation source to `pmcid`?'
             )
         elif not regexes['pmid'].fullmatch(identifier):
-            logging.warning(
-                f'Invalid PMID citation: {citation}\n'
-                'PubMed Identifiers should be 1-8 digits with no leading zeros. '
-            )
+            return 'PubMed Identifiers should be 1-8 digits with no leading zeros.'
     if source == 'pmcid':
         # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc
         if not identifier.startswith('PMC'):
-            logging.warning(
-                f'Invalid PMCID citation: {citation}\n'
-                f'Pubmed Central Identifiers must start with `PMC`.'
-            )
+            return 'PubMed Central Identifiers must start with `PMC`.'
     if source == 'doi':
         # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
         if not identifier.startswith('10.'):
-            logging.warning(
-                f'Invalid DOI citation: {citation}\n'
+            return (
                 'DOIs must start with `10.`.'
             )
         elif not regexes['doi'].fullmatch(identifier):
-            logging.warning(
-                f'Invalid DOI citation: {citation}\n'
+            return (
                 'identifier does not conform to the DOI regex. '
                 'Double check the DOI.'
             )
+    return None
 
 
 def is_valid_citation_string(string):
@@ -92,9 +89,9 @@ def is_valid_citation_string(string):
     if not string.startswith('@'):
         logging.error(f'{string} → does not start with @')
         return False
-
+    citation = string[1:]
     try:
-        source, identifier = string.lstrip('@').split(':', 1)
+        source, identifier = citation.split(':', 1)
     except ValueError as e:
         logging.error(
             f'Citation not splittable via a single colon: {string}. '
@@ -115,6 +112,11 @@ def is_valid_citation_string(string):
     # Check supported source type
     if source not in {'tag', 'raw'} and source not in citeproc_retrievers:
         logging.error(f'{string} → source "{source}" is not valid')
+        return False
+
+    inspection = inspect_citation_identifier(citation)
+    if inspection:
+        logging.error(f'invalid {source} citation: {string}\n{inspection}')
         return False
 
     return True
