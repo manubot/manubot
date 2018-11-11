@@ -227,6 +227,12 @@ def test_citation_to_citeproc_isbn():
     assert csl_data['title'] == 'Complex Analysis'
 
 
+def test_citation_to_citeproc_isbn_title_with_quotation_mark():
+    csl_data = citation_to_citeproc('isbn:9780312353780')
+    assert csl_data['type'] == 'book'
+    assert csl_data['title'].startswith('"F" is for Fugitive')
+
+
 def test_cite_command_empty():
     process = subprocess.run(
         ['manubot', 'cite'],
