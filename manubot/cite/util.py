@@ -39,6 +39,9 @@ def standardize_citation(citation):
     source, identifier = citation.split(':', 1)
     if source == 'doi':
         identifier = identifier.lower()
+    if source == 'isbn':
+        from isbnlib import to_isbn13
+        identifier = to_isbn13(identifier)
     return f'{source}:{identifier}'
 
 

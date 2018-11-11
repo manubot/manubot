@@ -60,6 +60,12 @@ def test_get_citation_id(standard_citation, expected):
     ('doi:10.5061/DRYAD.q447c/1', 'doi:10.5061/dryad.q447c/1'),
     ('doi:10.5061/dryad.q447c/1', 'doi:10.5061/dryad.q447c/1'),
     ('pmid:24159271', 'pmid:24159271'),
+    ('isbn:1339919885', 'isbn:9781339919881'),
+    ('isbn:1-339-91988-5', 'isbn:9781339919881'),
+    ('isbn:978-0-387-95069-3', 'isbn:9780387950693'),
+    ('isbn:9780387950938', 'isbn:9780387950938'),
+    ('isbn:1-55860-510-X', 'isbn:9781558605107'),
+    ('isbn:1-55860-510-x', 'isbn:9781558605107'),
 ])
 def test_standardize_citation(citation, expected):
     """
