@@ -9,6 +9,7 @@ citeproc_retrievers = {
     'pmid': 'manubot.cite.pubmed.get_pubmed_citeproc',
     'pmcid': 'manubot.cite.pubmed.get_pmc_citeproc',
     'arxiv': 'manubot.cite.arxiv.get_arxiv_citeproc',
+    'isbn': 'manubot.cite.isbn.get_isbn_citeproc',
     'url': 'manubot.cite.url.get_url_citeproc',
 }
 

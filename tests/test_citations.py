@@ -221,6 +221,12 @@ def test_citation_to_citeproc_pubmed_book():
         citation_to_citeproc('pmid:29227604')
 
 
+def test_citation_to_citeproc_isbn():
+    csl_data = citation_to_citeproc('isbn:9780387950693')
+    assert csl_data['type'] == 'book'
+    assert csl_data['title'] == 'Complex Analysis'
+
+
 def test_cite_command_empty():
     process = subprocess.run(
         ['manubot', 'cite'],
