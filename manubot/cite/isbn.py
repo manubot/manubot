@@ -1,6 +1,7 @@
 import collections
 import json
 import logging
+import re
 
 
 def get_isbn_citeproc(isbn):
@@ -28,21 +29,30 @@ def get_isbn_citeproc_citoid(isbn):
     isbn = isbnlib.to_isbn13(isbn)
     url = f'https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/{isbn}'
     response = requests.get(url)
-    mediawiki, = response.json()
+    result = response.json()
+    if isinstance(result, dict):
+        if result['title'] == 'Not found.':
+            raise KeyError(f'Metadata for ISBN {isbn} not found at {url}')
+        else:
+            raise Exception(
+                f'Unable to extract CSL from JSON metadata for ISBN {isbn}:\n'
+                f'{json.dumps(result.text)}'
+            )
+    mediawiki, = result
     csl_data = collections.OrderedDict()
     csl_data['type'] = mediawiki.get('itemType', 'book')
     if 'title' in mediawiki:
         csl_data['title'] = mediawiki['title']
     if 'date' in mediawiki:
-        try:
-            date_parts = [int(x) for x in mediawiki['date'].split('-')]
-            csl_data['issued'] = {'date-parts': [date_parts]}
-        except Exception:
-            logging.warning(
-                f'Error parsing issued date for ISBN {isbn}.\n'
-                f'Metadata retrieved by get_isbn_citeproc_citoid from {url}\n'
-                f'The following value was returned for the date field:\n'
-                f"{mediawiki['date']}"
+        match = year_pattern.search(mediawiki['date'])
+        if match:
+            year = int(match.group())
+            csl_data['issued'] = {'date-parts': [[year]]}
+        else:
+            logging.debug(
+                f'get_isbn_citeproc_citoid: issue extracting date for ISBN {isbn}\n'
+                f'metadata retrieved from {url}\n'
+                f'unable to extract year from date field: {mediawiki["date"]}'
             )
     if 'publisher' in mediawiki:
         csl_data['publisher'] = mediawiki['publisher']
@@ -60,3 +70,6 @@ def get_isbn_citeproc_citoid(isbn):
     if 'url' in mediawiki:
         csl_data['URL'] = mediawiki['url']
     return csl_data
+
+
+year_pattern = re.compile(r'[0-9]{4}')
