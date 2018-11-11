@@ -43,6 +43,15 @@ def get_isbn_citeproc_citoid(isbn):
     csl_data['type'] = mediawiki.get('itemType', 'book')
     if 'title' in mediawiki:
         csl_data['title'] = mediawiki['title']
+    if 'author' in mediawiki:
+        csl_author = list()
+        for last, first in mediawiki['author']:
+            csl_author.append({
+                'given': first,
+                'family': last,
+            })
+        if csl_author:
+            csl_data['author'] = csl_author
     if 'date' in mediawiki:
         match = year_pattern.search(mediawiki['date'])
         if match:

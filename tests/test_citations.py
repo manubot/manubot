@@ -236,6 +236,7 @@ def test_citation_to_citeproc_isbn_title_with_quotation_mark():
 def test_get_isbn_citeproc_citoid_weird_date():
     """
     isbn:9780719561023 has a date value of "(2004 printing)"
+    https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9780719561023
     """
     from manubot.cite.isbn import get_isbn_citeproc_citoid
     csl_item = get_isbn_citeproc_citoid('9780719561023')
