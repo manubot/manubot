@@ -76,7 +76,10 @@ def cli_cite(args):
             csl_item = citation_to_citeproc(citation, prune=args.prune_csl)
             csl_list.append(csl_item)
         except Exception as error:
-            logging.error(error)
+            logging.error(
+                f'citation_to_citeproc for {citation} failed '
+                f'due to a {error.__class__.__name__}:\n{error}'
+            )
             logging.info(error, exc_info=True)
 
     # output CSL JSON data, if --render is False
