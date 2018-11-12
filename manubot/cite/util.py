@@ -83,8 +83,14 @@ def inspect_citation_identifier(citation):
 
 def is_valid_citation_string(string):
     """
-    Return True if the citation string is a properly formatted citation.
-    Return False if improperly formatted or a non-citation.
+    Return True if string is a properly formatted citation. Return False if
+    string is not a citation (i.e. it's an exempt category such as @fig) or is
+    an invalid citation. In the case string is an invalid citation, an error is
+    logged. This function does not catch all invalid citations, but instead
+    performs cursory checks, such as citations adhere to the expected formats.
+    No calls to external resources are used by these checks, so they will not
+    detect citations to non-existent identifiers unless those identifiers
+    violate their source's syntax.
     """
     if not string.startswith('@'):
         logging.error(f'{string} → does not start with @')
