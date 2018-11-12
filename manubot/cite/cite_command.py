@@ -73,7 +73,8 @@ def cli_cite(args):
     csl_list = list()
     for citation in args.citations:
         try:
-            is_valid_citation_string(f'@{citation}')
+            if not is_valid_citation_string(f'@{citation}'):
+                continue
             citation = standardize_citation(citation)
             csl_item = citation_to_citeproc(citation, prune=args.prune_csl)
             csl_list.append(csl_item)
