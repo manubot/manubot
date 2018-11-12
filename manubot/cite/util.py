@@ -43,7 +43,7 @@ def standardize_citation(citation):
 
 
 regexes = {
-    'pmid': re.compile(r'[0-9]{1,8}'),
+    'pmid': re.compile(r'[1-9][0-9]{0,7}'),
     'doi': re.compile(r'10\.[0-9]{4,9}/\S+'),
 }
 
