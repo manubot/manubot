@@ -116,8 +116,17 @@ def is_valid_citation_string(string):
         return False
 
     # Check supported source type
-    if source not in {'tag', 'raw'} and source not in citeproc_retrievers:
-        logging.error(f'{string} → source "{source}" is not valid')
+    sources = {'tag', 'raw'} | set(citeproc_retrievers)
+    if source not in sources:
+        if source.lower() in sources:
+            logging.error(
+                f'Citation sources should be all lowercase.\n'
+                f'Should {string} use "{source.lower()}" rather than "{source}"?'
+            )
+        else:
+            logging.error(
+                f'{string} → source "{source}" is not valid'
+            )
         return False
 
     inspection = inspect_citation_identifier(citation)
