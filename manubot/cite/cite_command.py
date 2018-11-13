@@ -9,6 +9,7 @@ from manubot.cite import (
     citation_to_citeproc,
     standardize_citation,
 )
+from manubot.cite.util import is_valid_citation_string
 
 # For manubot cite, infer --format from --output filename extensions
 extension_to_format = {
@@ -71,8 +72,10 @@ def cli_cite(args):
     # generate CSL JSON data
     csl_list = list()
     for citation in args.citations:
-        citation = standardize_citation(citation)
         try:
+            if not is_valid_citation_string(f'@{citation}'):
+                continue
+            citation = standardize_citation(citation)
             csl_item = citation_to_citeproc(citation, prune=args.prune_csl)
             csl_list.append(csl_item)
         except Exception as error:

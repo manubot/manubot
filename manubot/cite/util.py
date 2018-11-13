@@ -46,34 +46,122 @@ def standardize_citation(citation):
     return f'{source}:{identifier}'
 
 
-def is_valid_citation_string(string):
+regexes = {
+    'pmid': re.compile(r'[1-9][0-9]{0,7}'),
+    'doi': re.compile(r'10\.[0-9]{4,9}/\S+'),
+}
+
+
+def inspect_citation_identifier(citation):
     """
-    Return True if the citation string is a properly formatted citation.
-    Return False if improperly formatted or a non-citation.
+    Check citation identifiers adhere to expected formats. If an issue is
+    detected a string describing the issue is returned. Otherwise returns None.
+    """
+    source, identifier = citation.split(':', 1)
+    if source == 'pmid':
+        # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmid
+        if identifier.startswith('PMC'):
+            return (
+                'PubMed Identifiers should start with digits rather than PMC. '
+                f'Should {citation} switch the citation source to `pmcid`?'
+            )
+        elif not regexes['pmid'].fullmatch(identifier):
+            return 'PubMed Identifiers should be 1-8 digits with no leading zeros.'
+    if source == 'pmcid':
+        # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc
+        if not identifier.startswith('PMC'):
+            return 'PubMed Central Identifiers must start with `PMC`.'
+    if source == 'doi':
+        # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
+        if not identifier.startswith('10.'):
+            return (
+                'DOIs must start with `10.`.'
+            )
+        elif not regexes['doi'].fullmatch(identifier):
+            return (
+                'identifier does not conform to the DOI regex. '
+                'Double check the DOI.'
+            )
+    return None
+
+
+def is_valid_citation_string(
+        string, allow_tag=False, allow_raw=False, allow_pandoc_xnos=False):
+    """
+    Return True if string is a properly formatted citation. Return False if
+    string is not a citation or is an invalid citation.
+
+    In the case string is an invalid citation, an error is logged. This
+    function does not catch all invalid citations, but instead performs cursory
+    checks, such as citations adhere to the expected formats. No calls to
+    external resources are used by these checks, so they will not detect
+    citations to non-existent identifiers unless those identifiers violate
+    their source's syntax.
+
+    allow_tag=False, allow_raw=False, and allow_pandoc_xnos=False enable
+    allowing citation sources that are valid for Manubot manuscripts, but
+    likely not elsewhere. allow_tag=True enables citations tags (e.g.
+    @tag:citation-tag). allow_raw=True enables raw citations (e.g.
+    @raw:manual-reference). allow_pandoc_xnos=True still returns False for
+    pandoc-xnos references (e.g. @fig:figure-id), but does not log an error.
+    With the default of False for these arguments, valid sources are restricted
+    to those for which manubot can retrieve metadata based only on the
+    standalone citation.
     """
     if not string.startswith('@'):
-        logging.error(f'{string} → does not start with @')
+        logging.error(f'Invalid citation: {string}\ndoes not start with "@"')
         return False
-
+    citation = string[1:]
     try:
-        source, identifier = string.lstrip('@').split(':', 1)
+        source, identifier = citation.split(':', 1)
     except ValueError as e:
-        logging.error(f'Citation not splittable: {string}')
+        logging.error(
+            f'Citation not splittable via a single colon: {string}. '
+            'Citation strings must be in the format of `@source:identifier`.'
+        )
         return False
 
     if not source or not identifier:
-        msg = f'{string} → blank source or identifier'
+        msg = f'Invalid citation: {string}\nblank source or identifier'
         logging.error(msg)
         return False
 
-    # Exempted non-citation sources used for pandoc-fignos, pandoc-tablenos,
-    # and pandoc-eqnos
-    if source in {'fig', 'tbl', 'eq'}:
-        return False
+    if allow_pandoc_xnos:
+        # Exempted non-citation sources used for pandoc-fignos,
+        # pandoc-tablenos, and pandoc-eqnos
+        pandoc_xnos_keys = {'fig', 'tbl', 'eq'}
+        if source in pandoc_xnos_keys:
+            return False
+        if source.lower() in pandoc_xnos_keys:
+            logging.error(
+                f'pandoc-xnos reference types should be all lowercase.\n'
+                f'Should {string} use "{source.lower()}" rather than "{source}"?'
+            )
+            return False
 
     # Check supported source type
-    if source not in {'tag', 'raw'} and source not in citeproc_retrievers:
-        logging.error(f'{string} → source "{source}" is not valid')
+    sources = set(citeproc_retrievers)
+    if allow_raw:
+        sources.add('raw')
+    if allow_tag:
+        sources.add('tag')
+    if source not in sources:
+        if source.lower() in sources:
+            logging.error(
+                f'Citation sources should be all lowercase.\n'
+                f'Should {string} use "{source.lower()}" rather than "{source}"?'
+            )
+        else:
+            logging.error(
+                f'Invalid citation: {string}\n'
+                f'Source "{source}" is not valid.\n'
+                f'Valid citation sources are {{{", ".join(sorted(sources))}}}'
+            )
+        return False
+
+    inspection = inspect_citation_identifier(citation)
+    if inspection:
+        logging.error(f'invalid {source} citation: {string}\n{inspection}')
         return False
 
     return True

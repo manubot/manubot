@@ -9,6 +9,7 @@ from manubot.cite.util import (
     citation_pattern,
     citation_to_citeproc,
     get_citation_id,
+    inspect_citation_identifier,
     standardize_citation,
 )
 from manubot.cite.pubmed import (
@@ -73,6 +74,36 @@ def test_standardize_citation(citation, expected):
     """
     output = standardize_citation(citation)
     assert output == expected
+
+
+@pytest.mark.parametrize('citation', [
+    'doi:10.7717/peerj.705',
+    'pmcid:PMC4304851',
+    'pmid:25648772',
+    'arxiv:1407.3561',
+    'url:https://peerj.com/articles/705/',
+])
+def test_inspect_citation_identifier_passes(citation):
+    """
+    These citations should pass inspection by inspect_citation_identifier.
+    """
+    assert inspect_citation_identifier(citation) is None
+
+
+@pytest.mark.parametrize(['citation', 'contains'], [
+    ('doi:10.771/peerj.705', 'Double check the DOI'),
+    ('doi:7717/peerj.705', 'must start with `10.`'),
+    ('pmcid:25648772', 'must start with `PMC`'),
+    ('pmid:PMC4304851', 'Should pmid:PMC4304851 switch the citation source to `pmcid`?'),
+])
+def test_inspect_citation_identifier_fails(citation, contains):
+    """
+    These citations should fail inspection by inspect_citation_identifier.
+    """
+    report = inspect_citation_identifier(citation)
+    assert report is not None
+    assert isinstance(report, str)
+    assert contains in report
 
 
 @pytest.mark.xfail(reason='https://twitter.com/dhimmel/status/950443969313419264')
