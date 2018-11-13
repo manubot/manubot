@@ -81,19 +81,21 @@ def inspect_citation_identifier(citation):
     return None
 
 
-def is_valid_citation_string(string):
+def is_valid_citation_string(string, manuscript_extras=False):
     """
     Return True if string is a properly formatted citation. Return False if
-    string is not a citation (i.e. it's an exempt category such as @fig) or is
-    an invalid citation. In the case string is an invalid citation, an error is
-    logged. This function does not catch all invalid citations, but instead
-    performs cursory checks, such as citations adhere to the expected formats.
-    No calls to external resources are used by these checks, so they will not
-    detect citations to non-existent identifiers unless those identifiers
-    violate their source's syntax.
+    string is not a citation or is an invalid citation.
+
+    In the case string is an invalid citation, an error is logged. This function does not catch all invalid citations, but instead performs cursory checks, such as citations adhere to the expected formats. No calls to external resources are used by these checks, so they will not detect citations to non-existent identifiers unless those identifiers violate their source's syntax.
+
+    manuscript_extras=True specifies allowing citaiton sources that are valid
+    for Manubot manuscripts, such as @fig (for pandoc-fignos), @raw, and @tag.
+    With the default manuscript_extras=False, valid sources are restricted to
+    those for which manubot can retrieve metadata based only on the standalone
+    citation.
     """
     if not string.startswith('@'):
-        logging.error(f'{string} → does not start with @')
+        logging.error(f'Invalid citation: {string}\ndoes not start with "@"')
         return False
     citation = string[1:]
     try:
@@ -106,17 +108,27 @@ def is_valid_citation_string(string):
         return False
 
     if not source or not identifier:
-        msg = f'{string} → blank source or identifier'
+        msg = f'Invalid citation: {string}\nblank source or identifier'
         logging.error(msg)
         return False
 
-    # Exempted non-citation sources used for pandoc-fignos, pandoc-tablenos,
-    # and pandoc-eqnos
-    if source in {'fig', 'tbl', 'eq'}:
-        return False
+    if manuscript_extras:
+        # Exempted non-citation sources used for pandoc-fignos,
+        # pandoc-tablenos, and pandoc-eqnos
+        pandoc_xnos_keys = {'fig', 'tbl', 'eq'}
+        if source in pandoc_xnos_keys:
+            return False
+        if source.lower() in pandoc_xnos_keys:
+            logging.error(
+                f'pandoc-xnos reference types should be all lowercase.\n'
+                f'Should {string} use "{source.lower()}" rather than "{source}"?'
+            )
+            return False
 
     # Check supported source type
-    sources = {'tag', 'raw'} | set(citeproc_retrievers)
+    sources = set(citeproc_retrievers)
+    if manuscript_extras:
+        sources |= {'tag', 'raw'}
     if source not in sources:
         if source.lower() in sources:
             logging.error(
@@ -125,7 +137,9 @@ def is_valid_citation_string(string):
             )
         else:
             logging.error(
-                f'{string} → source "{source}" is not valid'
+                f'Invalid citation: {string}\n'
+                f'Source "{source}" is not valid.\n'
+                f'Valid citation sources are {{{", ".join(sorted(sources))}}}'
             )
         return False
 

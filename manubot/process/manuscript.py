@@ -17,7 +17,10 @@ def get_citation_strings(text):
     clearly invalid such as `doi:/453` are not returned.
     """
     citations_strings = set(citation_pattern.findall(text))
-    citations_strings = filter(is_valid_citation_string, citations_strings)
+    citations_strings = filter(
+        lambda x: is_valid_citation_string(x, manuscript_extras=True),
+        citations_strings,
+    )
     return sorted(citations_strings)
 
 
