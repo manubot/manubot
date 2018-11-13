@@ -81,6 +81,8 @@ def test_standardize_citation(citation, expected):
     'pmcid:PMC4304851',
     'pmid:25648772',
     'arxiv:1407.3561',
+    'isbn:978-1-339-91988-1',
+    'isbn:1-339-91988-5',
     'url:https://peerj.com/articles/705/',
 ])
 def test_inspect_citation_identifier_passes(citation):
@@ -95,6 +97,7 @@ def test_inspect_citation_identifier_passes(citation):
     ('doi:7717/peerj.705', 'must start with `10.`'),
     ('pmcid:25648772', 'must start with `PMC`'),
     ('pmid:PMC4304851', 'Should pmid:PMC4304851 switch the citation source to `pmcid`?'),
+    ('isbn:1-339-91988-X', 'identifier violates the ISBN syntax'),
 ])
 def test_inspect_citation_identifier_fails(citation, contains):
     """

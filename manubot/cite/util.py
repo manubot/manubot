@@ -58,6 +58,7 @@ def inspect_citation_identifier(citation):
     detected a string describing the issue is returned. Otherwise returns None.
     """
     source, identifier = citation.split(':', 1)
+
     if source == 'pmid':
         # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmid
         if identifier.startswith('PMC'):
@@ -67,10 +68,12 @@ def inspect_citation_identifier(citation):
             )
         elif not regexes['pmid'].fullmatch(identifier):
             return 'PubMed Identifiers should be 1-8 digits with no leading zeros.'
+
     if source == 'pmcid':
         # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc
         if not identifier.startswith('PMC'):
             return 'PubMed Central Identifiers must start with `PMC`.'
+
     if source == 'doi':
         # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
         if not identifier.startswith('10.'):
@@ -82,6 +85,15 @@ def inspect_citation_identifier(citation):
                 'identifier does not conform to the DOI regex. '
                 'Double check the DOI.'
             )
+
+    if source == 'isbn':
+        import isbnlib
+        fail = isbnlib.notisbn(identifier, level='strict')
+        if fail:
+            return (
+                f'identifier violates the ISBN syntax according to isbnlib v{isbnlib.__version__}'
+            )
+
     return None
 
 
