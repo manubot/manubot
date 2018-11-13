@@ -13,7 +13,8 @@ from manubot.cite.util import (
 
 def get_citation_strings(text):
     """
-    Extract the deduplicated list of citations in a text
+    Extract the deduplicated list of citations in a text. Citations that are
+    clearly invalid such as `doi:/453` are not returned.
     """
     citations_strings = set(citation_pattern.findall(text))
     citations_strings = filter(is_valid_citation_string, citations_strings)
