@@ -81,18 +81,22 @@ def inspect_citation_identifier(citation):
     return None
 
 
-def is_valid_citation_string(string, manuscript_extras=False):
+def is_valid_citation_string(
+        string, allow_tag=False, allow_raw=False, allow_pandoc_xnos=False):
     """
     Return True if string is a properly formatted citation. Return False if
     string is not a citation or is an invalid citation.
 
     In the case string is an invalid citation, an error is logged. This function does not catch all invalid citations, but instead performs cursory checks, such as citations adhere to the expected formats. No calls to external resources are used by these checks, so they will not detect citations to non-existent identifiers unless those identifiers violate their source's syntax.
 
-    manuscript_extras=True specifies allowing citaiton sources that are valid
-    for Manubot manuscripts, such as @fig (for pandoc-fignos), @raw, and @tag.
-    With the default manuscript_extras=False, valid sources are restricted to
-    those for which manubot can retrieve metadata based only on the standalone
-    citation.
+    allow_tag=False, allow_raw=False, and allow_pandoc_xnos=False enable
+    allowing citaiton sources that are valid for Manubot manuscripts, but
+    likely not elsewhere. allow_tag=True enables citations tags
+    (e.g. @tag:citation-tag). allow_raw=True enables raw citations (e.g.
+    @raw:manual-reference). allow_pandoc_xnos=True allows pandoc-xnos
+    references (e.g. @fig:figure-id). With the default of False for these
+    arguments, valid sources are restricted to those for which manubot can
+    retrieve metadata based only on the standalone citation.
     """
     if not string.startswith('@'):
         logging.error(f'Invalid citation: {string}\ndoes not start with "@"')
@@ -112,7 +116,7 @@ def is_valid_citation_string(string, manuscript_extras=False):
         logging.error(msg)
         return False
 
-    if manuscript_extras:
+    if allow_pandoc_xnos:
         # Exempted non-citation sources used for pandoc-fignos,
         # pandoc-tablenos, and pandoc-eqnos
         pandoc_xnos_keys = {'fig', 'tbl', 'eq'}
@@ -127,8 +131,10 @@ def is_valid_citation_string(string, manuscript_extras=False):
 
     # Check supported source type
     sources = set(citeproc_retrievers)
-    if manuscript_extras:
-        sources |= {'tag', 'raw'}
+    if allow_raw:
+        sources.add('raw')
+    if allow_tag:
+        sources.add('tag')
     if source not in sources:
         if source.lower() in sources:
             logging.error(

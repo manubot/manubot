@@ -18,7 +18,7 @@ def get_citation_strings(text):
     """
     citations_strings = set(citation_pattern.findall(text))
     citations_strings = filter(
-        lambda x: is_valid_citation_string(x, manuscript_extras=True),
+        lambda x: is_valid_citation_string(x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True),
         citations_strings,
     )
     return sorted(citations_strings)
