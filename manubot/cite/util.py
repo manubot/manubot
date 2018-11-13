@@ -87,16 +87,22 @@ def is_valid_citation_string(
     Return True if string is a properly formatted citation. Return False if
     string is not a citation or is an invalid citation.
 
-    In the case string is an invalid citation, an error is logged. This function does not catch all invalid citations, but instead performs cursory checks, such as citations adhere to the expected formats. No calls to external resources are used by these checks, so they will not detect citations to non-existent identifiers unless those identifiers violate their source's syntax.
+    In the case string is an invalid citation, an error is logged. This
+    function does not catch all invalid citations, but instead performs cursory
+    checks, such as citations adhere to the expected formats. No calls to
+    external resources are used by these checks, so they will not detect
+    citations to non-existent identifiers unless those identifiers violate
+    their source's syntax.
 
     allow_tag=False, allow_raw=False, and allow_pandoc_xnos=False enable
-    allowing citaiton sources that are valid for Manubot manuscripts, but
-    likely not elsewhere. allow_tag=True enables citations tags
-    (e.g. @tag:citation-tag). allow_raw=True enables raw citations (e.g.
-    @raw:manual-reference). allow_pandoc_xnos=True allows pandoc-xnos
-    references (e.g. @fig:figure-id). With the default of False for these
-    arguments, valid sources are restricted to those for which manubot can
-    retrieve metadata based only on the standalone citation.
+    allowing citation sources that are valid for Manubot manuscripts, but
+    likely not elsewhere. allow_tag=True enables citations tags (e.g.
+    @tag:citation-tag). allow_raw=True enables raw citations (e.g.
+    @raw:manual-reference). allow_pandoc_xnos=True still returns False for
+    pandoc-xnos references (e.g. @fig:figure-id), but does not log an error.
+    With the default of False for these arguments, valid sources are restricted
+    to those for which manubot can retrieve metadata based only on the
+    standalone citation.
     """
     if not string.startswith('@'):
         logging.error(f'Invalid citation: {string}\ndoes not start with "@"')
