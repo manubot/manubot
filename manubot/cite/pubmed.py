@@ -16,7 +16,8 @@ def get_pmc_citeproc(pmcid):
     """
     assert pmcid.startswith('PMC')
     csl_item = _get_literature_citation_exporter_csl_item('pmc', pmcid[3:])
-    csl_item['URL'] = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{csl_item['PMCID']}/"
+    if 'URL' not in csl_item:
+        csl_item['URL'] = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{csl_item['PMCID']}/"
     return csl_item
 
 
