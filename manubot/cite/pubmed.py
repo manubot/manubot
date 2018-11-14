@@ -4,8 +4,6 @@ import xml.etree.ElementTree
 
 import requests
 
-import manubot
-
 
 def get_pmc_citeproc(pmcid):
     """
@@ -17,25 +15,38 @@ def get_pmc_citeproc(pmcid):
     https://twitter.com/dhimmel/status/1061787168820092929
     """
     assert pmcid.startswith('PMC')
+    csl_item = _get_literature_citation_exporter_csl_item('pmc', pmcid[3:])
+    csl_item['URL'] = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{csl_item['PMCID']}/"
+    return csl_item
+
+
+def _get_literature_citation_exporter_csl_item(database, identifier):
+    """
+    https://api.ncbi.nlm.nih.gov/lit/ctxp
+    """
+    assert database in {'pubmed', 'pmc'}
     params = {
         'format': 'csl',
-        'id': pmcid[3:],
+        'id': identifier,
     }
+    try:
+        from manubot import __version__ as manubot_version
+    except ImportError:
+        manubot_version = ''
     headers = {
-        'User-Agent': f'manubot/{manubot.__version__}',
+        'User-Agent': f'manubot/{manubot_version}',
     }
-    url = 'https://api.ncbi.nlm.nih.gov/lit/ctxp/v1/pmc/'
+    url = f'https://api.ncbi.nlm.nih.gov/lit/ctxp/v1/{database}/'
     response = requests.get(url, params, headers=headers)
     try:
-        citeproc = response.json()
+        csl_item = response.json()
     except Exception as error:
         logging.error(
-            f'Error fetching PMC metadata for {pmcid}.\n'
+            f'Error fetching {database} metadata for {identifier}.\n'
             f'Invalid response from {response.url}:\n{response.text}'
         )
         raise error
-    citeproc['URL'] = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{citeproc['PMCID']}/"
-    return citeproc
+    return csl_item
 
 
 def get_pubmed_citeproc(pmid):
