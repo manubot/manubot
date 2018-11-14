@@ -4,28 +4,35 @@ import xml.etree.ElementTree
 
 import requests
 
+import manubot
 
-def get_pmc_citeproc(identifier):
+
+def get_pmc_citeproc(pmcid):
     """
     Get the citeproc JSON for a PubMed Central record by its PMID, PMCID, or
     DOI, using the NCBI Citation Exporter API.
 
-    https://github.com/ncbi/citation-exporter
-    https://www.ncbi.nlm.nih.gov/pmc/tools/ctxp/
-    https://www.ncbi.nlm.nih.gov/pmc/utils/ctxp/samples
+    https://api.ncbi.nlm.nih.gov/lit/ctxp
     https://github.com/greenelab/manubot/issues/21
+    https://twitter.com/dhimmel/status/1061787168820092929
     """
+    assert pmcid.startswith('PMC')
     params = {
-        'ids': identifier,
-        'report': 'citeproc',
+        'format': 'csl',
+        'id': pmcid[3:],
     }
-    url = 'https://www.ncbi.nlm.nih.gov/pmc/utils/ctxp'
-    response = requests.get(url, params)
+    headers = {
+        'User-Agent': f'manubot/{manubot.__version__}',
+    }
+    url = 'https://api.ncbi.nlm.nih.gov/lit/ctxp/v1/pmc/'
+    response = requests.get(url, params, headers=headers)
     try:
         citeproc = response.json()
     except Exception as error:
-        logging.error(f'Error fetching PMC metadata for {identifier}.\n'
-                      f'Invalid response from {response.url}:\n{response.text}')
+        logging.error(
+            f'Error fetching PMC metadata for {pmcid}.\n'
+            f'Invalid response from {response.url}:\n{response.text}'
+        )
         raise error
     citeproc['URL'] = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{citeproc['PMCID']}/"
     return citeproc
