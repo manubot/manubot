@@ -42,12 +42,8 @@ def _get_literature_citation_exporter_csl_item(database, identifier):
         'format': 'csl',
         'id': identifier,
     }
-    try:
-        from manubot import __version__ as manubot_version
-    except ImportError:
-        manubot_version = ''
     headers = {
-        'User-Agent': f'manubot/{manubot_version}',
+        'User-Agent': get_manubot_user_agent(),
     }
     url = f'https://api.ncbi.nlm.nih.gov/lit/ctxp/v1/{database}/'
     response = requests.get(url, params, headers=headers)
@@ -83,8 +79,11 @@ def get_pubmed_citeproc(pmid):
         'id': pmid,
         'rettype': 'full',
     }
+    headers = {
+        'User-Agent': get_manubot_user_agent(),
+    }
     url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi'
-    response = requests.get(url, params)
+    response = requests.get(url, params, headers=headers)
     try:
         element_tree = xml.etree.ElementTree.fromstring(response.text)
         element_tree, = list(element_tree)
@@ -272,8 +271,11 @@ def get_pmid_for_doi(doi):
         'db': 'pubmed',
         'term': f'{doi}[DOI]',
     }
+    headers = {
+        'User-Agent': get_manubot_user_agent(),
+    }
     url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi'
-    response = requests.get(url, params)
+    response = requests.get(url, params, headers=headers)
     if not response.ok:
         logging.warning(f'Status code {response.status_code} querying {response.url}\n')
         return None
@@ -303,3 +305,15 @@ def get_pubmed_ids_for_doi(doi):
         if pmid:
             pubmed_ids['PMID'] = pmid
     return pubmed_ids
+
+
+def get_manubot_user_agent():
+    """
+    Return a User-Agent string for web request headers to help services
+    identify requests as coming from Manubot.
+    """
+    try:
+        from manubot import __version__ as manubot_version
+    except ImportError:
+        manubot_version = ''
+    return f'manubot/{manubot_version}'
