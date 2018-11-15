@@ -1,4 +1,5 @@
 import collections
+import json
 import logging
 import xml.etree.ElementTree
 
@@ -17,7 +18,7 @@ def get_pmc_citeproc(pmcid):
     assert pmcid.startswith('PMC')
     csl_item = _get_literature_citation_exporter_csl_item('pmc', pmcid[3:])
     if 'URL' not in csl_item:
-        csl_item['URL'] = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{csl_item['PMCID']}/"
+        csl_item['URL'] = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{csl_item.get('PMCID', pmcid)}/"
     return csl_item
 
 
@@ -25,7 +26,18 @@ def _get_literature_citation_exporter_csl_item(database, identifier):
     """
     https://api.ncbi.nlm.nih.gov/lit/ctxp
     """
-    assert database in {'pubmed', 'pmc'}
+    if database not in {'pubmed', 'pmc'}:
+        logging.error(
+            f'Error calling _get_literature_citation_exporter_csl_item.\n'
+            f'database must be either "pubmed" or "pmc", not {database}'
+        )
+        assert False
+    if not identifier:
+        logging.error(
+            f'Error calling _get_literature_citation_exporter_csl_item.\n'
+            f'identifier cannot be blank'
+        )
+        assert False
     params = {
         'format': 'csl',
         'id': identifier,
@@ -44,9 +56,17 @@ def _get_literature_citation_exporter_csl_item(database, identifier):
     except Exception as error:
         logging.error(
             f'Error fetching {database} metadata for {identifier}.\n'
-            f'Invalid response from {response.url}:\n{response.text}'
+            f'Invalid JSON response from {response.url}:\n{response.text}'
         )
         raise error
+    assert isinstance(csl_item, dict)
+    if csl_item.get('status', 'okay') == 'error':
+        logging.error(
+            f'Error fetching {database} metadata for {identifier}.\n'
+            f'Literature Citation Exporter returned JSON indicating an error for {response.url}\n'
+            f'{json.dumps(csl_item, indent=2)}'
+        )
+        assert False
     return csl_item
 
 

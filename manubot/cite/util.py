@@ -44,6 +44,7 @@ def standardize_citation(citation):
 
 regexes = {
     'pmid': re.compile(r'[1-9][0-9]{0,7}'),
+    'pmcid': re.compile(r'PMC[0-9]+'),
     'doi': re.compile(r'10\.[0-9]{4,9}/\S+'),
 }
 
@@ -67,6 +68,11 @@ def inspect_citation_identifier(citation):
         # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc
         if not identifier.startswith('PMC'):
             return 'PubMed Central Identifiers must start with `PMC`.'
+        elif not regexes['pmcid'].fullmatch(identifier):
+            return (
+                'Identifier does not conform to the PMCID regex. '
+                'Double check the PMCID.'
+            )
     if source == 'doi':
         # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
         if not identifier.startswith('10.'):
@@ -75,7 +81,7 @@ def inspect_citation_identifier(citation):
             )
         elif not regexes['doi'].fullmatch(identifier):
             return (
-                'identifier does not conform to the DOI regex. '
+                'Identifier does not conform to the DOI regex. '
                 'Double check the DOI.'
             )
     return None
