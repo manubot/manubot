@@ -1,34 +1,69 @@
 import collections
+import json
 import logging
 import xml.etree.ElementTree
 
 import requests
 
 
-def get_pmc_citeproc(identifier):
+def get_pmc_citeproc(pmcid):
     """
     Get the citeproc JSON for a PubMed Central record by its PMID, PMCID, or
     DOI, using the NCBI Citation Exporter API.
 
-    https://github.com/ncbi/citation-exporter
-    https://www.ncbi.nlm.nih.gov/pmc/tools/ctxp/
-    https://www.ncbi.nlm.nih.gov/pmc/utils/ctxp/samples
+    https://api.ncbi.nlm.nih.gov/lit/ctxp
     https://github.com/greenelab/manubot/issues/21
+    https://twitter.com/dhimmel/status/1061787168820092929
     """
+    assert pmcid.startswith('PMC')
+    csl_item = _get_literature_citation_exporter_csl_item('pmc', pmcid[3:])
+    if 'URL' not in csl_item:
+        csl_item['URL'] = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{csl_item.get('PMCID', pmcid)}/"
+    return csl_item
+
+
+def _get_literature_citation_exporter_csl_item(database, identifier):
+    """
+    https://api.ncbi.nlm.nih.gov/lit/ctxp
+    """
+    if database not in {'pubmed', 'pmc'}:
+        logging.error(
+            f'Error calling _get_literature_citation_exporter_csl_item.\n'
+            f'database must be either "pubmed" or "pmc", not {database}'
+        )
+        assert False
+    if not identifier:
+        logging.error(
+            f'Error calling _get_literature_citation_exporter_csl_item.\n'
+            f'identifier cannot be blank'
+        )
+        assert False
     params = {
-        'ids': identifier,
-        'report': 'citeproc',
+        'format': 'csl',
+        'id': identifier,
     }
-    url = 'https://www.ncbi.nlm.nih.gov/pmc/utils/ctxp'
-    response = requests.get(url, params)
+    headers = {
+        'User-Agent': get_manubot_user_agent(),
+    }
+    url = f'https://api.ncbi.nlm.nih.gov/lit/ctxp/v1/{database}/'
+    response = requests.get(url, params, headers=headers)
     try:
-        citeproc = response.json()
+        csl_item = response.json()
     except Exception as error:
-        logging.error(f'Error fetching PMC metadata for {identifier}.\n'
-                      f'Invalid response from {response.url}:\n{response.text}')
+        logging.error(
+            f'Error fetching {database} metadata for {identifier}.\n'
+            f'Invalid JSON response from {response.url}:\n{response.text}'
+        )
         raise error
-    citeproc['URL'] = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{citeproc['PMCID']}/"
-    return citeproc
+    assert isinstance(csl_item, dict)
+    if csl_item.get('status', 'okay') == 'error':
+        logging.error(
+            f'Error fetching {database} metadata for {identifier}.\n'
+            f'Literature Citation Exporter returned JSON indicating an error for {response.url}\n'
+            f'{json.dumps(csl_item, indent=2)}'
+        )
+        assert False
+    return csl_item
 
 
 def get_pubmed_citeproc(pmid):
@@ -44,8 +79,11 @@ def get_pubmed_citeproc(pmid):
         'id': pmid,
         'rettype': 'full',
     }
+    headers = {
+        'User-Agent': get_manubot_user_agent(),
+    }
     url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi'
-    response = requests.get(url, params)
+    response = requests.get(url, params, headers=headers)
     try:
         element_tree = xml.etree.ElementTree.fromstring(response.text)
         element_tree, = list(element_tree)
@@ -233,8 +271,11 @@ def get_pmid_for_doi(doi):
         'db': 'pubmed',
         'term': f'{doi}[DOI]',
     }
+    headers = {
+        'User-Agent': get_manubot_user_agent(),
+    }
     url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi'
-    response = requests.get(url, params)
+    response = requests.get(url, params, headers=headers)
     if not response.ok:
         logging.warning(f'Status code {response.status_code} querying {response.url}\n')
         return None
@@ -264,3 +305,15 @@ def get_pubmed_ids_for_doi(doi):
         if pmid:
             pubmed_ids['PMID'] = pmid
     return pubmed_ids
+
+
+def get_manubot_user_agent():
+    """
+    Return a User-Agent string for web request headers to help services
+    identify requests as coming from Manubot.
+    """
+    try:
+        from manubot import __version__ as manubot_version
+    except ImportError:
+        manubot_version = ''
+    return f'manubot/{manubot_version}'

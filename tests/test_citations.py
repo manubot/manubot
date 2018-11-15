@@ -129,16 +129,15 @@ def test_citation_to_citeproc_arxiv():
     assert citeproc['DOI'] == '10.1209/0295-5075/81/68004'
 
 
-@pytest.mark.parametrize('identifier,citation_id', [
-    ('PMC3041534', 'RoOhUFKU'),
-    ('21347133', '4nofiYkF'),
-])
-def test_citation_to_citeproc_pmc(identifier, citation_id):
-    citation = f'pmcid:{identifier}'
+def test_citation_to_citeproc_pmc():
+    """
+    https://api.ncbi.nlm.nih.gov/lit/ctxp/v1/pmc/?format=csl&id=3041534
+    """
+    citation = f'pmcid:PMC3041534'
     citeproc = citation_to_citeproc(citation)
-    assert citeproc['id'] == citation_id
+    assert citeproc['id'] == 'RoOhUFKU'
     assert citeproc['URL'] == 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3041534/'
-    assert citeproc['container-title'] == 'Summit on Translational Bioinformatics'
+    assert citeproc['container-title-short'] == 'AMIA Jt Summits Transl Sci Proc'
     assert citeproc['title'] == 'Secondary Use of EHR: Data Quality Issues and Informatics Opportunities'
     authors = citeproc['author']
     assert authors[0]['family'] == 'Botsis'
