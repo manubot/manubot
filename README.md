@@ -191,8 +191,8 @@ Then run the following commands:
 ```sh
 TAG=v`python setup.py --version`
 # Commit updated __version__ info
-git add manubot/__init__.py
-git commit --message="Set __version__ to $TAG"
+git add manubot/__init__.py release-notes/$TAG.md
+git commit --message="Prepare $TAG release"
 git push
 # Create & push tag (assuming upstream is greenelab remote)
 git tag --annotate $TAG --file=release-notes/$TAG.md

@@ -27,7 +27,8 @@ def citeproc_passthrough(csl_item, set_id=None, prune=True):
 
     # Correct invalid CSL item types
     # See https://github.com/CrossRef/rest-api-doc/issues/187
-    csl_item['type'] = citeproc_type_fixer.get(csl_item['type'], csl_item['type'])
+    if 'type' in csl_item:
+        csl_item['type'] = citeproc_type_fixer.get(csl_item['type'], csl_item['type'])
 
     if prune:
         # Remove fields that violate the CSL Item JSON Schema
