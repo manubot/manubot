@@ -257,7 +257,7 @@ def test_citation_to_citeproc_pubmed_book():
 def test_citation_to_citeproc_isbn():
     csl_item = citation_to_citeproc('isbn:9780387950693')
     assert csl_item['type'] == 'book'
-    assert csl_item['title'] == 'Complex Analysis'
+    assert csl_item['title'] == 'Complex analysis'
 
 
 def test_citation_to_citeproc_isbn_title_with_quotation_mark():
