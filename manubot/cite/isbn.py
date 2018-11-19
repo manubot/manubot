@@ -5,6 +5,12 @@ import re
 
 
 def get_isbn_citeproc(isbn):
+    """
+    Generate CSL JSON Data for an ISBN.
+
+    Currently, uses Citoid to retrieve metadata, although which resource this
+    function delegates to may change in the future.
+    """
     return get_isbn_citeproc_citoid(isbn)
 
 
