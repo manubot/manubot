@@ -260,6 +260,7 @@ def test_citation_to_citeproc_isbn():
     assert csl_item['title'] == 'Complex analysis'
 
 
+@pytest.mark.xfail(reason="Quotation in title removed at some upstream point")
 def test_citation_to_citeproc_isbnlib_title_with_quotation_mark():
     from manubot.cite.isbn import get_isbn_citeproc_isbnlib
     csl_item = get_isbn_citeproc_isbnlib('9780312353780')
