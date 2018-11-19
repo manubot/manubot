@@ -260,8 +260,9 @@ def test_citation_to_citeproc_isbn():
     assert csl_item['title'] == 'Complex analysis'
 
 
-def test_citation_to_citeproc_isbn_title_with_quotation_mark():
-    csl_item = citation_to_citeproc('isbn:9780312353780')
+def test_citation_to_citeproc_isbnlib_title_with_quotation_mark():
+    from manubot.cite.isbn import get_isbn_citeproc_isbnlib
+    csl_item = get_isbn_citeproc_isbnlib('9780312353780')
     assert csl_item['type'] == 'book'
     assert csl_item['title'].startswith('"F" is for Fugitive')
 
