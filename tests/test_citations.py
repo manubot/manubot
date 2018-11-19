@@ -61,6 +61,12 @@ def test_get_citation_id(standard_citation, expected):
     ('doi:10.5061/DRYAD.q447c/1', 'doi:10.5061/dryad.q447c/1'),
     ('doi:10.5061/dryad.q447c/1', 'doi:10.5061/dryad.q447c/1'),
     ('pmid:24159271', 'pmid:24159271'),
+    ('isbn:1339919885', 'isbn:9781339919881'),
+    ('isbn:1-339-91988-5', 'isbn:9781339919881'),
+    ('isbn:978-0-387-95069-3', 'isbn:9780387950693'),
+    ('isbn:9780387950938', 'isbn:9780387950938'),
+    ('isbn:1-55860-510-X', 'isbn:9781558605107'),
+    ('isbn:1-55860-510-x', 'isbn:9781558605107'),
 ])
 def test_standardize_citation(citation, expected):
     """
@@ -75,6 +81,8 @@ def test_standardize_citation(citation, expected):
     'pmcid:PMC4304851',
     'pmid:25648772',
     'arxiv:1407.3561',
+    'isbn:978-1-339-91988-1',
+    'isbn:1-339-91988-5',
     'url:https://peerj.com/articles/705/',
 ])
 def test_inspect_citation_identifier_passes(citation):
@@ -89,6 +97,7 @@ def test_inspect_citation_identifier_passes(citation):
     ('doi:7717/peerj.705', 'must start with `10.`'),
     ('pmcid:25648772', 'must start with `PMC`'),
     ('pmid:PMC4304851', 'Should pmid:PMC4304851 switch the citation source to `pmcid`?'),
+    ('isbn:1-339-91988-X', 'identifier violates the ISBN syntax'),
 ])
 def test_inspect_citation_identifier_fails(citation, contains):
     """
@@ -243,6 +252,41 @@ def test_citation_to_citeproc_pubmed_book():
     """
     with pytest.raises(NotImplementedError):
         citation_to_citeproc('pmid:29227604')
+
+
+def test_citation_to_citeproc_isbn():
+    csl_item = citation_to_citeproc('isbn:9780387950693')
+    assert csl_item['type'] == 'book'
+    assert csl_item['title'] == 'Complex analysis'
+
+
+@pytest.mark.xfail(reason="Quotation in title removed at some upstream point")
+def test_citation_to_citeproc_isbnlib_title_with_quotation_mark():
+    from manubot.cite.isbn import get_isbn_citeproc_isbnlib
+    csl_item = get_isbn_citeproc_isbnlib('9780312353780')
+    assert csl_item['type'] == 'book'
+    assert csl_item['title'].startswith('"F" is for Fugitive')
+
+
+def test_get_isbn_citeproc_citoid_weird_date():
+    """
+    isbn:9780719561023 has a date value of "(2004 printing)"
+    https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9780719561023
+    """
+    from manubot.cite.isbn import get_isbn_citeproc_citoid
+    csl_item = get_isbn_citeproc_citoid('9780719561023')
+    assert csl_item['issued']['date-parts'] == [[2004]]
+    assert csl_item['ISBN'] == '9780719561023'
+
+
+def test_get_isbn_citeproc_citoid_not_found():
+    """
+    isbn:9781439566039 is not found by Citoid:
+    https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9781439566039
+    """
+    from manubot.cite.isbn import get_isbn_citeproc_citoid
+    with pytest.raises(KeyError, match=r'Metadata for ISBN [0-9]{10,13} not found'):
+        get_isbn_citeproc_citoid('9781439566039')
 
 
 def test_cite_command_empty():

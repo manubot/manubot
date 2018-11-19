@@ -49,6 +49,7 @@ setuptools.setup(
     # Run-time dependencies
     install_requires=[
         'errorhandler',
+        'isbnlib',
         'jinja2',
         'jsonref',
         'jsonschema',

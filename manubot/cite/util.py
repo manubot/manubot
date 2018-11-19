@@ -9,6 +9,7 @@ citeproc_retrievers = {
     'pmid': 'manubot.cite.pubmed.get_pubmed_citeproc',
     'pmcid': 'manubot.cite.pubmed.get_pmc_citeproc',
     'arxiv': 'manubot.cite.arxiv.get_arxiv_citeproc',
+    'isbn': 'manubot.cite.isbn.get_isbn_citeproc',
     'url': 'manubot.cite.url.get_url_citeproc',
 }
 
@@ -39,6 +40,9 @@ def standardize_citation(citation):
     source, identifier = citation.split(':', 1)
     if source == 'doi':
         identifier = identifier.lower()
+    if source == 'isbn':
+        from isbnlib import to_isbn13
+        identifier = to_isbn13(identifier)
     return f'{source}:{identifier}'
 
 
@@ -55,6 +59,7 @@ def inspect_citation_identifier(citation):
     detected a string describing the issue is returned. Otherwise returns None.
     """
     source, identifier = citation.split(':', 1)
+
     if source == 'pmid':
         # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmid
         if identifier.startswith('PMC'):
@@ -64,6 +69,7 @@ def inspect_citation_identifier(citation):
             )
         elif not regexes['pmid'].fullmatch(identifier):
             return 'PubMed Identifiers should be 1-8 digits with no leading zeros.'
+
     if source == 'pmcid':
         # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc
         if not identifier.startswith('PMC'):
@@ -73,6 +79,7 @@ def inspect_citation_identifier(citation):
                 'Identifier does not conform to the PMCID regex. '
                 'Double check the PMCID.'
             )
+
     if source == 'doi':
         # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
         if not identifier.startswith('10.'):
@@ -84,6 +91,15 @@ def inspect_citation_identifier(citation):
                 'Identifier does not conform to the DOI regex. '
                 'Double check the DOI.'
             )
+
+    if source == 'isbn':
+        import isbnlib
+        fail = isbnlib.notisbn(identifier, level='strict')
+        if fail:
+            return (
+                f'identifier violates the ISBN syntax according to isbnlib v{isbnlib.__version__}'
+            )
+
     return None
 
 
