@@ -5,6 +5,16 @@ import re
 import requests
 
 
+def get_url_citeproc_zotero(url):
+    from manubot.cite.zotero import (
+        export_as_csl,
+        web_query,
+    )
+    zotero_json = web_query(url)
+    csl_json = export_as_csl(zotero_json)
+    return csl_json
+
+
 def get_url_citeproc_greycite(url):
     """
     Uses Greycite which has experiened uptime problems in the past.
@@ -51,9 +61,17 @@ def get_url_citeproc(url):
     """
     Get citeproc for a URL trying a sequence of strategies.
     """
-    try:
-        return get_url_citeproc_greycite(url)
-    except Exception as e:
-        logging.warning(f'Error getting {url} from Greycite: {e}')
-        # Fallback strategy
-        return get_url_citeproc_manual(url)
+    functions = [
+        get_url_citeproc_zotero,
+        get_url_citeproc_greycite,
+        get_url_citeproc_manual,
+    ]
+    for function in functions:
+        try:
+            return function(url)
+        except Exception as error:
+            logging.warning(
+                f'Error in {function.__name__} for {url} '
+                f'due to a {error.__class__.__name__}:\n{error}'
+            )
+            logging.info(error, exc_info=True)
