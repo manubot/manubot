@@ -5,6 +5,8 @@ import xml.etree.ElementTree
 
 import requests
 
+from manubot.util import get_manubot_user_agent
+
 
 def get_pmc_citeproc(pmcid):
     """
@@ -305,15 +307,3 @@ def get_pubmed_ids_for_doi(doi):
         if pmid:
             pubmed_ids['PMID'] = pmid
     return pubmed_ids
-
-
-def get_manubot_user_agent():
-    """
-    Return a User-Agent string for web request headers to help services
-    identify requests as coming from Manubot.
-    """
-    try:
-        from manubot import __version__ as manubot_version
-    except ImportError:
-        manubot_version = ''
-    return f'manubot/{manubot_version}'

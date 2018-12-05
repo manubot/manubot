@@ -1,5 +1,8 @@
 import importlib
 
+# Email address that forwards to Manubot maintainers
+contact_email = 'contact@manubot.org'
+
 
 def import_function(name):
     """
@@ -10,3 +13,15 @@ def import_function(name):
     module_name, function_name = name.rsplit('.', 1)
     module = importlib.import_module(module_name)
     return getattr(module, function_name)
+
+
+def get_manubot_user_agent():
+    """
+    Return a User-Agent string for web request headers to help services
+    identify requests as coming from Manubot.
+    """
+    try:
+        from manubot import __version__ as manubot_version
+    except ImportError:
+        manubot_version = ''
+    return f'manubot/{manubot_version} <{contact_email}>'
