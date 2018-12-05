@@ -1,4 +1,6 @@
 import importlib
+import platform
+import sys
 
 # Email address that forwards to Manubot maintainers
 contact_email = 'contact@manubot.org'
@@ -24,4 +26,8 @@ def get_manubot_user_agent():
         from manubot import __version__ as manubot_version
     except ImportError:
         manubot_version = ''
-    return f'manubot/{manubot_version} <{contact_email}>'
+    return (
+        f'manubot/{manubot_version} '
+        f'({platform.system()}; Python/{sys.version_info.major}.{sys.version_info.minor}) '
+        f'<{contact_email}>'
+    )
