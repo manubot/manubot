@@ -23,6 +23,7 @@ def get_url_citeproc(url):
                 f'due to a {error.__class__.__name__}:\n{error}'
             )
             logging.info(error, exc_info=True)
+    raise Exception(f'all get_url_citeproc methods failed for {url}')
 
 
 def get_url_citeproc_zotero(url):
@@ -33,9 +34,9 @@ def get_url_citeproc_zotero(url):
         export_as_csl,
         web_query,
     )
-    zotero_json = web_query(url)
-    csl_json = export_as_csl(zotero_json)
-    csl_item, = csl_json
+    zotero_data = web_query(url)
+    csl_data = export_as_csl(zotero_data)
+    csl_item, = csl_data
     return csl_item
 
 
