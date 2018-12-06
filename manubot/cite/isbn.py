@@ -32,9 +32,13 @@ def get_isbn_citeproc_citoid(isbn):
     """
     import isbnlib
     import requests
+    from manubot.util import get_manubot_user_agent
+    headers = {
+        'User-Agent': get_manubot_user_agent(),
+    }
     isbn = isbnlib.to_isbn13(isbn)
     url = f'https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/{isbn}'
-    response = requests.get(url)
+    response = requests.get(url, headers=headers)
     result = response.json()
     if isinstance(result, dict):
         if result['title'] == 'Not found.':

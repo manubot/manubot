@@ -5,6 +5,8 @@ import xml.etree.ElementTree
 
 import requests
 
+from manubot.util import get_manubot_user_agent
+
 
 def get_arxiv_citeproc(arxiv_id):
     """
@@ -28,7 +30,10 @@ def get_arxiv_citeproc(arxiv_id):
         'id_list': arxiv_id,
         'max_results': 1,
     }
-    response = requests.get(url, params)
+    headers = {
+        'User-Agent': get_manubot_user_agent(),
+    }
+    response = requests.get(url, params, headers=headers)
 
     # XML namespace prefixes
     prefix = '{http://www.w3.org/2005/Atom}'

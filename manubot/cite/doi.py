@@ -4,6 +4,7 @@ import urllib.request
 import requests
 
 from manubot.cite.pubmed import get_pubmed_ids_for_doi
+from manubot.util import get_manubot_user_agent
 
 
 def get_short_doi_url(doi):
@@ -12,8 +13,11 @@ def get_short_doi_url(doi):
     """
     quoted_doi = urllib.request.quote(doi)
     url = 'http://shortdoi.org/{}?format=json'.format(quoted_doi)
+    headers = {
+        'User-Agent': get_manubot_user_agent(),
+    }
     try:
-        response = requests.get(url).json()
+        response = requests.get(url, headers=headers).json()
         short_doi = response['ShortDOI']
         short_doi = short_doi[3:]  # Remove "10/" prefix
         short_url = 'https://doi.org/' + short_doi
@@ -31,6 +35,7 @@ def get_doi_citeproc(doi):
     url = 'https://doi.org/' + urllib.request.quote(doi)
     header = {
         'Accept': 'application/vnd.citationstyles.csl+json',
+        'User-Agent': get_manubot_user_agent(),
     }
     response = requests.get(url, headers=header)
     try:
