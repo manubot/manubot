@@ -25,17 +25,6 @@ def get_isbn_citeproc(isbn):
     raise Exception(f'all get_isbn_citeproc methods failed for {isbn}')
 
 
-def get_isbn_citeproc_isbnlib(isbn):
-    """
-    Generate CSL JSON Data for an ISBN using isbnlib.
-    """
-    import isbnlib
-    metadata = isbnlib.meta(isbn, cache=None)
-    csl_json = isbnlib.registry.bibformatters['csl'](metadata)
-    csl_data = json.loads(csl_json)
-    return csl_data
-
-
 def get_isbn_citeproc_zotero(isbn):
     """
     Generate CSL JSON Data for an ISBN using Zotero's translation-server.
@@ -83,6 +72,7 @@ def get_isbn_citeproc_citoid(isbn):
         if csl_author:
             csl_data['author'] = csl_author
     if 'date' in mediawiki:
+        year_pattern = re.compile(r'[0-9]{4}')
         match = year_pattern.search(mediawiki['date'])
         if match:
             year = int(match.group())
@@ -111,7 +101,15 @@ def get_isbn_citeproc_citoid(isbn):
     return csl_data
 
 
-year_pattern = re.compile(r'[0-9]{4}')
+def get_isbn_citeproc_isbnlib(isbn):
+    """
+    Generate CSL JSON Data for an ISBN using isbnlib.
+    """
+    import isbnlib
+    metadata = isbnlib.meta(isbn, cache=None)
+    csl_json = isbnlib.registry.bibformatters['csl'](metadata)
+    csl_data = json.loads(csl_json)
+    return csl_data
 
 
 isbn_retrievers = [
