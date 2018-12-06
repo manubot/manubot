@@ -5,14 +5,38 @@ import re
 import requests
 
 
+def get_url_citeproc(url):
+    """
+    Get citeproc for a URL trying a sequence of strategies.
+    """
+    functions = [
+        get_url_citeproc_zotero,
+        get_url_citeproc_greycite,
+        get_url_citeproc_manual,
+    ]
+    for function in functions:
+        try:
+            return function(url)
+        except Exception as error:
+            logging.warning(
+                f'Error in {function.__name__} for {url} '
+                f'due to a {error.__class__.__name__}:\n{error}'
+            )
+            logging.info(error, exc_info=True)
+
+
 def get_url_citeproc_zotero(url):
+    """
+    Use Zotero's translation-server to generate a CSL Item for the specified URL.
+    """
     from manubot.cite.zotero import (
         export_as_csl,
         web_query,
     )
     zotero_json = web_query(url)
     csl_json = export_as_csl(zotero_json)
-    return csl_json
+    csl_item, = csl_json
+    return csl_item
 
 
 def get_url_citeproc_greycite(url):
@@ -55,23 +79,3 @@ def get_url_citeproc_manual(url):
         'URL': url,
         'type': 'webpage',
     }
-
-
-def get_url_citeproc(url):
-    """
-    Get citeproc for a URL trying a sequence of strategies.
-    """
-    functions = [
-        get_url_citeproc_zotero,
-        get_url_citeproc_greycite,
-        get_url_citeproc_manual,
-    ]
-    for function in functions:
-        try:
-            return function(url)
-        except Exception as error:
-            logging.warning(
-                f'Error in {function.__name__} for {url} '
-                f'due to a {error.__class__.__name__}:\n{error}'
-            )
-            logging.info(error, exc_info=True)
