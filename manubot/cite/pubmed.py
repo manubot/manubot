@@ -245,7 +245,7 @@ def get_pmcid_and_pmid_for_doi(doi):
         return {}
     try:
         element_tree = xml.etree.ElementTree.fromstring(response.text)
-    except Exception as error:
+    except Exception:
         logging.warning(f'Error fetching PMC ID conversion for {doi}.\n'
                         f'Response from {response.url}:\n{response.text}')
         return {}
