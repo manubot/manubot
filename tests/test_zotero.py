@@ -6,6 +6,7 @@ from manubot.cite.zotero import (
     export_as_csl
 )
 from manubot.cite.url import get_url_citeproc_zotero
+from manubot.cite.wikidata import get_wikidata_citeproc
 
 
 def test_web_query():
@@ -82,3 +83,14 @@ def test_search_query():
     identifier = 'isbn:9781339919881'
     zotero_data = search_query(identifier)
     assert zotero_data[0]['title'].startswith('The hetnet awakens')
+
+
+def test_get_wikidata_citeproc():
+    """
+    Test metadata extraction from https://www.wikidata.org/wiki/Q50051684
+    """
+    wikidata_id = 'Q50051684'
+    csl_item = get_wikidata_citeproc(wikidata_id)
+    assert 'Sci-Hub provides access to nearly all scholarly literature' in csl_item['title']
+    assert csl_item['container-title'] == 'eLife'
+    assert csl_item['DOI'] == '10.7554/elife.32822'
