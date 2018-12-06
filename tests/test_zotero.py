@@ -9,6 +9,15 @@ from manubot.cite.url import get_url_citeproc_zotero
 
 
 def test_web_query():
+    """
+    The translation-server web endpoint can be tested via curl:
+    ```
+    curl \
+      --header "Content-Type: text/plain" \
+      --data 'https://bigthink.com/neurobonkers/a-pirate-bay-for-science' \
+      'https://translate.manubot.org/web'
+    ```
+    """
     url = 'https://bigthink.com/neurobonkers/a-pirate-bay-for-science'
     zotero_data = web_query(url)
     assert isinstance(zotero_data, list)
@@ -17,6 +26,15 @@ def test_web_query():
 
 
 def test_export_as_csl():
+    """
+    CSL export can be tested via curl:
+    ```
+    curl \
+      --header "Content-Type: application/json" \
+      --data '[{"key": "IN22XN53", "itemType": "webpage", "date": "2016-02-09T20:12:00"}]' \
+      'https://translate.manubot.org/export?format=csljson'
+    ```
+    """
     zotero_data = [
         {
             "key": "IN22XN53",
@@ -52,6 +70,15 @@ def test_web_query_fails_with_multiple_results():
 
 
 def test_search_query():
+    """
+    The translation-server search endpoint can be tested via curl:
+    ```
+    curl \
+      --header "Content-Type: text/plain" \
+      --data 'isbn:9781339919881' \
+      'https://translate.manubot.org/search'
+    ```
+    """
     identifier = 'isbn:9781339919881'
     zotero_data = search_query(identifier)
     assert zotero_data[0]['title'].startswith('The hetnet awakens')
