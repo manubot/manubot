@@ -9,9 +9,6 @@ from manubot.cite.url import get_url_citeproc_zotero
 
 
 def test_web_query():
-    """
-    https://bigthink.com/neurobonkers/a-pirate-bay-for-science
-    """
     url = 'https://bigthink.com/neurobonkers/a-pirate-bay-for-science'
     zotero_data = web_query(url)
     assert isinstance(zotero_data, list)
@@ -39,6 +36,13 @@ def test_export_as_csl():
     csl_item = export_as_csl(zotero_data)[0]
     assert csl_item['title'] == "Meet the Robin Hood of Science"
     assert csl_item['container-title'] == 'Big Think'
+
+
+def test_get_url_citeproc_zotero():
+    url = 'https://nyti.ms/1NuB0WJ'
+    csl_item = get_url_citeproc_zotero(url)
+    assert csl_item['title'] == 'Unraveling the Ties of Altitude, Oxygen and Lung Cancer'
+    assert csl_item['author'][0]['family'] == 'Johnson'
 
 
 def test_web_query_fails_with_multiple_results():
