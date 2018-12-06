@@ -69,13 +69,3 @@ def export_as_csl(zotero_data):
         logging.warning(f'Error parsing export_as_csl output as JSON:\n{response.text}')
         raise error
     return csl_json
-
-
-if __name__ == '__main__':
-    import json
-    #data = web_query('http://docs.python-requests.org/en/master/user/quickstart/')
-    url = 'https://www.ncbi.nlm.nih.gov/pubmed/?term=crispr'
-    data = web_query(url)
-    print(json.dumps(data, indent=2))
-    csl_json = export_as_csl(data)
-    print(json.dumps(csl_json, indent=2))
