@@ -56,6 +56,7 @@ setuptools.setup(
         'pandas',
         'pybase62',
         'pyyaml',
+        'ratelimiter',
         'requests-cache',
         'requests',
     ],

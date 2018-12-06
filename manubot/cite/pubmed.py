@@ -1,4 +1,5 @@
 import collections
+import functools
 import json
 import logging
 import xml.etree.ElementTree
@@ -85,7 +86,8 @@ def get_pubmed_citeproc(pmid):
         'User-Agent': get_manubot_user_agent(),
     }
     url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi'
-    response = requests.get(url, params, headers=headers)
+    with _get_eutils_rate_limiter():
+        response = requests.get(url, params, headers=headers)
     try:
         element_tree = xml.etree.ElementTree.fromstring(response.text)
         element_tree, = list(element_tree)
@@ -277,7 +279,8 @@ def get_pmid_for_doi(doi):
         'User-Agent': get_manubot_user_agent(),
     }
     url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi'
-    response = requests.get(url, params, headers=headers)
+    with _get_eutils_rate_limiter():
+        response = requests.get(url, params, headers=headers)
     if not response.ok:
         logging.warning(f'Status code {response.status_code} querying {response.url}\n')
         return None
@@ -307,3 +310,12 @@ def get_pubmed_ids_for_doi(doi):
         if pmid:
             pubmed_ids['PMID'] = pmid
     return pubmed_ids
+
+@functools.lru_cache()
+def _get_eutils_rate_limiter():
+    """
+    Rate limiter to cap NCBI E-utilities queries to 3 per second as per
+    https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/
+    """
+    from ratelimiter import RateLimiter
+    return RateLimiter(max_calls=2, period=1)
