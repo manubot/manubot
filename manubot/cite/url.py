@@ -9,14 +9,9 @@ def get_url_citeproc(url):
     """
     Get citeproc for a URL trying a sequence of strategies.
     """
-    functions = [
-        get_url_citeproc_zotero,
-        get_url_citeproc_greycite,
-        get_url_citeproc_manual,
-    ]
-    for function in functions:
+    for retriever in url_retrievers:
         try:
-            return function(url)
+            return retriever(url)
         except Exception as error:
             logging.warning(
                 f'Error in {function.__name__} for {url} '
@@ -80,3 +75,10 @@ def get_url_citeproc_manual(url):
         'URL': url,
         'type': 'webpage',
     }
+
+
+url_retrievers = [
+    get_url_citeproc_zotero,
+    get_url_citeproc_greycite,
+    get_url_citeproc_manual,
+]
