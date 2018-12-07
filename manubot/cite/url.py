@@ -2,8 +2,6 @@ import json
 import logging
 import re
 
-import requests
-
 
 def get_url_citeproc(url):
     """
@@ -48,6 +46,7 @@ def get_url_citeproc_greycite(url):
     https://arxiv.org/abs/1304.7151
     https://git.io/v9N2C
     """
+    import requests
     from manubot.util import get_manubot_user_agent
     headers = {
         'Connection': 'close',  # https://github.com/kennethreitz/requests/issues/4023
