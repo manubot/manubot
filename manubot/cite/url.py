@@ -12,7 +12,7 @@ def get_url_citeproc(url):
             return retriever(url)
         except Exception as error:
             logging.warning(
-                f'Error in {function.__name__} for {url} '
+                f'Error in {retriever.__name__} for {url} '
                 f'due to a {error.__class__.__name__}:\n{error}'
             )
             logging.info(error, exc_info=True)
