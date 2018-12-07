@@ -1,9 +1,12 @@
 import collections
+import functools
 import json
 import logging
 import xml.etree.ElementTree
 
 import requests
+
+from manubot.util import get_manubot_user_agent
 
 
 def get_pmc_citeproc(pmcid):
@@ -83,7 +86,8 @@ def get_pubmed_citeproc(pmid):
         'User-Agent': get_manubot_user_agent(),
     }
     url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi'
-    response = requests.get(url, params, headers=headers)
+    with _get_eutils_rate_limiter():
+        response = requests.get(url, params, headers=headers)
     try:
         element_tree = xml.etree.ElementTree.fromstring(response.text)
         element_tree, = list(element_tree)
@@ -241,7 +245,7 @@ def get_pmcid_and_pmid_for_doi(doi):
         return {}
     try:
         element_tree = xml.etree.ElementTree.fromstring(response.text)
-    except Exception as error:
+    except Exception:
         logging.warning(f'Error fetching PMC ID conversion for {doi}.\n'
                         f'Response from {response.url}:\n{response.text}')
         return {}
@@ -275,7 +279,8 @@ def get_pmid_for_doi(doi):
         'User-Agent': get_manubot_user_agent(),
     }
     url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi'
-    response = requests.get(url, params, headers=headers)
+    with _get_eutils_rate_limiter():
+        response = requests.get(url, params, headers=headers)
     if not response.ok:
         logging.warning(f'Status code {response.status_code} querying {response.url}\n')
         return None
@@ -306,14 +311,11 @@ def get_pubmed_ids_for_doi(doi):
             pubmed_ids['PMID'] = pmid
     return pubmed_ids
 
-
-def get_manubot_user_agent():
+@functools.lru_cache()
+def _get_eutils_rate_limiter():
     """
-    Return a User-Agent string for web request headers to help services
-    identify requests as coming from Manubot.
+    Rate limiter to cap NCBI E-utilities queries to 3 per second as per
+    https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/
     """
-    try:
-        from manubot import __version__ as manubot_version
-    except ImportError:
-        manubot_version = ''
-    return f'manubot/{manubot_version}'
+    from ratelimiter import RateLimiter
+    return RateLimiter(max_calls=2, period=1)

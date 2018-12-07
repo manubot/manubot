@@ -17,14 +17,16 @@ def get_url_citeproc_greycite(url):
     http://knowledgeblog.org/greycite
     https://arxiv.org/abs/1304.7151
     https://git.io/v9N2C
-
-    Uses urllib.request.urlopen rather than requests.get due to
-    https://github.com/kennethreitz/requests/issues/4023
     """
+    from manubot.util import get_manubot_user_agent
+    headers = {
+        'Connection': 'close',  # https://github.com/kennethreitz/requests/issues/4023
+        'User-Agent': get_manubot_user_agent(),
+    }
     response = requests.get(
         'http://greycite.knowledgeblog.org/json',
         params={'uri': url},
-        headers={'Connection': 'close'},
+        headers=headers,
     )
     # Some Greycite responses were valid JSON besides for an error appended
     # like "<p>*** Date set from uri<p>" or "<p>*** fetch error : 404<p>".
