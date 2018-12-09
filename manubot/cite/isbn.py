@@ -18,7 +18,7 @@ def get_isbn_citeproc(isbn):
             return retriever(isbn)
         except Exception as error:
             logging.warning(
-                f'Error in {function.__name__} for {isbn} '
+                f'Error in {retriever.__name__} for {isbn} '
                 f'due to a {error.__class__.__name__}:\n{error}'
             )
             logging.info(error, exc_info=True)
