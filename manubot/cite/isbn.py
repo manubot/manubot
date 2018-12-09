@@ -6,10 +6,12 @@ import re
 
 def get_isbn_citeproc(isbn):
     """
-    Generate CSL JSON Data for an ISBN.
+    Generate CSL JSON Data for an ISBN. Converts all ISBNs to 13-digit format.
 
-    Currently, uses Citoid to retrieve metadata, although which resource this
-    function delegates to may change in the future.
+    This function uses a list of CSL JSON Item metadata retrievers, specified
+    by the module-level variable `isbn_retrievers`. The methods are attempted
+    in order, with this function returning the metadata from the first
+    non-failing method.
     """
     import isbnlib
     isbn = isbnlib.to_isbn13(isbn)

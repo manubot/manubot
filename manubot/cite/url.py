@@ -6,6 +6,11 @@ import re
 def get_url_citeproc(url):
     """
     Get citeproc for a URL trying a sequence of strategies.
+
+    This function uses a list of CSL JSON Item metadata retrievers, specified
+    by the module-level variable `url_retrievers`. The methods are attempted
+    in order, with this function returning the metadata from the first
+    non-failing method.
     """
     for retriever in url_retrievers:
         try:
