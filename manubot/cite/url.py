@@ -2,7 +2,40 @@ import json
 import logging
 import re
 
-import requests
+
+def get_url_citeproc(url):
+    """
+    Get citeproc for a URL trying a sequence of strategies.
+
+    This function uses a list of CSL JSON Item metadata retrievers, specified
+    by the module-level variable `url_retrievers`. The methods are attempted
+    in order, with this function returning the metadata from the first
+    non-failing method.
+    """
+    for retriever in url_retrievers:
+        try:
+            return retriever(url)
+        except Exception as error:
+            logging.warning(
+                f'Error in {retriever.__name__} for {url} '
+                f'due to a {error.__class__.__name__}:\n{error}'
+            )
+            logging.info(error, exc_info=True)
+    raise Exception(f'all get_url_citeproc methods failed for {url}')
+
+
+def get_url_citeproc_zotero(url):
+    """
+    Use Zotero's translation-server to generate a CSL Item for the specified URL.
+    """
+    from manubot.cite.zotero import (
+        export_as_csl,
+        web_query,
+    )
+    zotero_data = web_query(url)
+    csl_data = export_as_csl(zotero_data)
+    csl_item, = csl_data
+    return csl_item
 
 
 def get_url_citeproc_greycite(url):
@@ -18,6 +51,7 @@ def get_url_citeproc_greycite(url):
     https://arxiv.org/abs/1304.7151
     https://git.io/v9N2C
     """
+    import requests
     from manubot.util import get_manubot_user_agent
     headers = {
         'Connection': 'close',  # https://github.com/kennethreitz/requests/issues/4023
@@ -47,13 +81,8 @@ def get_url_citeproc_manual(url):
     }
 
 
-def get_url_citeproc(url):
-    """
-    Get citeproc for a URL trying a sequence of strategies.
-    """
-    try:
-        return get_url_citeproc_greycite(url)
-    except Exception as e:
-        logging.warning(f'Error getting {url} from Greycite: {e}')
-        # Fallback strategy
-        return get_url_citeproc_manual(url)
+url_retrievers = [
+    get_url_citeproc_zotero,
+    get_url_citeproc_greycite,
+    get_url_citeproc_manual,
+]

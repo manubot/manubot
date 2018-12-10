@@ -6,23 +6,36 @@ import re
 
 def get_isbn_citeproc(isbn):
     """
-    Generate CSL JSON Data for an ISBN.
+    Generate CSL JSON Data for an ISBN. Converts all ISBNs to 13-digit format.
 
-    Currently, uses Citoid to retrieve metadata, although which resource this
-    function delegates to may change in the future.
-    """
-    return get_isbn_citeproc_citoid(isbn)
-
-
-def get_isbn_citeproc_isbnlib(isbn):
-    """
-    Generate CSL JSON Data for an ISBN using isbnlib.
+    This function uses a list of CSL JSON Item metadata retrievers, specified
+    by the module-level variable `isbn_retrievers`. The methods are attempted
+    in order, with this function returning the metadata from the first
+    non-failing method.
     """
     import isbnlib
-    metadata = isbnlib.meta(isbn, cache=None)
-    csl_json = isbnlib.registry.bibformatters['csl'](metadata)
-    csl_data = json.loads(csl_json)
-    return csl_data
+    isbn = isbnlib.to_isbn13(isbn)
+    for retriever in isbn_retrievers:
+        try:
+            return retriever(isbn)
+        except Exception as error:
+            logging.warning(
+                f'Error in {retriever.__name__} for {isbn} '
+                f'due to a {error.__class__.__name__}:\n{error}'
+            )
+            logging.info(error, exc_info=True)
+    raise Exception(f'all get_isbn_citeproc methods failed for {isbn}')
+
+
+def get_isbn_citeproc_zotero(isbn):
+    """
+    Generate CSL JSON Data for an ISBN using Zotero's translation-server.
+    """
+    from manubot.cite.zotero import export_as_csl, search_query
+    zotero_data = search_query(f'isbn:{isbn}')
+    csl_data = export_as_csl(zotero_data)
+    csl_item, = csl_data
+    return csl_item
 
 
 def get_isbn_citeproc_citoid(isbn):
@@ -30,13 +43,11 @@ def get_isbn_citeproc_citoid(isbn):
     Return CSL JSON Data for an ISBN using the Wikipedia Citoid API.
     https://en.wikipedia.org/api/rest_v1/#!/Citation/getCitation
     """
-    import isbnlib
     import requests
     from manubot.util import get_manubot_user_agent
     headers = {
         'User-Agent': get_manubot_user_agent(),
     }
-    isbn = isbnlib.to_isbn13(isbn)
     url = f'https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/{isbn}'
     response = requests.get(url, headers=headers)
     result = response.json()
@@ -63,6 +74,7 @@ def get_isbn_citeproc_citoid(isbn):
         if csl_author:
             csl_data['author'] = csl_author
     if 'date' in mediawiki:
+        year_pattern = re.compile(r'[0-9]{4}')
         match = year_pattern.search(mediawiki['date'])
         if match:
             year = int(match.group())
@@ -91,4 +103,19 @@ def get_isbn_citeproc_citoid(isbn):
     return csl_data
 
 
-year_pattern = re.compile(r'[0-9]{4}')
+def get_isbn_citeproc_isbnlib(isbn):
+    """
+    Generate CSL JSON Data for an ISBN using isbnlib.
+    """
+    import isbnlib
+    metadata = isbnlib.meta(isbn, cache=None)
+    csl_json = isbnlib.registry.bibformatters['csl'](metadata)
+    csl_data = json.loads(csl_json)
+    return csl_data
+
+
+isbn_retrievers = [
+    get_isbn_citeproc_zotero,
+    get_isbn_citeproc_citoid,
+    get_isbn_citeproc_isbnlib,
+]
