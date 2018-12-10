@@ -61,7 +61,6 @@ def inspect_citation_identifier(citation):
     detected a string describing the issue is returned. Otherwise returns None.
     """
     source, identifier = citation.split(':', 1)
-    print(source, identifier)
 
     if source == 'pmid':
         # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmid
