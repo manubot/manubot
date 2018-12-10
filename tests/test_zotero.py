@@ -88,6 +88,9 @@ def test_search_query():
 def test_get_wikidata_citeproc():
     """
     Test metadata extraction from https://www.wikidata.org/wiki/Q50051684
+
+    Author ordering is not properly set by the Wikidata translator
+    https://github.com/zotero/translators/issues/1790
     """
     wikidata_id = 'Q50051684'
     csl_item = get_wikidata_citeproc(wikidata_id)
