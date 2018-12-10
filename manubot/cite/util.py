@@ -61,6 +61,7 @@ def inspect_citation_identifier(citation):
     detected a string describing the issue is returned. Otherwise returns None.
     """
     source, identifier = citation.split(':', 1)
+    print(source, identifier)
 
     if source == 'pmid':
         # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmid
@@ -102,7 +103,8 @@ def inspect_citation_identifier(citation):
                 f'identifier violates the ISBN syntax according to isbnlib v{isbnlib.__version__}'
             )
 
-    if source == 'wikidata:':
+    if source == 'wikidata':
+        # https://www.wikidata.org/wiki/Wikidata:Identifiers
         if not identifier.startswith('Q'):
             return (
                 'Wikidata item IDs must start with `Q`.'
@@ -112,6 +114,7 @@ def inspect_citation_identifier(citation):
                 'Identifier does not conform to the Wikidata regex. '
                 'Double check the entity ID.'
             )
+
     return None
 
 

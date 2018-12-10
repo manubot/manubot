@@ -101,7 +101,7 @@ def test_inspect_citation_identifier_passes(citation):
     ('pmid:PMC4304851', 'Should pmid:PMC4304851 switch the citation source to `pmcid`?'),
     ('isbn:1-339-91988-X', 'identifier violates the ISBN syntax'),
     ('wikidata:P212', 'item IDs must start with `Q`'),
-    ('wikidata:QABCD', 'does not conform to the Wikidata item ID regex'),
+    ('wikidata:QABCD', 'does not conform to the Wikidata regex'),
 ])
 def test_inspect_citation_identifier_fails(citation, contains):
     """
