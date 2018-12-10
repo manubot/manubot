@@ -12,10 +12,3 @@ def get_wikidata_citeproc(identifier):
     if not 'URL' in csl_item:
         csl_item['URL'] = url
     return csl_item
-
-
-if __name__ == '__main__':
-    import json
-    identifier = 'Q50051684'
-    csl_json = get_wikidata_citeproc(identifier)
-    print(json.dumps(csl_json, indent=2))
