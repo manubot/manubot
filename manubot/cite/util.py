@@ -10,6 +10,7 @@ citeproc_retrievers = {
     'pmcid': 'manubot.cite.pubmed.get_pmc_citeproc',
     'arxiv': 'manubot.cite.arxiv.get_arxiv_citeproc',
     'isbn': 'manubot.cite.isbn.get_isbn_citeproc',
+    'wikidata': 'manubot.cite.wikidata.get_wikidata_citeproc',
     'url': 'manubot.cite.url.get_url_citeproc',
 }
 
@@ -50,6 +51,7 @@ regexes = {
     'pmid': re.compile(r'[1-9][0-9]{0,7}'),
     'pmcid': re.compile(r'PMC[0-9]+'),
     'doi': re.compile(r'10\.[0-9]{4,9}/\S+'),
+    'wikidata': re.compile(r'Q[0-9]+'),
 }
 
 
@@ -98,6 +100,18 @@ def inspect_citation_identifier(citation):
         if fail:
             return (
                 f'identifier violates the ISBN syntax according to isbnlib v{isbnlib.__version__}'
+            )
+
+    if source == 'wikidata':
+        # https://www.wikidata.org/wiki/Wikidata:Identifiers
+        if not identifier.startswith('Q'):
+            return (
+                'Wikidata item IDs must start with `Q`.'
+            )
+        elif not regexes['wikidata'].fullmatch(identifier):
+            return (
+                'Identifier does not conform to the Wikidata regex. '
+                'Double check the entity ID.'
             )
 
     return None

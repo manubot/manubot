@@ -83,6 +83,8 @@ def test_standardize_citation(citation, expected):
     'arxiv:1407.3561',
     'isbn:978-1-339-91988-1',
     'isbn:1-339-91988-5',
+    'wikidata:Q1',
+    'wikidata:Q50051684',
     'url:https://peerj.com/articles/705/',
 ])
 def test_inspect_citation_identifier_passes(citation):
@@ -98,6 +100,8 @@ def test_inspect_citation_identifier_passes(citation):
     ('pmcid:25648772', 'must start with `PMC`'),
     ('pmid:PMC4304851', 'Should pmid:PMC4304851 switch the citation source to `pmcid`?'),
     ('isbn:1-339-91988-X', 'identifier violates the ISBN syntax'),
+    ('wikidata:P212', 'item IDs must start with `Q`'),
+    ('wikidata:QABCD', 'does not conform to the Wikidata regex'),
 ])
 def test_inspect_citation_identifier_fails(citation, contains):
     """
