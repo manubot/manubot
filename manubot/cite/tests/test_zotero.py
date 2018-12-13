@@ -5,8 +5,6 @@ from manubot.cite.zotero import (
     search_query,
     export_as_csl
 )
-from manubot.cite.url import get_url_citeproc_zotero
-from manubot.cite.wikidata import get_wikidata_citeproc
 
 
 def test_web_query():
@@ -57,13 +55,6 @@ def test_export_as_csl():
     assert csl_item['container-title'] == 'Big Think'
 
 
-def test_get_url_citeproc_zotero():
-    url = 'https://nyti.ms/1NuB0WJ'
-    csl_item = get_url_citeproc_zotero(url)
-    assert csl_item['title'] == 'Unraveling the Ties of Altitude, Oxygen and Lung Cancer'
-    assert csl_item['author'][0]['family'] == 'Johnson'
-
-
 def test_web_query_fails_with_multiple_results():
     url = 'https://www.ncbi.nlm.nih.gov/pubmed/?term=sci-hub%5Btitle%5D'
     with pytest.raises(ValueError, match='multiple results'):
@@ -83,39 +74,3 @@ def test_search_query():
     identifier = 'isbn:9781339919881'
     zotero_data = search_query(identifier)
     assert zotero_data[0]['title'].startswith('The hetnet awakens')
-
-
-def test_get_wikidata_citeproc():
-    """
-    Test metadata extraction from https://www.wikidata.org/wiki/Q50051684
-    """
-    wikidata_id = 'Q50051684'
-    csl_item = get_wikidata_citeproc(wikidata_id)
-    assert 'Sci-Hub provides access to nearly all scholarly literature' in csl_item['title']
-    assert csl_item['container-title'] == 'eLife'
-    assert csl_item['DOI'] == '10.7554/elife.32822'
-
-
-@pytest.mark.xfail(reason='https://github.com/zotero/translators/issues/1790')
-def test_get_wikidata_citeproc_author_ordering():
-    """
-    Test extraction of author ordering from https://www.wikidata.org/wiki/Q50051684.
-    Wikidata uses a "series ordinal" qualifier that must be considered or else author
-    ordering may be wrong.
-
-    Author ordering is not properly set by the Wikidata translator
-    https://github.com/zotero/translators/issues/1790
-    """
-    wikidata_id = 'Q50051684'
-    csl_item = get_wikidata_citeproc(wikidata_id)
-    family_names =[author['family'] for author in csl_item['author']]
-    print(family_names)
-    assert family_names == [
-        'Himmelstein',
-        'Romero',
-        'Levernier',
-        'Munro',
-        'McLaughlin',
-        'Greshake',  # actually should be Greshake Tzovaras
-        'Greene',
-    ]
