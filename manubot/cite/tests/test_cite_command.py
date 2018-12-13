@@ -85,3 +85,14 @@ def test_cite_command_render_stdout(args, expected):
     print(process.stdout)
     print(process.stderr)
     assert process.stdout == expected
+
+
+def teardown_module(module):
+    """
+    Avoid too many requests to NCBI E-Utils in the test_pubmed.py,
+    which is executed following this module. E-Utility requests are
+    capped at 3 per second, which is usually controled by _get_eutils_rate_limiter,
+    but this does not seem to work across test modules.
+    """
+    import time
+    time.sleep(1)
