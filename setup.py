@@ -41,7 +41,9 @@ setuptools.setup(
         'Programming Language :: Python :: 3.6',
     ],
 
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(
+        exclude=['tests']
+    ),
 
     # Specify python version
     python_requires='>=3.6',
