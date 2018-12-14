@@ -5,6 +5,10 @@ import subprocess
 
 import pytest
 
+from manubot.cite.cite_command import (
+    _get_pandoc_info,
+)
+
 
 def test_cite_command_empty():
     process = subprocess.run(
@@ -65,6 +69,8 @@ def test_cite_command_render_stdout(args, expected):
     Note that this test may fail if the Pandoc version is not recent enough to
     support --lua-filter (introduced in pandoc 2.0) or URLs for --csl.
     """
+    if 'html' in args and _get_pandoc_info()['pandoc version'] < (2, 3):
+        pytest.skip("Test HTML output assumes pandoc >= 2.3")
     expected = (
         pathlib.Path(__file__).parent
         .joinpath('cite-command-rendered', expected)
