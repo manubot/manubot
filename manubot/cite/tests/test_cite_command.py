@@ -66,10 +66,14 @@ def test_cite_command_file(tmpdir):
 )
 def test_cite_command_render_stdout(args, expected):
     """
-    Note that this test may fail if the Pandoc version is not recent enough to
-    support --lua-filter (introduced in pandoc 2.0) or URLs for --csl.
+    Test the stdout output of `manubot cite --render` with various formats.
+    The output is sensitive to the version of Pandoc used, so rather than fail when
+    the system's pandoc is outdated, the test is skipped. 
     """
-    if 'html' in args and _get_pandoc_info()['pandoc version'] < (2, 3):
+    pandoc_version = _get_pandoc_info()['pandoc version']
+    if pandoc_version < (2, 0):
+        pytest.skip("Test requires pandoc >= 2.0 to support --lua-filter and --csl=URL")
+    if 'html' in args and pandoc_version < (2, 3):
         pytest.skip("Test HTML output assumes pandoc >= 2.3")
     expected = (
         pathlib.Path(__file__).parent
