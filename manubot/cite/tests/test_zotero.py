@@ -16,9 +16,9 @@ def test_web_query():
       --data 'https://bigthink.com/neurobonkers/a-pirate-bay-for-science' \
       'https://translate.manubot.org/web'
     ```
-
-    translation-server is slow to get this URL, which can potentially cause
-    timeout issues. See https://github.com/zotero/translation-server/issues/63
+    An outdated installation of translation-server caused the web query for this
+    URL to be extraordinarily slow but has now been fixed. See
+    https://github.com/zotero/translation-server/issues/63
     """
     url = 'https://bigthink.com/neurobonkers/a-pirate-bay-for-science'
     zotero_data = web_query(url)
