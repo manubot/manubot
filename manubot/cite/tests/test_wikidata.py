@@ -1,5 +1,3 @@
-import pytest
-
 from manubot.cite.wikidata import get_wikidata_citeproc
 
 
@@ -14,14 +12,13 @@ def test_get_wikidata_citeproc():
     assert csl_item['DOI'] == '10.7554/elife.32822'
 
 
-@pytest.mark.xfail(reason='https://github.com/zotero/translators/issues/1790')
 def test_get_wikidata_citeproc_author_ordering():
     """
     Test extraction of author ordering from https://www.wikidata.org/wiki/Q50051684.
     Wikidata uses a "series ordinal" qualifier that must be considered or else author
     ordering may be wrong.
 
-    Author ordering is not properly set by the Wikidata translator
+    Author ordering was previously not properly set by the Wikidata translator
     https://github.com/zotero/translators/issues/1790
     """
     wikidata_id = 'Q50051684'
