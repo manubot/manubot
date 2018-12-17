@@ -7,7 +7,7 @@ from manubot.cite.citeproc import remove_jsonschema_errors
 
 directory = pathlib.Path(__file__).parent
 csl_instances = [
-    x.name for x in directory.glob('*-csl')
+    x.name for x in directory.glob('csl-json/*-csl')
 ]
 
 
@@ -25,7 +25,7 @@ def test_remove_jsonschema_errors(name):
     deleting any invalid fields. Do not use `manubot cite` to directly generate
     pruned.json as that also relies on remove_jsonschema_errors for pruning.
     """
-    data_dir = directory / name
+    data_dir = directory / 'csl-json' / name
     raw = json.loads(data_dir.joinpath('raw.json').read_text())
     expected = json.loads(data_dir.joinpath('pruned.json').read_text())
     pruned = remove_jsonschema_errors(raw)

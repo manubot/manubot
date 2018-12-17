@@ -1,8 +1,3 @@
-import json
-import pathlib
-import shutil
-import subprocess
-
 import pytest
 
 from manubot.cite.util import (
@@ -11,11 +6,6 @@ from manubot.cite.util import (
     get_citation_id,
     inspect_citation_identifier,
     standardize_citation,
-)
-from manubot.cite.pubmed import (
-    get_pmcid_and_pmid_for_doi,
-    get_pmid_for_doi,
-    get_pubmed_ids_for_doi,
 )
 
 
@@ -214,40 +204,6 @@ def test_citation_to_citeproc_pubmed_with_numeric_month():
     assert citeproc['issued']['date-parts'] == [[2018, 3, 15]]
 
 
-@pytest.mark.parametrize(('doi', 'pmid'), [
-    ('10.1098/rsif.2017.0387', '29618526'),  # in PubMed and PMC
-    ('10.1161/CIRCGENETICS.115.001181', '27094199'),  # in PubMed but not PMC
-    ('10.7717/peerj-cs.134', None),  # DOI in journal not indexed by PubMed
-    ('10.1161/CIRC', None),  # invalid DOI
-])
-def test_get_pmid_for_doi(doi, pmid):
-    output = get_pmid_for_doi(doi)
-    assert pmid == output
-
-
-@pytest.mark.parametrize(('doi', 'id_dict'), [
-    ('10.1098/rsif.2017.0387', {'PMCID': 'PMC5938574', 'PMID': '29618526'}),
-    ('10.7554/ELIFE.32822', {'PMCID': 'PMC5832410', 'PMID': '29424689'}),
-    ('10.1161/CIRCGENETICS.115.001181', {}),  # only in PubMed, not in PMC
-    ('10.7717/peerj.000', {}),  # Non-existent DOI
-    ('10.peerj.000', {}),  # malformed DOI
-])
-def test_get_pmcid_and_pmid_for_doi(doi, id_dict):
-    output = get_pmcid_and_pmid_for_doi(doi)
-    assert id_dict == output
-
-
-@pytest.mark.parametrize(('doi', 'id_dict'), [
-    ('10.1098/rsif.2017.0387', {'PMCID': 'PMC5938574', 'PMID': '29618526'}),
-    ('10.7554/ELIFE.32822', {'PMCID': 'PMC5832410', 'PMID': '29424689'}),
-    ('10.1161/CIRCGENETICS.115.001181', {'PMID': '27094199'}),  # only in PubMed, not in PMC
-    ('10.7717/peerj.000', {}),  # Non-existent DOI
-])
-def test_get_pubmed_ids_for_doi(doi, id_dict):
-    output = get_pubmed_ids_for_doi(doi)
-    assert id_dict == output
-
-
 def test_citation_to_citeproc_pubmed_book():
     """
     Extracting CSL metadata from books in PubMed is not supported.
@@ -263,112 +219,3 @@ def test_citation_to_citeproc_isbn():
     assert csl_item['type'] == 'book'
     assert csl_item['title'] == 'Complex analysis'
 
-
-@pytest.mark.xfail(reason="Quotation in title removed at some upstream point")
-def test_citation_to_citeproc_isbnlib_title_with_quotation_mark():
-    from manubot.cite.isbn import get_isbn_citeproc_isbnlib
-    csl_item = get_isbn_citeproc_isbnlib('9780312353780')
-    assert csl_item['type'] == 'book'
-    assert csl_item['title'].startswith('"F" is for Fugitive')
-
-
-def test_get_isbn_citeproc_citoid_weird_date():
-    """
-    isbn:9780719561023 has a date value of "(2004 printing)"
-    https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9780719561023
-    """
-    from manubot.cite.isbn import get_isbn_citeproc_citoid
-    csl_item = get_isbn_citeproc_citoid('9780719561023')
-    assert csl_item['issued']['date-parts'] == [[2004]]
-    assert csl_item['ISBN'] == '9780719561023'
-
-
-def test_get_isbn_citeproc_citoid_not_found():
-    """
-    isbn:9781439566039 is not found by Citoid:
-    https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9781439566039
-    """
-    from manubot.cite.isbn import get_isbn_citeproc_citoid
-    with pytest.raises(KeyError, match=r'Metadata for ISBN [0-9]{10,13} not found'):
-        get_isbn_citeproc_citoid('9781439566039')
-
-
-def test_cite_command_empty():
-    process = subprocess.run(
-        ['manubot', 'cite'],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        universal_newlines=True,
-    )
-    print(process.stderr)
-    assert process.returncode == 2
-    assert 'the following arguments are required: citations' in process.stderr
-
-
-def test_cite_command_stdout():
-    process = subprocess.run(
-        ['manubot', 'cite', 'arxiv:1806.05726v1'],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        universal_newlines=True,
-    )
-    print(process.stderr)
-    assert process.returncode == 0
-    csl, = json.loads(process.stdout)
-    assert csl['URL'] == 'https://arxiv.org/abs/1806.05726v1'
-
-
-def test_cite_command_file(tmpdir):
-    path = pathlib.Path(tmpdir) / 'csl-items.json'
-    process = subprocess.run(
-        ['manubot', 'cite', '--output', str(path), 'arxiv:1806.05726v1'],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-    print(process.stderr.decode())
-    assert process.returncode == 0
-    with path.open() as read_file:
-        csl, = json.load(read_file)
-    assert csl['URL'] == 'https://arxiv.org/abs/1806.05726v1'
-
-
-@pytest.mark.parametrize(['args', 'expected'], [
-    ([], 'references-plain.txt'),
-    (['--format', 'plain'], 'references-plain.txt'),
-    (['--format', 'markdown'], 'references-markdown.md'),
-    (['--format', 'html'], 'references-html.html'),
-    (['--format', 'jats'], 'references-jats.xml'),
-], ids=['no-args', '--format=plain', '--format=markdown', '--format=html', '--format=jats'])
-@pytest.mark.skipif(
-    not shutil.which('pandoc'),
-    reason='pandoc installation not found on system'
-)
-@pytest.mark.skipif(
-    not shutil.which('pandoc-citeproc'),
-    reason='pandoc-citeproc installation not found on system'
-)
-def test_cite_command_render_stdout(args, expected):
-    """
-    Note that this test may fail if the Pandoc version is not recent enough to
-    support --lua-filter (introduced in pandoc 2.0) or URLs for --csl.
-    """
-    expected = (
-        pathlib.Path(__file__).parent
-        .joinpath('cite-command-rendered', expected)
-        .read_text()
-    )
-    args = [
-        'manubot', 'cite', '--render',
-        '--csl', 'https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl',
-        'arxiv:1806.05726v1', 'doi:10.6084/m9.figshare.5346577.v1', 'pmid:29618526',
-    ] + args
-    process = subprocess.run(
-        args,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        universal_newlines=True,
-    )
-    print(' '.join(process.args))
-    print(process.stdout)
-    print(process.stderr)
-    assert process.stdout == expected

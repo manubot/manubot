@@ -5,7 +5,7 @@ import subprocess
 
 import pytest
 
-readme_path = pathlib.Path(__file__).parent.parent / 'README.md'
+readme_path = pathlib.Path(__file__).parent.parent.parent / 'README.md'
 readme = readme_path.read_text()
 
 template = r'''

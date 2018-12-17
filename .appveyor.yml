@@ -22,8 +22,8 @@ install:
 
 before_test:
   - "%CMD_IN_ENV% pip install pytest"
-  - cinst pandoc
-  - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\"
+  - choco install pandoc --version 2.5
+  - ps: $env:Path += ";C:\Program Files\Pandoc\"
 
 test_script:
-  - "%CMD_IN_ENV% pytest"
+  - "%CMD_IN_ENV% pytest -rs"
