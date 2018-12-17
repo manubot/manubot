@@ -71,10 +71,11 @@ def test_cite_command_render_stdout(args, expected):
     the system's pandoc is outdated, the test is skipped. 
     """
     pandoc_version = _get_pandoc_info()['pandoc version']
+    for output in 'markdown', 'html', 'jats':
+        if output in args and pandoc_version < (2, 5):
+            pytest.skip(f"Test {output} output assumes pandoc >= 2.5")
     if pandoc_version < (2, 0):
         pytest.skip("Test requires pandoc >= 2.0 to support --lua-filter and --csl=URL")
-    if 'html' in args and pandoc_version < (2, 3):
-        pytest.skip("Test HTML output assumes pandoc >= 2.3")
     expected = (
         pathlib.Path(__file__).parent
         .joinpath('cite-command-rendered', expected)
@@ -83,7 +84,7 @@ def test_cite_command_render_stdout(args, expected):
     args = [
         'manubot', 'cite', '--render',
         '--csl', 'https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl',
-        'arxiv:1806.05726v1', 'doi:10.6084/m9.figshare.5346577.v1', 'pmid:29618526',
+        'arxiv:1806.05726v1', 'doi:10.7717/peerj.338', 'pmid:29618526',
     ] + args
     process = subprocess.run(
         args,
