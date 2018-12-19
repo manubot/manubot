@@ -64,6 +64,27 @@ def test_web_query_fails_with_multiple_results():
         web_query(url)
 
 
+def test_web_query_returns_single_result():
+    """
+    Check that single=1 is specified for web queries. Without this, Zotero
+    can prefer translators that return multiple choices. This occurs with legacy
+    Manubot mansucripts who get assigned the DOI translator as top priority.
+    https://github.com/zotero/translation-server/issues/65
+    ```
+    curl \
+      --header "Content-Type: text/plain" \
+      --data 'https://greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/' \
+      'https://translate.manubot.org/web?single=1'
+    ```
+    """
+    url = 'https://greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/'
+    zotero_metadata = web_query(url)
+    assert isinstance(zotero_metadata, list)
+    assert len(zotero_metadata) == 1
+    zotero_metadata, = zotero_metadata
+    assert zotero_metadata['title'] == 'Sci-Hub provides access to nearly all scholarly literature'
+
+
 def test_search_query():
     """
     The translation-server search endpoint can be tested via curl:
