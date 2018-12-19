@@ -58,13 +58,7 @@ def test_export_as_csl():
     assert csl_item['container-title'] == 'Big Think'
 
 
-def test_web_query_fails_with_multiple_results():
-    url = 'https://www.ncbi.nlm.nih.gov/pubmed/?term=sci-hub%5Btitle%5D'
-    with pytest.raises(ValueError, match='multiple results'):
-        web_query(url)
-
-
-def test_web_query_returns_single_result():
+def test_web_query_returns_single_result_legacy_manubot_url():
     """
     Check that single=1 is specified for web queries. Without this, Zotero
     can prefer translators that return multiple choices. This occurs with legacy
@@ -83,6 +77,24 @@ def test_web_query_returns_single_result():
     assert len(zotero_metadata) == 1
     zotero_metadata, = zotero_metadata
     assert zotero_metadata['title'] == 'Sci-Hub provides access to nearly all scholarly literature'
+
+
+def test_web_query_returns_single_result_pubmed_url():
+    """
+    See test_web_query_returns_single_result_legacy_manubot_url docstring.
+    ```
+    curl \
+      --header "Content-Type: text/plain" \
+      --data 'https://www.ncbi.nlm.nih.gov/pubmed/?term=sci-hub%5Btitle%5D' \
+      'https://translate.manubot.org/web?single=1'
+    ```
+    """
+    url = 'https://www.ncbi.nlm.nih.gov/pubmed/?term=sci-hub%5Btitle%5D'
+    zotero_metadata = web_query(url)
+    assert isinstance(zotero_metadata, list)
+    assert len(zotero_metadata) == 1
+    zotero_metadata, = zotero_metadata
+    assert zotero_metadata['title'] == 'sci-hub[title] - PubMed - NCBI'
 
 
 def test_search_query():

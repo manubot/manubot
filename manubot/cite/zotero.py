@@ -26,14 +26,18 @@ def web_query(url):
         'User-Agent': get_manubot_user_agent(),
         'Content-Type': 'text/plain',
     }
+    params = {
+        'single': 1,
+    }
     api_url = f'{base_url}/web'
-    response = requests.post(api_url, headers=headers, data=str(url))
+    response = requests.post(api_url, params=params, headers=headers, data=str(url))
     try:
         zotero_data = response.json()
     except Exception as error:
         logging.warning(f'Error parsing web_query output as JSON for {url}:\n{response.text}')
         raise error
     if response.status_code == 300:
+        # When single=1 is specified, multiple results should never be returned
         logging.warning(
             f'web_query returned multiple results for {url}:\n' +
             json.dumps(zotero_data, indent=2)
