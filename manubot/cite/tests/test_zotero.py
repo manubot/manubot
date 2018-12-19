@@ -62,7 +62,7 @@ def test_web_query_returns_single_result_legacy_manubot_url():
     """
     Check that single=1 is specified for web queries. Without this, Zotero
     can prefer translators that return multiple choices. This occurs with legacy
-    Manubot mansucripts who get assigned the DOI translator as top priority.
+    Manubot mansucripts, which get assigned the DOI translator as top priority.
     https://github.com/zotero/translation-server/issues/65
     ```
     curl \
