@@ -66,7 +66,14 @@ def search_query(identifier):
 
 def export_as_csl(zotero_data):
     """
-    curl -d @items.json -H 'Content-Type: application/json' 'http://127.0.0.1:1969/export?format=bibtex'
+    Export Zotero JSON data to CSL JSON using a translation-server /export query.
+    Performs a similar query to the following curl command:
+    ```
+    curl --verbose \
+      --data @items.json \
+      --header 'Content-Type: application/json' \
+      'https://translate.manubot.org/export?format=csljson'
+    ```
     """
     api_url = f'{base_url}/export'
     params = {
@@ -76,6 +83,10 @@ def export_as_csl(zotero_data):
         'User-Agent': get_manubot_user_agent(),
     }
     response = requests.post(api_url, params=params, headers=headers, json=zotero_data)
+    if not response.ok:
+        message = f'export_as_csl: translation-server returned status code {response.status_code}'
+        logging.warning(f'{message} with the following output:\n{response.text}')
+        raise requests.HTTPError(message)
     try:
         csl_json = response.json()
     except Exception as error:
