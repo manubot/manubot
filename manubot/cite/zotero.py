@@ -43,6 +43,7 @@ def web_query(url):
             json.dumps(zotero_data, indent=2)
         )
         raise ValueError(f'multiple results for {url}')
+    zotero_data = _passthrough_zotero_data(zotero_data)
     return zotero_data
 
 
@@ -58,10 +59,27 @@ def search_query(identifier):
     }
     response = requests.post(api_url, headers=headers, data=str(identifier))
     try:
-        return response.json()
+        zotero_data = response.json()
     except Exception as error:
         logging.warning(f'Error parsing search_query output as JSON for {identifier}:\n{response.text}')
         raise error
+    zotero_data = _passthrough_zotero_data(zotero_data)
+    return zotero_data
+
+
+def _passthrough_zotero_data(zotero_data):
+    """
+    Address known issues with Zotero metadata.
+    Assumes zotero data should contain a single bibliographic record.
+    """
+    if not isinstance(zotero_data, list):
+        raise ValueError('_passthrough_zotero_data: zotero_data should be a list')
+    if len(zotero_data) > 1:
+        # Sometimes translation-server creates multiple data items for a single record.
+        # If so, keep only the parent item, and remove child items (such as notes).
+        # https://github.com/zotero/translation-server/issues/67
+        zotero_data = zotero_data[:1]
+    return zotero_data
 
 
 def export_as_csl(zotero_data):

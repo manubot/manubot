@@ -33,13 +33,12 @@ def test_get_isbn_citeproc_citoid_not_found():
         get_isbn_citeproc_citoid('9781439566039')
 
 
-@pytest.mark.xfail(reason='https://github.com/zotero/translation-server/issues/67')
 def test_get_isbn_citeproc_zotero_with_note_issue():
     """
     translation-server returns two metadata records for this ISBN.
-    The second has itemType=note and causes CSL export to fail.
+    The second has itemType=note and previousely caused CSL export to fail.
     https://github.com/zotero/translation-server/issues/67
     """
     isbn = '9780262517638'
     csl_item = get_isbn_citeproc_zotero(isbn)
-    assert csl_item['author'][0]['given'] == 'Suber'
+    assert csl_item['author'][0]['family'] == 'Suber'
