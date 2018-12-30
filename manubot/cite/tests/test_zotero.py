@@ -143,6 +143,8 @@ def test_search_query(identifier):
       --data '30571677' \
       'https://translate.manubot.org/search'
     ```
+    translation-server does not support PMIDs with a `pmid:` prefix.
+    https://github.com/zotero/translation-server/issues/71
     """
     zotero_data = search_query(identifier)
     assert zotero_data[0]['title'].startswith('Ten simple rules for documenting scientific software')
