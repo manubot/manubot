@@ -97,7 +97,7 @@ def test_web_query_returns_single_result_pubmed_url():
     assert zotero_metadata['title'] == 'sci-hub[title] - PubMed - NCBI'
 
 
-def test_search_query():
+def test_search_query_isbn():
     """
     The translation-server search endpoint can be tested via curl:
     ```
@@ -110,3 +110,40 @@ def test_search_query():
     identifier = 'isbn:9781339919881'
     zotero_data = search_query(identifier)
     assert zotero_data[0]['title'].startswith('The hetnet awakens')
+
+
+def test_search_query_arxiv():
+    """
+    Test citing https://arxiv.org/abs/1604.05363v1
+    The translation-server search endpoint can be tested via curl:
+    ```
+    curl --verbose \
+      --header "Content-Type: text/plain" \
+      --data 'arxiv:1604.05363v1' \
+      'https://translate.manubot.org/search'
+    ```
+    """
+    identifier = 'arxiv:1604.05363v1'
+    zotero_data = search_query(identifier)
+    assert zotero_data[0]['title'] == 'Comparing Published Scientific Journal Articles to Their Pre-print Versions'
+    assert zotero_data[0]['creators'][-1]['firstName'] == 'Todd'
+    assert zotero_data[0]['date'] == '2016-04-18'
+
+
+@pytest.mark.parametrize('identifier', [
+    '30571677',  # https://www.ncbi.nlm.nih.gov/pubmed/30571677
+    'doi:10.1371/journal.pcbi.1006561',  # https://doi.org/10.1371/journal.pcbi.1006561
+])
+def test_search_query(identifier):
+    """
+    The translation-server search endpoint can be tested via curl:
+    ```
+    curl --verbose \
+      --header "Content-Type: text/plain" \
+      --data '30571677' \
+      'https://translate.manubot.org/search'
+    ```
+    """
+    zotero_data = search_query(identifier)
+    assert zotero_data[0]['title'].startswith('Ten simple rules for documenting scientific software')
+    assert zotero_data[0]['creators'][0]['lastName'] == 'Lee'
