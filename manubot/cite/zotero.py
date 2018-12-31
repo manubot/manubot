@@ -26,19 +26,24 @@ def web_query(url):
         'User-Agent': get_manubot_user_agent(),
         'Content-Type': 'text/plain',
     }
+    params = {
+        'single': 1,
+    }
     api_url = f'{base_url}/web'
-    response = requests.post(api_url, headers=headers, data=str(url))
+    response = requests.post(api_url, params=params, headers=headers, data=str(url))
     try:
         zotero_data = response.json()
     except Exception as error:
         logging.warning(f'Error parsing web_query output as JSON for {url}:\n{response.text}')
         raise error
     if response.status_code == 300:
+        # When single=1 is specified, multiple results should never be returned
         logging.warning(
             f'web_query returned multiple results for {url}:\n' +
             json.dumps(zotero_data, indent=2)
         )
         raise ValueError(f'multiple results for {url}')
+    zotero_data = _passthrough_zotero_data(zotero_data)
     return zotero_data
 
 
@@ -54,15 +59,39 @@ def search_query(identifier):
     }
     response = requests.post(api_url, headers=headers, data=str(identifier))
     try:
-        return response.json()
+        zotero_data = response.json()
     except Exception as error:
         logging.warning(f'Error parsing search_query output as JSON for {identifier}:\n{response.text}')
         raise error
+    zotero_data = _passthrough_zotero_data(zotero_data)
+    return zotero_data
+
+
+def _passthrough_zotero_data(zotero_data):
+    """
+    Address known issues with Zotero metadata.
+    Assumes zotero data should contain a single bibliographic record.
+    """
+    if not isinstance(zotero_data, list):
+        raise ValueError('_passthrough_zotero_data: zotero_data should be a list')
+    if len(zotero_data) > 1:
+        # Sometimes translation-server creates multiple data items for a single record.
+        # If so, keep only the parent item, and remove child items (such as notes).
+        # https://github.com/zotero/translation-server/issues/67
+        zotero_data = zotero_data[:1]
+    return zotero_data
 
 
 def export_as_csl(zotero_data):
     """
-    curl -d @items.json -H 'Content-Type: application/json' 'http://127.0.0.1:1969/export?format=bibtex'
+    Export Zotero JSON data to CSL JSON using a translation-server /export query.
+    Performs a similar query to the following curl command:
+    ```
+    curl --verbose \
+      --data @items.json \
+      --header 'Content-Type: application/json' \
+      'https://translate.manubot.org/export?format=csljson'
+    ```
     """
     api_url = f'{base_url}/export'
     params = {
@@ -72,6 +101,10 @@ def export_as_csl(zotero_data):
         'User-Agent': get_manubot_user_agent(),
     }
     response = requests.post(api_url, params=params, headers=headers, json=zotero_data)
+    if not response.ok:
+        message = f'export_as_csl: translation-server returned status code {response.status_code}'
+        logging.warning(f'{message} with the following output:\n{response.text}')
+        raise requests.HTTPError(message)
     try:
         csl_json = response.json()
     except Exception as error:
