@@ -196,6 +196,8 @@ def get_metadata_and_variables(args):
 
     # Process authors metadata
     authors = metadata.pop('author_info', [])
+    if authors is None:
+        authors = []
     metadata['author-meta'] = [author['name'] for author in authors]
     variables['authors'] = authors
     variables = add_author_affiliations(variables)
