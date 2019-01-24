@@ -36,10 +36,13 @@ citation_pattern = re.compile(
 
 def standardize_citation(citation):
     """
-    Standardize citation idenfiers based on their source
+    Standardize citation identifiers based on their source
     """
     source, identifier = citation.split(':', 1)
     if source == 'doi':
+        if identifier.startswith('10/'):
+            from manubot.cite.doi import expand_short_doi
+            identifier = expand_short_doi(identifier)
         identifier = identifier.lower()
     if source == 'isbn':
         from isbnlib import to_isbn13
@@ -51,6 +54,7 @@ regexes = {
     'pmid': re.compile(r'[1-9][0-9]{0,7}'),
     'pmcid': re.compile(r'PMC[0-9]+'),
     'doi': re.compile(r'10\.[0-9]{4,9}/\S+'),
+    'shortdoi': re.compile(r'10/[a-zA-Z0-9]+'),
     'wikidata': re.compile(r'Q[0-9]+'),
 }
 
@@ -84,13 +88,13 @@ def inspect_citation_identifier(citation):
 
     if source == 'doi':
         # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
-        if not identifier.startswith('10.'):
+        if not identifier.startswith('10.') and not identifier.startswith('10/'):
             return (
-                'DOIs must start with `10.`.'
+                'DOIs must start with `10.` (or `10/` for shortDOIs).'
             )
-        elif not regexes['doi'].fullmatch(identifier):
+        elif not regexes['doi'].fullmatch(identifier) and not regexes['shortdoi'].fullmatch(identifier):
             return (
-                'Identifier does not conform to the DOI regex. '
+                'Identifier does not conform to either the DOI or shortDOI regexes. '
                 'Double check the DOI.'
             )
 

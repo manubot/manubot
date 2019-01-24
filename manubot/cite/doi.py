@@ -14,7 +14,7 @@ def expand_short_doi(short_doi):
     """
     if not short_doi.startswith('10/'):
         raise ValueError(f'shortDOIs start with `10/`, but expand_short_doi received: {short_doi}')
-    url = f'https://doi.org/api/handles/{short_doi}'
+    url = f'https://doi.org/api/handles/{short_doi.lower()}'
     params = {
         "type": "HS_ALIAS",
     }
@@ -32,7 +32,7 @@ def expand_short_doi(short_doi):
     for value in values:
         if value.get('type') == 'HS_ALIAS':
             doi = value['data']['value']
-            return doi
+            return doi.lower()
     raise RuntimeError(
         f'HS_ALIAS value not found by expand_short_doi("{short_doi}")\n'
         f'The following JSON was retrieved from {response.url}:\n'
