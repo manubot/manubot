@@ -87,15 +87,23 @@ def inspect_citation_identifier(citation):
             )
 
     if source == 'doi':
-        # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
-        if not identifier.startswith('10.') and not identifier.startswith('10/'):
+        if identifier.startswith('10.'):
+            # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
+            if not regexes['doi'].fullmatch(identifier):
+                return (
+                    'Identifier does not conform to the DOI regex. '
+                    'Double check the DOI.'
+                )
+        elif identifier.startswith('10/'):
+            # shortDOI, see http://shortdoi.org
+            if not regexes['shortdoi'].fullmatch(identifier):
+                return (
+                    'Identifier does not conform to the shortDOI regex. '
+                    'Double check the shortDOI.'
+                )
+        else:
             return (
                 'DOIs must start with `10.` (or `10/` for shortDOIs).'
-            )
-        elif not regexes['doi'].fullmatch(identifier) and not regexes['shortdoi'].fullmatch(identifier):
-            return (
-                'Identifier does not conform to either the DOI or shortDOI regexes. '
-                'Double check the DOI.'
             )
 
     if source == 'isbn':

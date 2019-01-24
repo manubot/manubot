@@ -89,7 +89,7 @@ def test_inspect_citation_identifier_passes(citation):
 
 @pytest.mark.parametrize(['citation', 'contains'], [
     ('doi:10.771/peerj.705', 'Double check the DOI'),
-    ('doi:10/b6v_nmd', 'Double check the DOI'),
+    ('doi:10/b6v_nmd', 'Double check the shortDOI'),
     ('doi:7717/peerj.705', 'must start with `10.`'),
     ('doi:b6vnmd', 'must start with `10.`'),
     ('pmcid:25648772', 'must start with `PMC`'),
