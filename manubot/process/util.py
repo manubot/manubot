@@ -229,7 +229,7 @@ def get_citation_df(args, text):
         {'string': get_citation_strings(text)}
     )
     if args.citation_tags_path.is_file():
-        tag_df = pandas.read_table(args.citation_tags_path)
+        tag_df = pandas.read_csv(args.citation_tags_path, sep='\t')
         na_rows_df = tag_df[tag_df.isnull().any(axis='columns')]
         if not na_rows_df.empty:
             logging.error(
@@ -238,7 +238,7 @@ def get_citation_df(args, text):
                 'This error can be caused by using spaces rather than tabs to delimit fields.\n'
                 'Proceeding to reread TSV with delim_whitespace=True.'
             )
-            tag_df = pandas.read_table(args.citation_tags_path, delim_whitespace=True)
+            tag_df = pandas.read_csv(args.citation_tags_path, delim_whitespace=True)
         tag_df['string'] = '@tag:' + tag_df.tag
         for citation in tag_df.citation:
             is_valid_citation_string('@' + citation, allow_raw=True)
