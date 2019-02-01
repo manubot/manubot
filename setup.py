@@ -19,7 +19,7 @@ setuptools.setup(
     # Package details
     name='manubot',
     version=version,
-    url='https://github.com/greenelab/manubot',
+    url='https://github.com/manubot/manubot',
     description='Manuscript bot for automated scientific publishing',
     long_description_content_type='text/markdown',
     long_description=long_description,

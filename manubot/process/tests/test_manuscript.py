@@ -30,12 +30,12 @@ def test_replace_citations_strings_with_ids():
     > our new Manubot tool [@cTN2TQIL-rootstock; @cTN2TQIL] for automating
     manuscript generation.
 
-    See https://github.com/greenelab/manubot/issues/9
+    See https://github.com/manubot/manubot/issues/9
     """
     string_to_id = {
-        '@url:https://github.com/greenelab/manubot': 'cTN2TQIL',
+        '@url:https://github.com/manubot/manubot': 'mNMayr3f',
         '@url:https://github.com/greenelab/manubot-rootstock': '1B7Y2HVtw',
     }
-    text = 'our new Manubot tool [@url:https://github.com/greenelab/manubot-rootstock; @url:https://github.com/greenelab/manubot] for automating manuscript generation.'
+    text = 'our new Manubot tool [@url:https://github.com/greenelab/manubot-rootstock; @url:https://github.com/manubot/manubot] for automating manuscript generation.'
     text = replace_citations_strings_with_ids(text, string_to_id)
-    assert '[@1B7Y2HVtw; @cTN2TQIL]' in text
+    assert '[@1B7Y2HVtw; @mNMayr3f]' in text

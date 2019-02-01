@@ -15,7 +15,7 @@ def get_pmc_citeproc(pmcid):
     DOI, using the NCBI Citation Exporter API.
 
     https://api.ncbi.nlm.nih.gov/lit/ctxp
-    https://github.com/greenelab/manubot/issues/21
+    https://github.com/manubot/manubot/issues/21
     https://twitter.com/dhimmel/status/1061787168820092929
     """
     assert pmcid.startswith('PMC')
@@ -73,7 +73,7 @@ def get_pubmed_citeproc(pmid):
     """
     Query NCBI E-Utilities to create CSL Items for PubMed IDs.
 
-    https://github.com/greenelab/manubot/issues/21
+    https://github.com/manubot/manubot/issues/21
     https://github.com/ncbi/citation-exporter/issues/3#issuecomment-355313143
     """
     pmid = str(pmid)
@@ -302,7 +302,7 @@ def get_pmid_for_doi(doi):
 def get_pubmed_ids_for_doi(doi):
     """
     Return a dictionary with PMCID and PMID, if they exist, for the specified
-    DOI. See https://github.com/greenelab/manubot/issues/45.
+    DOI. See https://github.com/manubot/manubot/issues/45.
     """
     pubmed_ids = get_pmcid_and_pmid_for_doi(doi)
     if not pubmed_ids:
