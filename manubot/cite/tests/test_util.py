@@ -196,7 +196,7 @@ def test_citation_to_citeproc_pubmed_with_numeric_month():
     Generated from XML returned by
     https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29028984&rettype=full
 
-    See https://github.com/greenelab/manubot/issues/69
+    See https://github.com/manubot/manubot/issues/69
     """
     citation = 'pmid:29028984'
     citeproc = citation_to_citeproc(citation)

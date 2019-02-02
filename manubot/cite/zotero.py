@@ -4,7 +4,7 @@ https://github.com/zotero/translation-server
 
 The Manubot team currently hosts a public translation server at
 https://translate.manubot.org. More information on this instance at
-https://github.com/greenelab/manubot/issues/82.
+https://github.com/manubot/manubot/issues/82.
 """
 
 import json

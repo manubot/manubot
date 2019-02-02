@@ -1,7 +1,7 @@
 # The manuscript bot for automated scholarly publishing
 
-[![Travis Linux Build Status](https://travis-ci.org/greenelab/manubot.svg?branch=master)](https://travis-ci.org/greenelab/manubot)
-[![AppVeyor Windows Build Status](https://ci.appveyor.com/api/projects/status/u51tva6rmuk39xsc/branch/master?svg=true)](https://ci.appveyor.com/project/greenelab/manubot/branch/master)
+[![Travis Linux Build Status](https://travis-ci.com/manubot/manubot.svg?branch=master)](https://travis-ci.com/manubot/manubot)
+[![AppVeyor Windows Build Status](https://ci.appveyor.com/api/projects/status/f20hvc6si5uiqd7e/branch/master?svg=true)](https://ci.appveyor.com/project/manubot/manubot/branch/master)
 
 The Manubot Python package prepares scholarly manuscripts for Pandoc consumption.
 It automates and scripts several aspects of manuscript creation, including fetching bibliographic metadata for citations.
@@ -152,7 +152,7 @@ Install the version specified by a git commit hash using:
 
 ```sh
 COMMIT=33e512d21218263423de5f0d127aac4f8635468f
-pip install git+https://github.com/greenelab/manubot@$COMMIT
+pip install git+https://github.com/manubot/manubot@$COMMIT
 ```
 
 Use the `--upgrade` argument to reinstall `manubot` with a different commit hash.
