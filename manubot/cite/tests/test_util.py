@@ -50,6 +50,9 @@ def test_get_citation_id(standard_citation, expected):
 @pytest.mark.parametrize("citation,expected", [
     ('doi:10.5061/DRYAD.q447c/1', 'doi:10.5061/dryad.q447c/1'),
     ('doi:10.5061/dryad.q447c/1', 'doi:10.5061/dryad.q447c/1'),
+    ('doi:10/b6vnmd', 'doi:10.1016/s0933-3657(96)00367-3'),
+    ('doi:10/B6VNMD', 'doi:10.1016/s0933-3657(96)00367-3'),
+    ('doi:10/xxxxxxxxxxxxxYY', 'doi:10/xxxxxxxxxxxxxyy'),  # passthrough non-existent shortDOI
     ('pmid:24159271', 'pmid:24159271'),
     ('isbn:1339919885', 'isbn:9781339919881'),
     ('isbn:1-339-91988-5', 'isbn:9781339919881'),
@@ -60,7 +63,7 @@ def test_get_citation_id(standard_citation, expected):
 ])
 def test_standardize_citation(citation, expected):
     """
-    Standardize idenfiers based on their source
+    Standardize identifiers based on their source
     """
     output = standardize_citation(citation)
     assert output == expected
@@ -68,6 +71,7 @@ def test_standardize_citation(citation, expected):
 
 @pytest.mark.parametrize('citation', [
     'doi:10.7717/peerj.705',
+    'doi:10/b6vnmd',
     'pmcid:PMC4304851',
     'pmid:25648772',
     'arxiv:1407.3561',
@@ -86,7 +90,9 @@ def test_inspect_citation_identifier_passes(citation):
 
 @pytest.mark.parametrize(['citation', 'contains'], [
     ('doi:10.771/peerj.705', 'Double check the DOI'),
+    ('doi:10/b6v_nmd', 'Double check the shortDOI'),
     ('doi:7717/peerj.705', 'must start with `10.`'),
+    ('doi:b6vnmd', 'must start with `10.`'),
     ('pmcid:25648772', 'must start with `PMC`'),
     ('pmid:PMC4304851', 'Should pmid:PMC4304851 switch the citation source to `pmcid`?'),
     ('isbn:1-339-91988-X', 'identifier violates the ISBN syntax'),

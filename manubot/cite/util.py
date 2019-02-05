@@ -1,3 +1,4 @@
+import functools
 import logging
 import re
 
@@ -34,16 +35,33 @@ citation_pattern = re.compile(
     r'(?<!\w)@[a-zA-Z0-9][\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/]')
 
 
+@functools.lru_cache(maxsize=5_000)
 def standardize_citation(citation):
     """
-    Standardize citation idenfiers based on their source
+    Standardize citation identifiers based on their source
     """
     source, identifier = citation.split(':', 1)
+
     if source == 'doi':
+        if identifier.startswith('10/'):
+            from manubot.cite.doi import expand_short_doi
+            try:
+                identifier = expand_short_doi(identifier)
+            except Exception as error:
+                # If DOI shortening fails, return the unshortened DOI.
+                # DOI metadata lookup will eventually fail somewhere with
+                # appropriate error handling, as opposed to here.
+                logging.error(
+                    f'Error in expand_short_doi for {identifier} '
+                    f'due to a {error.__class__.__name__}:\n{error}'
+                )
+                logging.info(error, exc_info=True)
         identifier = identifier.lower()
+
     if source == 'isbn':
         from isbnlib import to_isbn13
         identifier = to_isbn13(identifier)
+
     return f'{source}:{identifier}'
 
 
@@ -51,6 +69,7 @@ regexes = {
     'pmid': re.compile(r'[1-9][0-9]{0,7}'),
     'pmcid': re.compile(r'PMC[0-9]+'),
     'doi': re.compile(r'10\.[0-9]{4,9}/\S+'),
+    'shortdoi': re.compile(r'10/[a-zA-Z0-9]+'),
     'wikidata': re.compile(r'Q[0-9]+'),
 }
 
@@ -83,15 +102,23 @@ def inspect_citation_identifier(citation):
             )
 
     if source == 'doi':
-        # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
-        if not identifier.startswith('10.'):
+        if identifier.startswith('10.'):
+            # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
+            if not regexes['doi'].fullmatch(identifier):
+                return (
+                    'Identifier does not conform to the DOI regex. '
+                    'Double check the DOI.'
+                )
+        elif identifier.startswith('10/'):
+            # shortDOI, see http://shortdoi.org
+            if not regexes['shortdoi'].fullmatch(identifier):
+                return (
+                    'Identifier does not conform to the shortDOI regex. '
+                    'Double check the shortDOI.'
+                )
+        else:
             return (
-                'DOIs must start with `10.`.'
-            )
-        elif not regexes['doi'].fullmatch(identifier):
-            return (
-                'Identifier does not conform to the DOI regex. '
-                'Double check the DOI.'
+                'DOIs must start with `10.` (or `10/` for shortDOIs).'
             )
 
     if source == 'isbn':
