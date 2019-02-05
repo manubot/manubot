@@ -1,3 +1,4 @@
+import functools
 import logging
 import re
 
@@ -34,6 +35,7 @@ citation_pattern = re.compile(
     r'(?<!\w)@[a-zA-Z0-9][\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/]')
 
 
+@functools.lru_cache(maxsize=5_000)
 def standardize_citation(citation):
     """
     Standardize citation identifiers based on their source
