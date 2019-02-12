@@ -146,7 +146,7 @@ def test_citation_to_citeproc_pmc():
     citeproc = citation_to_citeproc(citation)
     assert citeproc['id'] == 'RoOhUFKU'
     assert citeproc['URL'] == 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3041534/'
-    assert citeproc['container-title-short'] == 'AMIA Jt Summits Transl Sci Proc'
+    assert citeproc['container-title-short'] == 'Summit Transl Bioinform'
     assert citeproc['title'] == 'Secondary Use of EHR: Data Quality Issues and Informatics Opportunities'
     authors = citeproc['author']
     assert authors[0]['family'] == 'Botsis'
@@ -164,7 +164,7 @@ def test_citation_to_citeproc_pubmed_1():
     assert citeproc['id'] == 'y9ONtSZ9'
     assert citeproc['type'] == 'article-journal'
     assert citeproc['URL'] == 'https://www.ncbi.nlm.nih.gov/pubmed/21347133'
-    assert citeproc['container-title'] == 'AMIA Joint Summits on Translational Science proceedings. AMIA Joint Summits on Translational Science'
+    assert citeproc['container-title'] == 'Summit on translational bioinformatics'
     assert citeproc['title'] == 'Secondary Use of EHR: Data Quality Issues and Informatics Opportunities.'
     assert citeproc['issued']['date-parts'] == [[2010, 3, 1]]
     authors = citeproc['author']
