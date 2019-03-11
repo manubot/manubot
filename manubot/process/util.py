@@ -221,13 +221,32 @@ def get_metadata_and_variables(args):
     return metadata, variables
 
 
+def get_citation_df_from_strings(citation_strings, tag_to_string={}):
+    """
+    Create citation_df for a list of citation_strings and a mapping of
+    citation tag to string.
+    """
+    citation_df = pandas.DataFrame(
+        {'string': list(citation_strings)}
+    ).drop_duplicates()
+    tag_to_string = {f"@tag:{k}": v for k, v in tag_to_string.items()}
+    citation_df['citation'] = citation_df['string'].map(tag_to_string)
+    citation_df.citation.fillna(citation_df.string.astype(str).str.lstrip('@'), inplace=True)
+    for citation in citation_df.citation:
+        is_valid_citation_string('@' + citation, allow_raw=True)
+    citation_df['standard_citation'] = citation_df.citation.map(standardize_citation)
+    citation_df['citation_id'] = citation_df.standard_citation.map(get_citation_id)
+    citation_df = citation_df.sort_values(['standard_citation', 'citation'])
+    check_collisions(citation_df)
+    check_multiple_citation_strings(citation_df)
+    return citation_df
+
+
 def get_citation_df(args, text):
     """
     Generate citation_df and save it to 'citations.tsv'.
     """
-    citation_df = pandas.DataFrame(
-        {'string': get_citation_strings(text)}
-    )
+    citation_strings = get_citation_strings(text)
     if args.citation_tags_path.is_file():
         tag_df = pandas.read_csv(args.citation_tags_path, sep='\t')
         na_rows_df = tag_df[tag_df.isnull().any(axis='columns')]
@@ -239,20 +258,11 @@ def get_citation_df(args, text):
                 'Proceeding to reread TSV with delim_whitespace=True.'
             )
             tag_df = pandas.read_csv(args.citation_tags_path, delim_whitespace=True)
-        tag_df['string'] = '@tag:' + tag_df.tag
-        for citation in tag_df.citation:
-            is_valid_citation_string('@' + citation, allow_raw=True)
-        citation_df = citation_df.merge(tag_df[['string', 'citation']], how='left')
+        tag_to_string = dict(zip(tag_df['tag'], tag_df['citation']))
     else:
-        citation_df['citation'] = None
+        tag_to_string = {}
         logging.info(f'missing {args.citation_tags_path} file: no citation tags set')
-    citation_df.citation.fillna(citation_df.string.astype(str).str.lstrip('@'), inplace=True)
-    citation_df['standard_citation'] = citation_df.citation.map(standardize_citation)
-    citation_df['citation_id'] = citation_df.standard_citation.map(get_citation_id)
-    citation_df = citation_df.sort_values(['standard_citation', 'citation'])
-    citation_df.to_csv(args.citations_path, sep='\t', index=False)
-    check_collisions(citation_df)
-    check_multiple_citation_strings(citation_df)
+    citation_df = get_citation_df_from_strings(citation_strings, tag_to_string)
     return citation_df
 
 

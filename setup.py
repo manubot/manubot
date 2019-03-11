@@ -56,6 +56,7 @@ setuptools.setup(
         'jsonref',
         'jsonschema',
         'pandas',
+        'panflute',
         'pybase62',
         'pyyaml',
         'ratelimiter',
