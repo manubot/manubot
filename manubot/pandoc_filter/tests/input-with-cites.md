@@ -7,3 +7,8 @@ This is a sentence with many citations [@pmid:20170387; @doi:10.7717/peerj.705].
 ```markdown
 Citations in code blocks should not be modified [@pmid:20170387].
 ```
+
+## References
+
+::: {#refs}
+:::

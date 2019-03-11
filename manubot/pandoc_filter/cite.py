@@ -2,9 +2,12 @@
 Preliminary testing command:
 
 pandoc \
-  --filter=manubot/pandoc_filter/cite.py \
-  --to=markdown \
+  --to=plain \
+  --standalone \
+  --filter=pandoc-manubot-cite \
+  --filter pandoc-citeproc \
   manubot/pandoc_filter/tests/input-with-cites.md
+
 
 pandoc \
   --to=json \
@@ -19,12 +22,14 @@ http://scorreia.com/software/panflute/code.html#panflute.elements.Citation
 """
 import argparse
 import json
+import logging
 import sys
 
 # import pandocfilters
 import panflute
 
 from manubot.cite.util import (
+    citation_to_citeproc,
     is_valid_citation_string,
 )
 from manubot.process.util import (
@@ -88,13 +93,23 @@ def process_citations(doc):
     global_variables['citation_id_mapper'] = dict(zip(
         (f'@{x}' for x in citation_df['string']), citation_df['citation_id']))
     doc.walk(_citation_to_id_action)
+    csl_items = doc.get_metadata('references', default=[], builtin=True)
+    for citation in citation_df.standard_citation.unique():
+        citeproc = citation_to_citeproc(citation)
+        try:
+            citeproc = citation_to_citeproc(citation)
+            csl_items.append(citeproc)
+        except Exception:
+            logging.exception(f'Citeproc retrieval failure for {citation}')
+    doc.metadata['references'] = csl_items
+
 
 def main():
     args = parse_args()
     panflute.debug(sys.argv)
     doc = panflute.load(args.input)
     process_citations(doc)
-    panflute.debug(global_variables)
+    #panflute.debug(global_variables)
     panflute.dump(doc, args.output)
 
 
