@@ -32,7 +32,7 @@ def test_cite_pandoc_filter():
     expected = directory.joinpath('output-with-cites.md').read_text()
     args = [
         'pandoc',
-        '--filter', str(directory.parent.joinpath('cite.py').resolve()),
+        '--filter', 'pandoc-manubot-cite',
         '--to', 'markdown',
     ]
     process = subprocess.run(
