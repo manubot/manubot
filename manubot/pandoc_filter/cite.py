@@ -33,7 +33,9 @@ from manubot.cite.util import (
     is_valid_citation_string,
 )
 from manubot.process.util import (
-    get_citation_df_from_strings,
+    get_citation_df,
+    generate_csl_items,
+    read_manual_references,
 )
 
 
@@ -88,19 +90,16 @@ def process_citations(doc):
         citations_strings,
     ))
     global_variables['citation_strings'] = citations_strings
-    citation_df = get_citation_df_from_strings(citations_strings)
+    tag_to_string = doc.get_metadata('citation-tags', default={}, builtin=True)
+    citation_df = get_citation_df(citations_strings, tag_to_string)
     global_variables['citation_df'] = citation_df
     global_variables['citation_id_mapper'] = dict(zip(
         (f'@{x}' for x in citation_df['string']), citation_df['citation_id']))
     doc.walk(_citation_to_id_action)
-    csl_items = doc.get_metadata('references', default=[], builtin=True)
-    for citation in citation_df.standard_citation.unique():
-        citeproc = citation_to_citeproc(citation)
-        try:
-            citeproc = citation_to_citeproc(citation)
-            csl_items.append(citeproc)
-        except Exception:
-            logging.exception(f'Citeproc retrieval failure for {citation}')
+    manual_refs = doc.get_metadata('references', default=[], builtin=True)
+    manual_refs = read_manual_references(path=None, extra_csl_items=manual_refs)
+    citations = citation_df.standard_citation.unique()
+    csl_items = generate_csl_items(citations, manual_refs)
     doc.metadata['references'] = csl_items
 
 
