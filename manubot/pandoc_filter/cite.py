@@ -23,6 +23,7 @@ http://scorreia.com/software/panflute/code.html#panflute.elements.Citation
 import argparse
 import json
 import logging
+import subprocess
 import sys
 
 # import pandocfilters
@@ -82,7 +83,55 @@ def _citation_to_id_action(elem, doc):
     return None
 
 
+def load_bibliography(path=None, text=None, input_format=None):
+    """
+    Convert a bibliography to CSL JSON using `pandoc-citeproc --bib2json`.
+    Accepts either a bibliography path or text (string). If supplying text,
+    pandoc-citeproc will likely require input_format be specified.
+    The CSL JSON is returned as Python objects.
+    """
+    use_text = path is None
+    use_path = text is None
+    if not (use_text ^ use_path):
+        raise ValueError('load_bibliography: specify either path or text but not both.')
+    args = [
+        'pandoc-citeproc', '--bib2json',
+    ]
+    if input_format:
+        args.extend(['--format', input_format])
+    run_kwargs = {}
+    if use_path:
+        args.append(str(path))
+    if use_text:
+        run_kwargs['input'] = text
+    logging.info('call_pandoc subprocess args:\n' + ' '.join(args))
+    process = subprocess.run(
+        args,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+        **run_kwargs,
+    )
+    logging.info(f'captured stderr:\n{process.stderr}')
+    process.check_returncode()
+    try:
+        csl_json = json.loads(process.stdout)
+    except Exception:
+        logging.exception(f'Error parsing bib2json output as JSON:\n{process.stdout}')
+        csl_json = {}
+    return csl_json
+
+
 def process_citations(doc):
+    """
+    Apply citation-by-identifier to a Python object representation of
+    Pandoc's Abstract Syntax Tree.
+
+    The following Pandoc metadata fields are considered (NotImplemented):
+    --bibliography (use to define reference metadata manually)
+    --citation-tags (use to define tags for cite-by-id citations)
+    """
+
     doc.walk(_get_citation_string_action)
     citations_strings = set(global_variables['citation_strings'])
     citations_strings = sorted(filter(
@@ -108,7 +157,6 @@ def main():
     panflute.debug(sys.argv)
     doc = panflute.load(args.input)
     process_citations(doc)
-    #panflute.debug(global_variables)
     panflute.dump(doc, args.output)
 
 
