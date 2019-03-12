@@ -128,8 +128,10 @@ def process_citations(doc):
     Pandoc's Abstract Syntax Tree.
 
     The following Pandoc metadata fields are considered (NotImplemented):
-    --bibliography (use to define reference metadata manually)
-    --citation-tags (use to define tags for cite-by-id citations)
+    - bibliography (use to define reference metadata manually)
+    - manubot-citation-tags (use to define tags for cite-by-id citations)
+    - manubot-requests-cache-path
+    - manubot-clear-requests-cache
     """
 
     doc.walk(_get_citation_string_action)
