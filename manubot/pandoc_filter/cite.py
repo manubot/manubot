@@ -32,6 +32,7 @@ import panflute
 from manubot.cite.util import (
     citation_to_citeproc,
     is_valid_citation_string,
+    csl_item_set_standard_citation,
 )
 from manubot.process.util import (
     get_citation_df,
@@ -120,39 +121,6 @@ def load_bibliography(path=None, text=None, input_format=None):
         logging.exception(f'Error parsing bib2json output as JSON:\n{process.stdout}')
         csl_json = []
     return csl_json
-
-
-def csl_item_set_standard_citation(csl_item):
-    """
-    Modify csl_item to set standard_citation. If standard_citation is set, the csl_item
-    is passedthrough unmodified. Otherwise, a standard_citation is inferred from the id.
-    """
-    if not isinstance(csl_item, dict):
-        raise ValueError("csl_item must be a CSL Data Item represented as a Python dictionary")
-    if 'standard_citation' in csl_item:
-        return csl_item
-    if 'id' not in csl_item:
-        raise ValueError('standard_citation cannot be inferred unless the CSL Item id field is set')
-    csl_id = csl_item['id']
-    from manubot.cite.util import (
-        citeproc_retrievers,
-        is_valid_citation_string,
-        standardize_citation,
-    )
-    prefixes = [f'{x}:' for x in list(citeproc_retrievers) + ['raw']]
-    for prefix in prefixes:
-        if csl_id.startswith(prefix):
-            standard_citation = csl_id
-            break
-    else:
-        standard_citation = f'raw:{csl_id}'
-    is_valid_citation_string(standard_citation, allow_raw=True)
-    proofed_standard_citation = standardize_citation(standard_citation)
-    if standard_citation != proofed_standard_citation:
-        logging.warning('csl_item_set_standard_citation is changing the inferred standard_citation {standard_citation} with {proofed_standard_citation}')
-        standard_citation = proofed_standard_citation
-    csl_item['standard_citation'] = standard_citation
-    return csl_item
 
 
 def process_citations(doc):

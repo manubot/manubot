@@ -22,6 +22,7 @@ from manubot.process.manuscript import (
 )
 from manubot.cite.util import (
     citation_to_citeproc,
+    csl_item_set_standard_citation,
     get_citation_id,
     is_valid_citation_string,
     standardize_citation,
@@ -45,6 +46,11 @@ def read_manual_references(path, extra_csl_items=[]):
     csl_items.extend(extra_csl_items)
     manual_refs = dict()
     for csl_item in csl_items:
+        try:
+            csl_item_set_standard_citation(csl_item)
+        except Exception:
+            logging.info(exc_info=True)
+            continue
         standard_citation = csl_item.pop('standard_citation')
         csl_item = citeproc_passthrough(csl_item, set_id=get_citation_id(standard_citation))
         manual_refs[standard_citation] = csl_item
