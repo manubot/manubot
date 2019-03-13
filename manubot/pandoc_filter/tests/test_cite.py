@@ -8,6 +8,7 @@ from manubot.cite.cite_command import (
     _get_pandoc_info,
 )
 from manubot.pandoc_filter.cite import (
+    csl_item_set_standard_citation,
     load_bibliography,
 )
 
@@ -67,9 +68,9 @@ def test_cite_pandoc_filter():
 
 
 bibliography_paths = sorted(directory.glob('bibliographies/bibliography.*'))
+bibliography_path_ids = [path.name for path in bibliography_paths]
 
-
-@pytest.mark.parametrize('path', bibliography_paths)
+@pytest.mark.parametrize('path', bibliography_paths, ids=bibliography_path_ids)
 def test_load_bibliography_from_path(path):
     """
     Some of the bibliographies for this test were generated at
@@ -81,7 +82,7 @@ def test_load_bibliography_from_path(path):
     assert csl_json[0]['title'] == 'Sci-Hub provides access to nearly all scholarly literature'
 
 
-@pytest.mark.parametrize('path', bibliography_paths)
+@pytest.mark.parametrize('path', bibliography_paths, ids=bibliography_path_ids)
 def test_load_bibliography_from_text(path):
     """
     https://zbib.org/c7f95cdef6d6409c92ffde24d519435d
@@ -91,3 +92,38 @@ def test_load_bibliography_from_text(path):
     csl_json = load_bibliography(text=text, input_format=input_format)
     assert len(csl_json) == 2
     assert csl_json[0]['title'] == 'Sci-Hub provides access to nearly all scholarly literature'
+    if input_format in {'json', 'bib'}:
+        assert csl_json[0].get('id') == 'doi:10.7554/elife.32822'
+
+
+@pytest.mark.parametrize(
+    ['csl_item', 'standard_citation'],
+    [
+        (
+            {'id': 'my-id', 'standard_citation': 'doi:10.7554/elife.32822'},
+            'doi:10.7554/elife.32822',
+        ),
+        (
+            {'id': 'doi:10.7554/elife.32822'},
+            'doi:10.7554/elife.32822',
+        ),
+        (
+            {'id': 'doi:10.7554/ELIFE.32822'},
+            'doi:10.7554/elife.32822',
+        ),
+        (
+            {'id': 'my-id'},
+            'raw:my-id',
+        ),
+    ],
+    ids=[
+        'from_standard_citation',
+        'from_doi_id',
+        'from_doi_id_standardize',
+        'from_row_id',
+    ]
+)
+def test_csl_item_set_standard_citation(csl_item, standard_citation):
+    output = csl_item_set_standard_citation(csl_item)
+    assert output is csl_item
+    assert output['standard_citation'] == standard_citation
