@@ -7,7 +7,7 @@ import pytest
 from manubot.cite.cite_command import (
     _get_pandoc_info,
 )
-from manubot.pandoc_filter.cite import (
+from manubot.pandoc.cite import (
     csl_item_set_standard_citation,
     load_bibliography,
 )
@@ -35,10 +35,10 @@ def test_cite_pandoc_filter():
     --to=plain \
     --wrap=preserve \
     --csl=https://github.com/manubot/rootstock/raw/af1d47a0ec5f33d8fc99deab2ac23b697983b673/build/assets/style.csl \
-    --output=manubot/pandoc_filter/tests/output-with-cites.txt \
+    --output=manubot/pandoc/tests/output-with-cites.txt \
     --filter=pandoc-manubot-cite \
     --filter=pandoc-citeproc \
-    manubot/pandoc_filter/tests/input-with-cites.md
+    manubot/pandoc/tests/input-with-cites.md
     ```
     """
     pandoc_version = _get_pandoc_info()['pandoc version']

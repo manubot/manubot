@@ -72,7 +72,7 @@ setuptools.setup(
     entry_points={
         'console_scripts': [
             'manubot = manubot.command:main',
-            'pandoc-manubot-cite = manubot.pandoc_filter.cite:main',
+            'pandoc-manubot-cite = manubot.pandoc.cite:main',
         ],
     },
 

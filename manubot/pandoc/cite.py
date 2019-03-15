@@ -6,13 +6,13 @@ pandoc \
   --standalone \
   --filter=pandoc-manubot-cite \
   --filter pandoc-citeproc \
-  manubot/pandoc_filter/tests/input-with-cites.md
+  manubot/pandoc/tests/input-with-cites.md
 
 
 pandoc \
   --to=json \
-  manubot/pandoc_filter/tests/input-with-cites.md \
-  | python manubot/pandoc_filter/cite.py markdown
+  manubot/pandoc/tests/input-with-cites.md \
+  | python manubot/pandoc/cite.py markdown
 """
 
 """
