@@ -6,6 +6,23 @@ def load_bibliography(path=None, text=None, input_format=None):
     Accepts either a bibliography path or text (string). If supplying text,
     pandoc-citeproc will likely require input_format be specified.
     The CSL JSON is returned as Python objects.
+
+    Parameters
+    ----------
+    path : str, pathlike, or None
+        Path to a bibliography file. Extension is used by pandoc-citeproc to infer the
+        format of the input.
+    text : str or None
+        Text representation of the bibligriophy, such as a JSON-formatted string.
+        `input_format` should be specified if providing text input.
+    input_format : str or None
+        Manually specified input formatted that is supported by pandoc-citeproc:
+        https://github.com/jgm/pandoc-citeproc/blob/master/man/pandoc-citeproc.1.md#options
+
+    Returns
+    -------
+    csl_json : JSON-like object
+        CSL JSON Data for the references encoded by the input bibliography.
     """
     use_text = path is None
     use_path = text is None
