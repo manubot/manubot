@@ -21,12 +21,8 @@ https://github.com/sergiocorreia/panflute
 http://scorreia.com/software/panflute/code.html#panflute.elements.Citation
 """
 import argparse
-import json
-import logging
-import subprocess
 import sys
 
-# import pandocfilters
 import panflute
 
 from manubot.cite.util import (

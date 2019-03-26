@@ -1,9 +1,12 @@
+import pathlib
+
 import pytest
 
 from manubot.pandoc.bibliography import (
     load_bibliography,
 )
 
+directory = pathlib.Path(__file__).parent
 bibliography_paths = sorted(directory.glob('bibliographies/bibliography.*'))
 bibliography_path_ids = [path.name for path in bibliography_paths]
 

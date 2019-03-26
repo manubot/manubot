@@ -1,3 +1,6 @@
+import json
+import logging
+import subprocess
 
 
 def load_bibliography(path=None, text=None, input_format=None):
