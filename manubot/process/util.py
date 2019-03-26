@@ -13,6 +13,9 @@ import requests
 import requests_cache
 import yaml
 
+from manubot.process.bibliography import (
+    load_manual_references,
+)
 from manubot.process.manuscript import (
     datetime_now,
     get_citation_strings,
@@ -22,39 +25,12 @@ from manubot.process.manuscript import (
 )
 from manubot.cite.util import (
     citation_to_citeproc,
-    csl_item_set_standard_citation,
     get_citation_id,
     is_valid_citation_string,
     standardize_citation,
 )
 
 from manubot.cite.citeproc import citeproc_passthrough
-
-
-def read_manual_references(path, extra_csl_items=[]):
-    """
-    Read manual references (overrides) in JSON CSL specified by a pathlib.Path.
-    Returns a standard_citation to citeproc dictionary. extra_csl_items specifies
-    JSON CSL stored as a python object, to be used in addition to the CSL JSON
-    stored as text in the file specified by path. Set path=None to only use extra_csl_items.
-    """
-    if path is None or not path.is_file():
-        csl_items = []
-    else:
-        with path.open() as read_file:
-            csl_items = json.load(read_file)
-    csl_items.extend(extra_csl_items)
-    manual_refs = dict()
-    for csl_item in csl_items:
-        try:
-            csl_item_set_standard_citation(csl_item)
-        except Exception:
-            logging.info(exc_info=True)
-            continue
-        standard_citation = csl_item.pop('standard_citation')
-        csl_item = citeproc_passthrough(csl_item, set_id=get_citation_id(standard_citation))
-        manual_refs[standard_citation] = csl_item
-    return manual_refs
 
 
 def check_collisions(citation_df):
@@ -344,7 +320,7 @@ def _generate_csl_items(args, citation_df):
         dataframe of citations as returned by get_citation_df
     """
     # Read manual references (overrides) in JSON CSL
-    manual_refs = read_manual_references(args.manual_references_path)
+    manual_refs = load_manual_references(paths=[args.manual_references_path])
     # Retrieve CSL Items
     csl_items = generate_csl_items(
         citations=citation_df.standard_citation.unique(),

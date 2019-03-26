@@ -33,7 +33,7 @@ from manubot.cite.util import (
 from manubot.process.util import (
     get_citation_df,
     generate_csl_items,
-    read_manual_references,
+    load_manual_references,
 )
 
 
@@ -106,7 +106,10 @@ def process_citations(doc):
         (f'@{x}' for x in citation_df['string']), citation_df['citation_id']))
     doc.walk(_citation_to_id_action)
     manual_refs = doc.get_metadata('references', default=[], builtin=True)
-    manual_refs = read_manual_references(path=None, extra_csl_items=manual_refs)
+    bibliography_paths = doc.get_metadata('bibliography', default=[], builtin=True)
+    if not isinstance(bibliography_paths, list):
+        bibliography_paths = [bibliography_paths]
+    manual_refs = load_manual_references(bibliography_paths, extra_csl_items=manual_refs)
     citations = citation_df.standard_citation.unique()
     csl_items = generate_csl_items(citations, manual_refs)
     doc.metadata['references'] = csl_items
