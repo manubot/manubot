@@ -55,6 +55,7 @@ setuptools.setup(
         'jinja2',
         'jsonref',
         'jsonschema',
+        'packaging',
         'pandas',
         'panflute',
         'pybase62',

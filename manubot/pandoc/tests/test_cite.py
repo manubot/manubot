@@ -4,8 +4,8 @@ import subprocess
 
 import pytest
 
-from manubot.cite.cite_command import (
-    _get_pandoc_info,
+from manubot.pandoc.util import (
+    get_pandoc_info,
 )
 from manubot.pandoc.cite import (
     csl_item_set_standard_citation,
@@ -40,7 +40,7 @@ def test_cite_pandoc_filter():
     manubot/pandoc/tests/input-with-cites.md
     ```
     """
-    pandoc_version = _get_pandoc_info()['pandoc version']
+    pandoc_version = get_pandoc_info()['pandoc version']
     if pandoc_version < (1, 12):
         pytest.skip("Test requires pandoc >= 1.12 to support --filter")
     input_md = directory.joinpath('input-with-cites.md').read_text()
