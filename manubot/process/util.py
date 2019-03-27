@@ -320,7 +320,7 @@ def _generate_csl_items(args, citation_df):
         dataframe of citations as returned by get_citation_df
     """
     # Read manual references (overrides) in JSON CSL
-    manual_refs = load_manual_references(paths=[args.manual_references_path])
+    manual_refs = load_manual_references(paths=args.manual_references_paths)
     # Retrieve CSL Items
     csl_items = generate_csl_items(
         citations=citation_df.standard_citation.unique(),

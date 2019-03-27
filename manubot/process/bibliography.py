@@ -9,6 +9,7 @@ from manubot.cite.util import (
     get_citation_id,
 )
 
+
 def load_bibliography(path):
     """
     Load a bibliography as CSL Items (a CSL JSON Python object).
