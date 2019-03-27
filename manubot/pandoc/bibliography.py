@@ -46,7 +46,7 @@ def load_bibliography(path=None, text=None, input_format=None):
         args,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        universal_newlines=True,
+        encoding='utf-8',
         **run_kwargs,
     )
     logging.info(f'captured stderr:\n{process.stderr}')
