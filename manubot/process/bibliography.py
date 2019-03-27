@@ -1,3 +1,4 @@
+import json
 import logging
 import pathlib
 
@@ -20,7 +21,6 @@ def load_bibliography(path):
     use_pandoc_citeproc = True
     try:
         if path.suffix == '.json':
-            import json
             use_pandoc_citeproc = False
             with path.open() as read_file:
                 csl_items = json.load(read_file)
@@ -66,7 +66,8 @@ def load_manual_references(paths=[], extra_csl_items=[]):
         try:
             csl_item_set_standard_citation(csl_item)
         except Exception:
-            logging.info(exc_info=True)
+            csl_item_str = json.dumps(csl_item, indent=2)
+            logging.info(f'Skipping csl_item where setting standard_citation failed:\n{csl_item_str}', exc_info=True)
             continue
         standard_citation = csl_item.pop('standard_citation')
         csl_item = citeproc_passthrough(csl_item, set_id=get_citation_id(standard_citation))

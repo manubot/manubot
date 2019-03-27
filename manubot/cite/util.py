@@ -288,7 +288,7 @@ def csl_item_set_standard_citation(csl_item):
             break
     else:
         standard_citation = f'raw:{csl_id}'
-    is_valid_citation_string(standard_citation, allow_raw=True)
+    is_valid_citation_string('@' + standard_citation, allow_raw=True)
     standard_citation = standardize_citation(standard_citation, warn_if_changed=True)
     csl_item['standard_citation'] = standard_citation
     return csl_item
