@@ -10,6 +10,8 @@ from manubot.cite import (
     standardize_citation,
 )
 from manubot.cite.util import is_valid_citation_string
+from manubot.pandoc.util import get_pandoc_info
+
 
 # For manubot cite, infer --format from --output filename extensions
 extension_to_format = {
@@ -25,7 +27,8 @@ def call_pandoc(metadata, path, format='plain'):
     """
     path is the path to write to.
     """
-    info = _get_pandoc_info()
+    _exit_without_pandoc()
+    info = get_pandoc_info()
     _check_pandoc_version(info, metadata, format)
     metadata_block = '---\n{yaml}\n...\n'.format(
         yaml=json.dumps(metadata, ensure_ascii=False, indent=2)
@@ -110,37 +113,23 @@ def cli_cite(args):
     )
 
 
-def _get_pandoc_info():
+def _exit_without_pandoc():
     """
-    Return path and version information for the system's pandoc and
-    pandoc-citeproc commands. If not available, exit program.
+    Given info from get_pandoc_info, exit Python if Pandoc is not available.
     """
-    stats = dict()
+    info = get_pandoc_info()
     for command in 'pandoc', 'pandoc-citeproc':
-        path = shutil.which(command)
-        if not path:
+        if not info[command]:
             logging.critical(
                 f'"{command}" not found on system. '
                 f'Check that Pandoc is installed.'
             )
             raise SystemExit(1)
-        version = subprocess.check_output(
-            args=[command, '--version'],
-            universal_newlines=True,
-        )
-        logging.debug(version)
-        version, *discard = version.splitlines()
-        discard, version = version.strip().split()
-        version = tuple(map(int, version.split('.')))
-        stats[f'{command} version'] = version
-        stats[f'{command} path'] = path
-    logging.info('\n'.join(f'{k}: {v}' for k, v in stats.items()))
-    return stats
 
 
 def _check_pandoc_version(info, metadata, format):
     """
-    Given info from _get_pandoc_info, check that Pandoc's version is sufficient
+    Given info from get_pandoc_info, check that Pandoc's version is sufficient
     to perform the citation rendering command specified by metadata and format.
     Please add additional minimum version information to this function, as its
     discovered.
