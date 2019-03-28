@@ -3,6 +3,7 @@ import pytest
 from manubot.cite.util import (
     citation_pattern,
     citation_to_citeproc,
+    csl_item_set_standard_citation,
     get_citation_id,
     inspect_citation_identifier,
     standardize_citation,
@@ -225,3 +226,35 @@ def test_citation_to_citeproc_isbn():
     assert csl_item['type'] == 'book'
     assert csl_item['title'] == 'Complex analysis'
 
+
+@pytest.mark.parametrize(
+    ['csl_item', 'standard_citation'],
+    [
+        (
+            {'id': 'my-id', 'standard_citation': 'doi:10.7554/elife.32822'},
+            'doi:10.7554/elife.32822',
+        ),
+        (
+            {'id': 'doi:10.7554/elife.32822'},
+            'doi:10.7554/elife.32822',
+        ),
+        (
+            {'id': 'doi:10.7554/ELIFE.32822'},
+            'doi:10.7554/elife.32822',
+        ),
+        (
+            {'id': 'my-id'},
+            'raw:my-id',
+        ),
+    ],
+    ids=[
+        'from_standard_citation',
+        'from_doi_id',
+        'from_doi_id_standardize',
+        'from_row_id',
+    ]
+)
+def test_csl_item_set_standard_citation(csl_item, standard_citation):
+    output = csl_item_set_standard_citation(csl_item)
+    assert output is csl_item
+    assert output['standard_citation'] == standard_citation

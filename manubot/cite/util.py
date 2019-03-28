@@ -36,7 +36,7 @@ citation_pattern = re.compile(
 
 
 @functools.lru_cache(maxsize=5_000)
-def standardize_citation(citation):
+def standardize_citation(citation, warn_if_changed=False):
     """
     Standardize citation identifiers based on their source
     """
@@ -62,7 +62,13 @@ def standardize_citation(citation):
         from isbnlib import to_isbn13
         identifier = to_isbn13(identifier)
 
-    return f'{source}:{identifier}'
+    standard_citation = f'{source}:{identifier}'
+    if warn_if_changed and citation != standard_citation:
+        logging.warning(
+            f'standardize_citation expected citation to already be standardized.\n'
+            f'Instead citation was changed from {citation} to {standard_citation}'
+        )
+    return standard_citation
 
 
 regexes = {
@@ -259,3 +265,30 @@ def citation_to_citeproc(citation, prune=True):
     citeproc = citeproc_passthrough(citeproc, set_id=citation_id, prune=prune)
 
     return citeproc
+
+
+def csl_item_set_standard_citation(csl_item):
+    """
+    Modify csl_item to set standard_citation. If standard_citation is set, use it. Otherwise,
+    a standard_citation is inferred from the id. In both cases, the standard_citation
+    is checked for actually being standard.
+    """
+    if not isinstance(csl_item, dict):
+        raise ValueError("csl_item must be a CSL Data Item represented as a Python dictionary")
+    if 'standard_citation' in csl_item:
+        csl_item['standard_citation'] = standardize_citation(csl_item['standard_citation'], warn_if_changed=True)
+        return csl_item
+    if 'id' not in csl_item:
+        raise ValueError('standard_citation cannot be inferred unless the CSL Item id field is set')
+    csl_id = csl_item['id']
+    prefixes = [f'{x}:' for x in list(citeproc_retrievers) + ['raw']]
+    for prefix in prefixes:
+        if csl_id.startswith(prefix):
+            standard_citation = csl_id
+            break
+    else:
+        standard_citation = f'raw:{csl_id}'
+    is_valid_citation_string('@' + standard_citation, allow_raw=True)
+    standard_citation = standardize_citation(standard_citation, warn_if_changed=True)
+    csl_item['standard_citation'] = standard_citation
+    return csl_item
