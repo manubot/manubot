@@ -1,6 +1,7 @@
 import copy
 import functools
 import logging
+import re
 
 citeproc_type_fixer = {
     'journal-article': 'article-journal',
@@ -41,6 +42,40 @@ def citeproc_passthrough(csl_item, set_id=None, prune=True):
         # Confirm that corrected CSL validates
         validator = get_jsonschema_csl_validator()
         validator.validate([csl_item])
+    return csl_item
+
+
+def append_to_csl_item_note(csl_item, text='', dictionary={}):
+    """
+    Add information to the note field of a CSL Item.
+    In addition to accepting arbitrary text, the note field can be used to encode
+    additional values not defined by the CSL JSON schema, as per
+    https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields
+    Use dictionary to specify variable-value pairs.
+    """
+    if not isinstance(csl_item, dict):
+        raise ValueError(f'append_to_csl_item_note: csl_item must be a dict but was of type {type(csl_item)}')
+    if not isinstance(dictionary, dict):
+        raise ValueError(f'append_to_csl_item_note: dictionary must be a dict but was of type {type(dictionary)}')
+    if not isinstance(text, str):
+        raise ValueError(f'append_to_csl_item_note: text must be a str but was of type {type(text)}')
+    note = str(csl_item.get('note', ''))
+    if text:
+        if note and not note.endswith('\n'):
+            note += '\n'
+        note += text
+    for key, value in dictionary.items():
+        if not re.fullmatch(r'[A-Z]+|[-_a-z]+', key):
+            logging.warning(f'append_to_csl_item_note: skipping adding "{key}" because it does not conform to the variable_name syntax as per https://git.io/fjTzW.')
+            continue
+        if '\n' in value:
+            logging.warning(f'append_to_csl_item_note: skipping adding "{key}" because the value contains a newline: "{value}"')
+            continue
+        if note and not note.endswith('\n'):
+            note += '\n'
+        note += f'{key}: {value}'
+    if note:
+        csl_item['note'] = note
     return csl_item
 
 
