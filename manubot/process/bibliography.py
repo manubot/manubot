@@ -2,7 +2,9 @@ import json
 import logging
 import pathlib
 
+from manubot import __version__ as manubot_version
 from manubot.cite.citeproc import (
+    append_to_csl_item_note,
     citeproc_passthrough,
 )
 from manubot.cite.util import (
@@ -59,7 +61,13 @@ def load_manual_references(paths=[], extra_csl_items=[]):
         if not path.is_file():
             logging.warning(f'process.load_bibliographies is skipping a non-existent path: {path}')
             continue
-        csl_items.extend(load_bibliography(path))
+        for csl_item in load_bibliography(path):
+            append_to_csl_item_note(
+                csl_item,
+                text=f'This CSL JSON Item was loaded by Manubot v{manubot_version} from a manual reference file.',
+                dictionary={'manual_reference_filename': path.name},
+            )
+            csl_items.append(csl_item)
     csl_items.extend(extra_csl_items)
     manual_refs = dict()
     for csl_item in csl_items:
