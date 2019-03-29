@@ -279,14 +279,23 @@ def citation_to_citeproc(citation, prune=True):
 
 def csl_item_set_standard_citation(csl_item):
     """
-    Modify csl_item to set standard_citation. If standard_citation is set, use it. Otherwise,
-    a standard_citation is inferred from the id. In both cases, the standard_citation
+    Modify csl_item to set standard_citation. Uses explicit standard_citation if available, either as
+    a standard_citation field or as a key-value pair set using cheater syntax in the note field.
+    Otherwise, a standard_citation is inferred from the id. In both cases, the standard_citation
     is checked for actually being standard.
     """
+    from manubot.cite.citeproc import (
+        append_to_csl_item_note,
+        parse_csl_item_note,
+    )
     if not isinstance(csl_item, dict):
         raise ValueError("csl_item must be a CSL Data Item represented as a Python dictionary")
     if 'standard_citation' in csl_item:
         csl_item['standard_citation'] = standardize_citation(csl_item['standard_citation'], warn_if_changed=True)
+        return csl_item
+    note_dict = parse_csl_item_note(csl_item.get('note', ''))
+    if 'standard_citation' in note_dict:
+        csl_item['standard_citation'] = standardize_citation(note_dict['standard_citation'], warn_if_changed=True)
         return csl_item
     if 'id' not in csl_item:
         raise ValueError('standard_citation cannot be inferred unless the CSL Item id field is set')
@@ -301,7 +310,6 @@ def csl_item_set_standard_citation(csl_item):
     is_valid_citation_string('@' + standard_citation, allow_raw=True)
     standard_citation = standardize_citation(standard_citation, warn_if_changed=True)
     csl_item['standard_citation'] = standard_citation
-    from manubot.cite.citeproc import append_to_csl_item_note
     append_to_csl_item_note(
         csl_item,
         dictionary={'original_id': csl_id},

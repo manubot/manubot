@@ -79,6 +79,20 @@ def append_to_csl_item_note(csl_item, text='', dictionary={}):
     return csl_item
 
 
+def parse_csl_item_note(note):
+    """
+    Return the dictionary of key-value pairs encoded in a CSL JSON note.
+    Extracts both forms (line-entry and braced-entry) of key-value pairs from "cheater syntax"
+    https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields
+    """
+    note = str(note)
+    line_matches = re.findall(
+        r'^(?P<key>[A-Z]+|[-_a-z]+): *(?P<value>.+?) *$', note, re.MULTILINE)
+    braced_matches = re.findall(
+        r'{:(?P<key>[A-Z]+|[-_a-z]+): *(?P<value>.+?) *}', note)
+    return dict(line_matches + braced_matches)
+
+
 @functools.lru_cache()
 def get_jsonschema_csl_validator():
     """
