@@ -207,32 +207,13 @@ def get_metadata_and_variables(args):
     return metadata, variables
 
 
-def get_citation_df(citation_strings, tag_to_string={}):
-    """
-    Create citation_df for a list of citation_strings and a mapping of
-    citation tag to string.
-    """
-    citation_df = pandas.DataFrame(
-        {'string': list(citation_strings)}
-    ).drop_duplicates()
-    tag_to_string = {f"@tag:{k}": v for k, v in tag_to_string.items()}
-    citation_df['citation'] = citation_df['string'].map(tag_to_string)
-    citation_df.citation.fillna(citation_df.string.astype(str).str.lstrip('@'), inplace=True)
-    for citation in citation_df.citation:
-        is_valid_citation_string('@' + citation, allow_raw=True)
-    citation_df['standard_citation'] = citation_df.citation.map(standardize_citation)
-    citation_df['citation_id'] = citation_df.standard_citation.map(get_citation_id)
-    citation_df = citation_df.sort_values(['standard_citation', 'citation'])
-    check_collisions(citation_df)
-    check_multiple_citation_strings(citation_df)
-    return citation_df
-
-
-def _get_citation_df(args, text):
+def get_citation_df(args, text):
     """
     Generate citation_df and save it to 'citations.tsv'.
     """
-    citation_strings = get_citation_strings(text)
+    citation_df = pandas.DataFrame(
+        {'string': get_citation_strings(text)}
+    )
     if args.citation_tags_path.is_file():
         tag_df = pandas.read_csv(args.citation_tags_path, sep='\t')
         na_rows_df = tag_df[tag_df.isnull().any(axis='columns')]
@@ -244,41 +225,41 @@ def _get_citation_df(args, text):
                 'Proceeding to reread TSV with delim_whitespace=True.'
             )
             tag_df = pandas.read_csv(args.citation_tags_path, delim_whitespace=True)
-        tag_to_string = dict(zip(tag_df['tag'], tag_df['citation']))
+        tag_df['string'] = '@tag:' + tag_df.tag
+        for citation in tag_df.citation:
+            is_valid_citation_string('@' + citation, allow_raw=True)
+        citation_df = citation_df.merge(tag_df[['string', 'citation']], how='left')
     else:
-        tag_to_string = {}
+        citation_df['citation'] = None
         logging.info(f'missing {args.citation_tags_path} file: no citation tags set')
-    citation_df = get_citation_df(citation_strings, tag_to_string)
+    citation_df.citation.fillna(citation_df.string.astype(str).str.lstrip('@'), inplace=True)
+    citation_df['standard_citation'] = citation_df.citation.map(standardize_citation)
+    citation_df['citation_id'] = citation_df.standard_citation.map(get_citation_id)
+    citation_df = citation_df.sort_values(['standard_citation', 'citation'])
+    citation_df.to_csv(args.citations_path, sep='\t', index=False)
+    check_collisions(citation_df)
+    check_multiple_citation_strings(citation_df)
     return citation_df
 
 
-def generate_csl_items(citations, manual_refs={}, requests_cache_path=None, clear_requests_cache=False):
+def generate_csl_items(args, citation_df):
     """
-    General CSL JSON (as a python object) for standard_citations.
-
-    Parameters
-    ----------
-    citations: list
-        list of standard_citations
-    manual_refs: dict
-        mapping from standard_citation to csl_item for manual references
+    General CSL (citeproc) items for standard_citations in citation_df.
+    Writes references.json to disk and logs warnings for potential problems.
     """
-    # Deduplicate citations
-    citations = list(collections.OrderedDict.fromkeys(citations))
+    # Read manual references (overrides) in JSON CSL
+    manual_refs = load_manual_references(args.manual_references_paths)
 
-    # Install cache
-    if requests_cache_path is not None:
-        requests_cache.install_cache(requests_cache_path, include_get_headers=True)
-        cache = requests_cache.get_cache()
-        if clear_requests_cache:
-            logging.info('Clearing requests-cache')
-            requests_cache.clear()
-        logging.info(f'requests-cache starting with {len(cache.responses)} cached responses')
+    requests_cache.install_cache(args.requests_cache_path, include_get_headers=True)
+    cache = requests_cache.get_cache()
+    if args.clear_requests_cache:
+        logging.info('Clearing requests-cache')
+        requests_cache.clear()
+    logging.info(f'requests-cache starting with {len(cache.responses)} cached responses')
 
-    # Retrieve CSL Items
     csl_items = list()
     failures = list()
-    for citation in citations:
+    for citation in citation_df.standard_citation.unique():
         if citation in manual_refs:
             csl_items.append(manual_refs[citation])
             continue
@@ -289,45 +270,20 @@ def generate_csl_items(citations, manual_refs={}, requests_cache_path=None, clea
             )
             failures.append(citation)
         try:
-            csl_item = citation_to_citeproc(citation)
-            csl_items.append(csl_item)
-        except Exception:
+            citeproc = citation_to_citeproc(citation)
+            csl_items.append(citeproc)
+        except Exception as error:
             logging.exception(f'Citeproc retrieval failure for {citation}')
             failures.append(citation)
 
-    # Report failures
+    logging.info(f'requests-cache finished with {len(cache.responses)} cached responses')
+    requests_cache.uninstall_cache()
+
     if failures:
         message = 'CSL JSON Data retrieval failed for:\n{}'.format(
             '\n'.join(failures))
         logging.error(message)
 
-    # Uninstall cache
-    if requests_cache_path is not None:
-        logging.info(f'requests-cache finished with {len(cache.responses)} cached responses')
-        requests_cache.uninstall_cache()
-
-    return csl_items
-
-
-def _generate_csl_items(args, citation_df):
-    """
-    General CSL (citeproc) items for standard_citations in citation_df.
-    Writes references.json to disk and logs warnings for potential problems.
-
-    Parameters
-    ----------
-    citation_df: pandas.DataFrame
-        dataframe of citations as returned by get_citation_df
-    """
-    # Read manual references (overrides) in JSON CSL
-    manual_refs = load_manual_references(paths=args.manual_references_paths)
-    # Retrieve CSL Items
-    csl_items = generate_csl_items(
-        citations=citation_df.standard_citation.unique(),
-        manual_refs=manual_refs,
-        requests_cache_path=args.requests_cache_path,
-        clear_requests_cache=args.clear_requests_cache,
-    )
     # Write JSON CSL bibliography for Pandoc.
     with args.references_path.open('w') as write_file:
         json.dump(csl_items, write_file, indent=2, ensure_ascii=False)
@@ -356,9 +312,9 @@ def prepare_manuscript(args):
     for pandoc.
     """
     text = get_text(args.content_directory)
-    citation_df = _get_citation_df(args, text)
+    citation_df = get_citation_df(args, text)
 
-    _generate_csl_items(args, citation_df)
+    generate_csl_items(args, citation_df)
 
     citation_string_to_id = collections.OrderedDict(
         zip(citation_df.string, citation_df.citation_id))
