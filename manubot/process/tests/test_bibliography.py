@@ -1,3 +1,7 @@
+import shutil
+
+import pytest
+
 from manubot.pandoc.tests.test_bibliography import (
     bibliography_paths
 )
@@ -7,6 +11,10 @@ from manubot.process.bibliography import (
 )
 
 
+@pytest.mark.skipif(
+    not shutil.which('pandoc-citeproc'),
+    reason='pandoc-citeproc installation not found on system',
+)
 def test_load_multiple_bibliography_paths():
     citation_to_csl_item = load_manual_references(bibliography_paths)
     print(list(citation_to_csl_item))

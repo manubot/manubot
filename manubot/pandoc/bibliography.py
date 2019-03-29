@@ -2,6 +2,8 @@ import json
 import logging
 import subprocess
 
+from manubot.pandoc.util import get_pandoc_info
+
 
 def load_bibliography(path=None, text=None, input_format=None):
     """
@@ -31,6 +33,9 @@ def load_bibliography(path=None, text=None, input_format=None):
     use_path = text is None
     if not (use_text ^ use_path):
         raise ValueError('load_bibliography: specify either path or text but not both.')
+    if not get_pandoc_info()['pandoc-citeproc']:
+        logging.error('pandoc-citeproc not found on system: manubot.pandoc.bibliography.load_bibliography returning empty CSL JSON')
+        return []
     args = [
         'pandoc-citeproc', '--bib2json',
     ]
