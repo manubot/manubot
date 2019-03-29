@@ -5,8 +5,8 @@ import subprocess
 
 import pytest
 
-from manubot.cite.cite_command import (
-    _get_pandoc_info,
+from manubot.pandoc.util import (
+    get_pandoc_info,
 )
 
 
@@ -70,7 +70,7 @@ def test_cite_command_render_stdout(args, expected):
     The output is sensitive to the version of Pandoc used, so rather than fail when
     the system's pandoc is outdated, the test is skipped. 
     """
-    pandoc_version = _get_pandoc_info()['pandoc version']
+    pandoc_version = get_pandoc_info()['pandoc version']
     for output in 'markdown', 'html', 'jats':
         if output in args and pandoc_version < (2, 5):
             pytest.skip(f"Test {output} output assumes pandoc >= 2.5")
