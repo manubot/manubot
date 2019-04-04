@@ -253,7 +253,7 @@ def test_citation_to_citeproc_isbn():
         'from_standard_citation',
         'from_doi_id',
         'from_doi_id_standardize',
-        'from_row_id',
+        'from_raw_id',
     ]
 )
 def test_csl_item_set_standard_citation(csl_item, standard_citation):

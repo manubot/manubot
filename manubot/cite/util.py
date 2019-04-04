@@ -281,8 +281,8 @@ def csl_item_set_standard_citation(csl_item):
     """
     Modify csl_item to set standard_citation. Uses explicit standard_citation if available, either as
     a standard_citation field or as a key-value pair set using cheater syntax in the note field.
-    Otherwise, a standard_citation is inferred from the id. In both cases, the standard_citation
-    is checked for actually being standard.
+    Otherwise, a standard_citation is inferred from the id. In all cases, verify the standard_citation
+    is in standard form.
     """
     from manubot.cite.citeproc import (
         append_to_csl_item_note,

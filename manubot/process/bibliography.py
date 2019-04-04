@@ -52,7 +52,7 @@ def load_manual_references(paths=[], extra_csl_items=[]):
     """
     Read manual references (overrides) from files specified by a list of paths.
     Returns a standard_citation to CSL Item dictionary. extra_csl_items specifies
-    JSON CSL stored as a python object, to be used in addition to the CSL JSON
+    JSON CSL stored as a Python object, to be used in addition to the CSL JSON
     stored as text in the file specified by path. Set paths=[] to only use extra_csl_items.
     """
     csl_items = []
