@@ -277,41 +277,69 @@ def citation_to_citeproc(citation, prune=True):
     return csl_item
 
 
+def infer_citation_prefix(citation):
+    """
+    Passthrough citation if it has a valid citation prefix. Otherwise,
+    if the lowercase citation prefix is valid, convert the prefix to lowercase.
+    Otherwise, assume citation is raw and prepend "raw:".
+    """
+    prefixes = [f'{x}:' for x in list(citeproc_retrievers) + ['raw']]
+    for prefix in prefixes:
+        if citation.startswith(prefix):
+            return citation
+        if citation.lower().startswith(prefix):
+            return prefix + citation[len(prefix):]
+    return f'raw:{citation}'
+
+
 def csl_item_set_standard_citation(csl_item):
     """
-    Modify csl_item to set standard_citation. Uses explicit standard_citation if available, either as
-    a standard_citation field or as a key-value pair set using cheater syntax in the note field.
-    Otherwise, a standard_citation is inferred from the id. In all cases, verify the standard_citation
-    is in standard form.
+    Extract the standard_citation for a csl_item and modify the csl_item in-place to set its standard_citation.
+    The standard_citation is extracted from a "standard_citation" field, the "note" field, or the "id" field.
+    If extracting the citation from the "id" field, use the infer_citation_prefix function to set the prefix.
+    For example, if the extracted standard_citation does not begin with a supported prefix (e.g. "doi:", "pmid:"
+    or "raw:"), the citation is assumed to be raw and given a "raw:" prefix. The extracted citation
+    (referred to as "original_standard_citation") is checked for validity and standardized, after which it is
+    the final "standard_citation".
+
+    Regarding csl_item modification, the csl_item "id" field is set to the standard_citation and the note field
+    is created or updated with key-value pairs for standard_citation, original_standard_citation, and original_id.
     """
+    if not isinstance(csl_item, dict):
+        raise ValueError("csl_item must be a CSL Data Item represented as a Python dictionary")
+
     from manubot.cite.citeproc import (
         append_to_csl_item_note,
         parse_csl_item_note,
     )
-    if not isinstance(csl_item, dict):
-        raise ValueError("csl_item must be a CSL Data Item represented as a Python dictionary")
-    if 'standard_citation' in csl_item:
-        csl_item['standard_citation'] = standardize_citation(csl_item['standard_citation'], warn_if_changed=True)
-        return csl_item
     note_dict = parse_csl_item_note(csl_item.get('note', ''))
+
+    original_id = None
+    original_citation = None
+    if 'id' in csl_item:
+        original_id = csl_item['id']
+        original_citation = infer_citation_prefix(original_id)
     if 'standard_citation' in note_dict:
-        csl_item['standard_citation'] = standardize_citation(note_dict['standard_citation'], warn_if_changed=True)
-        return csl_item
-    if 'id' not in csl_item:
-        raise ValueError('standard_citation cannot be inferred unless the CSL Item id field is set')
-    csl_id = csl_item['id']
-    prefixes = [f'{x}:' for x in list(citeproc_retrievers) + ['raw']]
-    for prefix in prefixes:
-        if csl_id.startswith(prefix):
-            standard_citation = csl_id
-            break
-    else:
-        standard_citation = f'raw:{csl_id}'
-    is_valid_citation_string('@' + standard_citation, allow_raw=True)
-    standard_citation = standardize_citation(standard_citation, warn_if_changed=True)
-    csl_item['standard_citation'] = standard_citation
-    append_to_csl_item_note(
-        csl_item,
-        dictionary={'original_id': csl_id},
-    )
+        original_citation = note_dict['standard_citation']
+    if 'standard_citation' in csl_item:
+        original_citation = csl_item.pop('standard_citation')
+    standardize_citation(original_citation, warn_if_changed=True)
+    if original_citation is None:
+        raise ValueError(
+            'csl_item_set_standard_citation could not detect a field with a citation / standard_citation. '
+            'Consider setting the CSL Item "id" field.'
+        )
+    is_valid_citation_string('@' + original_citation, allow_raw=True)
+    standard_citation = standardize_citation(original_citation, warn_if_changed=False)
+    add_to_note = {}
+    if original_id and original_id != standard_citation:
+        if original_id != note_dict.get('original_id'):
+            add_to_note['original_id'] = original_id
+    if original_citation and original_citation != standard_citation:
+        if original_citation != note_dict.get('original_standard_citation'):
+            add_to_note['original_standard_citation'] = original_citation
+    if standard_citation != note_dict.get('original_standard_citation'):
+        add_to_note['standard_citation'] = standard_citation
+    append_to_csl_item_note(csl_item, dictionary=add_to_note)
+    csl_item['id'] = standard_citation
     return csl_item

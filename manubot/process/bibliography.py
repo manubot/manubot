@@ -77,7 +77,7 @@ def load_manual_references(paths=[], extra_csl_items=[]):
             csl_item_str = json.dumps(csl_item, indent=2)
             logging.info(f'Skipping csl_item where setting standard_citation failed:\n{csl_item_str}', exc_info=True)
             continue
-        standard_citation = csl_item.pop('standard_citation')
+        standard_citation = csl_item['id']
         csl_item = citeproc_passthrough(csl_item, set_id=get_citation_id(standard_citation))
         manual_refs[standard_citation] = csl_item
     return manual_refs

@@ -1,3 +1,5 @@
+import copy
+
 import pytest
 
 from manubot.cite.util import (
@@ -5,6 +7,7 @@ from manubot.cite.util import (
     citation_to_citeproc,
     csl_item_set_standard_citation,
     get_citation_id,
+    infer_citation_prefix,
     inspect_citation_identifier,
     standardize_citation,
 )
@@ -229,6 +232,18 @@ def test_citation_to_citeproc_isbn():
     assert csl_item['title'] == 'Complex analysis'
 
 
+@pytest.mark.parametrize(['citation', 'expect'], [
+    ('doi:not-a-real-doi', 'doi:not-a-real-doi'),
+    ('DOI:not-a-real-doi', 'doi:not-a-real-doi'),
+    ('uRl:mixed-case-prefix', 'url:mixed-case-prefix'),
+    ('raw:raw-citation', 'raw:raw-citation'),
+    ('no-prefix', 'raw:no-prefix'),
+    ('no-prefix:but-colon', 'raw:no-prefix:but-colon'),
+])
+def test_infer_citation_prefix(citation, expect):
+    assert infer_citation_prefix(citation) == expect
+
+
 @pytest.mark.parametrize(
     ['csl_item', 'standard_citation'],
     [
@@ -259,4 +274,16 @@ def test_citation_to_citeproc_isbn():
 def test_csl_item_set_standard_citation(csl_item, standard_citation):
     output = csl_item_set_standard_citation(csl_item)
     assert output is csl_item
-    assert output['standard_citation'] == standard_citation
+    assert output['id'] == standard_citation
+
+
+def test_csl_item_set_standard_citation_repeated():
+    csl_item = {
+        'id': 'pmid:1',
+        'type': 'article-journal',
+    }
+    # csl_item_0 = copy.deepcopy(csl_item)
+    csl_item_1 = copy.deepcopy(csl_item_set_standard_citation(csl_item))
+    assert 'standard_citation' not in 'csl_item'
+    csl_item_2 = copy.deepcopy(csl_item_set_standard_citation(csl_item))
+    assert csl_item_1 == csl_item_2
