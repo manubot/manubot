@@ -323,13 +323,12 @@ def csl_item_set_standard_citation(csl_item):
         original_citation = note_dict['standard_citation']
     if 'standard_citation' in csl_item:
         original_citation = csl_item.pop('standard_citation')
-    standardize_citation(original_citation, warn_if_changed=True)
     if original_citation is None:
         raise ValueError(
             'csl_item_set_standard_citation could not detect a field with a citation / standard_citation. '
             'Consider setting the CSL Item "id" field.'
         )
-    is_valid_citation_string('@' + original_citation, allow_raw=True)
+    assert is_valid_citation_string('@' + original_citation, allow_raw=True)
     standard_citation = standardize_citation(original_citation, warn_if_changed=False)
     add_to_note = {}
     if original_id and original_id != standard_citation:
