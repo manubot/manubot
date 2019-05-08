@@ -337,7 +337,7 @@ def csl_item_set_standard_citation(csl_item):
     if original_citation and original_citation != standard_citation:
         if original_citation != note_dict.get('original_standard_citation'):
             add_to_note['original_standard_citation'] = original_citation
-    if standard_citation != note_dict.get('original_standard_citation'):
+    if standard_citation != note_dict.get('standard_citation'):
         add_to_note['standard_citation'] = standard_citation
     append_to_csl_item_note(csl_item, dictionary=add_to_note)
     csl_item['id'] = standard_citation
