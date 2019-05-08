@@ -94,6 +94,16 @@ optional arguments:
                         Set the logging level for stderr logging
 ```
 
+#### Manual references
+
+Manubot has the ability to rely on user-provided reference metadata rather than generating it.
+`manubot process` searches the content directory for files containing manually-provided reference metadata that match the glob `manual-references*.*`.
+If a manual reference filename ends with `.json` or `.yaml`, it's assumed to contain CSL Data (i.e. Citation Style Language JSON).
+Otherwise, the format is inferred from the extension and converted to CSL JSON using the `pandoc-citeproc --bib2json` [utility](https://github.com/jgm/pandoc-citeproc/blob/master/man/pandoc-citeproc.1.md#convert-mode).
+The standard citation for manual references is inferred from the CSL JSON `id` or `note` field.
+When no prefix is provided, such as `doi:`, `url:`, or `raw:`, a `raw:` prefix is automatically added.
+If multiple manual reference files load metadata for the same standard citation `id`, precedence is assigned according to descending filename order.
+
 ### Cite
 
 `manubot cite` is a command line utility to create [CSL JSON items](http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html#items) for one or more citations.
