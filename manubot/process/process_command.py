@@ -10,7 +10,7 @@ def cli_process(args):
         logging.warning(f'content directory does not exist: {content_dir}')
     args_dict['citation_tags_path'] = content_dir.joinpath('citation-tags.tsv')
     args_dict['meta_yaml_path'] = content_dir.joinpath('metadata.yaml')
-    args_dict['manual_references_path'] = content_dir.joinpath('manual-references.json')
+    args_dict['manual_references_paths'] = sorted(content_dir.rglob('manual-references*.*'))
 
     # Set paths for output
     output_dir = args.output_directory

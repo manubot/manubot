@@ -36,7 +36,7 @@ def test_get_isbn_citeproc_citoid_not_found():
 def test_get_isbn_citeproc_zotero_with_note_issue():
     """
     translation-server returns two metadata records for this ISBN.
-    The second has itemType=note and previousely caused CSL export to fail.
+    The second has itemType=note and previously caused CSL export to fail.
     https://github.com/zotero/translation-server/issues/67
     """
     isbn = '9780262517638'

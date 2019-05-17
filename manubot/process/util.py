@@ -13,6 +13,9 @@ import requests
 import requests_cache
 import yaml
 
+from manubot.process.bibliography import (
+    load_manual_references,
+)
 from manubot.process.manuscript import (
     datetime_now,
     get_citation_strings,
@@ -28,23 +31,6 @@ from manubot.cite.util import (
 )
 
 from manubot.cite.citeproc import citeproc_passthrough
-
-
-def read_manual_references(path):
-    """
-    Read manual references (overrides) in JSON CSL specified by a pathlib.Path.
-    Returns a standard_citation to citeproc dictionary.
-    """
-    if not path.is_file():
-        return dict()
-    with path.open() as read_file:
-        csl_items = json.load(read_file)
-    manual_refs = dict()
-    for csl_item in csl_items:
-        standard_citation = csl_item.pop('standard_citation')
-        csl_item = citeproc_passthrough(csl_item, set_id=get_citation_id(standard_citation))
-        manual_refs[standard_citation] = csl_item
-    return manual_refs
 
 
 def check_collisions(citation_df):
@@ -262,7 +248,7 @@ def generate_csl_items(args, citation_df):
     Writes references.json to disk and logs warnings for potential problems.
     """
     # Read manual references (overrides) in JSON CSL
-    manual_refs = read_manual_references(args.manual_references_path)
+    manual_refs = load_manual_references(args.manual_references_paths)
 
     requests_cache.install_cache(args.requests_cache_path, include_get_headers=True)
     cache = requests_cache.get_cache()
