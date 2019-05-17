@@ -12,10 +12,8 @@ See the Manubot Rootstock [usage guide](https://github.com/greenelab/manubot-roo
 To cite the Manubot project or for more information on its design and history, see:
 
 > **Open collaborative writing with Manubot**<br>
-Daniel S. Himmelstein, David R. Slochower, Venkat S. Malladi, Casey S.
-Greene, Anthony Gitter<br>
-_Manubot Preprint_ (2018) <https://greenelab.github.io/meta-review/>
-
+Daniel S. Himmelstein, Vincent Rubinetti, David R. Slochower, Dongbo Hu, Venkat S. Malladi, Casey S. Greene, Anthony Gitter<br>
+_Manubot Preprint_ (2019) <https://greenelab.github.io/meta-review/>
 
 ## Usage
 
