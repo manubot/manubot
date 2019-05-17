@@ -2,7 +2,9 @@ import json
 import logging
 import pathlib
 
+from manubot import __version__ as manubot_version
 from manubot.cite.citeproc import (
+    append_to_csl_item_note,
     citeproc_passthrough,
 )
 from manubot.cite.util import (
@@ -50,7 +52,7 @@ def load_manual_references(paths=[], extra_csl_items=[]):
     """
     Read manual references (overrides) from files specified by a list of paths.
     Returns a standard_citation to CSL Item dictionary. extra_csl_items specifies
-    JSON CSL stored as a python object, to be used in addition to the CSL JSON
+    JSON CSL stored as a Python object, to be used in addition to the CSL JSON
     stored as text in the file specified by path. Set paths=[] to only use extra_csl_items.
     """
     csl_items = []
@@ -59,7 +61,13 @@ def load_manual_references(paths=[], extra_csl_items=[]):
         if not path.is_file():
             logging.warning(f'process.load_bibliographies is skipping a non-existent path: {path}')
             continue
-        csl_items.extend(load_bibliography(path))
+        for csl_item in load_bibliography(path):
+            append_to_csl_item_note(
+                csl_item,
+                text=f'This CSL JSON Item was loaded by Manubot v{manubot_version} from a manual reference file.',
+                dictionary={'manual_reference_filename': path.name},
+            )
+            csl_items.append(csl_item)
     csl_items.extend(extra_csl_items)
     manual_refs = dict()
     for csl_item in csl_items:
@@ -69,7 +77,7 @@ def load_manual_references(paths=[], extra_csl_items=[]):
             csl_item_str = json.dumps(csl_item, indent=2)
             logging.info(f'Skipping csl_item where setting standard_citation failed:\n{csl_item_str}', exc_info=True)
             continue
-        standard_citation = csl_item.pop('standard_citation')
+        standard_citation = csl_item['id']
         csl_item = citeproc_passthrough(csl_item, set_id=get_citation_id(standard_citation))
         manual_refs[standard_citation] = csl_item
     return manual_refs

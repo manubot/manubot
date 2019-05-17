@@ -1,4 +1,5 @@
 import pathlib
+import shutil
 
 import pytest
 
@@ -18,6 +19,10 @@ def test_bibliography_paths():
     assert len(bibliography_path_ids) == 4
 
 
+@pytest.mark.skipif(
+    not shutil.which('pandoc-citeproc'),
+    reason='pandoc-citeproc installation not found on system',
+)
 @pytest.mark.parametrize('path', bibliography_paths, ids=bibliography_path_ids)
 def test_load_bibliography_from_path(path):
     """
@@ -29,6 +34,10 @@ def test_load_bibliography_from_path(path):
     assert csl_json[0]['title'].rstrip('.') == 'Sci-Hub provides access to nearly all scholarly literature'
 
 
+@pytest.mark.skipif(
+    not shutil.which('pandoc-citeproc'),
+    reason='pandoc-citeproc installation not found on system',
+)
 @pytest.mark.parametrize('path', bibliography_paths, ids=bibliography_path_ids)
 def test_load_bibliography_from_text(path):
     """

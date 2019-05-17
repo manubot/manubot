@@ -263,19 +263,16 @@ def generate_csl_items(citations, manual_refs={}, requests_cache_path=None, clea
     manual_refs: dict
         mapping from standard_citation to csl_item for manual references
     """
-    # Deduplicate citations
-    citations = list(collections.OrderedDict.fromkeys(citations))
+    # Read manual references (overrides) in JSON CSL
+    manual_refs = load_manual_references(args.manual_references_paths)
 
-    # Install cache
-    if requests_cache_path is not None:
-        requests_cache.install_cache(requests_cache_path, include_get_headers=True)
-        cache = requests_cache.get_cache()
-        if clear_requests_cache:
-            logging.info('Clearing requests-cache')
-            requests_cache.clear()
-        logging.info(f'requests-cache starting with {len(cache.responses)} cached responses')
+    requests_cache.install_cache(args.requests_cache_path, include_get_headers=True)
+    cache = requests_cache.get_cache()
+    if args.clear_requests_cache:
+        logging.info('Clearing requests-cache')
+        requests_cache.clear()
+    logging.info(f'requests-cache starting with {len(cache.responses)} cached responses')
 
-    # Retrieve CSL Items
     csl_items = list()
     failures = list()
     for citation in citations:
