@@ -76,5 +76,7 @@ setuptools.setup(
     },
 
     # Include package data files
-    #include_package_data=True,
+    package_data={
+        'manubot': ['cite/*.lua'],
+    },
 )
