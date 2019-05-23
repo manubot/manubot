@@ -1,10 +1,10 @@
 from manubot.process.manuscript import (
-    get_citation_strings,
-    replace_citations_strings_with_ids
+    get_citation_ids,
+    update_manuscript_citations
 )
 
 
-def test_get_citation_strings_1():
+def test_get_citation_ids_1():
     text = '''
     Sci-Hub has released article request records from its server logs, covering 165 days from September 2015 through February 2016 [@doi:10.1126/science.352.6285.508; @doi:10.1126/science.aaf5664; @doi:10.5061/dryad.q447c/1].
     We filtered for valid requests by excluding DOIs not included in our literature catalog and omitting requests that occurred before an article's publication date.
@@ -13,7 +13,7 @@ def test_get_citation_strings_1():
 
     @10.5061/bad_doi says blah but @url:https://www.courtlistener.com/docket/4355308/1/elsevier-inc-v-sci-hub/ disagrees.
     '''
-    citations = get_citation_strings(text)
+    citations = get_citation_ids(text)
     expected = sorted([
         'doi:10.1126/science.352.6285.508',
         'doi:10.1126/science.aaf5664',
@@ -23,7 +23,7 @@ def test_get_citation_strings_1():
     assert citations == expected
 
 
-def test_replace_citations_strings_with_ids():
+def test_update_manuscript_citations():
     """
     Test that text does not get converted to:
 
@@ -37,5 +37,5 @@ def test_replace_citations_strings_with_ids():
         'url:https://github.com/greenelab/manubot-rootstock': '1B7Y2HVtw',
     }
     text = 'our new Manubot tool [@url:https://github.com/greenelab/manubot-rootstock; @url:https://github.com/manubot/manubot] for automating manuscript generation.'
-    text = replace_citations_strings_with_ids(text, string_to_id)
+    text = update_manuscript_citations(text, string_to_id)
     assert '[@1B7Y2HVtw; @mNMayr3f]' in text

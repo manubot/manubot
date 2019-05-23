@@ -18,14 +18,14 @@ from manubot.process.bibliography import (
 )
 from manubot.process.manuscript import (
     datetime_now,
-    get_citation_strings,
+    get_citation_ids,
     get_manuscript_stats,
     get_text,
-    replace_citations_strings_with_ids,
+    update_manuscript_citations,
 )
 from manubot.cite.util import (
     citation_to_citeproc,
-    get_citation_id,
+    get_citation_short_id,
     is_valid_citation,
     standardize_citation,
 )
@@ -33,10 +33,10 @@ from manubot.cite.util import (
 
 def check_collisions(citation_df):
     """
-    Check for citation_id hash collisions
+    Check for short_id hash collisions
     """
-    collision_df = citation_df[['standard_citation', 'citation_id']].drop_duplicates()
-    collision_df = collision_df[collision_df.citation_id.duplicated(keep=False)]
+    collision_df = citation_df[['standard_id', 'short_id']].drop_duplicates()
+    collision_df = collision_df[collision_df.short_id.duplicated(keep=False)]
     if not collision_df.empty:
         logging.error(f'OMF! Hash collision. Congratulations.\n{collision_df}')
     return collision_df
@@ -48,12 +48,12 @@ def check_multiple_citation_strings(citation_df):
     """
     message = textwrap.dedent(f'''\
     {len(citation_df)} unique citations strings extracted from text
-    {citation_df.standard_citation.nunique()} unique standard citations\
+    {citation_df.standard_id.nunique()} unique standard citations\
     ''')
     logging.info(message)
-    multi_df = citation_df[citation_df.standard_citation.duplicated(keep=False)]
+    multi_df = citation_df[citation_df.standard_id.duplicated(keep=False)]
     if not multi_df.empty:
-        table = multi_df.to_string(index=False, columns=['standard_citation', 'string'])
+        table = multi_df.to_string(index=False, columns=['standard_id', 'manuscript_id'])
         logging.warning(f'Multiple citation strings detected for the same reference:\n{table}')
     return multi_df
 
@@ -208,9 +208,14 @@ def get_metadata_and_variables(args):
 def get_citation_df(args, text):
     """
     Generate citation_df and save it to 'citations.tsv'.
+    citation_df is a pandas.DataFrame with the following columns:
+    - manuscript_id: citation ids extracted from the manuscript content files.
+    - detagged_id: manuscript_id but with tag citations dereferenced
+    - standard_id: detagged_id standardized
+    - short_id: standard_id hashed to create a short base
     """
     citation_df = pandas.DataFrame(
-        {'string': get_citation_strings(text)}
+        {'manuscript_id': get_citation_ids(text)}
     )
     if args.citation_tags_path.is_file():
         tag_df = pandas.read_csv(args.citation_tags_path, sep='\t')
@@ -223,17 +228,18 @@ def get_citation_df(args, text):
                 'Proceeding to reread TSV with delim_whitespace=True.'
             )
             tag_df = pandas.read_csv(args.citation_tags_path, delim_whitespace=True)
-        tag_df['string'] = 'tag:' + tag_df.tag
-        for citation in tag_df.citation:
-            is_valid_citation(citation, allow_raw=True)
-        citation_df = citation_df.merge(tag_df[['string', 'citation']], how='left')
+        tag_df['manuscript_id'] = 'tag:' + tag_df.tag
+        tag_df = tag_df.rename(columns={'citation': 'detagged_id'})
+        for detagged_id in tag_df.detagged_id:
+            is_valid_citation(detagged_id, allow_raw=True)        
+        citation_df = citation_df.merge(tag_df[['manuscript_id', 'detagged_id']], how='left')
     else:
-        citation_df['citation'] = None
+        citation_df['detagged_id'] = None
         logging.info(f'missing {args.citation_tags_path} file: no citation tags set')
-    citation_df.citation.fillna(citation_df.string.astype(str), inplace=True)
-    citation_df['standard_citation'] = citation_df.citation.map(standardize_citation)
-    citation_df['citation_id'] = citation_df.standard_citation.map(get_citation_id)
-    citation_df = citation_df.sort_values(['standard_citation', 'citation'])
+    citation_df.detagged_id.fillna(citation_df.manuscript_id.astype(str), inplace=True)
+    citation_df['standard_id'] = citation_df.detagged_id.map(standardize_citation)
+    citation_df['short_id'] = citation_df.standard_id.map(get_citation_short_id)
+    citation_df = citation_df.sort_values(['standard_id', 'detagged_id'])
     citation_df.to_csv(args.citations_path, sep='\t', index=False)
     check_collisions(citation_df)
     check_multiple_citation_strings(citation_df)
@@ -257,22 +263,22 @@ def generate_csl_items(args, citation_df):
 
     csl_items = list()
     failures = list()
-    for citation in citation_df.standard_citation.unique():
-        if citation in manual_refs:
-            csl_items.append(manual_refs[citation])
+    for standard_id in citation_df.standard_id.unique():
+        if standard_id in manual_refs:
+            csl_items.append(manual_refs[standard_id])
             continue
-        elif citation.startswith('raw:'):
+        elif standard_id.startswith('raw:'):
             logging.error(
-                f'CSL JSON Data with a standard_citation of {citation} not found in manual-references.json. '
+                f'CSL JSON Data with a standard_citation of {standard_id} not found in manual-references.json. '
                 'Metadata must be provided for raw citations.'
             )
-            failures.append(citation)
+            failures.append(standard_id)
         try:
-            citeproc = citation_to_citeproc(citation)
+            citeproc = citation_to_citeproc(standard_id)
             csl_items.append(citeproc)
         except Exception:
-            logging.exception(f'Citeproc retrieval failure for {citation}')
-            failures.append(citation)
+            logging.exception(f'Citeproc retrieval failure for {standard_id}')
+            failures.append(standard_id)
 
     logging.info(f'requests-cache finished with {len(cache.responses)} cached responses')
     requests_cache.uninstall_cache()
@@ -314,9 +320,9 @@ def prepare_manuscript(args):
 
     generate_csl_items(args, citation_df)
 
-    citation_string_to_id = collections.OrderedDict(
-        zip(citation_df.string, citation_df.citation_id))
-    text = replace_citations_strings_with_ids(text, citation_string_to_id)
+    short_citation_mapper = collections.OrderedDict(
+        zip(citation_df.manuscript_id, citation_df.short_id))
+    text = update_manuscript_citations(text, short_citation_mapper)
 
     metadata, variables = get_metadata_and_variables(args)
     variables['manuscript_stats'] = get_manuscript_stats(text, citation_df)

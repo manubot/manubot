@@ -11,17 +11,17 @@ from manubot.cite.util import (
 )
 
 
-def get_citation_strings(text):
+def get_citation_ids(text):
     """
     Extract the deduplicated list of citations in a text. Citations that are
     clearly invalid such as `doi:/453` are not returned.
     """
-    citations_strings = set(citation_pattern.findall(text))
-    citations_strings = filter(
+    citation_ids = set(citation_pattern.findall(text))
+    citation_ids = filter(
         lambda x: is_valid_citation(x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True),
-        citations_strings,
+        citation_ids,
     )
-    return sorted(citations_strings)
+    return sorted(citation_ids)
 
 
 def get_text(directory):
@@ -37,16 +37,16 @@ def get_text(directory):
     return '\n\n'.join(name_to_text.values()) + '\n'
 
 
-def replace_citations_strings_with_ids(text, string_to_id):
+def update_manuscript_citations(text, old_to_new):
     """
     Convert citations to their IDs for pandoc.
 
     `text` is markdown source text
 
-    `string_to_id` is a dictionary like:
+    `old_to_new` is a dictionary like:
     doi:10.7287/peerj.preprints.3100v1 → 11cb5HXoY
     """
-    for old, new in string_to_id.items():
+    for old, new in old_to_new.items():
         text = re.sub(
             pattern=re.escape('@' + old) + r'(?![\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])',
             repl='@' + new,
@@ -64,7 +64,7 @@ def get_manuscript_stats(text, citation_df):
     # Number of distinct references by type
     ref_counts = (
         citation_df
-        .standard_citation
+        .standard_id
         .drop_duplicates()
         .map(lambda x: x.split(':')[0])
         .pipe(collections.Counter)

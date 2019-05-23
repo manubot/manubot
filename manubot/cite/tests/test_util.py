@@ -6,7 +6,7 @@ from manubot.cite.util import (
     citation_pattern,
     citation_to_citeproc,
     csl_item_set_standard_citation,
-    get_citation_id,
+    get_citation_short_id,
     infer_citation_prefix,
     inspect_citation_identifier,
     standardize_citation,
@@ -40,15 +40,15 @@ def test_citation_pattern_no_match(citation_string):
     assert match is None
 
 
-@pytest.mark.parametrize("standard_citation,expected", [
+@pytest.mark.parametrize("standard_id,expected", [
     ('doi:10.5061/dryad.q447c/1', 'kQFQ8EaO'),
     ('arxiv:1407.3561v1', '16kozZ9Ys'),
     ('pmid:24159271', '11sli93ov'),
     ('url:http://blog.dhimmel.com/irreproducible-timestamps/', 'QBWMEuxW'),
 ])
-def test_get_citation_id(standard_citation, expected):
-    citation_id = get_citation_id(standard_citation)
-    assert citation_id == expected
+def test_get_citation_short_id(standard_id, expected):
+    short_id = get_citation_short_id(standard_id)
+    assert short_id == expected
 
 
 @pytest.mark.parametrize("citation,expected", [
