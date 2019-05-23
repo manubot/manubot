@@ -26,11 +26,9 @@ from manubot.process.manuscript import (
 from manubot.cite.util import (
     citation_to_citeproc,
     get_citation_id,
-    is_valid_citation_string,
+    is_valid_citation,
     standardize_citation,
 )
-
-from manubot.cite.citeproc import citeproc_passthrough
 
 
 def check_collisions(citation_df):
@@ -225,14 +223,14 @@ def get_citation_df(args, text):
                 'Proceeding to reread TSV with delim_whitespace=True.'
             )
             tag_df = pandas.read_csv(args.citation_tags_path, delim_whitespace=True)
-        tag_df['string'] = '@tag:' + tag_df.tag
+        tag_df['string'] = 'tag:' + tag_df.tag
         for citation in tag_df.citation:
-            is_valid_citation_string('@' + citation, allow_raw=True)
+            is_valid_citation(citation, allow_raw=True)
         citation_df = citation_df.merge(tag_df[['string', 'citation']], how='left')
     else:
         citation_df['citation'] = None
         logging.info(f'missing {args.citation_tags_path} file: no citation tags set')
-    citation_df.citation.fillna(citation_df.string.astype(str).str.lstrip('@'), inplace=True)
+    citation_df.citation.fillna(citation_df.string.astype(str), inplace=True)
     citation_df['standard_citation'] = citation_df.citation.map(standardize_citation)
     citation_df['citation_id'] = citation_df.standard_citation.map(get_citation_id)
     citation_df = citation_df.sort_values(['standard_citation', 'citation'])
@@ -272,7 +270,7 @@ def generate_csl_items(args, citation_df):
         try:
             citeproc = citation_to_citeproc(citation)
             csl_items.append(citeproc)
-        except Exception as error:
+        except Exception:
             logging.exception(f'Citeproc retrieval failure for {citation}')
             failures.append(citation)
 

@@ -6,7 +6,6 @@ from manubot.pandoc.tests.test_bibliography import (
     bibliography_paths
 )
 from manubot.process.bibliography import (
-    load_bibliography,
     load_manual_references,
 )
 

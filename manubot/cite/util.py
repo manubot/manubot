@@ -16,6 +16,7 @@ citeproc_retrievers = {
 
 """
 Regex to extract citations.
+The leading '@' is omitted from the single match group.
 
 Same rules as pandoc, except more permissive in the following ways:
 
@@ -28,10 +29,10 @@ tag that does, as defined in citation-tags.tsv.
 
 https://github.com/greenelab/manubot-rootstock/issues/2#issuecomment-312153192
 
-Prototyped at https://regex101.com/r/s3Asz3/2
+Prototyped at https://regex101.com/r/s3Asz3/4
 """
 citation_pattern = re.compile(
-    r'(?<!\w)@[a-zA-Z0-9][\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/]')
+    r'(?<!\w)@([a-zA-Z0-9][\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])')
 
 
 @functools.lru_cache(maxsize=5_000)
@@ -149,13 +150,13 @@ def inspect_citation_identifier(citation):
     return None
 
 
-def is_valid_citation_string(
-        string, allow_tag=False, allow_raw=False, allow_pandoc_xnos=False):
+def is_valid_citation(
+        citation, allow_tag=False, allow_raw=False, allow_pandoc_xnos=False):
     """
-    Return True if string is a properly formatted citation. Return False if
-    string is not a citation or is an invalid citation.
+    Return True if citation is a properly formatted string. Return False if
+    citation is not a citation or is an invalid citation.
 
-    In the case string is an invalid citation, an error is logged. This
+    In the case citation is invalid, an error is logged. This
     function does not catch all invalid citations, but instead performs cursory
     checks, such as citations adhere to the expected formats. No calls to
     external resources are used by these checks, so they will not detect
@@ -165,28 +166,33 @@ def is_valid_citation_string(
     allow_tag=False, allow_raw=False, and allow_pandoc_xnos=False enable
     allowing citation sources that are valid for Manubot manuscripts, but
     likely not elsewhere. allow_tag=True enables citations tags (e.g.
-    @tag:citation-tag). allow_raw=True enables raw citations (e.g.
-    @raw:manual-reference). allow_pandoc_xnos=True still returns False for
-    pandoc-xnos references (e.g. @fig:figure-id), but does not log an error.
+    tag:citation-tag). allow_raw=True enables raw citations (e.g.
+    raw:manual-reference). allow_pandoc_xnos=True still returns False for
+    pandoc-xnos references (e.g. fig:figure-id), but does not log an error.
     With the default of False for these arguments, valid sources are restricted
     to those for which manubot can retrieve metadata based only on the
     standalone citation.
     """
-    if not string.startswith('@'):
-        logging.error(f'Invalid citation: {string}\ndoes not start with "@"')
+    if not isinstance(citation, str):
+        logging.error(
+            f"Citation should be type 'str' not "
+            f"{type(citation).__name__!r}: {citation!r}"
+        )
         return False
-    citation = string[1:]
+    if citation.startswith('@'):
+        logging.error(f"Invalid citation: {citation!r}\nstarts with '@'")
+        return False
     try:
         source, identifier = citation.split(':', 1)
-    except ValueError as e:
+    except ValueError:
         logging.error(
-            f'Citation not splittable via a single colon: {string}. '
-            'Citation strings must be in the format of `@source:identifier`.'
+            f'Citation not splittable via a single colon: {citation}. '
+            'Citations must be in the format of `source:identifier`.'
         )
         return False
 
     if not source or not identifier:
-        msg = f'Invalid citation: {string}\nblank source or identifier'
+        msg = f'Invalid citation: {citation}\nblank source or identifier'
         logging.error(msg)
         return False
 
@@ -199,7 +205,7 @@ def is_valid_citation_string(
         if source.lower() in pandoc_xnos_keys:
             logging.error(
                 f'pandoc-xnos reference types should be all lowercase.\n'
-                f'Should {string} use "{source.lower()}" rather than "{source}"?'
+                f'Should {citation} use "{source.lower()}" rather than "{source}"?'
             )
             return False
 
@@ -213,11 +219,11 @@ def is_valid_citation_string(
         if source.lower() in sources:
             logging.error(
                 f'Citation sources should be all lowercase.\n'
-                f'Should {string} use "{source.lower()}" rather than "{source}"?'
+                f'Should {citation} use "{source.lower()}" rather than "{source}"?'
             )
         else:
             logging.error(
-                f'Invalid citation: {string}\n'
+                f'Invalid citation: {citation}\n'
                 f'Source "{source}" is not valid.\n'
                 f'Valid citation sources are {{{", ".join(sorted(sources))}}}'
             )
@@ -225,7 +231,7 @@ def is_valid_citation_string(
 
     inspection = inspect_citation_identifier(citation)
     if inspection:
-        logging.error(f'invalid {source} citation: {string}\n{inspection}')
+        logging.error(f'invalid {source} citation: {citation}\n{inspection}')
         return False
 
     return True
@@ -328,7 +334,7 @@ def csl_item_set_standard_citation(csl_item):
             'csl_item_set_standard_citation could not detect a field with a citation / standard_citation. '
             'Consider setting the CSL Item "id" field.'
         )
-    assert is_valid_citation_string('@' + original_citation, allow_raw=True)
+    assert is_valid_citation(original_citation, allow_raw=True)
     standard_citation = standardize_citation(original_citation, warn_if_changed=False)
     add_to_note = {}
     if original_id and original_id != standard_citation:

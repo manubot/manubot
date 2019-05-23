@@ -15,10 +15,10 @@ def test_get_citation_strings_1():
     '''
     citations = get_citation_strings(text)
     expected = sorted([
-        '@doi:10.1126/science.352.6285.508',
-        '@doi:10.1126/science.aaf5664',
-        '@doi:10.5061/dryad.q447c/1',
-        '@url:https://www.courtlistener.com/docket/4355308/1/elsevier-inc-v-sci-hub/',
+        'doi:10.1126/science.352.6285.508',
+        'doi:10.1126/science.aaf5664',
+        'doi:10.5061/dryad.q447c/1',
+        'url:https://www.courtlistener.com/docket/4355308/1/elsevier-inc-v-sci-hub/',
     ])
     assert citations == expected
 
@@ -33,8 +33,8 @@ def test_replace_citations_strings_with_ids():
     See https://github.com/manubot/manubot/issues/9
     """
     string_to_id = {
-        '@url:https://github.com/manubot/manubot': 'mNMayr3f',
-        '@url:https://github.com/greenelab/manubot-rootstock': '1B7Y2HVtw',
+        'url:https://github.com/manubot/manubot': 'mNMayr3f',
+        'url:https://github.com/greenelab/manubot-rootstock': '1B7Y2HVtw',
     }
     text = 'our new Manubot tool [@url:https://github.com/greenelab/manubot-rootstock; @url:https://github.com/manubot/manubot] for automating manuscript generation.'
     text = replace_citations_strings_with_ids(text, string_to_id)

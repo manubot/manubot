@@ -7,7 +7,7 @@ import re
 
 from manubot.cite.util import (
     citation_pattern,
-    is_valid_citation_string,
+    is_valid_citation,
 )
 
 
@@ -18,7 +18,7 @@ def get_citation_strings(text):
     """
     citations_strings = set(citation_pattern.findall(text))
     citations_strings = filter(
-        lambda x: is_valid_citation_string(x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True),
+        lambda x: is_valid_citation(x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True),
         citations_strings,
     )
     return sorted(citations_strings)
@@ -44,11 +44,11 @@ def replace_citations_strings_with_ids(text, string_to_id):
     `text` is markdown source text
 
     `string_to_id` is a dictionary like:
-    @10.7287/peerj.preprints.3100v1 → 11cb5HXoY
+    doi:10.7287/peerj.preprints.3100v1 → 11cb5HXoY
     """
     for old, new in string_to_id.items():
         text = re.sub(
-            pattern=re.escape(old) + r'(?![\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])',
+            pattern=re.escape('@' + old) + r'(?![\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])',
             repl='@' + new,
             string=text,
         )

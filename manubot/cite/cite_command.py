@@ -1,7 +1,6 @@
 import json
 import logging
 import pathlib
-import shutil
 import subprocess
 import sys
 
@@ -9,7 +8,7 @@ from manubot.cite import (
     citation_to_citeproc,
     standardize_citation,
 )
-from manubot.cite.util import is_valid_citation_string
+from manubot.cite.util import is_valid_citation
 from manubot.pandoc.util import get_pandoc_info
 
 
@@ -76,7 +75,7 @@ def cli_cite(args):
     csl_list = list()
     for citation in args.citations:
         try:
-            if not is_valid_citation_string(f'@{citation}'):
+            if not is_valid_citation(citation):
                 continue
             citation = standardize_citation(citation)
             csl_item = citation_to_citeproc(citation, prune=args.prune_csl)
