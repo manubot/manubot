@@ -75,6 +75,8 @@ setuptools.setup(
         ],
     },
 
-    # Include package data files from MANIFEST.in
-    include_package_data=True,
+    # Include package data files
+    package_data={
+        'manubot': ['cite/*.lua'],
+    },
 )

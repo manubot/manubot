@@ -24,7 +24,7 @@ def test_web_query():
     zotero_data = web_query(url)
     assert isinstance(zotero_data, list)
     assert len(zotero_data) == 1
-    assert zotero_data[0]['title'] == "Meet the Robin Hood of Science"
+    assert zotero_data[0]['title'].startswith("Meet the Robin Hood of Science")
 
 
 def test_export_as_csl():
