@@ -248,7 +248,7 @@ def get_citation_df(args, text):
 
 def generate_csl_items(args, citation_df):
     """
-    General CSL (citeproc) items for standard_citations in citation_df.
+    General CSL (citeproc) items for standard_ids in citation_df.
     Writes references.json to disk and logs warnings for potential problems.
     """
     # Read manual references (overrides) in JSON CSL
@@ -269,7 +269,7 @@ def generate_csl_items(args, citation_df):
             continue
         elif standard_id.startswith('raw:'):
             logging.error(
-                f'CSL JSON Data with a standard_citation of {standard_id} not found in manual-references.json. '
+                f'CSL JSON Data with a standard_id of {standard_id} not found in manual-references.json. '
                 'Metadata must be provided for raw citations.'
             )
             failures.append(standard_id)
