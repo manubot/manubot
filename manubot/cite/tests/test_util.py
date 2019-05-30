@@ -287,3 +287,21 @@ def test_csl_item_set_standard_id_repeated():
     assert 'standard_citation' not in 'csl_item'
     csl_item_2 = copy.deepcopy(csl_item_set_standard_id(csl_item))
     assert csl_item_1 == csl_item_2
+
+
+def test_csl_item_set_standard_id_note():
+    """
+    Test extracting standard_id from a note and setting additional
+    note fields.
+    """
+    csl_item = {
+        'id': 'original-id',
+        'type': 'article-journal',
+        'note': 'standard_id: doi:10.1371/journal.PPAT.1006256',
+    }
+    csl_item_set_standard_id(csl_item)
+    assert csl_item['id'] == 'doi:10.1371/journal.ppat.1006256'
+    from manubot.cite.citeproc import parse_csl_item_note
+    note_dict = parse_csl_item_note(csl_item['note'])
+    assert note_dict['original_id'] == 'original-id'
+    assert note_dict['original_standard_id'] == 'doi:10.1371/journal.PPAT.1006256'

@@ -324,28 +324,28 @@ def csl_item_set_standard_id(csl_item):
     note_dict = parse_csl_item_note(csl_item.get('note', ''))
 
     original_id = None
-    original_citation = None
+    original_standard_id = None
     if 'id' in csl_item:
         original_id = csl_item['id']
-        original_citation = infer_citation_prefix(original_id)
+        original_standard_id = infer_citation_prefix(original_id)
     if 'standard_id' in note_dict:
-        original_citation = note_dict['standard_id']
+        original_standard_id = note_dict['standard_id']
     if 'standard_citation' in csl_item:
-        original_citation = csl_item.pop('standard_citation')
-    if original_citation is None:
+        original_standard_id = csl_item.pop('standard_citation')
+    if original_standard_id is None:
         raise ValueError(
             'csl_item_set_standard_id could not detect a field with a citation / standard_citation. '
             'Consider setting the CSL Item "id" field.'
         )
-    assert is_valid_citation(original_citation, allow_raw=True)
-    standard_id = standardize_citation(original_citation, warn_if_changed=False)
+    assert is_valid_citation(original_standard_id, allow_raw=True)
+    standard_id = standardize_citation(original_standard_id, warn_if_changed=False)
     add_to_note = {}
     if original_id and original_id != standard_id:
         if original_id != note_dict.get('original_id'):
             add_to_note['original_id'] = original_id
-    if original_citation and original_citation != standard_id:
-        if original_citation != note_dict.get('original_standard_id'):
-            add_to_note['original_standard_id'] = original_citation
+    if original_standard_id and original_standard_id != standard_id:
+        if original_standard_id != note_dict.get('original_standard_id'):
+            add_to_note['original_standard_id'] = original_standard_id
     if standard_id != note_dict.get('standard_id'):
         add_to_note['standard_id'] = standard_id
     append_to_csl_item_note(csl_item, dictionary=add_to_note)
