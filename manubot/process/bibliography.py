@@ -8,8 +8,8 @@ from manubot.cite.citeproc import (
     citeproc_passthrough,
 )
 from manubot.cite.util import (
-    csl_item_set_standard_citation,
-    get_citation_id,
+    csl_item_set_standard_id,
+    get_citation_short_id,
 )
 
 
@@ -72,12 +72,12 @@ def load_manual_references(paths=[], extra_csl_items=[]):
     manual_refs = dict()
     for csl_item in csl_items:
         try:
-            csl_item_set_standard_citation(csl_item)
+            csl_item_set_standard_id(csl_item)
         except Exception:
             csl_item_str = json.dumps(csl_item, indent=2)
-            logging.info(f'Skipping csl_item where setting standard_citation failed:\n{csl_item_str}', exc_info=True)
+            logging.info(f'Skipping csl_item where setting standard_id failed:\n{csl_item_str}', exc_info=True)
             continue
-        standard_citation = csl_item['id']
-        csl_item = citeproc_passthrough(csl_item, set_id=get_citation_id(standard_citation))
-        manual_refs[standard_citation] = csl_item
+        standard_id = csl_item['id']
+        csl_item = citeproc_passthrough(csl_item, set_id=get_citation_short_id(standard_id))
+        manual_refs[standard_id] = csl_item
     return manual_refs

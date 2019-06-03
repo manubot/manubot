@@ -6,7 +6,6 @@ from manubot.pandoc.tests.test_bibliography import (
     bibliography_paths
 )
 from manubot.process.bibliography import (
-    load_bibliography,
     load_manual_references,
 )
 
@@ -24,7 +23,7 @@ def test_load_multiple_bibliography_paths():
     assert csl_item_1['title'].startswith('Sci-Hub')
     assert 'CSL JSON Item was loaded by Manubot' in csl_item_1['note']
     assert 'manual_reference_filename: bibliography.json' in csl_item_1['note']
-    assert 'standard_citation: doi:10.7554/elife.32822' in csl_item_1['note']
+    assert 'standard_id: doi:10.7554/elife.32822' in csl_item_1['note']
 
     # raw id corresponding to bibliography.bib
     assert 'raw:noauthor_techblog:_nodate' in citation_to_csl_item

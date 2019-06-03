@@ -16,6 +16,7 @@ citeproc_retrievers = {
 
 """
 Regex to extract citations.
+The leading '@' is omitted from the single match group.
 
 Same rules as pandoc, except more permissive in the following ways:
 
@@ -28,10 +29,10 @@ tag that does, as defined in citation-tags.tsv.
 
 https://github.com/greenelab/manubot-rootstock/issues/2#issuecomment-312153192
 
-Prototyped at https://regex101.com/r/s3Asz3/2
+Prototyped at https://regex101.com/r/s3Asz3/4
 """
 citation_pattern = re.compile(
-    r'(?<!\w)@[a-zA-Z0-9][\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/]')
+    r'(?<!\w)@([a-zA-Z0-9][\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])')
 
 
 @functools.lru_cache(maxsize=5_000)
@@ -149,13 +150,13 @@ def inspect_citation_identifier(citation):
     return None
 
 
-def is_valid_citation_string(
-        string, allow_tag=False, allow_raw=False, allow_pandoc_xnos=False):
+def is_valid_citation(
+        citation, allow_tag=False, allow_raw=False, allow_pandoc_xnos=False):
     """
-    Return True if string is a properly formatted citation. Return False if
-    string is not a citation or is an invalid citation.
+    Return True if citation is a properly formatted string. Return False if
+    citation is not a citation or is an invalid citation.
 
-    In the case string is an invalid citation, an error is logged. This
+    In the case citation is invalid, an error is logged. This
     function does not catch all invalid citations, but instead performs cursory
     checks, such as citations adhere to the expected formats. No calls to
     external resources are used by these checks, so they will not detect
@@ -165,28 +166,33 @@ def is_valid_citation_string(
     allow_tag=False, allow_raw=False, and allow_pandoc_xnos=False enable
     allowing citation sources that are valid for Manubot manuscripts, but
     likely not elsewhere. allow_tag=True enables citations tags (e.g.
-    @tag:citation-tag). allow_raw=True enables raw citations (e.g.
-    @raw:manual-reference). allow_pandoc_xnos=True still returns False for
-    pandoc-xnos references (e.g. @fig:figure-id), but does not log an error.
+    tag:citation-tag). allow_raw=True enables raw citations (e.g.
+    raw:manual-reference). allow_pandoc_xnos=True still returns False for
+    pandoc-xnos references (e.g. fig:figure-id), but does not log an error.
     With the default of False for these arguments, valid sources are restricted
     to those for which manubot can retrieve metadata based only on the
     standalone citation.
     """
-    if not string.startswith('@'):
-        logging.error(f'Invalid citation: {string}\ndoes not start with "@"')
+    if not isinstance(citation, str):
+        logging.error(
+            f"Citation should be type 'str' not "
+            f"{type(citation).__name__!r}: {citation!r}"
+        )
         return False
-    citation = string[1:]
+    if citation.startswith('@'):
+        logging.error(f"Invalid citation: {citation!r}\nstarts with '@'")
+        return False
     try:
         source, identifier = citation.split(':', 1)
-    except ValueError as e:
+    except ValueError:
         logging.error(
-            f'Citation not splittable via a single colon: {string}. '
-            'Citation strings must be in the format of `@source:identifier`.'
+            f'Citation not splittable via a single colon: {citation}. '
+            'Citations must be in the format of `source:identifier`.'
         )
         return False
 
     if not source or not identifier:
-        msg = f'Invalid citation: {string}\nblank source or identifier'
+        msg = f'Invalid citation: {citation}\nblank source or identifier'
         logging.error(msg)
         return False
 
@@ -199,7 +205,7 @@ def is_valid_citation_string(
         if source.lower() in pandoc_xnos_keys:
             logging.error(
                 f'pandoc-xnos reference types should be all lowercase.\n'
-                f'Should {string} use "{source.lower()}" rather than "{source}"?'
+                f'Should {citation} use "{source.lower()}" rather than "{source}"?'
             )
             return False
 
@@ -213,11 +219,11 @@ def is_valid_citation_string(
         if source.lower() in sources:
             logging.error(
                 f'Citation sources should be all lowercase.\n'
-                f'Should {string} use "{source.lower()}" rather than "{source}"?'
+                f'Should {citation} use "{source.lower()}" rather than "{source}"?'
             )
         else:
             logging.error(
-                f'Invalid citation: {string}\n'
+                f'Invalid citation: {citation}\n'
                 f'Source "{source}" is not valid.\n'
                 f'Valid citation sources are {{{", ".join(sorted(sources))}}}'
             )
@@ -225,24 +231,27 @@ def is_valid_citation_string(
 
     inspection = inspect_citation_identifier(citation)
     if inspection:
-        logging.error(f'invalid {source} citation: {string}\n{inspection}')
+        logging.error(f'invalid {source} citation: {citation}\n{inspection}')
         return False
 
     return True
 
 
-def get_citation_id(standard_citation):
+def get_citation_short_id(standard_id):
     """
-    Get the citation_id for a standard_citation.
+    Get the short_id derived from a citation's standard_id.
+    Short IDs are generated by converting the standard_id to a 6 byte hash,
+    and then converting this digest to a base62 ASCII str. The output
+    short_id consists of characters in the following ranges: 0-9, a-z and A-Z.
     """
     import hashlib
     import base62
-    assert '@' not in standard_citation
-    as_bytes = standard_citation.encode()
+    assert '@' not in standard_id
+    as_bytes = standard_id.encode()
     blake_hash = hashlib.blake2b(as_bytes, digest_size=6)
     digest = blake_hash.digest()
-    citation_id = base62.encodebytes(digest)
-    return citation_id
+    short_id = base62.encodebytes(digest)
+    return short_id
 
 
 def citation_to_citeproc(citation, prune=True):
@@ -267,12 +276,12 @@ def citation_to_citeproc(citation, prune=True):
 
     note_text = f'This CSL JSON Item was automatically generated by Manubot v{manubot_version} using citation-by-identifier.'
     note_dict = {
-        'standard_citation': citation,
+        'standard_id': citation,
     }
     append_to_csl_item_note(csl_item, note_text, note_dict)
 
-    citation_id = get_citation_id(citation)
-    csl_item = citeproc_passthrough(csl_item, set_id=citation_id, prune=prune)
+    short_id = get_citation_short_id(citation)
+    csl_item = citeproc_passthrough(csl_item, set_id=short_id, prune=prune)
 
     return csl_item
 
@@ -292,15 +301,15 @@ def infer_citation_prefix(citation):
     return f'raw:{citation}'
 
 
-def csl_item_set_standard_citation(csl_item):
+def csl_item_set_standard_id(csl_item):
     """
-    Extract the standard_citation for a csl_item and modify the csl_item in-place to set its standard_citation.
-    The standard_citation is extracted from a "standard_citation" field, the "note" field, or the "id" field.
+    Extract the standard_id for a csl_item and modify the csl_item in-place to set its standard_citation.
+    The standard_id is extracted from a "standard_citation" field, the "note" field, or the "id" field.
     If extracting the citation from the "id" field, use the infer_citation_prefix function to set the prefix.
-    For example, if the extracted standard_citation does not begin with a supported prefix (e.g. "doi:", "pmid:"
+    For example, if the extracted standard_id does not begin with a supported prefix (e.g. "doi:", "pmid:"
     or "raw:"), the citation is assumed to be raw and given a "raw:" prefix. The extracted citation
-    (referred to as "original_standard_citation") is checked for validity and standardized, after which it is
-    the final "standard_citation".
+    (referred to as "original_standard_id") is checked for validity and standardized, after which it is
+    the final "standard_id".
 
     Regarding csl_item modification, the csl_item "id" field is set to the standard_citation and the note field
     is created or updated with key-value pairs for standard_citation, original_standard_citation, and original_id.
@@ -315,30 +324,30 @@ def csl_item_set_standard_citation(csl_item):
     note_dict = parse_csl_item_note(csl_item.get('note', ''))
 
     original_id = None
-    original_citation = None
+    original_standard_id = None
     if 'id' in csl_item:
         original_id = csl_item['id']
-        original_citation = infer_citation_prefix(original_id)
-    if 'standard_citation' in note_dict:
-        original_citation = note_dict['standard_citation']
+        original_standard_id = infer_citation_prefix(original_id)
+    if 'standard_id' in note_dict:
+        original_standard_id = note_dict['standard_id']
     if 'standard_citation' in csl_item:
-        original_citation = csl_item.pop('standard_citation')
-    if original_citation is None:
+        original_standard_id = csl_item.pop('standard_citation')
+    if original_standard_id is None:
         raise ValueError(
-            'csl_item_set_standard_citation could not detect a field with a citation / standard_citation. '
+            'csl_item_set_standard_id could not detect a field with a citation / standard_citation. '
             'Consider setting the CSL Item "id" field.'
         )
-    assert is_valid_citation_string('@' + original_citation, allow_raw=True)
-    standard_citation = standardize_citation(original_citation, warn_if_changed=False)
+    assert is_valid_citation(original_standard_id, allow_raw=True)
+    standard_id = standardize_citation(original_standard_id, warn_if_changed=False)
     add_to_note = {}
-    if original_id and original_id != standard_citation:
+    if original_id and original_id != standard_id:
         if original_id != note_dict.get('original_id'):
             add_to_note['original_id'] = original_id
-    if original_citation and original_citation != standard_citation:
-        if original_citation != note_dict.get('original_standard_citation'):
-            add_to_note['original_standard_citation'] = original_citation
-    if standard_citation != note_dict.get('standard_citation'):
-        add_to_note['standard_citation'] = standard_citation
+    if original_standard_id and original_standard_id != standard_id:
+        if original_standard_id != note_dict.get('original_standard_id'):
+            add_to_note['original_standard_id'] = original_standard_id
+    if standard_id != note_dict.get('standard_id'):
+        add_to_note['standard_id'] = standard_id
     append_to_csl_item_note(csl_item, dictionary=add_to_note)
-    csl_item['id'] = standard_citation
+    csl_item['id'] = standard_id
     return csl_item
