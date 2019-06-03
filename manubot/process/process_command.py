@@ -14,7 +14,7 @@ def cli_process(args):
 
     # Set paths for output
     output_dir = args.output_directory
-    output_dir.mkdir(exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
     args_dict['manuscript_path'] = output_dir.joinpath('manuscript.md')
     args_dict['citations_path'] = output_dir.joinpath('citations.tsv')
     args_dict['references_path'] = output_dir.joinpath('references.json')
@@ -22,7 +22,7 @@ def cli_process(args):
 
     # Set paths for caching
     args_dict['cache_directory'] = args.cache_directory or output_dir
-    args.cache_directory.mkdir(exist_ok=True)
+    args.cache_directory.mkdir(parents=True, exist_ok=True)
     args_dict['requests_cache_path'] = str(args.cache_directory.joinpath('requests-cache'))
 
     from manubot.process.util import prepare_manuscript
