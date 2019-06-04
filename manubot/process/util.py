@@ -164,7 +164,7 @@ def get_metadata_and_variables(args):
     # as well as author_info.
     if args.meta_yaml_path.is_file():
         with args.meta_yaml_path.open() as read_file:
-            metadata = yaml.load(read_file)
+            metadata = yaml.safe_load(read_file)
             assert isinstance(metadata, dict)
     else:
         metadata = {}
