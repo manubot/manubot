@@ -30,7 +30,7 @@ def load_bibliography(path):
             use_pandoc_citeproc = False
             import yaml
             with path.open() as read_file:
-                csl_items = yaml.load(read_file)
+                csl_items = yaml.safe_load(read_file)
     except Exception:
         logging.exception(f'process.load_bibliography: error parsing {path}.\n')
         csl_items = []
