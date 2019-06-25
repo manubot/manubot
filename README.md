@@ -15,6 +15,23 @@ To cite the Manubot project or for more information on its design and history, s
 Daniel S. Himmelstein, Vincent Rubinetti, David R. Slochower, Dongbo Hu, Venkat S. Malladi, Casey S. Greene, Anthony Gitter<br>
 _Manubot Preprint_ (2019) <https://greenelab.github.io/meta-review/>
 
+## Installation
+
+Install the latest release version:
+
+```sh
+pip install manubot
+```
+
+or install a version specified by a git commit hash:
+
+```sh
+COMMIT=33e512d21218263423de5f0d127aac4f8635468f
+pip install git+https://github.com/manubot/manubot@$COMMIT
+```
+
+Use the `--upgrade` argument to reinstall `manubot` with a different commit hash.
+
 ## Usage
 
 Installing the python package creates the `manubot` command line program.
@@ -153,17 +170,6 @@ optional arguments:
   --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
                         Set the logging level for stderr logging
 ```
-
-## Installation
-
-Install the version specified by a git commit hash using:
-
-```sh
-COMMIT=33e512d21218263423de5f0d127aac4f8635468f
-pip install git+https://github.com/manubot/manubot@$COMMIT
-```
-
-Use the `--upgrade` argument to reinstall `manubot` with a different commit hash.
 
 ## Development
 
