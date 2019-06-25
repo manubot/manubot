@@ -13,7 +13,7 @@ To cite the Manubot project or for more information on its design and history, s
 
 > **Open collaborative writing with Manubot**<br>
 Daniel S. Himmelstein, Vincent Rubinetti, David R. Slochower, Dongbo Hu, Venkat S. Malladi, Casey S. Greene, Anthony Gitter<br>
-_Manubot Preprint_ (2019) <https://greenelab.github.io/meta-review/>
+_PLOS Computational Biology_ (2019) <https://doi.org/10.1371/journal.pcbi.1007128>
 
 ## Usage
 
