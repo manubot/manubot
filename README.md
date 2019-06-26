@@ -1,19 +1,28 @@
-# The manuscript bot for automated scholarly publishing
+# Python utilities for Manubot: Manuscripts, open and automated
 
 [![Travis Linux Build Status](https://travis-ci.com/manubot/manubot.svg?branch=master)](https://travis-ci.com/manubot/manubot)
 [![AppVeyor Windows Build Status](https://ci.appveyor.com/api/projects/status/f20hvc6si5uiqd7e/branch/master?svg=true)](https://ci.appveyor.com/project/manubot/manubot/branch/master)
 
-The Manubot Python package prepares scholarly manuscripts for Pandoc consumption.
-It automates and scripts several aspects of manuscript creation, including fetching bibliographic metadata for citations.
+[Manubot](https://manubot.org/ "Manubot homepage") is a workflow and set of tools for the next generation of scholarly publishing.
+This repository contains a Python package with several Manubot-related utilities, as described in the [usage section](#usage) below.
 
-This program is designed to be used with clones of [Manubot Rootstock](https://github.com/greenelab/manubot-rootstock), which perform Pandoc conversion and continuous deployment.
-See the Manubot Rootstock [usage guide](https://github.com/greenelab/manubot-rootstock/blob/master/USAGE.md) for more information.
+The `manubot cite` command-line interface retrieves and formats bibliographic metadata for user-supplied persistent identifiers like DOIs or PubMed IDs.
+The `manubot process` command-line interface prepares scholarly manuscripts for Pandoc consumption.
+The `manubot process` command is used by Manubot manuscripts, which are based off the [Rootstock template](https://github.com/manubot/rootstock), to automate several aspects of manuscript generation.
+See Rootstock's [manuscript usage guide](https://github.com/manubot/rootstock/blob/master/USAGE.md) for more information.
+
+**Note:**
+If you want to experience Manubot by editing an existing manuscript, see <https://github.com/manubot/try-manubot>.
+If you want to create a new manuscript, see <https://github.com/manubot/rootstock>.
 
 To cite the Manubot project or for more information on its design and history, see:
 
 > **Open collaborative writing with Manubot**<br>
 Daniel S. Himmelstein, Vincent Rubinetti, David R. Slochower, Dongbo Hu, Venkat S. Malladi, Casey S. Greene, Anthony Gitter<br>
-_PLOS Computational Biology_ (2019) <https://doi.org/10.1371/journal.pcbi.1007128>
+*PLOS Computational Biology* (2019-06-24) <https://doi.org/c7np><br>
+DOI: [10.1371/journal.pcbi.1007128](https://doi.org/10.1371/journal.pcbi.1007128) · PMID: [31233491](https://www.ncbi.nlm.nih.gov/pubmed/31233491)
+
+The Manubot version of this manuscript is available at <https://greenelab.github.io/meta-review/>.
 
 ## Usage
 
@@ -202,7 +211,7 @@ TAG=v`python setup.py --version`
 git add manubot/__init__.py release-notes/$TAG.md
 git commit --message="Prepare $TAG release"
 git push
-# Create & push tag (assuming upstream is greenelab remote)
+# Create & push tag (assuming upstream is the manubot organization remote)
 git tag --annotate $TAG --file=release-notes/$TAG.md
 git push upstream $TAG
 ```
