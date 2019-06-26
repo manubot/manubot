@@ -1,18 +1,19 @@
-# Python utilities for Manubot: Manuscripts, open & automated
+# Python utilities for Manubot: Manuscripts, open and automated
 
 [![Travis Linux Build Status](https://travis-ci.com/manubot/manubot.svg?branch=master)](https://travis-ci.com/manubot/manubot)
 [![AppVeyor Windows Build Status](https://ci.appveyor.com/api/projects/status/f20hvc6si5uiqd7e/branch/master?svg=true)](https://ci.appveyor.com/project/manubot/manubot/branch/master)
 
 [Manubot](https://manubot.org/ "Manubot homepage") is a workflow and set of tools for the next generation of scholarly publishing.
-This repository contains a Python package that contains several Manubot-related utilities.
+This repository contains a Python package with several Manubot-related utilities, as described in the [usage section](#usage) below.
 
-Specifically, the Python package includes a `manubot process` command line utility to prepares scholarly manuscripts for Pandoc consumption.
-This utility automates several aspects of manuscript creation, including fetching bibliographic metadata for citations, and is used to build Manubot manuscripts.
-See the [manuscript usage guide](https://github.com/manubot/rootstock/blob/master/USAGE.md) for more information.
+The `manubot cite` command-line interface retrieves and formats bibliographic metadata for user-supplied persistent identifiers like DOIs or PubMed IDs.
+The `manubot process` command-line interface prepares scholarly manuscripts for Pandoc consumption.
+The `manubot process` command is used by Manubot manuscripts, which are based off the [Rootstock template](https://github.com/manubot/rootstock), to automate several aspects of manuscript generation.
+See Rootstock's [manuscript usage guide](https://github.com/manubot/rootstock/blob/master/USAGE.md) for more information.
 
 **Note:**
 If you want to experience Manubot by editing an existing manuscript, see <https://github.com/manubot/try-manubot>.
-If you want to create a new Manuscript, see <https://github.com/manubot/rootstock>.
+If you want to create a new manuscript, see <https://github.com/manubot/rootstock>.
 
 To cite the Manubot project or for more information on its design and history, see:
 
