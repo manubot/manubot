@@ -24,6 +24,26 @@ DOI: [10.1371/journal.pcbi.1007128](https://doi.org/10.1371/journal.pcbi.1007128
 
 The Manubot version of this manuscript is available at <https://greenelab.github.io/meta-review/>.
 
+## Installation
+
+If you are using the `manubot` Python package as part of a manuscript repository, installation of this package is handled though the Rootstock's [environment specification](https://github.com/manubot/rootstock/blob/master/build/environment.yml).
+For other use cases, this package can be installed via `pip`.
+
+Install the latest release version [from PyPI](https://pypi.org/project/manubot/):
+
+```sh
+pip install --upgrade manubot
+```
+
+Or install from the source code on [GitHub](https://github.com/manubot/manubot), using the version specified by a commit hash:
+
+```sh
+COMMIT=d2160151e52750895571079a6e257beb6e0b1278
+pip install --upgrade git+https://github.com/manubot/manubot@$COMMIT
+```
+
+The `--upgrade` argument ensures `pip` updates an existing `manubot` installation if present.
+
 ## Usage
 
 Installing the python package creates the `manubot` command line program.
@@ -162,17 +182,6 @@ optional arguments:
   --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
                         Set the logging level for stderr logging
 ```
-
-## Installation
-
-Install the version specified by a git commit hash using:
-
-```sh
-COMMIT=33e512d21218263423de5f0d127aac4f8635468f
-pip install git+https://github.com/manubot/manubot@$COMMIT
-```
-
-Use the `--upgrade` argument to reinstall `manubot` with a different commit hash.
 
 ## Development
 
