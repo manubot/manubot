@@ -17,20 +17,23 @@ _Manubot Preprint_ (2019) <https://greenelab.github.io/meta-review/>
 
 ## Installation
 
-Install the latest release version:
+If you are using the `manubot` Python package as part of a manuscript repository, installation of this package is handled though the Rootstock's [environment specification](https://github.com/manubot/rootstock/blob/master/build/environment.yml).
+For other use cases, this package can be installed via `pip`.
+
+Install the latest release version [from PyPI](https://pypi.org/project/manubot/):
 
 ```sh
-pip install manubot
+pip install --upgrade manubot
 ```
 
-or install a version specified by a git commit hash:
+Or install from the source code on [GitHub](https://github.com/manubot/manubot), using the version specified by a commit hash:
 
 ```sh
-COMMIT=33e512d21218263423de5f0d127aac4f8635468f
-pip install git+https://github.com/manubot/manubot@$COMMIT
+COMMIT=d2160151e52750895571079a6e257beb6e0b1278
+pip install --upgrade git+https://github.com/manubot/manubot@$COMMIT
 ```
 
-Use the `--upgrade` argument to reinstall `manubot` with a different commit hash.
+The `--upgrade` argument ensures `pip` updates an existing `manubot` installation if present.
 
 ## Usage
 
