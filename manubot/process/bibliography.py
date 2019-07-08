@@ -24,12 +24,12 @@ def load_bibliography(path):
     try:
         if path.suffix == '.json':
             use_pandoc_citeproc = False
-            with path.open() as read_file:
+            with path.open(encoding='utf-8-sig') as read_file:
                 csl_items = json.load(read_file)
         if path.suffix == '.yaml':
             use_pandoc_citeproc = False
             import yaml
-            with path.open() as read_file:
+            with path.open(encoding='utf-8-sig') as read_file:
                 csl_items = yaml.safe_load(read_file)
     except Exception:
         logging.exception(f'process.load_bibliography: error parsing {path}.\n')

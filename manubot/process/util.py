@@ -67,7 +67,7 @@ def read_json(path):
         obj = response.json(object_pairs_hook=collections.OrderedDict)
     else:
         path = pathlib.Path(path)
-        with path.open() as read_file:
+        with path.open(encoding='utf-8-sig') as read_file:
             obj = json.load(read_file, object_pairs_hook=collections.OrderedDict)
     return obj
 
@@ -163,7 +163,7 @@ def get_metadata_and_variables(args):
     # Read metadata which contains pandoc_yaml_metadata
     # as well as author_info.
     if args.meta_yaml_path.is_file():
-        with args.meta_yaml_path.open() as read_file:
+        with args.meta_yaml_path.open(encoding='utf-8-sig') as read_file:
             metadata = yaml.safe_load(read_file)
             assert isinstance(metadata, dict)
     else:
@@ -289,7 +289,7 @@ def generate_csl_items(args, citation_df):
         logging.error(message)
 
     # Write JSON CSL bibliography for Pandoc.
-    with args.references_path.open('w') as write_file:
+    with args.references_path.open('w', encoding='utf-8') as write_file:
         json.dump(csl_items, write_file, indent=2, ensure_ascii=False)
         write_file.write('\n')
     return csl_items
@@ -326,14 +326,14 @@ def prepare_manuscript(args):
 
     metadata, variables = get_metadata_and_variables(args)
     variables['manuscript_stats'] = get_manuscript_stats(text, citation_df)
-    with args.variables_path.open('w') as write_file:
-        json.dump(variables, write_file, indent=2)
+    with args.variables_path.open('w', encoding='utf-8') as write_file:
+        json.dump(variables, write_file, ensure_ascii=False, indent=2)
         write_file.write('\n')
 
     text = template_with_jinja2(text, variables)
 
     # Write manuscript for pandoc
-    with args.manuscript_path.open('w') as write_file:
+    with args.manuscript_path.open('w', encoding='utf-8') as write_file:
         yaml.dump(metadata, write_file, default_flow_style=False,
                   explicit_start=True, explicit_end=True)
         write_file.write('\n')
