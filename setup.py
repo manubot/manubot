@@ -7,13 +7,13 @@ directory = pathlib.Path(__file__).parent.resolve()
 
 # version
 init_path = directory.joinpath('manubot', '__init__.py')
-text = init_path.read_text()
+text = init_path.read_text(encoding='utf-8-sig')
 pattern = re.compile(r"^__version__ = ['\"]([^'\"]*)['\"]", re.MULTILINE)
 version = pattern.search(text).group(1)
 
 # long_description
 readme_path = directory.joinpath('README.md')
-long_description = readme_path.read_text()
+long_description = readme_path.read_text(encoding='utf-8-sig')
 
 setuptools.setup(
     # Package details
