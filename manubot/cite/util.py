@@ -36,7 +36,7 @@ citation_pattern = re.compile(
 
 
 @functools.lru_cache(maxsize=5_000)
-def standardize_citation(citation, warn_if_changed=False):
+def standardize_citekey(citation, warn_if_changed=False):
     """
     Standardize citation identifiers based on their source
     """
@@ -65,7 +65,7 @@ def standardize_citation(citation, warn_if_changed=False):
     standard_citation = f'{source}:{identifier}'
     if warn_if_changed and citation != standard_citation:
         logging.warning(
-            f'standardize_citation expected citation to already be standardized.\n'
+            f'standardize_citekey expected citation to already be standardized.\n'
             f'Instead citation was changed from {citation} to {standard_citation}'
         )
     return standard_citation
@@ -150,7 +150,7 @@ def inspect_citation_identifier(citation):
     return None
 
 
-def is_valid_citation(
+def is_valid_citekey(
         citation, allow_tag=False, allow_raw=False, allow_pandoc_xnos=False):
     """
     Return True if citation is a properly formatted string. Return False if
@@ -258,7 +258,7 @@ def citation_to_citeproc(citation, prune=True):
     """
     Return a dictionary with citation metadata
     """
-    citation == standardize_citation(citation, warn_if_changed=True)
+    citation == standardize_citekey(citation, warn_if_changed=True)
     source, identifier = citation.split(':', 1)
 
     if source in citeproc_retrievers:
@@ -337,8 +337,8 @@ def csl_item_set_standard_id(csl_item):
             'csl_item_set_standard_id could not detect a field with a citation / standard_citation. '
             'Consider setting the CSL Item "id" field.'
         )
-    assert is_valid_citation(original_standard_id, allow_raw=True)
-    standard_id = standardize_citation(original_standard_id, warn_if_changed=False)
+    assert is_valid_citekey(original_standard_id, allow_raw=True)
+    standard_id = standardize_citekey(original_standard_id, warn_if_changed=False)
     add_to_note = {}
     if original_id and original_id != standard_id:
         if original_id != note_dict.get('original_id'):

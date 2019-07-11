@@ -6,9 +6,9 @@ import sys
 
 from manubot.cite import (
     citation_to_citeproc,
-    standardize_citation,
+    standardize_citekey,
 )
-from manubot.cite.util import is_valid_citation
+from manubot.cite.util import is_valid_citekey
 from manubot.pandoc.util import get_pandoc_info
 
 
@@ -75,9 +75,9 @@ def cli_cite(args):
     csl_list = list()
     for citation in args.citations:
         try:
-            if not is_valid_citation(citation):
+            if not is_valid_citekey(citation):
                 continue
-            citation = standardize_citation(citation)
+            citation = standardize_citekey(citation)
             csl_item = citation_to_citeproc(citation, prune=args.prune_csl)
             csl_list.append(csl_item)
         except Exception as error:

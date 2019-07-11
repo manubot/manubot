@@ -9,7 +9,7 @@ from manubot.cite.util import (
     get_citation_short_id,
     infer_citation_prefix,
     inspect_citation_identifier,
-    standardize_citation,
+    standardize_citekey,
 )
 
 
@@ -65,11 +65,11 @@ def test_get_citation_short_id(standard_id, expected):
     ('isbn:1-55860-510-X', 'isbn:9781558605107'),
     ('isbn:1-55860-510-x', 'isbn:9781558605107'),
 ])
-def test_standardize_citation(citation, expected):
+def test_standardize_citekey(citation, expected):
     """
     Standardize identifiers based on their source
     """
-    output = standardize_citation(citation)
+    output = standardize_citekey(citation)
     assert output == expected
 
 

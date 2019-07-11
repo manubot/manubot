@@ -7,21 +7,21 @@ import re
 
 from manubot.cite.util import (
     citation_pattern,
-    is_valid_citation,
+    is_valid_citekey,
 )
 
 
-def get_citation_ids(text):
+def get_citekeys(text):
     """
     Extract the deduplicated list of citations in a text. Citations that are
     clearly invalid such as `doi:/453` are not returned.
     """
-    citation_ids = set(citation_pattern.findall(text))
-    citation_ids = filter(
-        lambda x: is_valid_citation(x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True),
-        citation_ids,
+    citekeys = set(citation_pattern.findall(text))
+    citekeys = filter(
+        lambda x: is_valid_citekey(x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True),
+        citekeys,
     )
-    return sorted(citation_ids)
+    return sorted(citekeys)
 
 
 def get_text(directory):

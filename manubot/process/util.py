@@ -22,7 +22,7 @@ from manubot.process.ci import (
 )
 from manubot.process.manuscript import (
     datetime_now,
-    get_citation_ids,
+    get_citekeys,
     get_manuscript_stats,
     get_text,
     update_manuscript_citations,
@@ -30,8 +30,8 @@ from manubot.process.manuscript import (
 from manubot.cite.util import (
     citation_to_citeproc,
     get_citation_short_id,
-    is_valid_citation,
-    standardize_citation,
+    is_valid_citekey,
+    standardize_citekey,
 )
 
 
@@ -212,7 +212,7 @@ def get_citation_df(args, text):
     - short_id: standard_id hashed to create a short base
     """
     citation_df = pandas.DataFrame(
-        {'manuscript_id': get_citation_ids(text)}
+        {'manuscript_id': get_citekeys(text)}
     )
     if args.citation_tags_path.is_file():
         tag_df = pandas.read_csv(args.citation_tags_path, sep='\t')
@@ -228,13 +228,13 @@ def get_citation_df(args, text):
         tag_df['manuscript_id'] = 'tag:' + tag_df.tag
         tag_df = tag_df.rename(columns={'citation': 'detagged_id'})
         for detagged_id in tag_df.detagged_id:
-            is_valid_citation(detagged_id, allow_raw=True)        
+            is_valid_citekey(detagged_id, allow_raw=True)        
         citation_df = citation_df.merge(tag_df[['manuscript_id', 'detagged_id']], how='left')
     else:
         citation_df['detagged_id'] = None
         logging.info(f'missing {args.citation_tags_path} file: no citation tags set')
     citation_df.detagged_id.fillna(citation_df.manuscript_id.astype(str), inplace=True)
-    citation_df['standard_id'] = citation_df.detagged_id.map(standardize_citation)
+    citation_df['standard_id'] = citation_df.detagged_id.map(standardize_citekey)
     citation_df['short_id'] = citation_df.standard_id.map(get_citation_short_id)
     citation_df = citation_df.sort_values(['standard_id', 'detagged_id'])
     citation_df.to_csv(args.citations_path, sep='\t', index=False)
