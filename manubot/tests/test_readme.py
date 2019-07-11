@@ -6,7 +6,7 @@ import subprocess
 import pytest
 
 readme_path = pathlib.Path(__file__).parent.parent.parent / 'README.md'
-readme = readme_path.read_text(encoding='utf-8')
+readme = readme_path.read_text(encoding='utf-8-sig')
 
 template = r'''
 <!-- test codeblock contains output of `{command}` -->
