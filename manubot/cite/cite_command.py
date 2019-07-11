@@ -89,7 +89,7 @@ def cli_cite(args):
 
     # output CSL JSON data, if --render is False
     if not args.render:
-        write_file = args.output.open('w') if args.output else sys.stdout
+        write_file = args.output.open('w', encoding='utf-8') if args.output else sys.stdout
         with write_file:
             json.dump(csl_list, write_file, ensure_ascii=False, indent=2)
             write_file.write('\n')

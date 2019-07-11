@@ -27,12 +27,13 @@ def get_citation_ids(text):
 def get_text(directory):
     """
     Return a concatenated string of section texts from the specified directory.
+    Text files should be UTF-8 encoded.
     """
     section_dir = pathlib.Path(directory)
     paths = sorted(section_dir.glob('[0-9]*.md'))
     name_to_text = collections.OrderedDict()
     for path in paths:
-        name_to_text[path.stem] = path.read_text()
+        name_to_text[path.stem] = path.read_text(encoding='utf-8-sig')
     logging.info('Manuscript content parts:\n' + '\n'.join(name_to_text))
     return '\n\n'.join(name_to_text.values()) + '\n'
 
