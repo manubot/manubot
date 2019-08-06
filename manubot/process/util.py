@@ -16,6 +16,9 @@ import yaml
 from manubot.process.bibliography import (
     load_manual_references,
 )
+from manubot.process.ci import (
+    get_continuous_integration_parameters,
+)
 from manubot.process.manuscript import (
     datetime_now,
     get_citation_ids,
@@ -186,17 +189,10 @@ def get_metadata_and_variables(args):
     variables['authors'] = authors
     variables = add_author_affiliations(variables)
 
-    # Set repository version metadata for Travis CI builds only
-    # https://docs.travis-ci.com/user/environment-variables/
-    if os.getenv('TRAVIS', 'false') == 'true':
-        repo_slug = os.environ['TRAVIS_REPO_SLUG']
-        repo_owner, repo_name = repo_slug.split('/')
-        variables['ci_source'] = {
-            'repo_slug': repo_slug,
-            'repo_owner': repo_owner,
-            'repo_name': repo_name,
-            'commit': os.environ['TRAVIS_COMMIT'],
-        }
+    # Set repository version metadata for CI builds
+    ci_params = get_continuous_integration_parameters()
+    if ci_params:
+        variables['ci_source'] = ci_params
 
     # Update variables with user-provided variables here
     user_variables = read_jsons(args.template_variables_path)
