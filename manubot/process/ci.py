@@ -47,7 +47,7 @@ def get_continuous_integration_parameters():
         # https://www.appveyor.com/docs/environment-variables/
         repo_slug = os.environ['APPVEYOR_REPO_NAME']
         repo_owner, repo_name = repo_slug.split('/')
-        provider_url = '{APPVEYOR_URL}/{APPVEYOR_ACCOUNT_NAME}/{APPVEYOR_PROJECT_SLUG}'.format(**os.environ)
+        provider_url = '{APPVEYOR_URL}/project/{APPVEYOR_ACCOUNT_NAME}/{APPVEYOR_PROJECT_SLUG}'.format(**os.environ)
         return {
             'provider': 'appveyor',
             'provider_account': os.environ['APPVEYOR_ACCOUNT_NAME'],
