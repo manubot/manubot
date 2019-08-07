@@ -17,6 +17,7 @@ from manubot.process.bibliography import (
     load_manual_references,
 )
 from manubot.process.ci import (
+    add_manuscript_urls_to_ci_params,
     get_continuous_integration_parameters,
 )
 from manubot.process.manuscript import (
@@ -192,7 +193,7 @@ def get_metadata_and_variables(args):
     # Set repository version metadata for CI builds
     ci_params = get_continuous_integration_parameters()
     if ci_params:
-        variables['ci_source'] = ci_params
+        variables['ci_source'] = add_manuscript_urls_to_ci_params(ci_params)
 
     # Update variables with user-provided variables here
     user_variables = read_jsons(args.template_variables_path)

@@ -66,3 +66,23 @@ def get_continuous_integration_parameters():
         'Supported providers are: {}'.format(', '.join(supported_providers))
     )
     return None
+
+
+def add_manuscript_urls_to_ci_params(ci_params):
+    """
+    Return and edit in-place the ci_params dictionary to include 'manuscript_url'.
+    This function assumes Travis CI is used to deploy to GitHub Pages, while
+    AppVeyor is used for storing manuscript artifacts for pull request builds.
+    """
+    if not ci_params:
+        return ci_params
+    assert isinstance(ci_params, dict)
+    provider = ci_params.get('provider')
+    if provider == 'travis':
+        ci_params['manuscript_url'] = (
+            "https://{repo_owner}.github.io/{repo_name}/v/{commit}/"
+            .format(**ci_params)
+        )
+    if provider == 'appveyor':
+        ci_params['manuscript_url'] = f"{ci_params['build_url']}/artifacts"
+    return ci_params
