@@ -15,7 +15,7 @@ citeproc_retrievers = {
 }
 
 """
-Regex to extract citations.
+Regex to extract citation keys.
 The leading '@' is omitted from the single match group.
 
 Same rules as pandoc, except more permissive in the following ways:
@@ -24,23 +24,23 @@ Same rules as pandoc, except more permissive in the following ways:
 2. underscores are allowed in internal characters because URLs, DOIs, and
    citation tags often contain underscores.
 
-If a citation string does not match this regex, it can be substituted for a
+If a citekey does not match this regex, it can be substituted for a
 tag that does, as defined in citation-tags.tsv.
 
 https://github.com/greenelab/manubot-rootstock/issues/2#issuecomment-312153192
 
 Prototyped at https://regex101.com/r/s3Asz3/4
 """
-citation_pattern = re.compile(
+citekey_pattern = re.compile(
     r'(?<!\w)@([a-zA-Z0-9][\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])')
 
 
 @functools.lru_cache(maxsize=5_000)
-def standardize_citekey(citation, warn_if_changed=False):
+def standardize_citekey(citekey, warn_if_changed=False):
     """
-    Standardize citation identifiers based on their source
+    Standardize citation keys based on their source
     """
-    source, identifier = citation.split(':', 1)
+    source, identifier = citekey.split(':', 1)
 
     if source == 'doi':
         if identifier.startswith('10/'):
@@ -62,13 +62,13 @@ def standardize_citekey(citation, warn_if_changed=False):
         from isbnlib import to_isbn13
         identifier = to_isbn13(identifier)
 
-    standard_citation = f'{source}:{identifier}'
-    if warn_if_changed and citation != standard_citation:
+    standard_citekey = f'{source}:{identifier}'
+    if warn_if_changed and citekey != standard_citekey:
         logging.warning(
-            f'standardize_citekey expected citation to already be standardized.\n'
-            f'Instead citation was changed from {citation} to {standard_citation}'
+            f'standardize_citekey expected citekey to already be standardized.\n'
+            f'Instead citekey was changed from {citekey!r} to {standard_citekey!r}'
         )
-    return standard_citation
+    return standard_citekey
 
 
 regexes = {
@@ -80,19 +80,19 @@ regexes = {
 }
 
 
-def inspect_citekey(citation):
+def inspect_citekey(citekey):
     """
     Check citekeys adhere to expected formats. If an issue is detected a
     string describing the issue is returned. Otherwise returns None.
     """
-    source, identifier = citation.split(':', 1)
+    source, identifier = citekey.split(':', 1)
 
     if source == 'pmid':
         # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmid
         if identifier.startswith('PMC'):
             return (
                 'PubMed Identifiers should start with digits rather than PMC. '
-                f'Should {citation} switch the citation source to `pmcid`?'
+                f'Should {citekey!r} switch the citation source to `pmcid`?'
             )
         elif not regexes['pmid'].fullmatch(identifier):
             return 'PubMed Identifiers should be 1-8 digits with no leading zeros.'

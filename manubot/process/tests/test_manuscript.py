@@ -13,14 +13,14 @@ def test_get_citekeys_1():
 
     @10.5061/bad_doi says blah but @url:https://www.courtlistener.com/docket/4355308/1/elsevier-inc-v-sci-hub/ disagrees.
     '''
-    citations = get_citekeys(text)
+    citekeys = get_citekeys(text)
     expected = sorted([
         'doi:10.1126/science.352.6285.508',
         'doi:10.1126/science.aaf5664',
         'doi:10.5061/dryad.q447c/1',
         'url:https://www.courtlistener.com/docket/4355308/1/elsevier-inc-v-sci-hub/',
     ])
-    assert citations == expected
+    assert citekeys == expected
 
 
 def test_update_manuscript_citekeys():

@@ -3,7 +3,7 @@ import copy
 import pytest
 
 from manubot.cite.util import (
-    citation_pattern,
+    citekey_pattern,
     citekey_to_csl_item,
     csl_item_set_standard_id,
     shorten_citekey,
@@ -23,8 +23,8 @@ from manubot.cite.util import (
     ('@tag:abc123'),
     ('@tag:123abc'),
 ])
-def test_citation_pattern_match(citation_string):
-    match = citation_pattern.fullmatch(citation_string)
+def test_citekey_pattern_match(citation_string):
+    match = citekey_pattern.fullmatch(citation_string)
     assert match
 
 
@@ -35,8 +35,8 @@ def test_citation_pattern_match(citation_string):
     ('@-tag:abc123'),
     ('@_tag:abc123'),
 ])
-def test_citation_pattern_no_match(citation_string):
-    match = citation_pattern.fullmatch(citation_string)
+def test_citekey_pattern_no_match(citation_string):
+    match = citekey_pattern.fullmatch(citation_string)
     assert match is None
 
 
@@ -51,7 +51,7 @@ def test_shorten_citekey(standard_citekey, expected):
     assert short_citekey == expected
 
 
-@pytest.mark.parametrize("citation,expected", [
+@pytest.mark.parametrize("citekey,expected", [
     ('doi:10.5061/DRYAD.q447c/1', 'doi:10.5061/dryad.q447c/1'),
     ('doi:10.5061/dryad.q447c/1', 'doi:10.5061/dryad.q447c/1'),
     ('doi:10/b6vnmd', 'doi:10.1016/s0933-3657(96)00367-3'),
@@ -65,11 +65,11 @@ def test_shorten_citekey(standard_citekey, expected):
     ('isbn:1-55860-510-X', 'isbn:9781558605107'),
     ('isbn:1-55860-510-x', 'isbn:9781558605107'),
 ])
-def test_standardize_citekey(citation, expected):
+def test_standardize_citekey(citekey, expected):
     """
     Standardize identifiers based on their source
     """
-    output = standardize_citekey(citation)
+    output = standardize_citekey(citekey)
     assert output == expected
 
 

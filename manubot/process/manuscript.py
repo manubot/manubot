@@ -6,7 +6,7 @@ import pathlib
 import re
 
 from manubot.cite.util import (
-    citation_pattern,
+    citekey_pattern,
     is_valid_citekey,
 )
 
@@ -16,7 +16,7 @@ def get_citekeys(text):
     Extract the deduplicated list of citations in a text. Citations that are
     clearly invalid such as `doi:/453` are not returned.
     """
-    citekeys = set(citation_pattern.findall(text))
+    citekeys = set(citekey_pattern.findall(text))
     citekeys = filter(
         lambda x: is_valid_citekey(x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True),
         citekeys,
