@@ -59,10 +59,10 @@ def get_short_doi_url(doi):
         return None
 
 
-def get_doi_citeproc(doi):
+def get_doi_csl_item(doi):
     """
     Use Content Negotioation (http://citation.crosscite.org/docs.html) to
-    retrieve the citeproc JSON citation for a DOI.
+    retrieve the CSL Item metadata for a DOI.
     """
     url = 'https://doi.org/' + urllib.request.quote(doi)
     header = {
@@ -71,17 +71,17 @@ def get_doi_citeproc(doi):
     }
     response = requests.get(url, headers=header)
     try:
-        citeproc = response.json()
+        csl_item = response.json()
     except Exception as error:
         logging.error(f'Error fetching metadata for doi:{doi}.\n'
                       f'Invalid response from {response.url}:\n{response.text}')
         raise error
-    citeproc['URL'] = f'https://doi.org/{doi}'
+    csl_item['URL'] = f'https://doi.org/{doi}'
     short_doi_url = get_short_doi_url(doi)
     if short_doi_url:
-        citeproc['URL'] = short_doi_url
+        csl_item['URL'] = short_doi_url
     try:
-        citeproc.update(get_pubmed_ids_for_doi(doi))
+        csl_item.update(get_pubmed_ids_for_doi(doi))
     except Exception:
         logging.warning(f'Error calling get_pubmed_ids_for_doi for {doi}', exc_info=True)
-    return citeproc
+    return csl_item

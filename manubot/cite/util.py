@@ -5,13 +5,13 @@ import re
 from manubot.util import import_function
 
 citeproc_retrievers = {
-    'doi': 'manubot.cite.doi.get_doi_citeproc',
-    'pmid': 'manubot.cite.pubmed.get_pubmed_citeproc',
-    'pmcid': 'manubot.cite.pubmed.get_pmc_citeproc',
-    'arxiv': 'manubot.cite.arxiv.get_arxiv_citeproc',
-    'isbn': 'manubot.cite.isbn.get_isbn_citeproc',
-    'wikidata': 'manubot.cite.wikidata.get_wikidata_citeproc',
-    'url': 'manubot.cite.url.get_url_citeproc',
+    'doi': 'manubot.cite.doi.get_doi_csl_item',
+    'pmid': 'manubot.cite.pubmed.get_pubmed_csl_item',
+    'pmcid': 'manubot.cite.pubmed.get_pmc_csl_item',
+    'arxiv': 'manubot.cite.arxiv.get_arxiv_csl_item',
+    'isbn': 'manubot.cite.isbn.get_isbn_csl_item',
+    'wikidata': 'manubot.cite.wikidata.get_wikidata_csl_item',
+    'url': 'manubot.cite.url.get_url_csl_item',
 }
 
 """
@@ -272,7 +272,7 @@ def citekey_to_csl_item(citekey, prune=True):
 
     from manubot import __version__ as manubot_version
     from manubot.cite.citeproc import (
-        citeproc_passthrough,
+        csl_item_passthrough,
         append_to_csl_item_note,
     )
 
@@ -283,7 +283,7 @@ def citekey_to_csl_item(citekey, prune=True):
     append_to_csl_item_note(csl_item, note_text, note_dict)
 
     short_citekey = shorten_citekey(citekey)
-    csl_item = citeproc_passthrough(csl_item, set_id=short_citekey, prune=prune)
+    csl_item = csl_item_passthrough(csl_item, set_id=short_citekey, prune=prune)
 
     return csl_item
 

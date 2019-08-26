@@ -3,9 +3,9 @@ import logging
 import re
 
 
-def get_url_citeproc(url):
+def get_url_csl_item(url):
     """
-    Get citeproc for a URL trying a sequence of strategies.
+    Get csl_item for a URL trying a sequence of strategies.
 
     This function uses a list of CSL JSON Item metadata retrievers, specified
     by the module-level variable `url_retrievers`. The methods are attempted
@@ -21,10 +21,10 @@ def get_url_citeproc(url):
                 f'due to a {error.__class__.__name__}:\n{error}'
             )
             logging.info(error, exc_info=True)
-    raise Exception(f'all get_url_citeproc methods failed for {url}')
+    raise Exception(f'all get_url_csl_item methods failed for {url}')
 
 
-def get_url_citeproc_zotero(url):
+def get_url_csl_item_zotero(url):
     """
     Use Zotero's translation-server to generate a CSL Item for the specified URL.
     """
@@ -38,7 +38,7 @@ def get_url_citeproc_zotero(url):
     return csl_item
 
 
-def get_url_citeproc_greycite(url):
+def get_url_csl_item_greycite(url):
     """
     Uses Greycite which has experiened uptime problems in the past.
     API calls seem to take at least 15 seconds. Browser requests are much
@@ -71,9 +71,9 @@ def get_url_citeproc_greycite(url):
     return csl_item
 
 
-def get_url_citeproc_manual(url):
+def get_url_csl_item_manual(url):
     """
-    Manually create citeproc for a URL.
+    Manually create csl_item for a URL.
     """
     return {
         'URL': url,
@@ -82,7 +82,7 @@ def get_url_citeproc_manual(url):
 
 
 url_retrievers = [
-    get_url_citeproc_zotero,
-    get_url_citeproc_greycite,
-    get_url_citeproc_manual,
+    get_url_csl_item_zotero,
+    get_url_csl_item_greycite,
+    get_url_csl_item_manual,
 ]

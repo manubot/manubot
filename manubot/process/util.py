@@ -271,8 +271,8 @@ def generate_csl_items(args, citekeys_df):
             )
             failures.append(standard_key)
         try:
-            citeproc = citekey_to_csl_item(standard_key)
-            csl_items.append(citeproc)
+            csl_item = citekey_to_csl_item(standard_key)
+            csl_items.append(csl_item)
         except Exception:
             logging.exception(f'Citeproc retrieval failure for {standard_key!r}')
             failures.append(standard_key)

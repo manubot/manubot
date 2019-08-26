@@ -8,9 +8,9 @@ import requests
 from manubot.util import get_manubot_user_agent
 
 
-def get_arxiv_citeproc(arxiv_id):
+def get_arxiv_csl_item(arxiv_id):
     """
-    Return citeproc item for an arXiv record.
+    Return csl_item item for an arXiv record.
 
     arxiv_id can be versioned, like `1512.00567v2`, or versionless, like
     `1512.00567`. If versionless, the arXiv API will return metadata for the

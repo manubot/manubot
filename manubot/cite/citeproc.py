@@ -3,7 +3,7 @@ import functools
 import logging
 import re
 
-citeproc_type_fixer = {
+csl_item_type_fixer = {
     'journal-article': 'article-journal',
     'book-chapter': 'chapter',
     'posted-content': 'manuscript',
@@ -13,7 +13,7 @@ citeproc_type_fixer = {
 }
 
 
-def citeproc_passthrough(csl_item, set_id=None, prune=True):
+def csl_item_passthrough(csl_item, set_id=None, prune=True):
     """
     Fix errors in a CSL item, according to the CSL JSON schema, and optionally
     change its id.
@@ -24,12 +24,12 @@ def citeproc_passthrough(csl_item, set_id=None, prune=True):
     """
     if set_id is not None:
         csl_item['id'] = set_id
-    logging.debug(f"Starting citeproc_passthrough with{'' if prune else 'out'} CSL pruning for id: {csl_item.get('id', 'id not specified')}")
+    logging.debug(f"Starting csl_item_passthrough with{'' if prune else 'out'} CSL pruning for id: {csl_item.get('id', 'id not specified')}")
 
     # Correct invalid CSL item types
     # See https://github.com/CrossRef/rest-api-doc/issues/187
     if 'type' in csl_item:
-        csl_item['type'] = citeproc_type_fixer.get(csl_item['type'], csl_item['type'])
+        csl_item['type'] = csl_item_type_fixer.get(csl_item['type'], csl_item['type'])
 
     if prune:
         # Remove fields that violate the CSL Item JSON Schema
