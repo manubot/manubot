@@ -5,7 +5,7 @@ import subprocess
 import sys
 
 from manubot.cite import (
-    citation_to_citeproc,
+    citekey_to_csl_item,
     standardize_citekey,
 )
 from manubot.cite.util import is_valid_citekey
@@ -78,11 +78,11 @@ def cli_cite(args):
             if not is_valid_citekey(citekey):
                 continue
             citekey = standardize_citekey(citekey)
-            csl_item = citation_to_citeproc(citekey, prune=args.prune_csl)
+            csl_item = citekey_to_csl_item(citekey, prune=args.prune_csl)
             csl_list.append(csl_item)
         except Exception as error:
             logging.error(
-                f'citation_to_citeproc for {citekey!r} failed '
+                f'citekey_to_csl_item for {citekey!r} failed '
                 f'due to a {error.__class__.__name__}:\n{error}'
             )
             logging.info(error, exc_info=True)

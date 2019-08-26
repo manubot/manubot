@@ -8,7 +8,7 @@ from manubot.cite.isbn import (
 
 
 @pytest.mark.xfail(reason="Quotation in title removed at some upstream point")
-def test_citation_to_citeproc_isbnlib_title_with_quotation_mark():
+def test_citekey_to_csl_item_isbnlib_title_with_quotation_mark():
     csl_item = get_isbn_citeproc_isbnlib('9780312353780')
     assert csl_item['type'] == 'book'
     assert csl_item['title'].startswith('"F" is for Fugitive')

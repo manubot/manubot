@@ -27,7 +27,7 @@ from manubot.process.manuscript import (
     update_manuscript_citations,
 )
 from manubot.cite.util import (
-    citation_to_citeproc,
+    citekey_to_csl_item,
     shorten_citekey,
     is_valid_citekey,
     standardize_citekey,
@@ -271,7 +271,7 @@ def generate_csl_items(args, citekeys_df):
             )
             failures.append(standard_key)
         try:
-            citeproc = citation_to_citeproc(standard_key)
+            citeproc = citekey_to_csl_item(standard_key)
             csl_items.append(citeproc)
         except Exception:
             logging.exception(f'Citeproc retrieval failure for {standard_key!r}')

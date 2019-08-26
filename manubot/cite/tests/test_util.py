@@ -4,7 +4,7 @@ import pytest
 
 from manubot.cite.util import (
     citation_pattern,
-    citation_to_citeproc,
+    citekey_to_csl_item,
     csl_item_set_standard_id,
     shorten_citekey,
     infer_citekey_prefix,
@@ -114,9 +114,9 @@ def test_inspect_citekey_fails(citekey, contains):
 
 
 @pytest.mark.xfail(reason='https://twitter.com/dhimmel/status/950443969313419264')
-def test_citation_to_citeproc_doi_datacite():
+def test_citekey_to_csl_item_doi_datacite():
     citekey = 'doi:10.7287/peerj.preprints.3100v1'
-    csl_item = citation_to_citeproc(citekey)
+    csl_item = citekey_to_csl_item(citekey)
     assert csl_item['id'] == '11cb5HXoY'
     assert csl_item['URL'] == 'https://doi.org/10.7287/peerj.preprints.3100v1'
     assert csl_item['DOI'] == '10.7287/peerj.preprints.3100v1'
@@ -127,9 +127,9 @@ def test_citation_to_citeproc_doi_datacite():
     assert authors[-1]['family'] == 'Greene'
 
 
-def test_citation_to_citeproc_arxiv():
+def test_citekey_to_csl_item_arxiv():
     citekey = 'arxiv:cond-mat/0703470v2'
-    csl_item = citation_to_citeproc(citekey)
+    csl_item = citekey_to_csl_item(citekey)
     assert csl_item['id'] == 'ES92tcdg'
     assert csl_item['URL'] == 'https://arxiv.org/abs/cond-mat/0703470v2'
     assert csl_item['number'] == 'cond-mat/0703470v2'
@@ -142,12 +142,12 @@ def test_citation_to_citeproc_arxiv():
     assert csl_item['DOI'] == '10.1209/0295-5075/81/68004'
 
 
-def test_citation_to_citeproc_pmc():
+def test_citekey_to_csl_item_pmc():
     """
     https://api.ncbi.nlm.nih.gov/lit/ctxp/v1/pmc/?format=csl&id=3041534
     """
     citekey = f'pmcid:PMC3041534'
-    csl_item = citation_to_citeproc(citekey)
+    csl_item = citekey_to_csl_item(citekey)
     assert csl_item['id'] == 'RoOhUFKU'
     assert csl_item['URL'] == 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3041534/'
     assert csl_item['container-title-short'] == 'Summit Transl Bioinform'
@@ -160,13 +160,13 @@ def test_citation_to_citeproc_pmc():
     assert 'standard_id: pmcid:PMC3041534' in csl_item['note']
 
 
-def test_citation_to_citeproc_pubmed_1():
+def test_citekey_to_csl_item_pubmed_1():
     """
     Generated from XML returned by
     https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=21347133&rettype=full
     """
     citekey = 'pmid:21347133'
-    csl_item = citation_to_citeproc(citekey)
+    csl_item = citekey_to_csl_item(citekey)
     assert csl_item['id'] == 'y9ONtSZ9'
     assert csl_item['type'] == 'article-journal'
     assert csl_item['URL'] == 'https://www.ncbi.nlm.nih.gov/pubmed/21347133'
@@ -180,13 +180,13 @@ def test_citation_to_citeproc_pubmed_1():
     assert csl_item['PMCID'] == 'PMC3041534'
 
 
-def test_citation_to_citeproc_pubmed_2():
+def test_citekey_to_csl_item_pubmed_2():
     """
     Generated from XML returned by
     https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=27094199&rettype=full
     """
     citekey = 'pmid:27094199'
-    csl_item = citation_to_citeproc(citekey)
+    csl_item = citekey_to_csl_item(citekey)
     print(csl_item)
     assert csl_item['id'] == 'alaFV9OY'
     assert csl_item['type'] == 'article-journal'
@@ -203,7 +203,7 @@ def test_citation_to_citeproc_pubmed_2():
     assert csl_item['DOI'] == '10.1161/circgenetics.115.001181'
 
 
-def test_citation_to_citeproc_pubmed_with_numeric_month():
+def test_citekey_to_csl_item_pubmed_with_numeric_month():
     """
     Generated from XML returned by
     https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29028984&rettype=full
@@ -211,23 +211,23 @@ def test_citation_to_citeproc_pubmed_with_numeric_month():
     See https://github.com/manubot/manubot/issues/69
     """
     citekey = 'pmid:29028984'
-    csl_item = citation_to_citeproc(citekey)
+    csl_item = citekey_to_csl_item(citekey)
     print(csl_item)
     assert csl_item['issued']['date-parts'] == [[2018, 3, 15]]
 
 
-def test_citation_to_citeproc_pubmed_book():
+def test_citekey_to_csl_item_pubmed_book():
     """
     Extracting CSL metadata from books in PubMed is not supported.
     Logic not implemented to parse XML returned by
     https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29227604&rettype=full
     """
     with pytest.raises(NotImplementedError):
-        citation_to_citeproc('pmid:29227604')
+        citekey_to_csl_item('pmid:29227604')
 
 
-def test_citation_to_citeproc_isbn():
-    csl_item = citation_to_citeproc('isbn:9780387950693')
+def test_citekey_to_csl_item_isbn():
+    csl_item = citekey_to_csl_item('isbn:9780387950693')
     assert csl_item['type'] == 'book'
     assert csl_item['title'] == 'Complex analysis'
 
