@@ -1,6 +1,6 @@
 from manubot.process.manuscript import (
     get_citekeys,
-    update_manuscript_citations
+    update_manuscript_citekeys
 )
 
 
@@ -23,7 +23,7 @@ def test_get_citekeys_1():
     assert citations == expected
 
 
-def test_update_manuscript_citations():
+def test_update_manuscript_citekeys():
     """
     Test that text does not get converted to:
 
@@ -37,5 +37,5 @@ def test_update_manuscript_citations():
         'url:https://github.com/greenelab/manubot-rootstock': '1B7Y2HVtw',
     }
     text = 'our new Manubot tool [@url:https://github.com/greenelab/manubot-rootstock; @url:https://github.com/manubot/manubot] for automating manuscript generation.'
-    text = update_manuscript_citations(text, string_to_id)
+    text = update_manuscript_citekeys(text, string_to_id)
     assert '[@1B7Y2HVtw; @mNMayr3f]' in text

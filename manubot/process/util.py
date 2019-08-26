@@ -24,7 +24,7 @@ from manubot.process.manuscript import (
     get_citekeys,
     get_manuscript_stats,
     get_text,
-    update_manuscript_citations,
+    update_manuscript_citekeys,
 )
 from manubot.cite.util import (
     citekey_to_csl_item,
@@ -317,9 +317,9 @@ def prepare_manuscript(args):
 
     generate_csl_items(args, citekeys_df)
 
-    short_citation_mapper = collections.OrderedDict(
+    citekey_mapping = collections.OrderedDict(
         zip(citekeys_df.manuscript_key, citekeys_df.short_key))
-    text = update_manuscript_citations(text, short_citation_mapper)
+    text = update_manuscript_citekeys(text, citekey_mapping)
 
     metadata, variables = get_metadata_and_variables(args)
     variables['manuscript_stats'] = get_manuscript_stats(text, citekeys_df)

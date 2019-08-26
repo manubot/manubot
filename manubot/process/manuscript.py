@@ -38,9 +38,11 @@ def get_text(directory):
     return '\n\n'.join(name_to_text.values()) + '\n'
 
 
-def update_manuscript_citations(text, old_to_new):
+def update_manuscript_citekeys(text, old_to_new):
     """
-    Convert citations to their IDs for pandoc.
+    Replace citation keys according to the old_to_new dictionary.
+    Useful for converting citation keys to shortened versions
+    that are appropriate for pandoc.
 
     `text` is markdown source text
 
