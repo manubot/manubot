@@ -56,7 +56,7 @@ def update_manuscript_citations(text, old_to_new):
     return text
 
 
-def get_manuscript_stats(text, citation_df):
+def get_manuscript_stats(text, citekeys_df):
     """
     Compute manuscript statistics.
     """
@@ -64,7 +64,7 @@ def get_manuscript_stats(text, citation_df):
 
     # Number of distinct references by type
     ref_counts = (
-        citation_df
+        citekeys_df
         .standard_key
         .drop_duplicates()
         .map(lambda x: x.split(':')[0])
