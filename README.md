@@ -153,13 +153,13 @@ usage: manubot cite [-h] [--render] [--csl CSL]
                     [--format {plain,markdown,docx,html,jats}]
                     [--output OUTPUT] [--allow-invalid-csl-data]
                     [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
-                    citations [citations ...]
+                    citekeys [citekeys ...]
 
 Retrieve bibliographic metadata for one or more citation identifiers.
 
 positional arguments:
-  citations             One or more (space separated) citations to produce CSL
-                        for.
+  citekeys              One or more (space separated) citation keys to produce
+                        CSL for.
 
 optional arguments:
   -h, --help            show this help message and exit

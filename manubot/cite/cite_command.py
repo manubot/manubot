@@ -73,16 +73,16 @@ def cli_cite(args):
     """
     # generate CSL JSON data
     csl_list = list()
-    for citation in args.citations:
+    for citekey in args.citekeys:
         try:
-            if not is_valid_citekey(citation):
+            if not is_valid_citekey(citekey):
                 continue
-            citation = standardize_citekey(citation)
-            csl_item = citation_to_citeproc(citation, prune=args.prune_csl)
+            citekey = standardize_citekey(citekey)
+            csl_item = citation_to_citeproc(citekey, prune=args.prune_csl)
             csl_list.append(csl_item)
         except Exception as error:
             logging.error(
-                f'citation_to_citeproc for {citation} failed '
+                f'citation_to_citeproc for {citekey!r} failed '
                 f'due to a {error.__class__.__name__}:\n{error}'
             )
             logging.info(error, exc_info=True)
@@ -95,7 +95,7 @@ def cli_cite(args):
             write_file.write('\n')
         return
 
-    # use Pandoc to render citations
+    # use Pandoc to render references
     if not args.format and args.output:
         vars(args)['format'] = extension_to_format.get(args.output.suffix)
     if not args.format:

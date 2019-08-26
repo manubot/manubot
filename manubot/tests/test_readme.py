@@ -53,8 +53,8 @@ def _match_to_repl(match):
 
 if __name__ == '__main__':
     """
-    Run `python tests/test_readme.py` to populate README codeblocks with
-    output from the specified commands.
+    Run `python manubot/tests/test_readme.py` to populate README
+    codeblocks with output from the specified commands.
     """
     repl_readme = pattern.sub(repl=_match_to_repl, string=readme)
     readme_path.write_text(repl_readme, encoding='utf-8')

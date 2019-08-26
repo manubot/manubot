@@ -107,9 +107,9 @@ def add_subparser_cite(subparsers):
         help='Allow CSL Items that do not conform to the JSON Schema. Skips CSL pruning.',
     )
     parser.add_argument(
-        'citations',
+        'citekeys',
         nargs='+',
-        help='One or more (space separated) citations to produce CSL for.',
+        help='One or more (space separated) citation keys to produce CSL for.',
     )
     parser.set_defaults(function='manubot.cite.cite_command.cli_cite')
 
