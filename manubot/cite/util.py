@@ -80,10 +80,10 @@ regexes = {
 }
 
 
-def inspect_citation_identifier(citation):
+def inspect_citekey(citation):
     """
-    Check citation identifiers adhere to expected formats. If an issue is
-    detected a string describing the issue is returned. Otherwise returns None.
+    Check citekeys adhere to expected formats. If an issue is detected a
+    string describing the issue is returned. Otherwise returns None.
     """
     source, identifier = citation.split(':', 1)
 
@@ -151,48 +151,48 @@ def inspect_citation_identifier(citation):
 
 
 def is_valid_citekey(
-        citation, allow_tag=False, allow_raw=False, allow_pandoc_xnos=False):
+        citekey, allow_tag=False, allow_raw=False, allow_pandoc_xnos=False):
     """
-    Return True if citation is a properly formatted string. Return False if
-    citation is not a citation or is an invalid citation.
+    Return True if citekey is a properly formatted string. Return False if
+    citekey is not a citation or is an invalid citation.
 
-    In the case citation is invalid, an error is logged. This
-    function does not catch all invalid citations, but instead performs cursory
-    checks, such as citations adhere to the expected formats. No calls to
+    In the case citekey is invalid, an error is logged. This
+    function does not catch all invalid citekeys, but instead performs cursory
+    checks, such as ensuring citekeys adhere to the expected formats. No calls to
     external resources are used by these checks, so they will not detect
-    citations to non-existent identifiers unless those identifiers violate
+    citekeys to non-existent identifiers unless those identifiers violate
     their source's syntax.
 
     allow_tag=False, allow_raw=False, and allow_pandoc_xnos=False enable
-    allowing citation sources that are valid for Manubot manuscripts, but
-    likely not elsewhere. allow_tag=True enables citations tags (e.g.
-    tag:citation-tag). allow_raw=True enables raw citations (e.g.
+    allowing citekey sources that are valid for Manubot manuscripts, but
+    likely not elsewhere. allow_tag=True enables citekey tags (e.g.
+    tag:citation-tag). allow_raw=True enables raw citekeys (e.g.
     raw:manual-reference). allow_pandoc_xnos=True still returns False for
     pandoc-xnos references (e.g. fig:figure-id), but does not log an error.
     With the default of False for these arguments, valid sources are restricted
     to those for which manubot can retrieve metadata based only on the
-    standalone citation.
+    standalone citekey.
     """
-    if not isinstance(citation, str):
+    if not isinstance(citekey, str):
         logging.error(
-            f"Citation should be type 'str' not "
-            f"{type(citation).__name__!r}: {citation!r}"
+            f"citekey should be type 'str' not "
+            f"{type(citekey).__name__!r}: {citekey!r}"
         )
         return False
-    if citation.startswith('@'):
-        logging.error(f"Invalid citation: {citation!r}\nstarts with '@'")
+    if citekey.startswith('@'):
+        logging.error(f"invalid citekey: {citekey!r}\nstarts with '@'")
         return False
     try:
-        source, identifier = citation.split(':', 1)
+        source, identifier = citekey.split(':', 1)
     except ValueError:
         logging.error(
-            f'Citation not splittable via a single colon: {citation}. '
-            'Citations must be in the format of `source:identifier`.'
+            f'citekey not splittable via a single colon: {citekey}. '
+            'Citekeys must be in the format of `source:identifier`.'
         )
         return False
 
     if not source or not identifier:
-        msg = f'Invalid citation: {citation}\nblank source or identifier'
+        msg = f'invalid citekey: {citekey!r}\nblank source or identifier'
         logging.error(msg)
         return False
 
@@ -205,7 +205,7 @@ def is_valid_citekey(
         if source.lower() in pandoc_xnos_keys:
             logging.error(
                 f'pandoc-xnos reference types should be all lowercase.\n'
-                f'Should {citation} use "{source.lower()}" rather than "{source}"?'
+                f'Should {citekey!r} use {source.lower()!r} rather than "{source!r}"?'
             )
             return False
 
@@ -218,40 +218,42 @@ def is_valid_citekey(
     if source not in sources:
         if source.lower() in sources:
             logging.error(
-                f'Citation sources should be all lowercase.\n'
-                f'Should {citation} use "{source.lower()}" rather than "{source}"?'
+                f'citekey sources should be all lowercase.\n'
+                f'Should {citekey} use "{source.lower()}" rather than "{source}"?'
             )
         else:
             logging.error(
-                f'Invalid citation: {citation}\n'
-                f'Source "{source}" is not valid.\n'
+                f'invalid citekey: {citekey!r}\n'
+                f'Source {source!r} is not valid.\n'
                 f'Valid citation sources are {{{", ".join(sorted(sources))}}}'
             )
         return False
 
-    inspection = inspect_citation_identifier(citation)
+    inspection = inspect_citekey(citekey)
     if inspection:
-        logging.error(f'invalid {source} citation: {citation}\n{inspection}')
+        logging.error(f'invalid {source} citekey: {citekey}\n{inspection}')
         return False
 
     return True
 
 
-def get_citation_short_id(standard_id):
+def shorten_citekey(citekey):
     """
-    Get the short_id derived from a citation's standard_id.
-    Short IDs are generated by converting the standard_id to a 6 byte hash,
-    and then converting this digest to a base62 ASCII str. The output
-    short_id consists of characters in the following ranges: 0-9, a-z and A-Z.
+    Return a shortened citekey derived from the input citekey.
+    The input citekey should be standardized prior to this function,
+    since differences in the input citekey will result in different shortened citekeys.
+    Short citekeys are generated by converting the input citekey to a 6 byte hash,
+    and then converting this digest to a base62 ASCII str. Shortened
+    citekeys consist of characters in the following ranges: 0-9, a-z and A-Z.
     """
     import hashlib
     import base62
-    assert '@' not in standard_id
-    as_bytes = standard_id.encode()
+    assert '@' not in citekey
+    as_bytes = citekey.encode()
     blake_hash = hashlib.blake2b(as_bytes, digest_size=6)
     digest = blake_hash.digest()
-    short_id = base62.encodebytes(digest)
-    return short_id
+    short_citekey = base62.encodebytes(digest)
+    return short_citekey
 
 
 def citation_to_citeproc(citation, prune=True):
@@ -280,8 +282,8 @@ def citation_to_citeproc(citation, prune=True):
     }
     append_to_csl_item_note(csl_item, note_text, note_dict)
 
-    short_id = get_citation_short_id(citation)
-    csl_item = citeproc_passthrough(csl_item, set_id=short_id, prune=prune)
+    short_citekey = shorten_citekey(citation)
+    csl_item = citeproc_passthrough(csl_item, set_id=short_citekey, prune=prune)
 
     return csl_item
 

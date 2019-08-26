@@ -9,7 +9,7 @@ from manubot.cite.citeproc import (
 )
 from manubot.cite.util import (
     csl_item_set_standard_id,
-    get_citation_short_id,
+    shorten_citekey,
 )
 
 
@@ -78,6 +78,6 @@ def load_manual_references(paths=[], extra_csl_items=[]):
             logging.info(f'Skipping csl_item where setting standard_id failed:\n{csl_item_str}', exc_info=True)
             continue
         standard_id = csl_item['id']
-        csl_item = citeproc_passthrough(csl_item, set_id=get_citation_short_id(standard_id))
+        csl_item = citeproc_passthrough(csl_item, set_id=shorten_citekey(standard_id))
         manual_refs[standard_id] = csl_item
     return manual_refs

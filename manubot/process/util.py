@@ -29,7 +29,7 @@ from manubot.process.manuscript import (
 )
 from manubot.cite.util import (
     citation_to_citeproc,
-    get_citation_short_id,
+    shorten_citekey,
     is_valid_citekey,
     standardize_citekey,
 )
@@ -235,7 +235,7 @@ def get_citation_df(args, text):
         logging.info(f'missing {args.citation_tags_path} file: no citation tags set')
     citation_df.detagged_id.fillna(citation_df.manuscript_id.astype(str), inplace=True)
     citation_df['standard_id'] = citation_df.detagged_id.map(standardize_citekey)
-    citation_df['short_id'] = citation_df.standard_id.map(get_citation_short_id)
+    citation_df['short_id'] = citation_df.standard_id.map(shorten_citekey)
     citation_df = citation_df.sort_values(['standard_id', 'detagged_id'])
     citation_df.to_csv(args.citations_path, sep='\t', index=False)
     check_collisions(citation_df)

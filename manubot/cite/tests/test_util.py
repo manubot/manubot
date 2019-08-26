@@ -6,9 +6,9 @@ from manubot.cite.util import (
     citation_pattern,
     citation_to_citeproc,
     csl_item_set_standard_id,
-    get_citation_short_id,
+    shorten_citekey,
     infer_citation_prefix,
-    inspect_citation_identifier,
+    inspect_citekey,
     standardize_citekey,
 )
 
@@ -40,15 +40,15 @@ def test_citation_pattern_no_match(citation_string):
     assert match is None
 
 
-@pytest.mark.parametrize("standard_id,expected", [
+@pytest.mark.parametrize("standard_citekey,expected", [
     ('doi:10.5061/dryad.q447c/1', 'kQFQ8EaO'),
     ('arxiv:1407.3561v1', '16kozZ9Ys'),
     ('pmid:24159271', '11sli93ov'),
     ('url:http://blog.dhimmel.com/irreproducible-timestamps/', 'QBWMEuxW'),
 ])
-def test_get_citation_short_id(standard_id, expected):
-    short_id = get_citation_short_id(standard_id)
-    assert short_id == expected
+def test_shorten_citekey(standard_citekey, expected):
+    short_citekey = shorten_citekey(standard_citekey)
+    assert short_citekey == expected
 
 
 @pytest.mark.parametrize("citation,expected", [
@@ -85,11 +85,11 @@ def test_standardize_citekey(citation, expected):
     'wikidata:Q50051684',
     'url:https://peerj.com/articles/705/',
 ])
-def test_inspect_citation_identifier_passes(citation):
+def test_inspect_citekey_passes(citation):
     """
-    These citations should pass inspection by inspect_citation_identifier.
+    These citations should pass inspection by inspect_citekey.
     """
-    assert inspect_citation_identifier(citation) is None
+    assert inspect_citekey(citation) is None
 
 
 @pytest.mark.parametrize(['citation', 'contains'], [
@@ -103,11 +103,11 @@ def test_inspect_citation_identifier_passes(citation):
     ('wikidata:P212', 'item IDs must start with `Q`'),
     ('wikidata:QABCD', 'does not conform to the Wikidata regex'),
 ])
-def test_inspect_citation_identifier_fails(citation, contains):
+def test_inspect_citekey_fails(citation, contains):
     """
-    These citations should fail inspection by inspect_citation_identifier.
+    These citations should fail inspection by inspect_citekey.
     """
-    report = inspect_citation_identifier(citation)
+    report = inspect_citekey(citation)
     assert report is not None
     assert isinstance(report, str)
     assert contains in report
