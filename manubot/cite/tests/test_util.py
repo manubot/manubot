@@ -301,7 +301,7 @@ def test_csl_item_set_standard_id_note():
     }
     csl_item_set_standard_id(csl_item)
     assert csl_item['id'] == 'doi:10.1371/journal.ppat.1006256'
-    from manubot.cite.csl_item import parse_csl_item_note
+    from manubot.cite.citeproc import parse_csl_item_note
     note_dict = parse_csl_item_note(csl_item['note'])
     assert note_dict['original_id'] == 'original-id'
     assert note_dict['original_standard_id'] == 'doi:10.1371/journal.PPAT.1006256'
