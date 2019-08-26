@@ -127,14 +127,14 @@ Manubot has the ability to rely on user-provided reference metadata rather than 
 `manubot process` searches the content directory for files containing manually-provided reference metadata that match the glob `manual-references*.*`.
 If a manual reference filename ends with `.json` or `.yaml`, it's assumed to contain CSL Data (i.e. Citation Style Language JSON).
 Otherwise, the format is inferred from the extension and converted to CSL JSON using the `pandoc-citeproc --bib2json` [utility](https://github.com/jgm/pandoc-citeproc/blob/master/man/pandoc-citeproc.1.md#convert-mode).
-The standard citation for manual references is inferred from the CSL JSON `id` or `note` field.
+The standard citation key for manual references is inferred from the CSL JSON `id` or `note` field.
 When no prefix is provided, such as `doi:`, `url:`, or `raw:`, a `raw:` prefix is automatically added.
 If multiple manual reference files load metadata for the same standard citation `id`, precedence is assigned according to descending filename order.
 
 ### Cite
 
-`manubot cite` is a command line utility to create [CSL JSON items](http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html#items) for one or more citations.
-Citations should be in the format `source:identifier`.
+`manubot cite` is a command line utility to create [CSL JSON items](http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html#items) for one or more citation keys.
+Citation keys should be in the format `source:identifier`.
 For example, the following example generates CSL JSON for four references:
 
 ```sh
@@ -155,7 +155,7 @@ usage: manubot cite [-h] [--render] [--csl CSL]
                     [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
                     citekeys [citekeys ...]
 
-Retrieve bibliographic metadata for one or more citation identifiers.
+Retrieve bibliographic metadata for one or more citation keys.
 
 positional arguments:
   citekeys              One or more (space separated) citation keys to produce

@@ -74,7 +74,7 @@ def add_subparser_cite(subparsers):
     parser = subparsers.add_parser(
         name='cite',
         help='citation to CSL command line utility',
-        description='Retrieve bibliographic metadata for one or more citation identifiers.',
+        description='Retrieve bibliographic metadata for one or more citation keys.',
     )
     parser.add_argument(
         '--render',
