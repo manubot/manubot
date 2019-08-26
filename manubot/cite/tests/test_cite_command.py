@@ -19,7 +19,7 @@ def test_cite_command_empty():
     )
     print(process.stderr)
     assert process.returncode == 2
-    assert 'the following arguments are required: citations' in process.stderr
+    assert 'the following arguments are required: citekeys' in process.stderr
 
 
 def test_cite_command_stdout():

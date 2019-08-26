@@ -288,26 +288,26 @@ def citation_to_citeproc(citation, prune=True):
     return csl_item
 
 
-def infer_citation_prefix(citation):
+def infer_citekey_prefix(citekey):
     """
-    Passthrough citation if it has a valid citation prefix. Otherwise,
-    if the lowercase citation prefix is valid, convert the prefix to lowercase.
-    Otherwise, assume citation is raw and prepend "raw:".
+    Passthrough citekey if it has a valid citation key prefix. Otherwise,
+    if the lowercase citekey prefix is valid, convert the prefix to lowercase.
+    Otherwise, assume citekey is raw and prepend "raw:".
     """
     prefixes = [f'{x}:' for x in list(citeproc_retrievers) + ['raw']]
     for prefix in prefixes:
-        if citation.startswith(prefix):
-            return citation
-        if citation.lower().startswith(prefix):
-            return prefix + citation[len(prefix):]
-    return f'raw:{citation}'
+        if citekey.startswith(prefix):
+            return citekey
+        if citekey.lower().startswith(prefix):
+            return prefix + citekey[len(prefix):]
+    return f'raw:{citekey}'
 
 
 def csl_item_set_standard_id(csl_item):
     """
     Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.
     The standard_id is extracted from a "standard_citation" field, the "note" field, or the "id" field.
-    If extracting the citation from the "id" field, uses the infer_citation_prefix function to set the prefix.
+    If extracting the citation from the "id" field, uses the infer_citekey_prefix function to set the prefix.
     For example, if the extracted standard_id does not begin with a supported prefix (e.g. "doi:", "pmid:"
     or "raw:"), the citation is assumed to be raw and given a "raw:" prefix. The extracted citation
     (referred to as "original_standard_id") is checked for validity and standardized, after which it is
@@ -332,7 +332,7 @@ def csl_item_set_standard_id(csl_item):
     original_standard_id = None
     if 'id' in csl_item:
         original_id = csl_item['id']
-        original_standard_id = infer_citation_prefix(original_id)
+        original_standard_id = infer_citekey_prefix(original_id)
     if 'standard_id' in note_dict:
         original_standard_id = note_dict['standard_id']
     if 'standard_citation' in csl_item:
