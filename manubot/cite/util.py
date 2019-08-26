@@ -305,16 +305,19 @@ def infer_citation_prefix(citation):
 
 def csl_item_set_standard_id(csl_item):
     """
-    Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its standard_id.
+    Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.
     The standard_id is extracted from a "standard_citation" field, the "note" field, or the "id" field.
-    If extracting the citation from the "id" field, use the infer_citation_prefix function to set the prefix.
+    If extracting the citation from the "id" field, uses the infer_citation_prefix function to set the prefix.
     For example, if the extracted standard_id does not begin with a supported prefix (e.g. "doi:", "pmid:"
     or "raw:"), the citation is assumed to be raw and given a "raw:" prefix. The extracted citation
     (referred to as "original_standard_id") is checked for validity and standardized, after which it is
     the final "standard_id".
 
     Regarding csl_item modification, the csl_item "id" field is set to the standard_citation and the note field
-    is created or updated with key-value pairs for standard_citation, original_standard_citation, and original_id.
+    is created or updated with key-value pairs for standard_id, original_standard_id, and original_id.
+
+    Note that the Manubot software generally refers to the "id" of a CSL Item as a citekey.
+    However, in this context, we use "id" rather than "citekey" for consistency with CSL's "id" field.
     """
     if not isinstance(csl_item, dict):
         raise ValueError("csl_item must be a CSL Data Item represented as a Python dictionary")

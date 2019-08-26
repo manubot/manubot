@@ -1,7 +1,6 @@
 import collections
 import json
 import logging
-import os
 import pathlib
 import re
 import textwrap
@@ -113,9 +112,10 @@ def read_jsons(paths):
         assert isinstance(obj, dict)
         conflicts = user_variables.keys() & obj.keys()
         if conflicts:
-            logging.warning(f'Template variables in {path} overwrite existing '
-                            'values for the following keys:\n' +
-                            '\n'.join(conflicts))
+            logging.warning(
+                f'Template variables in {path} overwrite existing '
+                'values for the following keys:\n' + '\n'.join(conflicts)
+            )
         user_variables.update(obj)
     logging.info(f'Reading user-provided templating variables complete:\n'
                  f'{json.dumps(user_variables, indent=2, ensure_ascii=False)}')
@@ -225,10 +225,10 @@ def get_citation_df(args, text):
                 'Proceeding to reread TSV with delim_whitespace=True.'
             )
             tag_df = pandas.read_csv(args.citation_tags_path, delim_whitespace=True)
-        tag_df['manuscript_id'] = 'tag:' + tag_df.tag
+        tag_df['manuscript_key'] = 'tag:' + tag_df.tag
         tag_df = tag_df.rename(columns={'citation': 'detagged_key'})
         for detagged_key in tag_df.detagged_key:
-            is_valid_citekey(detagged_key, allow_raw=True)        
+            is_valid_citekey(detagged_key, allow_raw=True)
         citation_df = citation_df.merge(tag_df[['manuscript_key', 'detagged_key']], how='left')
     else:
         citation_df['detagged_key'] = None
