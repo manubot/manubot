@@ -37,10 +37,10 @@ from manubot.cite.util import (
 
 def check_collisions(citation_df):
     """
-    Check for short_id hash collisions
+    Check for short_key hash collisions
     """
-    collision_df = citation_df[['standard_id', 'short_id']].drop_duplicates()
-    collision_df = collision_df[collision_df.short_id.duplicated(keep=False)]
+    collision_df = citation_df[['standard_key', 'short_key']].drop_duplicates()
+    collision_df = collision_df[collision_df.short_key.duplicated(keep=False)]
     if not collision_df.empty:
         logging.error(f'OMF! Hash collision. Congratulations.\n{collision_df}')
     return collision_df
@@ -52,13 +52,13 @@ def check_multiple_citation_strings(citation_df):
     """
     message = textwrap.dedent(f'''\
     {len(citation_df)} unique citations strings extracted from text
-    {citation_df.standard_id.nunique()} unique standard citations\
+    {citation_df.standard_key.nunique()} unique standard citations\
     ''')
     logging.info(message)
-    multi_df = citation_df[citation_df.standard_id.duplicated(keep=False)]
+    multi_df = citation_df[citation_df.standard_key.duplicated(keep=False)]
     if not multi_df.empty:
-        table = multi_df.to_string(index=False, columns=['standard_id', 'manuscript_id'])
-        logging.warning(f'Multiple citation strings detected for the same reference:\n{table}')
+        table = multi_df.to_string(index=False, columns=['standard_key', 'manuscript_key'])
+        logging.warning(f'Multiple citekeys detected for the same reference:\n{table}')
     return multi_df
 
 
@@ -206,13 +206,13 @@ def get_citation_df(args, text):
     """
     Generate citation_df and save it to 'citations.tsv'.
     citation_df is a pandas.DataFrame with the following columns:
-    - manuscript_id: citation ids extracted from the manuscript content files.
-    - detagged_id: manuscript_id but with tag citations dereferenced
-    - standard_id: detagged_id standardized
-    - short_id: standard_id hashed to create a short base
+    - manuscript_key: citation keys extracted from the manuscript content files.
+    - detagged_key: manuscript_key but with tag citekeys dereferenced
+    - standard_key: detagged_key standardized
+    - short_key: standard_key hashed to create a shortened citekey
     """
     citation_df = pandas.DataFrame(
-        {'manuscript_id': get_citekeys(text)}
+        {'manuscript_key': get_citekeys(text)}
     )
     if args.citation_tags_path.is_file():
         tag_df = pandas.read_csv(args.citation_tags_path, sep='\t')
@@ -226,17 +226,17 @@ def get_citation_df(args, text):
             )
             tag_df = pandas.read_csv(args.citation_tags_path, delim_whitespace=True)
         tag_df['manuscript_id'] = 'tag:' + tag_df.tag
-        tag_df = tag_df.rename(columns={'citation': 'detagged_id'})
-        for detagged_id in tag_df.detagged_id:
-            is_valid_citekey(detagged_id, allow_raw=True)        
-        citation_df = citation_df.merge(tag_df[['manuscript_id', 'detagged_id']], how='left')
+        tag_df = tag_df.rename(columns={'citation': 'detagged_key'})
+        for detagged_key in tag_df.detagged_key:
+            is_valid_citekey(detagged_key, allow_raw=True)        
+        citation_df = citation_df.merge(tag_df[['manuscript_key', 'detagged_key']], how='left')
     else:
-        citation_df['detagged_id'] = None
-        logging.info(f'missing {args.citation_tags_path} file: no citation tags set')
-    citation_df.detagged_id.fillna(citation_df.manuscript_id.astype(str), inplace=True)
-    citation_df['standard_id'] = citation_df.detagged_id.map(standardize_citekey)
-    citation_df['short_id'] = citation_df.standard_id.map(shorten_citekey)
-    citation_df = citation_df.sort_values(['standard_id', 'detagged_id'])
+        citation_df['detagged_key'] = None
+        logging.info(f'missing {args.citation_tags_path} file: no citation tags (citekey aliases) set')
+    citation_df.detagged_key.fillna(citation_df.manuscript_key.astype(str), inplace=True)
+    citation_df['standard_key'] = citation_df.detagged_key.map(standardize_citekey)
+    citation_df['short_key'] = citation_df.standard_key.map(shorten_citekey)
+    citation_df = citation_df.sort_values(['standard_key', 'detagged_key'])
     citation_df.to_csv(args.citations_path, sep='\t', index=False)
     check_collisions(citation_df)
     check_multiple_citation_strings(citation_df)
@@ -245,7 +245,7 @@ def get_citation_df(args, text):
 
 def generate_csl_items(args, citation_df):
     """
-    General CSL (citeproc) items for standard_ids in citation_df.
+    General CSL (citeproc) items for standard_keys in citation_df.
     Writes references.json to disk and logs warnings for potential problems.
     """
     # Read manual references (overrides) in JSON CSL
@@ -260,28 +260,28 @@ def generate_csl_items(args, citation_df):
 
     csl_items = list()
     failures = list()
-    for standard_id in citation_df.standard_id.unique():
-        if standard_id in manual_refs:
-            csl_items.append(manual_refs[standard_id])
+    for standard_key in citation_df.standard_key.unique():
+        if standard_key in manual_refs:
+            csl_items.append(manual_refs[standard_key])
             continue
-        elif standard_id.startswith('raw:'):
+        elif standard_key.startswith('raw:'):
             logging.error(
-                f'CSL JSON Data with a standard_id of {standard_id} not found in manual-references.json. '
-                'Metadata must be provided for raw citations.'
+                f'CSL JSON Data with a standard_key of {standard_key!r} not found in manual-references.json. '
+                'Metadata must be provided for raw citekeys.'
             )
-            failures.append(standard_id)
+            failures.append(standard_key)
         try:
-            citeproc = citation_to_citeproc(standard_id)
+            citeproc = citation_to_citeproc(standard_key)
             csl_items.append(citeproc)
         except Exception:
-            logging.exception(f'Citeproc retrieval failure for {standard_id}')
-            failures.append(standard_id)
+            logging.exception(f'Citeproc retrieval failure for {standard_key!r}')
+            failures.append(standard_key)
 
     logging.info(f'requests-cache finished with {len(cache.responses)} cached responses')
     requests_cache.uninstall_cache()
 
     if failures:
-        message = 'CSL JSON Data retrieval failed for:\n{}'.format(
+        message = 'CSL JSON Data retrieval failed for the following standardized citation keys:\n{}'.format(
             '\n'.join(failures))
         logging.error(message)
 

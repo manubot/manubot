@@ -305,7 +305,7 @@ def infer_citation_prefix(citation):
 
 def csl_item_set_standard_id(csl_item):
     """
-    Extract the standard_id for a csl_item and modify the csl_item in-place to set its standard_citation.
+    Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its standard_id.
     The standard_id is extracted from a "standard_citation" field, the "note" field, or the "id" field.
     If extracting the citation from the "id" field, use the infer_citation_prefix function to set the prefix.
     For example, if the extracted standard_id does not begin with a supported prefix (e.g. "doi:", "pmid:"

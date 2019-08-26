@@ -65,7 +65,7 @@ def get_manuscript_stats(text, citation_df):
     # Number of distinct references by type
     ref_counts = (
         citation_df
-        .standard_id
+        .standard_key
         .drop_duplicates()
         .map(lambda x: x.split(':')[0])
         .pipe(collections.Counter)
