@@ -20,6 +20,17 @@ def configure_directories(args):
     """
     args_dict = vars(args)
 
+    # If --timestamp specified, check that opentimestamps-client is installed
+    if args.timestamp:
+        ots_executable_path = shutil.which("ots")
+        if not ots_executable_path:
+            logging.error(
+                "manubot webpage --timestamp was specified but opentimestamps-client not found on system. "
+                "Setting --timestamp=False. "
+                "Fix this by installing https://pypi.org/project/opentimestamps-client/"
+            )
+            args_dict['timestamp'] = False
+
     # Directory where Manubot outputs reside
     args_dict['output_directory'] = pathlib.Path('output')
 
@@ -201,7 +212,6 @@ def ots_stamp(path):
     This function calls `ots stamp path`.
     If `path` does not exist, this function does nothing.
     """
-    path = pathlib.Path(path).absolute
     process_args = ['ots', 'stamp', str(path)]
     process = subprocess.run(
         process_args,
