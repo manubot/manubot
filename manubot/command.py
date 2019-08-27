@@ -116,7 +116,6 @@ def add_subparser_cite(subparsers):
 
 
 def add_subparser_webpage(subparsers):
-    import os
     parser = subparsers.add_parser(
         name='webpage',
         help='deploy Manubot outputs to a webpage directory tree',
@@ -146,7 +145,7 @@ def add_subparser_webpage(subparsers):
         '--ots-cache',
         default=pathlib.Path('ci/cache/ots'),
         type=pathlib.Path,
-        help="location for the timestamp cache (default: %(default)s)."
+        help="location for the timestamp cache (default: ci/cache/ots)."
     )
     parser.set_defaults(function='manubot.webpage.webpage_command.cli_webpage')
 

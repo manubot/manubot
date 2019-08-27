@@ -226,7 +226,7 @@ Create a development environment using:
 conda create --name manubot-dev --channel conda-forge \
   python=3.6 jinja2 pandas pytest pandoc
 conda activate manubot-dev  # assumes conda >= 4.4
-pip install --editable .
+pip install --editable ".[all]"
 ```
 
 Inside this environment, use `pytest` to run the test suite.
