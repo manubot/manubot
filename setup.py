@@ -94,6 +94,9 @@ setuptools.setup(
 
     # Include package data files
     package_data={
-        'manubot': ['cite/*.lua'],
+        'manubot': [
+            'cite/*.lua',
+            'webpage/redirect-template.html',
+        ],
     },
 )

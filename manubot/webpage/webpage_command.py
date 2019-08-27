@@ -24,6 +24,7 @@ def configure_directories(args):
 
     # Set webpage directory
     args_dict['webpage_directory'] = pathlib.Path('webpage')
+    args.webpage_directory.mkdir(exist_ok=True)
 
     # Create webpage/v directory (if it doesn't already exist)
     args_dict['versions_directory'] = args.webpage_directory.joinpath('v')
@@ -110,10 +111,12 @@ def create_version(args):
     """
 
     # Copy content/images to webpage/v/commit/images
-    shutil.copytree(
-        src=pathlib.Path('content/images'),
-        dst=args.version_directory.joinpath('images'),
-    )
+    images_src = pathlib.Path('content/images')
+    if images_src.exists():
+        shutil.copytree(
+            src=images_src,
+            dst=args.version_directory.joinpath('images'),
+        )
 
     # Copy output files to to webpage/v/version/
     renamer = {
@@ -130,7 +133,7 @@ def create_version(args):
         )
 
     # Create v/freeze to redirect to v/commit
-    path = pathlib.Path('build/assets/redirect-template.html')
+    path = pathlib.Path(__file__).with_name('redirect-template.html')
     redirect_html = path.read_text()
     redirect_html = redirect_html.format(url=f'../{args.version}/')
     args.freeze_directory.joinpath('index.html').write_text(redirect_html)
