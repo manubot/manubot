@@ -207,8 +207,9 @@ optional arguments:
                         equivalent to --checkout=gh-pages. If --checkout is
                         ommitted, no checkout is performed.
   --version VERSION     Used to create webpage/v/{version} directory.
-                        Generally a commit hash, tag, or 'local'. (default:
-                        'local')
+                        Generally a commit hash, tag, or 'local'. When
+                        omitted, version defaults to the commit hash on CI
+                        builds and 'local' elsewhere.
   --no-ots-cache        disable the timestamp cache.
   --ots-cache OTS_CACHE
                         location for the timestamp cache (default:

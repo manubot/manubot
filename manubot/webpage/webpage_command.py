@@ -32,6 +32,15 @@ def configure_directories(args):
     # Checkout existing version directories
     checkout_existing_versions(args)
 
+    # Apply --version argument defaults
+    if args.version is None:
+        from manubot.process.ci import get_continuous_integration_parameters
+        ci_params = get_continuous_integration_parameters()
+        if ci_params:
+            args_dict['version'] = ci_params.get('commit', 'local')
+        else:
+            args_dict['version'] = 'local'
+
     # Create empty webpage/v/version directory
     version_directory = args.versions_directory.joinpath(args.version)
     if version_directory.is_dir():

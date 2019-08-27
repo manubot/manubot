@@ -132,10 +132,9 @@ def add_subparser_webpage(subparsers):
     )
     parser.add_argument(
         '--version',
-        default=os.environ.get('TRAVIS_COMMIT', 'local'),
         help="Used to create webpage/v/{version} directory. "
              "Generally a commit hash, tag, or 'local'. "
-             "(default: '%(default)s')"
+             "When omitted, version defaults to the commit hash on CI builds and 'local' elsewhere."
     )
     cache_group = parser.add_mutually_exclusive_group()
     cache_group.add_argument(
