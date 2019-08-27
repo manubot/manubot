@@ -51,20 +51,21 @@ Here is the usage information as per `manubot --help`:
 
 <!-- test codeblock contains output of `manubot --help` -->
 ```
-usage: manubot [-h] [--version] {process,cite} ...
+usage: manubot [-h] [--version] {process,cite,webpage} ...
 
 Manubot: the manuscript bot for scholarly writing
 
 optional arguments:
-  -h, --help      show this help message and exit
-  --version       show program's version number and exit
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
 
 subcommands:
   All operations are done through subcommands:
 
-  {process,cite}
-    process       process manuscript content
-    cite          citation to CSL command line utility
+  {process,cite,webpage}
+    process             process manuscript content
+    cite                citation to CSL command line utility
+    webpage             deploy Manubot outputs to a webpage directory tree
 ```
 
 Note that all operations are done through the following sub-commands.
@@ -183,11 +184,44 @@ optional arguments:
                         Set the logging level for stderr logging
 ```
 
+### Webpage
+
+The `manubot webpage` command populates a `webpage` directory with Manubot output files.
+The `webpage` directory tree is organized as the source of a manuscript website.
+This utility assumes the directory structure and outputs used by [Rootstock](https://github.com/manubot/rootstock).
+Specifically, it should be run from a manuscript's root directory that contains an `output` and `webpage` directory.
+
+<!-- test codeblock contains output of `manubot webpage --help` -->
+```
+usage: manubot webpage [-h] [--checkout [CHECKOUT]] [--version VERSION]
+                       [--no-ots-cache | --ots-cache OTS_CACHE]
+                       [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
+
+Update the webpage directory tree with Manubot output files.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --checkout [CHECKOUT]
+                        branch to checkout /v directory contents from. For
+                        example, --checkout=upstream/gh-pages. --checkout is
+                        equivalent to --checkout=gh-pages. If --checkout is
+                        ommitted, no checkout is performed.
+  --version VERSION     Used to create webpage/v/{version} directory.
+                        Generally a commit hash, tag, or 'local'. (default:
+                        'local')
+  --no-ots-cache        disable the timestamp cache.
+  --ots-cache OTS_CACHE
+                        location for the timestamp cache (default:
+                        ci/cache/ots).
+  --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
+                        Set the logging level for stderr logging
+```
+
 ## Development
 
 Create a development environment using:
 
-```sh
+```shell
 conda create --name manubot-dev --channel conda-forge \
   python=3.6 jinja2 pandas pytest pandoc
 conda activate manubot-dev  # assumes conda >= 4.4
@@ -198,14 +232,20 @@ Inside this environment, use `pytest` to run the test suite.
 You can also use the `manubot` CLI to build manuscripts.
 For example:
 
-```sh
+```shell
 manubot process \
   --content-directory=tests/manuscripts/example/content \
   --output-directory=tests/manuscripts/example/output \
   --log-level=DEBUG
 ```
 
-## Release instructions
+To automatically regenerate the README `--help` messages codeblocks, run:
+
+```shell
+python manubot/tests/test_readme.py
+```
+
+### Release instructions
 
 [![PyPI](https://img.shields.io/pypi/v/manubot.svg)](https://pypi.org/project/manubot/)
 
