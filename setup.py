@@ -25,7 +25,7 @@ extras_require = {
         'pytest',
     ],
 }
-extras_require['all'] = list(dict.fromkeys(itertools.chain(extras_require.values())))
+extras_require['all'] = list(dict.fromkeys(itertools.chain.from_iterable(extras_require.values())))
 
 setuptools.setup(
     # Package details
