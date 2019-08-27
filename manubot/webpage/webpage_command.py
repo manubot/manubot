@@ -9,7 +9,8 @@ def cli_webpage(args):
     configure_directories(args)
     logging.debug(f'Running `manubot webpage` with the following args:\n{args}')
     create_version(args)
-    ots_upgrade(args)
+    if args.timestamp:
+        ots_upgrade(args)
 
 
 def configure_directories(args):
@@ -127,10 +128,13 @@ def create_version(args):
         src_path = args.output_directory.joinpath(src)
         if not src_path.exists():
             continue
+        dst_path = args.version_directory.joinpath(dst)
         shutil.copy2(
             src=src_path,
-            dst=args.version_directory.joinpath(dst),
+            dst=dst_path,
         )
+        if args.timestamp:
+            ots_stamp(dst_path)
 
     # Create v/freeze to redirect to v/commit
     path = pathlib.Path(__file__).with_name('redirect-template.html')
@@ -189,3 +193,23 @@ def ots_upgrade(args):
             else:
                 # Restore original timestamp if failure
                 backup_path.rename(ots_path)
+
+
+def ots_stamp(path):
+    """
+    Timestamp a file using OpenTimestamps.
+    This function calls `ots stamp path`.
+    If `path` does not exist, this function does nothing.
+    """
+    process_args = ['ots', 'stamp', str(path)]
+    process = subprocess.run(
+        process_args,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+    )
+    if process.returncode != 0:
+        logging.warning(
+            f"OpenTimestamp command returned nonzero code ({process.returncode}).\n"
+            f">>> {' '.join(map(str, process.args))}\n"
+            f"{process.stderr}"
+        )

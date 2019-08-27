@@ -194,7 +194,7 @@ Specifically, it should be run from a manuscript's root directory that contains 
 <!-- test codeblock contains output of `manubot webpage --help` -->
 ```
 usage: manubot webpage [-h] [--checkout [CHECKOUT]] [--version VERSION]
-                       [--no-ots-cache | --ots-cache OTS_CACHE]
+                       [--timestamp] [--no-ots-cache | --ots-cache OTS_CACHE]
                        [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
 
 Update the webpage directory tree with Manubot output files.
@@ -210,6 +210,10 @@ optional arguments:
                         Generally a commit hash, tag, or 'local'. When
                         omitted, version defaults to the commit hash on CI
                         builds and 'local' elsewhere.
+  --timestamp           timestamp versioned manuscripts in webpage/v using
+                        OpenTimestamps. Specify this flag to create timestamps
+                        for the current HTML and PDF outputs and upgrade any
+                        timestamps from past manuscript versions.
   --no-ots-cache        disable the timestamp cache.
   --ots-cache OTS_CACHE
                         location for the timestamp cache (default:

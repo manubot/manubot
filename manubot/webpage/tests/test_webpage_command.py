@@ -11,6 +11,7 @@ def test_webpage_command():
         shutil.rmtree(webpage_path)
     args = [
         "manubot", "webpage",
+        "--timestamp",
         "--no-ots-cache",
         "--version=testing",
     ]

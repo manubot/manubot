@@ -135,6 +135,12 @@ def add_subparser_webpage(subparsers):
              "Generally a commit hash, tag, or 'local'. "
              "When omitted, version defaults to the commit hash on CI builds and 'local' elsewhere."
     )
+    parser.add_argument(
+        '--timestamp',
+        action='store_true',
+        help="timestamp versioned manuscripts in webpage/v using OpenTimestamps. "
+             "Specify this flag to create timestamps for the current HTML and PDF outputs and upgrade any timestamps from past manuscript versions."
+    )
     cache_group = parser.add_mutually_exclusive_group()
     cache_group.add_argument(
         '--no-ots-cache',
