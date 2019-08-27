@@ -8,9 +8,9 @@ import subprocess
 def cli_webpage(args):
     configure_directories(args)
     logging.debug(f'Running `manubot webpage` with the following args:\n{args}')
-    create_version(args)
     if args.timestamp:
         ots_upgrade(args)
+    create_version(args)
 
 
 def configure_directories(args):
