@@ -201,6 +201,7 @@ def ots_stamp(path):
     This function calls `ots stamp path`.
     If `path` does not exist, this function does nothing.
     """
+    path = pathlib.Path(path).absolute
     process_args = ['ots', 'stamp', str(path)]
     process = subprocess.run(
         process_args,
