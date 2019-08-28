@@ -95,12 +95,12 @@ def test_inspect_citekey_passes(citekey):
 @pytest.mark.parametrize(['citekey', 'contains'], [
     ('doi:10.771/peerj.705', 'Double check the DOI'),
     ('doi:10/b6v_nmd', 'Double check the shortDOI'),
-    ('doi:7717/peerj.705', 'must start with `10.`'),
-    ('doi:b6vnmd', 'must start with `10.`'),
-    ('pmcid:25648772', 'must start with `PMC`'),
-    ('pmid:PMC4304851', 'Should pmid:PMC4304851 switch the citation source to `pmcid`?'),
+    ('doi:7717/peerj.705', "must start with '10.'"),
+    ('doi:b6vnmd', "must start with '10.'"),
+    ('pmcid:25648772', "must start with 'PMC'"),
+    ('pmid:PMC4304851', "Should 'pmid:PMC4304851' switch the citation source to 'pmcid'?"),
     ('isbn:1-339-91988-X', 'identifier violates the ISBN syntax'),
-    ('wikidata:P212', 'item IDs must start with `Q`'),
+    ('wikidata:P212', "item IDs must start with 'Q'"),
     ('wikidata:QABCD', 'does not conform to the Wikidata regex'),
 ])
 def test_inspect_citekey_fails(citekey, contains):

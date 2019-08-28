@@ -92,7 +92,7 @@ def inspect_citekey(citekey):
         if identifier.startswith('PMC'):
             return (
                 'PubMed Identifiers should start with digits rather than PMC. '
-                f'Should {citekey!r} switch the citation source to `pmcid`?'
+                f"Should {citekey!r} switch the citation source to 'pmcid'?"
             )
         elif not regexes['pmid'].fullmatch(identifier):
             return 'PubMed Identifiers should be 1-8 digits with no leading zeros.'
@@ -100,7 +100,7 @@ def inspect_citekey(citekey):
     if source == 'pmcid':
         # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc
         if not identifier.startswith('PMC'):
-            return 'PubMed Central Identifiers must start with `PMC`.'
+            return "PubMed Central Identifiers must start with 'PMC'."
         elif not regexes['pmcid'].fullmatch(identifier):
             return (
                 'Identifier does not conform to the PMCID regex. '
@@ -124,7 +124,7 @@ def inspect_citekey(citekey):
                 )
         else:
             return (
-                'DOIs must start with `10.` (or `10/` for shortDOIs).'
+                "DOIs must start with '10.' (or '10/' for shortDOIs)."
             )
 
     if source == 'isbn':
@@ -139,7 +139,7 @@ def inspect_citekey(citekey):
         # https://www.wikidata.org/wiki/Wikidata:Identifiers
         if not identifier.startswith('Q'):
             return (
-                'Wikidata item IDs must start with `Q`.'
+                "Wikidata item IDs must start with 'Q'."
             )
         elif not regexes['wikidata'].fullmatch(identifier):
             return (
