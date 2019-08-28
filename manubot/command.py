@@ -119,7 +119,9 @@ def add_subparser_webpage(subparsers):
     parser = subparsers.add_parser(
         name='webpage',
         help='deploy Manubot outputs to a webpage directory tree',
-        description='Update the webpage directory tree with Manubot output files.',
+        description='Update the webpage directory tree with Manubot output files. '
+                    'This command should be run from the root directory of a Manubot manuscript that follows the Rootstock layout, containing `output` and `webpage` directories. '
+                    'HTML and PDF outputs are copied to the webpage directory, which is structured as static source files for website hosting.',
     )
     parser.add_argument(
         '--checkout',

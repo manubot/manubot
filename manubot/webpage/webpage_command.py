@@ -6,16 +6,22 @@ import subprocess
 
 
 def cli_webpage(args):
-    configure_directories(args)
+    """
+    Execute manubot webpage commands.
+    args should be an argparse.Namespace object created by parser.parse_args.
+    """
+    configure_args(args)
     logging.debug(f'Running `manubot webpage` with the following args:\n{args}')
     if args.timestamp:
         ots_upgrade(args)
     create_version(args)
 
 
-def configure_directories(args):
+def configure_args(args):
     """
-    Add directories to args and create them if neccessary.
+    Perform additional processing of arguments that is not handled by argparse.
+    Derive additional variables and add them to args.
+    For example, add directories to args and create them if neccessary.
     Note that versions_directory is the parent of version_directory.
     """
     args_dict = vars(args)
@@ -121,7 +127,6 @@ def create_version(args):
     """
     Populate the version directory for a new version.
     """
-
     # Copy content/images to webpage/v/commit/images
     images_src = pathlib.Path('content/images')
     if images_src.exists():

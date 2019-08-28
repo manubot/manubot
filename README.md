@@ -187,9 +187,6 @@ optional arguments:
 ### Webpage
 
 The `manubot webpage` command populates a `webpage` directory with Manubot output files.
-The `webpage` directory tree is organized as the source of a manuscript website.
-This utility assumes the directory structure and outputs used by [Rootstock](https://github.com/manubot/rootstock).
-Specifically, it should be run from a manuscript's root directory that contains an `output` and `webpage` directory.
 
 <!-- test codeblock contains output of `manubot webpage --help` -->
 ```
@@ -197,7 +194,11 @@ usage: manubot webpage [-h] [--checkout [CHECKOUT]] [--version VERSION]
                        [--timestamp] [--no-ots-cache | --ots-cache OTS_CACHE]
                        [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
 
-Update the webpage directory tree with Manubot output files.
+Update the webpage directory tree with Manubot output files. This command
+should be run from the root directory of a Manubot manuscript that follows the
+Rootstock layout, containing `output` and `webpage` directories. HTML and PDF
+outputs are copied to the webpage directory, which is structured as static
+source files for website hosting.
 
 optional arguments:
   -h, --help            show this help message and exit
