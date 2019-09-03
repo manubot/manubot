@@ -237,7 +237,7 @@ def is_valid_citekey(
     return True
 
 
-def shorten_citekey(citekey):
+def shorten_citekey(standard_citekey):
     """
     Return a shortened citekey derived from the input citekey.
     The input citekey should be standardized prior to this function,
@@ -248,8 +248,8 @@ def shorten_citekey(citekey):
     """
     import hashlib
     import base62
-    assert '@' not in citekey
-    as_bytes = citekey.encode()
+    assert not standard_citekey.startswith('@')
+    as_bytes = standard_citekey.encode()
     blake_hash = hashlib.blake2b(as_bytes, digest_size=6)
     digest = blake_hash.digest()
     short_citekey = base62.encodebytes(digest)
