@@ -1,3 +1,4 @@
+import itertools
 import pathlib
 import re
 
@@ -15,12 +16,29 @@ version = pattern.search(text).group(1)
 readme_path = directory.joinpath('README.md')
 long_description = readme_path.read_text(encoding='utf-8-sig')
 
+# extra depedencies with an "all" option
+extras_require = {
+    'webpage': [
+        'opentimestamps-client',
+    ],
+    'test': [
+        'pytest',
+    ],
+}
+extras_require['all'] = list(dict.fromkeys(itertools.chain.from_iterable(extras_require.values())))
+
 setuptools.setup(
     # Package details
     name='manubot',
     version=version,
     url='https://github.com/manubot/manubot',
-    description='Manuscript bot for automated scientific publishing',
+    project_urls={
+        'Source': 'https://github.com/manubot/manubot',
+        'Tracker': 'https://github.com/manubot/manubot/issues',
+        'Homepage': 'https://manubot.org',
+        'Publication': 'https://greenelab.github.io/meta-review/',
+    },
+    description='Python utilities for Manubot: Manuscripts, open and automated',
     long_description_content_type='text/markdown',
     long_description=long_description,
     license='BSD 3-Clause',
@@ -65,8 +83,7 @@ setuptools.setup(
     ],
 
     # Additional groups of dependencies
-    extras_require={
-    },
+    extras_require=extras_require,
 
     # Create command line script
     entry_points={
@@ -77,6 +94,9 @@ setuptools.setup(
 
     # Include package data files
     package_data={
-        'manubot': ['cite/*.lua'],
+        'manubot': [
+            'cite/*.lua',
+            'webpage/redirect-template.html',
+        ],
     },
 )

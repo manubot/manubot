@@ -26,6 +26,7 @@ def parse_arguments():
     subparsers.dest = 'subcommand'  # https://bugs.python.org/msg186387
     add_subparser_process(subparsers)
     add_subparser_cite(subparsers)
+    add_subparser_webpage(subparsers)
     for subparser in subparsers.choices.values():
         subparser.add_argument(
             '--log-level',
@@ -112,6 +113,49 @@ def add_subparser_cite(subparsers):
         help='One or more (space separated) citations to produce CSL for.',
     )
     parser.set_defaults(function='manubot.cite.cite_command.cli_cite')
+
+
+def add_subparser_webpage(subparsers):
+    parser = subparsers.add_parser(
+        name='webpage',
+        help='deploy Manubot outputs to a webpage directory tree',
+        description='Update the webpage directory tree with Manubot output files. '
+                    'This command should be run from the root directory of a Manubot manuscript that follows the Rootstock layout, containing `output` and `webpage` directories. '
+                    'HTML and PDF outputs are copied to the webpage directory, which is structured as static source files for website hosting.',
+    )
+    parser.add_argument(
+        '--checkout',
+        nargs='?', const='gh-pages', default=None,
+        help='branch to checkout /v directory contents from. '
+             'For example, --checkout=upstream/gh-pages. '
+             '--checkout is equivalent to --checkout=gh-pages. '
+             'If --checkout is ommitted, no checkout is performed.',
+    )
+    parser.add_argument(
+        '--version',
+        help="Used to create webpage/v/{version} directory. "
+             "Generally a commit hash, tag, or 'local'. "
+             "When omitted, version defaults to the commit hash on CI builds and 'local' elsewhere."
+    )
+    parser.add_argument(
+        '--timestamp',
+        action='store_true',
+        help="timestamp versioned manuscripts in webpage/v using OpenTimestamps. "
+             "Specify this flag to create timestamps for the current HTML and PDF outputs and upgrade any timestamps from past manuscript versions."
+    )
+    cache_group = parser.add_mutually_exclusive_group()
+    cache_group.add_argument(
+        '--no-ots-cache',
+        action='store_true',
+        help="disable the timestamp cache."
+    )
+    cache_group.add_argument(
+        '--ots-cache',
+        default=pathlib.Path('ci/cache/ots'),
+        type=pathlib.Path,
+        help="location for the timestamp cache (default: ci/cache/ots)."
+    )
+    parser.set_defaults(function='manubot.webpage.webpage_command.cli_webpage')
 
 
 def main():
