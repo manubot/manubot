@@ -195,13 +195,13 @@ def ots_upgrade(args):
             stderr=subprocess.PIPE,
             universal_newlines=True,
         )
+        message = f">>> {' '.join(map(str, process.args))}\n{process.stderr}"
         if process.returncode != 0:
-            logging.warning(f"OpenTimestamp upgrade command returned nonzero code ({process.returncode}).")
-        if not process.stderr.strip() == 'Success! Timestamp complete':
             logging.warning(
-                f">>> {' '.join(map(str, process.args))}\n"
-                f"{process.stderr}"
+                f"OpenTimestamp upgrade failed with exit code {process.returncode}.\n{message}"
             )
+        elif not process.stderr.strip() == 'Success! Timestamp complete':
+            logging.info(message)
         backup_path = ots_path.with_suffix('.ots.bak')
         if backup_path.exists():
             if process.returncode == 0:
