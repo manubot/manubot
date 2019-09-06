@@ -5,6 +5,7 @@ import subprocess
 
 import pytest
 
+from manubot.util import shlex_join
 from manubot.pandoc.util import (
     get_pandoc_info,
 )
@@ -92,7 +93,7 @@ def test_cite_command_render_stdout(args, expected):
         stderr=subprocess.PIPE,
         universal_newlines=True,
     )
-    print(' '.join(process.args))
+    print(shlex_join(process.args))
     print(process.stdout)
     print(process.stderr)
     assert process.stdout == expected

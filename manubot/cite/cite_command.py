@@ -10,6 +10,7 @@ from manubot.cite import (
 )
 from manubot.cite.util import is_valid_citation
 from manubot.pandoc.util import get_pandoc_info
+from manubot.util import shlex_join
 
 
 # For manubot cite, infer --format from --output filename extensions
@@ -53,7 +54,7 @@ def call_pandoc(metadata, path, format='plain'):
             filter_path = pathlib.Path(__file__).joinpath('..', 'plain-pandoc-filter.lua').resolve()
             assert filter_path.exists()
             args.extend(['--lua-filter', str(filter_path)])
-    logging.info('call_pandoc subprocess args:\n' + ' '.join(args))
+    logging.info('call_pandoc subprocess args:\n' + shlex_join(args))
     process = subprocess.run(
         args=args,
         input=metadata_block.encode(),

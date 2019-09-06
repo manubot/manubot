@@ -1,5 +1,6 @@
 import importlib
 import platform
+import shlex
 import sys
 
 # Email address that forwards to Manubot maintainers
@@ -31,3 +32,15 @@ def get_manubot_user_agent():
         f'({platform.system()}; Python/{sys.version_info.major}.{sys.version_info.minor}) '
         f'<{contact_email}>'
     )
+
+
+def shlex_join(split_command):
+    """
+    Backport shlex.join for Python < 3.8.
+    https://github.com/python/cpython/pull/7605
+    https://bugs.python.org/issue22454
+    """
+    try:
+        return shlex.join(split_command)
+    except AttributeError:
+        return ' '.join(shlex.quote(arg) for arg in split_command)

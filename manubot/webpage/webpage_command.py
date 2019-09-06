@@ -4,6 +4,8 @@ import pathlib
 import shutil
 import subprocess
 
+from manubot.util import shlex_join
+
 
 def cli_webpage(args):
     """
@@ -106,7 +108,7 @@ def checkout_existing_versions(args):
         'v',
     ]
     logging.info(
-        f"Attempting checkout with the following command:\n{' '.join(command)}"
+        f"Attempting checkout with the following command:\n{shlex_join(process.args)}"
     )
     process = subprocess.run(command, stderr=subprocess.PIPE)
     if process.returncode == 0:
@@ -195,7 +197,7 @@ def ots_upgrade(args):
             stderr=subprocess.PIPE,
             universal_newlines=True,
         )
-        message = f">>> {' '.join(map(str, process.args))}\n{process.stderr}"
+        message = f">>> {shlex_join(process.args)}\n{process.stderr}"
         if process.returncode != 0:
             logging.warning(
                 f"OpenTimestamp upgrade failed with exit code {process.returncode}.\n{message}"
@@ -226,6 +228,6 @@ def ots_stamp(path):
     if process.returncode != 0:
         logging.warning(
             f"OpenTimestamp command returned nonzero code ({process.returncode}).\n"
-            f">>> {' '.join(map(str, process.args))}\n"
+            f">>> {shlex_join(process.args)}\n"
             f"{process.stderr}"
         )
