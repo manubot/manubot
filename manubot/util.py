@@ -37,10 +37,8 @@ def get_manubot_user_agent():
 def shlex_join(split_command):
     """
     Backport shlex.join for Python < 3.8.
+    Also cast all args to str to increase versatility.
     https://github.com/python/cpython/pull/7605
     https://bugs.python.org/issue22454
     """
-    try:
-        return shlex.join(split_command)
-    except AttributeError:
-        return ' '.join(shlex.quote(arg) for arg in split_command)
+    return ' '.join(shlex.quote(str(arg)) for arg in split_command)
