@@ -7,7 +7,7 @@ def test_shlex_join():
         'command',
         'positional arg',
         'path_arg',
-        pathlib.Path('some/path'),
+        pathlib.Path('path'),
     ]
     output = manubot.util.shlex_join(args)
-    assert output == "command 'positional arg' path_arg some/path"
+    assert output == "command 'positional arg' path_arg path"
