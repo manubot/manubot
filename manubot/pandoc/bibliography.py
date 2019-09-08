@@ -3,6 +3,7 @@ import logging
 import subprocess
 
 from manubot.pandoc.util import get_pandoc_info
+from manubot.util import shlex_join
 
 
 def load_bibliography(path=None, text=None, input_format=None):
@@ -46,7 +47,7 @@ def load_bibliography(path=None, text=None, input_format=None):
         args.append(str(path))
     if use_text:
         run_kwargs['input'] = text
-    logging.info('call_pandoc subprocess args:\n' + ' '.join(args))
+    logging.info('call_pandoc subprocess args:\n>>> ' + shlex_join(args))
     process = subprocess.run(
         args,
         stdout=subprocess.PIPE,
