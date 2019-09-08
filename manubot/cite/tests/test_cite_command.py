@@ -19,7 +19,7 @@ def test_cite_command_empty():
     )
     print(process.stderr)
     assert process.returncode == 2
-    assert 'the following arguments are required: citations' in process.stderr
+    assert 'the following arguments are required: citekeys' in process.stderr
 
 
 def test_cite_command_stdout():
@@ -68,7 +68,7 @@ def test_cite_command_render_stdout(args, expected):
     """
     Test the stdout output of `manubot cite --render` with various formats.
     The output is sensitive to the version of Pandoc used, so rather than fail when
-    the system's pandoc is outdated, the test is skipped. 
+    the system's pandoc is outdated, the test is skipped.
     """
     pandoc_version = get_pandoc_info()['pandoc version']
     for output in 'markdown', 'html', 'jats':

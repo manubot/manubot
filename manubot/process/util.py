@@ -1,7 +1,6 @@
 import collections
 import json
 import logging
-import os
 import pathlib
 import re
 import textwrap
@@ -22,43 +21,43 @@ from manubot.process.ci import (
 )
 from manubot.process.manuscript import (
     datetime_now,
-    get_citation_ids,
+    get_citekeys,
     get_manuscript_stats,
     get_text,
-    update_manuscript_citations,
+    update_manuscript_citekeys,
 )
 from manubot.cite.util import (
-    citation_to_citeproc,
-    get_citation_short_id,
-    is_valid_citation,
-    standardize_citation,
+    citekey_to_csl_item,
+    shorten_citekey,
+    is_valid_citekey,
+    standardize_citekey,
 )
 
 
-def check_collisions(citation_df):
+def check_collisions(citekeys_df):
     """
-    Check for short_id hash collisions
+    Check for short_citekey hash collisions
     """
-    collision_df = citation_df[['standard_id', 'short_id']].drop_duplicates()
-    collision_df = collision_df[collision_df.short_id.duplicated(keep=False)]
+    collision_df = citekeys_df[['standard_citekey', 'short_citekey']].drop_duplicates()
+    collision_df = collision_df[collision_df.short_citekey.duplicated(keep=False)]
     if not collision_df.empty:
         logging.error(f'OMF! Hash collision. Congratulations.\n{collision_df}')
     return collision_df
 
 
-def check_multiple_citation_strings(citation_df):
+def check_multiple_citation_strings(citekeys_df):
     """
     Identify different citation strings referring the the same reference.
     """
     message = textwrap.dedent(f'''\
-    {len(citation_df)} unique citations strings extracted from text
-    {citation_df.standard_id.nunique()} unique standard citations\
+    {len(citekeys_df)} unique citations strings extracted from text
+    {citekeys_df.standard_citekey.nunique()} unique standard citations\
     ''')
     logging.info(message)
-    multi_df = citation_df[citation_df.standard_id.duplicated(keep=False)]
+    multi_df = citekeys_df[citekeys_df.standard_citekey.duplicated(keep=False)]
     if not multi_df.empty:
-        table = multi_df.to_string(index=False, columns=['standard_id', 'manuscript_id'])
-        logging.warning(f'Multiple citation strings detected for the same reference:\n{table}')
+        table = multi_df.to_string(index=False, columns=['standard_citekey', 'manuscript_citekey'])
+        logging.warning(f'Multiple citekeys detected for the same reference:\n{table}')
     return multi_df
 
 
@@ -113,9 +112,10 @@ def read_jsons(paths):
         assert isinstance(obj, dict)
         conflicts = user_variables.keys() & obj.keys()
         if conflicts:
-            logging.warning(f'Template variables in {path} overwrite existing '
-                            'values for the following keys:\n' +
-                            '\n'.join(conflicts))
+            logging.warning(
+                f'Template variables in {path} overwrite existing '
+                'values for the following keys:\n' + '\n'.join(conflicts)
+            )
         user_variables.update(obj)
     logging.info(f'Reading user-provided templating variables complete:\n'
                  f'{json.dumps(user_variables, indent=2, ensure_ascii=False)}')
@@ -202,17 +202,17 @@ def get_metadata_and_variables(args):
     return metadata, variables
 
 
-def get_citation_df(args, text):
+def get_citekeys_df(args, text):
     """
-    Generate citation_df and save it to 'citations.tsv'.
-    citation_df is a pandas.DataFrame with the following columns:
-    - manuscript_id: citation ids extracted from the manuscript content files.
-    - detagged_id: manuscript_id but with tag citations dereferenced
-    - standard_id: detagged_id standardized
-    - short_id: standard_id hashed to create a short base
+    Generate citekeys_df and save it to 'citations.tsv'.
+    citekeys_df is a pandas.DataFrame with the following columns:
+    - manuscript_citekey: citation keys extracted from the manuscript content files.
+    - detagged_citekey: manuscript_citekey but with tag citekeys dereferenced
+    - standard_citekey: detagged_citekey standardized
+    - short_citekey: standard_citekey hashed to create a shortened citekey
     """
-    citation_df = pandas.DataFrame(
-        {'manuscript_id': get_citation_ids(text)}
+    citekeys_df = pandas.DataFrame(
+        {'manuscript_citekey': get_citekeys(text)}
     )
     if args.citation_tags_path.is_file():
         tag_df = pandas.read_csv(args.citation_tags_path, sep='\t')
@@ -225,27 +225,27 @@ def get_citation_df(args, text):
                 'Proceeding to reread TSV with delim_whitespace=True.'
             )
             tag_df = pandas.read_csv(args.citation_tags_path, delim_whitespace=True)
-        tag_df['manuscript_id'] = 'tag:' + tag_df.tag
-        tag_df = tag_df.rename(columns={'citation': 'detagged_id'})
-        for detagged_id in tag_df.detagged_id:
-            is_valid_citation(detagged_id, allow_raw=True)        
-        citation_df = citation_df.merge(tag_df[['manuscript_id', 'detagged_id']], how='left')
+        tag_df['manuscript_citekey'] = 'tag:' + tag_df.tag
+        tag_df = tag_df.rename(columns={'citation': 'detagged_citekey'})
+        for detagged_citekey in tag_df.detagged_citekey:
+            is_valid_citekey(detagged_citekey, allow_raw=True)
+        citekeys_df = citekeys_df.merge(tag_df[['manuscript_citekey', 'detagged_citekey']], how='left')
     else:
-        citation_df['detagged_id'] = None
-        logging.info(f'missing {args.citation_tags_path} file: no citation tags set')
-    citation_df.detagged_id.fillna(citation_df.manuscript_id.astype(str), inplace=True)
-    citation_df['standard_id'] = citation_df.detagged_id.map(standardize_citation)
-    citation_df['short_id'] = citation_df.standard_id.map(get_citation_short_id)
-    citation_df = citation_df.sort_values(['standard_id', 'detagged_id'])
-    citation_df.to_csv(args.citations_path, sep='\t', index=False)
-    check_collisions(citation_df)
-    check_multiple_citation_strings(citation_df)
-    return citation_df
+        citekeys_df['detagged_citekey'] = None
+        logging.info(f'missing {args.citation_tags_path} file: no citation tags (citekey aliases) set')
+    citekeys_df.detagged_citekey.fillna(citekeys_df.manuscript_citekey.astype(str), inplace=True)
+    citekeys_df['standard_citekey'] = citekeys_df.detagged_citekey.map(standardize_citekey)
+    citekeys_df['short_citekey'] = citekeys_df.standard_citekey.map(shorten_citekey)
+    citekeys_df = citekeys_df.sort_values(['standard_citekey', 'detagged_citekey'])
+    citekeys_df.to_csv(args.citations_path, sep='\t', index=False)
+    check_collisions(citekeys_df)
+    check_multiple_citation_strings(citekeys_df)
+    return citekeys_df
 
 
-def generate_csl_items(args, citation_df):
+def generate_csl_items(args, citekeys_df):
     """
-    General CSL (citeproc) items for standard_ids in citation_df.
+    General CSL (citeproc) items for standard_citekeys in citekeys_df.
     Writes references.json to disk and logs warnings for potential problems.
     """
     # Read manual references (overrides) in JSON CSL
@@ -260,28 +260,28 @@ def generate_csl_items(args, citation_df):
 
     csl_items = list()
     failures = list()
-    for standard_id in citation_df.standard_id.unique():
-        if standard_id in manual_refs:
-            csl_items.append(manual_refs[standard_id])
+    for standard_citekey in citekeys_df.standard_citekey.unique():
+        if standard_citekey in manual_refs:
+            csl_items.append(manual_refs[standard_citekey])
             continue
-        elif standard_id.startswith('raw:'):
+        elif standard_citekey.startswith('raw:'):
             logging.error(
-                f'CSL JSON Data with a standard_id of {standard_id} not found in manual-references.json. '
-                'Metadata must be provided for raw citations.'
+                f'CSL JSON Data with a standard_citekey of {standard_citekey!r} not found in manual-references.json. '
+                'Metadata must be provided for raw citekeys.'
             )
-            failures.append(standard_id)
+            failures.append(standard_citekey)
         try:
-            citeproc = citation_to_citeproc(standard_id)
-            csl_items.append(citeproc)
+            csl_item = citekey_to_csl_item(standard_citekey)
+            csl_items.append(csl_item)
         except Exception:
-            logging.exception(f'Citeproc retrieval failure for {standard_id}')
-            failures.append(standard_id)
+            logging.exception(f'Citeproc retrieval failure for {standard_citekey!r}')
+            failures.append(standard_citekey)
 
     logging.info(f'requests-cache finished with {len(cache.responses)} cached responses')
     requests_cache.uninstall_cache()
 
     if failures:
-        message = 'CSL JSON Data retrieval failed for:\n{}'.format(
+        message = 'CSL JSON Data retrieval failed for the following standardized citation keys:\n{}'.format(
             '\n'.join(failures))
         logging.error(message)
 
@@ -313,16 +313,16 @@ def prepare_manuscript(args):
     for pandoc.
     """
     text = get_text(args.content_directory)
-    citation_df = get_citation_df(args, text)
+    citekeys_df = get_citekeys_df(args, text)
 
-    generate_csl_items(args, citation_df)
+    generate_csl_items(args, citekeys_df)
 
-    short_citation_mapper = collections.OrderedDict(
-        zip(citation_df.manuscript_id, citation_df.short_id))
-    text = update_manuscript_citations(text, short_citation_mapper)
+    citekey_mapping = collections.OrderedDict(
+        zip(citekeys_df.manuscript_citekey, citekeys_df.short_citekey))
+    text = update_manuscript_citekeys(text, citekey_mapping)
 
     metadata, variables = get_metadata_and_variables(args)
-    variables['manuscript_stats'] = get_manuscript_stats(text, citation_df)
+    variables['manuscript_stats'] = get_manuscript_stats(text, citekeys_df)
     with args.variables_path.open('w', encoding='utf-8') as write_file:
         json.dump(variables, write_file, ensure_ascii=False, indent=2)
         write_file.write('\n')

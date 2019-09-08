@@ -9,9 +9,9 @@ import requests
 from manubot.util import get_manubot_user_agent
 
 
-def get_pmc_citeproc(pmcid):
+def get_pmc_csl_item(pmcid):
     """
-    Get the citeproc JSON for a PubMed Central record by its PMID, PMCID, or
+    Get the CSL Item for a PubMed Central record by its PMID, PMCID, or
     DOI, using the NCBI Citation Exporter API.
 
     https://api.ncbi.nlm.nih.gov/lit/ctxp
@@ -69,7 +69,7 @@ def _get_literature_citation_exporter_csl_item(database, identifier):
     return csl_item
 
 
-def get_pubmed_citeproc(pmid):
+def get_pubmed_csl_item(pmid):
     """
     Query NCBI E-Utilities to create CSL Items for PubMed IDs.
 
@@ -96,56 +96,56 @@ def get_pubmed_citeproc(pmid):
                       f'Invalid XML response from {response.url}:\n{response.text}')
         raise error
     try:
-        citeproc = citeproc_from_pubmed_article(element_tree)
+        csl_item = csl_item_from_pubmed_article(element_tree)
     except Exception as error:
         msg = f'Error parsing the following PubMed metadata for PMID {pmid}:\n{response.text}'
         logging.error(msg)
         raise error
-    return citeproc
+    return csl_item
 
 
-def citeproc_from_pubmed_article(article):
+def csl_item_from_pubmed_article(article):
     """
     article is a PubmedArticle xml element tree
 
     https://github.com/citation-style-language/schema/blob/master/csl-data.json
     """
-    citeproc = collections.OrderedDict()
+    csl_item = collections.OrderedDict()
 
     if not article.find("MedlineCitation/Article"):
         raise NotImplementedError('Unsupported PubMed record: no <Article> element')
 
     title = article.findtext("MedlineCitation/Article/ArticleTitle")
     if title:
-        citeproc['title'] = title
+        csl_item['title'] = title
 
     volume = article.findtext("MedlineCitation/Article/Journal/JournalIssue/Volume")
     if volume:
-        citeproc['volume'] = volume
+        csl_item['volume'] = volume
 
     issue = article.findtext("MedlineCitation/Article/Journal/JournalIssue/Issue")
     if issue:
-        citeproc['issue'] = issue
+        csl_item['issue'] = issue
 
     page = article.findtext("MedlineCitation/Article/Pagination/MedlinePgn")
     if page:
-        citeproc['page'] = page
+        csl_item['page'] = page
 
     journal = article.findtext("MedlineCitation/Article/Journal/Title")
     if journal:
-        citeproc['container-title'] = journal
+        csl_item['container-title'] = journal
 
     journal_short = article.findtext("MedlineCitation/Article/Journal/ISOAbbreviation")
     if journal_short:
-        citeproc['container-title-short'] = journal_short
+        csl_item['container-title-short'] = journal_short
 
     issn = article.findtext("MedlineCitation/Article/Journal/ISSN")
     if issn:
-        citeproc['ISSN'] = issn
+        csl_item['ISSN'] = issn
 
     date_parts = extract_publication_date_parts(article)
     if date_parts:
-        citeproc['issued'] = {'date-parts': [date_parts]}
+        csl_item['issued'] = {'date-parts': [date_parts]}
 
     authors_csl = list()
     authors = article.findall("MedlineCitation/Article/AuthorList/Author")
@@ -159,22 +159,22 @@ def citeproc_from_pubmed_article(article):
             author_csl['family'] = family
         authors_csl.append(author_csl)
     if authors_csl:
-        citeproc['author'] = authors_csl
+        csl_item['author'] = authors_csl
 
     for id_type, key in ('pubmed', 'PMID'), ('pmc', 'PMCID'), ('doi', 'DOI'):
         xpath = f"PubmedData/ArticleIdList/ArticleId[@IdType='{id_type}']"
         value = article.findtext(xpath)
         if value:
-            citeproc[key] = value.lower() if key == 'DOI' else value
+            csl_item[key] = value.lower() if key == 'DOI' else value
 
     abstract = article.findtext("MedlineCitation/Article/Abstract/AbstractText")
     if abstract:
-        citeproc['abstract'] = abstract
+        csl_item['abstract'] = abstract
 
-    citeproc['URL'] = f"https://www.ncbi.nlm.nih.gov/pubmed/{citeproc['PMID']}"
-    citeproc['type'] = 'article-journal'
+    csl_item['URL'] = f"https://www.ncbi.nlm.nih.gov/pubmed/{csl_item['PMID']}"
+    csl_item['type'] = 'article-journal'
 
-    return citeproc
+    return csl_item
 
 
 month_abbrev_to_int = {
@@ -286,7 +286,7 @@ def get_pmid_for_doi(doi):
         return None
     try:
         element_tree = xml.etree.ElementTree.fromstring(response.text)
-    except Exception as error:
+    except Exception:
         logging.warning(f'Error in ESearch XML for DOI: {doi}.\n'
                         f'Response from {response.url}:\n{response.text}')
         return None
@@ -310,6 +310,7 @@ def get_pubmed_ids_for_doi(doi):
         if pmid:
             pubmed_ids['PMID'] = pmid
     return pubmed_ids
+
 
 @functools.lru_cache()
 def _get_eutils_rate_limiter():

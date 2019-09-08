@@ -6,22 +6,22 @@ import pathlib
 import re
 
 from manubot.cite.util import (
-    citation_pattern,
-    is_valid_citation,
+    citekey_pattern,
+    is_valid_citekey,
 )
 
 
-def get_citation_ids(text):
+def get_citekeys(text):
     """
     Extract the deduplicated list of citations in a text. Citations that are
     clearly invalid such as `doi:/453` are not returned.
     """
-    citation_ids = set(citation_pattern.findall(text))
-    citation_ids = filter(
-        lambda x: is_valid_citation(x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True),
-        citation_ids,
+    citekeys = set(citekey_pattern.findall(text))
+    citekeys = filter(
+        lambda x: is_valid_citekey(x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True),
+        citekeys,
     )
-    return sorted(citation_ids)
+    return sorted(citekeys)
 
 
 def get_text(directory):
@@ -38,9 +38,11 @@ def get_text(directory):
     return '\n\n'.join(name_to_text.values()) + '\n'
 
 
-def update_manuscript_citations(text, old_to_new):
+def update_manuscript_citekeys(text, old_to_new):
     """
-    Convert citations to their IDs for pandoc.
+    Replace citation keys according to the old_to_new dictionary.
+    Useful for converting citation keys to shortened versions
+    that are appropriate for pandoc.
 
     `text` is markdown source text
 
@@ -56,7 +58,7 @@ def update_manuscript_citations(text, old_to_new):
     return text
 
 
-def get_manuscript_stats(text, citation_df):
+def get_manuscript_stats(text, citekeys_df):
     """
     Compute manuscript statistics.
     """
@@ -64,8 +66,8 @@ def get_manuscript_stats(text, citation_df):
 
     # Number of distinct references by type
     ref_counts = (
-        citation_df
-        .standard_id
+        citekeys_df
+        .standard_citekey
         .drop_duplicates()
         .map(lambda x: x.split(':')[0])
         .pipe(collections.Counter)

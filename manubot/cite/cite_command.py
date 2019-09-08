@@ -5,10 +5,10 @@ import subprocess
 import sys
 
 from manubot.cite import (
-    citation_to_citeproc,
-    standardize_citation,
+    citekey_to_csl_item,
+    standardize_citekey,
 )
-from manubot.cite.util import is_valid_citation
+from manubot.cite.util import is_valid_citekey
 from manubot.pandoc.util import get_pandoc_info
 
 
@@ -73,16 +73,16 @@ def cli_cite(args):
     """
     # generate CSL JSON data
     csl_list = list()
-    for citation in args.citations:
+    for citekey in args.citekeys:
         try:
-            if not is_valid_citation(citation):
+            if not is_valid_citekey(citekey):
                 continue
-            citation = standardize_citation(citation)
-            csl_item = citation_to_citeproc(citation, prune=args.prune_csl)
+            citekey = standardize_citekey(citekey)
+            csl_item = citekey_to_csl_item(citekey, prune=args.prune_csl)
             csl_list.append(csl_item)
         except Exception as error:
             logging.error(
-                f'citation_to_citeproc for {citation} failed '
+                f'citekey_to_csl_item for {citekey!r} failed '
                 f'due to a {error.__class__.__name__}:\n{error}'
             )
             logging.info(error, exc_info=True)
@@ -95,7 +95,7 @@ def cli_cite(args):
             write_file.write('\n')
         return
 
-    # use Pandoc to render citations
+    # use Pandoc to render references
     if not args.format and args.output:
         vars(args)['format'] = extension_to_format.get(args.output.suffix)
     if not args.format:

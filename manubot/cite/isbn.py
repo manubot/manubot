@@ -4,7 +4,7 @@ import logging
 import re
 
 
-def get_isbn_citeproc(isbn):
+def get_isbn_csl_item(isbn):
     """
     Generate CSL JSON Data for an ISBN. Converts all ISBNs to 13-digit format.
 
@@ -24,10 +24,10 @@ def get_isbn_citeproc(isbn):
                 f'due to a {error.__class__.__name__}:\n{error}'
             )
             logging.info(error, exc_info=True)
-    raise Exception(f'all get_isbn_citeproc methods failed for {isbn}')
+    raise Exception(f'all get_isbn_csl_item methods failed for {isbn}')
 
 
-def get_isbn_citeproc_zotero(isbn):
+def get_isbn_csl_item_zotero(isbn):
     """
     Generate CSL JSON Data for an ISBN using Zotero's translation-server.
     """
@@ -38,7 +38,7 @@ def get_isbn_citeproc_zotero(isbn):
     return csl_item
 
 
-def get_isbn_citeproc_citoid(isbn):
+def get_isbn_csl_item_citoid(isbn):
     """
     Return CSL JSON Data for an ISBN using the Wikipedia Citoid API.
     https://en.wikipedia.org/api/rest_v1/#!/Citation/getCitation
@@ -60,10 +60,10 @@ def get_isbn_citeproc_citoid(isbn):
                 f'{json.dumps(result.text)}'
             )
     mediawiki, = result
-    csl_data = collections.OrderedDict()
-    csl_data['type'] = mediawiki.get('itemType', 'book')
+    csl_item = collections.OrderedDict()
+    csl_item['type'] = mediawiki.get('itemType', 'book')
     if 'title' in mediawiki:
-        csl_data['title'] = mediawiki['title']
+        csl_item['title'] = mediawiki['title']
     if 'author' in mediawiki:
         csl_author = list()
         for last, first in mediawiki['author']:
@@ -72,38 +72,38 @@ def get_isbn_citeproc_citoid(isbn):
                 'family': last,
             })
         if csl_author:
-            csl_data['author'] = csl_author
+            csl_item['author'] = csl_author
     if 'date' in mediawiki:
         year_pattern = re.compile(r'[0-9]{4}')
         match = year_pattern.search(mediawiki['date'])
         if match:
             year = int(match.group())
-            csl_data['issued'] = {'date-parts': [[year]]}
+            csl_item['issued'] = {'date-parts': [[year]]}
         else:
             logging.debug(
-                f'get_isbn_citeproc_citoid: issue extracting date for ISBN {isbn}\n'
+                f'get_isbn_csl_item_citoid: issue extracting date for ISBN {isbn}\n'
                 f'metadata retrieved from {url}\n'
                 f'unable to extract year from date field: {mediawiki["date"]}'
             )
     if 'publisher' in mediawiki:
-        csl_data['publisher'] = mediawiki['publisher']
+        csl_item['publisher'] = mediawiki['publisher']
     if 'place' in mediawiki:
-        csl_data['publisher-place'] = mediawiki['place']
+        csl_item['publisher-place'] = mediawiki['place']
     if 'volume' in mediawiki:
-        csl_data['volume'] = mediawiki['volume']
+        csl_item['volume'] = mediawiki['volume']
     if 'edition' in mediawiki:
-        csl_data['edition'] = mediawiki['edition']
+        csl_item['edition'] = mediawiki['edition']
     if 'abstractNote' in mediawiki:
-        csl_data['abstract'] = mediawiki['abstractNote']
-    csl_data['ISBN'] = isbn
+        csl_item['abstract'] = mediawiki['abstractNote']
+    csl_item['ISBN'] = isbn
     if 'source' in mediawiki:
-        csl_data['source'] = mediawiki['source'][0]
+        csl_item['source'] = mediawiki['source'][0]
     if 'url' in mediawiki:
-        csl_data['URL'] = mediawiki['url']
-    return csl_data
+        csl_item['URL'] = mediawiki['url']
+    return csl_item
 
 
-def get_isbn_citeproc_isbnlib(isbn):
+def get_isbn_csl_item_isbnlib(isbn):
     """
     Generate CSL JSON Data for an ISBN using isbnlib.
     """
@@ -115,7 +115,7 @@ def get_isbn_citeproc_isbnlib(isbn):
 
 
 isbn_retrievers = [
-    get_isbn_citeproc_zotero,
-    get_isbn_citeproc_citoid,
-    get_isbn_citeproc_isbnlib,
+    get_isbn_csl_item_zotero,
+    get_isbn_csl_item_citoid,
+    get_isbn_csl_item_isbnlib,
 ]

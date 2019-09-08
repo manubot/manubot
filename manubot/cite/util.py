@@ -5,17 +5,17 @@ import re
 from manubot.util import import_function
 
 citeproc_retrievers = {
-    'doi': 'manubot.cite.doi.get_doi_citeproc',
-    'pmid': 'manubot.cite.pubmed.get_pubmed_citeproc',
-    'pmcid': 'manubot.cite.pubmed.get_pmc_citeproc',
-    'arxiv': 'manubot.cite.arxiv.get_arxiv_citeproc',
-    'isbn': 'manubot.cite.isbn.get_isbn_citeproc',
-    'wikidata': 'manubot.cite.wikidata.get_wikidata_citeproc',
-    'url': 'manubot.cite.url.get_url_citeproc',
+    'doi': 'manubot.cite.doi.get_doi_csl_item',
+    'pmid': 'manubot.cite.pubmed.get_pubmed_csl_item',
+    'pmcid': 'manubot.cite.pubmed.get_pmc_csl_item',
+    'arxiv': 'manubot.cite.arxiv.get_arxiv_csl_item',
+    'isbn': 'manubot.cite.isbn.get_isbn_csl_item',
+    'wikidata': 'manubot.cite.wikidata.get_wikidata_csl_item',
+    'url': 'manubot.cite.url.get_url_csl_item',
 }
 
 """
-Regex to extract citations.
+Regex to extract citation keys.
 The leading '@' is omitted from the single match group.
 
 Same rules as pandoc, except more permissive in the following ways:
@@ -24,23 +24,23 @@ Same rules as pandoc, except more permissive in the following ways:
 2. underscores are allowed in internal characters because URLs, DOIs, and
    citation tags often contain underscores.
 
-If a citation string does not match this regex, it can be substituted for a
+If a citekey does not match this regex, it can be substituted for a
 tag that does, as defined in citation-tags.tsv.
 
 https://github.com/greenelab/manubot-rootstock/issues/2#issuecomment-312153192
 
 Prototyped at https://regex101.com/r/s3Asz3/4
 """
-citation_pattern = re.compile(
+citekey_pattern = re.compile(
     r'(?<!\w)@([a-zA-Z0-9][\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])')
 
 
 @functools.lru_cache(maxsize=5_000)
-def standardize_citation(citation, warn_if_changed=False):
+def standardize_citekey(citekey, warn_if_changed=False):
     """
-    Standardize citation identifiers based on their source
+    Standardize citation keys based on their source
     """
-    source, identifier = citation.split(':', 1)
+    source, identifier = citekey.split(':', 1)
 
     if source == 'doi':
         if identifier.startswith('10/'):
@@ -62,13 +62,13 @@ def standardize_citation(citation, warn_if_changed=False):
         from isbnlib import to_isbn13
         identifier = to_isbn13(identifier)
 
-    standard_citation = f'{source}:{identifier}'
-    if warn_if_changed and citation != standard_citation:
+    standard_citekey = f'{source}:{identifier}'
+    if warn_if_changed and citekey != standard_citekey:
         logging.warning(
-            f'standardize_citation expected citation to already be standardized.\n'
-            f'Instead citation was changed from {citation} to {standard_citation}'
+            f'standardize_citekey expected citekey to already be standardized.\n'
+            f'Instead citekey was changed from {citekey!r} to {standard_citekey!r}'
         )
-    return standard_citation
+    return standard_citekey
 
 
 regexes = {
@@ -80,19 +80,19 @@ regexes = {
 }
 
 
-def inspect_citation_identifier(citation):
+def inspect_citekey(citekey):
     """
-    Check citation identifiers adhere to expected formats. If an issue is
-    detected a string describing the issue is returned. Otherwise returns None.
+    Check citekeys adhere to expected formats. If an issue is detected a
+    string describing the issue is returned. Otherwise returns None.
     """
-    source, identifier = citation.split(':', 1)
+    source, identifier = citekey.split(':', 1)
 
     if source == 'pmid':
         # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmid
         if identifier.startswith('PMC'):
             return (
                 'PubMed Identifiers should start with digits rather than PMC. '
-                f'Should {citation} switch the citation source to `pmcid`?'
+                f"Should {citekey!r} switch the citation source to 'pmcid'?"
             )
         elif not regexes['pmid'].fullmatch(identifier):
             return 'PubMed Identifiers should be 1-8 digits with no leading zeros.'
@@ -100,7 +100,7 @@ def inspect_citation_identifier(citation):
     if source == 'pmcid':
         # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc
         if not identifier.startswith('PMC'):
-            return 'PubMed Central Identifiers must start with `PMC`.'
+            return "PubMed Central Identifiers must start with 'PMC'."
         elif not regexes['pmcid'].fullmatch(identifier):
             return (
                 'Identifier does not conform to the PMCID regex. '
@@ -124,7 +124,7 @@ def inspect_citation_identifier(citation):
                 )
         else:
             return (
-                'DOIs must start with `10.` (or `10/` for shortDOIs).'
+                "DOIs must start with '10.' (or '10/' for shortDOIs)."
             )
 
     if source == 'isbn':
@@ -139,7 +139,7 @@ def inspect_citation_identifier(citation):
         # https://www.wikidata.org/wiki/Wikidata:Identifiers
         if not identifier.startswith('Q'):
             return (
-                'Wikidata item IDs must start with `Q`.'
+                "Wikidata item IDs must start with 'Q'."
             )
         elif not regexes['wikidata'].fullmatch(identifier):
             return (
@@ -150,49 +150,49 @@ def inspect_citation_identifier(citation):
     return None
 
 
-def is_valid_citation(
-        citation, allow_tag=False, allow_raw=False, allow_pandoc_xnos=False):
+def is_valid_citekey(
+        citekey, allow_tag=False, allow_raw=False, allow_pandoc_xnos=False):
     """
-    Return True if citation is a properly formatted string. Return False if
-    citation is not a citation or is an invalid citation.
+    Return True if citekey is a properly formatted string. Return False if
+    citekey is not a citation or is an invalid citation.
 
-    In the case citation is invalid, an error is logged. This
-    function does not catch all invalid citations, but instead performs cursory
-    checks, such as citations adhere to the expected formats. No calls to
+    In the case citekey is invalid, an error is logged. This
+    function does not catch all invalid citekeys, but instead performs cursory
+    checks, such as ensuring citekeys adhere to the expected formats. No calls to
     external resources are used by these checks, so they will not detect
-    citations to non-existent identifiers unless those identifiers violate
+    citekeys to non-existent identifiers unless those identifiers violate
     their source's syntax.
 
     allow_tag=False, allow_raw=False, and allow_pandoc_xnos=False enable
-    allowing citation sources that are valid for Manubot manuscripts, but
-    likely not elsewhere. allow_tag=True enables citations tags (e.g.
-    tag:citation-tag). allow_raw=True enables raw citations (e.g.
+    allowing citekey sources that are valid for Manubot manuscripts, but
+    likely not elsewhere. allow_tag=True enables citekey tags (e.g.
+    tag:citation-tag). allow_raw=True enables raw citekeys (e.g.
     raw:manual-reference). allow_pandoc_xnos=True still returns False for
     pandoc-xnos references (e.g. fig:figure-id), but does not log an error.
     With the default of False for these arguments, valid sources are restricted
     to those for which manubot can retrieve metadata based only on the
-    standalone citation.
+    standalone citekey.
     """
-    if not isinstance(citation, str):
+    if not isinstance(citekey, str):
         logging.error(
-            f"Citation should be type 'str' not "
-            f"{type(citation).__name__!r}: {citation!r}"
+            f"citekey should be type 'str' not "
+            f"{type(citekey).__name__!r}: {citekey!r}"
         )
         return False
-    if citation.startswith('@'):
-        logging.error(f"Invalid citation: {citation!r}\nstarts with '@'")
+    if citekey.startswith('@'):
+        logging.error(f"invalid citekey: {citekey!r}\nstarts with '@'")
         return False
     try:
-        source, identifier = citation.split(':', 1)
+        source, identifier = citekey.split(':', 1)
     except ValueError:
         logging.error(
-            f'Citation not splittable via a single colon: {citation}. '
-            'Citations must be in the format of `source:identifier`.'
+            f'citekey not splittable via a single colon: {citekey}. '
+            'Citekeys must be in the format of `source:identifier`.'
         )
         return False
 
     if not source or not identifier:
-        msg = f'Invalid citation: {citation}\nblank source or identifier'
+        msg = f'invalid citekey: {citekey!r}\nblank source or identifier'
         logging.error(msg)
         return False
 
@@ -205,7 +205,7 @@ def is_valid_citation(
         if source.lower() in pandoc_xnos_keys:
             logging.error(
                 f'pandoc-xnos reference types should be all lowercase.\n'
-                f'Should {citation} use "{source.lower()}" rather than "{source}"?'
+                f'Should {citekey!r} use {source.lower()!r} rather than "{source!r}"?'
             )
             return False
 
@@ -218,101 +218,106 @@ def is_valid_citation(
     if source not in sources:
         if source.lower() in sources:
             logging.error(
-                f'Citation sources should be all lowercase.\n'
-                f'Should {citation} use "{source.lower()}" rather than "{source}"?'
+                f'citekey sources should be all lowercase.\n'
+                f'Should {citekey} use "{source.lower()}" rather than "{source}"?'
             )
         else:
             logging.error(
-                f'Invalid citation: {citation}\n'
-                f'Source "{source}" is not valid.\n'
+                f'invalid citekey: {citekey!r}\n'
+                f'Source {source!r} is not valid.\n'
                 f'Valid citation sources are {{{", ".join(sorted(sources))}}}'
             )
         return False
 
-    inspection = inspect_citation_identifier(citation)
+    inspection = inspect_citekey(citekey)
     if inspection:
-        logging.error(f'invalid {source} citation: {citation}\n{inspection}')
+        logging.error(f'invalid {source} citekey: {citekey}\n{inspection}')
         return False
 
     return True
 
 
-def get_citation_short_id(standard_id):
+def shorten_citekey(standard_citekey):
     """
-    Get the short_id derived from a citation's standard_id.
-    Short IDs are generated by converting the standard_id to a 6 byte hash,
-    and then converting this digest to a base62 ASCII str. The output
-    short_id consists of characters in the following ranges: 0-9, a-z and A-Z.
+    Return a shortened citekey derived from the input citekey.
+    The input citekey should be standardized prior to this function,
+    since differences in the input citekey will result in different shortened citekeys.
+    Short citekeys are generated by converting the input citekey to a 6 byte hash,
+    and then converting this digest to a base62 ASCII str. Shortened
+    citekeys consist of characters in the following ranges: 0-9, a-z and A-Z.
     """
     import hashlib
     import base62
-    assert '@' not in standard_id
-    as_bytes = standard_id.encode()
+    assert not standard_citekey.startswith('@')
+    as_bytes = standard_citekey.encode()
     blake_hash = hashlib.blake2b(as_bytes, digest_size=6)
     digest = blake_hash.digest()
-    short_id = base62.encodebytes(digest)
-    return short_id
+    short_citekey = base62.encodebytes(digest)
+    return short_citekey
 
 
-def citation_to_citeproc(citation, prune=True):
+def citekey_to_csl_item(citekey, prune=True):
     """
-    Return a dictionary with citation metadata
+    Generate a CSL Item (Python dictionary) for the input citekey.
     """
-    citation == standardize_citation(citation, warn_if_changed=True)
-    source, identifier = citation.split(':', 1)
+    citekey == standardize_citekey(citekey, warn_if_changed=True)
+    source, identifier = citekey.split(':', 1)
 
     if source in citeproc_retrievers:
         citeproc_retriever = import_function(citeproc_retrievers[source])
         csl_item = citeproc_retriever(identifier)
     else:
-        msg = f'Unsupported citation source {source} in {citation}'
+        msg = f'Unsupported citation source {source!r} in {citekey!r}'
         raise ValueError(msg)
 
     from manubot import __version__ as manubot_version
     from manubot.cite.citeproc import (
-        citeproc_passthrough,
+        csl_item_passthrough,
         append_to_csl_item_note,
     )
 
     note_text = f'This CSL JSON Item was automatically generated by Manubot v{manubot_version} using citation-by-identifier.'
     note_dict = {
-        'standard_id': citation,
+        'standard_id': citekey,
     }
     append_to_csl_item_note(csl_item, note_text, note_dict)
 
-    short_id = get_citation_short_id(citation)
-    csl_item = citeproc_passthrough(csl_item, set_id=short_id, prune=prune)
+    short_citekey = shorten_citekey(citekey)
+    csl_item = csl_item_passthrough(csl_item, set_id=short_citekey, prune=prune)
 
     return csl_item
 
 
-def infer_citation_prefix(citation):
+def infer_citekey_prefix(citekey):
     """
-    Passthrough citation if it has a valid citation prefix. Otherwise,
-    if the lowercase citation prefix is valid, convert the prefix to lowercase.
-    Otherwise, assume citation is raw and prepend "raw:".
+    Passthrough citekey if it has a valid citation key prefix. Otherwise,
+    if the lowercase citekey prefix is valid, convert the prefix to lowercase.
+    Otherwise, assume citekey is raw and prepend "raw:".
     """
     prefixes = [f'{x}:' for x in list(citeproc_retrievers) + ['raw']]
     for prefix in prefixes:
-        if citation.startswith(prefix):
-            return citation
-        if citation.lower().startswith(prefix):
-            return prefix + citation[len(prefix):]
-    return f'raw:{citation}'
+        if citekey.startswith(prefix):
+            return citekey
+        if citekey.lower().startswith(prefix):
+            return prefix + citekey[len(prefix):]
+    return f'raw:{citekey}'
 
 
 def csl_item_set_standard_id(csl_item):
     """
-    Extract the standard_id for a csl_item and modify the csl_item in-place to set its standard_citation.
+    Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.
     The standard_id is extracted from a "standard_citation" field, the "note" field, or the "id" field.
-    If extracting the citation from the "id" field, use the infer_citation_prefix function to set the prefix.
+    If extracting the citation from the "id" field, uses the infer_citekey_prefix function to set the prefix.
     For example, if the extracted standard_id does not begin with a supported prefix (e.g. "doi:", "pmid:"
     or "raw:"), the citation is assumed to be raw and given a "raw:" prefix. The extracted citation
     (referred to as "original_standard_id") is checked for validity and standardized, after which it is
     the final "standard_id".
 
     Regarding csl_item modification, the csl_item "id" field is set to the standard_citation and the note field
-    is created or updated with key-value pairs for standard_citation, original_standard_citation, and original_id.
+    is created or updated with key-value pairs for standard_id, original_standard_id, and original_id.
+
+    Note that the Manubot software generally refers to the "id" of a CSL Item as a citekey.
+    However, in this context, we use "id" rather than "citekey" for consistency with CSL's "id" field.
     """
     if not isinstance(csl_item, dict):
         raise ValueError("csl_item must be a CSL Data Item represented as a Python dictionary")
@@ -327,7 +332,7 @@ def csl_item_set_standard_id(csl_item):
     original_standard_id = None
     if 'id' in csl_item:
         original_id = csl_item['id']
-        original_standard_id = infer_citation_prefix(original_id)
+        original_standard_id = infer_citekey_prefix(original_id)
     if 'standard_id' in note_dict:
         original_standard_id = note_dict['standard_id']
     if 'standard_citation' in csl_item:
@@ -337,8 +342,8 @@ def csl_item_set_standard_id(csl_item):
             'csl_item_set_standard_id could not detect a field with a citation / standard_citation. '
             'Consider setting the CSL Item "id" field.'
         )
-    assert is_valid_citation(original_standard_id, allow_raw=True)
-    standard_id = standardize_citation(original_standard_id, warn_if_changed=False)
+    assert is_valid_citekey(original_standard_id, allow_raw=True)
+    standard_id = standardize_citekey(original_standard_id, warn_if_changed=False)
     add_to_note = {}
     if original_id and original_id != standard_id:
         if original_id != note_dict.get('original_id'):
