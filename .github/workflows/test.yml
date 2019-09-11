@@ -18,6 +18,8 @@ jobs:
         wget --quiet --output-document=pandoc.deb \
           https://github.com/jgm/pandoc/releases/download/${{ matrix.pandoc-version }}/pandoc-${{ matrix.pandoc-version }}-1-amd64.deb
         sudo dpkg --install pandoc.deb
+        # Set locale to avoid error: pandoc-citeproc: Could not find locale data for C-UTF
+        export LANG=en_US.UTF-8
     - name: Install pandoc on Windows
       if: matrix.os == 'windows-latest'
       run: choco install pandoc --version ${{ matrix.pandoc-version }}
