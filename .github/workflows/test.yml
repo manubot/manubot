@@ -16,10 +16,10 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: |
         # Generate C-UTF locale to avoid "pandoc-citeproc: Could not find locale data for C-UTF"
-        locale-gen C.UTF-8 && update-locale
+        sudo locale-gen C.UTF-8 && sudo update-locale
         wget --quiet --output-document=pandoc.deb \
           https://github.com/jgm/pandoc/releases/download/${{ matrix.pandoc-version }}/pandoc-${{ matrix.pandoc-version }}-1-amd64.deb
-        dpkg --install pandoc.deb
+        sudo dpkg --install pandoc.deb
     - name: Install pandoc on Windows
       if: matrix.os == 'windows-latest'
       run: choco install pandoc --version ${{ matrix.pandoc-version }}
@@ -28,7 +28,7 @@ jobs:
       run: |
         wget --quiet --output-document=pandoc.pkg \
           https://github.com/jgm/pandoc/releases/download/${{ matrix.pandoc-version }}/pandoc-${{ matrix.pandoc-version }}-macOS.pkg
-        installer -pkg pandoc.pkg -target /
+        sudo installer -pkg pandoc.pkg -target /
     - name: Checkout git repository
       uses: actions/checkout@v1
     - name: Set up Python
