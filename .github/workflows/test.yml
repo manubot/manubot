@@ -15,7 +15,8 @@ jobs:
     - name: Install pandoc on Linux
       if: matrix.os == 'ubuntu-latest'
       run: |
-        wget --quiet --output-document=pandoc.deb https://github.com/jgm/pandoc/releases/download/${{ matrix.pandoc-version }}/pandoc-${{ matrix.pandoc-version }}-1-amd64.deb
+        wget --quiet --output-document=pandoc.deb \
+          https://github.com/jgm/pandoc/releases/download/${{ matrix.pandoc-version }}/pandoc-${{ matrix.pandoc-version }}-1-amd64.deb
         sudo dpkg --install pandoc.deb
     - name: Install pandoc on Windows
       if: matrix.os == 'windows-latest'
@@ -23,8 +24,9 @@ jobs:
     - name: Install pandoc on Mac
       if: matrix.os == 'macOS-latest'
       run: |
-        brew search pandoc@
-        #brew install pandoc@${{ matrix.pandoc-version }}
+        wget --quiet --output-document=pandoc.pkg \
+          https://github.com/jgm/pandoc/releases/download/${{ matrix.pandoc-version }}/pandoc-${{ matrix.pandoc-version }}-macOS.pkg
+        sudo installer -pkg pandoc.pkg -target /
     - name: Checkout git repository
       uses: actions/checkout@v1
     - name: Set up Python
