@@ -23,7 +23,8 @@ jobs:
     - name: Install pandoc on Mac
       if: matrix.os == 'macOS-latest'
       run: |
-        brew install pandoc@${{ matrix.pandoc-version }}
+        brew search pandoc@
+        #brew install pandoc@${{ matrix.pandoc-version }}
     - name: Checkout git repository
       uses: actions/checkout@v1
     - name: Set up Python
