@@ -4,23 +4,26 @@ on: [push, pull_request]
 
 jobs:
   build:
-
     runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
       matrix:
         python-version: [3.6, 3.7]
         os: [ubuntu-latest, windows-latest, macOS-latest]
-
+        pandoc-version: [2.7.2]
     steps:
-    - name: Install pandoc on Windows
-      if: matrix.os == 'windows-latest'
-      run: choco install pandoc --version 2.7.2
     - name: Install pandoc on Linux
       if: matrix.os == 'ubuntu-latest'
       run: |
-        wget --quiet https://github.com/jgm/pandoc/releases/download/2.7.2/pandoc-2.7.2-1-amd64.deb
-        sudo dpkg --install pandoc-2.7.2-1-amd64.deb
+        wget --quiet --output-document=pandoc.deb https://github.com/jgm/pandoc/releases/download/${{ matrix.pandoc-version }}/pandoc-${{ matrix.pandoc-version }}-1-amd64.deb
+        sudo dpkg --install pandoc.deb
+    - name: Install pandoc on Windows
+      if: matrix.os == 'windows-latest'
+      run: choco install pandoc --version ${{ matrix.pandoc-version }}
+    - name: Install pandoc on Mac
+      if: matrix.os == 'macOS-latest'
+      run: |
+        brew install pandoc@${{ matrix.pandoc-version }}
     - name: Checkout git repository
       uses: actions/checkout@v1
     - name: Set up Python
