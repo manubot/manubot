@@ -16,7 +16,7 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: |
         # Generate C-UTF locale to avoid "pandoc-citeproc: Could not find locale data for C-UTF"
-        sudo dpkg-reconfigure --frontend=noninteractive locales
+        sudo dpkg-reconfigure --frontend=noninteractive locales && sudo locale-gen en_US.UTF-8 && sudo update-locale LANG=en_US.UTF-8
         wget --quiet --output-document=pandoc.deb \
           https://github.com/jgm/pandoc/releases/download/${{ matrix.pandoc-version }}/pandoc-${{ matrix.pandoc-version }}-1-amd64.deb
         sudo dpkg --install pandoc.deb
