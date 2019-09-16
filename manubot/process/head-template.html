@@ -1,0 +1,69 @@
+<!--
+https://github.com/jgm/pandoc-templates/blob/master/default.html5
+https://github.com/manubot/rootstock/issues/176
+https://github.com/manubot/rootstock/issues/203
+https://scholar.google.com/intl/en/scholar/inclusion.html#indexing
+https://larsgw.blogspot.com/2018/07/journal-metadata-authors-institutions.html
+https://ogp.me
+https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/markup.html
+-->
+
+<!-- Manubot generated metadata -->
+{% if title is defined %}
+<meta name="citation_title" content="{{ title|escape }}">
+<meta name="DC.title" content="{{ title|escape }}">
+<meta property="og:title" content="{{ title|escape }}">
+<meta property="twitter:title" content="{{ title|escape }}">
+{% endif %}
+<meta name="citation_journal_title" content="Manubot Preprint">
+<meta name="DC.relation.ispartof" content="Manubot Preprint">
+<meta name="citation_technical_report_institution" content="Manubot">
+<meta name="DC.publisher" content="Manubot">
+<!-- author information --> 
+{% for author in authors|default([]) if author.name is defined %}
+<meta name="citation_author" content="{{ author.name|escape }}">
+{% if author.affiliations is defined %}
+{% for affiliation in author.affiliations %}
+<meta name="citation_author_institution" content="{{ affiliation|escape }}">
+{% endfor %}
+{% endif %}
+{% if author.orcid is defined %}
+<meta name="citation_author_orcid" content="{{ author.orcid }}">
+{% endif %}
+{% if author.twitter is defined %}
+<meta name="twitter:creator" content="@{{ author.twitter }}" />
+{% endif %}
+{% endfor %}
+{% if html_url is defined %}
+<link rel="canonical" href="{{ html_url }}">
+<meta property="og:url" content="{{ html_url }}">
+<meta property="twitter:url" content="{{ html_url }}">
+{% endif %}
+{% if pdf_url is defined %}
+<meta name="citation_pdf_url" content="{{ pdf_url }}" />
+<link rel="alternate" type="application/pdf" href="{{ pdf_url }}">
+{% endif %}
+{% if html_url_versioned is defined %}
+<link rel="alternate" type="text/html" href="{{ html_url_versioned }}">
+<meta name="manubot_versioned_html_url" content="{{ html_url_versioned }}">
+{% endif %}
+{% if pdf_url_versioned is defined %}
+<meta name="manubot_versioned_pdf_url" content="{{ pdf_url_versioned }}">
+{% endif %}
+{% if description is defined %}
+<meta name="description" content="{{ description|escape }}">
+<meta property="og:description" content="{{ description|escape }}">
+<meta property="twitter:description" content="{{ description|escape }}">
+{% endif %}
+<meta property="og:type" content="article">
+<meta property="twitter:card" content="summary_large_image">
+{% if thumbnail_url is defined %}
+<meta property="og:image" content="{{ thumbnail_url }}">
+<meta property="twitter:image" content="{{ thumbnail_url }}">
+{% endif %}
+<!-- favicons from manubot.org -->
+<link rel="apple-touch-icon" sizes="180x180" href="https://manubot.org/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
+<link rel="mask-icon" href="https://manubot.org/safari-pinned-tab.svg" color="#ad1457" />
+<meta name="theme-color" content="#ad1457" />
+<!-- end Manubot generated metadata --> 
