@@ -15,6 +15,15 @@ https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/markup
 <meta property="og:title" content="{{ title|escape }}">
 <meta property="twitter:title" content="{{ title|escape }}">
 {% endif %}
+{% if iso_date is defined %}
+<meta name="citation_publication_date" content="{{ iso_date }}">
+{% endif %}
+{% if abstract is defined %}
+<meta name="DC.title" content="{{ abstract|escape }}">
+{% endif %}
+{% if lang is defined %}
+<meta name="citation_language" content="{{ lang }}">
+{% endif %}
 <meta name="citation_journal_title" content="Manubot Preprint">
 <meta name="DC.relation.ispartof" content="Manubot Preprint">
 <meta name="citation_technical_report_institution" content="Manubot">
@@ -38,6 +47,7 @@ https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/markup
 <link rel="canonical" href="{{ html_url }}">
 <meta property="og:url" content="{{ html_url }}">
 <meta property="twitter:url" content="{{ html_url }}">
+<meta name="citation_fulltext_html_url" content="{{ html_url }}" />
 {% endif %}
 {% if pdf_url is defined %}
 <meta name="citation_pdf_url" content="{{ pdf_url }}" />
@@ -62,8 +72,8 @@ https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/markup
 <meta property="twitter:image" content="{{ thumbnail_url }}">
 {% endif %}
 <!-- favicons from manubot.org -->
-<link rel="apple-touch-icon" sizes="180x180" href="https://manubot.org/apple-touch-icon.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
 <link rel="mask-icon" href="https://manubot.org/safari-pinned-tab.svg" color="#ad1457" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://manubot.org/apple-touch-icon.png" />
 <meta name="theme-color" content="#ad1457" />
 <!-- end Manubot generated metadata --> 
