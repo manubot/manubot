@@ -4,11 +4,11 @@ import pathlib
 import subprocess
 import sys
 
-from manubot.cite import (
+from manubot.cite.citekey import (
     citekey_to_csl_item,
     standardize_citekey,
+    is_valid_citekey
 )
-from manubot.cite.util import is_valid_citekey
 from manubot.pandoc.util import get_pandoc_info
 from manubot.util import shlex_join
 
