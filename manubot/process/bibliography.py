@@ -7,10 +7,8 @@ from manubot.cite.citeproc import (
     append_to_csl_item_note,
     csl_item_passthrough,
 )
-from manubot.cite.util import (
-    csl_item_set_standard_id,
-    shorten_citekey,
-)
+from manubot.cite.csl_dict import csl_item_set_standard_id
+from manubot.cite.cite_key import shorten_citekey
 
 
 def load_bibliography(path):
