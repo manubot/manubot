@@ -1,8 +1,8 @@
-import copy
+"""Tests API-level functions in manubot.cite. Both fucntions are found in citekey.py"""
 
 import pytest
 
-from manubot.cite.util import (
+from manubot.cite import (
     citekey_to_csl_item,
     standardize_citekey,
 )
