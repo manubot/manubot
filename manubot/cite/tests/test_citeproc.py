@@ -14,6 +14,14 @@ csl_instances = [
     x.name for x in directory.glob('csl-json/*-csl')
 ]
 
+def test_json_is_readable_on_windows_in_different_oem_encoding():
+    name = 'crossref-deep-review-csl'
+    path = directory / 'csl-json' / name / 'raw.json'
+    content = path.read_text(encoding='utf-8')
+    assert content
+    json1 = json.load(path.open('r', encoding='utf-8'))
+    assert json1
+    
 
 @pytest.mark.parametrize('name', csl_instances)
 def test_remove_jsonschema_errors(name):
@@ -28,10 +36,12 @@ def test_remove_jsonschema_errors(name):
     To create a new test case, derive pruned.json from raw.json, by manually
     deleting any invalid fields. Do not use `manubot cite` to directly generate
     pruned.json as that also relies on remove_jsonschema_errors for pruning.
-    """
-    data_dir = directory / 'csl-json' / name
-    raw = json.loads(data_dir.joinpath('raw.json').read_text())
-    expected = json.loads(data_dir.joinpath('pruned.json').read_text())
+    """    
+    data_dir = directory / 'csl-json' / name 
+    def load_json(filename):
+        return json.load((data_dir / filename).open('r', encoding='utf-8'))
+    raw = load_json('raw.json')
+    expected = load_json('pruned.json')
     pruned = remove_jsonschema_errors(raw)
     assert pruned == expected
 
