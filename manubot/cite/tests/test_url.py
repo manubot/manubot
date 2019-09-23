@@ -38,6 +38,8 @@ def test_get_url_csl_item_zotero_manubot():
     assert [int(x) for x in csl_item['issued']['date-parts'][0]] == [2018, 12, 18]
 
 
+# Note: this test had a temporary failure, maybe due to performance of 
+#       transaltion server.
 def test_get_url_csl_item_zotero_github():
     """
     This command creates two translation-server queries. The first query is
@@ -48,7 +50,7 @@ def test_get_url_csl_item_zotero_github():
       --data 'https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927' \
       'https://translate.manubot.org/web'
     ```
-    """
+    """    
     url = 'https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927'
     csl_item = get_url_csl_item_zotero(url)
     assert csl_item['title'].startswith('Flexible and powerful data analysis')
