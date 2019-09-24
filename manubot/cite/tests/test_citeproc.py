@@ -14,12 +14,17 @@ csl_instances = [
     x.name for x in directory.glob('csl-json/*-csl')
 ]
 
+
+def load_json(path):
+    return json.loads(path.read_text(encoding='utf-8-sig'))
+
+    
 def test_json_is_readable_on_windows_in_different_oem_encoding():
     name = 'crossref-deep-review-csl'
     path = directory / 'csl-json' / name / 'raw.json'
-    content = path.read_text(encoding='utf-8')
+    content = path.read_text(encoding='utf-8-sig')
     assert content
-    json1 = json.load(path.open('r', encoding='utf-8'))
+    json1 = load_json(path)
     assert json1
     
 
@@ -38,10 +43,8 @@ def test_remove_jsonschema_errors(name):
     pruned.json as that also relies on remove_jsonschema_errors for pruning.
     """    
     data_dir = directory / 'csl-json' / name 
-    def load_json(filename):
-        return json.load((data_dir / filename).open('r', encoding='utf-8'))
-    raw = load_json('raw.json')
-    expected = load_json('pruned.json')
+    raw = load_json(data_dir / 'raw.json')
+    expected = load_json(data_dir / 'pruned.json')
     pruned = remove_jsonschema_errors(raw)
     assert pruned == expected
 
