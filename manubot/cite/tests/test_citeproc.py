@@ -41,8 +41,8 @@ def test_remove_jsonschema_errors(name):
     To create a new test case, derive pruned.json from raw.json, by manually
     deleting any invalid fields. Do not use `manubot cite` to directly generate
     pruned.json as that also relies on remove_jsonschema_errors for pruning.
-    """    
-    data_dir = directory / 'csl-json' / name 
+    """
+    data_dir = directory / 'csl-json' / name
     raw = load_json(data_dir / 'raw.json')
     expected = load_json(data_dir / 'pruned.json')
     pruned = remove_jsonschema_errors(raw)
