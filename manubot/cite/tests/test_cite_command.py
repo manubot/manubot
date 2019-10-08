@@ -122,6 +122,50 @@ def test_cite_command_render_stdout(format_args, expected_output):
     assert process.stdout == expected_output
 
 
+pandoc_version = get_pandoc_version() 
+
+pytest.mark.skipif(pandoc_version < (2,0),
+              reason="Test requires pandoc >= 2.0 to support --lua-filter and --csl=URL") 
+class Test_cite_command_render_stdout():
+    @classmethod
+    def expected_output(cls, filename):
+        return (
+        pathlib.Path(__file__).parent
+        .joinpath('cite-command-rendered', filename)
+        .read_text()
+    )
+    
+    @classmethod
+    def _test_format_wtih_filename(self, format_args, filename):
+        args = [
+            'manubot', 'cite',
+            '--render',
+            '--csl', 'https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl',
+            'arxiv:1806.05726v1', 'doi:10.7717/peerj.338', 'pmid:29618526',
+        ] + format_args
+        process = subprocess.run(
+            args,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
+        )
+        print(shlex_join(process.args))
+        print(process.stdout)
+        print(process.stderr)
+        assert process.stdout == self.expected_output(filename)
+        
+    def test_one(self):
+        self._test_format_wtih_filename(['--format', 'plain'], 'references-plain.txt')
+        
+        
+#    def test_jats(self):
+#        if pandoc_version == (2, 7, 3):
+#            filname = 'references-jats-2.7.3.xml'
+#        else:
+#            filname = 'references-jats.xml'
+#        yield ['--format', 'jats'], xml
+
+
 def teardown_module(module):
     """
     Avoid too many requests to NCBI E-Utils in the test_pubmed.py,
