@@ -43,3 +43,11 @@ def get_pandoc_info():
         stats[f'{command} path'] = path
     logging.info('\n'.join(f'{k}: {v}' for k, v in stats.items()))
     return stats
+
+
+def get_pandoc_version() -> (int, int) :
+    """
+    Return pandoc version as tuple of major and minor 
+    version numbers, for example: (2, 7)
+    """
+    return get_pandoc_info()['pandoc version']     
