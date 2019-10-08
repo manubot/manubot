@@ -1,7 +1,5 @@
 """Tests rest of functions in manubot.cite, not covered by test_citekey_api.py."""
 
-import copy
-
 import pytest
 
 from manubot.cite.citekey import (
