@@ -137,7 +137,8 @@ def _check_pandoc_version(info, metadata, format):
     issues = list()
     if format == 'jats' and info['pandoc version'] < (2,):
         issues.append('--jats requires pandoc >= v2.0.')
-    # --csl=URL did not work in https://travis-ci.org/greenelab/manubot/builds/417314743#L796, but exact version where this fails unknown
+    # --csl=URL did not work in https://travis-ci.org/greenelab/manubot/builds/417314743#L796, 
+    # but exact version where this fails unknown
     # if metadata.get('csl', '').startswith('http') and pandoc_version < (2,):
     #     issues.append('--csl=URL requires pandoc >= v2.0.')
     issues = '\n'.join(issues)
