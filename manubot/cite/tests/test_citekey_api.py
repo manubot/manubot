@@ -1,4 +1,4 @@
-"""Tests API-level functions in manubot.cite. Both fucntions are found in citekey.py"""
+"""Tests API-level functions in manubot.cite. Both functions are found in citekey.py"""
 
 import pytest
 
