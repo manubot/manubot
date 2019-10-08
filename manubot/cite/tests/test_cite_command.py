@@ -53,10 +53,12 @@ def test_cite_command_file(tmpdir):
 @pytest.mark.parametrize(['args', 'expected'], [
     ([], 'references-plain.txt'),
     (['--format', 'plain'], 'references-plain.txt'),
-    (['--format', 'markdown'], 'references-markdown.md'),
+    (['--format', 'markdown'], 'references-markdown.md'),    
     (['--format', 'html'], 'references-html.html'),
-    (['--format', 'jats'], 'references-jats.xml'),
-], ids=['no-args', '--format=plain', '--format=markdown', '--format=html', '--format=jats'])
+    # isolating failing test, run as `pytest -m cite_jats`
+    pytest.param(['--format', 'jats'], 'references-jats.xml',
+                 marks=[pytest.mark.cite_jats])], 
+    ids=['no-args', '--format=plain', '--format=markdown', '--format=html', '--format=jats'])
 @pytest.mark.skipif(
     not shutil.which('pandoc'),
     reason='pandoc installation not found on system'
