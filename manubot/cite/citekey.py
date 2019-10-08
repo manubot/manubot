@@ -1,8 +1,6 @@
 import functools
 import logging
 
-#from manubot.cite.util import shorten_citekey, citeproc_retrievers
-
 
 @functools.lru_cache(maxsize=5_000)
 def standardize_citekey(citekey, warn_if_changed=False):
@@ -35,13 +33,12 @@ def standardize_citekey(citekey, warn_if_changed=False):
     if warn_if_changed and citekey != standard_citekey:
         logging.warning(
             f'standardize_citekey expected citekey to already be standardized.\n'
-            f'Instead citekey was changed from {citekey!r} to {standard_citekey!r}'
-        )
+            f'Instead citekey was changed from {citekey!r} to {standard_citekey!r}')
     return standard_citekey
 
 
-# NOTE: tentatively - must split to individual functions correspnding to 
-#       methods of CSL_dict class 
+# NOTE: tentatively - must split to individual functions correspnding to
+#       methods of CSL_dict class
 def citekey_to_csl_item(citekey, prune=True):
     """
     Generate a CSL Item (Python dictionary) for the input citekey.
@@ -69,9 +66,11 @@ def citekey_to_csl_item(citekey, prune=True):
     append_to_csl_item_note(csl_item, note_text, note_dict)
 
     short_citekey = shorten_citekey(citekey)
-    csl_item = csl_item_passthrough(csl_item, set_id=short_citekey, prune=prune)
+    csl_item = csl_item_passthrough(
+        csl_item, set_id=short_citekey, prune=prune)
 
     return csl_item
+
 
 import functools
 import logging
@@ -123,8 +122,8 @@ citeproc_retrievers = {
 }
 
 
-# FIXME: inspect fucntionality goes to individual Handle 
-#        classes, not if's will be needed
+# FIXME: inspect fucntionality goes to individual Handle
+#        classes, no if's will be needed
 def inspect_citekey(citekey):
     """
     Check citekeys adhere to expected formats. If an issue is detected a
@@ -250,8 +249,7 @@ def is_valid_citekey(
         if source.lower() in pandoc_xnos_keys:
             logging.error(
                 f'pandoc-xnos reference types should be all lowercase.\n'
-                f'Should {citekey!r} use {source.lower()!r} rather than "{source!r}"?'
-            )
+                f'Should {citekey!r} use {source.lower()!r} rather than "{source!r}"?')
             return False
 
     # Check supported source type
@@ -264,8 +262,7 @@ def is_valid_citekey(
         if source.lower() in sources:
             logging.error(
                 f'citekey sources should be all lowercase.\n'
-                f'Should {citekey} use "{source.lower()}" rather than "{source}"?'
-            )
+                f'Should {citekey} use "{source.lower()}" rather than "{source}"?')
         else:
             logging.error(
                 f'invalid citekey: {citekey!r}\n'
@@ -313,4 +310,4 @@ def infer_citekey_prefix(citekey):
             return citekey
         if citekey.lower().startswith(prefix):
             return prefix + citekey[len(prefix):]
-    return f'raw:{citekey}'    
+    return f'raw:{citekey}'

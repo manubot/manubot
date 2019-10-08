@@ -35,10 +35,11 @@ def test_get_url_csl_item_zotero_manubot():
     assert csl_item['author'][1]['family'] == 'Slochower'
     # Zotero CSL exporter returns mixed string/int date-parts
     # https://github.com/zotero/zotero/issues/1603
-    assert [int(x) for x in csl_item['issued']['date-parts'][0]] == [2018, 12, 18]
+    assert [int(x) for x in csl_item['issued']
+            ['date-parts'][0]] == [2018, 12, 18]
 
 
-# Note: this test had a temporary failure, maybe due to performance of 
+# Note: this test had a temporary failure, maybe due to performance of
 #       transaltion server.
 def test_get_url_csl_item_zotero_github():
     """
@@ -50,7 +51,7 @@ def test_get_url_csl_item_zotero_github():
       --data 'https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927' \
       'https://translate.manubot.org/web'
     ```
-    """    
+    """
     url = 'https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927'
     csl_item = get_url_csl_item_zotero(url)
     assert csl_item['title'].startswith('Flexible and powerful data analysis')

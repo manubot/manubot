@@ -1,5 +1,6 @@
 from manubot.cite.citekey import standardize_citekey, infer_citekey_prefix, is_valid_citekey
 
+
 def csl_item_set_standard_id(csl_item):
     """
     Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.
@@ -17,7 +18,8 @@ def csl_item_set_standard_id(csl_item):
     However, in this context, we use "id" rather than "citekey" for consistency with CSL's "id" field.
     """
     if not isinstance(csl_item, dict):
-        raise ValueError("csl_item must be a CSL Data Item represented as a Python dictionary")
+        raise ValueError(
+            "csl_item must be a CSL Data Item represented as a Python dictionary")
 
     from manubot.cite.citeproc import (
         append_to_csl_item_note,
@@ -37,10 +39,10 @@ def csl_item_set_standard_id(csl_item):
     if original_standard_id is None:
         raise ValueError(
             'csl_item_set_standard_id could not detect a field with a citation / standard_citation. '
-            'Consider setting the CSL Item "id" field.'
-        )
+            'Consider setting the CSL Item "id" field.')
     assert is_valid_citekey(original_standard_id, allow_raw=True)
-    standard_id = standardize_citekey(original_standard_id, warn_if_changed=False)
+    standard_id = standardize_citekey(
+        original_standard_id, warn_if_changed=False)
     add_to_note = {}
     if original_id and original_id != standard_id:
         if original_id != note_dict.get('original_id'):
