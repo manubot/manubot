@@ -35,7 +35,6 @@ regexes = {
 }
 
 
-# FIXME: this goes away with new classes
 citeproc_retrievers = {
     'doi': 'manubot.cite.doi.get_doi_csl_item',
     'pmid': 'manubot.cite.pubmed.get_pubmed_csl_item',
@@ -47,8 +46,6 @@ citeproc_retrievers = {
 }
 
 
-# FIXME: inspect fucntionality goes to individual Handle
-#        classes, no if's will be needed
 def inspect_citekey(citekey):
     """
     Check citekeys adhere to expected formats. If an issue is detected a
@@ -306,3 +303,4 @@ def citekey_to_csl_item(citekey, prune=True):
         csl_item, set_id=short_citekey, prune=prune)
 
     return csl_item
+    
