@@ -124,7 +124,7 @@ class Test_cite_command_render_stdout_above_pandoc_v2_5(
             self.expected_output('references-html.html')
 
     def test_jats(self):
-        if pandoc_version == (2, 7, 3):
+        if pandoc_version >= (2, 7, 3):
             filename = 'references-jats-2.7.3.xml'
         else:
             filename = 'references-jats.xml'
