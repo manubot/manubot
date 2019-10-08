@@ -1,9 +1,8 @@
 import copy
 import pytest
 
-from manubot.cite.csl_dict import (
+from manubot.cite.csl_item import (
     csl_item_set_standard_id)
-
 
 
 @pytest.mark.parametrize(
