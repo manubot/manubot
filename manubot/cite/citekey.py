@@ -303,4 +303,3 @@ def citekey_to_csl_item(citekey, prune=True):
         csl_item, set_id=short_citekey, prune=prune)
 
     return csl_item
-    
