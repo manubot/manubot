@@ -39,8 +39,6 @@ def test_get_url_csl_item_zotero_manubot():
             ['date-parts'][0]] == [2018, 12, 18]
 
 
-# Note: this test had a temporary failure, maybe due to performance of
-#       transaltion server.
 def test_get_url_csl_item_zotero_github():
     """
     This command creates two translation-server queries. The first query is
@@ -51,8 +49,19 @@ def test_get_url_csl_item_zotero_github():
       --data 'https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927' \
       'https://translate.manubot.org/web'
     ```
+
+    Note: this test may have temporary failures, due to performance of
+          translation-server. It seems that sometimes translation-server 
+          returns a different title for the same URL. A real mystery. 
+          
+    See also:
+        https://github.com/manubot/manubot/pull/139#discussion_r328703233 
+
+    Proposed action: 
+        Probably should inquire upstream or change the test.
     """
     url = 'https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927'
     csl_item = get_url_csl_item_zotero(url)
+    # FIXME: sometimes csl_item['abstract']  contains the title.
     assert csl_item['title'].startswith('Flexible and powerful data analysis')
     assert csl_item['source'] == 'GitHub'

@@ -7,7 +7,7 @@ from manubot.cite.citeproc import (
     append_to_csl_item_note,
     csl_item_passthrough,
 )
-from manubot.cite.csl_dict import csl_item_set_standard_id
+from manubot.cite.csl_item import csl_item_set_standard_id
 from manubot.cite.citekey import shorten_citekey
 
 
