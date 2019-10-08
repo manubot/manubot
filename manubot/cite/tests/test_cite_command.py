@@ -50,39 +50,9 @@ def test_cite_command_file(tmpdir):
     assert csl['URL'] == 'https://arxiv.org/abs/1806.05726v1'
 
 
-def cite_command_args():
-    yield [], 'references-plain.txt'
-    yield ['--format', 'plain'], 'references-plain.txt'
-    yield ['--format', 'markdown'], 'references-markdown.md'
-    yield ['--format', 'html'], 'references-html.html'
-    if get_pandoc_version() == (2, 7, 3):
-        xml = 'references-jats-2.7.3.xml'
-    else:
-        xml = 'references-jats.xml'
-    yield ['--format', 'jats'], xml
+pandoc_version = get_pandoc_version()
 
 
-def cite_command_rendered(filename: str):
-    return (
-        pathlib.Path(__file__).parent
-        .joinpath('cite-command-rendered', filename)
-        .read_text()
-    )
-
-
-@pytest.mark.parametrize(
-    argnames=[
-        'format_args',
-        'expected_output'],
-    argvalues=[
-        (format_args, cite_command_rendered(filename)) 
-        for format_args, filename in cite_command_args()],
-    ids=[
-        'no-args',
-        '--format=plain',
-        '--format=markdown',
-        '--format=html',
-        '--format=jats'])
 @pytest.mark.skipif(
     not shutil.which('pandoc'),
     reason='pandoc installation not found on system'
@@ -91,57 +61,26 @@ def cite_command_rendered(filename: str):
     not shutil.which('pandoc-citeproc'),
     reason='pandoc-citeproc installation not found on system'
 )
-def test_cite_command_render_stdout(format_args, expected_output):
-    """
-    Test the stdout output of `manubot cite --render` with various formats.
-    The output is sensitive to the version of Pandoc used, so rather than fail when
-    the system's pandoc is outdated, the test is skipped.
-    """
-    pandoc_version = get_pandoc_version()
-    if pandoc_version < (2, 0):
-        pytest.skip("Test requires pandoc >= 2.0 to support --lua-filter "
-                    "and --csl=URL")
-    for output in 'markdown', 'html', 'jats':
-        if output in format_args and pandoc_version < (2, 5):
-            pytest.skip(f"Test {output} output assumes pandoc >= 2.5")
-    args = [
-        'manubot', 'cite',
-        '--render',
-        '--csl', 'https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl',
-        'arxiv:1806.05726v1', 'doi:10.7717/peerj.338', 'pmid:29618526',
-    ] + format_args
-    process = subprocess.run(
-        args,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        universal_newlines=True,
-    )
-    print(shlex_join(process.args))
-    print(process.stdout)
-    print(process.stderr)
-    assert process.stdout == expected_output
-
-
-pandoc_version = get_pandoc_version() 
-
-pytest.mark.skipif(pandoc_version < (2,0),
-              reason="Test requires pandoc >= 2.0 to support --lua-filter and --csl=URL") 
-class Test_cite_command_render_stdout():
+class Base_cite_command_render_stdout():
     @classmethod
     def expected_output(cls, filename):
         return (
-        pathlib.Path(__file__).parent
-        .joinpath('cite-command-rendered', filename)
-        .read_text()
-    )
-    
+            pathlib.Path(__file__).parent
+            .joinpath('cite-command-rendered', filename)
+            .read_text()
+        )
+
     @classmethod
-    def _test_format_wtih_filename(self, format_args, filename):
+    def render(self, format_args):
         args = [
-            'manubot', 'cite',
+            'manubot',
+            'cite',
             '--render',
-            '--csl', 'https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl',
-            'arxiv:1806.05726v1', 'doi:10.7717/peerj.338', 'pmid:29618526',
+            '--csl',
+            'https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl',
+            'arxiv:1806.05726v1',
+            'doi:10.7717/peerj.338',
+            'pmid:29618526',
         ] + format_args
         process = subprocess.run(
             args,
@@ -152,18 +91,45 @@ class Test_cite_command_render_stdout():
         print(shlex_join(process.args))
         print(process.stdout)
         print(process.stderr)
-        assert process.stdout == self.expected_output(filename)
-        
-    def test_one(self):
-        self._test_format_wtih_filename(['--format', 'plain'], 'references-plain.txt')
-        
-        
-#    def test_jats(self):
-#        if pandoc_version == (2, 7, 3):
-#            filname = 'references-jats-2.7.3.xml'
-#        else:
-#            filname = 'references-jats.xml'
-#        yield ['--format', 'jats'], xml
+        return process.stdout
+
+
+@pytest.mark.skipif(
+    pandoc_version < (2, 0),
+    reason="Test requires pandoc >= 2.0 to support --lua-filter and --csl=URL")
+class Test_cite_command_render_stdout_above_pandoc_v2(
+        Base_cite_command_render_stdout):
+    def test_no_arg(self):
+        assert self.render([]) == \
+            self.expected_output('references-plain.txt')
+
+    def test_plain(self):
+        assert self.render(['--format', 'plain']) == \
+            self.expected_output('references-plain.txt')
+
+
+@pytest.mark.skipif(
+    pandoc_version < (2, 5),
+    reason=("Testing markdown, html or jats formats "
+            "assumes pandoc >= 2.5")
+)
+class Test_cite_command_render_stdout_above_pandoc_v2_5(
+        Base_cite_command_render_stdout):
+    def test_markdown(self):
+        assert self.render(['--format', 'markdown']) == \
+            self.expected_output('references-markdown.md')
+
+    def test_html(self):
+        assert self.render(['--format', 'html']) == \
+            self.expected_output('references-html.html')
+
+    def test_jats(self):
+        if pandoc_version == (2, 7, 3):
+            filename = 'references-jats-2.7.3.xml'
+        else:
+            filename = 'references-jats.xml'
+        assert self.render(['--format', 'jats']) == \
+            self.expected_output(filename)
 
 
 def teardown_module(module):
