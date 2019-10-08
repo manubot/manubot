@@ -1,9 +1,31 @@
-import re
+"""Functions importable from manubot.cite submodule (submodule API):
+
+  standardize_citekey()
+  citekey_to_csl_item()
+
+Helpers:
+
+  inspect_citekey()
+  is_valid_citekey() - also used in manubot.process
+  shorten_citekey() - used solely in manubot.process
+  infer_citekey_prefix()
+
+"""
 import functools
 import logging
+import re
 
 from manubot.util import import_function
 
+citeproc_retrievers = {
+    'doi': 'manubot.cite.doi.get_doi_csl_item',
+    'pmid': 'manubot.cite.pubmed.get_pubmed_csl_item',
+    'pmcid': 'manubot.cite.pubmed.get_pmc_csl_item',
+    'arxiv': 'manubot.cite.arxiv.get_arxiv_csl_item',
+    'isbn': 'manubot.cite.isbn.get_isbn_csl_item',
+    'wikidata': 'manubot.cite.wikidata.get_wikidata_csl_item',
+    'url': 'manubot.cite.url.get_url_csl_item',
+}
 
 """
 Regex to extract citation keys.
@@ -26,23 +48,48 @@ citekey_pattern = re.compile(
     r'(?<!\w)@([a-zA-Z0-9][\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])')
 
 
+@functools.lru_cache(maxsize=5_000)
+def standardize_citekey(citekey, warn_if_changed=False):
+    """
+    Standardize citation keys based on their source
+    """
+    source, identifier = citekey.split(':', 1)
+
+    if source == 'doi':
+        if identifier.startswith('10/'):
+            from manubot.cite.doi import expand_short_doi
+            try:
+                identifier = expand_short_doi(identifier)
+            except Exception as error:
+                # If DOI shortening fails, return the unshortened DOI.
+                # DOI metadata lookup will eventually fail somewhere with
+                # appropriate error handling, as opposed to here.
+                logging.error(
+                    f'Error in expand_short_doi for {identifier} '
+                    f'due to a {error.__class__.__name__}:\n{error}'
+                )
+                logging.info(error, exc_info=True)
+        identifier = identifier.lower()
+
+    if source == 'isbn':
+        from isbnlib import to_isbn13
+        identifier = to_isbn13(identifier)
+
+    standard_citekey = f'{source}:{identifier}'
+    if warn_if_changed and citekey != standard_citekey:
+        logging.warning(
+            f'standardize_citekey expected citekey to already be standardized.\n'
+            f'Instead citekey was changed from {citekey!r} to {standard_citekey!r}'
+        )
+    return standard_citekey
+
+
 regexes = {
     'pmid': re.compile(r'[1-9][0-9]{0,7}'),
     'pmcid': re.compile(r'PMC[0-9]+'),
     'doi': re.compile(r'10\.[0-9]{4,9}/\S+'),
     'shortdoi': re.compile(r'10/[a-zA-Z0-9]+'),
     'wikidata': re.compile(r'Q[0-9]+'),
-}
-
-
-citeproc_retrievers = {
-    'doi': 'manubot.cite.doi.get_doi_csl_item',
-    'pmid': 'manubot.cite.pubmed.get_pubmed_csl_item',
-    'pmcid': 'manubot.cite.pubmed.get_pmc_csl_item',
-    'arxiv': 'manubot.cite.arxiv.get_arxiv_csl_item',
-    'isbn': 'manubot.cite.isbn.get_isbn_csl_item',
-    'wikidata': 'manubot.cite.wikidata.get_wikidata_csl_item',
-    'url': 'manubot.cite.url.get_url_csl_item',
 }
 
 
@@ -171,7 +218,8 @@ def is_valid_citekey(
         if source.lower() in pandoc_xnos_keys:
             logging.error(
                 f'pandoc-xnos reference types should be all lowercase.\n'
-                f'Should {citekey!r} use {source.lower()!r} rather than "{source!r}"?')
+                f'Should {citekey!r} use {source.lower()!r} rather than "{source!r}"?'
+            )
             return False
 
     # Check supported source type
@@ -184,7 +232,8 @@ def is_valid_citekey(
         if source.lower() in sources:
             logging.error(
                 f'citekey sources should be all lowercase.\n'
-                f'Should {citekey} use "{source.lower()}" rather than "{source}"?')
+                f'Should {citekey} use "{source.lower()}" rather than "{source}"?'
+            )
         else:
             logging.error(
                 f'invalid citekey: {citekey!r}\n'
@@ -220,58 +269,6 @@ def shorten_citekey(standard_citekey):
     return short_citekey
 
 
-def infer_citekey_prefix(citekey):
-    """
-    Passthrough citekey if it has a valid citation key prefix. Otherwise,
-    if the lowercase citekey prefix is valid, convert the prefix to lowercase.
-    Otherwise, assume citekey is raw and prepend "raw:".
-    """
-    prefixes = [f'{x}:' for x in list(citeproc_retrievers) + ['raw']]
-    for prefix in prefixes:
-        if citekey.startswith(prefix):
-            return citekey
-        if citekey.lower().startswith(prefix):
-            return prefix + citekey[len(prefix):]
-    return f'raw:{citekey}'
-
-
-@functools.lru_cache(maxsize=5_000)
-def standardize_citekey(citekey, warn_if_changed=False):
-    """
-    Standardize citation keys based on their source
-    """
-    source, identifier = citekey.split(':', 1)
-
-    if source == 'doi':
-        if identifier.startswith('10/'):
-            from manubot.cite.doi import expand_short_doi
-            try:
-                identifier = expand_short_doi(identifier)
-            except Exception as error:
-                # If DOI shortening fails, return the unshortened DOI.
-                # DOI metadata lookup will eventually fail somewhere with
-                # appropriate error handling, as opposed to here.
-                logging.error(
-                    f'Error in expand_short_doi for {identifier} '
-                    f'due to a {error.__class__.__name__}:\n{error}'
-                )
-                logging.info(error, exc_info=True)
-        identifier = identifier.lower()
-
-    if source == 'isbn':
-        from isbnlib import to_isbn13
-        identifier = to_isbn13(identifier)
-
-    standard_citekey = f'{source}:{identifier}'
-    if warn_if_changed and citekey != standard_citekey:
-        logging.warning(
-            f'standardize_citekey expected citekey to already be standardized.\n'
-            f'Instead citekey was changed from {citekey!r} to {standard_citekey!r}')
-    return standard_citekey
-
-
-# NOTE: tentatively - must split to individual functions correspnding to
-#       methods of CSL_dict class
 def citekey_to_csl_item(citekey, prune=True):
     """
     Generate a CSL Item (Python dictionary) for the input citekey.
@@ -299,7 +296,21 @@ def citekey_to_csl_item(citekey, prune=True):
     append_to_csl_item_note(csl_item, note_text, note_dict)
 
     short_citekey = shorten_citekey(citekey)
-    csl_item = csl_item_passthrough(
-        csl_item, set_id=short_citekey, prune=prune)
+    csl_item = csl_item_passthrough(csl_item, set_id=short_citekey, prune=prune)
 
     return csl_item
+
+
+def infer_citekey_prefix(citekey):
+    """
+    Passthrough citekey if it has a valid citation key prefix. Otherwise,
+    if the lowercase citekey prefix is valid, convert the prefix to lowercase.
+    Otherwise, assume citekey is raw and prepend "raw:".
+    """
+    prefixes = [f'{x}:' for x in list(citeproc_retrievers) + ['raw']]
+    for prefix in prefixes:
+        if citekey.startswith(prefix):
+            return citekey
+        if citekey.lower().startswith(prefix):
+            return prefix + citekey[len(prefix):]
+    return f'raw:{citekey}'
