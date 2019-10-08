@@ -51,17 +51,17 @@ def test_get_url_csl_item_zotero_github():
     ```
 
     Note: this test may have temporary failures, due to performance of
-          translation-server. It seems that sometimes translation-server 
-          returns a different title for the same URL. A real mystery. 
-          
-    See also:
-        https://github.com/manubot/manubot/pull/139#discussion_r328703233 
+          translation-server. It seems that sometimes translation-server
+          returns a different title for the same URL. A real mystery.
 
-    Proposed action: 
+    See also:
+        https://github.com/manubot/manubot/pull/139#discussion_r328703233
+
+    Proposed action:
         Probably should inquire upstream or change the test.
     """
     url = 'https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927'
     csl_item = get_url_csl_item_zotero(url)
-    # FIXME: sometimes csl_item['abstract']  contains the title.
+    # FIXME: arbitraryly, csl_item['abstract'], and not csl_item['title'] contains the title.
     assert csl_item['title'].startswith('Flexible and powerful data analysis')
     assert csl_item['source'] == 'GitHub'
