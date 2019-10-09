@@ -87,13 +87,19 @@ class HandleBase:
 
 @dataclass
 class Handle(HandleBase):
+    """
+    Parent class for DOI, ISBN and other supported handles.
+    Child class names in lowercase will be treated as source prefixes, eg DOI -> doi.
+    """
     identifier: str
 
-    # Child classes must redefine canonic() and csl_item()
-
+    # Child classes may redefine canonic(), otherwise this method just passes 
+    # orginal identifer, if not change needed to stadardize the identifer.
     def canonic(self):
         return self
 
+    # Child classes must redefine csl_item() method.
+    # This can probably be enforced with @abc.abstractmethod.
     def csl_item(self):
         return CSL_Item()
 
