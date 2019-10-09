@@ -25,7 +25,7 @@ class DOI(Handle):
             # DOI metadata lookup will eventually fail somewhere with
             # appropriate error handling, as opposed to here.
             logging.error(
-                f'Error in expand_short_doi for {self.identifie} '
+                f'Error in expand_short_doi for {self.identifier} '
                 f'due to a {error.__class__.__name__}:\n{error}'
             )
             logging.info(error, exc_info=True)
