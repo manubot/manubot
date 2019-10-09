@@ -7,6 +7,32 @@ import requests
 from manubot.cite.pubmed import get_pubmed_ids_for_doi
 from manubot.util import get_manubot_user_agent
 
+from manubot.cite.types import Handle, CSL_Item
+
+class DOI(Handle):
+    def canonic(self):
+        self.identifier = self.identifier.lower()
+        if self.identifier.startswith('10/'):
+            self.expand()
+        return self    
+
+    def expand(self):
+        """Expand short DOI"""
+        try:
+            self.identifier = expand_short_doi(self.identifier)
+        except Exception as error:
+            # If DOI shortening fails, return the unshortened DOI.
+            # DOI metadata lookup will eventually fail somewhere with
+            # appropriate error handling, as opposed to here.
+            logging.error(
+                f'Error in expand_short_doi for {self.identifie} '
+                f'due to a {error.__class__.__name__}:\n{error}'
+            )
+            logging.info(error, exc_info=True)
+
+    def csl_item(self):
+        return CSL_Item(get_doi_csl_item(self.identifier))        
+
 
 def expand_short_doi(short_doi):
     """
