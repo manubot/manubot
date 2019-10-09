@@ -68,6 +68,7 @@ setuptools.setup(
 
     # Run-time dependencies
     install_requires=[
+        'dataclasses;python_version<"3.7"',
         'errorhandler',
         'isbnlib',
         'jinja2',
