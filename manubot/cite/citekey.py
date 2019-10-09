@@ -56,20 +56,8 @@ def standardize_citekey(citekey, warn_if_changed=False):
     source, identifier = citekey.split(':', 1)
 
     if source == 'doi':
-        if identifier.startswith('10/'):
-            from manubot.cite.doi import expand_short_doi
-            try:
-                identifier = expand_short_doi(identifier)
-            except Exception as error:
-                # If DOI shortening fails, return the unshortened DOI.
-                # DOI metadata lookup will eventually fail somewhere with
-                # appropriate error handling, as opposed to here.
-                logging.error(
-                    f'Error in expand_short_doi for {identifier} '
-                    f'due to a {error.__class__.__name__}:\n{error}'
-                )
-                logging.info(error, exc_info=True)
-        identifier = identifier.lower()
+        from manubot.cite.types import CiteKey
+        identifier = CiteKey(citekey).handle().canonic().identifier
 
     if source == 'isbn':
         from isbnlib import to_isbn13
