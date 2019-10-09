@@ -10,10 +10,10 @@ from manubot.util import get_manubot_user_agent
 from manubot.cite.types import Handle, CSL_Item
 
 class DOI(Handle):
-    def canonic(self):
-        self.identifier = self.identifier.lower()
+    def canonic(self):        
         if self.identifier.startswith('10/'):
             self.expand()
+        self.identifier = self.identifier.lower()           
         return self    
 
     def expand(self):
