@@ -8,23 +8,26 @@ from ..ci import (
     get_continuous_integration_parameters,
 )
 
+
 @pytest.fixture
 def info():
     return get_continuous_integration_parameters()
 
 
-# TODO: test generic properties of `info` distionary, eg list of keys
-# TODO: make class for get_continuous_integration_parameters
-
-@pytest.mark.skipif('CI' not in os.environ, reason='We are not on Travis or Appveyor.')
+@pytest.mark.skipif(
+    'CI' not in os.environ,
+    reason='We are not on Travis or Appveyor.')
 class Test_get_continuous_integration_parameters():
-    
+
+    def test_not_empty(self, info):
+        assert info is not None
+
     def test_repo_name(self, info):
         """
-        We assume repo name stays the same in forks.
+        We assume repo name stays the same in repo forks.
         """
         assert info['repo_name'] == 'manubot'
-        assert info['repo_slug'].endswith('manubot')  
+        assert info['repo_slug'].endswith('manubot')
 
     def test_repo_slug(self, info):
         # APPVEYOR_PROJECT_NAME - project name
@@ -35,7 +38,7 @@ class Test_get_continuous_integration_parameters():
         # https://docs.travis-ci.com/user/environment-variables/
         if 'TRAVIS' in os.environ:
             assert info['repo_slug'] == os.environ['TRAVIS_REPO_SLUG']
-        elif 'APPVEYOR' in os.environ:            
+        elif 'APPVEYOR' in os.environ:
             assert info['repo_slug'] == os.environ['APPVEYOR_PROJECT_SLUG']
         else:
             assert False
@@ -44,43 +47,54 @@ class Test_get_continuous_integration_parameters():
         assert info['commit']
         assert info['triggering_commit']
 
+    @pytest.mark.skipif('TRAVIS' not in os.environ,
+                        reason="This test is specific to Travis CI")
+    def test_parameters_travis(self, info):
+        assert info['provider'] == 'travis'
+        assert info['build_url'].startswith('https://travis-ci.com')
+        assert '/manubot/builds/' in info['build_url']
+        assert info['job_url'].startswith('https://travis-ci.com')
+        assert '/manubot/jobs/' in info['job_url']
 
-@pytest.mark.skipif('TRAVIS' not in os.environ, reason='tests environment variables set by Travis builds only')
-def test_get_continuous_integration_parameters_travis(info):
-    assert info is not None
-    assert info['provider'] == 'travis'
-    assert info['build_url'].startswith('https://travis-ci.com/manubot/manubot/builds/')
-    assert info['job_url'].startswith('https://travis-ci.com/manubot/manubot/jobs/')
-    
-    # TODO: must be separate test - it depends on owner name
-    # test add_manuscript_urls_to_ci_params
-    info_updated = add_manuscript_urls_to_ci_params(info)    
-    assert info is info_updated
-    assert re.fullmatch(
-        pattern=r"https://manubot\.github\.io/manubot/v/[0-9a-f]{40}/",
-        string=info['manuscript_url'],
-    )
-
-
-@pytest.mark.skipif('APPVEYOR' not in os.environ, reason='tests environment variables set by AppVeyor builds only')
-def test_get_continuous_integration_parameters_appveyor(info):
-    assert info is not None
-    assert info['provider'] == 'appveyor'
-    assert info['provider_account'] == 'manubot' # FIXME
-    assert info['build_url'].startswith('https://ci.appveyor.com/project/manubot/manubot/builds/')
-    assert info['job_url'].startswith('https://ci.appveyor.com/project/manubot/manubot/build/job/')
-    
-    # TODO: must be separate test - it depends on owner name
-    # test add_manuscript_urls_to_ci_params
-    info_updated = add_manuscript_urls_to_ci_params(info)
-    assert info is info_updated
-    assert re.fullmatch(
-        pattern=r"https://ci\.appveyor\.com/project/manubot/manubot/builds/[0-9]+/artifacts",
-        string=info['manuscript_url'],
-    )
+    @pytest.mark.skipif('APPVEYOR' not in os.environ,
+                        reason="This test is specific to Appveyor")
+    def test_parameters_appveyor(self, info):
+        assert info['provider'] == 'appveyor'
+        # assert info['provider_account'] == 'manubot' # FIXME
+        assert info['build_url'].startswith('https://ci.appveyor.com/project/')
+        assert '/manubot/builds/' in info['build_url']
+        assert info['job_url'].startswith('https://ci.appveyor.com/project/')
+        assert '/manubot/build/job/' in info['job_url']
 
 
-@pytest.mark.skipif('CI' in os.environ, reason='tests functions when run outside of a CI build')
+class Test_add_manuscript_urls_to_ci_params:
+
+    @pytest.mark.skipif('TRAVIS' not in os.environ
+                        or os.environ['TRAVIS_REPO_SLUG'] != 'manubot/manubot',
+                        reason="This test is specific to Travis CI")
+    def test_on_travis(self, info):
+        info_updated = add_manuscript_urls_to_ci_params(info)
+        assert info is info_updated
+        assert re.fullmatch(
+            pattern=r"https://manubot\.github\.io/manubot/v/[0-9a-f]{40}/",
+            string=info['manuscript_url'],
+        )
+
+    @pytest.mark.skipif('APPVEYOR' not in os.environ
+                        or os.environ['APPVEYOR_PROJECT_SLUG'] != 'manubot/manubot',
+                        reason="This test is specific to Appveyor")
+    def test_on_appveyor(self, info):
+        info_updated = add_manuscript_urls_to_ci_params(info)
+        assert info is info_updated
+        assert re.fullmatch(
+            pattern=r"https://ci\.appveyor\.com/project/manubot/manubot/builds/[0-9]+/artifacts",
+            string=info['manuscript_url'],
+        )
+
+
+@pytest.mark.skipif(
+    'CI' in os.environ,
+    reason='tests functions when run outside of a CI build')
 def test_get_continuous_integration_parameters_no_ci():
     info = get_continuous_integration_parameters()
     assert info is None
