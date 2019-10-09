@@ -67,7 +67,10 @@ class Base_cite_command_render_stdout():
         return (
             pathlib.Path(__file__).parent
             .joinpath('cite-command-rendered', filename)
-            .read_text()
+            # We need to enforce that files are read with 
+            # encoding='utf-8-sig', otherwise ther maybe fasle test failures.
+            # File reader can be helper function in conftest.py
+            .read_text(encoding='utf-8-sig')
         )
 
     @classmethod
