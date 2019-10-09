@@ -46,7 +46,7 @@ class Test_get_continuous_integration_parameters():
         assert info['repo_slug'] == os.environ['APPVEYOR_PROJECT_SLUG']
 
     @pytest.mark.skipif('TRAVIS' not in os.environ or 'APPVEYOR' not in os.environ,
-                        reason="Behaviour not guaranteed outside Travis or Appveyor CI"")
+                        reason="Behaviour not guaranteed outside Travis or Appveyor CI")
     def test_commits_are_not_empty(self, info):
         assert info['commit']
         assert info['triggering_commit']
