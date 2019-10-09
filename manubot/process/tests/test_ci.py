@@ -24,7 +24,7 @@ class Test_get_continuous_integration_parameters():
 
     def test_repo_name(self, info):
         """
-        We assume repo name stays the same in repo forks.
+        We assume 'manubot' repo name stays the same in repo forks.
         """
         assert info['repo_name'] == 'manubot'
         assert info['repo_slug'].endswith('manubot')
