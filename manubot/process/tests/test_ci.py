@@ -29,19 +29,22 @@ class Test_get_continuous_integration_parameters():
         assert info['repo_name'] == 'manubot'
         assert info['repo_slug'].endswith('manubot')
 
-    def test_repo_slug(self, info):
+    @pytest.mark.skipif('TRAVIS' not in os.environ,
+                        reason="Test parameters are specific to Travis")    
+    def test_repo_slug_on_travis(self, info):
+        # TRAVIS_REPO_SLUG: The slug (in form: owner_name/repo_name) of the repository 
+        # currently being built. https://docs.travis-ci.com/user/environment-variables/
+        assert info['repo_slug'] == os.environ['TRAVIS_REPO_SLUG']
+        
+
+    @pytest.mark.skipif('APPVEYOR' not in os.environ,
+                        reason="Test parameters are specific to APPVEYOR")    
+    def test_repo_slug_on_travis(self, info):
         # APPVEYOR_PROJECT_NAME - project name
         # APPVEYOR_PROJECT_SLUG - project slug (as seen in project details URL)
         # https://www.appveyor.com/docs/environment-variables/
-        #
-        # TRAVIS_REPO_SLUG: The slug (in form: owner_name/repo_name) of the repository currently being built.
-        # https://docs.travis-ci.com/user/environment-variables/
-        if 'TRAVIS' in os.environ:
-            assert info['repo_slug'] == os.environ['TRAVIS_REPO_SLUG']
-        elif 'APPVEYOR' in os.environ:
-            assert info['repo_slug'] == os.environ['APPVEYOR_PROJECT_SLUG']
-        else:
-            assert False
+        assert info['repo_slug'] == os.environ['APPVEYOR_PROJECT_SLUG']
+
 
     def test_commits_are_not_empty(self, info):
         assert info['commit']
