@@ -45,9 +45,9 @@ def get_pandoc_info():
     return stats
 
 
-def get_pandoc_version() -> (int, int) :
+def get_pandoc_version() -> (int, int, int) :
     """
     Return pandoc version as tuple of major and minor 
-    version numbers, for example: (2, 7)
+    version numbers, for example: (2, 7, 2)
     """
     return get_pandoc_info()['pandoc version']     
