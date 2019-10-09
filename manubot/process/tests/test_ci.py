@@ -16,25 +16,34 @@ def info():
 # TODO: test generic properties of `info` distionary, eg list of keys
 # TODO: make class for get_continuous_integration_parameters
 
-@pytest.mark.skipif('CI' not in os.environ)
-def test_get_continuous_integration_parameters_generic(info):
-    assert info is not None
-    # assume fork repo name unchanged
-    assert info['repo_slug'].endswith('manubot') 
-    assert info['repo_name'] == 'manubot' 
-    # commis are not empty
-    assert info['commit']
-    assert info['triggering_commit']
+@pytest.mark.skipif('CI' not in os.environ, reason='We are not on Travis or Appveyor.')
+class Test_get_continuous_integration_parameters():
+    
+    def test_repo_name(self, info):
+        """
+        We assume repo name stays the same in forks.
+        """
+        assert info['repo_name'] == 'manubot'
+        assert info['repo_slug'].endswith('manubot')  
 
+    def test_repo_slug(self, info):
+        # APPVEYOR_PROJECT_NAME - project name
+        # APPVEYOR_PROJECT_SLUG - project slug (as seen in project details URL)
+        # https://www.appveyor.com/docs/environment-variables/
+        #
+        # TRAVIS_REPO_SLUG: The slug (in form: owner_name/repo_name) of the repository currently being built.
+        # https://docs.travis-ci.com/user/environment-variables/
+        if 'TRAVIS' in os.environ:
+            assert info['repo_slug'] == os.environ['TRAVIS_REPO_SLUG']
+        elif 'APPVEYOR' in os.environ:            
+            assert info['repo_slug'] == os.environ['APPVEYOR_PROJECT_SLUG']
+        else:
+            assert False
 
-# TODO: need similar test for APPVEYOR, what is the slug constant name?
-#       may embed in this test  
-@pytest.mark.skipif('TRAVIS' not in os.environ 
-                     or os.environ['TRAVIS_REPO_SLUG'] != 'manubot/manubot',
-                     reason='this test runs only for ')
-def test_get_continuous_integration_parameters_on_master_repo_on_travis(info):
-    assert info['repo_slug'] == 'manubot/manubot'
-    assert info['repo_owner'] == 'manubot'
+    def test_commits_are_not_empty(self, info):
+        assert info['commit']
+        assert info['triggering_commit']
+
 
 @pytest.mark.skipif('TRAVIS' not in os.environ, reason='tests environment variables set by Travis builds only')
 def test_get_continuous_integration_parameters_travis(info):
@@ -71,7 +80,7 @@ def test_get_continuous_integration_parameters_appveyor(info):
     )
 
 
-@pytest.mark.skipif('CI' in os.environ, reason='tests function when run outside of a CI build')
+@pytest.mark.skipif('CI' in os.environ, reason='tests functions when run outside of a CI build')
 def test_get_continuous_integration_parameters_no_ci():
     info = get_continuous_integration_parameters()
     assert info is None
