@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-
 class CiteKeyParsingError(ValueError):
     pass
 
@@ -51,11 +50,12 @@ class HandleBase:
       .source_prefixes() -> [str]
       .validate(source: str)   
       .create_with(source: str, identifier: str)
-
-    """
-   
+    """   
     @classmethod
     def _class_dict(cls):
+        # Must provide import to all handle classes here too make them 
+        # discoverable and avoid a circular import problem.
+        from manubot.cite.doi import DOI
         return {c.__name__.lower(): c for c in cls.__subclasses__()}
 
     @classmethod
@@ -129,7 +129,7 @@ class CSL_Item(dict):
 
     @staticmethod
     def generate_id(x):
-        """If no id, make a hash"""
+        """If item has no id, make a hash"""
         return x
 
     @staticmethod
@@ -154,11 +154,3 @@ class CSL_Item(dict):
         #    csl_item.prune()
         return csl_item
 
-# FIXME: delete here, defined in doi.py
-class DOI(Handle):
-    pass
-
-# TODO: move to tests
-assert split_prefixed_identifier("  @dOi:blah\t\t\n ") == ('doi', 'blah')
-assert CiteKey("doi:blah").handle() == DOI("blah")
-assert DOI("blah").csl_item() == {} 

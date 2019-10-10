@@ -2,7 +2,15 @@ import pytest
 
 from manubot.cite.doi import (
     expand_short_doi,
+    DOI
 )
+
+from manubot.cite.types import CiteKey
+
+
+class Test_DOI():
+    def test_citekey_handle_results_in_doi(self):    
+       assert CiteKey("doi:blah").handle() == DOI("blah")
 
 
 def test_expand_short_doi():
