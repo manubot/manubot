@@ -15,7 +15,7 @@ from manubot.cite.doi import DOI
 def test_split_prefixed_identifier():    
     assert split_prefixed_identifier("  @dOi:blah\t\t\n ") == ('doi', 'blah')
 
-def test_citekey_handle_results_in_doi(self):    
+def test_citekey_handle_results_in_doi():    
     assert CiteKey("doi:blah").handle() == DOI("blah")
 
 @pytest.mark.parametrize("citation_string", [
