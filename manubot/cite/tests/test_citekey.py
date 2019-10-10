@@ -7,16 +7,19 @@ from manubot.cite.citekey import (
     shorten_citekey,
     infer_citekey_prefix,
     inspect_citekey,
-    split_prefixed_identifier, 
+    split_prefixed_identifier,
     CiteKey
 )
 from manubot.cite.doi import DOI
 
-def test_split_prefixed_identifier():    
+
+def test_split_prefixed_identifier():
     assert split_prefixed_identifier("  @dOi:blah\t\t\n ") == ('doi', 'blah')
 
-def test_citekey_handle_results_in_doi():    
+
+def test_citekey_handle_results_in_doi():
     assert CiteKey("doi:blah").handle() == DOI("blah")
+
 
 @pytest.mark.parametrize("citation_string", [
     ('@doi:10.5061/dryad.q447c/1'),
