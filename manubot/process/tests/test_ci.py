@@ -42,6 +42,8 @@ class Test_get_continuous_integration_parameters():
     def test_repo_slug_on_appveyor(self, info):
         # APPVEYOR_PROJECT_NAME - project name
         # APPVEYOR_PROJECT_SLUG - project slug (as seen in project details URL)
+        # Note: APPVEYOR_PROJECT_SLUG not he same value as on Travis ('manubot/manubot')
+        #       this is just ('manubot')
         # APPVEYOR_REPO_NAME - repository name in format owner-name/repo-name
         # https://www.appveyor.com/docs/environment-variables/
         assert info['repo_slug'] == os.environ['APPVEYOR_REPO_NAME']
