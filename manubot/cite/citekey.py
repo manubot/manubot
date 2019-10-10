@@ -97,7 +97,7 @@ def standardize_citekey(citekey, warn_if_changed=False):
     source, identifier = citekey.split(':', 1)
 
     if source == 'doi':
-        from manubot.cite.types import CiteKey
+        from manubot.cite.citekey import CiteKey
         identifier = CiteKey(citekey).handle().canonic().identifier
 
     if source == 'isbn':
