@@ -42,8 +42,9 @@ class Test_get_continuous_integration_parameters():
     def test_repo_slug_on_travis(self, info):
         # APPVEYOR_PROJECT_NAME - project name
         # APPVEYOR_PROJECT_SLUG - project slug (as seen in project details URL)
+        # APPVEYOR_REPO_NAME - repository name in format owner-name/repo-name
         # https://www.appveyor.com/docs/environment-variables/
-        assert info['repo_slug'] == os.environ['APPVEYOR_PROJECT_SLUG']
+        assert info['repo_slug'] == os.environ['APPVEYOR_REPO_NAME']
 
     @pytest.mark.skipif('TRAVIS' not in os.environ or 'APPVEYOR' not in os.environ,
                         reason="Behaviour not guaranteed outside Travis or Appveyor CI")
