@@ -39,7 +39,7 @@ class Test_get_continuous_integration_parameters():
 
     @pytest.mark.skipif('APPVEYOR' not in os.environ,
                         reason="Test parameters are specific to APPVEYOR")    
-    def test_repo_slug_on_travis(self, info):
+    def test_repo_slug_on_appveyor(self, info):
         # APPVEYOR_PROJECT_NAME - project name
         # APPVEYOR_PROJECT_SLUG - project slug (as seen in project details URL)
         # APPVEYOR_REPO_NAME - repository name in format owner-name/repo-name
@@ -86,7 +86,7 @@ class Test_add_manuscript_urls_to_ci_params:
         )
 
     @pytest.mark.skipif('APPVEYOR' not in os.environ
-                        or os.environ['APPVEYOR_PROJECT_SLUG'] != 'manubot/manubot',
+                        or os.environ['APPVEYOR_REPO_NAME'] != 'manubot/manubot',
                         reason="This test is specific to Appveyor")
     def test_on_appveyor(self, info):
         info_updated = add_manuscript_urls_to_ci_params(info)
