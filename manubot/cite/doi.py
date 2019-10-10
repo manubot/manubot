@@ -7,17 +7,20 @@ import requests
 from manubot.cite.pubmed import get_pubmed_ids_for_doi
 from manubot.util import get_manubot_user_agent
 
-from manubot.cite.types import Handle, CSL_Item
+from manubot.cite.handle import Handle
+
 
 class DOI(Handle):
     def canonic(self):        
         if self.identifier.startswith('10/'):
-            self.expand()
+            self._expand()
         self.identifier = self.identifier.lower()           
         return self    
 
-    def expand(self):
-        """Expand short DOI"""
+    def _expand(self):
+        """Expand short DOI. 
+           Makes inline change for self.identifier.
+        """
         try:
             self.identifier = expand_short_doi(self.identifier)
         except Exception as error:
@@ -31,6 +34,7 @@ class DOI(Handle):
             logging.info(error, exc_info=True)
 
     def csl_item(self):
+        from manubot.cite.csl_item import CSL_Item
         return CSL_Item(get_doi_csl_item(self.identifier))        
 
 

@@ -17,6 +17,47 @@ import re
 
 from manubot.util import import_function
 
+
+def split_prefixed_identifier(string: str):
+    """
+    Split strings like 'doi:blah' into source prefix and identifier 
+    ('doi', 'blah')
+    String must contain a colon (:). Accepts strings starting with '@'.
+    Raises error if source prefix not defined.
+    """
+    from manubot.cite.handle import Handle
+    string = string.strip()
+    trimmed = string[1:] if string.startswith('@') else string
+    try:
+        source, identifier = trimmed.split(':', 1)
+    except ValueError:
+        raise ValueError(f"Could not process '{string}' as citekey.")
+    source = source.strip().lower()
+    identifier = identifier.strip()
+    Handle.validate(source)  # raises error on wrong source prefix
+    return source, identifier
+
+
+class CiteKey(object):
+    def __init__(self, citekey):
+        self.source, self.identifier = split_prefixed_identifier(citekey)
+
+    def handle(self):
+        from manubot.cite.handle import Handle
+        return Handle.create_with(self.source, self.identifier)
+
+    def str(self):
+        """Use in chained transformation of citekey as citekey.str()
+           Same result as str(citekey)"""
+        return str(self)
+
+    def __str__(self):
+        return f'{self.source}:{self.identifier}'
+
+    def __repr__(self):
+        return "CiteKey(citekey='{}')".format(self)
+
+
 citeproc_retrievers = {
     'doi': 'manubot.cite.doi.get_doi_csl_item',
     'pmid': 'manubot.cite.pubmed.get_pubmed_csl_item',

@@ -1,6 +1,47 @@
 from manubot.cite.citekey import standardize_citekey, infer_citekey_prefix, is_valid_citekey
 
 
+class CSL_Item(dict):
+    def __init__(self, incoming_dict: dict = {}):
+        super().__init__(incoming_dict)
+
+    def set_id(self, x):
+        self['id'] = x
+        return self
+
+    @staticmethod
+    def add_note(x):
+        return x
+
+    @staticmethod
+    def generate_id(x):
+        """If item has no id, make a hash"""
+        return x
+
+    @staticmethod
+    def fix_type(x):
+        return x
+
+    @staticmethod
+    def prune(self, x):
+        return x
+
+    def minimal(self):
+        keys = ('title author URL issued type container-title'
+                'volume issue page DOI').split()
+        return CSL_Item({k: v for k, v in self.items() if k in keys})
+
+    def clean(self, prune=True):
+        csl_item = self
+        # csl_item.fix_type()
+        # csl_item.add_note()
+        # csl_item.generate_id()
+        # if prune:
+        #    csl_item.prune()
+        return csl_item
+
+
+
 def csl_item_set_standard_id(csl_item):
     """
     Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.
