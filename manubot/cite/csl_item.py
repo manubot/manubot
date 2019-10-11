@@ -19,7 +19,7 @@ class CSL_Item(dict):
 
     These methods relate to:
     - adding an `id` key and value for CSL item
-    - correcting bibliographic information   
+    - correcting bibliographic information and its structure   
     - adding and reading a custom note to CSL item
 
     """
@@ -29,8 +29,11 @@ class CSL_Item(dict):
     #  - append_to_csl_item_note
     # The methods provide primitives to reconstruct these fucntions.
 
-    def __init__(self, incoming_dict: dict = {}):        
-        super().__init__(incoming_dict)
+    def __init__(self, dictionary=None, **kwargs):
+        if dictionary is None:
+            dictionary = dict()            
+        dictionary.update(kwargs)                
+        super().__init__(dictionary)
 
     # def csl_item_passthrough(csl_item, set_id=None, prune=True):
     #     """
