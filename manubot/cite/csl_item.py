@@ -16,7 +16,7 @@ csl_item_type_fixer = {
 
 class CSL_Item(dict):
     """
-    CSL_Item represents bibliographiuc information for a single publication.
+    CSL_Item represents bibliographic information for a single publication.
 
     On a technical side CSL_Item is a Python dictionary with extra methods
     that help cleaning and manipulating it.
@@ -62,7 +62,7 @@ class CSL_Item(dict):
         # Correct invalid CSL item types
         # See https://github.com/CrossRef/rest-api-doc/issues/187
         try:
-            self['type'] = csl_item_type_fixer.get(self['type'])
+            self['type'] = csl_item_type_fixer[self['type']]
         except KeyError:
             pass
         return self
