@@ -3,14 +3,7 @@ import functools
 import logging
 import re
 
-csl_item_type_fixer = {
-    'journal-article': 'article-journal',
-    'book-chapter': 'chapter',
-    'posted-content': 'manuscript',
-    'proceedings-article': 'paper-conference',
-    'standard': 'entry',
-    'reference-entry': 'entry',
-}
+from manubot.cite.csl_item import CSL_Item
 
 
 def csl_item_passthrough(csl_item, set_id=None, prune=True):
@@ -22,19 +15,21 @@ def csl_item_passthrough(csl_item, set_id=None, prune=True):
     http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
     https://github.com/citation-style-language/schema/blob/master/csl-data.json
     """
+    csl_item = CSL_Item(csl_item)
     if set_id is not None:
-        csl_item['id'] = set_id
+        csl_item.set_id(set_id)
+
     logging.debug(f"Starting csl_item_passthrough with{'' if prune else 'out'} CSL pruning for id: {csl_item.get('id', 'id not specified')}")
 
-    # Correct invalid CSL item types
-    # See https://github.com/CrossRef/rest-api-doc/issues/187
-    if 'type' in csl_item:
-        csl_item['type'] = csl_item_type_fixer.get(csl_item['type'], csl_item['type'])
+    #if 'type' in csl_item:
+    #    csl_item['type'] = csl_item_type_fixer.get(csl_item['type'], csl_item['type'])
+    csl_item.fix_type()
 
     if prune:
         # Remove fields that violate the CSL Item JSON Schema
         csl_item, = remove_jsonschema_errors([csl_item])
 
+    # FIXME: should this be .set_default_type()
     # Default CSL type to entry
     csl_item['type'] = csl_item.get('type', 'entry')
 
