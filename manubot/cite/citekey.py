@@ -5,10 +5,10 @@
 
 Helpers:
 
-  inspect_citekey()
-  is_valid_citekey() - also used in manubot.process
+  inspect_citekey() - used in manubot.cite for is_valid_citekey()
+  is_valid_citekey() - used in manubot.process and manubot.cite
   shorten_citekey() - used solely in manubot.process
-  infer_citekey_prefix()
+  infer_citekey_prefix() - used in manubot.cite
 
 """
 import functools
@@ -44,6 +44,14 @@ class CiteKey(object):
 
     def handle(self):
         from manubot.cite.handle import Handle
+        # This fucntionality should replaces retrievers:
+        #'doi': 'manubot.cite.doi.get_doi_csl_item', - DONE
+        #'pmid': 'manubot.cite.pubmed.get_pubmed_csl_item',
+        #'pmcid': 'manubot.cite.pubmed.get_pmc_csl_item',
+        #'arxiv': 'manubot.cite.arxiv.get_arxiv_csl_item',
+        #'isbn': 'manubot.cite.isbn.get_isbn_csl_item',
+        #'wikidata': 'manubot.cite.wikidata.get_wikidata_csl_item',
+        #'url': 'manubot.cite.url.get_url_csl_item',
         return Handle.create_with(self.source, self.identifier)
 
     def str(self):
