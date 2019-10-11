@@ -1,47 +1,201 @@
-from manubot.cite.citekey import standardize_citekey, infer_citekey_prefix, is_valid_citekey
+import re
+import logging
 
+from manubot.cite.citekey import standardize_citekey, infer_citekey_prefix, is_valid_citekey
+from manubot.cite.citeproc import remove_jsonschema_errors, get_jsonschema_csl_validator
+
+
+csl_item_type_fixer = {
+    'journal-article': 'article-journal',
+    'book-chapter': 'chapter',
+    'posted-content': 'manuscript',
+    'proceedings-article': 'paper-conference',
+    'standard': 'entry',
+    'reference-entry': 'entry',
+}
 
 class CSL_Item(dict):
-    def __init__(self, incoming_dict: dict = {}):
+    """
+    CSL_Item represents bibliographiuc information for a single publication.
+
+    On a technical side CSL_Item is a Python dictionary with extra methods
+    that help cleaning and manipulating it.
+
+    These methods relate to:
+    - adding an `id` key and value for CSL item
+    - correcting bibliographic information   
+    - adding and reading a custom note to CSL item
+
+    """
+    # The ideas for CSL_Item methods come from the following parts of code:
+    #  - citekey_to_csl_item(citekey, prune=True)
+    #  - csl_item_passthrough
+    #  - append_to_csl_item_note
+    # The methods provide primitives to reconstruct these fucntions.
+
+    def __init__(self, incoming_dict: dict = {}):        
         super().__init__(incoming_dict)
+
+    # def csl_item_passthrough(csl_item, set_id=None, prune=True):
+    #     """
+    #     Fix errors in a CSL item, according to the CSL JSON schema, and optionally
+    #     change its id.
+
+    #     http://docs.citationstyles.org/en/1.0.1/specification.html
+    #     http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
+    #     https://github.com/citation-style-language/schema/blob/master/csl-data.json
+    #     """
+    #     if set_id is not None:
+    #         csl_item['id'] = set_id
+    #     logging.debug(f"Starting csl_item_passthrough with{'' if prune else 'out'} CSL pruning for id: {csl_item.get('id', 'id not specified')}")
 
     def set_id(self, x):
         self['id'] = x
         return self
 
-    @staticmethod
-    def add_note(x):
-        return x
+    #     # Correct invalid CSL item types
+    #     # See https://github.com/CrossRef/rest-api-doc/issues/187
+    #     if 'type' in csl_item:
+    #         csl_item['type'] = csl_item_type_fixer.get(csl_item['type'], csl_item['type'])
+    
+    def fix_type(self):
+        # Correct invalid CSL item types
+        # See https://github.com/CrossRef/rest-api-doc/issues/187
+        try:
+            self['type'] = csl_item_type_fixer.get(self['type'])
+        except KeyError:
+            pass
+        return self
 
-    @staticmethod
-    def generate_id(x):
-        """If item has no id, make a hash"""
-        return x
+    # prune parameter is likely to be supported by two methods:
+    
+    def remove_jsonschema_errors(self):
+        csl_item, = remove_jsonschema_errors([self])
+        return CSL_Item(csl_item)   
 
-    @staticmethod
-    def fix_type(x):
-        return x
+    def validate_csl_schema(self):
+        validator = get_jsonschema_csl_validator()
+        validator.validate([self])
 
-    @staticmethod
-    def prune(self, x):
-        return x
+    # These methods can be used in code below:
+    #
+    #     if prune:
+    #         # Remove fields that violate the CSL Item JSON Schema
+    #         csl_item, = remove_jsonschema_errors([csl_item])
+
+    #     # Default CSL type to entry
+    #     csl_item['type'] = csl_item.get('type', 'entry')
+
+    #     if prune:
+    #         # Confirm that corrected CSL validates
+    #         validator = get_jsonschema_csl_validator()
+    #         validator.validate([csl_item])
+    #     return csl_item
+
+    # -----------------------------------------------------------------------------------
+    #
+    # append_to_csl_item_note() can be implemented using two methods below.
+
+    def append_note_text(self, text: str):
+        note = str(self.get('note', ''))
+        if note and not note.endswith('\n'):
+            note += '\n'
+        note += text
+        self['note'] = note
+    
+    def append_note_dict(self, dictionary: dict):
+        def log(key, reason: str):
+            msg = (f'append_to_csl_item_note: skipped adding "{key}",'
+                     '\nreason: {reason}')
+            logging.warning(msg)            
+        dict_items = []                            
+        for key, value in dictionary.items():
+            if not re.fullmatch(r'[A-Z]+|[-_a-z]+', key):
+                log(key, 'value "{value}" does not conform to the variable_name ' 
+                         'syntax as per https://git.io/fjTzW.')                
+                continue
+            if '\n' in value:
+                log(key, 'value "{value}" contains a newline')
+                continue
+            dict_items.append(f'{key}: {value}')
+        self.append_note_text('\n'.join(dict_items))    
+
+    #     note_text = f'This CSL JSON Item was automatically generated by Manubot v{manubot_version} using citation-by-identifier.'
+    #     note_dict = {
+    #         'standard_id': citekey,
+    #     }
+    #     append_to_csl_item_note(csl_item, note_text, note_dict)
+
+    def add_note_manubot_version(self, version=None):
+        if version is None:
+            from manubot import __version__ as manubot_version
+            version = manubot_version
+        self.append_note_text('This CSL JSON Item was automatically generated '
+                              f'by Manubot v{version} using citation-by-identifier.')
+        return self
+
+    def add_note_standard_id(self, citekey:str):
+        self.append_note_dict({'standard_id': citekey})
+        return self
+
+    # def append_to_csl_item_note(csl_item, text='', dictionary={}):
+    #     """
+    #     Add information to the note field of a CSL Item.
+    #     In addition to accepting arbitrary text, the note field can be used to encode
+    #     additional values not defined by the CSL JSON schema, as per
+    #     https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields
+    #     Use dictionary to specify variable-value pairs.
+    #     """
+    #     if not isinstance(csl_item, dict):
+    #         raise ValueError(f'append_to_csl_item_note: csl_item must be a dict but was of type {type(csl_item)}')
+    #     if not isinstance(dictionary, dict):
+    #         raise ValueError(f'append_to_csl_item_note: dictionary must be a dict but was of type {type(dictionary)}')
+    #     if not isinstance(text, str):
+    #         raise ValueError(f'append_to_csl_item_note: text must be a str but was of type {type(text)}')
+    #     note = str(csl_item.get('note', ''))
+    #     if text:
+    #         if note and not note.endswith('\n'):
+    #             note += '\n'
+    #         note += text
+    #     for key, value in dictionary.items():
+    #         if not re.fullmatch(r'[A-Z]+|[-_a-z]+', key):
+    #             logging.warning(f'append_to_csl_item_note: skipping adding "{key}" because it does not conform to the variable_name syntax as per https://git.io/fjTzW.')
+    #             continue
+    #         if '\n' in value:
+    #             logging.warning(f'append_to_csl_item_note: skipping adding "{key}" because the value contains a newline: "{value}"')
+    #             continue
+    #         if note and not note.endswith('\n'):
+    #             note += '\n'
+    #         note += f'{key}: {value}'
+    #     if note:
+    #         csl_item['note'] = note
+    #     return csl_item
+
+    def note_dict(self):
+        return parse_csl_item_note(self['note'])
 
     def minimal(self):
+        """Return csl item with a minimal set of keys."""
         keys = ('title author URL issued type container-title'
                 'volume issue page DOI').split()
         return CSL_Item({k: v for k, v in self.items() if k in keys})
 
-    def clean(self, prune=True):
-        csl_item = self
-        # csl_item.fix_type()
-        # csl_item.add_note()
-        # csl_item.generate_id()
-        # if prune:
-        #    csl_item.prune()
-        return csl_item
+
+def parse_csl_item_note(note: str):
+    """
+    Return the dictionary of key-value pairs encoded in a CSL JSON note.
+    Extracts both forms (line-entry and braced-entry) of key-value pairs from "cheater syntax"
+    https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields
+    """
+    note = str(note) # type safeguard 
+    line_matches = re.findall(
+        r'^(?P<key>[A-Z]+|[-_a-z]+): *(?P<value>.+?) *$', note, re.MULTILINE)
+    braced_matches = re.findall(
+        r'{:(?P<key>[A-Z]+|[-_a-z]+): *(?P<value>.+?) *}', note)
+    return dict(line_matches + braced_matches)
 
 
-
+# csl_item_set_standard_id(csl_item: CSL_Item) ->  CSL_Item
 def csl_item_set_standard_id(csl_item):
     """
     Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.
