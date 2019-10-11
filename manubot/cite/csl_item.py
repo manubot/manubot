@@ -1,6 +1,69 @@
 from manubot.cite.citekey import standardize_citekey, infer_citekey_prefix, is_valid_citekey
 
 
+csl_item_type_fixer = {
+    'journal-article': 'article-journal',
+    'book-chapter': 'chapter',
+    'posted-content': 'manuscript',
+    'proceedings-article': 'paper-conference',
+    'standard': 'entry',
+    'reference-entry': 'entry',
+}
+
+class CSL_Item(dict):
+    """
+    CSL_Item represents bibliographic information for a single publication.
+
+    On a technical side CSL_Item is a Python dictionary with extra methods
+    that help cleaning and manipulating it.
+
+    These methods relate to:
+    - adding an `id` key and value for CSL item
+    - correcting bibliographic information   
+    - adding and reading a custom note to CSL item
+
+    """
+    # The ideas for CSL_Item methods come from the following parts of code:
+    #  - citekey_to_csl_item(citekey, prune=True)
+    #  - csl_item_passthrough
+    #  - append_to_csl_item_note
+    # The methods provide primitives to reconstruct these fucntions.
+
+    def __init__(self, incoming_dict: dict = {}):        
+        super().__init__(incoming_dict)
+
+    # def csl_item_passthrough(csl_item, set_id=None, prune=True):
+    #     """
+    #     Fix errors in a CSL item, according to the CSL JSON schema, and optionally
+    #     change its id.
+
+    #     http://docs.citationstyles.org/en/1.0.1/specification.html
+    #     http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
+    #     https://github.com/citation-style-language/schema/blob/master/csl-data.json
+    #     """
+    #     if set_id is not None:
+    #         csl_item['id'] = set_id
+    #     logging.debug(f"Starting csl_item_passthrough with{'' if prune else 'out'} CSL pruning for id: {csl_item.get('id', 'id not specified')}")
+
+    def set_id(self, x):
+        self['id'] = x
+        return self
+
+    #     # Correct invalid CSL item types
+    #     # See https://github.com/CrossRef/rest-api-doc/issues/187
+    #     if 'type' in csl_item:
+    #         csl_item['type'] = csl_item_type_fixer.get(csl_item['type'], csl_item['type'])
+    
+    def fix_type(self):
+        # Correct invalid CSL item types
+        # See https://github.com/CrossRef/rest-api-doc/issues/187
+        try:
+            self['type'] = csl_item_type_fixer[self['type']]
+        except KeyError:
+            pass
+        return self
+
+
 def csl_item_set_standard_id(csl_item):
     """
     Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.
