@@ -54,6 +54,10 @@ class CiteKey(object):
         #'url': 'manubot.cite.url.get_url_csl_item',
         return Handle.create_with(self.source, self.identifier)
 
+    def standardize(self):    
+        handle = self.handle().canonic()
+        return handle.citekey()
+
     def str(self):
         """Return string represenation of Citekey instance, eg 'doi:blah'
            To be used in chained transformations of citekey, for example:

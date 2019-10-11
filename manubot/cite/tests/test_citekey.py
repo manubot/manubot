@@ -17,8 +17,18 @@ def test_split_prefixed_identifier():
     assert split_prefixed_identifier("  @dOi:blah\t\t\n ") == ('doi', 'blah')
 
 
-def test_citekey_handle_results_in_doi():
-    assert CiteKey("doi:blah").handle() == DOI("blah")
+class Test_CiteKey:
+
+    def test_handle_results_in_doi(self):
+        assert CiteKey("doi:blah").handle() == DOI("blah")
+
+    def test_handle_unknown_prefix_raises_error(self):
+        with pytest.raises(ValueError):
+            assert CiteKey("abc:blah").handle()
+
+    def test_standardize_works_on_doi(self):
+        assert CiteKey('doi:10.1038/SREP16899').standardize().str() == \
+            'doi:10.1038/srep16899'    
 
 
 @pytest.mark.parametrize("citation_string", [
