@@ -55,8 +55,10 @@ class CiteKey(object):
         return Handle.create_with(self.source, self.identifier)
 
     def str(self):
-        """Use in chained transformation of citekey as citekey.str()
-           Same result as str(citekey)"""
+        """Return string represenation of Citekey instance, eg 'doi:blah'
+           To be used in chained transformations of citekey, for example:
+               assert DOI('blah').citekey().str() == 'doi:blah'
+           Produces same result as str(citekey)."""
         return str(self)
 
     def __str__(self):
@@ -113,6 +115,15 @@ def standardize_citekey(citekey, warn_if_changed=False):
         identifier = to_isbn13(identifier)
 
     standard_citekey = f'{source}:{identifier}'
+
+    # FIXME: this is a bit self-conflicting - the fucntion has to do one thing,
+    #        it looks strange the function logs a message about what it is supposed to do
+    #        by its algorithm.  
+
+    #        To fix that the logging message can be separated into own function, that is 
+    #        aware of old value and new value and used. 
+    #        This fucntion is 'log_citekey_change()'. It is used just once in 
+    #        citekey_to_csl_item(), also marked as FIXME. 
     if warn_if_changed and citekey != standard_citekey:
         logging.warning(
             f'standardize_citekey expected citekey to already be standardized.\n'
@@ -120,6 +131,18 @@ def standardize_citekey(citekey, warn_if_changed=False):
         )
     return standard_citekey
 
+    #  After proposed refactoring entire standardize_citekey(citekey) will be just this:
+    #  def standardize_citekey(citekey):
+    #      return CiteKey(citekey).handle().canonic().citekey().str()
+    #      # or: 
+    #      return str(CiteKey(citekey).handle().canonic().citekey())
+
+def log_citekey_change(original_citekey: str, new_citekey: str):
+    if original_citekey != new_citekey:
+        logging.warning(
+            f'standardize_citekey expected citekey to already be standardized.\n'
+            f'Instead citekey was changed from {original_citekey!r} to {new_citekey!r}'
+        )
 
 regexes = {
     'pmid': re.compile(r'[1-9][0-9]{0,7}'),
@@ -311,6 +334,10 @@ def citekey_to_csl_item(citekey, prune=True):
     Generate a CSL Item (Python dictionary) for the input citekey.
     """
     citekey == standardize_citekey(citekey, warn_if_changed=True)
+    # FIXME: this is the only place where logger is invoked, can change to below: 
+    # new_citekey == standardize_citekey(citekey)
+    # log_citekey_change(citekey, new_citekey)
+    # citekey = new_citekey 
     source, identifier = citekey.split(':', 1)
 
     if source in citeproc_retrievers:

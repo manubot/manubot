@@ -84,6 +84,9 @@ def csl_item_set_standard_id(csl_item):
     assert is_valid_citekey(original_standard_id, allow_raw=True)
     standard_id = standardize_citekey(
         original_standard_id, warn_if_changed=False)
+    # FIXME: can be changed to below after omitting 'warn_if_changed' parameter in 
+    #        favour of individual logger funciton
+    # standard_id = standardize_citekey(original_standard_id)       
     add_to_note = {}
     if original_id and original_id != standard_id:
         if original_id != note_dict.get('original_id'):
