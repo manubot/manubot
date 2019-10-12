@@ -32,17 +32,15 @@ def csl_item_passthrough(csl_item, set_id=None, prune=True):
     logging.debug(f"Starting csl_item_passthrough with{'' if prune else 'out'} CSL pruning for id: {csl_item.get('id', 'id not specified')}")
 
     # Correct invalid CSL item types
-    # See https://github.com/CrossRef/rest-api-doc/issues/187
-    #if 'type' in csl_item:
-    #    csl_item['type'] = csl_item_type_fixer.get(csl_item['type'], csl_item['type'])
     csl_item = csl_item.correct_invalid_type()
 
     if prune:
         # Remove fields that violate the CSL Item JSON Schema
-        csl_item, = remove_jsonschema_errors([csl_item])
-
-    # Default CSL type to entry
-    csl_item['type'] = csl_item.get('type', 'entry')
+        csl_item, = remove_jsonschema_errors([csl_item])    
+        
+    assert isinstance(csl_item, CSL_Item) # FIXME: Remove if passes
+    # Default CSL type to 'entry'
+    csl_item = csl_item.set_default_type()
 
     if prune:
         # Confirm that corrected CSL validates

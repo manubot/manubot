@@ -76,7 +76,8 @@ class CSL_Item(dict):
         """
         Set type to 'entry', if type not specified.          
         """
-        self['type'] = self.get('type', 'entry')                
+        self['type'] = self.get('type', 'entry') 
+        return self               
 
     def fix_type(self):
         self.correct_invalid_type()
