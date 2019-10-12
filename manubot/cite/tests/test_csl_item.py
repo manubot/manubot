@@ -23,14 +23,16 @@ class Test_CSL_Item:
                             type='journal-article') == \
             {'title': 'My journal article', 'type': 'journal-article'}
 
-    def test_fixtype_makes_change(self):
-        assert CSL_Item(type='journal-article').fix_type() == {'type': 'article-journal'}
+    def test_correct_type_makes_change(self):
+        assert CSL_Item(type='journal-article').correct_invalid_type() == \
+           {'type': 'article-journal'}
 
-    def test_fixtype_changes_type_to_default(self):    
-        assert CSL_Item().fix_type() == {'type': 'entry'}
+    def test_set_default_type(self):    
+        assert CSL_Item().set_default_type() == {'type': 'entry'}
 
-    def test_fixtype_makes_no_change_on_type_outside_mapper_keys(self):            
-        assert CSL_Item(type='book').fix_type() == {'type': 'book'}
+    def test_no_change_of_type(self):            
+        assert CSL_Item(type='book').correct_invalid_type() == {'type': 'book'}
+        assert CSL_Item(type='book').set_default_type() == {'type': 'book'}
 
     @pytest.mark.skip("Not implemented")
     def test_add_note_manubot_version_on_fixed_version_parameter(self):
