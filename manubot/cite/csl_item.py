@@ -71,11 +71,6 @@ class CSL_Item(dict):
         self['type'] = self.get('type', 'entry') 
         return self               
 
-    def fix_type(self):
-        self.correct_invalid_type()
-        self.set_default_type()
-        return self
-
 
 def csl_item_set_standard_id(csl_item):
     """

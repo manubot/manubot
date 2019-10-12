@@ -39,45 +39,16 @@ def csl_item_passthrough(csl_item, set_id=None, prune=True):
         csl_item, = remove_jsonschema_errors([csl_item])    
         
     # Default CSL type to 'entry'
-    # Important: ordering does matter, must execute AFTER remove_jsonschema_errors([csl_item])
     csl_item = csl_item.set_default_type()
 
     if prune:
         # Confirm that corrected CSL validates
         validator = get_jsonschema_csl_validator()
         validator.validate([csl_item])
-    assert isinstance(csl_item, CSL_Item) # FIXME: Remove if passes        
+    assert isinstance(csl_item, CSL_Item) # FIXME: Remove if passes
     return csl_item
 
-
-
-    
-
-def csl_item_passthrough2(csl_item, set_id=None, prune=True):
-    """
-    Fix errors in a CSL item, according to the CSL JSON schema, and optionally
-    change its id.
-
-    http://docs.citationstyles.org/en/1.0.1/specification.html
-    http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
-    https://github.com/citation-style-language/schema/blob/master/csl-data.json
-    """
-    csl_item = CSL_Item(csl_item)
-    if set_id is not None:
-        csl_item.set_id(set_id)
-    logging.debug(f"Starting csl_item_passthrough with{'' if prune else 'out'}" 
-                  "CSL pruning for id: {csl_item.get('id', 'id not specified')}")    
-    # Correct type filed and set type to default if it is not specified.
-    csl_item.fix_type()
-    if prune:
-        # Remove fields that violate the CSL Item JSON Schema
-        csl_item, = remove_jsonschema_errors([csl_item])
-        # Confirm that corrected CSL validates
-        validator = get_jsonschema_csl_validator()
-        validator.validate([csl_item])        
-    return csl_item
-
-
+ 
 def append_to_csl_item_note(csl_item, text='', dictionary={}):
     """
     Add information to the note field of a CSL Item.
