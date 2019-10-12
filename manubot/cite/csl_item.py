@@ -53,14 +53,6 @@ class CSL_Item(dict):
         dictionary.update(kwargs)                
         super().__init__(dictionary)
 
-    def set_id(self, x):
-        """
-        Set 'id' key to value x
-        """
-        self['id'] = x
-        return self   
-    
-
     def correct_invalid_type(self):
         """
         Correct invalid CSL item type. 
