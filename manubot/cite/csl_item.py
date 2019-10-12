@@ -61,7 +61,7 @@ class CSL_Item(dict):
         return self   
     
 
-    def correct_type(self):
+    def correct_invalid_type(self):
         """
         Correct invalid CSL item type. 
         Does nothing if `type` not present.
@@ -78,7 +78,7 @@ class CSL_Item(dict):
         self['type'] = self.get('type', 'entry')                
 
     def fix_type(self):
-        self.correct_type()
+        self.correct_invalid_type()
         self.set_default_type()
 
 
