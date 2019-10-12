@@ -70,6 +70,7 @@ class CSL_Item(dict):
         """
         if 'type' in self:
            self['type'] = replace_type(self['type'])
+        return self   
 
     def set_default_type(self):
         """
@@ -80,6 +81,7 @@ class CSL_Item(dict):
     def fix_type(self):
         self.correct_invalid_type()
         self.set_default_type()
+        return self
 
 
 def csl_item_set_standard_id(csl_item):
