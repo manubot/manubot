@@ -1,3 +1,4 @@
+"""Correct or validate CSL item schema."""
 import copy
 import functools
 import logging
@@ -18,25 +19,16 @@ def csl_item_passthrough(csl_item, set_id=None, prune=True):
     csl_item = CSL_Item(csl_item)
     if set_id is not None:
         csl_item.set_id(set_id)
-
-    logging.debug(f"Starting csl_item_passthrough with{'' if prune else 'out'} CSL pruning for id: {csl_item.get('id', 'id not specified')}")
-
-    #if 'type' in csl_item:
-    #    csl_item['type'] = csl_item_type_fixer.get(csl_item['type'], csl_item['type'])
+    logging.debug(f"Starting csl_item_passthrough with{'' if prune else 'out'}" 
+                  "CSL pruning for id: {csl_item.get('id', 'id not specified')}")    
+    # Correct type filed and set type to default if it is not specified.
     csl_item.fix_type()
-
     if prune:
         # Remove fields that violate the CSL Item JSON Schema
         csl_item, = remove_jsonschema_errors([csl_item])
-
-    # FIXME: should this be .set_default_type()
-    # Default CSL type to entry
-    csl_item['type'] = csl_item.get('type', 'entry')
-
-    if prune:
         # Confirm that corrected CSL validates
         validator = get_jsonschema_csl_validator()
-        validator.validate([csl_item])
+        validator.validate([csl_item])        
     return csl_item
 
 

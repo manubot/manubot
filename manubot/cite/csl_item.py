@@ -23,47 +23,51 @@ class CSL_Item(dict):
     - adding and reading a custom note to CSL item
 
     """
+    
     # The ideas for CSL_Item methods come from the following parts of code:
-    #  - citekey_to_csl_item(citekey, prune=True)
-    #  - csl_item_passthrough
-    #  - append_to_csl_item_note
-    # The methods provide primitives to reconstruct these fucntions.
+    #  - [ ] citekey_to_csl_item(citekey, prune=True)
+    #  - [x] csl_item_passthrough
+    #  - [ ] append_to_csl_item_note
+    # The methods in CSL_Item class provide primitives to reconstruct 
+    # fucntions above.
 
     def __init__(self, dictionary=None, **kwargs):
+        """
+        Can use both a dictionary or keywords to create a CSL_Item object:
+            
+            CSL_Item(title='The Book')
+            CSL_Item({'title': 'The Book'})
+            csl_dict = {'title': 'The Book', 'ISBN': '321-321'}
+            CSL_Item(csl_dict, type='entry')
+            CSL_Item(title='The Book', ISBN='321-321', type='entry')
+            
+        CSL_Item object is usually provided by bibliographic information API, 
+        but constructing small CSL_Item objects is useful for testing.
+        """
         if dictionary is None:
             dictionary = dict()            
         dictionary.update(kwargs)                
         super().__init__(dictionary)
 
-    # def csl_item_passthrough(csl_item, set_id=None, prune=True):
-    #     """
-    #     Fix errors in a CSL item, according to the CSL JSON schema, and optionally
-    #     change its id.
-
-    #     http://docs.citationstyles.org/en/1.0.1/specification.html
-    #     http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
-    #     https://github.com/citation-style-language/schema/blob/master/csl-data.json
-    #     """
-    #     if set_id is not None:
-    #         csl_item['id'] = set_id
-    #     logging.debug(f"Starting csl_item_passthrough with{'' if prune else 'out'} CSL pruning for id: {csl_item.get('id', 'id not specified')}")
-
     def set_id(self, x):
+        """
+        Set 'id' key to value x
+        """
         self['id'] = x
         return self
 
-    #     # Correct invalid CSL item types
-    #     # See https://github.com/CrossRef/rest-api-doc/issues/187
-    #     if 'type' in csl_item:
-    #         csl_item['type'] = csl_item_type_fixer.get(csl_item['type'], csl_item['type'])
-    
     def fix_type(self):
-        # Correct invalid CSL item types
-        # See https://github.com/CrossRef/rest-api-doc/issues/187
+        """
+        Correct invalid CSL item types and set type to default value ('entry'), 
+        if type not specified.          
+        
+        For CSL correction see https://github.com/CrossRef/rest-api-doc/issues/187        
+        """
         try:
             self['type'] = csl_item_type_fixer[self['type']]
         except KeyError:
-            pass
+            pass                
+        self['type'] = self.get('type', 'entry')        
         return self
 
 
