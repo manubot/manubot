@@ -10,6 +10,10 @@ csl_item_type_fixer = {
     'reference-entry': 'entry',
 }
 
+def replace_type(key: str) -> str:
+    return csl_item_type_fixer.get(key, key)
+
+
 class CSL_Item(dict):
     """
     CSL_Item represents bibliographic information for a single publication.
@@ -54,21 +58,28 @@ class CSL_Item(dict):
         Set 'id' key to value x
         """
         self['id'] = x
-        return self
+        return self   
+    
+
+    def correct_type(self):
+        """
+        Correct invalid CSL item type. 
+        Does nothing if `type` not present.
+         
+        For detail see https://github.com/CrossRef/rest-api-doc/issues/187        
+        """
+        if 'type' in self:
+           self['type'] = replace_type(self['type'])
+
+    def set_default_type(self):
+        """
+        Set type to 'entry', if type not specified.          
+        """
+        self['type'] = self.get('type', 'entry')                
 
     def fix_type(self):
-        """
-        Correct invalid CSL item types and set type to default value ('entry'), 
-        if type not specified.          
-        
-        For CSL correction see https://github.com/CrossRef/rest-api-doc/issues/187        
-        """
-        try:
-            self['type'] = csl_item_type_fixer[self['type']]
-        except KeyError:
-            pass                
-        self['type'] = self.get('type', 'entry')        
-        return self
+        self.correct_type()
+        self.set_default_type()
 
 
 def csl_item_set_standard_id(csl_item):

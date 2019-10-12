@@ -33,8 +33,9 @@ def csl_item_passthrough(csl_item, set_id=None, prune=True):
 
     # Correct invalid CSL item types
     # See https://github.com/CrossRef/rest-api-doc/issues/187
-    if 'type' in csl_item:
-        csl_item['type'] = csl_item_type_fixer.get(csl_item['type'], csl_item['type'])
+    #if 'type' in csl_item:
+    #    csl_item['type'] = csl_item_type_fixer.get(csl_item['type'], csl_item['type'])
+    csl_item.correct_type()
 
     if prune:
         # Remove fields that violate the CSL Item JSON Schema
