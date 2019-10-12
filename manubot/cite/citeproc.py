@@ -26,6 +26,7 @@ def csl_item_passthrough(csl_item, set_id=None, prune=True):
     http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
     https://github.com/citation-style-language/schema/blob/master/csl-data.json
     """
+    csl_item = CSL_Item(csl_item) # wrap dictionary as CSL_Item dictionary
     if set_id is not None:
         csl_item['id'] = set_id
     logging.debug(f"Starting csl_item_passthrough with{'' if prune else 'out'} CSL pruning for id: {csl_item.get('id', 'id not specified')}")
