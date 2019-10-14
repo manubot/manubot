@@ -62,15 +62,41 @@ pandoc_version = get_pandoc_version()
     reason='pandoc-citeproc installation not found on system'
 )
 class Base_cite_command_render_stdout():
+    """
+    Expecting reference values for test to be at files on path:
+    cite-command-rendered/references-{format}-{pandoc_stamp}.{extension}
+
+    Examples:
+    - references-html-2.7.2.html  
+    - references-plain-2.7.2.txt
+    - references-jats-2.7.2.xml
+    - references-jats-2.7.3.xml
+    - references-markdown-2.7.2.md
+
+    2.7.2 is current pandoc version on CI builds for these builds.
+
+    Filenames must be adjusted accodingly when current pandoc version changes.
+
+    Run tests locally skipping this test suit (makes sense if your local pandoc
+    version is different from pandoc version used by Travis and Appveyor):
+        pytest -v -m "not pandocfail"
+
+    See .travis.yml and .appveyor.yml to find out current pandoc version used 
+    for testing.
+    """
+    pandoc_stamp = '.'.join(map(str, pandoc_version))
+    
     @classmethod
-    def expected_output(cls, filename):
+    def expected_output(cls, format, extension):
+        filename = f'references-{format}-{cls.pandoc_stamp}.{extension}'   
         return (
             pathlib.Path(__file__).parent
             .joinpath('cite-command-rendered', filename)
-            # We wanted to introduce encoding='utf-8-sig' below
-            # for compatability, but that makes tests fail on Travis for Windows.              
             .read_text()
         )
+        # Note: We wanted to introduce encoding='utf-8-sig' above
+        # for compatability, but that makes tests fail on Travis for 
+        # Windows default encoding.
 
     @classmethod
     def render(self, format_args):
@@ -96,6 +122,7 @@ class Base_cite_command_render_stdout():
         return process.stdout
 
 
+@pytest.mark.pandocfail
 @pytest.mark.skipif(
     pandoc_version < (2, 0),
     reason="Test requires pandoc >= 2.0 to support --lua-filter and --csl=URL")
@@ -103,13 +130,14 @@ class Test_cite_command_render_stdout_above_pandoc_v2(
         Base_cite_command_render_stdout):
     def test_no_arg(self):
         assert self.render([]) == \
-            self.expected_output('references-plain.txt')
+            self.expected_output('plain', 'txt')
 
     def test_plain(self):
         assert self.render(['--format', 'plain']) == \
-            self.expected_output('references-plain.txt')
+            self.expected_output('plain', 'txt')
 
 
+@pytest.mark.pandocfail
 @pytest.mark.skipif(
     pandoc_version < (2, 5),
     reason=("Testing markdown, html or jats formats "
@@ -119,19 +147,15 @@ class Test_cite_command_render_stdout_above_pandoc_v2_5(
         Base_cite_command_render_stdout):
     def test_markdown(self):
         assert self.render(['--format', 'markdown']) == \
-            self.expected_output('references-markdown.md')
+            self.expected_output('markdown', 'md')
 
     def test_html(self):
         assert self.render(['--format', 'html']) == \
-            self.expected_output('references-html.html')
+            self.expected_output('html', 'html')
 
     def test_jats(self):
-        if pandoc_version >= (2, 7, 3):
-            filename = 'references-jats-2.7.3.xml'
-        else:
-            filename = 'references-jats.xml'
         assert self.render(['--format', 'jats']) == \
-            self.expected_output(filename)
+            self.expected_output('jats', 'xml')
 
 
 def teardown_module(module):
