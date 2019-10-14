@@ -67,10 +67,9 @@ class Base_cite_command_render_stdout():
         return (
             pathlib.Path(__file__).parent
             .joinpath('cite-command-rendered', filename)
-            # We need to enforce that files are read with 
-            # encoding='utf-8-sig', otherwise ther maybe fasle test failures.
-            # File reader can be helper function in conftest.py
-            .read_text(encoding='utf-8-sig')
+            # We wanted to introduce encoding='utf-8-sig' below
+            # for compatability, but that makes tests fail on Travis for Windows.              
+            .read_text()
         )
 
     @classmethod
