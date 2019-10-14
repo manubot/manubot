@@ -22,8 +22,12 @@ class Test_CSL_Item:
             assert CSL_Item({'title': 'My journal article'},
                             type='journal-article') == \
             {'title': 'My journal article', 'type': 'journal-article'}
+            
+    def test_recursive_constructor(self):
+        assert CSL_Item(CSL_Item()) == {}
+        assert CSL_Item(CSL_Item(abc=1)) == {'abc': 1}
 
-    def test_correct_type_makes_change(self):
+    def test_correct_invalid_type(self):
         assert CSL_Item(type='journal-article').correct_invalid_type() == \
            {'type': 'article-journal'}
 
