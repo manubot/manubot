@@ -36,7 +36,7 @@ def csl_item_passthrough(csl_item, set_id=None, prune=True):
 
     if prune:
         # Remove fields that violate the CSL Item JSON Schema
-        csl_item, = remove_jsonschema_errors([csl_item])    
+        csl_item, = remove_jsonschema_errors([csl_item])
         
     # Default CSL type to 'entry'
     csl_item = csl_item.set_default_type()
