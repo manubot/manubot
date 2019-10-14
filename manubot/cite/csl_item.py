@@ -11,8 +11,12 @@ csl_item_type_fixer = {
 }
 
 
-def replace_type(key: str) -> str:
-    return csl_item_type_fixer.get(key, key)
+def replace_type(key: str, mapping=csl_item_type_fixer) -> str:
+    """
+    Replaces a *key* from csl_item_type_fixer.keys() with 
+    an alternative, leaves *key* intact in other cases.
+    """
+    return mapping.get(key, key)
 
 
 class CSL_Item(dict):
