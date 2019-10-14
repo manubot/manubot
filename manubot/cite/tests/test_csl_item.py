@@ -27,6 +27,12 @@ class Test_CSL_Item:
         assert CSL_Item(CSL_Item()) == {}
         assert CSL_Item(CSL_Item(abc=1)) == {'abc': 1}
 
+    def test_constructor_leaves_no_inplace_effects(self):
+        dict1 = {'a': 1}
+        ci = CSL_Item(dict1, b=2)
+        assert ci == {'a': 1, 'b': 2}
+        assert dict1 == {'a': 1}
+
     def test_correct_invalid_type(self):
         assert CSL_Item(type='journal-article').correct_invalid_type() == \
             {'type': 'article-journal'}

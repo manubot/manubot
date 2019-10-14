@@ -10,6 +10,7 @@ csl_item_type_fixer = {
     'reference-entry': 'entry',
 }
 
+
 def replace_type(key: str) -> str:
     return csl_item_type_fixer.get(key, key)
 
@@ -23,53 +24,53 @@ class CSL_Item(dict):
 
     These methods relate to:
     - adding an `id` key and value for CSL item
-    - correcting bibliographic information and its structure   
+    - correcting bibliographic information and its structure
     - adding and reading a custom note to CSL item
 
     """
-    
+
     # The ideas for CSL_Item methods come from the following parts of code:
     #  - [ ] citekey_to_csl_item(citekey, prune=True)
     #  - [x] csl_item_passthrough
     #  - [ ] append_to_csl_item_note
-    # The methods in CSL_Item class provide primitives to reconstruct 
+    # The methods in CSL_Item class provide primitives to reconstruct
     # fucntions above.
 
     def __init__(self, dictionary=None, **kwargs):
         """
         Can use both a dictionary or keywords to create a CSL_Item object:
-            
+
             CSL_Item(title='The Book')
             CSL_Item({'title': 'The Book'})
             csl_dict = {'title': 'The Book', 'ISBN': '321-321'}
             CSL_Item(csl_dict, type='entry')
             CSL_Item(title='The Book', ISBN='321-321', type='entry')
-            
-        CSL_Item object is usually provided by bibliographic information API, 
+
+        CSL_Item object is usually provided by bibliographic information API,
         but constructing small CSL_Item objects is useful for testing.
         """
         if dictionary is None:
-            dictionary = dict()            
-        dictionary.update(kwargs)                
+            dictionary = dict()
         super().__init__(dictionary)
+        self.update(kwargs)
 
     def correct_invalid_type(self):
         """
-        Correct invalid CSL item type. 
+        Correct invalid CSL item type.
         Does nothing if `type` not present.
-         
-        For detail see https://github.com/CrossRef/rest-api-doc/issues/187        
+
+        For detail see https://github.com/CrossRef/rest-api-doc/issues/187
         """
         if 'type' in self:
-           self['type'] = replace_type(self['type'])
-        return self   
+            self['type'] = replace_type(self['type'])
+        return self
 
     def set_default_type(self):
         """
-        Set type to 'entry', if type not specified.          
+        Set type to 'entry', if type not specified.
         """
-        self['type'] = self.get('type', 'entry') 
-        return self               
+        self['type'] = self.get('type', 'entry')
+        return self
 
 
 def csl_item_set_standard_id(csl_item):
