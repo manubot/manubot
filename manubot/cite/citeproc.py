@@ -7,16 +7,6 @@ import re
 from manubot.cite.csl_item import CSL_Item
 
 
-csl_item_type_fixer = {
-    'journal-article': 'article-journal',
-    'book-chapter': 'chapter',
-    'posted-content': 'manuscript',
-    'proceedings-article': 'paper-conference',
-    'standard': 'entry',
-    'reference-entry': 'entry',
-}
-
-
 def csl_item_passthrough(csl_item, set_id=None, prune=True):
     """
     Fix errors in a CSL item, according to the CSL JSON schema, and optionally
