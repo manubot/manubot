@@ -22,6 +22,8 @@ extras_require = {
         'opentimestamps-client',
     ],
     'test': [
+        'ghp-import',
+        'portray',
         'pytest',
     ],
 }

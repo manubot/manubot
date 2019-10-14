@@ -14,12 +14,21 @@ install:
   - python setup.py sdist bdist_wheel
 script:
   - pytest
+  - portray as_html --output-dir=docs
 deploy:
-  provider: pypi
-  user: __token__
-  password: $PYPI_PASSWORD
-  on:
-    python: '3.6'
-    repo: manubot/manubot
-    tags: true
-  distributions: sdist bdist_wheel
+  - provider: pypi
+    user: __token__
+    password: $PYPI_PASSWORD
+    on:
+      python: '3.6'
+      repo: manubot/manubot
+      tags: true
+    distributions: sdist bdist_wheel
+  - provider: script
+    script: bash ci/deploy-docs.sh
+    skip_cleanup: true
+    on:
+      python: "3.7"
+      repo: manubot/manubot
+      branch: master
+      condition: $TRAVIS_EVENT_TYPE = "push"
