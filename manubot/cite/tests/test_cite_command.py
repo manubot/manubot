@@ -79,8 +79,10 @@ class Base_cite_command_render_stdout():
 
     Run tests locally skipping this test suit (makes sense if your local pandoc
     version is different from pandoc version used by Travis and Appveyor):
-        pytest -v -m "not pandocfail"
 
+        pytest -v -m "not pandocfail"
+        pytest -k "Test_cite_command_render_stdout" -m "not pandocfail"
+        
     See .travis.yml and .appveyor.yml to find out current pandoc version used 
     for testing.
     """
@@ -98,8 +100,8 @@ class Base_cite_command_render_stdout():
         # for compatability, but that makes tests fail on Travis for 
         # Windows default encoding.
 
-    @classmethod
-    def render(self, format_args):
+    @staticmethod
+    def render(format_args):
         args = [
             'manubot',
             'cite',
