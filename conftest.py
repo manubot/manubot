@@ -11,7 +11,7 @@ def pytest_addoption(parser):
         "--hours",
         action="store",
         default="12",
-        help="Set time to live for requests cache"
+        help="Set time to live for requests cache. Used with --use-requests-cache"
     )
 
 
