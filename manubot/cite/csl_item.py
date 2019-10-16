@@ -25,25 +25,6 @@ for csl_data that is JSON-serialized.
 
 from manubot.cite.citekey import standardize_citekey, infer_citekey_prefix, is_valid_citekey
 
-
-csl_item_type_fixer = {
-    'journal-article': 'article-journal',
-    'book-chapter': 'chapter',
-    'posted-content': 'manuscript',
-    'proceedings-article': 'paper-conference',
-    'standard': 'entry',
-    'reference-entry': 'entry',
-}
-
-
-def replace_type(key: str, mapping=csl_item_type_fixer) -> str:
-    """
-    Replaces a *key* from csl_item_type_fixer.keys() with 
-    an alternative, leaves *key* intact in other cases.
-    """
-    return mapping.get(key, key)
-
-
 class CSL_Item(dict):
     """
     CSL_Item represents bibliographic information for a single publication.
@@ -55,7 +36,6 @@ class CSL_Item(dict):
     - adding an `id` key and value for CSL item
     - correcting bibliographic information and its structure
     - adding and reading a custom note to CSL item
-
     """
 
     # The ideas for CSL_Item methods come from the following parts of code:
@@ -64,6 +44,15 @@ class CSL_Item(dict):
     #  - [ ] append_to_csl_item_note
     # The methods in CSL_Item class provide primitives to reconstruct
     # fucntions above.
+
+    type_mapping = {
+        'journal-article': 'article-journal',
+        'book-chapter': 'chapter',
+        'posted-content': 'manuscript',
+        'proceedings-article': 'paper-conference',
+        'standard': 'entry',
+        'reference-entry': 'entry',
+    }
 
     def __init__(self, dictionary=None, **kwargs):
         """
@@ -90,8 +79,11 @@ class CSL_Item(dict):
 
         For detail see https://github.com/CrossRef/rest-api-doc/issues/187
         """
-        if 'type' in self:
-            self['type'] = replace_type(self['type'])
+        if 'type' in self:            
+            # Replace a type from in CSL_Item.type_mapping.keys(),
+            # leave type intact in other cases.
+            t = self['type'] 
+            self['type'] = self.type_mapping.get(t, t)
         return self
 
     def set_default_type(self):
