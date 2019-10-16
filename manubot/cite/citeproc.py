@@ -1,4 +1,11 @@
-"""Correct or validate CSL item schema."""
+"""Correct or validate CSL item schema.
+
+Module naming: citeproc is the generic name for programs that produce 
+formatted bibliographies and citations based on the metadata of 
+the cited objects and the formatting instructions provided by 
+Citation Style Language (CSL) styles. 
+-- https://en.wikipedia.org/wiki/CiteProc
+"""
 import copy
 import functools
 import logging

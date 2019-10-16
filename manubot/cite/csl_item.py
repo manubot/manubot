@@ -1,3 +1,28 @@
+"""Represent bibliographic information for a single publication.
+
+From the CSL docs:
+
+    Next up are the bibliographic details of the items you wish to cite: the item metadata.
+
+    For example, the bibliographic entry for a journal article may show the names of the 
+    authors, the year in which the article was published, the article title, the journal 
+    title, the volume and issue in which the article appeared, the page numbers of the 
+    article, and the article’s Digital Object Identifier (DOI). All these details help 
+    the reader identify and find the referenced work.
+
+    Reference managers make it easy to create a library of items. While many reference 
+    managers have their own way of storing item metadata, most support common bibliographic 
+    exchange formats such as BibTeX and RIS. The citeproc-js CSL processor introduced a 
+    JSON-based format for storing item metadata in a way citeproc-js could understand. 
+    Several other CSL processors have since adopted this “CSL JSON” format (also known as 
+    “citeproc JSON”).
+
+-- https://github.com/citation-style-language/documentation/blob/master/primer.txt
+
+The terminology we've adopted is csl_data for a list of csl_item dicts, and csl_json 
+for csl_data that is JSON-serialized.
+"""
+
 from manubot.cite.citekey import standardize_citekey, infer_citekey_prefix, is_valid_citekey
 
 
