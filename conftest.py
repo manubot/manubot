@@ -28,24 +28,29 @@ def use_requests_cache(request):
        - By default the cache persists for 12 hours. Default can be overrriden
          with --hours option.
        - Cache does not work for invocations of manubot commands as subprocess.
+
+       Cache file location: .\\.cache\\requests-cache.sqlite
     """
     if request.config.getoption("--use-requests-cache"):
         start_caching(hours=int(request.config.getoption("--hours")))
 
 
-def start_caching(**kwargs):
-    from datetime import timedelta
+def cache_path():
     from pathlib import Path
-    from requests_cache import install_cache
-    if not kwargs:
-        kwargs = dict(hours=1)
     folder = Path(__file__).resolve().parent / '.cache'
     if not folder.exists():
         folder.mkdir()
     # requests_cache itself always adds extension .sqlite
-    path = str(folder / 'requests-cache')
+    return str(folder / 'requests-cache')
+
+
+def start_caching(**kwargs):
+    from datetime import timedelta
+    from requests_cache import install_cache
+    if not kwargs:
+        kwargs = dict(hours=1)
     ttl = timedelta(**kwargs)
-    install_cache(cache_name=path, expire_after=ttl)
+    install_cache(cache_name=cache_path(), expire_after=ttl)
     print('Using requests_cache to speed up local tests')
-    print('Cache location is', path + '.sqlite')
+    print('Cache location is', cache_path() + '.sqlite')
     print('Cache expiration time is set to', ttl)
