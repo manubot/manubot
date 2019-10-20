@@ -31,10 +31,10 @@ def use_requests_cache(request):
 
        Cache file location: ./.cache/requests-cache.sqlite
     """
-    
+
     if request.config.getoption('--use-requests-cache'):
-       hours = int(request.config.getoption('--requests-cache-hours'))
-       start_caching(hours)
+        hours = int(request.config.getoption('--requests-cache-hours'))
+        start_caching(hours)
 
 
 def cache_path():
@@ -55,5 +55,3 @@ def start_caching(hours: int):
     logging.info('Using requests_cache to speed up local tests execution.')
     logging.info(f"Cache location is {cache_path() + '.sqlite'}")
     logging.info(f'Cache expiration time is set to {ttl}')
-    
-start_caching(1)
