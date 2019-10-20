@@ -3,15 +3,15 @@ import pytest
 
 def pytest_addoption(parser):
     parser.addoption(
-        "--use-requests-cache",
-        action="store_true",
+        '--use-requests-cache',
+        action='store_true',
         help="Use requests_cache for caching web API calls"
     )
     parser.addoption(
-        "--hours",
-        action="store",
-        default="12",
-        help="Set time to live for requests cache. Used with --use-requests-cache"
+        '--requests-cache-hours',
+        action='store',
+        default='12',
+        help='Set time to live for requests cache. To be used with --use-requests-cache.'
     )
 
 
@@ -21,18 +21,20 @@ def use_requests_cache(request):
        Enabled with --use-requests-cache flag:
 
           pytest --use-requests-cache
-          pytest --use-requests-cache --hours=3
-          pytest --use-requests-cache --hours=8760
+          pytest --use-requests-cache --requests-cache-hours=3
+          pytest --use-requests-cache --requests-cache-hours=8760
 
        Notes:
        - By default the cache persists for 12 hours. Default can be overrriden
-         with --hours option.
+         with --requests-cache-hours option.
        - Cache does not work for invocations of manubot commands as subprocess.
 
-       Cache file location: .\\.cache\\requests-cache.sqlite
+       Cache file location: ./.cache/requests-cache.sqlite
     """
-    if request.config.getoption("--use-requests-cache"):
-        start_caching(hours=int(request.config.getoption("--hours")))
+    
+    if request.config.getoption('--use-requests-cache'):
+       hours = int(request.config.getoption('--requests-cache-hours'))
+       start_caching(hours)
 
 
 def cache_path():
@@ -44,13 +46,14 @@ def cache_path():
     return str(folder / 'requests-cache')
 
 
-def start_caching(**kwargs):
+def start_caching(hours: int):
     from datetime import timedelta
+    import logging
     from requests_cache import install_cache
-    if not kwargs:
-        kwargs = dict(hours=1)
-    ttl = timedelta(**kwargs)
+    ttl = timedelta(hours=hours)
     install_cache(cache_name=cache_path(), expire_after=ttl)
-    print('Using requests_cache to speed up local tests')
-    print('Cache location is', cache_path() + '.sqlite')
-    print('Cache expiration time is set to', ttl)
+    logging.info('Using requests_cache to speed up local tests execution.')
+    logging.info(f"Cache location is {cache_path() + '.sqlite'}")
+    logging.info(f'Cache expiration time is set to {ttl}')
+    
+start_caching(1)
