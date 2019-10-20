@@ -16,7 +16,7 @@ version = pattern.search(text).group(1)
 readme_path = directory.joinpath('README.md')
 long_description = readme_path.read_text(encoding='utf-8-sig')
 
-# extra depedencies with an "all" option
+# extra dependencies with an "all" option
 extras_require = {
     'webpage': [
         'opentimestamps-client',
@@ -36,6 +36,7 @@ setuptools.setup(
     url='https://github.com/manubot/manubot',
     project_urls={
         'Source': 'https://github.com/manubot/manubot',
+        'Documentation': 'https://manubot.github.io/manubot',
         'Tracker': 'https://github.com/manubot/manubot/issues',
         'Homepage': 'https://manubot.org',
         'Publication': 'https://greenelab.github.io/meta-review/',
