@@ -73,15 +73,16 @@ class Base_cite_command_render_stdout():
     - references-jats-2.7.3.xml
     - references-markdown-2.7.2.md
 
-    2.7.2 is current pandoc version on CI builds for these builds.
+    2.7.2 was the current pandoc version on CI builds for these builds,
+    but a newer version 2.7.3 was available too and giving a different output
+    for xml (jats) output.
 
     Filenames must be adjusted accodingly when current pandoc version changes.
 
     Run tests locally skipping this test suit (makes sense if your local pandoc
     version is different from pandoc version used by Travis and Appveyor):
 
-        pytest -v -m "not pandocfail"
-        pytest -k "Test_cite_command_render_stdout" -m "not pandocfail"
+        pytest -v -m "not pandoc_version_sensitive"
         
     See .travis.yml and .appveyor.yml to find out current pandoc version used 
     for testing.
@@ -124,7 +125,7 @@ class Base_cite_command_render_stdout():
         return process.stdout
 
 
-@pytest.mark.pandocfail
+@pytest.mark.pandoc_version_sensitive
 @pytest.mark.skipif(
     pandoc_version < (2, 0),
     reason="Test requires pandoc >= 2.0 to support --lua-filter and --csl=URL")
@@ -139,7 +140,7 @@ class Test_cite_command_render_stdout_above_pandoc_v2(
             self.expected_output('plain', 'txt')
 
 
-@pytest.mark.pandocfail
+@pytest.mark.pandoc_version_sensitive
 @pytest.mark.skipif(
     pandoc_version < (2, 5),
     reason=("Testing markdown, html or jats formats "
