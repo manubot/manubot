@@ -23,6 +23,7 @@ The terminology we've adopted is csl_data for a list of csl_item dicts, and csl_
 for csl_data that is JSON-serialized.
 """
 
+import copy
 from manubot.cite.citekey import standardize_citekey, infer_citekey_prefix, is_valid_citekey
 
 class CSL_Item(dict):
@@ -69,7 +70,7 @@ class CSL_Item(dict):
         """
         if dictionary is None:
             dictionary = dict()
-        super().__init__(dictionary)
+        super().__init__(copy.deepcopy(dictionary))
         self.update(kwargs)
 
     def correct_invalid_type(self):

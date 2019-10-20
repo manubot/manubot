@@ -23,9 +23,8 @@ def csl_item_passthrough(csl_item, set_id=None, prune=True):
     http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
     https://github.com/citation-style-language/schema/blob/master/csl-data.json
     """
-    # We wrap dictionary as CSL_Item and make a copy of all
-    # components to prevent side effect changes.
-    csl_item_ = copy.deepcopy(CSL_Item(csl_item))
+    # We wrap dictionary as CSL_Item.
+    csl_item_ = CSL_Item(csl_item)
     if set_id is not None:
         csl_item_['id'] = set_id
     logging.debug(
