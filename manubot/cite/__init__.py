@@ -5,7 +5,7 @@ __all__ = [
     'standardize_citekey',
 ]
 
-from manubot.cite.util import (
+from manubot.cite.citekey import (
     citekey_to_csl_item,
     standardize_citekey,
 )
