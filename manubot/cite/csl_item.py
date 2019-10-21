@@ -95,6 +95,12 @@ class CSL_Item(dict):
         return self
 
 
+def assert_csl_item_type(x):
+    if not isinstance(x, CSL_Item):
+        raise TypeError(
+            f'Expected CSL_Item object, got {type(x)}')
+
+
 def csl_item_set_standard_id(csl_item):
     """
     Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.

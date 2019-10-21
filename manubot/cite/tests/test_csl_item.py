@@ -4,7 +4,8 @@ import pytest
 
 from manubot.cite.csl_item import (
     csl_item_set_standard_id,
-    CSL_Item)
+    CSL_Item,
+    assert_csl_item_type)
 
 
 class Test_CSL_Item:
@@ -43,6 +44,15 @@ class Test_CSL_Item:
     def test_no_change_of_type(self):
         assert CSL_Item(type='book').correct_invalid_type() == {'type': 'book'}
         assert CSL_Item(type='book').set_default_type() == {'type': 'book'}
+
+
+def test_assert_csl_item_type_passes():
+    assert_csl_item_type(CSL_Item())
+
+
+def test_assert_csl_item_type_raises_error_on_dict():
+    with pytest.raises(TypeError):
+        assert_csl_item_type({})
 
 
 @pytest.mark.parametrize(
