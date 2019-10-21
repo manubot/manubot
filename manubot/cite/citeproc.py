@@ -1,42 +1,50 @@
+"""Correct or validate CSL item schema.
+
+Module naming: citeproc is the generic name for programs that produce
+formatted bibliographies and citations based on the metadata of
+the cited objects and the formatting instructions provided by
+Citation Style Language (CSL) styles.
+-- https://en.wikipedia.org/wiki/CiteProc
+"""
 import copy
 import functools
 import logging
 import re
 
-csl_item_type_fixer = {
-    'journal-article': 'article-journal',
-    'book-chapter': 'chapter',
-    'posted-content': 'manuscript',
-    'proceedings-article': 'paper-conference',
-    'standard': 'entry',
-    'reference-entry': 'entry',
-}
+from manubot.cite.csl_item import CSL_Item
 
 
 def csl_item_passthrough(csl_item, set_id=None, prune=True):
     """
-    Fix errors in a CSL item, according to the CSL JSON schema, and optionally
-    change its id.
+    Return a new CSL item with structure fixes according to the CSL JSON schema,
+    fixed type and optionally change CSL item id.
 
     http://docs.citationstyles.org/en/1.0.1/specification.html
     http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
     https://github.com/citation-style-language/schema/blob/master/csl-data.json
     """
+    # We wrap dictionary as CSL_Item.
+    csl_item = CSL_Item(csl_item)
     if set_id is not None:
         csl_item['id'] = set_id
-    logging.debug(f"Starting csl_item_passthrough with{'' if prune else 'out'} CSL pruning for id: {csl_item.get('id', 'id not specified')}")
+    logging.debug(
+        f"Starting csl_item_passthrough with{'' if prune else 'out'}"
+        f"CSL pruning for id: {csl_item.get('id', 'id not specified')}")
+
+    # WARNING: remove_jsonschema_errors, .correct_invalid_type and
+    #          .set_default_type() operations are not independent.
+    #          Changing order of execution of these operation may
+    #          result in failure of downstream tests.
 
     # Correct invalid CSL item types
-    # See https://github.com/CrossRef/rest-api-doc/issues/187
-    if 'type' in csl_item:
-        csl_item['type'] = csl_item_type_fixer.get(csl_item['type'], csl_item['type'])
+    csl_item = csl_item.correct_invalid_type()
 
     if prune:
         # Remove fields that violate the CSL Item JSON Schema
         csl_item, = remove_jsonschema_errors([csl_item])
 
-    # Default CSL type to entry
-    csl_item['type'] = csl_item.get('type', 'entry')
+    # Default CSL type to 'entry'
+    csl_item = csl_item.set_default_type()
 
     if prune:
         # Confirm that corrected CSL validates
@@ -54,11 +62,14 @@ def append_to_csl_item_note(csl_item, text='', dictionary={}):
     Use dictionary to specify variable-value pairs.
     """
     if not isinstance(csl_item, dict):
-        raise ValueError(f'append_to_csl_item_note: csl_item must be a dict but was of type {type(csl_item)}')
+        raise ValueError(
+            f'append_to_csl_item_note: csl_item must be a dict but was of type {type(csl_item)}')
     if not isinstance(dictionary, dict):
-        raise ValueError(f'append_to_csl_item_note: dictionary must be a dict but was of type {type(dictionary)}')
+        raise ValueError(
+            f'append_to_csl_item_note: dictionary must be a dict but was of type {type(dictionary)}')
     if not isinstance(text, str):
-        raise ValueError(f'append_to_csl_item_note: text must be a str but was of type {type(text)}')
+        raise ValueError(
+            f'append_to_csl_item_note: text must be a str but was of type {type(text)}')
     note = str(csl_item.get('note', ''))
     if text:
         if note and not note.endswith('\n'):
@@ -66,10 +77,12 @@ def append_to_csl_item_note(csl_item, text='', dictionary={}):
         note += text
     for key, value in dictionary.items():
         if not re.fullmatch(r'[A-Z]+|[-_a-z]+', key):
-            logging.warning(f'append_to_csl_item_note: skipping adding "{key}" because it does not conform to the variable_name syntax as per https://git.io/fjTzW.')
+            logging.warning(
+                f'append_to_csl_item_note: skipping adding "{key}" because it does not conform to the variable_name syntax as per https://git.io/fjTzW.')
             continue
         if '\n' in value:
-            logging.warning(f'append_to_csl_item_note: skipping adding "{key}" because the value contains a newline: "{value}"')
+            logging.warning(
+                f'append_to_csl_item_note: skipping adding "{key}" because the value contains a newline: "{value}"')
             continue
         if note and not note.endswith('\n'):
             note += '\n'
@@ -176,7 +189,8 @@ def _remove_error(instance, error):
     """
     sub_errors = error.context
     if sub_errors:
-        # already_removed_additional was neccessary to workaround https://github.com/citation-style-language/schema/issues/154
+        # already_removed_additional was neccessary to workaround
+        # https://github.com/citation-style-language/schema/issues/154
         already_removed_additional = False
         for sub_error in sub_errors:
             if sub_error.validator == 'additionalProperties':

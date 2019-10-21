@@ -1,4 +1,104 @@
+"""Represent bibliographic information for a single publication.
+
+From the CSL docs:
+
+    Next up are the bibliographic details of the items you wish to cite: the item metadata.
+
+    For example, the bibliographic entry for a journal article may show the names of the 
+    authors, the year in which the article was published, the article title, the journal 
+    title, the volume and issue in which the article appeared, the page numbers of the 
+    article, and the article’s Digital Object Identifier (DOI). All these details help 
+    the reader identify and find the referenced work.
+
+    Reference managers make it easy to create a library of items. While many reference 
+    managers have their own way of storing item metadata, most support common bibliographic 
+    exchange formats such as BibTeX and RIS. The citeproc-js CSL processor introduced a 
+    JSON-based format for storing item metadata in a way citeproc-js could understand. 
+    Several other CSL processors have since adopted this “CSL JSON” format (also known as 
+    “citeproc JSON”).
+
+-- https://github.com/citation-style-language/documentation/blob/master/primer.txt
+
+The terminology we've adopted is csl_data for a list of csl_item dicts, and csl_json 
+for csl_data that is JSON-serialized.
+"""
+
+import copy
 from manubot.cite.citekey import standardize_citekey, infer_citekey_prefix, is_valid_citekey
+
+class CSL_Item(dict):
+    """
+    CSL_Item represents bibliographic information for a single publication.
+
+    On a technical side CSL_Item is a Python dictionary with extra methods
+    that help cleaning and manipulating it.
+
+    These methods relate to:
+    - adding an `id` key and value for CSL item
+    - correcting bibliographic information and its structure
+    - adding and reading a custom note to CSL item
+    """
+
+    # The ideas for CSL_Item methods come from the following parts of code:
+    #  - [ ] citekey_to_csl_item(citekey, prune=True)
+    #  - [x] csl_item_passthrough
+    #  - [ ] append_to_csl_item_note
+    # The methods in CSL_Item class provide primitives to reconstruct
+    # fucntions above.
+
+    type_mapping = {
+        'journal-article': 'article-journal',
+        'book-chapter': 'chapter',
+        'posted-content': 'manuscript',
+        'proceedings-article': 'paper-conference',
+        'standard': 'entry',
+        'reference-entry': 'entry',
+    }
+
+    def __init__(self, dictionary=None, **kwargs):
+        """
+        Can use both a dictionary or keywords to create a CSL_Item object:
+
+            CSL_Item(title='The Book')
+            CSL_Item({'title': 'The Book'})
+            csl_dict = {'title': 'The Book', 'ISBN': '321-321'}
+            CSL_Item(csl_dict, type='entry')
+            CSL_Item(title='The Book', ISBN='321-321', type='entry')
+
+        CSL_Item object is usually provided by bibliographic information API,
+        but constructing small CSL_Item objects is useful for testing.
+        """
+        if dictionary is None:
+            dictionary = dict()
+        super().__init__(copy.deepcopy(dictionary))
+        self.update(copy.deepcopy(kwargs))
+
+    def correct_invalid_type(self):
+        """
+        Correct invalid CSL item type.
+        Does nothing if `type` not present.
+
+        For detail see https://github.com/CrossRef/rest-api-doc/issues/187
+        """
+        if 'type' in self:            
+            # Replace a type from in CSL_Item.type_mapping.keys(),
+            # leave type intact in other cases.
+            t = self['type'] 
+            self['type'] = self.type_mapping.get(t, t)
+        return self
+
+    def set_default_type(self):
+        """
+        Set type to 'entry', if type not specified.
+        """
+        self['type'] = self.get('type', 'entry')
+        return self
+
+
+def assert_csl_item_type(x):
+    if not isinstance(x, CSL_Item):
+        raise TypeError(
+            f'Expected CSL_Item object, got {type(x)}')
 
 
 def csl_item_set_standard_id(csl_item):

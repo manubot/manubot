@@ -1,8 +1,58 @@
 import copy
 import pytest
 
+
 from manubot.cite.csl_item import (
-    csl_item_set_standard_id)
+    csl_item_set_standard_id,
+    CSL_Item,
+    assert_csl_item_type)
+
+
+class Test_CSL_Item:
+    def test_constuctor_empty(self):
+        assert CSL_Item() == {}
+
+    def test_constuctor_by_dict(self):
+        d = {'title': 'My book'}
+        assert CSL_Item(d) == d
+
+    def test_constuctor_by_keyword(self):
+        assert CSL_Item(type='journal-article') == {'type': 'journal-article'}
+
+    def test_constuctor_by_dict_keyword_combination(self):
+        assert CSL_Item({'title': 'My journal article'},
+                        type='journal-article') == \
+            {'title': 'My journal article', 'type': 'journal-article'}
+
+    def test_recursive_constructor(self):
+        assert CSL_Item(CSL_Item()) == {}
+        assert CSL_Item(CSL_Item(abc=1)) == {'abc': 1}
+
+    def test_constructor_leaves_no_inplace_effects(self):
+        dict1 = {'a': 1}
+        ci = CSL_Item(dict1, b=2)
+        assert ci == {'a': 1, 'b': 2}
+        assert dict1 == {'a': 1}
+
+    def test_correct_invalid_type(self):
+        assert CSL_Item(type='journal-article').correct_invalid_type() == \
+            {'type': 'article-journal'}
+
+    def test_set_default_type(self):
+        assert CSL_Item().set_default_type() == {'type': 'entry'}
+
+    def test_no_change_of_type(self):
+        assert CSL_Item(type='book').correct_invalid_type() == {'type': 'book'}
+        assert CSL_Item(type='book').set_default_type() == {'type': 'book'}
+
+
+def test_assert_csl_item_type_passes():
+    assert_csl_item_type(CSL_Item())
+
+
+def test_assert_csl_item_type_raises_error_on_dict():
+    with pytest.raises(TypeError):
+        assert_csl_item_type({})
 
 
 @pytest.mark.parametrize(
@@ -66,4 +116,3 @@ def test_csl_item_set_standard_id_note():
     note_dict = parse_csl_item_note(csl_item['note'])
     assert note_dict['original_id'] == 'original-id'
     assert note_dict['original_standard_id'] == 'doi:10.1371/journal.PPAT.1006256'
-
