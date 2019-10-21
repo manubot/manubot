@@ -4,7 +4,6 @@ import pathlib
 import pytest
 
 from manubot.cite.citeproc import (
-    csl_item_passthrough,
     append_to_csl_item_note,
     parse_csl_item_note,
     remove_jsonschema_errors,
@@ -27,13 +26,6 @@ def test_json_is_readable_on_windows_in_different_oem_encoding():
     assert content
     json1 = load_json(path)
     assert json1
-
-
-def test_csl_item_passthrough():
-    ci1 = csl_item_passthrough(dict(type='chapter', id='abc'), prune=True)
-    ci2 = csl_item_passthrough(dict(type='chapter'), set_id='abc', prune=True)
-    assert ci1 == {'type': 'chapter', 'id': 'abc'}
-    assert ci2 == {'type': 'chapter', 'id': 'abc'}
 
 
 @pytest.mark.parametrize('name', csl_instances)

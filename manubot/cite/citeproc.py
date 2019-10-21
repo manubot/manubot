@@ -11,23 +11,6 @@ import functools
 import logging
 import re
 
-from manubot.cite.csl_item import CSL_Item
-
-
-def csl_item_passthrough(csl_item, set_id=None, prune=True):
-    """
-    Return a new CSL item with structure fixes according to the CSL JSON schema,
-    fixed type and optionally change CSL item id.
-
-    http://docs.citationstyles.org/en/1.0.1/specification.html
-    http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
-    https://github.com/citation-style-language/schema/blob/master/csl-data.json
-    """
-    # We wrap dictionary as CSL_Item.
-    csl_item = CSL_Item(csl_item)
-    csl_item = csl_item.clean(set_id=set_id, prune=prune)
-    return csl_item
-
 
 def append_to_csl_item_note(csl_item, text='', dictionary={}):
     """

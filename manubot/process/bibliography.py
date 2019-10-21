@@ -3,15 +3,12 @@ import logging
 import pathlib
 
 from manubot import __version__ as manubot_version
-from manubot.cite.citeproc import (
-    append_to_csl_item_note,
-    csl_item_passthrough,
-)
+from manubot.cite.citeproc import append_to_csl_item_note
 from manubot.cite.csl_item import csl_item_set_standard_id
 from manubot.cite.citekey import shorten_citekey
 
 
-def load_bibliography(path):
+def load_bibliography(path) -> list:
     """
     Load a bibliography as CSL Items (a CSL JSON Python object).
     For paths that already contain CSL Items (inferred from a .json or .yaml extension),
@@ -43,16 +40,19 @@ def load_bibliography(path):
             'Setting csl_items to an empty list.'
         )
         csl_items = []
+    from manubot.cite.csl_item import CSL_Item
+    csl_items = [CSL_Item(csl_item) for csl_item in csl_items]
     return csl_items
 
 
-def load_manual_references(paths=[], extra_csl_items=[]):
+def load_manual_references(paths=[], extra_csl_items=[]) -> dict:
     """
     Read manual references (overrides) from files specified by a list of paths.
     Returns a standard_citation to CSL Item dictionary. extra_csl_items specifies
     JSON CSL stored as a Python object, to be used in addition to the CSL JSON
     stored as text in the file specified by path. Set paths=[] to only use extra_csl_items.
     """
+    from manubot.cite.csl_item import CSL_Item
     csl_items = []
     for path in paths:
         path = pathlib.Path(path)
@@ -66,7 +66,7 @@ def load_manual_references(paths=[], extra_csl_items=[]):
                 dictionary={'manual_reference_filename': path.name},
             )
             csl_items.append(csl_item)
-    csl_items.extend(extra_csl_items)
+    csl_items.extend(map(CSL_Item, extra_csl_items))
     manual_refs = dict()
     for csl_item in csl_items:
         try:
@@ -76,6 +76,6 @@ def load_manual_references(paths=[], extra_csl_items=[]):
             logging.info(f'Skipping csl_item where setting standard_id failed:\n{csl_item_str}', exc_info=True)
             continue
         standard_id = csl_item['id']
-        csl_item = csl_item_passthrough(csl_item, set_id=shorten_citekey(standard_id))
+        csl_item.clean(set_id=shorten_citekey(standard_id))
         manual_refs[standard_id] = csl_item
     return manual_refs

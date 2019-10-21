@@ -49,7 +49,6 @@ class CSL_Item(dict):
 
     # The ideas for CSL_Item methods come from the following parts of code:
     #  - [ ] citekey_to_csl_item(citekey, prune=True)
-    #  - [x] csl_item_passthrough
     #  - [ ] append_to_csl_item_note
     # The methods in CSL_Item class provide primitives to reconstruct
     # fucntions above.
