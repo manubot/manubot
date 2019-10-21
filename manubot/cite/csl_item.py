@@ -71,7 +71,7 @@ class CSL_Item(dict):
         if dictionary is None:
             dictionary = dict()
         super().__init__(copy.deepcopy(dictionary))
-        self.update(kwargs)
+        self.update(copy.deepcopy(kwargs))
 
     def correct_invalid_type(self):
         """
