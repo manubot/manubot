@@ -24,6 +24,7 @@ for csl_data that is JSON-serialized.
 """
 
 import copy
+import logging
 
 from manubot.cite.citekey import standardize_citekey, infer_citekey_prefix, is_valid_citekey
 
@@ -39,6 +40,11 @@ class CSL_Item(dict):
     - adding an `id` key and value for CSL item
     - correcting bibliographic information and its structure
     - adding and reading a custom note to CSL item
+
+    More information on CSL JSON (a list of CSL_Items) is available at:
+    - https://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
+    - http://docs.citationstyles.org/en/1.0.1/specification.html#standard-variables
+    - https://github.com/citation-style-language/schema/blob/master/csl-data.json
     """
 
     # The ideas for CSL_Item methods come from the following parts of code:
@@ -94,6 +100,48 @@ class CSL_Item(dict):
         Set type to 'entry', if type not specified.
         """
         self['type'] = self.get('type', 'entry')
+        return self
+
+    def prune_against_schema(self):
+        """
+        Remove fields that violate the CSL Item JSON Schema.
+        """
+        from .citeproc import remove_jsonschema_errors
+        csl_item, = remove_jsonschema_errors([self], in_place=True)
+        assert csl_item is self
+        return self
+
+    def validate_against_schema(self):
+        """
+        Confirm that the CSL_Item validates. If not, raises a
+        jsonschema.exceptions.ValidationError.
+        """
+        from .citeproc import get_jsonschema_csl_validator
+        validator = get_jsonschema_csl_validator()
+        validator.validate([self])
+
+    def clean(self, set_id=None, prune: bool = True):
+        """
+        Sanitize and touch-up a potentially dirty CSL_Item.
+        The following steps are performed:
+        - set "id" field to the value provided by `set_id` (if set_id is not None)
+        - update incorrect values for "type" field when a correct variant is known
+        - remove fields that violate the JSON Schema (if prune=True)
+        - set default value for "type" if missing, since CSL JSON requires type
+        - validate against the CSL JSON schema (if prune=True) to ensure output
+          CSL_Item is clean
+        """
+        if set_id is not None:
+            self['id'] = set_id
+        logging.debug(
+            f"Starting passthrough with{'' if prune else 'out'}"
+            f"CSL pruning for id: {self.get('id', 'id not specified')}")
+        self.correct_invalid_type()
+        if prune:
+            self.prune_against_schema()
+        self.set_default_type()
+        if prune:
+            self.validate_against_schema()
         return self
 
 

@@ -25,31 +25,7 @@ def csl_item_passthrough(csl_item, set_id=None, prune=True):
     """
     # We wrap dictionary as CSL_Item.
     csl_item = CSL_Item(csl_item)
-    if set_id is not None:
-        csl_item['id'] = set_id
-    logging.debug(
-        f"Starting csl_item_passthrough with{'' if prune else 'out'}"
-        f"CSL pruning for id: {csl_item.get('id', 'id not specified')}")
-
-    # WARNING: remove_jsonschema_errors, .correct_invalid_type and
-    #          .set_default_type() operations are not independent.
-    #          Changing order of execution of these operation may
-    #          result in failure of downstream tests.
-
-    # Correct invalid CSL item types
-    csl_item = csl_item.correct_invalid_type()
-
-    if prune:
-        # Remove fields that violate the CSL Item JSON Schema
-        csl_item, = remove_jsonschema_errors([csl_item])
-
-    # Default CSL type to 'entry'
-    csl_item = csl_item.set_default_type()
-
-    if prune:
-        # Confirm that corrected CSL validates
-        validator = get_jsonschema_csl_validator()
-        validator.validate([csl_item])
+    csl_item = csl_item.clean(set_id=set_id, prune=prune)
     return csl_item
 
 
@@ -122,7 +98,7 @@ def get_jsonschema_csl_validator():
     return Validator(schema)
 
 
-def remove_jsonschema_errors(instance, recurse_depth=5):
+def remove_jsonschema_errors(instance, recurse_depth=5, in_place=False):
     """
     Remove fields in CSL Items that produce JSON Schema errors. Should errors
     be removed, but the JSON instance still fails to validate, recursively call
@@ -140,7 +116,8 @@ def remove_jsonschema_errors(instance, recurse_depth=5):
     """
     validator = get_jsonschema_csl_validator()
     errors = list(validator.iter_errors(instance))
-    instance = copy.deepcopy(instance)
+    if not in_place:
+        instance = copy.deepcopy(instance)
     errors = sorted(errors, key=lambda e: e.path, reverse=True)
     for error in errors:
         _remove_error(instance, error)
