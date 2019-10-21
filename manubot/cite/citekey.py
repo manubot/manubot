@@ -294,7 +294,8 @@ def citekey_to_csl_item(citekey, prune=True):
     append_to_csl_item_note(csl_item, note_text, note_dict)
 
     short_citekey = shorten_citekey(citekey)
-    csl_item.clean(set_id=short_citekey, prune=prune)
+    csl_item.set_id(short_citekey)
+    csl_item.clean(prune=prune)
 
     return csl_item
 

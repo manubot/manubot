@@ -80,6 +80,10 @@ class CSL_Item(dict):
         super().__init__(copy.deepcopy(dictionary))
         self.update(copy.deepcopy(kwargs))
 
+    def set_id(self, id_):
+        self['id'] = id_
+        return self
+
     def correct_invalid_type(self):
         """
         Correct invalid CSL item type.
@@ -118,22 +122,20 @@ class CSL_Item(dict):
         from .citeproc import get_jsonschema_csl_validator
         validator = get_jsonschema_csl_validator()
         validator.validate([self])
+        return self
 
-    def clean(self, set_id=None, prune: bool = True):
+    def clean(self, prune: bool = True):
         """
         Sanitize and touch-up a potentially dirty CSL_Item.
         The following steps are performed:
-        - set "id" field to the value provided by `set_id` (if set_id is not None)
         - update incorrect values for "type" field when a correct variant is known
         - remove fields that violate the JSON Schema (if prune=True)
         - set default value for "type" if missing, since CSL JSON requires type
         - validate against the CSL JSON schema (if prune=True) to ensure output
           CSL_Item is clean
         """
-        if set_id is not None:
-            self['id'] = set_id
         logging.debug(
-            f"Starting passthrough with{'' if prune else 'out'}"
+            f"Starting CSL_Item.clean with{'' if prune else 'out'}"
             f"CSL pruning for id: {self.get('id', 'id not specified')}")
         self.correct_invalid_type()
         if prune:

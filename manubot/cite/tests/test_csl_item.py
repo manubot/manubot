@@ -52,7 +52,8 @@ class Test_CSL_Item:
 
     def test_clean_set_id(self):
         csl_item = CSL_Item(type='chapter')
-        csl_item.clean(prune=True, set_id='abc')
+        csl_item.set_id('abc')
+        csl_item.clean(prune=True)
         assert csl_item == {'type': 'chapter', 'id': 'abc'}
 
 

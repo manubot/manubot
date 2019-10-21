@@ -76,6 +76,7 @@ def load_manual_references(paths=[], extra_csl_items=[]) -> dict:
             logging.info(f'Skipping csl_item where setting standard_id failed:\n{csl_item_str}', exc_info=True)
             continue
         standard_id = csl_item['id']
-        csl_item.clean(set_id=shorten_citekey(standard_id))
+        csl_item.set_id(shorten_citekey(standard_id))
+        csl_item.clean()
         manual_refs[standard_id] = csl_item
     return manual_refs
