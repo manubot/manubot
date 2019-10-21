@@ -94,10 +94,11 @@ def remove_jsonschema_errors(instance, recurse_depth=5, in_place=False):
     intended.
 
     The default in_place=False creates a deepcopy of instance before pruning it,
-    such that a new dictionary is returned and instance is not edited. Use
-    in_place=True to edit instance in-place. in_place=True was added after this
-    function's initial implementation. Hence, whether its neccessary to handle
-    certain edge cases is unknown.
+    such that a new dictionary is returned and instance is not edited.
+    Set in_place=True to edit instance in-place. The inital implementation of
+    remove_jsonschema_errors always deepcopied instance, and it is possible deepcopying
+    is important to prevent malfunction when encountering certain edge cases.
+    Please report if you observe any in_place dependent behaviors.
 
     See also:
     https://github.com/Julian/jsonschema/issues/448
