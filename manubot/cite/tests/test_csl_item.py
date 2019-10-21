@@ -1,6 +1,6 @@
 import copy
-import pytest
 
+import pytest
 
 from manubot.cite.csl_item import (
     csl_item_set_standard_id,
