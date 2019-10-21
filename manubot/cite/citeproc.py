@@ -123,7 +123,7 @@ def remove_jsonschema_errors(instance, recurse_depth=5, in_place=False):
         _remove_error(instance, error)
     if validator.is_valid(instance) or recurse_depth < 1:
         return instance
-    return remove_jsonschema_errors(instance, recurse_depth - 1)
+    return remove_jsonschema_errors(instance, recurse_depth - 1, in_place=in_place)
 
 
 def _delete_elem(instance, path, absolute_path=None, message=''):
