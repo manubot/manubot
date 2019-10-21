@@ -24,12 +24,12 @@ def csl_item_passthrough(csl_item, set_id=None, prune=True):
     https://github.com/citation-style-language/schema/blob/master/csl-data.json
     """
     # We wrap dictionary as CSL_Item.
-    csl_item_ = CSL_Item(csl_item)
+    csl_item = CSL_Item(csl_item)
     if set_id is not None:
-        csl_item_['id'] = set_id
+        csl_item['id'] = set_id
     logging.debug(
         f"Starting csl_item_passthrough with{'' if prune else 'out'}"
-        f"CSL pruning for id: {csl_item_.get('id', 'id not specified')}")
+        f"CSL pruning for id: {csl_item.get('id', 'id not specified')}")
 
     # WARNING: remove_jsonschema_errors, .correct_invalid_type and
     #          .set_default_type() operations are not independent.
@@ -37,20 +37,20 @@ def csl_item_passthrough(csl_item, set_id=None, prune=True):
     #          result in failure of downstream tests.
 
     # Correct invalid CSL item types
-    csl_item_ = csl_item_.correct_invalid_type()
+    csl_item = csl_item.correct_invalid_type()
 
     if prune:
         # Remove fields that violate the CSL Item JSON Schema
-        csl_item_, = remove_jsonschema_errors([csl_item_])
+        csl_item, = remove_jsonschema_errors([csl_item])
 
     # Default CSL type to 'entry'
-    csl_item_ = csl_item_.set_default_type()
+    csl_item = csl_item.set_default_type()
 
     if prune:
         # Confirm that corrected CSL validates
         validator = get_jsonschema_csl_validator()
-        validator.validate([csl_item_])
-    return csl_item_
+        validator.validate([csl_item])
+    return csl_item
 
 
 def append_to_csl_item_note(csl_item, text='', dictionary={}):
