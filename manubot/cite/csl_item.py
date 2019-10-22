@@ -165,24 +165,24 @@ class CSL_Item(dict):
         """
         if self.get('standard_citation'):
             # "standard_citation" field is set with a non-null/empty value
-            self.set_id(self.pop('standard_citation'))
-        elif self.note_dict.get('standard_id'):
+            return self.set_id(self.pop('standard_citation'))
+        if self.note_dict.get('standard_id'):
             # "standard_id" note field is set with a non-null/empty value
-            self.set_id(self.note_dict['standard_id'])
-        if not self.get('id'):
-            # "id" field does not exist or its value is None or empty
-            raise ValueError(
-                'infer_id could not detect a field with a citation / standard_citation. '
-                'Consider setting the CSL Item "id" field.')
-        return self
+            return self.set_id(self.note_dict['standard_id'])
+        if self.get('id'):
+            # "id" field exists and is set with a non-null/empty value
+            return self.set_id(infer_citekey_prefix(self['id']))
+        raise ValueError(
+            'infer_id could not detect a field with a citation / standard_citation. '
+            'Consider setting the CSL Item "id" field.')
 
     def standardize_id(self):
         """
         Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.
         The standard_id is extracted from a "standard_citation" field, the "note" field, or the "id" field.
-        Uses the infer_citekey_prefix function to set the prefix.
-        For example, if the extracted standard_id does not begin with a supported prefix (e.g. "doi:", "pmid:"
-        or "raw:"), the citation is assumed to be raw and given a "raw:" prefix.
+        If extracting the citation from the "id" field, uses the infer_citekey_prefix function to set the prefix.
+        For example, if the extracted standard_id does not begin with a supported prefix (e.g. "doi:", "pmid:" or "raw:"),
+        the citation is assumed to be raw and given a "raw:" prefix.
         The extracted citation is checked for validity and standardized, after which it is the final "standard_id".
 
         Regarding csl_item modification, the csl_item "id" field is set to the standard_citation and the note field
@@ -193,7 +193,7 @@ class CSL_Item(dict):
         """
         original_id = self.get('id')
         self.infer_id()
-        original_standard_id = infer_citekey_prefix(original_id)
+        original_standard_id = self['id']
         assert is_valid_citekey(original_standard_id, allow_raw=True)
         standard_id = standardize_citekey(original_standard_id, warn_if_changed=False)
         add_to_note = {}
