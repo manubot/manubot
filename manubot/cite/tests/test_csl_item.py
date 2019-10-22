@@ -3,7 +3,6 @@ import copy
 import pytest
 
 from manubot.cite.csl_item import (
-    csl_item_set_standard_id,
     CSL_Item,
     assert_csl_item_type)
 
@@ -93,35 +92,32 @@ def test_assert_csl_item_type_raises_error_on_dict():
         'from_raw_id',
     ]
 )
-def test_csl_item_set_standard_id(csl_item, standard_citation):
-    output = csl_item_set_standard_id(csl_item)
+def test_csl_item_standardize_id(csl_item, standard_citation):
+    csl_item = CSL_Item(csl_item)
+    output = csl_item.standardize_id()
     assert output is csl_item
     assert output['id'] == standard_citation
 
 
-def test_csl_item_set_standard_id_repeated():
-    csl_item = {
-        'id': 'pmid:1',
-        'type': 'article-journal',
-    }
-    # csl_item_0 = copy.deepcopy(csl_item)
-    csl_item_1 = copy.deepcopy(csl_item_set_standard_id(csl_item))
+def test_csl_item_standardize_id_repeated():
+    csl_item = CSL_Item(id='pmid:1', type='article-journal')
+    csl_item_1 = copy.deepcopy(csl_item.standardize_id())
     assert 'standard_citation' not in 'csl_item'
-    csl_item_2 = copy.deepcopy(csl_item_set_standard_id(csl_item))
+    csl_item_2 = copy.deepcopy(csl_item.standardize_id())
     assert csl_item_1 == csl_item_2
 
 
-def test_csl_item_set_standard_id_note():
+def test_csl_item_standardize_id_note():
     """
     Test extracting standard_id from a note and setting additional
     note fields.
     """
-    csl_item = {
+    csl_item = CSL_Item({
         'id': 'original-id',
         'type': 'article-journal',
         'note': 'standard_id: doi:10.1371/journal.PPAT.1006256',
-    }
-    csl_item_set_standard_id(csl_item)
+    })
+    csl_item.standardize_id
     assert csl_item['id'] == 'doi:10.1371/journal.ppat.1006256'
     from manubot.cite.citeproc import parse_csl_item_note
     note_dict = parse_csl_item_note(csl_item['note'])

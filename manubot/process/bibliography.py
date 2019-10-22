@@ -4,7 +4,6 @@ import pathlib
 
 from manubot import __version__ as manubot_version
 from manubot.cite.citeproc import append_to_csl_item_note
-from manubot.cite.csl_item import csl_item_set_standard_id
 from manubot.cite.citekey import shorten_citekey
 
 
@@ -70,7 +69,7 @@ def load_manual_references(paths=[], extra_csl_items=[]) -> dict:
     manual_refs = dict()
     for csl_item in csl_items:
         try:
-            csl_item_set_standard_id(csl_item)
+            csl_item.standardize_id()
         except Exception:
             csl_item_str = json.dumps(csl_item, indent=2)
             logging.info(f'Skipping csl_item where setting standard_id failed:\n{csl_item_str}', exc_info=True)
