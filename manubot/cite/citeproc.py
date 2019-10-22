@@ -11,47 +11,6 @@ import functools
 import logging
 import re
 
-from manubot.cite.csl_item import CSL_Item
-
-
-def csl_item_passthrough(csl_item, set_id=None, prune=True):
-    """
-    Return a new CSL item with structure fixes according to the CSL JSON schema,
-    fixed type and optionally change CSL item id.
-
-    http://docs.citationstyles.org/en/1.0.1/specification.html
-    http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
-    https://github.com/citation-style-language/schema/blob/master/csl-data.json
-    """
-    # We wrap dictionary as CSL_Item.
-    csl_item = CSL_Item(csl_item)
-    if set_id is not None:
-        csl_item['id'] = set_id
-    logging.debug(
-        f"Starting csl_item_passthrough with{'' if prune else 'out'}"
-        f"CSL pruning for id: {csl_item.get('id', 'id not specified')}")
-
-    # WARNING: remove_jsonschema_errors, .correct_invalid_type and
-    #          .set_default_type() operations are not independent.
-    #          Changing order of execution of these operation may
-    #          result in failure of downstream tests.
-
-    # Correct invalid CSL item types
-    csl_item = csl_item.correct_invalid_type()
-
-    if prune:
-        # Remove fields that violate the CSL Item JSON Schema
-        csl_item, = remove_jsonschema_errors([csl_item])
-
-    # Default CSL type to 'entry'
-    csl_item = csl_item.set_default_type()
-
-    if prune:
-        # Confirm that corrected CSL validates
-        validator = get_jsonschema_csl_validator()
-        validator.validate([csl_item])
-    return csl_item
-
 
 def append_to_csl_item_note(csl_item, text='', dictionary={}):
     """
@@ -122,7 +81,7 @@ def get_jsonschema_csl_validator():
     return Validator(schema)
 
 
-def remove_jsonschema_errors(instance, recurse_depth=5):
+def remove_jsonschema_errors(instance, recurse_depth=5, in_place=False):
     """
     Remove fields in CSL Items that produce JSON Schema errors. Should errors
     be removed, but the JSON instance still fails to validate, recursively call
@@ -134,19 +93,27 @@ def remove_jsonschema_errors(instance, recurse_depth=5):
     task-specific tests to provide empirical evaluate that it works as
     intended.
 
+    The default in_place=False creates a deepcopy of instance before pruning it,
+    such that a new dictionary is returned and instance is not edited.
+    Set in_place=True to edit instance in-place. The inital implementation of
+    remove_jsonschema_errors always deepcopied instance, and it is possible deepcopying
+    is important to prevent malfunction when encountering certain edge cases.
+    Please report if you observe any in_place dependent behaviors.
+
     See also:
     https://github.com/Julian/jsonschema/issues/448
     https://stackoverflow.com/questions/44694835
     """
     validator = get_jsonschema_csl_validator()
     errors = list(validator.iter_errors(instance))
-    instance = copy.deepcopy(instance)
+    if not in_place:
+        instance = copy.deepcopy(instance)
     errors = sorted(errors, key=lambda e: e.path, reverse=True)
     for error in errors:
         _remove_error(instance, error)
     if validator.is_valid(instance) or recurse_depth < 1:
         return instance
-    return remove_jsonschema_errors(instance, recurse_depth - 1)
+    return remove_jsonschema_errors(instance, recurse_depth - 1, in_place=in_place)
 
 
 def _delete_elem(instance, path, absolute_path=None, message=''):

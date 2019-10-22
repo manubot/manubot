@@ -4,31 +4,34 @@ From the CSL docs:
 
     Next up are the bibliographic details of the items you wish to cite: the item metadata.
 
-    For example, the bibliographic entry for a journal article may show the names of the 
-    authors, the year in which the article was published, the article title, the journal 
-    title, the volume and issue in which the article appeared, the page numbers of the 
-    article, and the article’s Digital Object Identifier (DOI). All these details help 
+    For example, the bibliographic entry for a journal article may show the names of the
+    authors, the year in which the article was published, the article title, the journal
+    title, the volume and issue in which the article appeared, the page numbers of the
+    article, and the article’s Digital Object Identifier (DOI). All these details help
     the reader identify and find the referenced work.
 
-    Reference managers make it easy to create a library of items. While many reference 
-    managers have their own way of storing item metadata, most support common bibliographic 
-    exchange formats such as BibTeX and RIS. The citeproc-js CSL processor introduced a 
-    JSON-based format for storing item metadata in a way citeproc-js could understand. 
-    Several other CSL processors have since adopted this “CSL JSON” format (also known as 
+    Reference managers make it easy to create a library of items. While many reference
+    managers have their own way of storing item metadata, most support common bibliographic
+    exchange formats such as BibTeX and RIS. The citeproc-js CSL processor introduced a
+    JSON-based format for storing item metadata in a way citeproc-js could understand.
+    Several other CSL processors have since adopted this “CSL JSON” format (also known as
     “citeproc JSON”).
 
 -- https://github.com/citation-style-language/documentation/blob/master/primer.txt
 
-The terminology we've adopted is csl_data for a list of csl_item dicts, and csl_json 
+The terminology we've adopted is csl_data for a list of csl_item dicts, and csl_json
 for csl_data that is JSON-serialized.
 """
 
 import copy
+import logging
+
 from manubot.cite.citekey import standardize_citekey, infer_citekey_prefix, is_valid_citekey
+
 
 class CSL_Item(dict):
     """
-    CSL_Item represents bibliographic information for a single publication.
+    CSL_Item represents bibliographic information for a single citeable work.
 
     On a technical side CSL_Item is a Python dictionary with extra methods
     that help cleaning and manipulating it.
@@ -37,11 +40,15 @@ class CSL_Item(dict):
     - adding an `id` key and value for CSL item
     - correcting bibliographic information and its structure
     - adding and reading a custom note to CSL item
+
+    More information on CSL JSON (a list of CSL_Items) is available at:
+    - https://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
+    - http://docs.citationstyles.org/en/1.0.1/specification.html#standard-variables
+    - https://github.com/citation-style-language/schema/blob/master/csl-data.json
     """
 
     # The ideas for CSL_Item methods come from the following parts of code:
     #  - [ ] citekey_to_csl_item(citekey, prune=True)
-    #  - [x] csl_item_passthrough
     #  - [ ] append_to_csl_item_note
     # The methods in CSL_Item class provide primitives to reconstruct
     # fucntions above.
@@ -73,6 +80,10 @@ class CSL_Item(dict):
         super().__init__(copy.deepcopy(dictionary))
         self.update(copy.deepcopy(kwargs))
 
+    def set_id(self, id_):
+        self['id'] = id_
+        return self
+
     def correct_invalid_type(self):
         """
         Correct invalid CSL item type.
@@ -80,10 +91,10 @@ class CSL_Item(dict):
 
         For detail see https://github.com/CrossRef/rest-api-doc/issues/187
         """
-        if 'type' in self:            
+        if 'type' in self:
             # Replace a type from in CSL_Item.type_mapping.keys(),
             # leave type intact in other cases.
-            t = self['type'] 
+            t = self['type']
             self['type'] = self.type_mapping.get(t, t)
         return self
 
@@ -92,6 +103,46 @@ class CSL_Item(dict):
         Set type to 'entry', if type not specified.
         """
         self['type'] = self.get('type', 'entry')
+        return self
+
+    def prune_against_schema(self):
+        """
+        Remove fields that violate the CSL Item JSON Schema.
+        """
+        from .citeproc import remove_jsonschema_errors
+        csl_item, = remove_jsonschema_errors([self], in_place=True)
+        assert csl_item is self
+        return self
+
+    def validate_against_schema(self):
+        """
+        Confirm that the CSL_Item validates. If not, raises a
+        jsonschema.exceptions.ValidationError.
+        """
+        from .citeproc import get_jsonschema_csl_validator
+        validator = get_jsonschema_csl_validator()
+        validator.validate([self])
+        return self
+
+    def clean(self, prune: bool = True):
+        """
+        Sanitize and touch-up a potentially dirty CSL_Item.
+        The following steps are performed:
+        - update incorrect values for "type" field when a correct variant is known
+        - remove fields that violate the JSON Schema (if prune=True)
+        - set default value for "type" if missing, since CSL JSON requires type
+        - validate against the CSL JSON schema (if prune=True) to ensure output
+          CSL_Item is clean
+        """
+        logging.debug(
+            f"Starting CSL_Item.clean with{'' if prune else 'out'}"
+            f"CSL pruning for id: {self.get('id', 'id not specified')}")
+        self.correct_invalid_type()
+        if prune:
+            self.prune_against_schema()
+        self.set_default_type()
+        if prune:
+            self.validate_against_schema()
         return self
 
 

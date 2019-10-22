@@ -1,6 +1,6 @@
 import copy
-import pytest
 
+import pytest
 
 from manubot.cite.csl_item import (
     csl_item_set_standard_id,
@@ -44,6 +44,17 @@ class Test_CSL_Item:
     def test_no_change_of_type(self):
         assert CSL_Item(type='book').correct_invalid_type() == {'type': 'book'}
         assert CSL_Item(type='book').set_default_type() == {'type': 'book'}
+
+    def test_clean(self):
+        csl_item = CSL_Item(type='chapter', id='abc')
+        csl_item.clean(prune=True)
+        assert csl_item == {'type': 'chapter', 'id': 'abc'}
+
+    def test_clean_set_id(self):
+        csl_item = CSL_Item(type='chapter')
+        csl_item.set_id('abc')
+        csl_item.clean(prune=True)
+        assert csl_item == {'type': 'chapter', 'id': 'abc'}
 
 
 def test_assert_csl_item_type_passes():
