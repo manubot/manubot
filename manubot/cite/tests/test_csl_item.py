@@ -117,7 +117,7 @@ def test_csl_item_standardize_id_note():
         'type': 'article-journal',
         'note': 'standard_id: doi:10.1371/journal.PPAT.1006256',
     })
-    csl_item.standardize_id
+    csl_item.standardize_id()
     assert csl_item['id'] == 'doi:10.1371/journal.ppat.1006256'
     from manubot.cite.citeproc import parse_csl_item_note
     note_dict = parse_csl_item_note(csl_item['note'])

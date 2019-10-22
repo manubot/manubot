@@ -156,7 +156,7 @@ class CSL_Item(dict):
 
     def append_to_note(self, text='', dictionary={}):
         from .citeproc import append_to_csl_item_note
-        append_to_csl_item_note(self, text='', dictionary={})
+        append_to_csl_item_note(self, text=text, dictionary=dictionary)
         return self
 
     def infer_id(self):
