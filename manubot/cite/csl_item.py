@@ -191,16 +191,19 @@ class CSL_Item(dict):
         Note that the Manubot software generally refers to the "id" of a CSL Item as a citekey.
         However, in this context, we use "id" rather than "citekey" for consistency with CSL's "id" field.
         """
+        original_id = self.get('id')
         self.infer_id()
-        original_id = self['id']
-        prefixed_id = infer_citekey_prefix(original_id)
-        assert is_valid_citekey(prefixed_id, allow_raw=True)
-        standard_id = standardize_citekey(prefixed_id, warn_if_changed=False)
+        original_standard_id = infer_citekey_prefix(original_id)
+        assert is_valid_citekey(original_standard_id, allow_raw=True)
+        standard_id = standardize_citekey(original_standard_id, warn_if_changed=False)
         add_to_note = {}
         note_dict = self.note_dict
-        if original_id != standard_id:
+        if original_id and original_id != standard_id:
             if original_id != note_dict.get('original_id'):
                 add_to_note['original_id'] = original_id
+        if original_standard_id and original_standard_id != standard_id:
+            if original_standard_id != note_dict.get('original_standard_id'):
+                add_to_note['original_standard_id'] = original_standard_id
         if standard_id != note_dict.get('standard_id'):
             add_to_note['standard_id'] = standard_id
         self.append_to_note(dictionary=add_to_note)
