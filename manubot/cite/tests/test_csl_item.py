@@ -125,7 +125,7 @@ def test_csl_item_standardize_id_note():
 
 
 @pytest.mark.parametrize(['input_note', 'text', 'dictionary', 'expected_note'], [
-    (None, '', {}, ''),
+    ('', '', {}, ''),
     ('preexisting note', '', {}, 'preexisting note'),
     ('preexisting note', '', {'key': 'the value'}, 'preexisting note\nkey: the value'),
     ('', '', {'KEYOKAY': 'the value'}, 'KEYOKAY: the value'),

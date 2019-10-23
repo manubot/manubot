@@ -177,6 +177,8 @@ class CSL_Item(dict):
         return dict(line_matches + braced_matches)
 
     def note_append_text(self, text: str):
+        if not text:
+            return
         note = self.note
         if note and not note.endswith('\n'):
             note += '\n'
