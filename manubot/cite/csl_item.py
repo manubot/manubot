@@ -25,6 +25,7 @@ for csl_data that is JSON-serialized.
 
 import copy
 import logging
+import re
 
 from manubot.cite.citekey import standardize_citekey, infer_citekey_prefix, is_valid_citekey
 
@@ -146,18 +147,56 @@ class CSL_Item(dict):
         return self
 
     @property
+    def note(self) -> str:
+        """
+        Return the value of the "note" field as a string.
+        If "note" key is not set, return empty string.
+        """
+        return str(self.get('note', ''))
+
+    @note.setter
+    def note(self, text: str):
+        if text:
+            self['note'] = text
+        else:
+            self.pop('note', None)
+
+    @property
     def note_dict(self) -> dict:
         """
-        Assigning to this dict will not update self["note"].
-        """
-        from .citeproc import parse_csl_item_note
-        note = self.get('note', '')
-        return parse_csl_item_note(note)
+        Return a dictionary with key-value pairs encoded by this CSL Item's note.
+        Extracts both forms (line-entry and braced-entry) of key-value pairs from the CSL JSON "cheater syntax"
+        https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields
 
-    def append_to_note(self, text='', dictionary={}):
-        from .citeproc import append_to_csl_item_note
-        append_to_csl_item_note(self, text=text, dictionary=dictionary)
-        return self
+        Assigning to this dict will not update `self["note"]`.
+        """
+        note = self.note
+        line_matches = re.findall(
+            r'^(?P<key>[A-Z]+|[-_a-z]+): *(?P<value>.+?) *$', note, re.MULTILINE)
+        braced_matches = re.findall(
+            r'{:(?P<key>[A-Z]+|[-_a-z]+): *(?P<value>.+?) *}', note)
+        return dict(line_matches + braced_matches)
+
+    def note_append_text(self, text: str):
+        note = self.note
+        if note and not note.endswith('\n'):
+            note += '\n'
+        note += text
+        self.note = note
+
+    def note_append_dict(self, dictionary: dict):
+        for key, value in dictionary.items():
+            if not re.fullmatch(r'[A-Z]+|[-_a-z]+', key):
+                logging.warning(
+                    f'note_append_dict: skipping adding {key!r} because '
+                    f'it does not conform to the variable_name syntax as per https://git.io/fjTzW.')
+                continue
+            if '\n' in value:
+                logging.warning(
+                    f'note_append_dict: skipping adding {key!r} because '
+                    f'the value contains a newline: {value!r}')
+                continue
+            self.note_append_text(f'{key}: {value}')
 
     def infer_id(self):
         """

@@ -123,3 +123,37 @@ def test_csl_item_standardize_id_note():
     note_dict = parse_csl_item_note(csl_item['note'])
     assert note_dict['original_id'] == 'original-id'
     assert note_dict['original_standard_id'] == 'doi:10.1371/journal.PPAT.1006256'
+
+
+@pytest.mark.parametrize(['input_note', 'text', 'dictionary', 'expected_note'], [
+    (None, '', {}, ''),
+    ('preexisting note', '', {}, 'preexisting note'),
+    ('preexisting note', '', {'key': 'the value'}, 'preexisting note\nkey: the value'),
+    ('', '', {'KEYOKAY': 'the value'}, 'KEYOKAY: the value'),
+    ('preexisting note', '', {'KEY-NOT-OKAY': 'the value'}, 'preexisting note'),
+    ('', '', {'standard_citation': 'doi:10.7554/elife.32822'}, 'standard_citation: doi:10.7554/elife.32822'),
+    ('This CSL Item was produced using Manubot.', '', {'standard_citation': 'doi:10.7554/elife.32822'}, 'This CSL Item was produced using Manubot.\nstandard_citation: doi:10.7554/elife.32822'),
+])
+def test_append_to_csl_item_note(input_note, text, dictionary, expected_note):
+    csl_item = CSL_Item({
+        'id': 'test_csl_item',
+        'type': 'entry',
+        'note': input_note,
+    })
+    csl_item.note_append_text(text)
+    csl_item.note_append_dict(dictionary)
+    assert csl_item.note == expected_note
+
+
+@pytest.mark.parametrize(['note', 'dictionary'], [
+    ('This is a note\nkey_one: value\nKEYTWO: value 2 ', {'key_one': 'value', 'KEYTWO': 'value 2'}),
+    ('BAD_KEY: good value\ngood-key: good value', {'good-key': 'good value'}),
+    ('This is a note {:key_one: value} {:KEYTWO: value 2 } ', {'key_one': 'value', 'KEYTWO': 'value 2'}),
+    ('{:BAD_KEY: good value}\n{:good-key: good value}', {'good-key': 'good value'}),
+    ('Mixed line-entry and braced-entry syntax\nGOODKEY: good value\n{:good-key: good value}', {'GOODKEY': 'good value', 'good-key': 'good value'}),
+    ('Note without any key-value pairs', {}),
+    ('Other text\nstandard_citation: doi:10/ckcj\nMore other text', {'standard_citation': 'doi:10/ckcj'}),
+])
+def test_parse_csl_item_note(note, dictionary):
+    csl_item = CSL_Item(note=note)
+    assert csl_item.note_dict == dictionary
