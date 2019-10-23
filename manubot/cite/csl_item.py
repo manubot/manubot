@@ -151,7 +151,7 @@ class CSL_Item(dict):
         Return the value of the "note" field as a string.
         If "note" key is not set, return empty string.
         """
-        return str(self.get('note', ''))
+        return str(self.get('note') or '')
 
     @note.setter
     def note(self, text: str):
@@ -177,6 +177,9 @@ class CSL_Item(dict):
         return dict(line_matches + braced_matches)
 
     def note_append_text(self, text: str):
+        """
+        Append text to the note field of a CSL Item.
+        """
         if not text:
             return
         note = self.note
@@ -186,6 +189,11 @@ class CSL_Item(dict):
         self.note = note
 
     def note_append_dict(self, dictionary: dict):
+        """
+        Append key-value pairs specified by `dictionary` to the note field of a CSL Item.
+        Uses the the [CSL JSON "cheater syntax"](https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields)
+        to encode additional values not defined by the CSL JSON schema.
+        """
         for key, value in dictionary.items():
             if not re.fullmatch(r'[A-Z]+|[-_a-z]+', key):
                 logging.warning(
