@@ -4,8 +4,6 @@ import pathlib
 import pytest
 
 from manubot.cite.citeproc import (
-    append_to_csl_item_note,
-    parse_csl_item_note,
     remove_jsonschema_errors,
 )
 

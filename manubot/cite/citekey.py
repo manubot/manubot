@@ -274,7 +274,6 @@ def citekey_to_csl_item(citekey, prune=True):
     Generate a CSL Item (Python dictionary) for the input citekey.
     """
     from manubot.cite.csl_item import CSL_Item
-    from manubot.cite.citeproc import append_to_csl_item_note
     from manubot import __version__ as manubot_version
 
     citekey == standardize_citekey(citekey, warn_if_changed=True)
@@ -291,7 +290,8 @@ def citekey_to_csl_item(citekey, prune=True):
     note_dict = {
         'standard_id': citekey,
     }
-    append_to_csl_item_note(csl_item, note_text, note_dict)
+    csl_item.note_append_text(note_text)
+    csl_item.note_append_dict(note_dict)
 
     short_citekey = shorten_citekey(citekey)
     csl_item.set_id(short_citekey)

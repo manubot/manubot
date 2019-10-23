@@ -119,8 +119,7 @@ def test_csl_item_standardize_id_note():
     })
     csl_item.standardize_id()
     assert csl_item['id'] == 'doi:10.1371/journal.ppat.1006256'
-    from manubot.cite.citeproc import parse_csl_item_note
-    note_dict = parse_csl_item_note(csl_item['note'])
+    note_dict = csl_item.note_dict
     assert note_dict['original_id'] == 'original-id'
     assert note_dict['original_standard_id'] == 'doi:10.1371/journal.PPAT.1006256'
 
@@ -134,7 +133,7 @@ def test_csl_item_standardize_id_note():
     ('', '', {'standard_citation': 'doi:10.7554/elife.32822'}, 'standard_citation: doi:10.7554/elife.32822'),
     ('This CSL Item was produced using Manubot.', '', {'standard_citation': 'doi:10.7554/elife.32822'}, 'This CSL Item was produced using Manubot.\nstandard_citation: doi:10.7554/elife.32822'),
 ])
-def test_append_to_csl_item_note(input_note, text, dictionary, expected_note):
+def test_csl_item_note_append(input_note, text, dictionary, expected_note):
     csl_item = CSL_Item({
         'id': 'test_csl_item',
         'type': 'entry',
@@ -154,6 +153,6 @@ def test_append_to_csl_item_note(input_note, text, dictionary, expected_note):
     ('Note without any key-value pairs', {}),
     ('Other text\nstandard_citation: doi:10/ckcj\nMore other text', {'standard_citation': 'doi:10/ckcj'}),
 ])
-def test_parse_csl_item_note(note, dictionary):
+def test_csl_item_note_dict(note, dictionary):
     csl_item = CSL_Item(note=note)
     assert csl_item.note_dict == dictionary

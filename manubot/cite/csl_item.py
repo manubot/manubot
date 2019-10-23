@@ -50,7 +50,6 @@ class CSL_Item(dict):
 
     # The ideas for CSL_Item methods come from the following parts of code:
     #  - [ ] citekey_to_csl_item(citekey, prune=True)
-    #  - [ ] append_to_csl_item_note
     # The methods in CSL_Item class provide primitives to reconstruct
     # fucntions above.
 
@@ -245,7 +244,7 @@ class CSL_Item(dict):
                 add_to_note['original_standard_id'] = original_standard_id
         if standard_id != note_dict.get('standard_id'):
             add_to_note['standard_id'] = standard_id
-        self.append_to_note(dictionary=add_to_note)
+        self.note_append_dict(dictionary=add_to_note)
         self.set_id(standard_id)
         return self
 
