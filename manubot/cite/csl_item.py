@@ -25,6 +25,7 @@ for csl_data that is JSON-serialized.
 
 import copy
 import logging
+import re
 
 from manubot.cite.citekey import standardize_citekey, infer_citekey_prefix, is_valid_citekey
 
@@ -49,7 +50,6 @@ class CSL_Item(dict):
 
     # The ideas for CSL_Item methods come from the following parts of code:
     #  - [ ] citekey_to_csl_item(citekey, prune=True)
-    #  - [ ] append_to_csl_item_note
     # The methods in CSL_Item class provide primitives to reconstruct
     # fucntions above.
 
@@ -145,64 +145,122 @@ class CSL_Item(dict):
             self.validate_against_schema()
         return self
 
+    @property
+    def note(self) -> str:
+        """
+        Return the value of the "note" field as a string.
+        If "note" key is not set, return empty string.
+        """
+        return str(self.get('note') or '')
+
+    @note.setter
+    def note(self, text: str):
+        if text:
+            self['note'] = text
+        else:
+            # if text is None or an empty string, remove the "note" field
+            self.pop('note', None)
+
+    @property
+    def note_dict(self) -> dict:
+        """
+        Return a dictionary with key-value pairs encoded by this CSL Item's note.
+        Extracts both forms (line-entry and braced-entry) of key-value pairs from the CSL JSON "cheater syntax"
+        https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields
+
+        Assigning to this dict will not update `self["note"]`.
+        """
+        note = self.note
+        line_matches = re.findall(
+            r'^(?P<key>[A-Z]+|[-_a-z]+): *(?P<value>.+?) *$', note, re.MULTILINE)
+        braced_matches = re.findall(
+            r'{:(?P<key>[A-Z]+|[-_a-z]+): *(?P<value>.+?) *}', note)
+        return dict(line_matches + braced_matches)
+
+    def note_append_text(self, text: str):
+        """
+        Append text to the note field of a CSL Item.
+        """
+        if not text:
+            return
+        note = self.note
+        if note and not note.endswith('\n'):
+            note += '\n'
+        note += text
+        self.note = note
+
+    def note_append_dict(self, dictionary: dict):
+        """
+        Append key-value pairs specified by `dictionary` to the note field of a CSL Item.
+        Uses the the [CSL JSON "cheater syntax"](https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields)
+        to encode additional values not defined by the CSL JSON schema.
+        """
+        for key, value in dictionary.items():
+            if not re.fullmatch(r'[A-Z]+|[-_a-z]+', key):
+                logging.warning(
+                    f'note_append_dict: skipping adding {key!r} because '
+                    f'it does not conform to the variable_name syntax as per https://git.io/fjTzW.')
+                continue
+            if '\n' in value:
+                logging.warning(
+                    f'note_append_dict: skipping adding {key!r} because '
+                    f'the value contains a newline: {value!r}')
+                continue
+            self.note_append_text(f'{key}: {value}')
+
+    def infer_id(self):
+        """
+        Detect and set a non-null/empty for "id" or else raise a ValueError.
+        """
+        if self.get('standard_citation'):
+            # "standard_citation" field is set with a non-null/empty value
+            return self.set_id(self.pop('standard_citation'))
+        if self.note_dict.get('standard_id'):
+            # "standard_id" note field is set with a non-null/empty value
+            return self.set_id(self.note_dict['standard_id'])
+        if self.get('id'):
+            # "id" field exists and is set with a non-null/empty value
+            return self.set_id(infer_citekey_prefix(self['id']))
+        raise ValueError(
+            'infer_id could not detect a field with a citation / standard_citation. '
+            'Consider setting the CSL Item "id" field.')
+
+    def standardize_id(self):
+        """
+        Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.
+        The standard_id is extracted from a "standard_citation" field, the "note" field, or the "id" field.
+        If extracting the citation from the "id" field, uses the infer_citekey_prefix function to set the prefix.
+        For example, if the extracted standard_id does not begin with a supported prefix (e.g. "doi:", "pmid:" or "raw:"),
+        the citation is assumed to be raw and given a "raw:" prefix.
+        The extracted citation is checked for validity and standardized, after which it is the final "standard_id".
+
+        Regarding csl_item modification, the csl_item "id" field is set to the standard_citation and the note field
+        is created or updated with key-value pairs for standard_id and original_id.
+
+        Note that the Manubot software generally refers to the "id" of a CSL Item as a citekey.
+        However, in this context, we use "id" rather than "citekey" for consistency with CSL's "id" field.
+        """
+        original_id = self.get('id')
+        self.infer_id()
+        original_standard_id = self['id']
+        assert is_valid_citekey(original_standard_id, allow_raw=True)
+        standard_id = standardize_citekey(original_standard_id, warn_if_changed=False)
+        add_to_note = {}
+        note_dict = self.note_dict
+        if original_id and original_id != standard_id:
+            if original_id != note_dict.get('original_id'):
+                add_to_note['original_id'] = original_id
+        if original_standard_id and original_standard_id != standard_id:
+            if original_standard_id != note_dict.get('original_standard_id'):
+                add_to_note['original_standard_id'] = original_standard_id
+        if standard_id != note_dict.get('standard_id'):
+            add_to_note['standard_id'] = standard_id
+        self.note_append_dict(dictionary=add_to_note)
+        self.set_id(standard_id)
+        return self
+
 
 def assert_csl_item_type(x):
     if not isinstance(x, CSL_Item):
         raise TypeError(
             f'Expected CSL_Item object, got {type(x)}')
-
-
-def csl_item_set_standard_id(csl_item):
-    """
-    Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.
-    The standard_id is extracted from a "standard_citation" field, the "note" field, or the "id" field.
-    If extracting the citation from the "id" field, uses the infer_citekey_prefix function to set the prefix.
-    For example, if the extracted standard_id does not begin with a supported prefix (e.g. "doi:", "pmid:"
-    or "raw:"), the citation is assumed to be raw and given a "raw:" prefix. The extracted citation
-    (referred to as "original_standard_id") is checked for validity and standardized, after which it is
-    the final "standard_id".
-
-    Regarding csl_item modification, the csl_item "id" field is set to the standard_citation and the note field
-    is created or updated with key-value pairs for standard_id, original_standard_id, and original_id.
-
-    Note that the Manubot software generally refers to the "id" of a CSL Item as a citekey.
-    However, in this context, we use "id" rather than "citekey" for consistency with CSL's "id" field.
-    """
-    if not isinstance(csl_item, dict):
-        raise ValueError(
-            "csl_item must be a CSL Data Item represented as a Python dictionary")
-
-    from manubot.cite.citeproc import (
-        append_to_csl_item_note,
-        parse_csl_item_note,
-    )
-    note_dict = parse_csl_item_note(csl_item.get('note', ''))
-
-    original_id = None
-    original_standard_id = None
-    if 'id' in csl_item:
-        original_id = csl_item['id']
-        original_standard_id = infer_citekey_prefix(original_id)
-    if 'standard_id' in note_dict:
-        original_standard_id = note_dict['standard_id']
-    if 'standard_citation' in csl_item:
-        original_standard_id = csl_item.pop('standard_citation')
-    if original_standard_id is None:
-        raise ValueError(
-            'csl_item_set_standard_id could not detect a field with a citation / standard_citation. '
-            'Consider setting the CSL Item "id" field.')
-    assert is_valid_citekey(original_standard_id, allow_raw=True)
-    standard_id = standardize_citekey(
-        original_standard_id, warn_if_changed=False)
-    add_to_note = {}
-    if original_id and original_id != standard_id:
-        if original_id != note_dict.get('original_id'):
-            add_to_note['original_id'] = original_id
-    if original_standard_id and original_standard_id != standard_id:
-        if original_standard_id != note_dict.get('original_standard_id'):
-            add_to_note['original_standard_id'] = original_standard_id
-    if standard_id != note_dict.get('standard_id'):
-        add_to_note['standard_id'] = standard_id
-    append_to_csl_item_note(csl_item, dictionary=add_to_note)
-    csl_item['id'] = standard_id
-    return csl_item

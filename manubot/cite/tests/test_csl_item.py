@@ -3,7 +3,6 @@ import copy
 import pytest
 
 from manubot.cite.csl_item import (
-    csl_item_set_standard_id,
     CSL_Item,
     assert_csl_item_type)
 
@@ -93,37 +92,68 @@ def test_assert_csl_item_type_raises_error_on_dict():
         'from_raw_id',
     ]
 )
-def test_csl_item_set_standard_id(csl_item, standard_citation):
-    output = csl_item_set_standard_id(csl_item)
+def test_csl_item_standardize_id(csl_item, standard_citation):
+    csl_item = CSL_Item(csl_item)
+    output = csl_item.standardize_id()
     assert output is csl_item
     assert output['id'] == standard_citation
 
 
-def test_csl_item_set_standard_id_repeated():
-    csl_item = {
-        'id': 'pmid:1',
-        'type': 'article-journal',
-    }
-    # csl_item_0 = copy.deepcopy(csl_item)
-    csl_item_1 = copy.deepcopy(csl_item_set_standard_id(csl_item))
+def test_csl_item_standardize_id_repeated():
+    csl_item = CSL_Item(id='pmid:1', type='article-journal')
+    csl_item_1 = copy.deepcopy(csl_item.standardize_id())
     assert 'standard_citation' not in 'csl_item'
-    csl_item_2 = copy.deepcopy(csl_item_set_standard_id(csl_item))
+    csl_item_2 = copy.deepcopy(csl_item.standardize_id())
     assert csl_item_1 == csl_item_2
 
 
-def test_csl_item_set_standard_id_note():
+def test_csl_item_standardize_id_note():
     """
     Test extracting standard_id from a note and setting additional
     note fields.
     """
-    csl_item = {
+    csl_item = CSL_Item({
         'id': 'original-id',
         'type': 'article-journal',
         'note': 'standard_id: doi:10.1371/journal.PPAT.1006256',
-    }
-    csl_item_set_standard_id(csl_item)
+    })
+    csl_item.standardize_id()
     assert csl_item['id'] == 'doi:10.1371/journal.ppat.1006256'
-    from manubot.cite.citeproc import parse_csl_item_note
-    note_dict = parse_csl_item_note(csl_item['note'])
+    note_dict = csl_item.note_dict
     assert note_dict['original_id'] == 'original-id'
     assert note_dict['original_standard_id'] == 'doi:10.1371/journal.PPAT.1006256'
+
+
+@pytest.mark.parametrize(['input_note', 'text', 'dictionary', 'expected_note'], [
+    ('', '', {}, ''),
+    (None, '', {}, ''),
+    ('preexisting note', '', {}, 'preexisting note'),
+    ('preexisting note', '', {'key': 'the value'}, 'preexisting note\nkey: the value'),
+    ('', '', {'KEYOKAY': 'the value'}, 'KEYOKAY: the value'),
+    ('preexisting note', '', {'KEY-NOT-OKAY': 'the value'}, 'preexisting note'),
+    ('', '', {'standard_citation': 'doi:10.7554/elife.32822'}, 'standard_citation: doi:10.7554/elife.32822'),
+    ('This CSL Item was produced using Manubot.', '', {'standard_citation': 'doi:10.7554/elife.32822'}, 'This CSL Item was produced using Manubot.\nstandard_citation: doi:10.7554/elife.32822'),
+])
+def test_csl_item_note_append(input_note, text, dictionary, expected_note):
+    csl_item = CSL_Item({
+        'id': 'test_csl_item',
+        'type': 'entry',
+        'note': input_note,
+    })
+    csl_item.note_append_text(text)
+    csl_item.note_append_dict(dictionary)
+    assert csl_item.note == expected_note
+
+
+@pytest.mark.parametrize(['note', 'dictionary'], [
+    ('This is a note\nkey_one: value\nKEYTWO: value 2 ', {'key_one': 'value', 'KEYTWO': 'value 2'}),
+    ('BAD_KEY: good value\ngood-key: good value', {'good-key': 'good value'}),
+    ('This is a note {:key_one: value} {:KEYTWO: value 2 } ', {'key_one': 'value', 'KEYTWO': 'value 2'}),
+    ('{:BAD_KEY: good value}\n{:good-key: good value}', {'good-key': 'good value'}),
+    ('Mixed line-entry and braced-entry syntax\nGOODKEY: good value\n{:good-key: good value}', {'GOODKEY': 'good value', 'good-key': 'good value'}),
+    ('Note without any key-value pairs', {}),
+    ('Other text\nstandard_citation: doi:10/ckcj\nMore other text', {'standard_citation': 'doi:10/ckcj'}),
+])
+def test_csl_item_note_dict(note, dictionary):
+    csl_item = CSL_Item(note=note)
+    assert csl_item.note_dict == dictionary
