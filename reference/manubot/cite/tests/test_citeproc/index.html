@@ -607,22 +607,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#test_append_to_csl_item_note" class="md-nav__link">
-    test_append_to_csl_item_note
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#test_json_is_readable_on_windows_in_different_oem_encoding" class="md-nav__link">
     test_json_is_readable_on_windows_in_different_oem_encoding
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test_parse_csl_item_note" class="md-nav__link">
-    test_parse_csl_item_note
   </a>
   
 </li>
@@ -1181,22 +1167,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#test_append_to_csl_item_note" class="md-nav__link">
-    test_append_to_csl_item_note
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#test_json_is_readable_on_windows_in_different_oem_encoding" class="md-nav__link">
     test_json_is_readable_on_windows_in_different_oem_encoding
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test_parse_csl_item_note" class="md-nav__link">
-    test_parse_csl_item_note
   </a>
   
 </li>
@@ -1240,10 +1212,6 @@
 <span class="kn">import</span> <span class="nn">pytest</span>
 
 <span class="kn">from</span> <span class="nn">manubot.cite.citeproc</span> <span class="kn">import</span> <span class="p">(</span>
-
-    <span class="n">append_to_csl_item_note</span><span class="p">,</span>
-
-    <span class="n">parse_csl_item_note</span><span class="p">,</span>
 
     <span class="n">remove_jsonschema_errors</span><span class="p">,</span>
 
@@ -1310,62 +1278,6 @@
     <span class="n">pruned</span> <span class="o">=</span> <span class="n">remove_jsonschema_errors</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
     <span class="k">assert</span> <span class="n">pruned</span> <span class="o">==</span> <span class="n">expected</span>
-
-<span class="nd">@pytest.mark.parametrize</span><span class="p">([</span><span class="s1">&#39;input_note&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;dictionary&#39;</span><span class="p">,</span> <span class="s1">&#39;expected_note&#39;</span><span class="p">],</span> <span class="p">[</span>
-
-    <span class="p">(</span><span class="s1">&#39;preexisting note&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="s1">&#39;preexisting note&#39;</span><span class="p">),</span>
-
-    <span class="p">(</span><span class="s1">&#39;preexisting note&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="s1">&#39;the value&#39;</span><span class="p">},</span> <span class="s1">&#39;preexisting note</span><span class="se">\n</span><span class="s1">key: the value&#39;</span><span class="p">),</span>
-
-    <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;KEYOKAY&#39;</span><span class="p">:</span> <span class="s1">&#39;the value&#39;</span><span class="p">},</span> <span class="s1">&#39;KEYOKAY: the value&#39;</span><span class="p">),</span>
-
-    <span class="p">(</span><span class="s1">&#39;preexisting note&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;KEY-NOT-OKAY&#39;</span><span class="p">:</span> <span class="s1">&#39;the value&#39;</span><span class="p">},</span> <span class="s1">&#39;preexisting note&#39;</span><span class="p">),</span>
-
-    <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;standard_citation&#39;</span><span class="p">:</span> <span class="s1">&#39;doi:10.7554/elife.32822&#39;</span><span class="p">},</span> <span class="s1">&#39;standard_citation: doi:10.7554/elife.32822&#39;</span><span class="p">),</span>
-
-    <span class="p">(</span><span class="s1">&#39;This CSL Item was produced using Manubot.&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;standard_citation&#39;</span><span class="p">:</span> <span class="s1">&#39;doi:10.7554/elife.32822&#39;</span><span class="p">},</span> <span class="s1">&#39;This CSL Item was produced using Manubot.</span><span class="se">\n</span><span class="s1">standard_citation: doi:10.7554/elife.32822&#39;</span><span class="p">),</span>
-
-<span class="p">])</span>
-
-<span class="k">def</span> <span class="nf">test_append_to_csl_item_note</span><span class="p">(</span><span class="n">input_note</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">,</span> <span class="n">expected_note</span><span class="p">):</span>
-
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="p">{</span>
-
-        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;test_csl_item&#39;</span><span class="p">,</span>
-
-        <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;entry&#39;</span><span class="p">,</span>
-
-        <span class="s1">&#39;note&#39;</span><span class="p">:</span> <span class="n">input_note</span><span class="p">,</span>
-
-    <span class="p">}</span>
-
-    <span class="n">append_to_csl_item_note</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)</span>
-
-    <span class="n">output_note</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span>
-
-    <span class="k">assert</span> <span class="n">output_note</span> <span class="o">==</span> <span class="n">expected_note</span>
-
-<span class="nd">@pytest.mark.parametrize</span><span class="p">([</span><span class="s1">&#39;note&#39;</span><span class="p">,</span> <span class="s1">&#39;dictionary&#39;</span><span class="p">],</span> <span class="p">[</span>
-
-    <span class="p">(</span><span class="s1">&#39;This is a note</span><span class="se">\n</span><span class="s1">key_one: value</span><span class="se">\n</span><span class="s1">KEYTWO: value 2 &#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;key_one&#39;</span><span class="p">:</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;KEYTWO&#39;</span><span class="p">:</span> <span class="s1">&#39;value 2&#39;</span><span class="p">}),</span>
-
-    <span class="p">(</span><span class="s1">&#39;BAD_KEY: good value</span><span class="se">\n</span><span class="s1">good-key: good value&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;good-key&#39;</span><span class="p">:</span> <span class="s1">&#39;good value&#39;</span><span class="p">}),</span>
-
-    <span class="p">(</span><span class="s1">&#39;This is a note {:key_one: value} {:KEYTWO: value 2 } &#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;key_one&#39;</span><span class="p">:</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;KEYTWO&#39;</span><span class="p">:</span> <span class="s1">&#39;value 2&#39;</span><span class="p">}),</span>
-
-    <span class="p">(</span><span class="s1">&#39;{:BAD_KEY: good value}</span><span class="se">\n</span><span class="s1">{:good-key: good value}&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;good-key&#39;</span><span class="p">:</span> <span class="s1">&#39;good value&#39;</span><span class="p">}),</span>
-
-    <span class="p">(</span><span class="s1">&#39;Mixed line-entry and braced-entry syntax</span><span class="se">\n</span><span class="s1">GOODKEY: good value</span><span class="se">\n</span><span class="s1">{:good-key: good value}&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;GOODKEY&#39;</span><span class="p">:</span> <span class="s1">&#39;good value&#39;</span><span class="p">,</span> <span class="s1">&#39;good-key&#39;</span><span class="p">:</span> <span class="s1">&#39;good value&#39;</span><span class="p">}),</span>
-
-    <span class="p">(</span><span class="s1">&#39;Note without any key-value pairs&#39;</span><span class="p">,</span> <span class="p">{}),</span>
-
-    <span class="p">(</span><span class="s1">&#39;Other text</span><span class="se">\n</span><span class="s1">standard_citation: doi:10/ckcj</span><span class="se">\n</span><span class="s1">More other text&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;standard_citation&#39;</span><span class="p">:</span> <span class="s1">&#39;doi:10/ckcj&#39;</span><span class="p">}),</span>
-
-<span class="p">])</span>
-
-<span class="k">def</span> <span class="nf">test_parse_csl_item_note</span><span class="p">(</span><span class="n">note</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">):</span>
-
-    <span class="k">assert</span> <span class="n">parse_csl_item_note</span><span class="p">(</span><span class="n">note</span><span class="p">)</span> <span class="o">==</span> <span class="n">dictionary</span>
 </pre></div>
 
 
@@ -1394,53 +1306,6 @@
 
 
 </details>
-<h3 id="test_append_to_csl_item_note">test_append_to_csl_item_note</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_append_to_csl_item_note</span><span class="p">(</span>
-    <span class="n">input_note</span><span class="p">,</span>
-    <span class="n">text</span><span class="p">,</span>
-    <span class="n">dictionary</span><span class="p">,</span>
-    <span class="n">expected_note</span>
-<span class="p">)</span>
-</pre></div>
-
-
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="o">[</span><span class="n">&#39;input_note&#39;, &#39;text&#39;, &#39;dictionary&#39;, &#39;expected_note&#39;</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
-
-<span class="n">    (&#39;preexisting note&#39;, &#39;&#39;, {}, &#39;preexisting note&#39;),</span>
-
-<span class="n">    (&#39;preexisting note&#39;, &#39;&#39;, {&#39;key&#39;: &#39;the value&#39;}, &#39;preexisting note\nkey: the value&#39;),</span>
-
-<span class="n">    (&#39;&#39;, &#39;&#39;, {&#39;KEYOKAY&#39;: &#39;the value&#39;}, &#39;KEYOKAY: the value&#39;),</span>
-
-<span class="n">    (&#39;preexisting note&#39;, &#39;&#39;, {&#39;KEY-NOT-OKAY&#39;: &#39;the value&#39;}, &#39;preexisting note&#39;),</span>
-
-<span class="n">    (&#39;&#39;, &#39;&#39;, {&#39;standard_citation&#39;: &#39;doi:10.7554/elife.32822&#39;}, &#39;standard_citation: doi:10.7554/elife.32822&#39;),</span>
-
-<span class="n">    (&#39;This CSL Item was produced using Manubot.&#39;, &#39;&#39;, {&#39;standard_citation&#39;: &#39;doi:10.7554/elife.32822&#39;}, &#39;This CSL Item was produced using Manubot.\nstandard_citation: doi:10.7554/elife.32822&#39;),</span>
-
-<span class="o">]</span><span class="p">)</span><span class="w"></span>
-
-<span class="n">def</span><span class="w"> </span><span class="n">test_append_to_csl_item_note</span><span class="p">(</span><span class="n">input_note</span><span class="p">,</span><span class="w"> </span><span class="nc">text</span><span class="p">,</span><span class="w"> </span><span class="k">dictionary</span><span class="p">,</span><span class="w"> </span><span class="n">expected_note</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
-
-<span class="w">        </span><span class="s1">&#39;id&#39;</span><span class="err">:</span><span class="w"> </span><span class="s1">&#39;test_csl_item&#39;</span><span class="p">,</span><span class="w"></span>
-
-<span class="w">        </span><span class="s1">&#39;type&#39;</span><span class="err">:</span><span class="w"> </span><span class="s1">&#39;entry&#39;</span><span class="p">,</span><span class="w"></span>
-
-<span class="w">        </span><span class="s1">&#39;note&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">input_note</span><span class="p">,</span><span class="w"></span>
-
-<span class="w">    </span><span class="err">}</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">append_to_csl_item_note</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span><span class="w"> </span><span class="nc">text</span><span class="p">,</span><span class="w"> </span><span class="k">dictionary</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">output_note</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&#39;note&#39;</span><span class="o">]</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">output_note</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected_note</span><span class="w"></span>
-</pre></div>
-
-
-</details>
 <h3 id="test_json_is_readable_on_windows_in_different_oem_encoding">test_json_is_readable_on_windows_in_different_oem_encoding</h3>
 <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_json_is_readable_on_windows_in_different_oem_encoding</span><span class="p">(</span>
 
@@ -1461,39 +1326,6 @@
     <span class="n">json1</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
     <span class="n">assert</span> <span class="n">json1</span>
-</pre></div>
-
-
-</details>
-<h3 id="test_parse_csl_item_note">test_parse_csl_item_note</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_parse_csl_item_note</span><span class="p">(</span>
-    <span class="n">note</span><span class="p">,</span>
-    <span class="n">dictionary</span>
-<span class="p">)</span>
-</pre></div>
-
-
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="o">[</span><span class="n">&#39;note&#39;, &#39;dictionary&#39;</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
-
-<span class="n">    (&#39;This is a note\nkey_one: value\nKEYTWO: value 2 &#39;, {&#39;key_one&#39;: &#39;value&#39;, &#39;KEYTWO&#39;: &#39;value 2&#39;}),</span>
-
-<span class="n">    (&#39;BAD_KEY: good value\ngood-key: good value&#39;, {&#39;good-key&#39;: &#39;good value&#39;}),</span>
-
-<span class="n">    (&#39;This is a note {:key_one: value} {:KEYTWO: value 2 } &#39;, {&#39;key_one&#39;: &#39;value&#39;, &#39;KEYTWO&#39;: &#39;value 2&#39;}),</span>
-
-<span class="n">    (&#39;{:BAD_KEY: good value}\n{:good-key: good value}&#39;, {&#39;good-key&#39;: &#39;good value&#39;}),</span>
-
-<span class="n">    (&#39;Mixed line-entry and braced-entry syntax\nGOODKEY: good value\n{:good-key: good value}&#39;, {&#39;GOODKEY&#39;: &#39;good value&#39;, &#39;good-key&#39;: &#39;good value&#39;}),</span>
-
-<span class="n">    (&#39;Note without any key-value pairs&#39;, {}),</span>
-
-<span class="n">    (&#39;Other text\nstandard_citation: doi:10/ckcj\nMore other text&#39;, {&#39;standard_citation&#39;: &#39;doi:10/ckcj&#39;}),</span>
-
-<span class="o">]</span><span class="p">)</span><span class="w"></span>
-
-<span class="n">def</span><span class="w"> </span><span class="n">test_parse_csl_item_note</span><span class="p">(</span><span class="n">note</span><span class="p">,</span><span class="w"> </span><span class="k">dictionary</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">parse_csl_item_note</span><span class="p">(</span><span class="n">note</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">dictionary</span><span class="w"></span>
 </pre></div>
 
 

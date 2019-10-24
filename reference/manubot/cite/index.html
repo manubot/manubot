@@ -1322,8 +1322,6 @@
 
     <span class="kn">from</span> <span class="nn">manubot.cite.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
 
-    <span class="kn">from</span> <span class="nn">manubot.cite.citeproc</span> <span class="kn">import</span> <span class="n">append_to_csl_item_note</span>
-
     <span class="kn">from</span> <span class="nn">manubot</span> <span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">manubot_version</span>
 
     <span class="n">citekey</span> <span class="o">==</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">warn_if_changed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -1350,7 +1348,9 @@
 
     <span class="p">}</span>
 
-    <span class="n">append_to_csl_item_note</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="n">note_text</span><span class="p">,</span> <span class="n">note_dict</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">note_text</span><span class="p">)</span>
+
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">(</span><span class="n">note_dict</span><span class="p">)</span>
 
     <span class="n">short_citekey</span> <span class="o">=</span> <span class="n">shorten_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 

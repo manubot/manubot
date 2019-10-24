@@ -416,22 +416,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#append_to_csl_item_note" class="md-nav__link">
-    append_to_csl_item_note
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#get_jsonschema_csl_validator" class="md-nav__link">
     get_jsonschema_csl_validator
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#parse_csl_item_note" class="md-nav__link">
-    parse_csl_item_note
   </a>
   
 </li>
@@ -1151,22 +1137,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#append_to_csl_item_note" class="md-nav__link">
-    append_to_csl_item_note
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#get_jsonschema_csl_validator" class="md-nav__link">
     get_jsonschema_csl_validator
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#parse_csl_item_note" class="md-nav__link">
-    parse_csl_item_note
   </a>
   
 </li>
@@ -1228,106 +1200,6 @@ Citation Style Language (CSL) styles.
 <span class="kn">import</span> <span class="nn">functools</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
-
-<span class="kn">import</span> <span class="nn">re</span>
-
-<span class="k">def</span> <span class="nf">append_to_csl_item_note</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">dictionary</span><span class="o">=</span><span class="p">{}):</span>
-
-    <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">    Add information to the note field of a CSL Item.</span>
-
-<span class="sd">    In addition to accepting arbitrary text, the note field can be used to encode</span>
-
-<span class="sd">    additional values not defined by the CSL JSON schema, as per</span>
-
-<span class="sd">    https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields</span>
-
-<span class="sd">    Use dictionary to specify variable-value pairs.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-
-            <span class="n">f</span><span class="s1">&#39;append_to_csl_item_note: csl_item must be a dict but was of type {type(csl_item)}&#39;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-
-            <span class="n">f</span><span class="s1">&#39;append_to_csl_item_note: dictionary must be a dict but was of type {type(dictionary)}&#39;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-
-            <span class="n">f</span><span class="s1">&#39;append_to_csl_item_note: text must be a str but was of type {type(text)}&#39;</span><span class="p">)</span>
-
-    <span class="n">note</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;note&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
-
-    <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
-
-        <span class="k">if</span> <span class="n">note</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">note</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
-
-            <span class="n">note</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-
-        <span class="n">note</span> <span class="o">+=</span> <span class="n">text</span>
-
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[A-Z]+|[-_a-z]+&#39;</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-
-            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-
-                <span class="n">f</span><span class="s1">&#39;append_to_csl_item_note: skipping adding &quot;{key}&quot; because it does not conform to the variable_name syntax as per https://git.io/fjTzW.&#39;</span><span class="p">)</span>
-
-            <span class="k">continue</span>
-
-        <span class="k">if</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
-
-            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-
-                <span class="n">f</span><span class="s1">&#39;append_to_csl_item_note: skipping adding &quot;{key}&quot; because the value contains a newline: &quot;{value}&quot;&#39;</span><span class="p">)</span>
-
-            <span class="k">continue</span>
-
-        <span class="k">if</span> <span class="n">note</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">note</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
-
-            <span class="n">note</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-
-        <span class="n">note</span> <span class="o">+=</span> <span class="n">f</span><span class="s1">&#39;{key}: {value}&#39;</span>
-
-    <span class="k">if</span> <span class="n">note</span><span class="p">:</span>
-
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">note</span>
-
-    <span class="k">return</span> <span class="n">csl_item</span>
-
-<span class="k">def</span> <span class="nf">parse_csl_item_note</span><span class="p">(</span><span class="n">note</span><span class="p">):</span>
-
-    <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">    Return the dictionary of key-value pairs encoded in a CSL JSON note.</span>
-
-<span class="sd">    Extracts both forms (line-entry and braced-entry) of key-value pairs from &quot;cheater syntax&quot;</span>
-
-<span class="sd">    https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">note</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
-
-    <span class="n">line_matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span>
-
-        <span class="sa">r</span><span class="s1">&#39;^(?P&lt;key&gt;[A-Z]+|[-_a-z]+): *(?P&lt;value&gt;.+?) *$&#39;</span><span class="p">,</span> <span class="n">note</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
-
-    <span class="n">braced_matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span>
-
-        <span class="sa">r</span><span class="s1">&#39;{:(?P&lt;key&gt;[A-Z]+|[-_a-z]+): *(?P&lt;value&gt;.+?) *}&#39;</span><span class="p">,</span> <span class="n">note</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">line_matches</span> <span class="o">+</span> <span class="n">braced_matches</span><span class="p">)</span>
 
 <span class="nd">@functools.lru_cache</span><span class="p">()</span>
 
@@ -1553,97 +1425,6 @@ Citation Style Language (CSL) styles.
 
 </details>
 <h2 id="functions">Functions</h2>
-<h3 id="append_to_csl_item_note">append_to_csl_item_note</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">append_to_csl_item_note</span><span class="p">(</span>
-    <span class="n">csl_item</span><span class="p">,</span>
-    <span class="n">text</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-    <span class="n">dictionary</span><span class="o">=</span><span class="p">{}</span>
-<span class="p">)</span>
-</pre></div>
-
-
-<p>Add information to the note field of a CSL Item.
-In addition to accepting arbitrary text, the note field can be used to encode
-additional values not defined by the CSL JSON schema, as per
-https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields
-Use dictionary to specify variable-value pairs.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">append_to_csl_item_note</span><span class="ss">(</span><span class="nv">csl_item</span>, <span class="nv">text</span><span class="o">=</span><span class="s1">&#39;&#39;</span>, <span class="nv">dictionary</span><span class="o">=</span>{}<span class="ss">)</span>:
-
-    <span class="s2">&quot;&quot;&quot;</span>
-
-    <span class="nv">Add</span> <span class="nv">information</span> <span class="nv">to</span> <span class="nv">the</span> <span class="nv">note</span> <span class="nv">field</span> <span class="nv">of</span> <span class="nv">a</span> <span class="nv">CSL</span> <span class="nv">Item</span>.
-
-    <span class="nv">In</span> <span class="nv">addition</span> <span class="nv">to</span> <span class="nv">accepting</span> <span class="nv">arbitrary</span> <span class="nv">text</span>, <span class="nv">the</span> <span class="nv">note</span> <span class="nv">field</span> <span class="nv">can</span> <span class="nv">be</span> <span class="nv">used</span> <span class="nv">to</span> <span class="nv">encode</span>
-
-    <span class="nv">additional</span> <span class="nv">values</span> <span class="nv">not</span> <span class="nv">defined</span> <span class="nv">by</span> <span class="nv">the</span> <span class="nv">CSL</span> <span class="nv">JSON</span> <span class="nv">schema</span>, <span class="nv">as</span> <span class="nv">per</span>
-
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">Juris</span><span class="o">-</span><span class="nv">M</span><span class="o">/</span><span class="nv">citeproc</span><span class="o">-</span><span class="nv">js</span><span class="o">-</span><span class="nv">docs</span><span class="o">/</span><span class="nv">blob</span><span class="o">/</span><span class="mi">93</span><span class="nv">d7991d42b4a96b74b7281f38e168e365847e40</span><span class="o">/</span><span class="nv">csl</span><span class="o">-</span><span class="nv">json</span><span class="o">/</span><span class="nv">markup</span>.<span class="nv">rst</span>#<span class="nv">cheater</span><span class="o">-</span><span class="nv">syntax</span><span class="o">-</span><span class="k">for</span><span class="o">-</span><span class="nv">odd</span><span class="o">-</span><span class="nv">fields</span>
-
-    <span class="nv">Use</span> <span class="nv">dictionary</span> <span class="nv">to</span> <span class="nv">specify</span> <span class="nv">variable</span><span class="o">-</span><span class="nv">value</span> <span class="nv">pairs</span>.
-
-    <span class="s2">&quot;&quot;&quot;</span>
-
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">csl_item</span>, <span class="nv">dict</span><span class="ss">)</span>:
-
-        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span>
-
-            <span class="nv">f</span><span class="s1">&#39;</span><span class="s">append_to_csl_item_note: csl_item must be a dict but was of type {type(csl_item)}</span><span class="s1">&#39;</span><span class="ss">)</span>
-
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">dictionary</span>, <span class="nv">dict</span><span class="ss">)</span>:
-
-        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span>
-
-            <span class="nv">f</span><span class="s1">&#39;</span><span class="s">append_to_csl_item_note: dictionary must be a dict but was of type {type(dictionary)}</span><span class="s1">&#39;</span><span class="ss">)</span>
-
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">text</span>, <span class="nv">str</span><span class="ss">)</span>:
-
-        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span>
-
-            <span class="nv">f</span><span class="s1">&#39;</span><span class="s">append_to_csl_item_note: text must be a str but was of type {type(text)}</span><span class="s1">&#39;</span><span class="ss">)</span>
-
-    <span class="nv">note</span> <span class="o">=</span> <span class="nv">str</span><span class="ss">(</span><span class="nv">csl_item</span>.<span class="nv">get</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">note</span><span class="s1">&#39;</span>, <span class="s1">&#39;&#39;</span><span class="ss">))</span>
-
-    <span class="k">if</span> <span class="nv">text</span>:
-
-        <span class="k">if</span> <span class="nv">note</span> <span class="nv">and</span> <span class="nv">not</span> <span class="nv">note</span>.<span class="nv">endswith</span><span class="ss">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="ss">)</span>:
-
-            <span class="nv">note</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-
-        <span class="nv">note</span> <span class="o">+=</span> <span class="nv">text</span>
-
-    <span class="k">for</span> <span class="nv">key</span>, <span class="nv">value</span> <span class="nv">in</span> <span class="nv">dictionary</span>.<span class="nv">items</span><span class="ss">()</span>:
-
-        <span class="k">if</span> <span class="nv">not</span> <span class="nv">re</span>.<span class="nv">fullmatch</span><span class="ss">(</span><span class="nv">r</span><span class="s1">&#39;</span><span class="s">[A-Z]+|[-_a-z]+</span><span class="s1">&#39;</span>, <span class="nv">key</span><span class="ss">)</span>:
-
-            <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
-
-                <span class="nv">f</span><span class="s1">&#39;</span><span class="s">append_to_csl_item_note: skipping adding &quot;{key}&quot; because it does not conform to the variable_name syntax as per https://git.io/fjTzW.</span><span class="s1">&#39;</span><span class="ss">)</span>
-
-            <span class="k">continue</span>
-
-        <span class="k">if</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="nv">in</span> <span class="nv">value</span>:
-
-            <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
-
-                <span class="nv">f</span><span class="s1">&#39;</span><span class="s">append_to_csl_item_note: skipping adding &quot;{key}&quot; because the value contains a newline: &quot;{value}&quot;</span><span class="s1">&#39;</span><span class="ss">)</span>
-
-            <span class="k">continue</span>
-
-        <span class="k">if</span> <span class="nv">note</span> <span class="nv">and</span> <span class="nv">not</span> <span class="nv">note</span>.<span class="nv">endswith</span><span class="ss">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="ss">)</span>:
-
-            <span class="nv">note</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-
-        <span class="nv">note</span> <span class="o">+=</span> <span class="nv">f</span><span class="s1">&#39;</span><span class="s">{key}: {value}</span><span class="s1">&#39;</span>
-
-    <span class="k">if</span> <span class="nv">note</span>:
-
-        <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">note</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">note</span>
-
-    <span class="k">return</span> <span class="nv">csl_item</span>
-</pre></div>
-
-
-</details>
 <h3 id="get_jsonschema_csl_validator">get_jsonschema_csl_validator</h3>
 <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_jsonschema_csl_validator</span><span class="p">(</span>
 
@@ -1677,43 +1458,6 @@ Use dictionary to specify variable-value pairs.</p>
     <span class="n">Validator</span><span class="o">.</span><span class="n">check_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">Validator</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
-</pre></div>
-
-
-</details>
-<h3 id="parse_csl_item_note">parse_csl_item_note</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">parse_csl_item_note</span><span class="p">(</span>
-    <span class="n">note</span>
-<span class="p">)</span>
-</pre></div>
-
-
-<p>Return the dictionary of key-value pairs encoded in a CSL JSON note.
-Extracts both forms (line-entry and braced-entry) of key-value pairs from "cheater syntax"
-https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">parse_csl_item_note</span><span class="ss">(</span><span class="nv">note</span><span class="ss">)</span>:
-
-    <span class="s2">&quot;&quot;&quot;</span>
-
-    <span class="k">Return</span> <span class="nv">the</span> <span class="nv">dictionary</span> <span class="nv">of</span> <span class="nv">key</span><span class="o">-</span><span class="nv">value</span> <span class="nv">pairs</span> <span class="nv">encoded</span> <span class="nv">in</span> <span class="nv">a</span> <span class="nv">CSL</span> <span class="nv">JSON</span> <span class="nv">note</span>.
-
-    <span class="nv">Extracts</span> <span class="nv">both</span> <span class="nv">forms</span> <span class="ss">(</span><span class="nv">line</span><span class="o">-</span><span class="nv">entry</span> <span class="nv">and</span> <span class="nv">braced</span><span class="o">-</span><span class="nv">entry</span><span class="ss">)</span> <span class="nv">of</span> <span class="nv">key</span><span class="o">-</span><span class="nv">value</span> <span class="nv">pairs</span> <span class="nv">from</span> <span class="s2">&quot;</span><span class="s">cheater syntax</span><span class="s2">&quot;</span>
-
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">Juris</span><span class="o">-</span><span class="nv">M</span><span class="o">/</span><span class="nv">citeproc</span><span class="o">-</span><span class="nv">js</span><span class="o">-</span><span class="nv">docs</span><span class="o">/</span><span class="nv">blob</span><span class="o">/</span><span class="mi">93</span><span class="nv">d7991d42b4a96b74b7281f38e168e365847e40</span><span class="o">/</span><span class="nv">csl</span><span class="o">-</span><span class="nv">json</span><span class="o">/</span><span class="nv">markup</span>.<span class="nv">rst</span>#<span class="nv">cheater</span><span class="o">-</span><span class="nv">syntax</span><span class="o">-</span><span class="k">for</span><span class="o">-</span><span class="nv">odd</span><span class="o">-</span><span class="nv">fields</span>
-
-    <span class="s2">&quot;&quot;&quot;</span>
-
-    <span class="nv">note</span> <span class="o">=</span> <span class="nv">str</span><span class="ss">(</span><span class="nv">note</span><span class="ss">)</span>
-
-    <span class="nv">line_matches</span> <span class="o">=</span> <span class="nv">re</span>.<span class="nv">findall</span><span class="ss">(</span>
-
-        <span class="nv">r</span><span class="s1">&#39;</span><span class="s">^(?P&lt;key&gt;[A-Z]+|[-_a-z]+): *(?P&lt;value&gt;.+?) *$</span><span class="s1">&#39;</span>, <span class="nv">note</span>, <span class="nv">re</span>.<span class="nv">MULTILINE</span><span class="ss">)</span>
-
-    <span class="nv">braced_matches</span> <span class="o">=</span> <span class="nv">re</span>.<span class="nv">findall</span><span class="ss">(</span>
-
-        <span class="nv">r</span><span class="s1">&#39;</span><span class="s">{:(?P&lt;key&gt;[A-Z]+|[-_a-z]+): *(?P&lt;value&gt;.+?) *}</span><span class="s1">&#39;</span>, <span class="nv">note</span><span class="ss">)</span>
-
-    <span class="k">return</span> <span class="nv">dict</span><span class="ss">(</span><span class="nv">line_matches</span> <span class="o">+</span> <span class="nv">braced_matches</span><span class="ss">)</span>
 </pre></div>
 
 

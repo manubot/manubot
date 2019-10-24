@@ -619,22 +619,36 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#test_csl_item_set_standard_id" class="md-nav__link">
-    test_csl_item_set_standard_id
+  <a href="#test_csl_item_note_append" class="md-nav__link">
+    test_csl_item_note_append
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#test_csl_item_set_standard_id_note" class="md-nav__link">
-    test_csl_item_set_standard_id_note
+  <a href="#test_csl_item_note_dict" class="md-nav__link">
+    test_csl_item_note_dict
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#test_csl_item_set_standard_id_repeated" class="md-nav__link">
-    test_csl_item_set_standard_id_repeated
+  <a href="#test_csl_item_standardize_id" class="md-nav__link">
+    test_csl_item_standardize_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_csl_item_standardize_id_note" class="md-nav__link">
+    test_csl_item_standardize_id_note
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_csl_item_standardize_id_repeated" class="md-nav__link">
+    test_csl_item_standardize_id_repeated
   </a>
   
 </li>
@@ -1290,22 +1304,36 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#test_csl_item_set_standard_id" class="md-nav__link">
-    test_csl_item_set_standard_id
+  <a href="#test_csl_item_note_append" class="md-nav__link">
+    test_csl_item_note_append
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#test_csl_item_set_standard_id_note" class="md-nav__link">
-    test_csl_item_set_standard_id_note
+  <a href="#test_csl_item_note_dict" class="md-nav__link">
+    test_csl_item_note_dict
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#test_csl_item_set_standard_id_repeated" class="md-nav__link">
-    test_csl_item_set_standard_id_repeated
+  <a href="#test_csl_item_standardize_id" class="md-nav__link">
+    test_csl_item_standardize_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_csl_item_standardize_id_note" class="md-nav__link">
+    test_csl_item_standardize_id_note
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_csl_item_standardize_id_repeated" class="md-nav__link">
+    test_csl_item_standardize_id_repeated
   </a>
   
 </li>
@@ -1457,8 +1485,6 @@
 
 <span class="kn">from</span> <span class="nn">manubot.cite.csl_item</span> <span class="kn">import</span> <span class="p">(</span>
 
-    <span class="n">csl_item_set_standard_id</span><span class="p">,</span>
-
     <span class="n">CSL_Item</span><span class="p">,</span>
 
     <span class="n">assert_csl_item_type</span><span class="p">)</span>
@@ -1601,35 +1627,29 @@
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_csl_item_set_standard_id</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="n">standard_citation</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_csl_item_standardize_id</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="n">standard_citation</span><span class="p">):</span>
 
-    <span class="n">output</span> <span class="o">=</span> <span class="n">csl_item_set_standard_id</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">()</span>
 
     <span class="k">assert</span> <span class="n">output</span> <span class="ow">is</span> <span class="n">csl_item</span>
 
     <span class="k">assert</span> <span class="n">output</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">standard_citation</span>
 
-<span class="k">def</span> <span class="nf">test_csl_item_set_standard_id_repeated</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_csl_item_standardize_id_repeated</span><span class="p">():</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;pmid:1&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;article-journal&#39;</span><span class="p">)</span>
 
-        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;pmid:1&#39;</span><span class="p">,</span>
-
-        <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;article-journal&#39;</span><span class="p">,</span>
-
-    <span class="p">}</span>
-
-    <span class="c1"># csl_item_0 = copy.deepcopy(csl_item)</span>
-
-    <span class="n">csl_item_1</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">csl_item_set_standard_id</span><span class="p">(</span><span class="n">csl_item</span><span class="p">))</span>
+    <span class="n">csl_item_1</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">())</span>
 
     <span class="k">assert</span> <span class="s1">&#39;standard_citation&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s1">&#39;csl_item&#39;</span>
 
-    <span class="n">csl_item_2</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">csl_item_set_standard_id</span><span class="p">(</span><span class="n">csl_item</span><span class="p">))</span>
+    <span class="n">csl_item_2</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">())</span>
 
     <span class="k">assert</span> <span class="n">csl_item_1</span> <span class="o">==</span> <span class="n">csl_item_2</span>
 
-<span class="k">def</span> <span class="nf">test_csl_item_set_standard_id_note</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_csl_item_standardize_id_note</span><span class="p">():</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1639,7 +1659,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">({</span>
 
         <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;original-id&#39;</span><span class="p">,</span>
 
@@ -1647,19 +1667,79 @@
 
         <span class="s1">&#39;note&#39;</span><span class="p">:</span> <span class="s1">&#39;standard_id: doi:10.1371/journal.PPAT.1006256&#39;</span><span class="p">,</span>
 
-    <span class="p">}</span>
+    <span class="p">})</span>
 
-    <span class="n">csl_item_set_standard_id</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">()</span>
 
     <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;doi:10.1371/journal.ppat.1006256&#39;</span>
 
-    <span class="kn">from</span> <span class="nn">manubot.cite.citeproc</span> <span class="kn">import</span> <span class="n">parse_csl_item_note</span>
-
-    <span class="n">note_dict</span> <span class="o">=</span> <span class="n">parse_csl_item_note</span><span class="p">(</span><span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">])</span>
+    <span class="n">note_dict</span> <span class="o">=</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span>
 
     <span class="k">assert</span> <span class="n">note_dict</span><span class="p">[</span><span class="s1">&#39;original_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;original-id&#39;</span>
 
     <span class="k">assert</span> <span class="n">note_dict</span><span class="p">[</span><span class="s1">&#39;original_standard_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;doi:10.1371/journal.PPAT.1006256&#39;</span>
+
+<span class="nd">@pytest.mark.parametrize</span><span class="p">([</span><span class="s1">&#39;input_note&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;dictionary&#39;</span><span class="p">,</span> <span class="s1">&#39;expected_note&#39;</span><span class="p">],</span> <span class="p">[</span>
+
+    <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s1">&#39;preexisting note&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="s1">&#39;preexisting note&#39;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s1">&#39;preexisting note&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="s1">&#39;the value&#39;</span><span class="p">},</span> <span class="s1">&#39;preexisting note</span><span class="se">\n</span><span class="s1">key: the value&#39;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;KEYOKAY&#39;</span><span class="p">:</span> <span class="s1">&#39;the value&#39;</span><span class="p">},</span> <span class="s1">&#39;KEYOKAY: the value&#39;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s1">&#39;preexisting note&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;KEY-NOT-OKAY&#39;</span><span class="p">:</span> <span class="s1">&#39;the value&#39;</span><span class="p">},</span> <span class="s1">&#39;preexisting note&#39;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;standard_citation&#39;</span><span class="p">:</span> <span class="s1">&#39;doi:10.7554/elife.32822&#39;</span><span class="p">},</span> <span class="s1">&#39;standard_citation: doi:10.7554/elife.32822&#39;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s1">&#39;This CSL Item was produced using Manubot.&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;standard_citation&#39;</span><span class="p">:</span> <span class="s1">&#39;doi:10.7554/elife.32822&#39;</span><span class="p">},</span> <span class="s1">&#39;This CSL Item was produced using Manubot.</span><span class="se">\n</span><span class="s1">standard_citation: doi:10.7554/elife.32822&#39;</span><span class="p">),</span>
+
+<span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">test_csl_item_note_append</span><span class="p">(</span><span class="n">input_note</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">,</span> <span class="n">expected_note</span><span class="p">):</span>
+
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">({</span>
+
+        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;test_csl_item&#39;</span><span class="p">,</span>
+
+        <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;entry&#39;</span><span class="p">,</span>
+
+        <span class="s1">&#39;note&#39;</span><span class="p">:</span> <span class="n">input_note</span><span class="p">,</span>
+
+    <span class="p">})</span>
+
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">note</span> <span class="o">==</span> <span class="n">expected_note</span>
+
+<span class="nd">@pytest.mark.parametrize</span><span class="p">([</span><span class="s1">&#39;note&#39;</span><span class="p">,</span> <span class="s1">&#39;dictionary&#39;</span><span class="p">],</span> <span class="p">[</span>
+
+    <span class="p">(</span><span class="s1">&#39;This is a note</span><span class="se">\n</span><span class="s1">key_one: value</span><span class="se">\n</span><span class="s1">KEYTWO: value 2 &#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;key_one&#39;</span><span class="p">:</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;KEYTWO&#39;</span><span class="p">:</span> <span class="s1">&#39;value 2&#39;</span><span class="p">}),</span>
+
+    <span class="p">(</span><span class="s1">&#39;BAD_KEY: good value</span><span class="se">\n</span><span class="s1">good-key: good value&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;good-key&#39;</span><span class="p">:</span> <span class="s1">&#39;good value&#39;</span><span class="p">}),</span>
+
+    <span class="p">(</span><span class="s1">&#39;This is a note {:key_one: value} {:KEYTWO: value 2 } &#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;key_one&#39;</span><span class="p">:</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;KEYTWO&#39;</span><span class="p">:</span> <span class="s1">&#39;value 2&#39;</span><span class="p">}),</span>
+
+    <span class="p">(</span><span class="s1">&#39;{:BAD_KEY: good value}</span><span class="se">\n</span><span class="s1">{:good-key: good value}&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;good-key&#39;</span><span class="p">:</span> <span class="s1">&#39;good value&#39;</span><span class="p">}),</span>
+
+    <span class="p">(</span><span class="s1">&#39;Mixed line-entry and braced-entry syntax</span><span class="se">\n</span><span class="s1">GOODKEY: good value</span><span class="se">\n</span><span class="s1">{:good-key: good value}&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;GOODKEY&#39;</span><span class="p">:</span> <span class="s1">&#39;good value&#39;</span><span class="p">,</span> <span class="s1">&#39;good-key&#39;</span><span class="p">:</span> <span class="s1">&#39;good value&#39;</span><span class="p">}),</span>
+
+    <span class="p">(</span><span class="s1">&#39;Note without any key-value pairs&#39;</span><span class="p">,</span> <span class="p">{}),</span>
+
+    <span class="p">(</span><span class="s1">&#39;Other text</span><span class="se">\n</span><span class="s1">standard_citation: doi:10/ckcj</span><span class="se">\n</span><span class="s1">More other text&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;standard_citation&#39;</span><span class="p">:</span> <span class="s1">&#39;doi:10/ckcj&#39;</span><span class="p">}),</span>
+
+<span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">test_csl_item_note_dict</span><span class="p">(</span><span class="n">note</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">):</span>
+
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">note</span><span class="o">=</span><span class="n">note</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span> <span class="o">==</span> <span class="n">dictionary</span>
 </pre></div>
 
 
@@ -1695,8 +1775,94 @@
 
 
 </details>
-<h3 id="test_csl_item_set_standard_id">test_csl_item_set_standard_id</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_csl_item_set_standard_id</span><span class="p">(</span>
+<h3 id="test_csl_item_note_append">test_csl_item_note_append</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_csl_item_note_append</span><span class="p">(</span>
+    <span class="n">input_note</span><span class="p">,</span>
+    <span class="n">text</span><span class="p">,</span>
+    <span class="n">dictionary</span><span class="p">,</span>
+    <span class="n">expected_note</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="o">[</span><span class="n">&#39;input_note&#39;, &#39;text&#39;, &#39;dictionary&#39;, &#39;expected_note&#39;</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
+
+<span class="n">    (&#39;&#39;, &#39;&#39;, {}, &#39;&#39;),</span>
+
+<span class="n">    (None, &#39;&#39;, {}, &#39;&#39;),</span>
+
+<span class="n">    (&#39;preexisting note&#39;, &#39;&#39;, {}, &#39;preexisting note&#39;),</span>
+
+<span class="n">    (&#39;preexisting note&#39;, &#39;&#39;, {&#39;key&#39;: &#39;the value&#39;}, &#39;preexisting note\nkey: the value&#39;),</span>
+
+<span class="n">    (&#39;&#39;, &#39;&#39;, {&#39;KEYOKAY&#39;: &#39;the value&#39;}, &#39;KEYOKAY: the value&#39;),</span>
+
+<span class="n">    (&#39;preexisting note&#39;, &#39;&#39;, {&#39;KEY-NOT-OKAY&#39;: &#39;the value&#39;}, &#39;preexisting note&#39;),</span>
+
+<span class="n">    (&#39;&#39;, &#39;&#39;, {&#39;standard_citation&#39;: &#39;doi:10.7554/elife.32822&#39;}, &#39;standard_citation: doi:10.7554/elife.32822&#39;),</span>
+
+<span class="n">    (&#39;This CSL Item was produced using Manubot.&#39;, &#39;&#39;, {&#39;standard_citation&#39;: &#39;doi:10.7554/elife.32822&#39;}, &#39;This CSL Item was produced using Manubot.\nstandard_citation: doi:10.7554/elife.32822&#39;),</span>
+
+<span class="o">]</span><span class="p">)</span><span class="w"></span>
+
+<span class="n">def</span><span class="w"> </span><span class="n">test_csl_item_note_append</span><span class="p">(</span><span class="n">input_note</span><span class="p">,</span><span class="w"> </span><span class="nc">text</span><span class="p">,</span><span class="w"> </span><span class="k">dictionary</span><span class="p">,</span><span class="w"> </span><span class="n">expected_note</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="err">{</span><span class="w"></span>
+
+<span class="w">        </span><span class="s1">&#39;id&#39;</span><span class="err">:</span><span class="w"> </span><span class="s1">&#39;test_csl_item&#39;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="s1">&#39;type&#39;</span><span class="err">:</span><span class="w"> </span><span class="s1">&#39;entry&#39;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="s1">&#39;note&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">input_note</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="err">}</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">csl_item</span><span class="p">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="nc">text</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">csl_item</span><span class="p">.</span><span class="n">note_append_dict</span><span class="p">(</span><span class="k">dictionary</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">.</span><span class="n">note</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected_note</span><span class="w"></span>
+</pre></div>
+
+
+</details>
+<h3 id="test_csl_item_note_dict">test_csl_item_note_dict</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_csl_item_note_dict</span><span class="p">(</span>
+    <span class="n">note</span><span class="p">,</span>
+    <span class="n">dictionary</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="o">[</span><span class="n">&#39;note&#39;, &#39;dictionary&#39;</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
+
+<span class="n">    (&#39;This is a note\nkey_one: value\nKEYTWO: value 2 &#39;, {&#39;key_one&#39;: &#39;value&#39;, &#39;KEYTWO&#39;: &#39;value 2&#39;}),</span>
+
+<span class="n">    (&#39;BAD_KEY: good value\ngood-key: good value&#39;, {&#39;good-key&#39;: &#39;good value&#39;}),</span>
+
+<span class="n">    (&#39;This is a note {:key_one: value} {:KEYTWO: value 2 } &#39;, {&#39;key_one&#39;: &#39;value&#39;, &#39;KEYTWO&#39;: &#39;value 2&#39;}),</span>
+
+<span class="n">    (&#39;{:BAD_KEY: good value}\n{:good-key: good value}&#39;, {&#39;good-key&#39;: &#39;good value&#39;}),</span>
+
+<span class="n">    (&#39;Mixed line-entry and braced-entry syntax\nGOODKEY: good value\n{:good-key: good value}&#39;, {&#39;GOODKEY&#39;: &#39;good value&#39;, &#39;good-key&#39;: &#39;good value&#39;}),</span>
+
+<span class="n">    (&#39;Note without any key-value pairs&#39;, {}),</span>
+
+<span class="n">    (&#39;Other text\nstandard_citation: doi:10/ckcj\nMore other text&#39;, {&#39;standard_citation&#39;: &#39;doi:10/ckcj&#39;}),</span>
+
+<span class="o">]</span><span class="p">)</span><span class="w"></span>
+
+<span class="n">def</span><span class="w"> </span><span class="n">test_csl_item_note_dict</span><span class="p">(</span><span class="n">note</span><span class="p">,</span><span class="w"> </span><span class="k">dictionary</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">note</span><span class="o">=</span><span class="n">note</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">.</span><span class="n">note_dict</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">dictionary</span><span class="w"></span>
+</pre></div>
+
+
+</details>
+<h3 id="test_csl_item_standardize_id">test_csl_item_standardize_id</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_csl_item_standardize_id</span><span class="p">(</span>
     <span class="n">csl_item</span><span class="p">,</span>
     <span class="n">standard_citation</span>
 <span class="p">)</span>
@@ -1757,9 +1923,11 @@
 
 <span class="p">)</span><span class="w"></span>
 
-<span class="n">def</span><span class="w"> </span><span class="n">test_csl_item_set_standard_id</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span><span class="w"> </span><span class="n">standard_citation</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="n">def</span><span class="w"> </span><span class="n">test_csl_item_standardize_id</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span><span class="w"> </span><span class="n">standard_citation</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item_set_standard_id</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="p">.</span><span class="n">standardize_id</span><span class="p">()</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="k">output</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">csl_item</span><span class="w"></span>
 
@@ -1768,8 +1936,8 @@
 
 
 </details>
-<h3 id="test_csl_item_set_standard_id_note">test_csl_item_set_standard_id_note</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_csl_item_set_standard_id_note</span><span class="p">(</span>
+<h3 id="test_csl_item_standardize_id_note">test_csl_item_standardize_id_note</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_csl_item_standardize_id_note</span><span class="p">(</span>
 
 <span class="p">)</span>
 </pre></div>
@@ -1777,17 +1945,17 @@
 
 <p>Test extracting standard_id from a note and setting additional
 note fields.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_csl_item_set_standard_id_note</span><span class="p">():</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_csl_item_standardize_id_note</span><span class="p">():</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-<span class="sd">    Test extracting standard_id from a note and setting additional</span>
+<span class="ss">    Test extracting standard_id from a note and setting additional</span>
 
-<span class="sd">    note fields.</span>
+<span class="ss">    note fields.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="err">{</span>
 
         <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;original-id&#39;</span><span class="p">,</span>
 
@@ -1795,47 +1963,37 @@ note fields.</p>
 
         <span class="s1">&#39;note&#39;</span><span class="p">:</span> <span class="s1">&#39;standard_id: doi:10.1371/journal.PPAT.1006256&#39;</span><span class="p">,</span>
 
-    <span class="p">}</span>
+    <span class="err">}</span><span class="p">)</span>
 
-    <span class="n">csl_item_set_standard_id</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="p">.</span><span class="n">standardize_id</span><span class="p">()</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;doi:10.1371/journal.ppat.1006256&#39;</span>
+    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;doi:10.1371/journal.ppat.1006256&#39;</span>
 
-    <span class="kn">from</span> <span class="nn">manubot.cite.citeproc</span> <span class="kn">import</span> <span class="n">parse_csl_item_note</span>
+    <span class="n">note_dict</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">.</span><span class="n">note_dict</span>
 
-    <span class="n">note_dict</span> <span class="o">=</span> <span class="n">parse_csl_item_note</span><span class="p">(</span><span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">])</span>
+    <span class="n">assert</span> <span class="n">note_dict</span><span class="p">[</span><span class="s1">&#39;original_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;original-id&#39;</span>
 
-    <span class="k">assert</span> <span class="n">note_dict</span><span class="p">[</span><span class="s1">&#39;original_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;original-id&#39;</span>
-
-    <span class="k">assert</span> <span class="n">note_dict</span><span class="p">[</span><span class="s1">&#39;original_standard_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;doi:10.1371/journal.PPAT.1006256&#39;</span>
+    <span class="n">assert</span> <span class="n">note_dict</span><span class="p">[</span><span class="s1">&#39;original_standard_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;doi:10.1371/journal.PPAT.1006256&#39;</span>
 </pre></div>
 
 
 </details>
-<h3 id="test_csl_item_set_standard_id_repeated">test_csl_item_set_standard_id_repeated</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_csl_item_set_standard_id_repeated</span><span class="p">(</span>
+<h3 id="test_csl_item_standardize_id_repeated">test_csl_item_standardize_id_repeated</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_csl_item_standardize_id_repeated</span><span class="p">(</span>
 
 <span class="p">)</span>
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_csl_item_set_standard_id_repeated</span><span class="p">():</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_csl_item_standardize_id_repeated</span><span class="p">():</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="err">{</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">id</span><span class="o">=</span><span class="s1">&#39;pmid:1&#39;</span><span class="p">,</span> <span class="k">type</span><span class="o">=</span><span class="s1">&#39;article-journal&#39;</span><span class="p">)</span>
 
-        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;pmid:1&#39;</span><span class="p">,</span>
-
-        <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;article-journal&#39;</span><span class="p">,</span>
-
-    <span class="err">}</span>
-
-    <span class="o">#</span> <span class="n">csl_item_0</span> <span class="o">=</span> <span class="k">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
-
-    <span class="n">csl_item_1</span> <span class="o">=</span> <span class="k">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">csl_item_set_standard_id</span><span class="p">(</span><span class="n">csl_item</span><span class="p">))</span>
+    <span class="n">csl_item_1</span> <span class="o">=</span> <span class="k">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">csl_item</span><span class="p">.</span><span class="n">standardize_id</span><span class="p">())</span>
 
     <span class="n">assert</span> <span class="s1">&#39;standard_citation&#39;</span> <span class="k">not</span> <span class="k">in</span> <span class="s1">&#39;csl_item&#39;</span>
 
-    <span class="n">csl_item_2</span> <span class="o">=</span> <span class="k">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">csl_item_set_standard_id</span><span class="p">(</span><span class="n">csl_item</span><span class="p">))</span>
+    <span class="n">csl_item_2</span> <span class="o">=</span> <span class="k">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">csl_item</span><span class="p">.</span><span class="n">standardize_id</span><span class="p">())</span>
 
     <span class="n">assert</span> <span class="n">csl_item_1</span> <span class="o">==</span> <span class="n">csl_item_2</span>
 </pre></div>
