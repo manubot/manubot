@@ -158,6 +158,7 @@ class CSL_Item(dict):
         if text:
             self['note'] = text
         else:
+            # if text is None or an empty string, remove the "note" field
             self.pop('note', None)
 
     @property
