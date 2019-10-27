@@ -1207,6 +1207,8 @@
 
 <span class="nd">@pytest.mark.skipif</span><span class="p">(</span><span class="s1">&#39;TRAVIS&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s1">&#39;tests environment variables set by Travis builds only&#39;</span><span class="p">)</span>
 
+<span class="nd">@pytest.mark.skipif</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TRAVIS_REPO_SLUG&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;manubot/manubot&#39;</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s1">&#39;test fails on forks&#39;</span><span class="p">)</span>
+
 <span class="k">def</span> <span class="nf">test_get_continuous_integration_parameters_travis</span><span class="p">():</span>
 
     <span class="n">info</span> <span class="o">=</span> <span class="n">get_continuous_integration_parameters</span><span class="p">()</span>
@@ -1244,6 +1246,8 @@
     <span class="p">)</span>
 
 <span class="nd">@pytest.mark.skipif</span><span class="p">(</span><span class="s1">&#39;APPVEYOR&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s1">&#39;tests environment variables set by AppVeyor builds only&#39;</span><span class="p">)</span>
+
+<span class="nd">@pytest.mark.skipif</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;APPVEYOR_REPO_NAME&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;manubot/manubot&#39;</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s1">&#39;test fails on forks&#39;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">test_get_continuous_integration_parameters_appveyor</span><span class="p">():</span>
 
@@ -1308,45 +1312,47 @@
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">skipif</span><span class="p">(</span><span class="s1">&#39;APPVEYOR&#39;</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">,</span><span class="w"> </span><span class="n">reason</span><span class="o">=</span><span class="s1">&#39;tests environment variables set by AppVeyor builds only&#39;</span><span class="p">)</span><span class="w"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>@<span class="nv">pytest</span>.<span class="nv">mark</span>.<span class="nv">skipif</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">APPVEYOR</span><span class="s1">&#39;</span> <span class="nv">not</span> <span class="nv">in</span> <span class="nv">os</span>.<span class="nv">environ</span>, <span class="nv">reason</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">tests environment variables set by AppVeyor builds only</span><span class="s1">&#39;</span><span class="ss">)</span>
 
-<span class="n">def</span><span class="w"> </span><span class="n">test_get_continuous_integration_parameters_appveyor</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
+@<span class="nv">pytest</span>.<span class="nv">mark</span>.<span class="nv">skipif</span><span class="ss">(</span><span class="nv">os</span>.<span class="k">getenv</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">APPVEYOR_REPO_NAME</span><span class="s1">&#39;</span><span class="ss">)</span> <span class="o">!=</span> <span class="s1">&#39;</span><span class="s">manubot/manubot</span><span class="s1">&#39;</span>, <span class="nv">reason</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">test fails on forks</span><span class="s1">&#39;</span><span class="ss">)</span>
 
-<span class="w">    </span><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_continuous_integration_parameters</span><span class="p">()</span><span class="w"></span>
+<span class="nv">def</span> <span class="nv">test_get_continuous_integration_parameters_appveyor</span><span class="ss">()</span>:
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
+    <span class="nv">info</span> <span class="o">=</span> <span class="nv">get_continuous_integration_parameters</span><span class="ss">()</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;provider&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;appveyor&#39;</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span> <span class="nv">is</span> <span class="nv">not</span> <span class="nv">None</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;provider_account&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;manubot&#39;</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">provider</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="s1">&#39;</span><span class="s">appveyor</span><span class="s1">&#39;</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;repo_slug&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;manubot/manubot&#39;</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">provider_account</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="s1">&#39;</span><span class="s">manubot</span><span class="s1">&#39;</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;repo_owner&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;manubot&#39;</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">repo_slug</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="s1">&#39;</span><span class="s">manubot/manubot</span><span class="s1">&#39;</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;repo_name&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;manubot&#39;</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">repo_owner</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="s1">&#39;</span><span class="s">manubot</span><span class="s1">&#39;</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;commit&#39;</span><span class="o">]</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">repo_name</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="s1">&#39;</span><span class="s">manubot</span><span class="s1">&#39;</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;triggering_commit&#39;</span><span class="o">]</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">commit</span><span class="s1">&#39;</span>]
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;build_url&#39;</span><span class="o">]</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;https://ci.appveyor.com/project/manubot/manubot/builds/&#39;</span><span class="p">)</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">triggering_commit</span><span class="s1">&#39;</span>]
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;job_url&#39;</span><span class="o">]</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;https://ci.appveyor.com/project/manubot/manubot/build/job/&#39;</span><span class="p">)</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">build_url</span><span class="s1">&#39;</span>].<span class="nv">startswith</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">https://ci.appveyor.com/project/manubot/manubot/builds/</span><span class="s1">&#39;</span><span class="ss">)</span>
 
-<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="n">add_manuscript_urls_to_ci_params</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">job_url</span><span class="s1">&#39;</span>].<span class="nv">startswith</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">https://ci.appveyor.com/project/manubot/manubot/build/job/</span><span class="s1">&#39;</span><span class="ss">)</span>
 
-<span class="w">    </span><span class="n">info_updated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_manuscript_urls_to_ci_params</span><span class="p">(</span><span class="n">info</span><span class="p">)</span><span class="w"></span>
+    # <span class="nv">test</span> <span class="nv">add_manuscript_urls_to_ci_params</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">info_updated</span><span class="w"></span>
+    <span class="nv">info_updated</span> <span class="o">=</span> <span class="nv">add_manuscript_urls_to_ci_params</span><span class="ss">(</span><span class="nv">info</span><span class="ss">)</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">re</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span> <span class="nv">is</span> <span class="nv">info_updated</span>
 
-<span class="w">        </span><span class="n">pattern</span><span class="o">=</span><span class="n">r</span><span class="ss">&quot;https://ci\.appveyor\.com/project/manubot/manubot/builds/[0-9]+/artifacts&quot;</span><span class="p">,</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">re</span>.<span class="nv">fullmatch</span><span class="ss">(</span>
 
-<span class="w">        </span><span class="n">string</span><span class="o">=</span><span class="n">info</span><span class="o">[</span><span class="n">&#39;manuscript_url&#39;</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+        <span class="nv">pattern</span><span class="o">=</span><span class="nv">r</span><span class="s2">&quot;</span><span class="s">https://ci\.appveyor\.com/project/manubot/manubot/builds/[0-9]+/artifacts</span><span class="s2">&quot;</span>,
 
-<span class="w">    </span><span class="p">)</span><span class="w"></span>
+        <span class="nv">string</span><span class="o">=</span><span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">manuscript_url</span><span class="s1">&#39;</span>],
+
+    <span class="ss">)</span>
 </pre></div>
 
 
@@ -1382,43 +1388,45 @@
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">skipif</span><span class="p">(</span><span class="s1">&#39;TRAVIS&#39;</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">,</span><span class="w"> </span><span class="n">reason</span><span class="o">=</span><span class="s1">&#39;tests environment variables set by Travis builds only&#39;</span><span class="p">)</span><span class="w"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>@<span class="nv">pytest</span>.<span class="nv">mark</span>.<span class="nv">skipif</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">TRAVIS</span><span class="s1">&#39;</span> <span class="nv">not</span> <span class="nv">in</span> <span class="nv">os</span>.<span class="nv">environ</span>, <span class="nv">reason</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">tests environment variables set by Travis builds only</span><span class="s1">&#39;</span><span class="ss">)</span>
 
-<span class="n">def</span><span class="w"> </span><span class="n">test_get_continuous_integration_parameters_travis</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
+@<span class="nv">pytest</span>.<span class="nv">mark</span>.<span class="nv">skipif</span><span class="ss">(</span><span class="nv">os</span>.<span class="k">getenv</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">TRAVIS_REPO_SLUG</span><span class="s1">&#39;</span><span class="ss">)</span> <span class="o">!=</span> <span class="s1">&#39;</span><span class="s">manubot/manubot</span><span class="s1">&#39;</span>, <span class="nv">reason</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">test fails on forks</span><span class="s1">&#39;</span><span class="ss">)</span>
 
-<span class="w">    </span><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_continuous_integration_parameters</span><span class="p">()</span><span class="w"></span>
+<span class="nv">def</span> <span class="nv">test_get_continuous_integration_parameters_travis</span><span class="ss">()</span>:
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
+    <span class="nv">info</span> <span class="o">=</span> <span class="nv">get_continuous_integration_parameters</span><span class="ss">()</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;provider&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;travis&#39;</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span> <span class="nv">is</span> <span class="nv">not</span> <span class="nv">None</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;repo_slug&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;manubot/manubot&#39;</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">provider</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="s1">&#39;</span><span class="s">travis</span><span class="s1">&#39;</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;repo_owner&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;manubot&#39;</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">repo_slug</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="s1">&#39;</span><span class="s">manubot/manubot</span><span class="s1">&#39;</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;repo_name&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;manubot&#39;</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">repo_owner</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="s1">&#39;</span><span class="s">manubot</span><span class="s1">&#39;</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;commit&#39;</span><span class="o">]</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">repo_name</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="s1">&#39;</span><span class="s">manubot</span><span class="s1">&#39;</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;triggering_commit&#39;</span><span class="o">]</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">commit</span><span class="s1">&#39;</span>]
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;build_url&#39;</span><span class="o">]</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;https://travis-ci.com/manubot/manubot/builds/&#39;</span><span class="p">)</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">triggering_commit</span><span class="s1">&#39;</span>]
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="o">[</span><span class="n">&#39;job_url&#39;</span><span class="o">]</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;https://travis-ci.com/manubot/manubot/jobs/&#39;</span><span class="p">)</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">build_url</span><span class="s1">&#39;</span>].<span class="nv">startswith</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">https://travis-ci.com/manubot/manubot/builds/</span><span class="s1">&#39;</span><span class="ss">)</span>
 
-<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="n">add_manuscript_urls_to_ci_params</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">job_url</span><span class="s1">&#39;</span>].<span class="nv">startswith</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">https://travis-ci.com/manubot/manubot/jobs/</span><span class="s1">&#39;</span><span class="ss">)</span>
 
-<span class="w">    </span><span class="n">info_updated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_manuscript_urls_to_ci_params</span><span class="p">(</span><span class="n">info</span><span class="p">)</span><span class="w"></span>
+    # <span class="nv">test</span> <span class="nv">add_manuscript_urls_to_ci_params</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">info_updated</span><span class="w"></span>
+    <span class="nv">info_updated</span> <span class="o">=</span> <span class="nv">add_manuscript_urls_to_ci_params</span><span class="ss">(</span><span class="nv">info</span><span class="ss">)</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">re</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">info</span> <span class="nv">is</span> <span class="nv">info_updated</span>
 
-<span class="w">        </span><span class="n">pattern</span><span class="o">=</span><span class="n">r</span><span class="ss">&quot;https://manubot\.github\.io/manubot/v/[0-9a-f]{40}/&quot;</span><span class="p">,</span><span class="w"></span>
+    <span class="nv">assert</span> <span class="nv">re</span>.<span class="nv">fullmatch</span><span class="ss">(</span>
 
-<span class="w">        </span><span class="n">string</span><span class="o">=</span><span class="n">info</span><span class="o">[</span><span class="n">&#39;manuscript_url&#39;</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+        <span class="nv">pattern</span><span class="o">=</span><span class="nv">r</span><span class="s2">&quot;</span><span class="s">https://manubot\.github\.io/manubot/v/[0-9a-f]{40}/</span><span class="s2">&quot;</span>,
 
-<span class="w">    </span><span class="p">)</span><span class="w"></span>
+        <span class="nv">string</span><span class="o">=</span><span class="nv">info</span>[<span class="s1">&#39;</span><span class="s">manuscript_url</span><span class="s1">&#39;</span>],
+
+    <span class="ss">)</span>
 </pre></div>
 
 
