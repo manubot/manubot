@@ -5,10 +5,7 @@ import logging
 import pathlib
 import re
 
-from manubot.cite.util import (
-    citekey_pattern,
-    is_valid_citekey,
-)
+from manubot.cite.citekey import citekey_pattern, is_valid_citekey
 
 
 def get_citekeys(text):

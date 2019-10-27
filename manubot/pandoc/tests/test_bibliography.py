@@ -43,7 +43,7 @@ def test_load_bibliography_from_text(path):
     """
     https://zbib.org/c7f95cdef6d6409c92ffde24d519435d
     """
-    text = path.read_text()
+    text = path.read_text(encoding='utf-8-sig')
     input_format = path.suffix[1:]
     csl_json = load_bibliography(text=text, input_format=input_format)
     assert len(csl_json) == 2

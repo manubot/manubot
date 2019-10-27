@@ -26,7 +26,7 @@ from manubot.process.manuscript import (
     get_text,
     update_manuscript_citekeys,
 )
-from manubot.cite.util import (
+from manubot.cite.citekey import (
     citekey_to_csl_item,
     shorten_citekey,
     is_valid_citekey,
