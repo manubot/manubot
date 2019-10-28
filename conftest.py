@@ -1,6 +1,13 @@
 import pytest
 
 
+def pytest_configure(config):
+    # register an additional marker
+    config.addinivalue_line(
+        "markers", "pandoc_version_sensitive: marks tests that require a specific version of pandoc to pass"
+    )
+
+
 def pytest_addoption(parser):
     parser.addoption(
         '--use-requests-cache',
