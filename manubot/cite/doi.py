@@ -86,7 +86,7 @@ def get_doi_csl_item_zotero(doi):
     return get_csl_item(f'doi:{doi}')
 
 
-def tweak_doi_csl_item(function):
+def augment_get_doi_csl_item(function):
     """
     Decorator providing edits to the csl_item returned by a get_doi_csl_item_* function.
     """
@@ -106,7 +106,7 @@ def tweak_doi_csl_item(function):
     return wrapper
 
 
-@tweak_doi_csl_item
+@augment_get_doi_csl_item
 def get_doi_csl_item(doi):
     """
     Generate CSL JSON Data for an DOI.
@@ -116,6 +116,7 @@ def get_doi_csl_item(doi):
     in order, with this function returning the metadata from the first
     non-failing method.
     """
+    # FIXME: this function is repetitive with other get_*_csl_item functions.
     for retriever in doi_retrievers:
         try:
             return retriever(doi)
