@@ -432,12 +432,26 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#variables" class="md-nav__link">
+    Variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#functions" class="md-nav__link">
     Functions
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#augment_get_doi_csl_item" class="md-nav__link">
+    augment_get_doi_csl_item
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#expand_short_doi" class="md-nav__link">
@@ -449,6 +463,20 @@
           <li class="md-nav__item">
   <a href="#get_doi_csl_item" class="md-nav__link">
     get_doi_csl_item
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_doi_csl_item_crosscite" class="md-nav__link">
+    get_doi_csl_item_crosscite
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_doi_csl_item_zotero" class="md-nav__link">
+    get_doi_csl_item_zotero
   </a>
   
 </li>
@@ -1136,12 +1164,26 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#variables" class="md-nav__link">
+    Variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#functions" class="md-nav__link">
     Functions
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#augment_get_doi_csl_item" class="md-nav__link">
+    augment_get_doi_csl_item
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#expand_short_doi" class="md-nav__link">
@@ -1153,6 +1195,20 @@
           <li class="md-nav__item">
   <a href="#get_doi_csl_item" class="md-nav__link">
     get_doi_csl_item
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_doi_csl_item_crosscite" class="md-nav__link">
+    get_doi_csl_item_crosscite
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_doi_csl_item_zotero" class="md-nav__link">
+    get_doi_csl_item_zotero
   </a>
   
 </li>
@@ -1295,11 +1351,11 @@
 
         <span class="k">return</span> <span class="bp">None</span>
 
-<span class="k">def</span> <span class="nf">get_doi_csl_item</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_doi_csl_item_crosscite</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Use Content Negotioation (http://citation.crosscite.org/docs.html) to</span>
+<span class="sd">    Use Content Negotioation (https://crosscite.org/docs.html) to</span>
 
 <span class="sd">    retrieve the CSL Item metadata for a DOI.</span>
 
@@ -1319,7 +1375,7 @@
 
     <span class="k">try</span><span class="p">:</span>
 
-        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
@@ -1329,28 +1385,158 @@
 
         <span class="k">raise</span> <span class="n">error</span>
 
-    <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;https://doi.org/{doi}&#39;</span>
+<span class="k">def</span> <span class="nf">get_doi_csl_item_zotero</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
 
-    <span class="n">short_doi_url</span> <span class="o">=</span> <span class="n">get_short_doi_url</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">short_doi_url</span><span class="p">:</span>
+<span class="sd">    Generate CSL JSON Data for a DOI using Zotero&#39;s translation-server.</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_doi_url</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">manubot.cite.zotero</span> <span class="kn">import</span> <span class="n">get_csl_item</span>
 
-        <span class="n">csl_item</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_pubmed_ids_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;doi:{doi}&#39;</span><span class="p">)</span>
 
-    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">augment_get_doi_csl_item</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Error calling get_pubmed_ids_for_doi for {doi}&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="n">csl_item</span>
+<span class="sd">    Decorator providing edits to the csl_item returned by a get_doi_csl_item_* function.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+        <span class="n">doi</span> <span class="o">=</span> <span class="n">doi</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+
+        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;DOI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doi</span>
+
+        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;https://doi.org/{doi}&#39;</span>
+
+        <span class="n">short_doi_url</span> <span class="o">=</span> <span class="n">get_short_doi_url</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">short_doi_url</span><span class="p">:</span>
+
+            <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_doi_url</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="n">csl_item</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_pubmed_ids_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">))</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Error calling get_pubmed_ids_for_doi for {doi}&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">csl_item</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="nd">@augment_get_doi_csl_item</span>
+
+<span class="k">def</span> <span class="nf">get_doi_csl_item</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Generate CSL JSON Data for an DOI.</span>
+
+<span class="sd">    This function uses a list of CSL JSON Item metadata retrievers, specified</span>
+
+<span class="sd">    by the module-level variable `doi_retrievers`. The methods are attempted</span>
+
+<span class="sd">    in order, with this function returning the metadata from the first</span>
+
+<span class="sd">    non-failing method.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># FIXME: this function is repetitive with other get_*_csl_item functions.</span>
+
+    <span class="k">for</span> <span class="n">retriever</span> <span class="ow">in</span> <span class="n">doi_retrievers</span><span class="p">:</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="n">retriever</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+                <span class="n">f</span><span class="s1">&#39;Error in {retriever.__name__} for {doi} &#39;</span>
+
+                <span class="n">f</span><span class="s1">&#39;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s1">{error}&#39;</span>
+
+            <span class="p">)</span>
+
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;all get_doi_csl_item methods failed for {doi}&#39;</span><span class="p">)</span>
+
+<span class="n">doi_retrievers</span> <span class="o">=</span> <span class="p">[</span>
+
+    <span class="n">get_doi_csl_item_crosscite</span><span class="p">,</span>
+
+    <span class="n">get_doi_csl_item_zotero</span><span class="p">,</span>
+
+<span class="p">]</span>
 </pre></div>
 
 
 </details>
+<h2 id="variables">Variables</h2>
+<div class="codehilite"><pre><span></span><span class="n">doi_retrievers</span>
+</pre></div>
+
+
 <h2 id="functions">Functions</h2>
+<h3 id="augment_get_doi_csl_item">augment_get_doi_csl_item</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">augment_get_doi_csl_item</span><span class="p">(</span>
+    <span class="n">function</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>Decorator providing edits to the csl_item returned by a get_doi_csl_item_* function.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">augment_get_doi_csl_item</span><span class="ss">(</span><span class="nv">function</span><span class="ss">)</span>:
+
+    <span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="nv">Decorator</span> <span class="nv">providing</span> <span class="nv">edits</span> <span class="nv">to</span> <span class="nv">the</span> <span class="nv">csl_item</span> <span class="nv">returned</span> <span class="nv">by</span> <span class="nv">a</span> <span class="nv">get_doi_csl_item_</span><span class="o">*</span> <span class="nv">function</span>.
+
+    <span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="nv">def</span> <span class="nv">wrapper</span><span class="ss">(</span><span class="nv">doi</span>: <span class="nv">str</span><span class="ss">)</span>:
+
+        <span class="nv">doi</span> <span class="o">=</span> <span class="nv">doi</span>.<span class="nv">lower</span><span class="ss">()</span>
+
+        <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+
+        <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">DOI</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">doi</span>
+
+        <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">URL</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s1">&#39;</span><span class="s">https://doi.org/{doi}</span><span class="s1">&#39;</span>
+
+        <span class="nv">short_doi_url</span> <span class="o">=</span> <span class="nv">get_short_doi_url</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+
+        <span class="k">if</span> <span class="nv">short_doi_url</span>:
+
+            <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">URL</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">short_doi_url</span>
+
+        <span class="nv">try</span>:
+
+            <span class="nv">csl_item</span>.<span class="nv">update</span><span class="ss">(</span><span class="nv">get_pubmed_ids_for_doi</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">))</span>
+
+        <span class="nv">except</span> <span class="nv">Exception</span>:
+
+            <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Error calling get_pubmed_ids_for_doi for {doi}</span><span class="s1">&#39;</span>, <span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+
+        <span class="k">return</span> <span class="nv">csl_item</span>
+
+    <span class="k">return</span> <span class="nv">wrapper</span>
+</pre></div>
+
+
+</details>
 <h3 id="expand_short_doi">expand_short_doi</h3>
 <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">expand_short_doi</span><span class="p">(</span>
     <span class="n">short_doi</span>
@@ -1424,18 +1610,54 @@
 </details>
 <h3 id="get_doi_csl_item">get_doi_csl_item</h3>
 <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_doi_csl_item</span><span class="p">(</span>
+    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>    <span class="nv">def</span> <span class="nv">wrapper</span><span class="ss">(</span><span class="nv">doi</span>: <span class="nv">str</span><span class="ss">)</span>:
+
+        <span class="nv">doi</span> <span class="o">=</span> <span class="nv">doi</span>.<span class="nv">lower</span><span class="ss">()</span>
+
+        <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+
+        <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">DOI</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">doi</span>
+
+        <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">URL</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s1">&#39;</span><span class="s">https://doi.org/{doi}</span><span class="s1">&#39;</span>
+
+        <span class="nv">short_doi_url</span> <span class="o">=</span> <span class="nv">get_short_doi_url</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+
+        <span class="k">if</span> <span class="nv">short_doi_url</span>:
+
+            <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">URL</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">short_doi_url</span>
+
+        <span class="nv">try</span>:
+
+            <span class="nv">csl_item</span>.<span class="nv">update</span><span class="ss">(</span><span class="nv">get_pubmed_ids_for_doi</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">))</span>
+
+        <span class="nv">except</span> <span class="nv">Exception</span>:
+
+            <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Error calling get_pubmed_ids_for_doi for {doi}</span><span class="s1">&#39;</span>, <span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+
+        <span class="k">return</span> <span class="nv">csl_item</span>
+</pre></div>
+
+
+</details>
+<h3 id="get_doi_csl_item_crosscite">get_doi_csl_item_crosscite</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_doi_csl_item_crosscite</span><span class="p">(</span>
     <span class="n">doi</span>
 <span class="p">)</span>
 </pre></div>
 
 
-<p>Use Content Negotioation (http://citation.crosscite.org/docs.html) to
+<p>Use Content Negotioation (https://crosscite.org/docs.html) to
 retrieve the CSL Item metadata for a DOI.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_doi_csl_item</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_doi_csl_item_crosscite</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">Use</span> <span class="nv">Content</span> <span class="nv">Negotioation</span> <span class="ss">(</span><span class="nv">http</span>:<span class="o">//</span><span class="nv">citation</span>.<span class="nv">crosscite</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">docs</span>.<span class="nv">html</span><span class="ss">)</span> <span class="nv">to</span>
+    <span class="nv">Use</span> <span class="nv">Content</span> <span class="nv">Negotioation</span> <span class="ss">(</span><span class="nv">https</span>:<span class="o">//</span><span class="nv">crosscite</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">docs</span>.<span class="nv">html</span><span class="ss">)</span> <span class="nv">to</span>
 
     <span class="nv">retrieve</span> <span class="nv">the</span> <span class="nv">CSL</span> <span class="nv">Item</span> <span class="nv">metadata</span> <span class="k">for</span> <span class="nv">a</span> <span class="nv">DOI</span>.
 
@@ -1455,7 +1677,7 @@ retrieve the CSL Item metadata for a DOI.</p>
 
     <span class="nv">try</span>:
 
-        <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">response</span>.<span class="nv">json</span><span class="ss">()</span>
+        <span class="k">return</span> <span class="nv">response</span>.<span class="nv">json</span><span class="ss">()</span>
 
     <span class="nv">except</span> <span class="nv">Exception</span> <span class="nv">as</span> <span class="nv">error</span>:
 
@@ -1464,24 +1686,29 @@ retrieve the CSL Item metadata for a DOI.</p>
                       <span class="nv">f</span><span class="s1">&#39;</span><span class="s">Invalid response from {response.url}:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s1">&#39;</span><span class="ss">)</span>
 
         <span class="nv">raise</span> <span class="nv">error</span>
+</pre></div>
 
-    <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">URL</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s1">&#39;</span><span class="s">https://doi.org/{doi}</span><span class="s1">&#39;</span>
 
-    <span class="nv">short_doi_url</span> <span class="o">=</span> <span class="nv">get_short_doi_url</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+</details>
+<h3 id="get_doi_csl_item_zotero">get_doi_csl_item_zotero</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_doi_csl_item_zotero</span><span class="p">(</span>
+    <span class="n">doi</span>
+<span class="p">)</span>
+</pre></div>
 
-    <span class="k">if</span> <span class="nv">short_doi_url</span>:
 
-        <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">URL</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">short_doi_url</span>
+<p>Generate CSL JSON Data for a DOI using Zotero's translation-server.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_doi_csl_item_zotero</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
 
-    <span class="nv">try</span>:
+    <span class="sd">&quot;&quot;&quot;</span>
 
-        <span class="nv">csl_item</span>.<span class="nv">update</span><span class="ss">(</span><span class="nv">get_pubmed_ids_for_doi</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">))</span>
+<span class="sd">    Generate CSL JSON Data for a DOI using Zotero&#39;s translation-server.</span>
 
-    <span class="nv">except</span> <span class="nv">Exception</span>:
+<span class="sd">    &quot;&quot;&quot;</span>
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Error calling get_pubmed_ids_for_doi for {doi}</span><span class="s1">&#39;</span>, <span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+    <span class="kn">from</span> <span class="nn">manubot.cite.zotero</span> <span class="kn">import</span> <span class="n">get_csl_item</span>
 
-    <span class="k">return</span> <span class="nv">csl_item</span>
+    <span class="k">return</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;doi:{doi}&#39;</span><span class="p">)</span>
 </pre></div>
 
 

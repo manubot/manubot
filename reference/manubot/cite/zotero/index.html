@@ -526,6 +526,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#get_csl_item" class="md-nav__link">
+    get_csl_item
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#search_query" class="md-nav__link">
     search_query
   </a>
@@ -1165,6 +1172,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#get_csl_item" class="md-nav__link">
+    get_csl_item
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#search_query" class="md-nav__link">
     search_query
   </a>
@@ -1407,6 +1421,24 @@ https://github.com/manubot/manubot/issues/82.</p>
         <span class="k">raise</span> <span class="n">error</span>
 
     <span class="k">return</span> <span class="n">csl_json</span>
+
+<span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Use a translation-server serach query followed by an export query</span>
+
+<span class="sd">    to return a CSL Item (the first &amp; only record of a the returned CSL JSON).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">zotero_data</span> <span class="o">=</span> <span class="n">search_query</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+
+    <span class="n">csl_data</span> <span class="o">=</span> <span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span>
+
+    <span class="n">csl_item</span><span class="p">,</span> <span class="o">=</span> <span class="n">csl_data</span>
+
+    <span class="k">return</span> <span class="n">csl_item</span>
 </pre></div>
 
 
@@ -1487,6 +1519,36 @@ Performs a similar query to the following curl command:</p>
         <span class="nv">raise</span> <span class="nv">error</span>
 
     <span class="k">return</span> <span class="nv">csl_json</span>
+</pre></div>
+
+
+</details>
+<h3 id="get_csl_item">get_csl_item</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span>
+    <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>Use a translation-server serach query followed by an export query
+to return a CSL Item (the first &amp; only record of a the returned CSL JSON).</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_csl_item</span><span class="ss">(</span><span class="nv">identifier</span>: <span class="nv">str</span><span class="ss">)</span>:
+
+    <span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="nv">Use</span> <span class="nv">a</span> <span class="nv">translation</span><span class="o">-</span><span class="nv">server</span> <span class="nv">serach</span> <span class="nv">query</span> <span class="nv">followed</span> <span class="nv">by</span> <span class="nv">an</span> <span class="nv">export</span> <span class="nv">query</span>
+
+    <span class="nv">to</span> <span class="k">return</span> <span class="nv">a</span> <span class="nv">CSL</span> <span class="nv">Item</span> <span class="ss">(</span><span class="nv">the</span> <span class="nv">first</span> <span class="o">&amp;</span> <span class="nv">only</span> <span class="nv">record</span> <span class="nv">of</span> <span class="nv">a</span> <span class="nv">the</span> <span class="nv">returned</span> <span class="nv">CSL</span> <span class="nv">JSON</span><span class="ss">)</span>.
+
+    <span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="nv">zotero_data</span> <span class="o">=</span> <span class="nv">search_query</span><span class="ss">(</span><span class="nv">identifier</span><span class="ss">)</span>
+
+    <span class="nv">csl_data</span> <span class="o">=</span> <span class="nv">export_as_csl</span><span class="ss">(</span><span class="nv">zotero_data</span><span class="ss">)</span>
+
+    <span class="nv">csl_item</span>, <span class="o">=</span> <span class="nv">csl_data</span>
+
+    <span class="k">return</span> <span class="nv">csl_item</span>
 </pre></div>
 
 

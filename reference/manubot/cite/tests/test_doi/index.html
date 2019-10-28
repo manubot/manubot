@@ -637,6 +637,27 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#test_get_doi_csl_item" class="md-nav__link">
+    test_get_doi_csl_item
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_get_doi_csl_item_crosscite" class="md-nav__link">
+    test_get_doi_csl_item_crosscite
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_get_doi_csl_item_zotero" class="md-nav__link">
+    test_get_doi_csl_item_zotero
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1166,6 +1187,27 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#test_get_doi_csl_item" class="md-nav__link">
+    test_get_doi_csl_item
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_get_doi_csl_item_crosscite" class="md-nav__link">
+    test_get_doi_csl_item_crosscite
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_get_doi_csl_item_zotero" class="md-nav__link">
+    test_get_doi_csl_item_zotero
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1197,6 +1239,12 @@
 
     <span class="n">expand_short_doi</span><span class="p">,</span>
 
+    <span class="n">get_doi_csl_item</span><span class="p">,</span>
+
+    <span class="n">get_doi_csl_item_zotero</span><span class="p">,</span>
+
+    <span class="n">get_doi_csl_item_crosscite</span><span class="p">,</span>
+
 <span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">test_expand_short_doi</span><span class="p">():</span>
@@ -1216,6 +1264,56 @@
     <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s1">&#39;shortDOIs start with `10/`&#39;</span><span class="p">):</span>
 
         <span class="n">expand_short_doi</span><span class="p">(</span><span class="s1">&#39;10.1016/S0933-3657(96)00367-3&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_get_doi_csl_item_crosscite</span><span class="p">():</span>
+
+    <span class="n">doi</span> <span class="o">=</span> <span class="s1">&#39;10.1101/142760&#39;</span>
+
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_doi_csl_item_crosscite</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+
+    <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;publisher&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Cold Spring Harbor Laboratory&quot;</span>
+
+<span class="k">def</span> <span class="nf">test_get_doi_csl_item_zotero</span><span class="p">():</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    As of 2019-10-25, DOI Content Negotiation (i.e. crosscite) encodes the consurtium</span>
+
+<span class="sd">    in author.name rather than author.literal. Zotero translation-server encodes</span>
+
+<span class="sd">    the consortium in author.family, which is better than nothing since it&#39;s a valid</span>
+
+<span class="sd">    CSL JSON field.</span>
+
+<span class="sd">    https://github.com/manubot/manubot/issues/158</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">doi</span> <span class="o">=</span> <span class="s1">&#39;10.1038/ng.3834&#39;</span>
+
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_doi_csl_item_zotero</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+
+    <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">][</span><span class="mi">9</span><span class="p">][</span><span class="s1">&#39;family&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;GTEx Consortium&quot;</span>
+
+<span class="k">def</span> <span class="nf">test_get_doi_csl_item</span><span class="p">():</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Test URL is set with shortDOI when calling get_doi_csl_item.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">doi</span> <span class="o">=</span> <span class="s1">&#39;10.1101/142760&#39;</span>
+
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_doi_csl_item</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;URL&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://doi.org/gbpvh5&quot;</span>
 </pre></div>
 
 
@@ -1265,6 +1363,92 @@
     <span class="k">with</span> <span class="n">pytest</span><span class="p">.</span><span class="n">raises</span><span class="p">(</span><span class="n">ValueError</span><span class="p">,</span> <span class="k">match</span><span class="o">=</span><span class="s1">&#39;shortDOIs start with `10/`&#39;</span><span class="p">):</span>
 
         <span class="n">expand_short_doi</span><span class="p">(</span><span class="s1">&#39;10.1016/S0933-3657(96)00367-3&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+</details>
+<h3 id="test_get_doi_csl_item">test_get_doi_csl_item</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_get_doi_csl_item</span><span class="p">(</span>
+
+<span class="p">)</span>
+</pre></div>
+
+
+<p>Test URL is set with shortDOI when calling get_doi_csl_item.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_get_doi_csl_item</span><span class="p">():</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Test URL is set with shortDOI when calling get_doi_csl_item.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="n">doi</span> <span class="o">=</span> <span class="s1">&#39;10.1101/142760&#39;</span>
+
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_doi_csl_item</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+
+    <span class="n">assert</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="n">dict</span><span class="p">)</span>
+
+    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;URL&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;https://doi.org/gbpvh5&quot;</span>
+</pre></div>
+
+
+</details>
+<h3 id="test_get_doi_csl_item_crosscite">test_get_doi_csl_item_crosscite</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_get_doi_csl_item_crosscite</span><span class="p">(</span>
+
+<span class="p">)</span>
+</pre></div>
+
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_get_doi_csl_item_crosscite</span><span class="p">():</span>
+
+    <span class="n">doi</span> <span class="o">=</span> <span class="s1">&#39;10.1101/142760&#39;</span>
+
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_doi_csl_item_crosscite</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+
+    <span class="n">assert</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="n">dict</span><span class="p">)</span>
+
+    <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;publisher&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;Cold Spring Harbor Laboratory&quot;</span>
+</pre></div>
+
+
+</details>
+<h3 id="test_get_doi_csl_item_zotero">test_get_doi_csl_item_zotero</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_get_doi_csl_item_zotero</span><span class="p">(</span>
+
+<span class="p">)</span>
+</pre></div>
+
+
+<p>As of 2019-10-25, DOI Content Negotiation (i.e. crosscite) encodes the consurtium
+in author.name rather than author.literal. Zotero translation-server encodes
+the consortium in author.family, which is better than nothing since it's a valid
+CSL JSON field.
+https://github.com/manubot/manubot/issues/158</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_get_doi_csl_item_zotero</span><span class="p">():</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    As of 2019-10-25, DOI Content Negotiation (i.e. crosscite) encodes the consurtium</span>
+
+<span class="ss">    in author.name rather than author.literal. Zotero translation-server encodes</span>
+
+<span class="ss">    the consortium in author.family, which is better than nothing since it&#39;s a valid</span>
+
+<span class="ss">    CSL JSON field.</span>
+
+<span class="ss">    https://github.com/manubot/manubot/issues/158</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="n">doi</span> <span class="o">=</span> <span class="s1">&#39;10.1038/ng.3834&#39;</span>
+
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_doi_csl_item_zotero</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+
+    <span class="n">assert</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="n">dict</span><span class="p">)</span>
+
+    <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">][</span><span class="mi">9</span><span class="p">][</span><span class="s1">&#39;family&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;GTEx Consortium&quot;</span>
 </pre></div>
 
 
