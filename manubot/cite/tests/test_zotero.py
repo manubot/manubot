@@ -1,10 +1,6 @@
 import pytest
 
-from manubot.cite.zotero import (
-    web_query,
-    search_query,
-    export_as_csl
-)
+from manubot.cite.zotero import web_query, search_query, export_as_csl
 
 
 def test_web_query():
@@ -20,11 +16,11 @@ def test_web_query():
     URL to be extraordinarily slow but has now been fixed. See
     https://github.com/zotero/translation-server/issues/63
     """
-    url = 'https://bigthink.com/neurobonkers/a-pirate-bay-for-science'
+    url = "https://bigthink.com/neurobonkers/a-pirate-bay-for-science"
     zotero_data = web_query(url)
     assert isinstance(zotero_data, list)
     assert len(zotero_data) == 1
-    assert zotero_data[0]['title'].startswith("Meet the Robin Hood of Science")
+    assert zotero_data[0]["title"].startswith("Meet the Robin Hood of Science")
 
 
 def test_export_as_csl():
@@ -54,8 +50,8 @@ def test_export_as_csl():
         }
     ]
     csl_item = export_as_csl(zotero_data)[0]
-    assert csl_item['title'] == "Meet the Robin Hood of Science"
-    assert csl_item['container-title'] == 'Big Think'
+    assert csl_item["title"] == "Meet the Robin Hood of Science"
+    assert csl_item["container-title"] == "Big Think"
 
 
 def test_web_query_returns_single_result_legacy_manubot_url():
@@ -71,12 +67,15 @@ def test_web_query_returns_single_result_legacy_manubot_url():
       'https://translate.manubot.org/web?single=1'
     ```
     """
-    url = 'https://greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/'
+    url = "https://greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/"
     zotero_metadata = web_query(url)
     assert isinstance(zotero_metadata, list)
     assert len(zotero_metadata) == 1
     zotero_metadata, = zotero_metadata
-    assert zotero_metadata['title'] == 'Sci-Hub provides access to nearly all scholarly literature'
+    assert (
+        zotero_metadata["title"]
+        == "Sci-Hub provides access to nearly all scholarly literature"
+    )
 
 
 def test_web_query_returns_single_result_pubmed_url():
@@ -89,12 +88,12 @@ def test_web_query_returns_single_result_pubmed_url():
       'https://translate.manubot.org/web?single=1'
     ```
     """
-    url = 'https://www.ncbi.nlm.nih.gov/pubmed/?term=sci-hub%5Btitle%5D'
+    url = "https://www.ncbi.nlm.nih.gov/pubmed/?term=sci-hub%5Btitle%5D"
     zotero_metadata = web_query(url)
     assert isinstance(zotero_metadata, list)
     assert len(zotero_metadata) == 1
     zotero_metadata, = zotero_metadata
-    assert zotero_metadata['title'] == 'sci-hub[title] - PubMed - NCBI'
+    assert zotero_metadata["title"] == "sci-hub[title] - PubMed - NCBI"
 
 
 def test_search_query_isbn():
@@ -107,9 +106,9 @@ def test_search_query_isbn():
       'https://translate.manubot.org/search'
     ```
     """
-    identifier = 'isbn:9781339919881'
+    identifier = "isbn:9781339919881"
     zotero_data = search_query(identifier)
-    assert zotero_data[0]['title'].startswith('The hetnet awakens')
+    assert zotero_data[0]["title"].startswith("The hetnet awakens")
 
 
 def test_search_query_arxiv():
@@ -123,17 +122,23 @@ def test_search_query_arxiv():
       'https://translate.manubot.org/search'
     ```
     """
-    identifier = 'arxiv:1604.05363v1'
+    identifier = "arxiv:1604.05363v1"
     zotero_data = search_query(identifier)
-    assert zotero_data[0]['title'] == 'Comparing Published Scientific Journal Articles to Their Pre-print Versions'
-    assert zotero_data[0]['creators'][-1]['firstName'] == 'Todd'
-    assert zotero_data[0]['date'] == '2016-04-18'
+    assert (
+        zotero_data[0]["title"]
+        == "Comparing Published Scientific Journal Articles to Their Pre-print Versions"
+    )
+    assert zotero_data[0]["creators"][-1]["firstName"] == "Todd"
+    assert zotero_data[0]["date"] == "2016-04-18"
 
 
-@pytest.mark.parametrize('identifier', [
-    '30571677',  # https://www.ncbi.nlm.nih.gov/pubmed/30571677
-    'doi:10.1371/journal.pcbi.1006561',  # https://doi.org/10.1371/journal.pcbi.1006561
-])
+@pytest.mark.parametrize(
+    "identifier",
+    [
+        "30571677",  # https://www.ncbi.nlm.nih.gov/pubmed/30571677
+        "doi:10.1371/journal.pcbi.1006561",  # https://doi.org/10.1371/journal.pcbi.1006561
+    ],
+)
 def test_search_query(identifier):
     """
     The translation-server search endpoint can be tested via curl:
@@ -147,5 +152,7 @@ def test_search_query(identifier):
     https://github.com/zotero/translation-server/issues/71
     """
     zotero_data = search_query(identifier)
-    assert zotero_data[0]['title'].startswith('Ten simple rules for documenting scientific software')
-    assert zotero_data[0]['creators'][0]['lastName'] == 'Lee'
+    assert zotero_data[0]["title"].startswith(
+        "Ten simple rules for documenting scientific software"
+    )
+    assert zotero_data[0]["creators"][0]["lastName"] == "Lee"

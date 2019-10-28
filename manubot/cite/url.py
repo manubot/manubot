@@ -17,21 +17,19 @@ def get_url_csl_item(url):
             return retriever(url)
         except Exception as error:
             logging.warning(
-                f'Error in {retriever.__name__} for {url} '
-                f'due to a {error.__class__.__name__}:\n{error}'
+                f"Error in {retriever.__name__} for {url} "
+                f"due to a {error.__class__.__name__}:\n{error}"
             )
             logging.info(error, exc_info=True)
-    raise Exception(f'all get_url_csl_item methods failed for {url}')
+    raise Exception(f"all get_url_csl_item methods failed for {url}")
 
 
 def get_url_csl_item_zotero(url):
     """
     Use Zotero's translation-server to generate a CSL Item for the specified URL.
     """
-    from manubot.cite.zotero import (
-        export_as_csl,
-        web_query,
-    )
+    from manubot.cite.zotero import export_as_csl, web_query
+
     zotero_data = web_query(url)
     csl_data = export_as_csl(zotero_data)
     csl_item, = csl_data
@@ -53,21 +51,20 @@ def get_url_csl_item_greycite(url):
     """
     import requests
     from manubot.util import get_manubot_user_agent
+
     headers = {
-        'Connection': 'close',  # https://github.com/kennethreitz/requests/issues/4023
-        'User-Agent': get_manubot_user_agent(),
+        "Connection": "close",  # https://github.com/kennethreitz/requests/issues/4023
+        "User-Agent": get_manubot_user_agent(),
     }
     response = requests.get(
-        'http://greycite.knowledgeblog.org/json',
-        params={'uri': url},
-        headers=headers,
+        "http://greycite.knowledgeblog.org/json", params={"uri": url}, headers=headers
     )
     # Some Greycite responses were valid JSON besides for an error appended
     # like "<p>*** Date set from uri<p>" or "<p>*** fetch error : 404<p>".
     pattern = re.compile(r"<p>\*\*\*.*<p>")
-    text = pattern.sub('', response.text)
+    text = pattern.sub("", response.text)
     csl_item = json.loads(text)
-    csl_item['type'] = 'webpage'
+    csl_item["type"] = "webpage"
     return csl_item
 
 
@@ -75,10 +72,7 @@ def get_url_csl_item_manual(url):
     """
     Manually create csl_item for a URL.
     """
-    return {
-        'URL': url,
-        'type': 'webpage',
-    }
+    return {"URL": url, "type": "webpage"}
 
 
 url_retrievers = [

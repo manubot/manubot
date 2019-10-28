@@ -18,10 +18,12 @@ def get_pmc_csl_item(pmcid):
     https://github.com/manubot/manubot/issues/21
     https://twitter.com/dhimmel/status/1061787168820092929
     """
-    assert pmcid.startswith('PMC')
-    csl_item = _get_literature_citation_exporter_csl_item('pmc', pmcid[3:])
-    if 'URL' not in csl_item:
-        csl_item['URL'] = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{csl_item.get('PMCID', pmcid)}/"
+    assert pmcid.startswith("PMC")
+    csl_item = _get_literature_citation_exporter_csl_item("pmc", pmcid[3:])
+    if "URL" not in csl_item:
+        csl_item[
+            "URL"
+        ] = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{csl_item.get('PMCID', pmcid)}/"
     return csl_item
 
 
@@ -29,41 +31,36 @@ def _get_literature_citation_exporter_csl_item(database, identifier):
     """
     https://api.ncbi.nlm.nih.gov/lit/ctxp
     """
-    if database not in {'pubmed', 'pmc'}:
+    if database not in {"pubmed", "pmc"}:
         logging.error(
-            f'Error calling _get_literature_citation_exporter_csl_item.\n'
+            f"Error calling _get_literature_citation_exporter_csl_item.\n"
             f'database must be either "pubmed" or "pmc", not {database}'
         )
         assert False
     if not identifier:
         logging.error(
-            f'Error calling _get_literature_citation_exporter_csl_item.\n'
-            f'identifier cannot be blank'
+            f"Error calling _get_literature_citation_exporter_csl_item.\n"
+            f"identifier cannot be blank"
         )
         assert False
-    params = {
-        'format': 'csl',
-        'id': identifier,
-    }
-    headers = {
-        'User-Agent': get_manubot_user_agent(),
-    }
-    url = f'https://api.ncbi.nlm.nih.gov/lit/ctxp/v1/{database}/'
+    params = {"format": "csl", "id": identifier}
+    headers = {"User-Agent": get_manubot_user_agent()}
+    url = f"https://api.ncbi.nlm.nih.gov/lit/ctxp/v1/{database}/"
     response = requests.get(url, params, headers=headers)
     try:
         csl_item = response.json()
     except Exception as error:
         logging.error(
-            f'Error fetching {database} metadata for {identifier}.\n'
-            f'Invalid JSON response from {response.url}:\n{response.text}'
+            f"Error fetching {database} metadata for {identifier}.\n"
+            f"Invalid JSON response from {response.url}:\n{response.text}"
         )
         raise error
     assert isinstance(csl_item, dict)
-    if csl_item.get('status', 'okay') == 'error':
+    if csl_item.get("status", "okay") == "error":
         logging.error(
-            f'Error fetching {database} metadata for {identifier}.\n'
-            f'Literature Citation Exporter returned JSON indicating an error for {response.url}\n'
-            f'{json.dumps(csl_item, indent=2)}'
+            f"Error fetching {database} metadata for {identifier}.\n"
+            f"Literature Citation Exporter returned JSON indicating an error for {response.url}\n"
+            f"{json.dumps(csl_item, indent=2)}"
         )
         assert False
     return csl_item
@@ -77,28 +74,24 @@ def get_pubmed_csl_item(pmid):
     https://github.com/ncbi/citation-exporter/issues/3#issuecomment-355313143
     """
     pmid = str(pmid)
-    params = {
-        'db': 'pubmed',
-        'id': pmid,
-        'rettype': 'full',
-    }
-    headers = {
-        'User-Agent': get_manubot_user_agent(),
-    }
-    url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi'
+    params = {"db": "pubmed", "id": pmid, "rettype": "full"}
+    headers = {"User-Agent": get_manubot_user_agent()}
+    url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
     with _get_eutils_rate_limiter():
         response = requests.get(url, params, headers=headers)
     try:
         element_tree = xml.etree.ElementTree.fromstring(response.text)
         element_tree, = list(element_tree)
     except Exception as error:
-        logging.error(f'Error fetching PubMed metadata for {pmid}.\n'
-                      f'Invalid XML response from {response.url}:\n{response.text}')
+        logging.error(
+            f"Error fetching PubMed metadata for {pmid}.\n"
+            f"Invalid XML response from {response.url}:\n{response.text}"
+        )
         raise error
     try:
         csl_item = csl_item_from_pubmed_article(element_tree)
     except Exception as error:
-        msg = f'Error parsing the following PubMed metadata for PMID {pmid}:\n{response.text}'
+        msg = f"Error parsing the following PubMed metadata for PMID {pmid}:\n{response.text}"
         logging.error(msg)
         raise error
     return csl_item
@@ -113,83 +106,83 @@ def csl_item_from_pubmed_article(article):
     csl_item = collections.OrderedDict()
 
     if not article.find("MedlineCitation/Article"):
-        raise NotImplementedError('Unsupported PubMed record: no <Article> element')
+        raise NotImplementedError("Unsupported PubMed record: no <Article> element")
 
     title = article.findtext("MedlineCitation/Article/ArticleTitle")
     if title:
-        csl_item['title'] = title
+        csl_item["title"] = title
 
     volume = article.findtext("MedlineCitation/Article/Journal/JournalIssue/Volume")
     if volume:
-        csl_item['volume'] = volume
+        csl_item["volume"] = volume
 
     issue = article.findtext("MedlineCitation/Article/Journal/JournalIssue/Issue")
     if issue:
-        csl_item['issue'] = issue
+        csl_item["issue"] = issue
 
     page = article.findtext("MedlineCitation/Article/Pagination/MedlinePgn")
     if page:
-        csl_item['page'] = page
+        csl_item["page"] = page
 
     journal = article.findtext("MedlineCitation/Article/Journal/Title")
     if journal:
-        csl_item['container-title'] = journal
+        csl_item["container-title"] = journal
 
     journal_short = article.findtext("MedlineCitation/Article/Journal/ISOAbbreviation")
     if journal_short:
-        csl_item['container-title-short'] = journal_short
+        csl_item["container-title-short"] = journal_short
 
     issn = article.findtext("MedlineCitation/Article/Journal/ISSN")
     if issn:
-        csl_item['ISSN'] = issn
+        csl_item["ISSN"] = issn
 
     date_parts = extract_publication_date_parts(article)
     if date_parts:
-        csl_item['issued'] = {'date-parts': [date_parts]}
+        csl_item["issued"] = {"date-parts": [date_parts]}
 
     authors_csl = list()
     authors = article.findall("MedlineCitation/Article/AuthorList/Author")
     for author in authors:
         author_csl = collections.OrderedDict()
-        given = author.findtext('ForeName')
+        given = author.findtext("ForeName")
         if given:
-            author_csl['given'] = given
-        family = author.findtext('LastName')
+            author_csl["given"] = given
+        family = author.findtext("LastName")
         if family:
-            author_csl['family'] = family
+            author_csl["family"] = family
         authors_csl.append(author_csl)
     if authors_csl:
-        csl_item['author'] = authors_csl
+        csl_item["author"] = authors_csl
 
-    for id_type, key in ('pubmed', 'PMID'), ('pmc', 'PMCID'), ('doi', 'DOI'):
+    for id_type, key in ("pubmed", "PMID"), ("pmc", "PMCID"), ("doi", "DOI"):
         xpath = f"PubmedData/ArticleIdList/ArticleId[@IdType='{id_type}']"
         value = article.findtext(xpath)
         if value:
-            csl_item[key] = value.lower() if key == 'DOI' else value
+            csl_item[key] = value.lower() if key == "DOI" else value
 
     abstract = article.findtext("MedlineCitation/Article/Abstract/AbstractText")
     if abstract:
-        csl_item['abstract'] = abstract
+        csl_item["abstract"] = abstract
 
-    csl_item['URL'] = f"https://www.ncbi.nlm.nih.gov/pubmed/{csl_item['PMID']}"
-    csl_item['type'] = 'article-journal'
+    csl_item["URL"] = f"https://www.ncbi.nlm.nih.gov/pubmed/{csl_item['PMID']}"
+    csl_item["type"] = "article-journal"
 
     return csl_item
 
 
 month_abbrev_to_int = {
-    'Jan': 1,
-    'Feb': 2,
-    'Mar': 3,
-    'Apr': 4,
-    'May': 5,
-    'Jun': 6,
-    'Jul': 7,
-    'Aug': 8,
-    'Sep': 9,
-    'Oct': 10,
-    'Nov': 11,
-    'Dec': 12,
+    "Jan": 1,
+    "Feb": 2,
+    "Mar": 3,
+    "Apr": 4,
+    "May": 5,
+    "Jun": 6,
+    "Jul": 7,
+    "Aug": 8,
+    "Sep": 9,
+    "Oct": 10,
+    "Nov": 11,
+    "Dec": 12,
 }
 
 
@@ -202,7 +195,7 @@ def extract_publication_date_parts(article):
     # Electronic articles
     date = article.find("MedlineCitation/Article/ArticleDate")
     if date:
-        for part in 'Year', 'Month', 'Day':
+        for part in "Year", "Month", "Day":
             part = date.findtext(part)
             if not part:
                 break
@@ -211,16 +204,16 @@ def extract_publication_date_parts(article):
 
     # Print articles
     date = article.find("MedlineCitation/Article/Journal/JournalIssue/PubDate")
-    year = date.findtext('Year')
+    year = date.findtext("Year")
     if year:
         date_parts.append(int(year))
-    month = date.findtext('Month')
+    month = date.findtext("Month")
     if month:
         try:
             date_parts.append(month_abbrev_to_int[month])
         except KeyError:
             date_parts.append(int(month))
-    day = date.findtext('Day')
+    day = date.findtext("Day")
     if day:
         date_parts.append(int(day))
     return date_parts
@@ -233,32 +226,33 @@ def get_pmcid_and_pmid_for_doi(doi):
     https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/
     """
     assert isinstance(doi, str)
-    assert doi.startswith('10.')
-    params = {
-        'ids': doi,
-        'tool': 'manubot',
-    }
-    url = 'https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/'
+    assert doi.startswith("10.")
+    params = {"ids": doi, "tool": "manubot"}
+    url = "https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/"
     response = requests.get(url, params)
     if not response.ok:
-        logging.warning(f'Status code {response.status_code} querying {response.url}\n')
+        logging.warning(f"Status code {response.status_code} querying {response.url}\n")
         return {}
     try:
         element_tree = xml.etree.ElementTree.fromstring(response.text)
     except Exception:
-        logging.warning(f'Error fetching PMC ID conversion for {doi}.\n'
-                        f'Response from {response.url}:\n{response.text}')
+        logging.warning(
+            f"Error fetching PMC ID conversion for {doi}.\n"
+            f"Response from {response.url}:\n{response.text}"
+        )
         return {}
-    records = element_tree.findall('record')
+    records = element_tree.findall("record")
     if len(records) != 1:
-        logging.warning(f'Expected PubMed Central ID converter to return a single XML record for {doi}.\n'
-                        f'Response from {response.url}:\n{response.text}')
+        logging.warning(
+            f"Expected PubMed Central ID converter to return a single XML record for {doi}.\n"
+            f"Response from {response.url}:\n{response.text}"
+        )
         return {}
     record, = records
-    if record.findtext('status', default='okay') == 'error':
+    if record.findtext("status", default="okay") == "error":
         return {}
     id_dict = {}
-    for id_type in 'pmcid', 'pmid':
+    for id_type in "pmcid", "pmid":
         id_ = record.get(id_type)
         if id_:
             id_dict[id_type.upper()] = id_
@@ -270,30 +264,29 @@ def get_pmid_for_doi(doi):
     Query NCBI's E-utilities to retrieve the PMID for a DOI.
     """
     assert isinstance(doi, str)
-    assert doi.startswith('10.')
-    params = {
-        'db': 'pubmed',
-        'term': f'{doi}[DOI]',
-    }
-    headers = {
-        'User-Agent': get_manubot_user_agent(),
-    }
-    url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi'
+    assert doi.startswith("10.")
+    params = {"db": "pubmed", "term": f"{doi}[DOI]"}
+    headers = {"User-Agent": get_manubot_user_agent()}
+    url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
     with _get_eutils_rate_limiter():
         response = requests.get(url, params, headers=headers)
     if not response.ok:
-        logging.warning(f'Status code {response.status_code} querying {response.url}\n')
+        logging.warning(f"Status code {response.status_code} querying {response.url}\n")
         return None
     try:
         element_tree = xml.etree.ElementTree.fromstring(response.text)
     except Exception:
-        logging.warning(f'Error in ESearch XML for DOI: {doi}.\n'
-                        f'Response from {response.url}:\n{response.text}')
+        logging.warning(
+            f"Error in ESearch XML for DOI: {doi}.\n"
+            f"Response from {response.url}:\n{response.text}"
+        )
         return None
-    id_elems = element_tree.findall('IdList/Id')
+    id_elems = element_tree.findall("IdList/Id")
     if len(id_elems) != 1:
-        logging.debug(f'No PMIDs found for {doi}.\n'
-                      f'Response from {response.url}:\n{response.text}')
+        logging.debug(
+            f"No PMIDs found for {doi}.\n"
+            f"Response from {response.url}:\n{response.text}"
+        )
         return None
     id_elem, = id_elems
     return id_elem.text
@@ -308,7 +301,7 @@ def get_pubmed_ids_for_doi(doi):
     if not pubmed_ids:
         pmid = get_pmid_for_doi(doi)
         if pmid:
-            pubmed_ids['PMID'] = pmid
+            pubmed_ids["PMID"] = pmid
     return pubmed_ids
 
 
@@ -319,4 +312,5 @@ def _get_eutils_rate_limiter():
     https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/
     """
     from ratelimiter import RateLimiter
+
     return RateLimiter(max_calls=2, period=1)

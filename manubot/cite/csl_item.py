@@ -27,7 +27,11 @@ import copy
 import logging
 import re
 
-from manubot.cite.citekey import standardize_citekey, infer_citekey_prefix, is_valid_citekey
+from manubot.cite.citekey import (
+    standardize_citekey,
+    infer_citekey_prefix,
+    is_valid_citekey,
+)
 
 
 class CSL_Item(dict):
@@ -54,12 +58,12 @@ class CSL_Item(dict):
     # fucntions above.
 
     type_mapping = {
-        'journal-article': 'article-journal',
-        'book-chapter': 'chapter',
-        'posted-content': 'manuscript',
-        'proceedings-article': 'paper-conference',
-        'standard': 'entry',
-        'reference-entry': 'entry',
+        "journal-article": "article-journal",
+        "book-chapter": "chapter",
+        "posted-content": "manuscript",
+        "proceedings-article": "paper-conference",
+        "standard": "entry",
+        "reference-entry": "entry",
     }
 
     def __init__(self, dictionary=None, **kwargs):
@@ -81,7 +85,7 @@ class CSL_Item(dict):
         self.update(copy.deepcopy(kwargs))
 
     def set_id(self, id_):
-        self['id'] = id_
+        self["id"] = id_
         return self
 
     def correct_invalid_type(self):
@@ -91,18 +95,18 @@ class CSL_Item(dict):
 
         For detail see https://github.com/CrossRef/rest-api-doc/issues/187
         """
-        if 'type' in self:
+        if "type" in self:
             # Replace a type from in CSL_Item.type_mapping.keys(),
             # leave type intact in other cases.
-            t = self['type']
-            self['type'] = self.type_mapping.get(t, t)
+            t = self["type"]
+            self["type"] = self.type_mapping.get(t, t)
         return self
 
     def set_default_type(self):
         """
         Set type to 'entry', if type not specified.
         """
-        self['type'] = self.get('type', 'entry')
+        self["type"] = self.get("type", "entry")
         return self
 
     def prune_against_schema(self):
@@ -110,6 +114,7 @@ class CSL_Item(dict):
         Remove fields that violate the CSL Item JSON Schema.
         """
         from .citeproc import remove_jsonschema_errors
+
         csl_item, = remove_jsonschema_errors([self], in_place=True)
         assert csl_item is self
         return self
@@ -120,6 +125,7 @@ class CSL_Item(dict):
         jsonschema.exceptions.ValidationError.
         """
         from .citeproc import get_jsonschema_csl_validator
+
         validator = get_jsonschema_csl_validator()
         validator.validate([self])
         return self
@@ -136,7 +142,8 @@ class CSL_Item(dict):
         """
         logging.debug(
             f"Starting CSL_Item.clean with{'' if prune else 'out'}"
-            f"CSL pruning for id: {self.get('id', 'id not specified')}")
+            f"CSL pruning for id: {self.get('id', 'id not specified')}"
+        )
         self.correct_invalid_type()
         if prune:
             self.prune_against_schema()
@@ -151,15 +158,15 @@ class CSL_Item(dict):
         Return the value of the "note" field as a string.
         If "note" key is not set, return empty string.
         """
-        return str(self.get('note') or '')
+        return str(self.get("note") or "")
 
     @note.setter
     def note(self, text: str):
         if text:
-            self['note'] = text
+            self["note"] = text
         else:
             # if text is None or an empty string, remove the "note" field
-            self.pop('note', None)
+            self.pop("note", None)
 
     @property
     def note_dict(self) -> dict:
@@ -172,9 +179,11 @@ class CSL_Item(dict):
         """
         note = self.note
         line_matches = re.findall(
-            r'^(?P<key>[A-Z]+|[-_a-z]+): *(?P<value>.+?) *$', note, re.MULTILINE)
+            r"^(?P<key>[A-Z]+|[-_a-z]+): *(?P<value>.+?) *$", note, re.MULTILINE
+        )
         braced_matches = re.findall(
-            r'{:(?P<key>[A-Z]+|[-_a-z]+): *(?P<value>.+?) *}', note)
+            r"{:(?P<key>[A-Z]+|[-_a-z]+): *(?P<value>.+?) *}", note
+        )
         return dict(line_matches + braced_matches)
 
     def note_append_text(self, text: str):
@@ -184,8 +193,8 @@ class CSL_Item(dict):
         if not text:
             return
         note = self.note
-        if note and not note.endswith('\n'):
-            note += '\n'
+        if note and not note.endswith("\n"):
+            note += "\n"
         note += text
         self.note = note
 
@@ -196,34 +205,37 @@ class CSL_Item(dict):
         to encode additional values not defined by the CSL JSON schema.
         """
         for key, value in dictionary.items():
-            if not re.fullmatch(r'[A-Z]+|[-_a-z]+', key):
+            if not re.fullmatch(r"[A-Z]+|[-_a-z]+", key):
                 logging.warning(
-                    f'note_append_dict: skipping adding {key!r} because '
-                    f'it does not conform to the variable_name syntax as per https://git.io/fjTzW.')
+                    f"note_append_dict: skipping adding {key!r} because "
+                    f"it does not conform to the variable_name syntax as per https://git.io/fjTzW."
+                )
                 continue
-            if '\n' in value:
+            if "\n" in value:
                 logging.warning(
-                    f'note_append_dict: skipping adding {key!r} because '
-                    f'the value contains a newline: {value!r}')
+                    f"note_append_dict: skipping adding {key!r} because "
+                    f"the value contains a newline: {value!r}"
+                )
                 continue
-            self.note_append_text(f'{key}: {value}')
+            self.note_append_text(f"{key}: {value}")
 
     def infer_id(self):
         """
         Detect and set a non-null/empty for "id" or else raise a ValueError.
         """
-        if self.get('standard_citation'):
+        if self.get("standard_citation"):
             # "standard_citation" field is set with a non-null/empty value
-            return self.set_id(self.pop('standard_citation'))
-        if self.note_dict.get('standard_id'):
+            return self.set_id(self.pop("standard_citation"))
+        if self.note_dict.get("standard_id"):
             # "standard_id" note field is set with a non-null/empty value
-            return self.set_id(self.note_dict['standard_id'])
-        if self.get('id'):
+            return self.set_id(self.note_dict["standard_id"])
+        if self.get("id"):
             # "id" field exists and is set with a non-null/empty value
-            return self.set_id(infer_citekey_prefix(self['id']))
+            return self.set_id(infer_citekey_prefix(self["id"]))
         raise ValueError(
-            'infer_id could not detect a field with a citation / standard_citation. '
-            'Consider setting the CSL Item "id" field.')
+            "infer_id could not detect a field with a citation / standard_citation. "
+            'Consider setting the CSL Item "id" field.'
+        )
 
     def standardize_id(self):
         """
@@ -240,21 +252,21 @@ class CSL_Item(dict):
         Note that the Manubot software generally refers to the "id" of a CSL Item as a citekey.
         However, in this context, we use "id" rather than "citekey" for consistency with CSL's "id" field.
         """
-        original_id = self.get('id')
+        original_id = self.get("id")
         self.infer_id()
-        original_standard_id = self['id']
+        original_standard_id = self["id"]
         assert is_valid_citekey(original_standard_id, allow_raw=True)
         standard_id = standardize_citekey(original_standard_id, warn_if_changed=False)
         add_to_note = {}
         note_dict = self.note_dict
         if original_id and original_id != standard_id:
-            if original_id != note_dict.get('original_id'):
-                add_to_note['original_id'] = original_id
+            if original_id != note_dict.get("original_id"):
+                add_to_note["original_id"] = original_id
         if original_standard_id and original_standard_id != standard_id:
-            if original_standard_id != note_dict.get('original_standard_id'):
-                add_to_note['original_standard_id'] = original_standard_id
-        if standard_id != note_dict.get('standard_id'):
-            add_to_note['standard_id'] = standard_id
+            if original_standard_id != note_dict.get("original_standard_id"):
+                add_to_note["original_standard_id"] = original_standard_id
+        if standard_id != note_dict.get("standard_id"):
+            add_to_note["standard_id"] = standard_id
         self.note_append_dict(dictionary=add_to_note)
         self.set_id(standard_id)
         return self
@@ -262,5 +274,4 @@ class CSL_Item(dict):
 
 def assert_csl_item_type(x):
     if not isinstance(x, CSL_Item):
-        raise TypeError(
-            f'Expected CSL_Item object, got {type(x)}')
+        raise TypeError(f"Expected CSL_Item object, got {type(x)}")

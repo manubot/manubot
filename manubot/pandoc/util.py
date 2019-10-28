@@ -25,29 +25,29 @@ def get_pandoc_info():
     }
     """
     stats = dict()
-    for command in 'pandoc', 'pandoc-citeproc':
+    for command in "pandoc", "pandoc-citeproc":
         path = shutil.which(command)
         stats[command] = bool(path)
         if not path:
             continue
         version = subprocess.check_output(
-            args=[command, '--version'],
-            universal_newlines=True,
+            args=[command, "--version"], universal_newlines=True
         )
         logging.debug(version)
         version, *discard = version.splitlines()
         discard, version = version.strip().split()
         from packaging.version import parse as parse_version
+
         version = parse_version(version).release
-        stats[f'{command} version'] = version
-        stats[f'{command} path'] = path
-    logging.info('\n'.join(f'{k}: {v}' for k, v in stats.items()))
+        stats[f"{command} version"] = version
+        stats[f"{command} path"] = path
+    logging.info("\n".join(f"{k}: {v}" for k, v in stats.items()))
     return stats
 
 
-def get_pandoc_version() -> (int, int, int) :
+def get_pandoc_version() -> (int, int, int):
     """
     Return pandoc version as tuple of major and minor 
     version numbers, for example: (2, 7, 2)
     """
-    return get_pandoc_info()['pandoc version']     
+    return get_pandoc_info()["pandoc version"]
