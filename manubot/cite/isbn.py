@@ -31,11 +31,8 @@ def get_isbn_csl_item_zotero(isbn):
     """
     Generate CSL JSON Data for an ISBN using Zotero's translation-server.
     """
-    from manubot.cite.zotero import export_as_csl, search_query
-    zotero_data = search_query(f'isbn:{isbn}')
-    csl_data = export_as_csl(zotero_data)
-    csl_item, = csl_data
-    return csl_item
+    from manubot.cite.zotero import get_csl_item
+    return get_csl_item(f'isbn:{isbn}')
 
 
 def get_isbn_csl_item_citoid(isbn):
