@@ -1,9 +1,10 @@
-dist: xenial
+dist: bionic
 sudo: true
 language: python
 python:
   - "3.6"
   - "3.7"
+  - "3.8"
 cache:
   - pip
 before_install:
@@ -13,13 +14,24 @@ install:
   - pip install ".[all]"
   - python setup.py sdist bdist_wheel
 script:
-  - pytest
+  - pytest --verbose --color=yes
+  # temporary workaround for portray "Module not found" error https://git.io/JeR9C
+  - export PYTHONPATH=.
+  - portray as_html --overwrite --output_dir=docs
 deploy:
-  provider: pypi
-  user: __token__
-  password: $PYPI_PASSWORD
-  on:
-    python: '3.6'
-    repo: manubot/manubot
-    tags: true
-  distributions: sdist bdist_wheel
+  - provider: pypi
+    user: __token__
+    password: $PYPI_PASSWORD
+    on:
+      python: '3.6'
+      repo: manubot/manubot
+      tags: true
+    distributions: sdist bdist_wheel
+  - provider: script
+    script: bash ci/deploy-docs.sh
+    skip_cleanup: true
+    on:
+      python: "3.7"
+      repo: manubot/manubot
+      branch: master
+      condition: $TRAVIS_EVENT_TYPE = "push"

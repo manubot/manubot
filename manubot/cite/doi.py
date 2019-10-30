@@ -89,9 +89,9 @@ def get_short_doi_url(doi):
         return None
 
 
-def get_doi_csl_item(doi):
+def get_doi_csl_item_crosscite(doi):
     """
-    Use Content Negotioation (http://citation.crosscite.org/docs.html) to
+    Use Content Negotioation (https://crosscite.org/docs.html) to
     retrieve the CSL Item metadata for a DOI.
     """
     url = 'https://doi.org/' + urllib.request.quote(doi)
@@ -101,17 +101,65 @@ def get_doi_csl_item(doi):
     }
     response = requests.get(url, headers=header)
     try:
-        csl_item = response.json()
+        return response.json()
     except Exception as error:
         logging.error(f'Error fetching metadata for doi:{doi}.\n'
                       f'Invalid response from {response.url}:\n{response.text}')
         raise error
-    csl_item['URL'] = f'https://doi.org/{doi}'
-    short_doi_url = get_short_doi_url(doi)
-    if short_doi_url:
-        csl_item['URL'] = short_doi_url
-    try:
-        csl_item.update(get_pubmed_ids_for_doi(doi))
-    except Exception:
-        logging.warning(f'Error calling get_pubmed_ids_for_doi for {doi}', exc_info=True)
-    return csl_item
+
+
+def get_doi_csl_item_zotero(doi):
+    """
+    Generate CSL JSON Data for a DOI using Zotero's translation-server.
+    """
+    from manubot.cite.zotero import get_csl_item
+    return get_csl_item(f'doi:{doi}')
+
+
+def augment_get_doi_csl_item(function):
+    """
+    Decorator providing edits to the csl_item returned by a get_doi_csl_item_* function.
+    """
+    def wrapper(doi: str):
+        doi = doi.lower()
+        csl_item = function(doi)
+        csl_item['DOI'] = doi
+        csl_item['URL'] = f'https://doi.org/{doi}'
+        short_doi_url = get_short_doi_url(doi)
+        if short_doi_url:
+            csl_item['URL'] = short_doi_url
+        try:
+            csl_item.update(get_pubmed_ids_for_doi(doi))
+        except Exception:
+            logging.warning(f'Error calling get_pubmed_ids_for_doi for {doi}', exc_info=True)
+        return csl_item
+    return wrapper
+
+
+@augment_get_doi_csl_item
+def get_doi_csl_item(doi):
+    """
+    Generate CSL JSON Data for an DOI.
+
+    This function uses a list of CSL JSON Item metadata retrievers, specified
+    by the module-level variable `doi_retrievers`. The methods are attempted
+    in order, with this function returning the metadata from the first
+    non-failing method.
+    """
+    # FIXME: this function is repetitive with other get_*_csl_item functions.
+    for retriever in doi_retrievers:
+        try:
+            return retriever(doi)
+        except Exception as error:
+            logging.warning(
+                f'Error in {retriever.__name__} for {doi} '
+                f'due to a {error.__class__.__name__}:\n{error}'
+            )
+            logging.info(error, exc_info=True)
+    raise Exception(f'all get_doi_csl_item methods failed for {doi}')
+
+
+doi_retrievers = [
+    get_doi_csl_item_crosscite,
+    get_doi_csl_item_zotero,
+]
