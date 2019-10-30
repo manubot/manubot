@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-import re
-import logging
-=======
 """Represent bibliographic information for a single publication.
 
 From the CSL docs:
@@ -30,7 +26,6 @@ for csl_data that is JSON-serialized.
 import copy
 import logging
 import re
->>>>>>> ddd099516d58d1428f92d91a69e4b7295de13335
 
 from manubot.cite.citekey import standardize_citekey, infer_citekey_prefix, is_valid_citekey
 from manubot.cite.citeproc import remove_jsonschema_errors, get_jsonschema_csl_validator
@@ -226,12 +221,7 @@ def parse_csl_item_note(note: str):
     return dict(line_matches + braced_matches)
 
 
-<<<<<<< HEAD
-# csl_item_set_standard_id(csl_item: CSL_Item) ->  CSL_Item
-def csl_item_set_standard_id(csl_item):
-=======
 class CSL_Item(dict):
->>>>>>> ddd099516d58d1428f92d91a69e4b7295de13335
     """
     CSL_Item represents bibliographic information for a single citeable work.
 
@@ -425,26 +415,6 @@ class CSL_Item(dict):
         raise ValueError(
             'infer_id could not detect a field with a citation / standard_citation. '
             'Consider setting the CSL Item "id" field.')
-<<<<<<< HEAD
-    assert is_valid_citekey(original_standard_id, allow_raw=True)
-    standard_id = standardize_citekey(
-        original_standard_id, warn_if_changed=False)
-    # FIXME: can be changed to below after omitting 'warn_if_changed' parameter in 
-    #        favour of individual logger funciton
-    # standard_id = standardize_citekey(original_standard_id)       
-    add_to_note = {}
-    if original_id and original_id != standard_id:
-        if original_id != note_dict.get('original_id'):
-            add_to_note['original_id'] = original_id
-    if original_standard_id and original_standard_id != standard_id:
-        if original_standard_id != note_dict.get('original_standard_id'):
-            add_to_note['original_standard_id'] = original_standard_id
-    if standard_id != note_dict.get('standard_id'):
-        add_to_note['standard_id'] = standard_id
-    append_to_csl_item_note(csl_item, dictionary=add_to_note)
-    csl_item['id'] = standard_id
-    return csl_item
-=======
 
     def standardize_id(self):
         """
@@ -485,4 +455,3 @@ def assert_csl_item_type(x):
     if not isinstance(x, CSL_Item):
         raise TypeError(
             f'Expected CSL_Item object, got {type(x)}')
->>>>>>> ddd099516d58d1428f92d91a69e4b7295de13335
