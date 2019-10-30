@@ -111,3 +111,14 @@ def export_as_csl(zotero_data):
         logging.warning(f'Error parsing export_as_csl output as JSON:\n{response.text}')
         raise error
     return csl_json
+
+
+def get_csl_item(identifier: str):
+    """
+    Use a translation-server serach query followed by an export query
+    to return a CSL Item (the first & only record of a the returned CSL JSON).
+    """
+    zotero_data = search_query(identifier)
+    csl_data = export_as_csl(zotero_data)
+    csl_item, = csl_data
+    return csl_item
