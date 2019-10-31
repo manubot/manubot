@@ -15,7 +15,8 @@ install:
   - python setup.py sdist bdist_wheel
 script:
   - pytest --verbose --color=yes
-  - black --check .
+  # if the following command fails, run `black .` locally to reformat the code
+  - black --check --diff .
   # temporary workaround for portray "Module not found" error https://git.io/JeR9C
   - export PYTHONPATH=.
   - portray as_html --overwrite --output_dir=docs

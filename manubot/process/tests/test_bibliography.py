@@ -2,11 +2,7 @@ import shutil
 
 import pytest
 
-from manubot.pandoc.tests.test_bibliography import (
-    bibliography_paths  # list of 4 paths: 'bibliography.bib', 'bibliography.json',
-    # 'bibliography.nbib', 'bibliography.ris'
-    ,
-)
+from manubot.pandoc.tests.test_bibliography import bibliography_paths
 from manubot.process.bibliography import load_manual_references
 
 
