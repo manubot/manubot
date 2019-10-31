@@ -112,5 +112,5 @@ def get_csl_item(identifier: str):
     """
     zotero_data = search_query(identifier)
     csl_data = export_as_csl(zotero_data)
-    csl_item, = csl_data
+    (csl_item,) = csl_data
     return csl_item

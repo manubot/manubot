@@ -32,7 +32,7 @@ def get_url_csl_item_zotero(url):
 
     zotero_data = web_query(url)
     csl_data = export_as_csl(zotero_data)
-    csl_item, = csl_data
+    (csl_item,) = csl_data
     return csl_item
 
 

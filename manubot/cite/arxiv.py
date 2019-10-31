@@ -36,7 +36,7 @@ def get_arxiv_csl_item(arxiv_id):
 
     # Parse XML
     xml_tree = xml.etree.ElementTree.fromstring(response.text)
-    entry, = xml_tree.findall(prefix + "entry")
+    (entry,) = xml_tree.findall(prefix + "entry")
 
     # Create dictionary for CSL Item
     csl_item = collections.OrderedDict()

@@ -81,7 +81,7 @@ def get_pubmed_csl_item(pmid):
         response = requests.get(url, params, headers=headers)
     try:
         element_tree = xml.etree.ElementTree.fromstring(response.text)
-        element_tree, = list(element_tree)
+        (element_tree,) = list(element_tree)
     except Exception as error:
         logging.error(
             f"Error fetching PubMed metadata for {pmid}.\n"
@@ -248,7 +248,7 @@ def get_pmcid_and_pmid_for_doi(doi):
             f"Response from {response.url}:\n{response.text}"
         )
         return {}
-    record, = records
+    (record,) = records
     if record.findtext("status", default="okay") == "error":
         return {}
     id_dict = {}
@@ -288,7 +288,7 @@ def get_pmid_for_doi(doi):
             f"Response from {response.url}:\n{response.text}"
         )
         return None
-    id_elem, = id_elems
+    (id_elem,) = id_elems
     return id_elem.text
 
 

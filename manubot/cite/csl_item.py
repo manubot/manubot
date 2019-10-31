@@ -115,7 +115,7 @@ class CSL_Item(dict):
         """
         from .citeproc import remove_jsonschema_errors
 
-        csl_item, = remove_jsonschema_errors([self], in_place=True)
+        (csl_item,) = remove_jsonschema_errors([self], in_place=True)
         assert csl_item is self
         return self
 

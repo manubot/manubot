@@ -30,7 +30,7 @@ def test_cite_command_stdout():
     )
     print(process.stderr)
     assert process.returncode == 0
-    csl, = json.loads(process.stdout)
+    (csl,) = json.loads(process.stdout)
     assert csl["URL"] == "https://arxiv.org/abs/1806.05726v1"
 
 
@@ -44,7 +44,7 @@ def test_cite_command_file(tmpdir):
     print(process.stderr.decode())
     assert process.returncode == 0
     with path.open() as read_file:
-        csl, = json.load(read_file)
+        (csl,) = json.load(read_file)
     assert csl["URL"] == "https://arxiv.org/abs/1806.05726v1"
 
 

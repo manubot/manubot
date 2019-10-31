@@ -71,7 +71,7 @@ def test_web_query_returns_single_result_legacy_manubot_url():
     zotero_metadata = web_query(url)
     assert isinstance(zotero_metadata, list)
     assert len(zotero_metadata) == 1
-    zotero_metadata, = zotero_metadata
+    (zotero_metadata,) = zotero_metadata
     assert (
         zotero_metadata["title"]
         == "Sci-Hub provides access to nearly all scholarly literature"
@@ -92,7 +92,7 @@ def test_web_query_returns_single_result_pubmed_url():
     zotero_metadata = web_query(url)
     assert isinstance(zotero_metadata, list)
     assert len(zotero_metadata) == 1
-    zotero_metadata, = zotero_metadata
+    (zotero_metadata,) = zotero_metadata
     assert zotero_metadata["title"] == "sci-hub[title] - PubMed - NCBI"
 
 

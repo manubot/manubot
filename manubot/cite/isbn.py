@@ -57,7 +57,7 @@ def get_isbn_csl_item_citoid(isbn):
                 f"Unable to extract CSL from JSON metadata for ISBN {isbn}:\n"
                 f"{json.dumps(result.text)}"
             )
-    mediawiki, = result
+    (mediawiki,) = result
     csl_item = collections.OrderedDict()
     csl_item["type"] = mediawiki.get("itemType", "book")
     if "title" in mediawiki:
