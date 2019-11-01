@@ -107,10 +107,10 @@ def checkout_existing_versions(args):
         '--',
         'v',
     ]
-    process = subprocess.run(command, stderr=subprocess.PIPE)
     logging.info(
-        f"Attempting checkout with the following command:\n{shlex_join(process.args)}"
+        f"Attempting checkout with the following command:\n{shlex_join(command)}"
     )
+    process = subprocess.run(command, stderr=subprocess.PIPE)
     if process.returncode == 0:
         # Addresses an odd behavior where git checkout stages v/* files that don't actually exist
         subprocess.run(['git', 'add', 'v'])
