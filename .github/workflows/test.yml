@@ -15,7 +15,8 @@ jobs:
     - name: Install pandoc on Linux
       if: matrix.os == 'ubuntu-latest'
       run: |
-        locale
+        # workaround https://github.com/manubot/manubot/issues/167
+        export LANG=en_US.UTF-8
         wget --quiet --output-document=pandoc.deb \
           https://github.com/jgm/pandoc/releases/download/${{ matrix.pandoc-version }}/pandoc-${{ matrix.pandoc-version }}-1-amd64.deb
         sudo dpkg --install pandoc.deb
