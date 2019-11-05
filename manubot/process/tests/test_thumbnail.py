@@ -1,7 +1,7 @@
 import pytest
 
 
-from ..thumbnail import test_get_thumbnail_url
+from ..thumbnail import get_thumbnail_url
 
 
 @pytest.mark.parametrize(
@@ -14,5 +14,5 @@ from ..thumbnail import test_get_thumbnail_url
     ],
 )
 def test_get_thumbnail_url(thumbnail, expected):
-    thumbnail_url = test_get_thumbnail_url(thumbnail)
+    thumbnail_url = get_thumbnail_url(thumbnail)
     assert thumbnail_url == expected

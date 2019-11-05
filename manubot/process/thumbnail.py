@@ -15,8 +15,10 @@ def get_thumbnail_url(thumbnail=None):
     Starting with a user-specified `thumbnail` as either a path, URL, or None,
     return a web-accessible URL with thumbnail. If provided `thumbnail` is a URL,
     return the URL unmodified. If `thumbnail` is None, search for `thumbnail.png`
-    within the git repository from which this function is executed. If a local path
-    is provided or detected, convert that path to a GitHub raw URL.
+    within the git repository from which this function is executed. If `thumbnail`
+    is a local path, it should be relative to root directory of the git repository
+    if is located in. If a local path is provided or detected, convert that path
+    to a GitHub raw URL.
     """
     if not thumbnail:
         # thumbnail not provided, so find local path if exists
