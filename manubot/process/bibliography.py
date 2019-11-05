@@ -15,30 +15,33 @@ def load_bibliography(path) -> list:
     path = pathlib.Path(path)
     use_pandoc_citeproc = True
     try:
-        if path.suffix == '.json':
+        if path.suffix == ".json":
             use_pandoc_citeproc = False
-            with path.open(encoding='utf-8-sig') as read_file:
+            with path.open(encoding="utf-8-sig") as read_file:
                 csl_items = json.load(read_file)
-        if path.suffix == '.yaml':
+        if path.suffix == ".yaml":
             use_pandoc_citeproc = False
             import yaml
-            with path.open(encoding='utf-8-sig') as read_file:
+
+            with path.open(encoding="utf-8-sig") as read_file:
                 csl_items = yaml.safe_load(read_file)
     except Exception:
-        logging.exception(f'process.load_bibliography: error parsing {path}.\n')
+        logging.exception(f"process.load_bibliography: error parsing {path}.\n")
         csl_items = []
     if use_pandoc_citeproc:
         from manubot.pandoc.bibliography import (
             load_bibliography as load_bibliography_pandoc,
         )
+
         csl_items = load_bibliography_pandoc(path)
     if not isinstance(csl_items, list):
         logging.error(
-            f'process.load_bibliography: csl_items read from {path} are of type {type(csl_items)}. '
-            'Setting csl_items to an empty list.'
+            f"process.load_bibliography: csl_items read from {path} are of type {type(csl_items)}. "
+            "Setting csl_items to an empty list."
         )
         csl_items = []
     from manubot.cite.csl_item import CSL_Item
+
     csl_items = [CSL_Item(csl_item) for csl_item in csl_items]
     return csl_items
 
@@ -51,15 +54,20 @@ def load_manual_references(paths=[], extra_csl_items=[]) -> dict:
     stored as text in the file specified by path. Set paths=[] to only use extra_csl_items.
     """
     from manubot.cite.csl_item import CSL_Item
+
     csl_items = []
     for path in paths:
         path = pathlib.Path(path)
         if not path.is_file():
-            logging.warning(f'process.load_bibliographies is skipping a non-existent path: {path}')
+            logging.warning(
+                f"process.load_bibliographies is skipping a non-existent path: {path}"
+            )
             continue
         for csl_item in load_bibliography(path):
-            csl_item.note_append_text(f'This CSL JSON Item was loaded by Manubot v{manubot_version} from a manual reference file.')
-            csl_item.note_append_dict({'manual_reference_filename': path.name})
+            csl_item.note_append_text(
+                f"This CSL JSON Item was loaded by Manubot v{manubot_version} from a manual reference file."
+            )
+            csl_item.note_append_dict({"manual_reference_filename": path.name})
             csl_items.append(csl_item)
     csl_items.extend(map(CSL_Item, extra_csl_items))
     manual_refs = dict()
@@ -68,9 +76,12 @@ def load_manual_references(paths=[], extra_csl_items=[]) -> dict:
             csl_item.standardize_id()
         except Exception:
             csl_item_str = json.dumps(csl_item, indent=2)
-            logging.info(f'Skipping csl_item where setting standard_id failed:\n{csl_item_str}', exc_info=True)
+            logging.info(
+                f"Skipping csl_item where setting standard_id failed:\n{csl_item_str}",
+                exc_info=True,
+            )
             continue
-        standard_id = csl_item['id']
+        standard_id = csl_item["id"]
         csl_item.set_id(shorten_citekey(standard_id))
         csl_item.clean()
         manual_refs[standard_id] = csl_item
