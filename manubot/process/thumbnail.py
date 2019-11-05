@@ -57,7 +57,7 @@ def _thumbnail_path_to_url(path):
     info = get_continuous_integration_parameters()
     try:
         url = f"https://github.com/{info['repo_slug']}/raw/{info['triggering_commit']}/{path}"
-    except KeyError:
+    except (TypeError, KeyError):
         return None
     return url
 
