@@ -1264,25 +1264,31 @@
 
 <span class="p">)</span>
 
-<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="s2">&quot;citation_string&quot;</span><span class="p">,</span> <span class="p">[</span>
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
 
-    <span class="p">(</span><span class="s1">&#39;@doi:10.5061/dryad.q447c/1&#39;</span><span class="p">),</span>
+    <span class="s2">&quot;citation_string&quot;</span><span class="p">,</span>
 
-    <span class="p">(</span><span class="s1">&#39;@arxiv:1407.3561v1&#39;</span><span class="p">),</span>
+    <span class="p">[</span>
 
-    <span class="p">(</span><span class="s1">&#39;@doi:10.1007/978-94-015-6859-3_4&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;@doi:10.5061/dryad.q447c/1&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;@tag:tag_with_underscores&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;@arxiv:1407.3561v1&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;@tag:tag-with-hyphens&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;@doi:10.1007/978-94-015-6859-3_4&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;@url:https://greenelab.github.io/manubot-rootstock/&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;@tag:tag_with_underscores&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;@tag:abc123&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;@tag:tag-with-hyphens&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;@tag:123abc&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;@url:https://greenelab.github.io/manubot-rootstock/&quot;</span><span class="p">),</span>
 
-<span class="p">])</span>
+        <span class="p">(</span><span class="s2">&quot;@tag:abc123&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;@tag:123abc&quot;</span><span class="p">),</span>
+
+    <span class="p">],</span>
+
+<span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">test_citekey_pattern_match</span><span class="p">(</span><span class="n">citation_string</span><span class="p">):</span>
 
@@ -1290,19 +1296,25 @@
 
     <span class="k">assert</span> <span class="n">match</span>
 
-<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="s2">&quot;citation_string&quot;</span><span class="p">,</span> <span class="p">[</span>
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
 
-    <span class="p">(</span><span class="s1">&#39;doi:10.5061/dryad.q447c/1&#39;</span><span class="p">),</span>
+    <span class="s2">&quot;citation_string&quot;</span><span class="p">,</span>
 
-    <span class="p">(</span><span class="s1">&#39;@tag:abc123-&#39;</span><span class="p">),</span>
+    <span class="p">[</span>
 
-    <span class="p">(</span><span class="s1">&#39;@tag:abc123_&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;@-tag:abc123&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;@tag:abc123-&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;@_tag:abc123&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;@tag:abc123_&quot;</span><span class="p">),</span>
 
-<span class="p">])</span>
+        <span class="p">(</span><span class="s2">&quot;@-tag:abc123&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;@_tag:abc123&quot;</span><span class="p">),</span>
+
+    <span class="p">],</span>
+
+<span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">test_citekey_pattern_no_match</span><span class="p">(</span><span class="n">citation_string</span><span class="p">):</span>
 
@@ -1310,17 +1322,23 @@
 
     <span class="k">assert</span> <span class="n">match</span> <span class="ow">is</span> <span class="bp">None</span>
 
-<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="s2">&quot;standard_citekey,expected&quot;</span><span class="p">,</span> <span class="p">[</span>
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
 
-    <span class="p">(</span><span class="s1">&#39;doi:10.5061/dryad.q447c/1&#39;</span><span class="p">,</span> <span class="s1">&#39;kQFQ8EaO&#39;</span><span class="p">),</span>
+    <span class="s2">&quot;standard_citekey,expected&quot;</span><span class="p">,</span>
 
-    <span class="p">(</span><span class="s1">&#39;arxiv:1407.3561v1&#39;</span><span class="p">,</span> <span class="s1">&#39;16kozZ9Ys&#39;</span><span class="p">),</span>
+    <span class="p">[</span>
 
-    <span class="p">(</span><span class="s1">&#39;pmid:24159271&#39;</span><span class="p">,</span> <span class="s1">&#39;11sli93ov&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">,</span> <span class="s2">&quot;kQFQ8EaO&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;url:http://blog.dhimmel.com/irreproducible-timestamps/&#39;</span><span class="p">,</span> <span class="s1">&#39;QBWMEuxW&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;arxiv:1407.3561v1&quot;</span><span class="p">,</span> <span class="s2">&quot;16kozZ9Ys&quot;</span><span class="p">),</span>
 
-<span class="p">])</span>
+        <span class="p">(</span><span class="s2">&quot;pmid:24159271&quot;</span><span class="p">,</span> <span class="s2">&quot;11sli93ov&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;url:http://blog.dhimmel.com/irreproducible-timestamps/&quot;</span><span class="p">,</span> <span class="s2">&quot;QBWMEuxW&quot;</span><span class="p">),</span>
+
+    <span class="p">],</span>
+
+<span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">test_shorten_citekey</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
 
@@ -1328,29 +1346,35 @@
 
     <span class="k">assert</span> <span class="n">short_citekey</span> <span class="o">==</span> <span class="n">expected</span>
 
-<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="s1">&#39;citekey&#39;</span><span class="p">,</span> <span class="p">[</span>
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
 
-    <span class="s1">&#39;doi:10.7717/peerj.705&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;citekey&quot;</span><span class="p">,</span>
 
-    <span class="s1">&#39;doi:10/b6vnmd&#39;</span><span class="p">,</span>
+    <span class="p">[</span>
 
-    <span class="s1">&#39;pmcid:PMC4304851&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;doi:10.7717/peerj.705&quot;</span><span class="p">,</span>
 
-    <span class="s1">&#39;pmid:25648772&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;doi:10/b6vnmd&quot;</span><span class="p">,</span>
 
-    <span class="s1">&#39;arxiv:1407.3561&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;pmcid:PMC4304851&quot;</span><span class="p">,</span>
 
-    <span class="s1">&#39;isbn:978-1-339-91988-1&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;pmid:25648772&quot;</span><span class="p">,</span>
 
-    <span class="s1">&#39;isbn:1-339-91988-5&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;arxiv:1407.3561&quot;</span><span class="p">,</span>
 
-    <span class="s1">&#39;wikidata:Q1&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;isbn:978-1-339-91988-1&quot;</span><span class="p">,</span>
 
-    <span class="s1">&#39;wikidata:Q50051684&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;isbn:1-339-91988-5&quot;</span><span class="p">,</span>
 
-    <span class="s1">&#39;url:https://peerj.com/articles/705/&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;wikidata:Q1&quot;</span><span class="p">,</span>
 
-<span class="p">])</span>
+        <span class="s2">&quot;wikidata:Q50051684&quot;</span><span class="p">,</span>
+
+        <span class="s2">&quot;url:https://peerj.com/articles/705/&quot;</span><span class="p">,</span>
+
+    <span class="p">],</span>
+
+<span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">test_inspect_citekey_passes</span><span class="p">(</span><span class="n">citekey</span><span class="p">):</span>
 
@@ -1362,27 +1386,39 @@
 
     <span class="k">assert</span> <span class="n">inspect_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span>
 
-<span class="nd">@pytest.mark.parametrize</span><span class="p">([</span><span class="s1">&#39;citekey&#39;</span><span class="p">,</span> <span class="s1">&#39;contains&#39;</span><span class="p">],</span> <span class="p">[</span>
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
 
-    <span class="p">(</span><span class="s1">&#39;doi:10.771/peerj.705&#39;</span><span class="p">,</span> <span class="s1">&#39;Double check the DOI&#39;</span><span class="p">),</span>
+    <span class="p">[</span><span class="s2">&quot;citekey&quot;</span><span class="p">,</span> <span class="s2">&quot;contains&quot;</span><span class="p">],</span>
 
-    <span class="p">(</span><span class="s1">&#39;doi:10/b6v_nmd&#39;</span><span class="p">,</span> <span class="s1">&#39;Double check the shortDOI&#39;</span><span class="p">),</span>
+    <span class="p">[</span>
 
-    <span class="p">(</span><span class="s1">&#39;doi:7717/peerj.705&#39;</span><span class="p">,</span> <span class="s2">&quot;must start with &#39;10.&#39;&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;doi:10.771/peerj.705&quot;</span><span class="p">,</span> <span class="s2">&quot;Double check the DOI&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;doi:b6vnmd&#39;</span><span class="p">,</span> <span class="s2">&quot;must start with &#39;10.&#39;&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;doi:10/b6v_nmd&quot;</span><span class="p">,</span> <span class="s2">&quot;Double check the shortDOI&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;pmcid:25648772&#39;</span><span class="p">,</span> <span class="s2">&quot;must start with &#39;PMC&#39;&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;doi:7717/peerj.705&quot;</span><span class="p">,</span> <span class="s2">&quot;must start with &#39;10.&#39;&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;pmid:PMC4304851&#39;</span><span class="p">,</span> <span class="s2">&quot;Should &#39;pmid:PMC4304851&#39; switch the citation source to &#39;pmcid&#39;?&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;doi:b6vnmd&quot;</span><span class="p">,</span> <span class="s2">&quot;must start with &#39;10.&#39;&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;isbn:1-339-91988-X&#39;</span><span class="p">,</span> <span class="s1">&#39;identifier violates the ISBN syntax&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;pmcid:25648772&quot;</span><span class="p">,</span> <span class="s2">&quot;must start with &#39;PMC&#39;&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;wikidata:P212&#39;</span><span class="p">,</span> <span class="s2">&quot;item IDs must start with &#39;Q&#39;&quot;</span><span class="p">),</span>
+        <span class="p">(</span>
 
-    <span class="p">(</span><span class="s1">&#39;wikidata:QABCD&#39;</span><span class="p">,</span> <span class="s1">&#39;does not conform to the Wikidata regex&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;pmid:PMC4304851&quot;</span><span class="p">,</span>
 
-<span class="p">])</span>
+            <span class="s2">&quot;Should &#39;pmid:PMC4304851&#39; switch the citation source to &#39;pmcid&#39;?&quot;</span><span class="p">,</span>
+
+        <span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;isbn:1-339-91988-X&quot;</span><span class="p">,</span> <span class="s2">&quot;identifier violates the ISBN syntax&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;wikidata:P212&quot;</span><span class="p">,</span> <span class="s2">&quot;item IDs must start with &#39;Q&#39;&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;wikidata:QABCD&quot;</span><span class="p">,</span> <span class="s2">&quot;does not conform to the Wikidata regex&quot;</span><span class="p">),</span>
+
+    <span class="p">],</span>
+
+<span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">test_inspect_citekey_fails</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">contains</span><span class="p">):</span>
 
@@ -1400,21 +1436,27 @@
 
     <span class="k">assert</span> <span class="n">contains</span> <span class="ow">in</span> <span class="n">report</span>
 
-<span class="nd">@pytest.mark.parametrize</span><span class="p">([</span><span class="s1">&#39;citation&#39;</span><span class="p">,</span> <span class="s1">&#39;expect&#39;</span><span class="p">],</span> <span class="p">[</span>
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
 
-    <span class="p">(</span><span class="s1">&#39;doi:not-a-real-doi&#39;</span><span class="p">,</span> <span class="s1">&#39;doi:not-a-real-doi&#39;</span><span class="p">),</span>
+    <span class="p">[</span><span class="s2">&quot;citation&quot;</span><span class="p">,</span> <span class="s2">&quot;expect&quot;</span><span class="p">],</span>
 
-    <span class="p">(</span><span class="s1">&#39;DOI:not-a-real-doi&#39;</span><span class="p">,</span> <span class="s1">&#39;doi:not-a-real-doi&#39;</span><span class="p">),</span>
+    <span class="p">[</span>
 
-    <span class="p">(</span><span class="s1">&#39;uRl:mixed-case-prefix&#39;</span><span class="p">,</span> <span class="s1">&#39;url:mixed-case-prefix&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;doi:not-a-real-doi&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:not-a-real-doi&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;raw:raw-citation&#39;</span><span class="p">,</span> <span class="s1">&#39;raw:raw-citation&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;DOI:not-a-real-doi&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:not-a-real-doi&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;no-prefix&#39;</span><span class="p">,</span> <span class="s1">&#39;raw:no-prefix&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;uRl:mixed-case-prefix&quot;</span><span class="p">,</span> <span class="s2">&quot;url:mixed-case-prefix&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;no-prefix:but-colon&#39;</span><span class="p">,</span> <span class="s1">&#39;raw:no-prefix:but-colon&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;raw:raw-citation&quot;</span><span class="p">,</span> <span class="s2">&quot;raw:raw-citation&quot;</span><span class="p">),</span>
 
-<span class="p">])</span>
+        <span class="p">(</span><span class="s2">&quot;no-prefix&quot;</span><span class="p">,</span> <span class="s2">&quot;raw:no-prefix&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;no-prefix:but-colon&quot;</span><span class="p">,</span> <span class="s2">&quot;raw:no-prefix:but-colon&quot;</span><span class="p">),</span>
+
+    <span class="p">],</span>
+
+<span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">test_infer_citekey_prefix</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="n">expect</span><span class="p">):</span>
 
@@ -1436,25 +1478,31 @@
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="ss">&quot;citation_string&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
 
-<span class="n">    (&#39;@doi:10.5061/dryad.q447c/1&#39;),</span>
+<span class="w">    </span><span class="ss">&quot;citation_string&quot;</span><span class="p">,</span><span class="w"></span>
 
-<span class="n">    (&#39;@arxiv:1407.3561v1&#39;),</span>
+<span class="w">    </span><span class="o">[</span><span class="n"></span>
 
-<span class="n">    (&#39;@doi:10.1007/978-94-015-6859-3_4&#39;),</span>
+<span class="n">        (&quot;@doi:10.5061/dryad.q447c/1&quot;),</span>
 
-<span class="n">    (&#39;@tag:tag_with_underscores&#39;),</span>
+<span class="n">        (&quot;@arxiv:1407.3561v1&quot;),</span>
 
-<span class="n">    (&#39;@tag:tag-with-hyphens&#39;),</span>
+<span class="n">        (&quot;@doi:10.1007/978-94-015-6859-3_4&quot;),</span>
 
-<span class="n">    (&#39;@url:https://greenelab.github.io/manubot-rootstock/&#39;),</span>
+<span class="n">        (&quot;@tag:tag_with_underscores&quot;),</span>
 
-<span class="n">    (&#39;@tag:abc123&#39;),</span>
+<span class="n">        (&quot;@tag:tag-with-hyphens&quot;),</span>
 
-<span class="n">    (&#39;@tag:123abc&#39;),</span>
+<span class="n">        (&quot;@url:https://greenelab.github.io/manubot-rootstock/&quot;),</span>
 
-<span class="o">]</span><span class="p">)</span><span class="w"></span>
+<span class="n">        (&quot;@tag:abc123&quot;),</span>
+
+<span class="n">        (&quot;@tag:123abc&quot;),</span>
+
+<span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
 
 <span class="n">def</span><span class="w"> </span><span class="n">test_citekey_pattern_match</span><span class="p">(</span><span class="n">citation_string</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
@@ -1472,19 +1520,25 @@
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="ss">&quot;citation_string&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
 
-<span class="n">    (&#39;doi:10.5061/dryad.q447c/1&#39;),</span>
+<span class="w">    </span><span class="ss">&quot;citation_string&quot;</span><span class="p">,</span><span class="w"></span>
 
-<span class="n">    (&#39;@tag:abc123-&#39;),</span>
+<span class="w">    </span><span class="o">[</span><span class="n"></span>
 
-<span class="n">    (&#39;@tag:abc123_&#39;),</span>
+<span class="n">        (&quot;doi:10.5061/dryad.q447c/1&quot;),</span>
 
-<span class="n">    (&#39;@-tag:abc123&#39;),</span>
+<span class="n">        (&quot;@tag:abc123-&quot;),</span>
 
-<span class="n">    (&#39;@_tag:abc123&#39;),</span>
+<span class="n">        (&quot;@tag:abc123_&quot;),</span>
 
-<span class="o">]</span><span class="p">)</span><span class="w"></span>
+<span class="n">        (&quot;@-tag:abc123&quot;),</span>
+
+<span class="n">        (&quot;@_tag:abc123&quot;),</span>
+
+<span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
 
 <span class="n">def</span><span class="w"> </span><span class="n">test_citekey_pattern_no_match</span><span class="p">(</span><span class="n">citation_string</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
@@ -1503,21 +1557,27 @@
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="o">[</span><span class="n">&#39;citation&#39;, &#39;expect&#39;</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
 
-<span class="n">    (&#39;doi:not-a-real-doi&#39;, &#39;doi:not-a-real-doi&#39;),</span>
+<span class="w">    </span><span class="o">[</span><span class="n">&quot;citation&quot;, &quot;expect&quot;</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
-<span class="n">    (&#39;DOI:not-a-real-doi&#39;, &#39;doi:not-a-real-doi&#39;),</span>
+<span class="w">    </span><span class="o">[</span><span class="n"></span>
 
-<span class="n">    (&#39;uRl:mixed-case-prefix&#39;, &#39;url:mixed-case-prefix&#39;),</span>
+<span class="n">        (&quot;doi:not-a-real-doi&quot;, &quot;doi:not-a-real-doi&quot;),</span>
 
-<span class="n">    (&#39;raw:raw-citation&#39;, &#39;raw:raw-citation&#39;),</span>
+<span class="n">        (&quot;DOI:not-a-real-doi&quot;, &quot;doi:not-a-real-doi&quot;),</span>
 
-<span class="n">    (&#39;no-prefix&#39;, &#39;raw:no-prefix&#39;),</span>
+<span class="n">        (&quot;uRl:mixed-case-prefix&quot;, &quot;url:mixed-case-prefix&quot;),</span>
 
-<span class="n">    (&#39;no-prefix:but-colon&#39;, &#39;raw:no-prefix:but-colon&#39;),</span>
+<span class="n">        (&quot;raw:raw-citation&quot;, &quot;raw:raw-citation&quot;),</span>
 
-<span class="o">]</span><span class="p">)</span><span class="w"></span>
+<span class="n">        (&quot;no-prefix&quot;, &quot;raw:no-prefix&quot;),</span>
+
+<span class="n">        (&quot;no-prefix:but-colon&quot;, &quot;raw:no-prefix:but-colon&quot;),</span>
+
+<span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
 
 <span class="n">def</span><span class="w"> </span><span class="n">test_infer_citekey_prefix</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span><span class="w"> </span><span class="n">expect</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
@@ -1535,27 +1595,39 @@
 
 
 <p>These citekeys should fail inspection by inspect_citekey.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="o">[</span><span class="n">&#39;citekey&#39;, &#39;contains&#39;</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
 
-<span class="n">    (&#39;doi:10.771/peerj.705&#39;, &#39;Double check the DOI&#39;),</span>
+<span class="w">    </span><span class="o">[</span><span class="n">&quot;citekey&quot;, &quot;contains&quot;</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
-<span class="n">    (&#39;doi:10/b6v_nmd&#39;, &#39;Double check the shortDOI&#39;),</span>
+<span class="w">    </span><span class="o">[</span><span class="n"></span>
 
-<span class="n">    (&#39;doi:7717/peerj.705&#39;, &quot;must start with &#39;10.&#39;&quot;),</span>
+<span class="n">        (&quot;doi:10.771/peerj.705&quot;, &quot;Double check the DOI&quot;),</span>
 
-<span class="n">    (&#39;doi:b6vnmd&#39;, &quot;must start with &#39;10.&#39;&quot;),</span>
+<span class="n">        (&quot;doi:10/b6v_nmd&quot;, &quot;Double check the shortDOI&quot;),</span>
 
-<span class="n">    (&#39;pmcid:25648772&#39;, &quot;must start with &#39;PMC&#39;&quot;),</span>
+<span class="n">        (&quot;doi:7717/peerj.705&quot;, &quot;must start with &#39;10.&#39;&quot;),</span>
 
-<span class="n">    (&#39;pmid:PMC4304851&#39;, &quot;Should &#39;pmid:PMC4304851&#39; switch the citation source to &#39;pmcid&#39;?&quot;),</span>
+<span class="n">        (&quot;doi:b6vnmd&quot;, &quot;must start with &#39;10.&#39;&quot;),</span>
 
-<span class="n">    (&#39;isbn:1-339-91988-X&#39;, &#39;identifier violates the ISBN syntax&#39;),</span>
+<span class="n">        (&quot;pmcid:25648772&quot;, &quot;must start with &#39;PMC&#39;&quot;),</span>
 
-<span class="n">    (&#39;wikidata:P212&#39;, &quot;item IDs must start with &#39;Q&#39;&quot;),</span>
+<span class="n">        (</span>
 
-<span class="n">    (&#39;wikidata:QABCD&#39;, &#39;does not conform to the Wikidata regex&#39;),</span>
+<span class="n">            &quot;pmid:PMC4304851&quot;,</span>
 
-<span class="o">]</span><span class="p">)</span><span class="w"></span>
+<span class="n">            &quot;Should &#39;pmid:PMC4304851&#39; switch the citation source to &#39;pmcid&#39;?&quot;,</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        (&quot;isbn:1-339-91988-X&quot;, &quot;identifier violates the ISBN syntax&quot;),</span>
+
+<span class="n">        (&quot;wikidata:P212&quot;, &quot;item IDs must start with &#39;Q&#39;&quot;),</span>
+
+<span class="n">        (&quot;wikidata:QABCD&quot;, &quot;does not conform to the Wikidata regex&quot;),</span>
+
+<span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
 
 <span class="n">def</span><span class="w"> </span><span class="n">test_inspect_citekey_fails</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="k">contains</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
@@ -1584,29 +1656,35 @@
 
 
 <p>These citekeys should pass inspection by inspect_citekey.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;citekey&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
 
-<span class="n">    &#39;doi:10.7717/peerj.705&#39;,</span>
+<span class="w">    </span><span class="ss">&quot;citekey&quot;</span><span class="p">,</span><span class="w"></span>
 
-<span class="n">    &#39;doi:10/b6vnmd&#39;,</span>
+<span class="w">    </span><span class="o">[</span><span class="n"></span>
 
-<span class="n">    &#39;pmcid:PMC4304851&#39;,</span>
+<span class="n">        &quot;doi:10.7717/peerj.705&quot;,</span>
 
-<span class="n">    &#39;pmid:25648772&#39;,</span>
+<span class="n">        &quot;doi:10/b6vnmd&quot;,</span>
 
-<span class="n">    &#39;arxiv:1407.3561&#39;,</span>
+<span class="n">        &quot;pmcid:PMC4304851&quot;,</span>
 
-<span class="n">    &#39;isbn:978-1-339-91988-1&#39;,</span>
+<span class="n">        &quot;pmid:25648772&quot;,</span>
 
-<span class="n">    &#39;isbn:1-339-91988-5&#39;,</span>
+<span class="n">        &quot;arxiv:1407.3561&quot;,</span>
 
-<span class="n">    &#39;wikidata:Q1&#39;,</span>
+<span class="n">        &quot;isbn:978-1-339-91988-1&quot;,</span>
 
-<span class="n">    &#39;wikidata:Q50051684&#39;,</span>
+<span class="n">        &quot;isbn:1-339-91988-5&quot;,</span>
 
-<span class="n">    &#39;url:https://peerj.com/articles/705/&#39;,</span>
+<span class="n">        &quot;wikidata:Q1&quot;,</span>
 
-<span class="o">]</span><span class="p">)</span><span class="w"></span>
+<span class="n">        &quot;wikidata:Q50051684&quot;,</span>
+
+<span class="n">        &quot;url:https://peerj.com/articles/705/&quot;,</span>
+
+<span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
 
 <span class="n">def</span><span class="w"> </span><span class="n">test_inspect_citekey_passes</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
@@ -1629,17 +1707,23 @@
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="ss">&quot;standard_citekey,expected&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
 
-<span class="n">    (&#39;doi:10.5061/dryad.q447c/1&#39;, &#39;kQFQ8EaO&#39;),</span>
+<span class="w">    </span><span class="ss">&quot;standard_citekey,expected&quot;</span><span class="p">,</span><span class="w"></span>
 
-<span class="n">    (&#39;arxiv:1407.3561v1&#39;, &#39;16kozZ9Ys&#39;),</span>
+<span class="w">    </span><span class="o">[</span><span class="n"></span>
 
-<span class="n">    (&#39;pmid:24159271&#39;, &#39;11sli93ov&#39;),</span>
+<span class="n">        (&quot;doi:10.5061/dryad.q447c/1&quot;, &quot;kQFQ8EaO&quot;),</span>
 
-<span class="n">    (&#39;url:http://blog.dhimmel.com/irreproducible-timestamps/&#39;, &#39;QBWMEuxW&#39;),</span>
+<span class="n">        (&quot;arxiv:1407.3561v1&quot;, &quot;16kozZ9Ys&quot;),</span>
 
-<span class="o">]</span><span class="p">)</span><span class="w"></span>
+<span class="n">        (&quot;pmid:24159271&quot;, &quot;11sli93ov&quot;),</span>
+
+<span class="n">        (&quot;url:http://blog.dhimmel.com/irreproducible-timestamps/&quot;, &quot;QBWMEuxW&quot;),</span>
+
+<span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
 
 <span class="n">def</span><span class="w"> </span><span class="n">test_shorten_citekey</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 

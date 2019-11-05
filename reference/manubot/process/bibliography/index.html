@@ -1217,27 +1217,27 @@
 
     <span class="k">try</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.json&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.json&quot;</span><span class="p">:</span>
 
             <span class="n">use_pandoc_citeproc</span> <span class="o">=</span> <span class="bp">False</span>
 
-            <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
 
                 <span class="n">csl_items</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">read_file</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.yaml&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">:</span>
 
             <span class="n">use_pandoc_citeproc</span> <span class="o">=</span> <span class="bp">False</span>
 
             <span class="kn">import</span> <span class="nn">yaml</span>
 
-            <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
 
                 <span class="n">csl_items</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">read_file</span><span class="p">)</span>
 
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;process.load_bibliography: error parsing {path}.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;process.load_bibliography: error parsing {path}.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">csl_items</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -1255,9 +1255,9 @@
 
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
 
-            <span class="n">f</span><span class="s1">&#39;process.load_bibliography: csl_items read from {path} are of type {type(csl_items)}. &#39;</span>
+            <span class="n">f</span><span class="s2">&quot;process.load_bibliography: csl_items read from {path} are of type {type(csl_items)}. &quot;</span>
 
-            <span class="s1">&#39;Setting csl_items to an empty list.&#39;</span>
+            <span class="s2">&quot;Setting csl_items to an empty list.&quot;</span>
 
         <span class="p">)</span>
 
@@ -1293,15 +1293,23 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;process.load_bibliographies is skipping a non-existent path: {path}&#39;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+                <span class="n">f</span><span class="s2">&quot;process.load_bibliographies is skipping a non-existent path: {path}&quot;</span>
+
+            <span class="p">)</span>
 
             <span class="k">continue</span>
 
         <span class="k">for</span> <span class="n">csl_item</span> <span class="ow">in</span> <span class="n">load_bibliography</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
 
-            <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;This CSL JSON Item was loaded by Manubot v{manubot_version} from a manual reference file.&#39;</span><span class="p">)</span>
+            <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span>
 
-            <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">({</span><span class="s1">&#39;manual_reference_filename&#39;</span><span class="p">:</span> <span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
+                <span class="n">f</span><span class="s2">&quot;This CSL JSON Item was loaded by Manubot v{manubot_version} from a manual reference file.&quot;</span>
+
+            <span class="p">)</span>
+
+            <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">({</span><span class="s2">&quot;manual_reference_filename&quot;</span><span class="p">:</span> <span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
 
             <span class="n">csl_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
@@ -1319,11 +1327,17 @@
 
             <span class="n">csl_item_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Skipping csl_item where setting standard_id failed:</span><span class="se">\n</span><span class="s1">{csl_item_str}&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+
+                <span class="n">f</span><span class="s2">&quot;Skipping csl_item where setting standard_id failed:</span><span class="se">\n</span><span class="s2">{csl_item_str}&quot;</span><span class="p">,</span>
+
+                <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+
+            <span class="p">)</span>
 
             <span class="k">continue</span>
 
-        <span class="n">standard_id</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+        <span class="n">standard_id</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
 
         <span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">shorten_citekey</span><span class="p">(</span><span class="n">standard_id</span><span class="p">))</span>
 
@@ -1370,27 +1384,27 @@ parse these files directly. Otherwise, delegate conversion to CSL Items to pando
 
     <span class="k">try</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.json&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.json&quot;</span><span class="p">:</span>
 
             <span class="n">use_pandoc_citeproc</span> <span class="o">=</span> <span class="bp">False</span>
 
-            <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
 
                 <span class="n">csl_items</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">read_file</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.yaml&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">:</span>
 
             <span class="n">use_pandoc_citeproc</span> <span class="o">=</span> <span class="bp">False</span>
 
             <span class="kn">import</span> <span class="nn">yaml</span>
 
-            <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
 
                 <span class="n">csl_items</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">read_file</span><span class="p">)</span>
 
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;process.load_bibliography: error parsing {path}.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;process.load_bibliography: error parsing {path}.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">csl_items</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -1408,9 +1422,9 @@ parse these files directly. Otherwise, delegate conversion to CSL Items to pando
 
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
 
-            <span class="n">f</span><span class="s1">&#39;process.load_bibliography: csl_items read from {path} are of type {type(csl_items)}. &#39;</span>
+            <span class="n">f</span><span class="s2">&quot;process.load_bibliography: csl_items read from {path} are of type {type(csl_items)}. &quot;</span>
 
-            <span class="s1">&#39;Setting csl_items to an empty list.&#39;</span>
+            <span class="s2">&quot;Setting csl_items to an empty list.&quot;</span>
 
         <span class="p">)</span>
 
@@ -1461,15 +1475,23 @@ stored as text in the file specified by path. Set paths=[] to only use extra_csl
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;process.load_bibliographies is skipping a non-existent path: {path}&#39;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+                <span class="n">f</span><span class="s2">&quot;process.load_bibliographies is skipping a non-existent path: {path}&quot;</span>
+
+            <span class="p">)</span>
 
             <span class="k">continue</span>
 
         <span class="k">for</span> <span class="n">csl_item</span> <span class="ow">in</span> <span class="n">load_bibliography</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
 
-            <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;This CSL JSON Item was loaded by Manubot v{manubot_version} from a manual reference file.&#39;</span><span class="p">)</span>
+            <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span>
 
-            <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">({</span><span class="s1">&#39;manual_reference_filename&#39;</span><span class="p">:</span> <span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
+                <span class="n">f</span><span class="s2">&quot;This CSL JSON Item was loaded by Manubot v{manubot_version} from a manual reference file.&quot;</span>
+
+            <span class="p">)</span>
+
+            <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">({</span><span class="s2">&quot;manual_reference_filename&quot;</span><span class="p">:</span> <span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
 
             <span class="n">csl_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
@@ -1487,11 +1509,17 @@ stored as text in the file specified by path. Set paths=[] to only use extra_csl
 
             <span class="n">csl_item_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Skipping csl_item where setting standard_id failed:</span><span class="se">\n</span><span class="s1">{csl_item_str}&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+
+                <span class="n">f</span><span class="s2">&quot;Skipping csl_item where setting standard_id failed:</span><span class="se">\n</span><span class="s2">{csl_item_str}&quot;</span><span class="p">,</span>
+
+                <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+
+            <span class="p">)</span>
 
             <span class="k">continue</span>
 
-        <span class="n">standard_id</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+        <span class="n">standard_id</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
 
         <span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">shorten_citekey</span><span class="p">(</span><span class="n">standard_id</span><span class="p">))</span>
 

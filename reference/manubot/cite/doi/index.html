@@ -1265,17 +1265,17 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">short_doi</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;10/&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">short_doi</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;10/&quot;</span><span class="p">):</span>
 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;shortDOIs start with `10/`, but expand_short_doi received: {short_doi}&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;https://doi.org/api/handles/{short_doi.lower()}&#39;</span>
+            <span class="n">f</span><span class="s2">&quot;shortDOIs start with `10/`, but expand_short_doi received: {short_doi}&quot;</span>
 
-    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">)</span>
 
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;HS_ALIAS&quot;</span><span class="p">,</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;https://doi.org/api/handles/{short_doi.lower()}&quot;</span>
 
-    <span class="p">}</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;HS_ALIAS&quot;</span><span class="p">}</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
@@ -1283,27 +1283,35 @@
 
     <span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
-    <span class="n">response_code</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;responseCode&#39;</span><span class="p">)</span>  <span class="c1"># Handle protocol response code</span>
+    <span class="n">response_code</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;responseCode&quot;</span><span class="p">)</span>  <span class="c1"># Handle protocol response code</span>
 
     <span class="k">if</span> <span class="n">response_code</span> <span class="o">==</span> <span class="mi">100</span><span class="p">:</span>
 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Handle not found. Double check short_doi: {short_doi}&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Handle not found. Double check short_doi: {short_doi}&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">response_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;HS_ALIAS values not found. Double check short_doi: {short_doi}&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+
+            <span class="n">f</span><span class="s2">&quot;HS_ALIAS values not found. Double check short_doi: {short_doi}&quot;</span>
+
+        <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">response_code</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Error response code of {response_code} returned by {response.url}&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
 
-    <span class="n">values</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;values&#39;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">f</span><span class="s2">&quot;Error response code of {response_code} returned by {response.url}&quot;</span>
+
+        <span class="p">)</span>
+
+    <span class="n">values</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;values&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
     <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;HS_ALIAS&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;HS_ALIAS&quot;</span><span class="p">:</span>
 
-            <span class="n">doi</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+            <span class="n">doi</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
 
             <span class="k">return</span> <span class="n">doi</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
@@ -1311,7 +1319,7 @@
 
         <span class="n">f</span><span class="s1">&#39;HS_ALIAS value not found by expand_short_doi(&quot;{short_doi}&quot;)</span><span class="se">\n</span><span class="s1">&#39;</span>
 
-        <span class="n">f</span><span class="s1">&#39;The following JSON was retrieved from {response.url}:</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">f</span><span class="s2">&quot;The following JSON was retrieved from {response.url}:</span><span class="se">\n</span><span class="s2">&quot;</span>
 
         <span class="o">+</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
@@ -1327,27 +1335,23 @@
 
     <span class="n">quoted_doi</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://shortdoi.org/{}?format=json&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">quoted_doi</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://shortdoi.org/{}?format=json&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">quoted_doi</span><span class="p">)</span>
 
-    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
-
-        <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span>
-
-    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">()}</span>
 
     <span class="k">try</span><span class="p">:</span>
 
         <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
-        <span class="n">short_doi</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;ShortDOI&#39;</span><span class="p">]</span>
+        <span class="n">short_doi</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;ShortDOI&quot;</span><span class="p">]</span>
 
-        <span class="n">short_url</span> <span class="o">=</span> <span class="s1">&#39;https://doi.org/&#39;</span> <span class="o">+</span> <span class="n">short_doi</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>  <span class="c1"># Remove &quot;10/&quot; prefix</span>
+        <span class="n">short_url</span> <span class="o">=</span> <span class="s2">&quot;https://doi.org/&quot;</span> <span class="o">+</span> <span class="n">short_doi</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>  <span class="c1"># Remove &quot;10/&quot; prefix</span>
 
         <span class="k">return</span> <span class="n">short_url</span>
 
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;shortDOI lookup failed for {doi}&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;shortDOI lookup failed for {doi}&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">None</span>
 
@@ -1361,13 +1365,13 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://doi.org/&#39;</span> <span class="o">+</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://doi.org/&quot;</span> <span class="o">+</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
     <span class="n">header</span> <span class="o">=</span> <span class="p">{</span>
 
-        <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/vnd.citationstyles.csl+json&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/vnd.citationstyles.csl+json&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span>
+        <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span>
 
     <span class="p">}</span>
 
@@ -1379,9 +1383,13 @@
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Error fetching metadata for doi:{doi}.</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
 
-                      <span class="n">f</span><span class="s1">&#39;Invalid response from {response.url}:</span><span class="se">\n</span><span class="s1">{response.text}&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="s2">&quot;Error fetching metadata for doi:{doi}.</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+            <span class="n">f</span><span class="s2">&quot;Invalid response from {response.url}:</span><span class="se">\n</span><span class="s2">{response.text}&quot;</span>
+
+        <span class="p">)</span>
 
         <span class="k">raise</span> <span class="n">error</span>
 
@@ -1395,7 +1403,7 @@
 
     <span class="kn">from</span> <span class="nn">manubot.cite.zotero</span> <span class="kn">import</span> <span class="n">get_csl_item</span>
 
-    <span class="k">return</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;doi:{doi}&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;doi:{doi}&quot;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">augment_get_doi_csl_item</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
 
@@ -1411,15 +1419,15 @@
 
         <span class="n">csl_item</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;DOI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doi</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doi</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;https://doi.org/{doi}&#39;</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;https://doi.org/{doi}&quot;</span>
 
         <span class="n">short_doi_url</span> <span class="o">=</span> <span class="n">get_short_doi_url</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">short_doi_url</span><span class="p">:</span>
 
-            <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_doi_url</span>
+            <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_doi_url</span>
 
         <span class="k">try</span><span class="p">:</span>
 
@@ -1427,7 +1435,11 @@
 
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Error calling get_pubmed_ids_for_doi for {doi}&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+                <span class="n">f</span><span class="s2">&quot;Error calling get_pubmed_ids_for_doi for {doi}&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span>
+
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">csl_item</span>
 
@@ -1463,23 +1475,17 @@
 
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s1">&#39;Error in {retriever.__name__} for {doi} &#39;</span>
+                <span class="n">f</span><span class="s2">&quot;Error in {retriever.__name__} for {doi} &quot;</span>
 
-                <span class="n">f</span><span class="s1">&#39;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s1">{error}&#39;</span>
+                <span class="n">f</span><span class="s2">&quot;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s2">{error}&quot;</span>
 
             <span class="p">)</span>
 
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;all get_doi_csl_item methods failed for {doi}&#39;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;all get_doi_csl_item methods failed for {doi}&quot;</span><span class="p">)</span>
 
-<span class="n">doi_retrievers</span> <span class="o">=</span> <span class="p">[</span>
-
-    <span class="n">get_doi_csl_item_crosscite</span><span class="p">,</span>
-
-    <span class="n">get_doi_csl_item_zotero</span><span class="p">,</span>
-
-<span class="p">]</span>
+<span class="n">doi_retrievers</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_doi_csl_item_crosscite</span><span class="p">,</span> <span class="n">get_doi_csl_item_zotero</span><span class="p">]</span>
 </pre></div>
 
 
@@ -1512,15 +1518,15 @@
 
         <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
 
-        <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">DOI</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">doi</span>
+        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">DOI</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">doi</span>
 
-        <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">URL</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s1">&#39;</span><span class="s">https://doi.org/{doi}</span><span class="s1">&#39;</span>
+        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">URL</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">https://doi.org/{doi}</span><span class="s2">&quot;</span>
 
         <span class="nv">short_doi_url</span> <span class="o">=</span> <span class="nv">get_short_doi_url</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
 
         <span class="k">if</span> <span class="nv">short_doi_url</span>:
 
-            <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">URL</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">short_doi_url</span>
+            <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">URL</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">short_doi_url</span>
 
         <span class="nv">try</span>:
 
@@ -1528,7 +1534,11 @@
 
         <span class="nv">except</span> <span class="nv">Exception</span>:
 
-            <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Error calling get_pubmed_ids_for_doi for {doi}</span><span class="s1">&#39;</span>, <span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+            <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+
+                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error calling get_pubmed_ids_for_doi for {doi}</span><span class="s2">&quot;</span>, <span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span>
+
+            <span class="ss">)</span>
 
         <span class="k">return</span> <span class="nv">csl_item</span>
 
@@ -1553,17 +1563,17 @@
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">short_doi</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">10/</span><span class="s1">&#39;</span><span class="ss">)</span>:
+    <span class="k">if</span> <span class="nv">not</span> <span class="nv">short_doi</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">10/</span><span class="s2">&quot;</span><span class="ss">)</span>:
 
-        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">shortDOIs start with `10/`, but expand_short_doi received: {short_doi}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span>
 
-    <span class="nv">url</span> <span class="o">=</span> <span class="nv">f</span><span class="s1">&#39;</span><span class="s">https://doi.org/api/handles/{short_doi.lower()}</span><span class="s1">&#39;</span>
+            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">shortDOIs start with `10/`, but expand_short_doi received: {short_doi}</span><span class="s2">&quot;</span>
 
-    <span class="nb">params</span> <span class="o">=</span> {
+        <span class="ss">)</span>
 
-        <span class="s2">&quot;</span><span class="s">type</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">HS_ALIAS</span><span class="s2">&quot;</span>,
+    <span class="nv">url</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">https://doi.org/api/handles/{short_doi.lower()}</span><span class="s2">&quot;</span>
 
-    }
+    <span class="nb">params</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">type</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">HS_ALIAS</span><span class="s2">&quot;</span>}
 
     <span class="nv">response</span> <span class="o">=</span> <span class="nv">requests</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">url</span>, <span class="nb">params</span><span class="o">=</span><span class="nb">params</span><span class="ss">)</span>
 
@@ -1571,27 +1581,35 @@
 
     <span class="nv">results</span> <span class="o">=</span> <span class="nv">response</span>.<span class="nv">json</span><span class="ss">()</span>
 
-    <span class="nv">response_code</span> <span class="o">=</span> <span class="nv">results</span>.<span class="nv">get</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">responseCode</span><span class="s1">&#39;</span><span class="ss">)</span>  # <span class="nv">Handle</span> <span class="nv">protocol</span> <span class="nv">response</span> <span class="nv">code</span>
+    <span class="nv">response_code</span> <span class="o">=</span> <span class="nv">results</span>.<span class="nv">get</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">responseCode</span><span class="s2">&quot;</span><span class="ss">)</span>  # <span class="nv">Handle</span> <span class="nv">protocol</span> <span class="nv">response</span> <span class="nv">code</span>
 
     <span class="k">if</span> <span class="nv">response_code</span> <span class="o">==</span> <span class="mi">100</span>:
 
-        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Handle not found. Double check short_doi: {short_doi}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">Handle not found. Double check short_doi: {short_doi}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
     <span class="k">if</span> <span class="nv">response_code</span> <span class="o">==</span> <span class="mi">200</span>:
 
-        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">HS_ALIAS values not found. Double check short_doi: {short_doi}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span>
+
+            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">HS_ALIAS values not found. Double check short_doi: {short_doi}</span><span class="s2">&quot;</span>
+
+        <span class="ss">)</span>
 
     <span class="k">if</span> <span class="nv">response_code</span> <span class="o">!=</span> <span class="mi">1</span>:
 
-        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Error response code of {response_code} returned by {response.url}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span>
 
-    <span class="nv">values</span> <span class="o">=</span> <span class="nv">results</span>.<span class="nv">get</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">values</span><span class="s1">&#39;</span>, []<span class="ss">)</span>
+            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error response code of {response_code} returned by {response.url}</span><span class="s2">&quot;</span>
+
+        <span class="ss">)</span>
+
+    <span class="nv">values</span> <span class="o">=</span> <span class="nv">results</span>.<span class="nv">get</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">values</span><span class="s2">&quot;</span>, []<span class="ss">)</span>
 
     <span class="k">for</span> <span class="nv">value</span> <span class="nv">in</span> <span class="nv">values</span>:
 
-        <span class="k">if</span> <span class="nv">value</span>.<span class="nv">get</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">type</span><span class="s1">&#39;</span><span class="ss">)</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="s">HS_ALIAS</span><span class="s1">&#39;</span>:
+        <span class="k">if</span> <span class="nv">value</span>.<span class="nv">get</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">type</span><span class="s2">&quot;</span><span class="ss">)</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">HS_ALIAS</span><span class="s2">&quot;</span>:
 
-            <span class="nv">doi</span> <span class="o">=</span> <span class="nv">value</span>[<span class="s1">&#39;</span><span class="s">data</span><span class="s1">&#39;</span>][<span class="s1">&#39;</span><span class="s">value</span><span class="s1">&#39;</span>]
+            <span class="nv">doi</span> <span class="o">=</span> <span class="nv">value</span>[<span class="s2">&quot;</span><span class="s">data</span><span class="s2">&quot;</span>][<span class="s2">&quot;</span><span class="s">value</span><span class="s2">&quot;</span>]
 
             <span class="k">return</span> <span class="nv">doi</span>.<span class="nv">lower</span><span class="ss">()</span>
 
@@ -1599,7 +1617,7 @@
 
         <span class="nv">f</span><span class="s1">&#39;</span><span class="s">HS_ALIAS value not found by expand_short_doi(&quot;{short_doi}&quot;)</span><span class="se">\n</span><span class="s1">&#39;</span>
 
-        <span class="nv">f</span><span class="s1">&#39;</span><span class="s">The following JSON was retrieved from {response.url}:</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">The following JSON was retrieved from {response.url}:</span><span class="se">\n</span><span class="s2">&quot;</span>
 
         <span class="o">+</span> <span class="nv">json</span>.<span class="nv">dumps</span><span class="ss">(</span><span class="nv">results</span>, <span class="nv">indent</span><span class="o">=</span><span class="mi">2</span><span class="ss">)</span>
 
@@ -1621,15 +1639,15 @@
 
         <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
 
-        <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">DOI</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">doi</span>
+        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">DOI</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">doi</span>
 
-        <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">URL</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s1">&#39;</span><span class="s">https://doi.org/{doi}</span><span class="s1">&#39;</span>
+        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">URL</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">https://doi.org/{doi}</span><span class="s2">&quot;</span>
 
         <span class="nv">short_doi_url</span> <span class="o">=</span> <span class="nv">get_short_doi_url</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
 
         <span class="k">if</span> <span class="nv">short_doi_url</span>:
 
-            <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">URL</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">short_doi_url</span>
+            <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">URL</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">short_doi_url</span>
 
         <span class="nv">try</span>:
 
@@ -1637,7 +1655,11 @@
 
         <span class="nv">except</span> <span class="nv">Exception</span>:
 
-            <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Error calling get_pubmed_ids_for_doi for {doi}</span><span class="s1">&#39;</span>, <span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+            <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+
+                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error calling get_pubmed_ids_for_doi for {doi}</span><span class="s2">&quot;</span>, <span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span>
+
+            <span class="ss">)</span>
 
         <span class="k">return</span> <span class="nv">csl_item</span>
 </pre></div>
@@ -1663,13 +1685,13 @@ retrieve the CSL Item metadata for a DOI.</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s">https://doi.org/</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nv">urllib</span>.<span class="nv">request</span>.<span class="nv">quote</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+    <span class="nv">url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">https://doi.org/</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nv">urllib</span>.<span class="nv">request</span>.<span class="nv">quote</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
 
     <span class="nv">header</span> <span class="o">=</span> {
 
-        <span class="s1">&#39;</span><span class="s">Accept</span><span class="s1">&#39;</span>: <span class="s1">&#39;</span><span class="s">application/vnd.citationstyles.csl+json</span><span class="s1">&#39;</span>,
+        <span class="s2">&quot;</span><span class="s">Accept</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">application/vnd.citationstyles.csl+json</span><span class="s2">&quot;</span>,
 
-        <span class="s1">&#39;</span><span class="s">User-Agent</span><span class="s1">&#39;</span>: <span class="nv">get_manubot_user_agent</span><span class="ss">()</span>,
+        <span class="s2">&quot;</span><span class="s">User-Agent</span><span class="s2">&quot;</span>: <span class="nv">get_manubot_user_agent</span><span class="ss">()</span>,
 
     }
 
@@ -1681,9 +1703,13 @@ retrieve the CSL Item metadata for a DOI.</p>
 
     <span class="nv">except</span> <span class="nv">Exception</span> <span class="nv">as</span> <span class="nv">error</span>:
 
-        <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Error fetching metadata for doi:{doi}.</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span>
 
-                      <span class="nv">f</span><span class="s1">&#39;</span><span class="s">Invalid response from {response.url}:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s1">&#39;</span><span class="ss">)</span>
+            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error fetching metadata for doi:{doi}.</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Invalid response from {response.url}:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s2">&quot;</span>
+
+        <span class="ss">)</span>
 
         <span class="nv">raise</span> <span class="nv">error</span>
 </pre></div>
@@ -1708,7 +1734,7 @@ retrieve the CSL Item metadata for a DOI.</p>
 
     <span class="kn">from</span> <span class="nn">manubot.cite.zotero</span> <span class="kn">import</span> <span class="n">get_csl_item</span>
 
-    <span class="k">return</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;doi:{doi}&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;doi:{doi}&quot;</span><span class="p">)</span>
 </pre></div>
 
 
@@ -1731,27 +1757,23 @@ retrieve the CSL Item metadata for a DOI.</p>
 
     <span class="nv">quoted_doi</span> <span class="o">=</span> <span class="nv">urllib</span>.<span class="nv">request</span>.<span class="nv">quote</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
 
-    <span class="nv">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s">http://shortdoi.org/{}?format=json</span><span class="s1">&#39;</span>.<span class="nv">format</span><span class="ss">(</span><span class="nv">quoted_doi</span><span class="ss">)</span>
+    <span class="nv">url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">http://shortdoi.org/{}?format=json</span><span class="s2">&quot;</span>.<span class="nv">format</span><span class="ss">(</span><span class="nv">quoted_doi</span><span class="ss">)</span>
 
-    <span class="nv">headers</span> <span class="o">=</span> {
-
-        <span class="s1">&#39;</span><span class="s">User-Agent</span><span class="s1">&#39;</span>: <span class="nv">get_manubot_user_agent</span><span class="ss">()</span>,
-
-    }
+    <span class="nv">headers</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">User-Agent</span><span class="s2">&quot;</span>: <span class="nv">get_manubot_user_agent</span><span class="ss">()</span>}
 
     <span class="nv">try</span>:
 
         <span class="nv">response</span> <span class="o">=</span> <span class="nv">requests</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">url</span>, <span class="nv">headers</span><span class="o">=</span><span class="nv">headers</span><span class="ss">)</span>.<span class="nv">json</span><span class="ss">()</span>
 
-        <span class="nv">short_doi</span> <span class="o">=</span> <span class="nv">response</span>[<span class="s1">&#39;</span><span class="s">ShortDOI</span><span class="s1">&#39;</span>]
+        <span class="nv">short_doi</span> <span class="o">=</span> <span class="nv">response</span>[<span class="s2">&quot;</span><span class="s">ShortDOI</span><span class="s2">&quot;</span>]
 
-        <span class="nv">short_url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s">https://doi.org/</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nv">short_doi</span>[<span class="mi">3</span>:]  # <span class="nv">Remove</span> <span class="s2">&quot;</span><span class="s">10/</span><span class="s2">&quot;</span> <span class="nv">prefix</span>
+        <span class="nv">short_url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">https://doi.org/</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nv">short_doi</span>[<span class="mi">3</span>:]  # <span class="nv">Remove</span> <span class="s2">&quot;</span><span class="s">10/</span><span class="s2">&quot;</span> <span class="nv">prefix</span>
 
         <span class="k">return</span> <span class="nv">short_url</span>
 
     <span class="nv">except</span> <span class="nv">Exception</span>:
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">shortDOI lookup failed for {doi}</span><span class="s1">&#39;</span>, <span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">shortDOI lookup failed for {doi}</span><span class="s2">&quot;</span>, <span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
 
         <span class="k">return</span> <span class="nv">None</span>
 </pre></div>

@@ -1244,7 +1244,7 @@ https://github.com/manubot/manubot/issues/82.</p>
 
 <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">get_manubot_user_agent</span>
 
-<span class="n">base_url</span> <span class="o">=</span> <span class="s1">&#39;https://translate.manubot.org&#39;</span>
+<span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://translate.manubot.org&quot;</span>
 
 <span class="k">def</span> <span class="nf">web_query</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
 
@@ -1256,21 +1256,11 @@ https://github.com/manubot/manubot/issues/82.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span> <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">}</span>
 
-        <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;single&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
 
-        <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;text/plain&#39;</span><span class="p">,</span>
-
-    <span class="p">}</span>
-
-    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-
-        <span class="s1">&#39;single&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-
-    <span class="p">}</span>
-
-    <span class="n">api_url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{base_url}/web&#39;</span>
+    <span class="n">api_url</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{base_url}/web&quot;</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
 
@@ -1280,7 +1270,11 @@ https://github.com/manubot/manubot/issues/82.</p>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Error parsing web_query output as JSON for {url}:</span><span class="se">\n</span><span class="s1">{response.text}&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+            <span class="n">f</span><span class="s2">&quot;Error parsing web_query output as JSON for {url}:</span><span class="se">\n</span><span class="s2">{response.text}&quot;</span>
+
+        <span class="p">)</span>
 
         <span class="k">raise</span> <span class="n">error</span>
 
@@ -1290,13 +1284,13 @@ https://github.com/manubot/manubot/issues/82.</p>
 
         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-            <span class="n">f</span><span class="s1">&#39;web_query returned multiple results for {url}:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
+            <span class="n">f</span><span class="s2">&quot;web_query returned multiple results for {url}:</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-            <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
         <span class="p">)</span>
 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;multiple results for {url}&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;multiple results for {url}&quot;</span><span class="p">)</span>
 
     <span class="n">zotero_data</span> <span class="o">=</span> <span class="n">_passthrough_zotero_data</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span>
 
@@ -1312,15 +1306,9 @@ https://github.com/manubot/manubot/issues/82.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">api_url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{base_url}/search&#39;</span>
+    <span class="n">api_url</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{base_url}/search&quot;</span>
 
-    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
-
-        <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span>
-
-        <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;text/plain&#39;</span><span class="p">,</span>
-
-    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span> <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">}</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">identifier</span><span class="p">))</span>
 
@@ -1330,7 +1318,11 @@ https://github.com/manubot/manubot/issues/82.</p>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Error parsing search_query output as JSON for {identifier}:</span><span class="se">\n</span><span class="s1">{response.text}&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+            <span class="n">f</span><span class="s2">&quot;Error parsing search_query output as JSON for {identifier}:</span><span class="se">\n</span><span class="s2">{response.text}&quot;</span>
+
+        <span class="p">)</span>
 
         <span class="k">raise</span> <span class="n">error</span>
 
@@ -1350,7 +1342,7 @@ https://github.com/manubot/manubot/issues/82.</p>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;_passthrough_zotero_data: zotero_data should be a list&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;_passthrough_zotero_data: zotero_data should be a list&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
 
@@ -1386,27 +1378,19 @@ https://github.com/manubot/manubot/issues/82.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">api_url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{base_url}/export&#39;</span>
+    <span class="n">api_url</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{base_url}/export&quot;</span>
 
-    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;csljson&quot;</span><span class="p">}</span>
 
-        <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;csljson&#39;</span><span class="p">,</span>
-
-    <span class="p">}</span>
-
-    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
-
-        <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span>
-
-    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">()}</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">zotero_data</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
 
-        <span class="n">message</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;export_as_csl: translation-server returned status code {response.status_code}&#39;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;export_as_csl: translation-server returned status code {response.status_code}&quot;</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;{message} with the following output:</span><span class="se">\n</span><span class="s1">{response.text}&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{message} with the following output:</span><span class="se">\n</span><span class="s2">{response.text}&quot;</span><span class="p">)</span>
 
         <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
@@ -1416,7 +1400,7 @@ https://github.com/manubot/manubot/issues/82.</p>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Error parsing export_as_csl output as JSON:</span><span class="se">\n</span><span class="s1">{response.text}&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Error parsing export_as_csl output as JSON:</span><span class="se">\n</span><span class="s2">{response.text}&quot;</span><span class="p">)</span>
 
         <span class="k">raise</span> <span class="n">error</span>
 
@@ -1436,7 +1420,7 @@ https://github.com/manubot/manubot/issues/82.</p>
 
     <span class="n">csl_data</span> <span class="o">=</span> <span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span>
 
-    <span class="n">csl_item</span><span class="p">,</span> <span class="o">=</span> <span class="n">csl_data</span>
+    <span class="p">(</span><span class="n">csl_item</span><span class="p">,)</span> <span class="o">=</span> <span class="n">csl_data</span>
 
     <span class="k">return</span> <span class="n">csl_item</span>
 </pre></div>
@@ -1484,27 +1468,19 @@ Performs a similar query to the following curl command:</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">api_url</span> <span class="o">=</span> <span class="nv">f</span><span class="s1">&#39;</span><span class="s">{base_url}/export</span><span class="s1">&#39;</span>
+    <span class="nv">api_url</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{base_url}/export</span><span class="s2">&quot;</span>
 
-    <span class="nb">params</span> <span class="o">=</span> {
+    <span class="nb">params</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">format</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">csljson</span><span class="s2">&quot;</span>}
 
-        <span class="s1">&#39;</span><span class="s">format</span><span class="s1">&#39;</span>: <span class="s1">&#39;</span><span class="s">csljson</span><span class="s1">&#39;</span>,
-
-    }
-
-    <span class="nv">headers</span> <span class="o">=</span> {
-
-        <span class="s1">&#39;</span><span class="s">User-Agent</span><span class="s1">&#39;</span>: <span class="nv">get_manubot_user_agent</span><span class="ss">()</span>,
-
-    }
+    <span class="nv">headers</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">User-Agent</span><span class="s2">&quot;</span>: <span class="nv">get_manubot_user_agent</span><span class="ss">()</span>}
 
     <span class="nv">response</span> <span class="o">=</span> <span class="nv">requests</span>.<span class="nv">post</span><span class="ss">(</span><span class="nv">api_url</span>, <span class="nb">params</span><span class="o">=</span><span class="nb">params</span>, <span class="nv">headers</span><span class="o">=</span><span class="nv">headers</span>, <span class="nv">json</span><span class="o">=</span><span class="nv">zotero_data</span><span class="ss">)</span>
 
     <span class="k">if</span> <span class="nv">not</span> <span class="nv">response</span>.<span class="nv">ok</span>:
 
-        <span class="nv">message</span> <span class="o">=</span> <span class="nv">f</span><span class="s1">&#39;</span><span class="s">export_as_csl: translation-server returned status code {response.status_code}</span><span class="s1">&#39;</span>
+        <span class="nv">message</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">export_as_csl: translation-server returned status code {response.status_code}</span><span class="s2">&quot;</span>
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">{message} with the following output:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">{message} with the following output:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
         <span class="nv">raise</span> <span class="nv">requests</span>.<span class="nv">HTTPError</span><span class="ss">(</span><span class="nv">message</span><span class="ss">)</span>
 
@@ -1514,7 +1490,7 @@ Performs a similar query to the following curl command:</p>
 
     <span class="nv">except</span> <span class="nv">Exception</span> <span class="nv">as</span> <span class="nv">error</span>:
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Error parsing export_as_csl output as JSON:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error parsing export_as_csl output as JSON:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
         <span class="nv">raise</span> <span class="nv">error</span>
 
@@ -1546,7 +1522,7 @@ to return a CSL Item (the first &amp; only record of a the returned CSL JSON).</
 
     <span class="nv">csl_data</span> <span class="o">=</span> <span class="nv">export_as_csl</span><span class="ss">(</span><span class="nv">zotero_data</span><span class="ss">)</span>
 
-    <span class="nv">csl_item</span>, <span class="o">=</span> <span class="nv">csl_data</span>
+    <span class="ss">(</span><span class="nv">csl_item</span>,<span class="ss">)</span> <span class="o">=</span> <span class="nv">csl_data</span>
 
     <span class="k">return</span> <span class="nv">csl_item</span>
 </pre></div>
@@ -1572,15 +1548,9 @@ curl -d 10.2307/4486062 -H 'Content-Type: text/plain' http://127.0.0.1:1969/sear
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">api_url</span> <span class="o">=</span> <span class="nv">f</span><span class="s1">&#39;</span><span class="s">{base_url}/search</span><span class="s1">&#39;</span>
+    <span class="nv">api_url</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{base_url}/search</span><span class="s2">&quot;</span>
 
-    <span class="nv">headers</span> <span class="o">=</span> {
-
-        <span class="s1">&#39;</span><span class="s">User-Agent</span><span class="s1">&#39;</span>: <span class="nv">get_manubot_user_agent</span><span class="ss">()</span>,
-
-        <span class="s1">&#39;</span><span class="s">Content-Type</span><span class="s1">&#39;</span>: <span class="s1">&#39;</span><span class="s">text/plain</span><span class="s1">&#39;</span>,
-
-    }
+    <span class="nv">headers</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">User-Agent</span><span class="s2">&quot;</span>: <span class="nv">get_manubot_user_agent</span><span class="ss">()</span>, <span class="s2">&quot;</span><span class="s">Content-Type</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">text/plain</span><span class="s2">&quot;</span>}
 
     <span class="nv">response</span> <span class="o">=</span> <span class="nv">requests</span>.<span class="nv">post</span><span class="ss">(</span><span class="nv">api_url</span>, <span class="nv">headers</span><span class="o">=</span><span class="nv">headers</span>, <span class="nv">data</span><span class="o">=</span><span class="nv">str</span><span class="ss">(</span><span class="nv">identifier</span><span class="ss">))</span>
 
@@ -1590,7 +1560,11 @@ curl -d 10.2307/4486062 -H 'Content-Type: text/plain' http://127.0.0.1:1969/sear
 
     <span class="nv">except</span> <span class="nv">Exception</span> <span class="nv">as</span> <span class="nv">error</span>:
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Error parsing search_query output as JSON for {identifier}:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+
+            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error parsing search_query output as JSON for {identifier}:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s2">&quot;</span>
+
+        <span class="ss">)</span>
 
         <span class="nv">raise</span> <span class="nv">error</span>
 
@@ -1620,21 +1594,11 @@ is a dictionary with the URL's metadata.</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">headers</span> <span class="o">=</span> {
+    <span class="nv">headers</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">User-Agent</span><span class="s2">&quot;</span>: <span class="nv">get_manubot_user_agent</span><span class="ss">()</span>, <span class="s2">&quot;</span><span class="s">Content-Type</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">text/plain</span><span class="s2">&quot;</span>}
 
-        <span class="s1">&#39;</span><span class="s">User-Agent</span><span class="s1">&#39;</span>: <span class="nv">get_manubot_user_agent</span><span class="ss">()</span>,
+    <span class="nb">params</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">single</span><span class="s2">&quot;</span>: <span class="mi">1</span>}
 
-        <span class="s1">&#39;</span><span class="s">Content-Type</span><span class="s1">&#39;</span>: <span class="s1">&#39;</span><span class="s">text/plain</span><span class="s1">&#39;</span>,
-
-    }
-
-    <span class="nb">params</span> <span class="o">=</span> {
-
-        <span class="s1">&#39;</span><span class="s">single</span><span class="s1">&#39;</span>: <span class="mi">1</span>,
-
-    }
-
-    <span class="nv">api_url</span> <span class="o">=</span> <span class="nv">f</span><span class="s1">&#39;</span><span class="s">{base_url}/web</span><span class="s1">&#39;</span>
+    <span class="nv">api_url</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{base_url}/web</span><span class="s2">&quot;</span>
 
     <span class="nv">response</span> <span class="o">=</span> <span class="nv">requests</span>.<span class="nv">post</span><span class="ss">(</span><span class="nv">api_url</span>, <span class="nb">params</span><span class="o">=</span><span class="nb">params</span>, <span class="nv">headers</span><span class="o">=</span><span class="nv">headers</span>, <span class="nv">data</span><span class="o">=</span><span class="nv">str</span><span class="ss">(</span><span class="nv">url</span><span class="ss">))</span>
 
@@ -1644,7 +1608,11 @@ is a dictionary with the URL's metadata.</p>
 
     <span class="nv">except</span> <span class="nv">Exception</span> <span class="nv">as</span> <span class="nv">error</span>:
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Error parsing web_query output as JSON for {url}:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+
+            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error parsing web_query output as JSON for {url}:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s2">&quot;</span>
+
+        <span class="ss">)</span>
 
         <span class="nv">raise</span> <span class="nv">error</span>
 
@@ -1654,13 +1622,13 @@ is a dictionary with the URL's metadata.</p>
 
         <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
 
-            <span class="nv">f</span><span class="s1">&#39;</span><span class="s">web_query returned multiple results for {url}:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
+            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">web_query returned multiple results for {url}:</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-            <span class="nv">json</span>.<span class="nv">dumps</span><span class="ss">(</span><span class="nv">zotero_data</span>, <span class="nv">indent</span><span class="o">=</span><span class="mi">2</span><span class="ss">)</span>
+            <span class="o">+</span> <span class="nv">json</span>.<span class="nv">dumps</span><span class="ss">(</span><span class="nv">zotero_data</span>, <span class="nv">indent</span><span class="o">=</span><span class="mi">2</span><span class="ss">)</span>
 
         <span class="ss">)</span>
 
-        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">multiple results for {url}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">multiple results for {url}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
     <span class="nv">zotero_data</span> <span class="o">=</span> <span class="nv">_passthrough_zotero_data</span><span class="ss">(</span><span class="nv">zotero_data</span><span class="ss">)</span>
 

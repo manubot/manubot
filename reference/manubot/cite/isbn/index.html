@@ -1255,15 +1255,15 @@
 
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s1">&#39;Error in {retriever.__name__} for {isbn} &#39;</span>
+                <span class="n">f</span><span class="s2">&quot;Error in {retriever.__name__} for {isbn} &quot;</span>
 
-                <span class="n">f</span><span class="s1">&#39;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s1">{error}&#39;</span>
+                <span class="n">f</span><span class="s2">&quot;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s2">{error}&quot;</span>
 
             <span class="p">)</span>
 
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;all get_isbn_csl_item methods failed for {isbn}&#39;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;all get_isbn_csl_item methods failed for {isbn}&quot;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">get_isbn_csl_item_zotero</span><span class="p">(</span><span class="n">isbn</span><span class="p">):</span>
 
@@ -1275,7 +1275,7 @@
 
     <span class="kn">from</span> <span class="nn">manubot.cite.zotero</span> <span class="kn">import</span> <span class="n">get_csl_item</span>
 
-    <span class="k">return</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;isbn:{isbn}&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;isbn:{isbn}&quot;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">get_isbn_csl_item_citoid</span><span class="p">(</span><span class="n">isbn</span><span class="p">):</span>
 
@@ -1291,13 +1291,9 @@
 
     <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">get_manubot_user_agent</span>
 
-    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">()}</span>
 
-        <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span>
-
-    <span class="p">}</span>
-
-    <span class="n">url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/{isbn}&#39;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/{isbn}&quot;</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
@@ -1305,101 +1301,95 @@
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
 
-        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Not found.&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Not found.&quot;</span><span class="p">:</span>
 
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Metadata for ISBN {isbn} not found at {url}&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Metadata for ISBN {isbn} not found at {url}&quot;</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
 
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s1">&#39;Unable to extract CSL from JSON metadata for ISBN {isbn}:</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">f</span><span class="s2">&quot;Unable to extract CSL from JSON metadata for ISBN {isbn}:</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-                <span class="n">f</span><span class="s1">&#39;{json.dumps(result.text)}&#39;</span>
+                <span class="n">f</span><span class="s2">&quot;{json.dumps(result.text)}&quot;</span>
 
             <span class="p">)</span>
 
-    <span class="n">mediawiki</span><span class="p">,</span> <span class="o">=</span> <span class="n">result</span>
+    <span class="p">(</span><span class="n">mediawiki</span><span class="p">,)</span> <span class="o">=</span> <span class="n">result</span>
 
     <span class="n">csl_item</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
-    <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;itemType&#39;</span><span class="p">,</span> <span class="s1">&#39;book&#39;</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;itemType&quot;</span><span class="p">,</span> <span class="s2">&quot;book&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="s1">&#39;title&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;title&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="s1">&#39;author&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;author&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
         <span class="n">csl_author</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">last</span><span class="p">,</span> <span class="n">first</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">last</span><span class="p">,</span> <span class="n">first</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]:</span>
 
-            <span class="n">csl_author</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-
-                <span class="s1">&#39;given&#39;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span>
-
-                <span class="s1">&#39;family&#39;</span><span class="p">:</span> <span class="n">last</span><span class="p">,</span>
-
-            <span class="p">})</span>
+            <span class="n">csl_author</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;given&quot;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span> <span class="s2">&quot;family&quot;</span><span class="p">:</span> <span class="n">last</span><span class="p">})</span>
 
         <span class="k">if</span> <span class="n">csl_author</span><span class="p">:</span>
 
-            <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">csl_author</span>
+            <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">csl_author</span>
 
-    <span class="k">if</span> <span class="s1">&#39;date&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;date&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">year_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[0-9]{4}&#39;</span><span class="p">)</span>
+        <span class="n">year_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[0-9]{4}&quot;</span><span class="p">)</span>
 
-        <span class="n">match</span> <span class="o">=</span> <span class="n">year_pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">year_pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
 
             <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
 
-            <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;issued&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;date-parts&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">year</span><span class="p">]]}</span>
+            <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;date-parts&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="n">year</span><span class="p">]]}</span>
 
         <span class="k">else</span><span class="p">:</span>
 
             <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s1">&#39;get_isbn_csl_item_citoid: issue extracting date for ISBN {isbn}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">f</span><span class="s2">&quot;get_isbn_csl_item_citoid: issue extracting date for ISBN {isbn}</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-                <span class="n">f</span><span class="s1">&#39;metadata retrieved from {url}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">f</span><span class="s2">&quot;metadata retrieved from {url}</span><span class="se">\n</span><span class="s2">&quot;</span>
 
                 <span class="n">f</span><span class="s1">&#39;unable to extract year from date field: {mediawiki[&quot;date&quot;]}&#39;</span>
 
             <span class="p">)</span>
 
-    <span class="k">if</span> <span class="s1">&#39;publisher&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;publisher&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;publisher&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;publisher&#39;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;publisher&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;publisher&quot;</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="s1">&#39;place&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;place&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;publisher-place&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;place&#39;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;publisher-place&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="s1">&#39;volume&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;volume&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;volume&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;volume&quot;</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="s1">&#39;edition&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;edition&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;edition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;edition&#39;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;edition&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;edition&quot;</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="s1">&#39;abstractNote&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;abstractNote&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;abstract&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;abstractNote&#39;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;abstract&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;abstractNote&quot;</span><span class="p">]</span>
 
-    <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;ISBN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">isbn</span>
+    <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;ISBN&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">isbn</span>
 
-    <span class="k">if</span> <span class="s1">&#39;source&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;source&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="s1">&#39;url&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;url&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">csl_item</span>
 
@@ -1415,7 +1405,7 @@
 
     <span class="n">metadata</span> <span class="o">=</span> <span class="n">isbnlib</span><span class="o">.</span><span class="n">meta</span><span class="p">(</span><span class="n">isbn</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 
-    <span class="n">csl_json</span> <span class="o">=</span> <span class="n">isbnlib</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">bibformatters</span><span class="p">[</span><span class="s1">&#39;csl&#39;</span><span class="p">](</span><span class="n">metadata</span><span class="p">)</span>
+    <span class="n">csl_json</span> <span class="o">=</span> <span class="n">isbnlib</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">bibformatters</span><span class="p">[</span><span class="s2">&quot;csl&quot;</span><span class="p">](</span><span class="n">metadata</span><span class="p">)</span>
 
     <span class="n">csl_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">csl_json</span><span class="p">)</span>
 
@@ -1482,15 +1472,15 @@ non-failing method.</p>
 
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s1">&#39;Error in {retriever.__name__} for {isbn} &#39;</span>
+                <span class="n">f</span><span class="s2">&quot;Error in {retriever.__name__} for {isbn} &quot;</span>
 
-                <span class="n">f</span><span class="s1">&#39;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s1">{error}&#39;</span>
+                <span class="n">f</span><span class="s2">&quot;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s2">{error}&quot;</span>
 
             <span class="p">)</span>
 
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;all get_isbn_csl_item methods failed for {isbn}&#39;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;all get_isbn_csl_item methods failed for {isbn}&quot;</span><span class="p">)</span>
 </pre></div>
 
 
@@ -1518,13 +1508,9 @@ https://en.wikipedia.org/api/rest_v1/#!/Citation/getCitation</p>
 
     <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">get_manubot_user_agent</span>
 
-    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">()}</span>
 
-        <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span>
-
-    <span class="p">}</span>
-
-    <span class="n">url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/{isbn}&#39;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/{isbn}&quot;</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
@@ -1532,101 +1518,95 @@ https://en.wikipedia.org/api/rest_v1/#!/Citation/getCitation</p>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
 
-        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Not found.&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Not found.&quot;</span><span class="p">:</span>
 
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Metadata for ISBN {isbn} not found at {url}&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Metadata for ISBN {isbn} not found at {url}&quot;</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
 
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s1">&#39;Unable to extract CSL from JSON metadata for ISBN {isbn}:</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">f</span><span class="s2">&quot;Unable to extract CSL from JSON metadata for ISBN {isbn}:</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-                <span class="n">f</span><span class="s1">&#39;{json.dumps(result.text)}&#39;</span>
+                <span class="n">f</span><span class="s2">&quot;{json.dumps(result.text)}&quot;</span>
 
             <span class="p">)</span>
 
-    <span class="n">mediawiki</span><span class="p">,</span> <span class="o">=</span> <span class="n">result</span>
+    <span class="p">(</span><span class="n">mediawiki</span><span class="p">,)</span> <span class="o">=</span> <span class="n">result</span>
 
     <span class="n">csl_item</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
-    <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;itemType&#39;</span><span class="p">,</span> <span class="s1">&#39;book&#39;</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;itemType&quot;</span><span class="p">,</span> <span class="s2">&quot;book&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="s1">&#39;title&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;title&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="s1">&#39;author&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;author&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
         <span class="n">csl_author</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">last</span><span class="p">,</span> <span class="n">first</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">last</span><span class="p">,</span> <span class="n">first</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]:</span>
 
-            <span class="n">csl_author</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-
-                <span class="s1">&#39;given&#39;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span>
-
-                <span class="s1">&#39;family&#39;</span><span class="p">:</span> <span class="n">last</span><span class="p">,</span>
-
-            <span class="p">})</span>
+            <span class="n">csl_author</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;given&quot;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span> <span class="s2">&quot;family&quot;</span><span class="p">:</span> <span class="n">last</span><span class="p">})</span>
 
         <span class="k">if</span> <span class="n">csl_author</span><span class="p">:</span>
 
-            <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">csl_author</span>
+            <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">csl_author</span>
 
-    <span class="k">if</span> <span class="s1">&#39;date&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;date&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">year_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[0-9]{4}&#39;</span><span class="p">)</span>
+        <span class="n">year_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[0-9]{4}&quot;</span><span class="p">)</span>
 
-        <span class="n">match</span> <span class="o">=</span> <span class="n">year_pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">year_pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
 
             <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
 
-            <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;issued&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;date-parts&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">year</span><span class="p">]]}</span>
+            <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;date-parts&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="n">year</span><span class="p">]]}</span>
 
         <span class="k">else</span><span class="p">:</span>
 
             <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s1">&#39;get_isbn_csl_item_citoid: issue extracting date for ISBN {isbn}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">f</span><span class="s2">&quot;get_isbn_csl_item_citoid: issue extracting date for ISBN {isbn}</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-                <span class="n">f</span><span class="s1">&#39;metadata retrieved from {url}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">f</span><span class="s2">&quot;metadata retrieved from {url}</span><span class="se">\n</span><span class="s2">&quot;</span>
 
                 <span class="n">f</span><span class="s1">&#39;unable to extract year from date field: {mediawiki[&quot;date&quot;]}&#39;</span>
 
             <span class="p">)</span>
 
-    <span class="k">if</span> <span class="s1">&#39;publisher&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;publisher&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;publisher&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;publisher&#39;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;publisher&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;publisher&quot;</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="s1">&#39;place&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;place&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;publisher-place&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;place&#39;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;publisher-place&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="s1">&#39;volume&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;volume&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;volume&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;volume&quot;</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="s1">&#39;edition&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;edition&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;edition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;edition&#39;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;edition&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;edition&quot;</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="s1">&#39;abstractNote&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;abstractNote&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;abstract&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;abstractNote&#39;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;abstract&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;abstractNote&quot;</span><span class="p">]</span>
 
-    <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;ISBN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">isbn</span>
+    <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;ISBN&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">isbn</span>
 
-    <span class="k">if</span> <span class="s1">&#39;source&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;source&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="s1">&#39;url&#39;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;url&quot;</span> <span class="ow">in</span> <span class="n">mediawiki</span><span class="p">:</span>
 
-        <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mediawiki</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">csl_item</span>
 </pre></div>
@@ -1653,7 +1633,7 @@ https://en.wikipedia.org/api/rest_v1/#!/Citation/getCitation</p>
 
     <span class="n">metadata</span> <span class="o">=</span> <span class="n">isbnlib</span><span class="o">.</span><span class="n">meta</span><span class="p">(</span><span class="n">isbn</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 
-    <span class="n">csl_json</span> <span class="o">=</span> <span class="n">isbnlib</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">bibformatters</span><span class="p">[</span><span class="s1">&#39;csl&#39;</span><span class="p">](</span><span class="n">metadata</span><span class="p">)</span>
+    <span class="n">csl_json</span> <span class="o">=</span> <span class="n">isbnlib</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">bibformatters</span><span class="p">[</span><span class="s2">&quot;csl&quot;</span><span class="p">](</span><span class="n">metadata</span><span class="p">)</span>
 
     <span class="n">csl_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">csl_json</span><span class="p">)</span>
 
@@ -1680,7 +1660,7 @@ https://en.wikipedia.org/api/rest_v1/#!/Citation/getCitation</p>
 
     <span class="kn">from</span> <span class="nn">manubot.cite.zotero</span> <span class="kn">import</span> <span class="n">get_csl_item</span>
 
-    <span class="k">return</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;isbn:{isbn}&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;isbn:{isbn}&quot;</span><span class="p">)</span>
 </pre></div>
 
 

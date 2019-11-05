@@ -1249,23 +1249,23 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">use_text</span> <span class="o">^</span> <span class="n">use_path</span><span class="p">):</span>
 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;load_bibliography: specify either path or text but not both.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;load_bibliography: specify either path or text but not both.&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">get_pandoc_info</span><span class="p">()[</span><span class="s1">&#39;pandoc-citeproc&#39;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">get_pandoc_info</span><span class="p">()[</span><span class="s2">&quot;pandoc-citeproc&quot;</span><span class="p">]:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;pandoc-citeproc not found on system: manubot.pandoc.bibliography.load_bibliography returning empty CSL JSON&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+
+            <span class="s2">&quot;pandoc-citeproc not found on system: manubot.pandoc.bibliography.load_bibliography returning empty CSL JSON&quot;</span>
+
+        <span class="p">)</span>
 
         <span class="k">return</span> <span class="p">[]</span>
 
-    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
-
-        <span class="s1">&#39;pandoc-citeproc&#39;</span><span class="p">,</span> <span class="s1">&#39;--bib2json&#39;</span><span class="p">,</span>
-
-    <span class="p">]</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;pandoc-citeproc&quot;</span><span class="p">,</span> <span class="s2">&quot;--bib2json&quot;</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">input_format</span><span class="p">:</span>
 
-        <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;--format&#39;</span><span class="p">,</span> <span class="n">input_format</span><span class="p">])</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--format&quot;</span><span class="p">,</span> <span class="n">input_format</span><span class="p">])</span>
 
     <span class="n">run_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -1275,9 +1275,9 @@
 
     <span class="k">if</span> <span class="n">use_text</span><span class="p">:</span>
 
-        <span class="n">run_kwargs</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="n">run_kwargs</span><span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;call_pandoc subprocess args:</span><span class="se">\n</span><span class="s1">&gt;&gt;&gt; &#39;</span> <span class="o">+</span> <span class="n">shlex_join</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;call_pandoc subprocess args:</span><span class="se">\n</span><span class="s2">&gt;&gt;&gt; &quot;</span> <span class="o">+</span> <span class="n">shlex_join</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
 
     <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
 
@@ -1287,13 +1287,13 @@
 
         <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
 
-        <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
+        <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
 
         <span class="o">**</span><span class="n">run_kwargs</span><span class="p">,</span>
 
     <span class="p">)</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;captured stderr:</span><span class="se">\n</span><span class="s1">{process.stderr}&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;captured stderr:</span><span class="se">\n</span><span class="s2">{process.stderr}&quot;</span><span class="p">)</span>
 
     <span class="n">process</span><span class="o">.</span><span class="n">check_returncode</span><span class="p">()</span>
 
@@ -1303,7 +1303,7 @@
 
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Error parsing bib2json output as JSON:</span><span class="se">\n</span><span class="s1">{process.stdout}&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Error parsing bib2json output as JSON:</span><span class="se">\n</span><span class="s2">{process.stdout}&quot;</span><span class="p">)</span>
 
         <span class="n">csl_json</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -1389,23 +1389,23 @@ input_format : str or None
 
     <span class="k">if</span> <span class="nv">not</span> <span class="ss">(</span><span class="nv">use_text</span> <span class="o">^</span> <span class="nv">use_path</span><span class="ss">)</span>:
 
-        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">load_bibliography: specify either path or text but not both.</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">load_bibliography: specify either path or text but not both.</span><span class="s2">&quot;</span><span class="ss">)</span>
 
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">get_pandoc_info</span><span class="ss">()</span>[<span class="s1">&#39;</span><span class="s">pandoc-citeproc</span><span class="s1">&#39;</span>]:
+    <span class="k">if</span> <span class="nv">not</span> <span class="nv">get_pandoc_info</span><span class="ss">()</span>[<span class="s2">&quot;</span><span class="s">pandoc-citeproc</span><span class="s2">&quot;</span>]:
 
-        <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">pandoc-citeproc not found on system: manubot.pandoc.bibliography.load_bibliography returning empty CSL JSON</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span>
+
+            <span class="s2">&quot;</span><span class="s">pandoc-citeproc not found on system: manubot.pandoc.bibliography.load_bibliography returning empty CSL JSON</span><span class="s2">&quot;</span>
+
+        <span class="ss">)</span>
 
         <span class="k">return</span> []
 
-    <span class="nv">args</span> <span class="o">=</span> [
-
-        <span class="s1">&#39;</span><span class="s">pandoc-citeproc</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">--bib2json</span><span class="s1">&#39;</span>,
-
-    ]
+    <span class="nv">args</span> <span class="o">=</span> [<span class="s2">&quot;</span><span class="s">pandoc-citeproc</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">--bib2json</span><span class="s2">&quot;</span>]
 
     <span class="k">if</span> <span class="nv">input_format</span>:
 
-        <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">--format</span><span class="s1">&#39;</span>, <span class="nv">input_format</span>]<span class="ss">)</span>
+        <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;</span><span class="s">--format</span><span class="s2">&quot;</span>, <span class="nv">input_format</span>]<span class="ss">)</span>
 
     <span class="nv">run_kwargs</span> <span class="o">=</span> {}
 
@@ -1415,9 +1415,9 @@ input_format : str or None
 
     <span class="k">if</span> <span class="nv">use_text</span>:
 
-        <span class="nv">run_kwargs</span>[<span class="s1">&#39;</span><span class="s">input</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">text</span>
+        <span class="nv">run_kwargs</span>[<span class="s2">&quot;</span><span class="s">input</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">text</span>
 
-    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">call_pandoc subprocess args:</span><span class="se">\n</span><span class="s">&gt;&gt;&gt; </span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nv">shlex_join</span><span class="ss">(</span><span class="nv">args</span><span class="ss">))</span>
+    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">call_pandoc subprocess args:</span><span class="se">\n</span><span class="s">&gt;&gt;&gt; </span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nv">shlex_join</span><span class="ss">(</span><span class="nv">args</span><span class="ss">))</span>
 
     <span class="nv">process</span> <span class="o">=</span> <span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span>
 
@@ -1427,13 +1427,13 @@ input_format : str or None
 
         <span class="nv">stderr</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>,
 
-        <span class="nv">encoding</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">utf-8</span><span class="s1">&#39;</span>,
+        <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">utf-8</span><span class="s2">&quot;</span>,
 
         <span class="o">**</span><span class="nv">run_kwargs</span>,
 
     <span class="ss">)</span>
 
-    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">captured stderr:</span><span class="se">\n</span><span class="s">{process.stderr}</span><span class="s1">&#39;</span><span class="ss">)</span>
+    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">captured stderr:</span><span class="se">\n</span><span class="s">{process.stderr}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
     <span class="nv">process</span>.<span class="nv">check_returncode</span><span class="ss">()</span>
 
@@ -1443,7 +1443,7 @@ input_format : str or None
 
     <span class="nv">except</span> <span class="nv">Exception</span>:
 
-        <span class="nv">logging</span>.<span class="nv">exception</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Error parsing bib2json output as JSON:</span><span class="se">\n</span><span class="s">{process.stdout}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">logging</span>.<span class="nv">exception</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error parsing bib2json output as JSON:</span><span class="se">\n</span><span class="s">{process.stdout}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
         <span class="nv">csl_json</span> <span class="o">=</span> []
 

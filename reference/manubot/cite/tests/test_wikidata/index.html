@@ -1187,15 +1187,21 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">wikidata_id</span> <span class="o">=</span> <span class="s1">&#39;Q50051684&#39;</span>
+    <span class="n">wikidata_id</span> <span class="o">=</span> <span class="s2">&quot;Q50051684&quot;</span>
 
     <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_wikidata_csl_item</span><span class="p">(</span><span class="n">wikidata_id</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="s1">&#39;Sci-Hub provides access to nearly all scholarly literature&#39;</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="p">(</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;container-title&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;eLife&#39;</span>
+        <span class="s2">&quot;Sci-Hub provides access to nearly all scholarly literature&quot;</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;DOI&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;10.7554/elife.32822&#39;</span>
+        <span class="ow">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+
+    <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;container-title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;eLife&quot;</span>
+
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;10.7554/elife.32822&quot;</span>
 
 <span class="k">def</span> <span class="nf">test_get_wikidata_csl_item_author_ordering</span><span class="p">():</span>
 
@@ -1213,29 +1219,29 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">wikidata_id</span> <span class="o">=</span> <span class="s1">&#39;Q50051684&#39;</span>
+    <span class="n">wikidata_id</span> <span class="o">=</span> <span class="s2">&quot;Q50051684&quot;</span>
 
     <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_wikidata_csl_item</span><span class="p">(</span><span class="n">wikidata_id</span><span class="p">)</span>
 
-    <span class="n">family_names</span> <span class="o">=</span><span class="p">[</span><span class="n">author</span><span class="p">[</span><span class="s1">&#39;family&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">]]</span>
+    <span class="n">family_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">author</span><span class="p">[</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]]</span>
 
     <span class="k">print</span><span class="p">(</span><span class="n">family_names</span><span class="p">)</span>
 
     <span class="k">assert</span> <span class="n">family_names</span> <span class="o">==</span> <span class="p">[</span>
 
-        <span class="s1">&#39;Himmelstein&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;Himmelstein&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;Romero&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;Romero&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;Levernier&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;Levernier&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;Munro&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;Munro&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;McLaughlin&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;McLaughlin&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;Greshake&#39;</span><span class="p">,</span>  <span class="c1"># actually should be Greshake Tzovaras</span>
+        <span class="s2">&quot;Greshake&quot;</span><span class="p">,</span>  <span class="c1"># actually should be Greshake Tzovaras</span>
 
-        <span class="s1">&#39;Greene&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;Greene&quot;</span><span class="p">,</span>
 
     <span class="p">]</span>
 </pre></div>
@@ -1259,15 +1265,21 @@
 
 <span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="n">wikidata_id</span> <span class="o">=</span> <span class="s1">&#39;Q50051684&#39;</span>
+    <span class="n">wikidata_id</span> <span class="o">=</span> <span class="ss">&quot;Q50051684&quot;</span>
 
     <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_wikidata_csl_item</span><span class="p">(</span><span class="n">wikidata_id</span><span class="p">)</span>
 
-    <span class="n">assert</span> <span class="s1">&#39;Sci-Hub provides access to nearly all scholarly literature&#39;</span> <span class="k">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+    <span class="n">assert</span> <span class="p">(</span>
 
-    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;container-title&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;eLife&#39;</span>
+        <span class="ss">&quot;Sci-Hub provides access to nearly all scholarly literature&quot;</span>
 
-    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;DOI&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;10.7554/elife.32822&#39;</span>
+        <span class="k">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;title&quot;</span><span class="p">]</span>
+
+    <span class="p">)</span>
+
+    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;container-title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;eLife&quot;</span>
+
+    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;DOI&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;10.7554/elife.32822&quot;</span>
 </pre></div>
 
 
@@ -1300,29 +1312,29 @@ https://github.com/zotero/translators/issues/1790</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">wikidata_id</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s">Q50051684</span><span class="s1">&#39;</span>
+    <span class="nv">wikidata_id</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">Q50051684</span><span class="s2">&quot;</span>
 
     <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">get_wikidata_csl_item</span><span class="ss">(</span><span class="nv">wikidata_id</span><span class="ss">)</span>
 
-    <span class="nv">family_names</span> <span class="o">=</span>[<span class="nv">author</span>[<span class="s1">&#39;</span><span class="s">family</span><span class="s1">&#39;</span>] <span class="k">for</span> <span class="nv">author</span> <span class="nv">in</span> <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">author</span><span class="s1">&#39;</span>]]
+    <span class="nv">family_names</span> <span class="o">=</span> [<span class="nv">author</span>[<span class="s2">&quot;</span><span class="s">family</span><span class="s2">&quot;</span>] <span class="k">for</span> <span class="nv">author</span> <span class="nv">in</span> <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">author</span><span class="s2">&quot;</span>]]
 
     <span class="nv">print</span><span class="ss">(</span><span class="nv">family_names</span><span class="ss">)</span>
 
     <span class="nv">assert</span> <span class="nv">family_names</span> <span class="o">==</span> [
 
-        <span class="s1">&#39;</span><span class="s">Himmelstein</span><span class="s1">&#39;</span>,
+        <span class="s2">&quot;</span><span class="s">Himmelstein</span><span class="s2">&quot;</span>,
 
-        <span class="s1">&#39;</span><span class="s">Romero</span><span class="s1">&#39;</span>,
+        <span class="s2">&quot;</span><span class="s">Romero</span><span class="s2">&quot;</span>,
 
-        <span class="s1">&#39;</span><span class="s">Levernier</span><span class="s1">&#39;</span>,
+        <span class="s2">&quot;</span><span class="s">Levernier</span><span class="s2">&quot;</span>,
 
-        <span class="s1">&#39;</span><span class="s">Munro</span><span class="s1">&#39;</span>,
+        <span class="s2">&quot;</span><span class="s">Munro</span><span class="s2">&quot;</span>,
 
-        <span class="s1">&#39;</span><span class="s">McLaughlin</span><span class="s1">&#39;</span>,
+        <span class="s2">&quot;</span><span class="s">McLaughlin</span><span class="s2">&quot;</span>,
 
-        <span class="s1">&#39;</span><span class="s">Greshake</span><span class="s1">&#39;</span>,  # <span class="nv">actually</span> <span class="nv">should</span> <span class="nv">be</span> <span class="nv">Greshake</span> <span class="nv">Tzovaras</span>
+        <span class="s2">&quot;</span><span class="s">Greshake</span><span class="s2">&quot;</span>,  # <span class="nv">actually</span> <span class="nv">should</span> <span class="nv">be</span> <span class="nv">Greshake</span> <span class="nv">Tzovaras</span>
 
-        <span class="s1">&#39;</span><span class="s">Greene</span><span class="s1">&#39;</span>,
+        <span class="s2">&quot;</span><span class="s">Greene</span><span class="s2">&quot;</span>,
 
     ]
 </pre></div>

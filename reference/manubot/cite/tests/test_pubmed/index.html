@@ -1203,17 +1203,23 @@
 
 <span class="p">)</span>
 
-<span class="nd">@pytest.mark.parametrize</span><span class="p">((</span><span class="s1">&#39;doi&#39;</span><span class="p">,</span> <span class="s1">&#39;pmid&#39;</span><span class="p">),</span> <span class="p">[</span>
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
 
-    <span class="p">(</span><span class="s1">&#39;10.1098/rsif.2017.0387&#39;</span><span class="p">,</span> <span class="s1">&#39;29618526&#39;</span><span class="p">),</span>  <span class="c1"># in PubMed and PMC</span>
+    <span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;pmid&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;10.1161/CIRCGENETICS.115.001181&#39;</span><span class="p">,</span> <span class="s1">&#39;27094199&#39;</span><span class="p">),</span>  <span class="c1"># in PubMed but not PMC</span>
+    <span class="p">[</span>
 
-    <span class="p">(</span><span class="s1">&#39;10.7717/peerj-cs.134&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span>  <span class="c1"># DOI in journal not indexed by PubMed</span>
+        <span class="p">(</span><span class="s2">&quot;10.1098/rsif.2017.0387&quot;</span><span class="p">,</span> <span class="s2">&quot;29618526&quot;</span><span class="p">),</span>  <span class="c1"># in PubMed and PMC</span>
 
-    <span class="p">(</span><span class="s1">&#39;10.1161/CIRC&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span>  <span class="c1"># invalid DOI</span>
+        <span class="p">(</span><span class="s2">&quot;10.1161/CIRCGENETICS.115.001181&quot;</span><span class="p">,</span> <span class="s2">&quot;27094199&quot;</span><span class="p">),</span>  <span class="c1"># in PubMed but not PMC</span>
 
-<span class="p">])</span>
+        <span class="p">(</span><span class="s2">&quot;10.7717/peerj-cs.134&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span>  <span class="c1"># DOI in journal not indexed by PubMed</span>
+
+        <span class="p">(</span><span class="s2">&quot;10.1161/CIRC&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span>  <span class="c1"># invalid DOI</span>
+
+    <span class="p">],</span>
+
+<span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">test_get_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">pmid</span><span class="p">):</span>
 
@@ -1221,19 +1227,25 @@
 
     <span class="k">assert</span> <span class="n">pmid</span> <span class="o">==</span> <span class="n">output</span>
 
-<span class="nd">@pytest.mark.parametrize</span><span class="p">((</span><span class="s1">&#39;doi&#39;</span><span class="p">,</span> <span class="s1">&#39;id_dict&#39;</span><span class="p">),</span> <span class="p">[</span>
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
 
-    <span class="p">(</span><span class="s1">&#39;10.1098/rsif.2017.0387&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;PMCID&#39;</span><span class="p">:</span> <span class="s1">&#39;PMC5938574&#39;</span><span class="p">,</span> <span class="s1">&#39;PMID&#39;</span><span class="p">:</span> <span class="s1">&#39;29618526&#39;</span><span class="p">}),</span>
+    <span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;id_dict&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;10.7554/ELIFE.32822&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;PMCID&#39;</span><span class="p">:</span> <span class="s1">&#39;PMC5832410&#39;</span><span class="p">,</span> <span class="s1">&#39;PMID&#39;</span><span class="p">:</span> <span class="s1">&#39;29424689&#39;</span><span class="p">}),</span>
+    <span class="p">[</span>
 
-    <span class="p">(</span><span class="s1">&#39;10.1161/CIRCGENETICS.115.001181&#39;</span><span class="p">,</span> <span class="p">{}),</span>  <span class="c1"># only in PubMed, not in PMC</span>
+        <span class="p">(</span><span class="s2">&quot;10.1098/rsif.2017.0387&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;PMCID&quot;</span><span class="p">:</span> <span class="s2">&quot;PMC5938574&quot;</span><span class="p">,</span> <span class="s2">&quot;PMID&quot;</span><span class="p">:</span> <span class="s2">&quot;29618526&quot;</span><span class="p">}),</span>
 
-    <span class="p">(</span><span class="s1">&#39;10.7717/peerj.000&#39;</span><span class="p">,</span> <span class="p">{}),</span>  <span class="c1"># Non-existent DOI</span>
+        <span class="p">(</span><span class="s2">&quot;10.7554/ELIFE.32822&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;PMCID&quot;</span><span class="p">:</span> <span class="s2">&quot;PMC5832410&quot;</span><span class="p">,</span> <span class="s2">&quot;PMID&quot;</span><span class="p">:</span> <span class="s2">&quot;29424689&quot;</span><span class="p">}),</span>
 
-    <span class="p">(</span><span class="s1">&#39;10.peerj.000&#39;</span><span class="p">,</span> <span class="p">{}),</span>  <span class="c1"># malformed DOI</span>
+        <span class="p">(</span><span class="s2">&quot;10.1161/CIRCGENETICS.115.001181&quot;</span><span class="p">,</span> <span class="p">{}),</span>  <span class="c1"># only in PubMed, not in PMC</span>
 
-<span class="p">])</span>
+        <span class="p">(</span><span class="s2">&quot;10.7717/peerj.000&quot;</span><span class="p">,</span> <span class="p">{}),</span>  <span class="c1"># Non-existent DOI</span>
+
+        <span class="p">(</span><span class="s2">&quot;10.peerj.000&quot;</span><span class="p">,</span> <span class="p">{}),</span>  <span class="c1"># malformed DOI</span>
+
+    <span class="p">],</span>
+
+<span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">test_get_pmcid_and_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">id_dict</span><span class="p">):</span>
 
@@ -1241,17 +1253,29 @@
 
     <span class="k">assert</span> <span class="n">id_dict</span> <span class="o">==</span> <span class="n">output</span>
 
-<span class="nd">@pytest.mark.parametrize</span><span class="p">((</span><span class="s1">&#39;doi&#39;</span><span class="p">,</span> <span class="s1">&#39;id_dict&#39;</span><span class="p">),</span> <span class="p">[</span>
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
 
-    <span class="p">(</span><span class="s1">&#39;10.1098/rsif.2017.0387&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;PMCID&#39;</span><span class="p">:</span> <span class="s1">&#39;PMC5938574&#39;</span><span class="p">,</span> <span class="s1">&#39;PMID&#39;</span><span class="p">:</span> <span class="s1">&#39;29618526&#39;</span><span class="p">}),</span>
+    <span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;id_dict&quot;</span><span class="p">),</span>
 
-    <span class="p">(</span><span class="s1">&#39;10.7554/ELIFE.32822&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;PMCID&#39;</span><span class="p">:</span> <span class="s1">&#39;PMC5832410&#39;</span><span class="p">,</span> <span class="s1">&#39;PMID&#39;</span><span class="p">:</span> <span class="s1">&#39;29424689&#39;</span><span class="p">}),</span>
+    <span class="p">[</span>
 
-    <span class="p">(</span><span class="s1">&#39;10.1161/CIRCGENETICS.115.001181&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;PMID&#39;</span><span class="p">:</span> <span class="s1">&#39;27094199&#39;</span><span class="p">}),</span>  <span class="c1"># only in PubMed, not in PMC</span>
+        <span class="p">(</span><span class="s2">&quot;10.1098/rsif.2017.0387&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;PMCID&quot;</span><span class="p">:</span> <span class="s2">&quot;PMC5938574&quot;</span><span class="p">,</span> <span class="s2">&quot;PMID&quot;</span><span class="p">:</span> <span class="s2">&quot;29618526&quot;</span><span class="p">}),</span>
 
-    <span class="p">(</span><span class="s1">&#39;10.7717/peerj.000&#39;</span><span class="p">,</span> <span class="p">{}),</span>  <span class="c1"># Non-existent DOI</span>
+        <span class="p">(</span><span class="s2">&quot;10.7554/ELIFE.32822&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;PMCID&quot;</span><span class="p">:</span> <span class="s2">&quot;PMC5832410&quot;</span><span class="p">,</span> <span class="s2">&quot;PMID&quot;</span><span class="p">:</span> <span class="s2">&quot;29424689&quot;</span><span class="p">}),</span>
 
-<span class="p">])</span>
+        <span class="p">(</span>
+
+            <span class="s2">&quot;10.1161/CIRCGENETICS.115.001181&quot;</span><span class="p">,</span>
+
+            <span class="p">{</span><span class="s2">&quot;PMID&quot;</span><span class="p">:</span> <span class="s2">&quot;27094199&quot;</span><span class="p">},</span>
+
+        <span class="p">),</span>  <span class="c1"># only in PubMed, not in PMC</span>
+
+        <span class="p">(</span><span class="s2">&quot;10.7717/peerj.000&quot;</span><span class="p">,</span> <span class="p">{}),</span>  <span class="c1"># Non-existent DOI</span>
+
+    <span class="p">],</span>
+
+<span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">test_get_pubmed_ids_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">id_dict</span><span class="p">):</span>
 
@@ -1271,19 +1295,25 @@
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">((</span><span class="s1">&#39;doi&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;id_dict&#39;</span><span class="p">),</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
 
-<span class="n">    (&#39;10.1098/rsif.2017.0387&#39;, {&#39;PMCID&#39;: &#39;PMC5938574&#39;, &#39;PMID&#39;: &#39;29618526&#39;}),</span>
+<span class="w">    </span><span class="p">(</span><span class="ss">&quot;doi&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;id_dict&quot;</span><span class="p">),</span><span class="w"></span>
 
-<span class="n">    (&#39;10.7554/ELIFE.32822&#39;, {&#39;PMCID&#39;: &#39;PMC5832410&#39;, &#39;PMID&#39;: &#39;29424689&#39;}),</span>
+<span class="w">    </span><span class="o">[</span><span class="n"></span>
 
-<span class="n">    (&#39;10.1161/CIRCGENETICS.115.001181&#39;, {}),  # only in PubMed, not in PMC</span>
+<span class="n">        (&quot;10.1098/rsif.2017.0387&quot;, {&quot;PMCID&quot;: &quot;PMC5938574&quot;, &quot;PMID&quot;: &quot;29618526&quot;}),</span>
 
-<span class="n">    (&#39;10.7717/peerj.000&#39;, {}),  # Non-existent DOI</span>
+<span class="n">        (&quot;10.7554/ELIFE.32822&quot;, {&quot;PMCID&quot;: &quot;PMC5832410&quot;, &quot;PMID&quot;: &quot;29424689&quot;}),</span>
 
-<span class="n">    (&#39;10.peerj.000&#39;, {}),  # malformed DOI</span>
+<span class="n">        (&quot;10.1161/CIRCGENETICS.115.001181&quot;, {}),  # only in PubMed, not in PMC</span>
 
-<span class="o">]</span><span class="p">)</span><span class="w"></span>
+<span class="n">        (&quot;10.7717/peerj.000&quot;, {}),  # Non-existent DOI</span>
+
+<span class="n">        (&quot;10.peerj.000&quot;, {}),  # malformed DOI</span>
+
+<span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
 
 <span class="n">def</span><span class="w"> </span><span class="n">test_get_pmcid_and_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span><span class="w"> </span><span class="n">id_dict</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
@@ -1302,17 +1332,23 @@
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">((</span><span class="s1">&#39;doi&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;pmid&#39;</span><span class="p">),</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
 
-<span class="n">    (&#39;10.1098/rsif.2017.0387&#39;, &#39;29618526&#39;),  # in PubMed and PMC</span>
+<span class="w">    </span><span class="p">(</span><span class="ss">&quot;doi&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;pmid&quot;</span><span class="p">),</span><span class="w"></span>
 
-<span class="n">    (&#39;10.1161/CIRCGENETICS.115.001181&#39;, &#39;27094199&#39;),  # in PubMed but not PMC</span>
+<span class="w">    </span><span class="o">[</span><span class="n"></span>
 
-<span class="n">    (&#39;10.7717/peerj-cs.134&#39;, None),  # DOI in journal not indexed by PubMed</span>
+<span class="n">        (&quot;10.1098/rsif.2017.0387&quot;, &quot;29618526&quot;),  # in PubMed and PMC</span>
 
-<span class="n">    (&#39;10.1161/CIRC&#39;, None),  # invalid DOI</span>
+<span class="n">        (&quot;10.1161/CIRCGENETICS.115.001181&quot;, &quot;27094199&quot;),  # in PubMed but not PMC</span>
 
-<span class="o">]</span><span class="p">)</span><span class="w"></span>
+<span class="n">        (&quot;10.7717/peerj-cs.134&quot;, None),  # DOI in journal not indexed by PubMed</span>
+
+<span class="n">        (&quot;10.1161/CIRC&quot;, None),  # invalid DOI</span>
+
+<span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
 
 <span class="n">def</span><span class="w"> </span><span class="n">test_get_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span><span class="w"> </span><span class="n">pmid</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
@@ -1331,17 +1367,29 @@
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">((</span><span class="s1">&#39;doi&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;id_dict&#39;</span><span class="p">),</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
 
-<span class="n">    (&#39;10.1098/rsif.2017.0387&#39;, {&#39;PMCID&#39;: &#39;PMC5938574&#39;, &#39;PMID&#39;: &#39;29618526&#39;}),</span>
+<span class="w">    </span><span class="p">(</span><span class="ss">&quot;doi&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;id_dict&quot;</span><span class="p">),</span><span class="w"></span>
 
-<span class="n">    (&#39;10.7554/ELIFE.32822&#39;, {&#39;PMCID&#39;: &#39;PMC5832410&#39;, &#39;PMID&#39;: &#39;29424689&#39;}),</span>
+<span class="w">    </span><span class="o">[</span><span class="n"></span>
 
-<span class="n">    (&#39;10.1161/CIRCGENETICS.115.001181&#39;, {&#39;PMID&#39;: &#39;27094199&#39;}),  # only in PubMed, not in PMC</span>
+<span class="n">        (&quot;10.1098/rsif.2017.0387&quot;, {&quot;PMCID&quot;: &quot;PMC5938574&quot;, &quot;PMID&quot;: &quot;29618526&quot;}),</span>
 
-<span class="n">    (&#39;10.7717/peerj.000&#39;, {}),  # Non-existent DOI</span>
+<span class="n">        (&quot;10.7554/ELIFE.32822&quot;, {&quot;PMCID&quot;: &quot;PMC5832410&quot;, &quot;PMID&quot;: &quot;29424689&quot;}),</span>
 
-<span class="o">]</span><span class="p">)</span><span class="w"></span>
+<span class="n">        (</span>
+
+<span class="n">            &quot;10.1161/CIRCGENETICS.115.001181&quot;,</span>
+
+<span class="n">            {&quot;PMID&quot;: &quot;27094199&quot;},</span>
+
+<span class="n">        ),  # only in PubMed, not in PMC</span>
+
+<span class="n">        (&quot;10.7717/peerj.000&quot;, {}),  # Non-existent DOI</span>
+
+<span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
 
 <span class="n">def</span><span class="w"> </span><span class="n">test_get_pubmed_ids_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span><span class="w"> </span><span class="n">id_dict</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 

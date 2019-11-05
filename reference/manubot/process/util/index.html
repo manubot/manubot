@@ -1311,11 +1311,7 @@
 
 <span class="kn">import</span> <span class="nn">yaml</span>
 
-<span class="kn">from</span> <span class="nn">manubot.process.bibliography</span> <span class="kn">import</span> <span class="p">(</span>
-
-    <span class="n">load_manual_references</span><span class="p">,</span>
-
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">manubot.process.bibliography</span> <span class="kn">import</span> <span class="n">load_manual_references</span>
 
 <span class="kn">from</span> <span class="nn">manubot.process.ci</span> <span class="kn">import</span> <span class="p">(</span>
 
@@ -1359,13 +1355,13 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">collision_df</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="p">[[</span><span class="s1">&#39;standard_citekey&#39;</span><span class="p">,</span> <span class="s1">&#39;short_citekey&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+    <span class="n">collision_df</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="p">[[</span><span class="s2">&quot;standard_citekey&quot;</span><span class="p">,</span> <span class="s2">&quot;short_citekey&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
 
     <span class="n">collision_df</span> <span class="o">=</span> <span class="n">collision_df</span><span class="p">[</span><span class="n">collision_df</span><span class="o">.</span><span class="n">short_citekey</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="bp">False</span><span class="p">)]</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">collision_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;OMF! Hash collision. Congratulations.</span><span class="se">\n</span><span class="s1">{collision_df}&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;OMF! Hash collision. Congratulations.</span><span class="se">\n</span><span class="s2">{collision_df}&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">collision_df</span>
 
@@ -1377,13 +1373,17 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">message</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;&#39;&#39;</span><span class="se">\</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
 
-<span class="s1">    {len(citekeys_df)} unique citations strings extracted from text</span>
+        <span class="n">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
 
-<span class="s1">    {citekeys_df.standard_citekey.nunique()} unique standard citations</span><span class="se">\</span>
+<span class="s2">    {len(citekeys_df)} unique citations strings extracted from text</span>
 
-<span class="s1">    &#39;&#39;&#39;</span><span class="p">)</span>
+<span class="s2">    {citekeys_df.standard_citekey.nunique()} unique standard citations</span><span class="se">\</span>
+
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="p">)</span>
 
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
@@ -1391,9 +1391,13 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">multi_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
 
-        <span class="n">table</span> <span class="o">=</span> <span class="n">multi_df</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;standard_citekey&#39;</span><span class="p">,</span> <span class="s1">&#39;manuscript_citekey&#39;</span><span class="p">])</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">multi_df</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Multiple citekeys detected for the same reference:</span><span class="se">\n</span><span class="s1">{table}&#39;</span><span class="p">)</span>
+            <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;standard_citekey&quot;</span><span class="p">,</span> <span class="s2">&quot;manuscript_citekey&quot;</span><span class="p">]</span>
+
+        <span class="p">)</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Multiple citekeys detected for the same reference:</span><span class="se">\n</span><span class="s2">{table}&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">multi_df</span>
 
@@ -1405,7 +1409,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;^(http|ftp)s?://&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^(http|ftp)s?://&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
 
         <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
@@ -1415,7 +1419,7 @@
 
         <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
 
             <span class="n">obj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">read_file</span><span class="p">,</span> <span class="n">object_pairs_hook</span><span class="o">=</span><span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">)</span>
 
@@ -1457,19 +1461,27 @@
 
     <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Read the following user-provided templating variables for {path}&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+
+            <span class="n">f</span><span class="s2">&quot;Read the following user-provided templating variables for {path}&quot;</span>
+
+        <span class="p">)</span>
 
         <span class="c1"># Match only namespaces that are valid jinja2 variable names</span>
 
         <span class="c1"># http://jinja.pocoo.org/docs/2.10/api/#identifier-naming</span>
 
-        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([a-zA-Z_][a-zA-Z0-9_]*)=(.+)&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([a-zA-Z_][a-zA-Z0-9_]*)=(.+)&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
 
             <span class="n">namespace</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Using the &quot;{namespace}&quot; namespace for template variables from {path}&#39;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+
+                <span class="n">f</span><span class="s1">&#39;Using the &quot;{namespace}&quot; namespace for template variables from {path}&#39;</span>
+
+            <span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
 
@@ -1477,7 +1489,7 @@
 
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Error reading template variables from {path}&#39;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Error reading template variables from {path}&quot;</span><span class="p">)</span>
 
             <span class="k">continue</span>
 
@@ -1493,17 +1505,21 @@
 
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s1">&#39;Template variables in {path} overwrite existing &#39;</span>
+                <span class="n">f</span><span class="s2">&quot;Template variables in {path} overwrite existing &quot;</span>
 
-                <span class="s1">&#39;values for the following keys:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">conflicts</span><span class="p">)</span>
+                <span class="s2">&quot;values for the following keys:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">conflicts</span><span class="p">)</span>
 
             <span class="p">)</span>
 
         <span class="n">user_variables</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Reading user-provided templating variables complete:</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
-                 <span class="n">f</span><span class="s1">&#39;{json.dumps(user_variables, indent=2, ensure_ascii=False)}&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="s2">&quot;Reading user-provided templating variables complete:</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="n">f</span><span class="s2">&quot;{json.dumps(user_variables, indent=2, ensure_ascii=False)}&quot;</span>
+
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">user_variables</span>
 
@@ -1523,13 +1539,13 @@
 
     <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">[</span><span class="s1">&#39;authors&#39;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]:</span>
 
-        <span class="k">if</span> <span class="s1">&#39;affiliations&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">author</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;affiliations&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">author</span><span class="p">:</span>
 
             <span class="k">continue</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">author</span><span class="p">[</span><span class="s1">&#39;affiliations&#39;</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">author</span><span class="p">[</span><span class="s2">&quot;affiliations&quot;</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
 
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
 
@@ -1539,37 +1555,39 @@
 
                 <span class="n">f</span><span class="s2">&quot;Please switch affiliations to a list.&quot;</span><span class="p">,</span>
 
-                <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span>
+                <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">,</span>
 
             <span class="p">)</span>
 
-            <span class="n">author</span><span class="p">[</span><span class="s1">&#39;affiliations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">author</span><span class="p">[</span><span class="s1">&#39;affiliations&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;; &#39;</span><span class="p">)</span>
+            <span class="n">author</span><span class="p">[</span><span class="s2">&quot;affiliations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">author</span><span class="p">[</span><span class="s2">&quot;affiliations&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;; &quot;</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">affiliation</span> <span class="ow">in</span> <span class="n">author</span><span class="p">[</span><span class="s1">&#39;affiliations&#39;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">affiliation</span> <span class="ow">in</span> <span class="n">author</span><span class="p">[</span><span class="s2">&quot;affiliations&quot;</span><span class="p">]:</span>
 
-            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">author</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">affiliation</span><span class="p">))</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">author</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">affiliation</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">rows</span><span class="p">:</span>
 
         <span class="k">return</span> <span class="n">variables</span>
 
-    <span class="n">affil_map_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;affiliation&#39;</span><span class="p">])</span>
+    <span class="n">affil_map_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;affiliation&quot;</span><span class="p">])</span>
 
-    <span class="n">affiliation_df</span> <span class="o">=</span> <span class="n">affil_map_df</span><span class="p">[[</span><span class="s1">&#39;affiliation&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+    <span class="n">affiliation_df</span> <span class="o">=</span> <span class="n">affil_map_df</span><span class="p">[[</span><span class="s2">&quot;affiliation&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
 
-    <span class="n">affiliation_df</span><span class="p">[</span><span class="s1">&#39;affiliation_number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">affiliation_df</span><span class="p">))</span>
+    <span class="n">affiliation_df</span><span class="p">[</span><span class="s2">&quot;affiliation_number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">affiliation_df</span><span class="p">))</span>
 
     <span class="n">affil_map_df</span> <span class="o">=</span> <span class="n">affil_map_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">affiliation_df</span><span class="p">)</span>
 
-    <span class="n">name_to_numbers</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">affiliation_number</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span>
+    <span class="n">name_to_numbers</span> <span class="o">=</span> <span class="p">{</span>
 
-                       <span class="n">affil_map_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)}</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">affiliation_number</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">affil_map_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">[</span><span class="s1">&#39;authors&#39;</span><span class="p">]:</span>
+    <span class="p">}</span>
 
-        <span class="n">author</span><span class="p">[</span><span class="s1">&#39;affiliation_numbers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name_to_numbers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">author</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="p">[])</span>
+    <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]:</span>
 
-    <span class="n">variables</span><span class="p">[</span><span class="s1">&#39;affiliations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">affiliation_df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">)</span>
+        <span class="n">author</span><span class="p">[</span><span class="s2">&quot;affiliation_numbers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name_to_numbers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">author</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="p">[])</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;affiliations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">affiliation_df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">variables</span>
 
@@ -1591,7 +1609,7 @@
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">meta_yaml_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
 
-        <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">meta_yaml_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">meta_yaml_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
 
             <span class="n">metadata</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">read_file</span><span class="p">)</span>
 
@@ -1601,7 +1619,11 @@
 
         <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;missing {args.meta_yaml_path} file with yaml_metadata_block for pandoc&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+            <span class="n">f</span><span class="s2">&quot;missing {args.meta_yaml_path} file with yaml_metadata_block for pandoc&quot;</span>
+
+        <span class="p">)</span>
 
     <span class="c1"># Add date to metadata</span>
 
@@ -1609,25 +1631,27 @@
 
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
-        <span class="n">f</span><span class="s1">&#39;Using {now:%Z} timezone.</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">f</span><span class="s2">&quot;Using {now:%Z} timezone.</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-        <span class="n">f</span><span class="s1">&#39;Dating manuscript with the current datetime: {now.isoformat()}&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="s2">&quot;Dating manuscript with the current datetime: {now.isoformat()}&quot;</span>
 
-    <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;date-meta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+    <span class="p">)</span>
 
-    <span class="n">variables</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{now:%B} {now.day}, {now.year}&#39;</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;date-meta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{now:%B} {now.day}, {now.year}&quot;</span>
 
     <span class="c1"># Process authors metadata</span>
 
-    <span class="n">authors</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;author_info&#39;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">authors</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;author_info&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
     <span class="k">if</span> <span class="n">authors</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 
         <span class="n">authors</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;author-meta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">author</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">authors</span><span class="p">]</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;author-meta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">author</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">authors</span><span class="p">]</span>
 
-    <span class="n">variables</span><span class="p">[</span><span class="s1">&#39;authors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authors</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authors</span>
 
     <span class="n">variables</span> <span class="o">=</span> <span class="n">add_author_affiliations</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
 
@@ -1637,7 +1661,7 @@
 
     <span class="k">if</span> <span class="n">ci_params</span><span class="p">:</span>
 
-        <span class="n">variables</span><span class="p">[</span><span class="s1">&#39;ci_source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_manuscript_urls_to_ci_params</span><span class="p">(</span><span class="n">ci_params</span><span class="p">)</span>
+        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;ci_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_manuscript_urls_to_ci_params</span><span class="p">(</span><span class="n">ci_params</span><span class="p">)</span>
 
     <span class="c1"># Update variables with user-provided variables here</span>
 
@@ -1665,59 +1689,71 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-
-        <span class="p">{</span><span class="s1">&#39;manuscript_citekey&#39;</span><span class="p">:</span> <span class="n">get_citekeys</span><span class="p">(</span><span class="n">text</span><span class="p">)}</span>
-
-    <span class="p">)</span>
+    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;manuscript_citekey&quot;</span><span class="p">:</span> <span class="n">get_citekeys</span><span class="p">(</span><span class="n">text</span><span class="p">)})</span>
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">citation_tags_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
 
-        <span class="n">tag_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">citation_tags_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">tag_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">citation_tags_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="n">na_rows_df</span> <span class="o">=</span> <span class="n">tag_df</span><span class="p">[</span><span class="n">tag_df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;columns&#39;</span><span class="p">)]</span>
+        <span class="n">na_rows_df</span> <span class="o">=</span> <span class="n">tag_df</span><span class="p">[</span><span class="n">tag_df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;columns&quot;</span><span class="p">)]</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">na_rows_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
 
             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s1">&#39;{args.citation_tags_path} contains rows with missing values:</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">f</span><span class="s2">&quot;{args.citation_tags_path} contains rows with missing values:</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-                <span class="n">f</span><span class="s1">&#39;{na_rows_df}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">f</span><span class="s2">&quot;{na_rows_df}</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-                <span class="s1">&#39;This error can be caused by using spaces rather than tabs to delimit fields.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="s2">&quot;This error can be caused by using spaces rather than tabs to delimit fields.</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-                <span class="s1">&#39;Proceeding to reread TSV with delim_whitespace=True.&#39;</span>
+                <span class="s2">&quot;Proceeding to reread TSV with delim_whitespace=True.&quot;</span>
 
             <span class="p">)</span>
 
             <span class="n">tag_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">citation_tags_path</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-        <span class="n">tag_df</span><span class="p">[</span><span class="s1">&#39;manuscript_citekey&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;tag:&#39;</span> <span class="o">+</span> <span class="n">tag_df</span><span class="o">.</span><span class="n">tag</span>
+        <span class="n">tag_df</span><span class="p">[</span><span class="s2">&quot;manuscript_citekey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;tag:&quot;</span> <span class="o">+</span> <span class="n">tag_df</span><span class="o">.</span><span class="n">tag</span>
 
-        <span class="n">tag_df</span> <span class="o">=</span> <span class="n">tag_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;citation&#39;</span><span class="p">:</span> <span class="s1">&#39;detagged_citekey&#39;</span><span class="p">})</span>
+        <span class="n">tag_df</span> <span class="o">=</span> <span class="n">tag_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;citation&quot;</span><span class="p">:</span> <span class="s2">&quot;detagged_citekey&quot;</span><span class="p">})</span>
 
         <span class="k">for</span> <span class="n">detagged_citekey</span> <span class="ow">in</span> <span class="n">tag_df</span><span class="o">.</span><span class="n">detagged_citekey</span><span class="p">:</span>
 
             <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">detagged_citekey</span><span class="p">,</span> <span class="n">allow_raw</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-        <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">tag_df</span><span class="p">[[</span><span class="s1">&#39;manuscript_citekey&#39;</span><span class="p">,</span> <span class="s1">&#39;detagged_citekey&#39;</span><span class="p">]],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+        <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+
+            <span class="n">tag_df</span><span class="p">[[</span><span class="s2">&quot;manuscript_citekey&quot;</span><span class="p">,</span> <span class="s2">&quot;detagged_citekey&quot;</span><span class="p">]],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span>
+
+        <span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
 
-        <span class="n">citekeys_df</span><span class="p">[</span><span class="s1">&#39;detagged_citekey&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">citekeys_df</span><span class="p">[</span><span class="s2">&quot;detagged_citekey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;missing {args.citation_tags_path} file: no citation tags (citekey aliases) set&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
-    <span class="n">citekeys_df</span><span class="o">.</span><span class="n">detagged_citekey</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">citekeys_df</span><span class="o">.</span><span class="n">manuscript_citekey</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">f</span><span class="s2">&quot;missing {args.citation_tags_path} file: no citation tags (citekey aliases) set&quot;</span>
 
-    <span class="n">citekeys_df</span><span class="p">[</span><span class="s1">&#39;standard_citekey&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">detagged_citekey</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">standardize_citekey</span><span class="p">)</span>
+        <span class="p">)</span>
 
-    <span class="n">citekeys_df</span><span class="p">[</span><span class="s1">&#39;short_citekey&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">shorten_citekey</span><span class="p">)</span>
+    <span class="n">citekeys_df</span><span class="o">.</span><span class="n">detagged_citekey</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span>
 
-    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;standard_citekey&#39;</span><span class="p">,</span> <span class="s1">&#39;detagged_citekey&#39;</span><span class="p">])</span>
+        <span class="n">citekeys_df</span><span class="o">.</span><span class="n">manuscript_citekey</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span>
 
-    <span class="n">citekeys_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">citations_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">citekeys_df</span><span class="p">[</span><span class="s2">&quot;standard_citekey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">detagged_citekey</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+
+        <span class="n">standardize_citekey</span>
+
+    <span class="p">)</span>
+
+    <span class="n">citekeys_df</span><span class="p">[</span><span class="s2">&quot;short_citekey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">shorten_citekey</span><span class="p">)</span>
+
+    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">&quot;standard_citekey&quot;</span><span class="p">,</span> <span class="s2">&quot;detagged_citekey&quot;</span><span class="p">])</span>
+
+    <span class="n">citekeys_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">citations_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
     <span class="n">check_collisions</span><span class="p">(</span><span class="n">citekeys_df</span><span class="p">)</span>
 
@@ -1745,11 +1781,15 @@
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">clear_requests_cache</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Clearing requests-cache&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Clearing requests-cache&quot;</span><span class="p">)</span>
 
         <span class="n">requests_cache</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;requests-cache starting with {len(cache.responses)} cached responses&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+
+        <span class="n">f</span><span class="s2">&quot;requests-cache starting with {len(cache.responses)} cached responses&quot;</span>
+
+    <span class="p">)</span>
 
     <span class="n">csl_items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
@@ -1763,13 +1803,13 @@
 
             <span class="k">continue</span>
 
-        <span class="k">elif</span> <span class="n">standard_citekey</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;raw:&#39;</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="n">standard_citekey</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;raw:&quot;</span><span class="p">):</span>
 
             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s1">&#39;CSL JSON Data with a standard_citekey of {standard_citekey!r} not found in manual-references.json. &#39;</span>
+                <span class="n">f</span><span class="s2">&quot;CSL JSON Data with a standard_citekey of {standard_citekey!r} not found in manual-references.json. &quot;</span>
 
-                <span class="s1">&#39;Metadata must be provided for raw citekeys.&#39;</span>
+                <span class="s2">&quot;Metadata must be provided for raw citekeys.&quot;</span>
 
             <span class="p">)</span>
 
@@ -1783,29 +1823,35 @@
 
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Citeproc retrieval failure for {standard_citekey!r}&#39;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Citeproc retrieval failure for {standard_citekey!r}&quot;</span><span class="p">)</span>
 
             <span class="n">failures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">)</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;requests-cache finished with {len(cache.responses)} cached responses&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+
+        <span class="n">f</span><span class="s2">&quot;requests-cache finished with {len(cache.responses)} cached responses&quot;</span>
+
+    <span class="p">)</span>
 
     <span class="n">requests_cache</span><span class="o">.</span><span class="n">uninstall_cache</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">failures</span><span class="p">:</span>
 
-        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;CSL JSON Data retrieval failed for the following standardized citation keys:</span><span class="se">\n</span><span class="s1">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;CSL JSON Data retrieval failed for the following standardized citation keys:</span><span class="se">\n</span><span class="s2">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
 
-            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">failures</span><span class="p">))</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">failures</span><span class="p">)</span>
+
+        <span class="p">)</span>
 
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
     <span class="c1"># Write JSON CSL bibliography for Pandoc.</span>
 
-    <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">references_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">references_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
 
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">csl_items</span><span class="p">,</span> <span class="n">write_file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
-        <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">csl_items</span>
 
@@ -1825,9 +1871,9 @@
 
         <span class="n">undefined</span><span class="o">=</span><span class="n">jinja2</span><span class="o">.</span><span class="n">make_logging_undefined</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()),</span>
 
-        <span class="n">comment_start_string</span><span class="o">=</span><span class="s1">&#39;{##&#39;</span><span class="p">,</span>
+        <span class="n">comment_start_string</span><span class="o">=</span><span class="s2">&quot;{##&quot;</span><span class="p">,</span>
 
-        <span class="n">comment_end_string</span><span class="o">=</span><span class="s1">&#39;##}&#39;</span><span class="p">,</span>
+        <span class="n">comment_end_string</span><span class="o">=</span><span class="s2">&quot;##}&quot;</span><span class="p">,</span>
 
     <span class="p">)</span>
 
@@ -1853,31 +1899,43 @@
 
     <span class="n">citekey_mapping</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(</span>
 
-        <span class="nb">zip</span><span class="p">(</span><span class="n">citekeys_df</span><span class="o">.</span><span class="n">manuscript_citekey</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">short_citekey</span><span class="p">))</span>
+        <span class="nb">zip</span><span class="p">(</span><span class="n">citekeys_df</span><span class="o">.</span><span class="n">manuscript_citekey</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">short_citekey</span><span class="p">)</span>
+
+    <span class="p">)</span>
 
     <span class="n">text</span> <span class="o">=</span> <span class="n">update_manuscript_citekeys</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citekey_mapping</span><span class="p">)</span>
 
     <span class="n">metadata</span><span class="p">,</span> <span class="n">variables</span> <span class="o">=</span> <span class="n">get_metadata_and_variables</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="n">variables</span><span class="p">[</span><span class="s1">&#39;manuscript_stats&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_manuscript_stats</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">)</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manuscript_stats&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_manuscript_stats</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">)</span>
 
-    <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">variables_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">variables_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
 
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="n">write_file</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-        <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="n">text</span> <span class="o">=</span> <span class="n">template_with_jinja2</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
 
     <span class="c1"># Write manuscript for pandoc</span>
 
-    <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">manuscript_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">manuscript_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
 
-        <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">write_file</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
 
-                  <span class="n">explicit_start</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">explicit_end</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="p">,</span>
 
-        <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">write_file</span><span class="p">,</span>
+
+            <span class="n">default_flow_style</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+
+            <span class="n">explicit_start</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+
+            <span class="n">explicit_end</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+
+        <span class="p">)</span>
+
+        <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 </pre></div>
@@ -1912,13 +1970,13 @@ affiliations, variables is left unmodified.</p>
 
     <span class="nv">rows</span> <span class="o">=</span> <span class="nv">list</span><span class="ss">()</span>
 
-    <span class="k">for</span> <span class="nv">author</span> <span class="nv">in</span> <span class="nv">variables</span>[<span class="s1">&#39;</span><span class="s">authors</span><span class="s1">&#39;</span>]:
+    <span class="k">for</span> <span class="nv">author</span> <span class="nv">in</span> <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">authors</span><span class="s2">&quot;</span>]:
 
-        <span class="k">if</span> <span class="s1">&#39;</span><span class="s">affiliations</span><span class="s1">&#39;</span> <span class="nv">not</span> <span class="nv">in</span> <span class="nv">author</span>:
+        <span class="k">if</span> <span class="s2">&quot;</span><span class="s">affiliations</span><span class="s2">&quot;</span> <span class="nv">not</span> <span class="nv">in</span> <span class="nv">author</span>:
 
             <span class="k">continue</span>
 
-        <span class="k">if</span> <span class="nv">not</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">author</span>[<span class="s1">&#39;</span><span class="s">affiliations</span><span class="s1">&#39;</span>], <span class="nv">list</span><span class="ss">)</span>:
+        <span class="k">if</span> <span class="nv">not</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">author</span>[<span class="s2">&quot;</span><span class="s">affiliations</span><span class="s2">&quot;</span>], <span class="nv">list</span><span class="ss">)</span>:
 
             <span class="nv">warnings</span>.<span class="nv">warn</span><span class="ss">(</span>
 
@@ -1928,37 +1986,39 @@ affiliations, variables is left unmodified.</p>
 
                 <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Please switch affiliations to a list.</span><span class="s2">&quot;</span>,
 
-                <span class="nv">category</span><span class="o">=</span><span class="nv">DeprecationWarning</span>
+                <span class="nv">category</span><span class="o">=</span><span class="nv">DeprecationWarning</span>,
 
             <span class="ss">)</span>
 
-            <span class="nv">author</span>[<span class="s1">&#39;</span><span class="s">affiliations</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">author</span>[<span class="s1">&#39;</span><span class="s">affiliations</span><span class="s1">&#39;</span>].<span class="nv">split</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">; </span><span class="s1">&#39;</span><span class="ss">)</span>
+            <span class="nv">author</span>[<span class="s2">&quot;</span><span class="s">affiliations</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">author</span>[<span class="s2">&quot;</span><span class="s">affiliations</span><span class="s2">&quot;</span>].<span class="nv">split</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">; </span><span class="s2">&quot;</span><span class="ss">)</span>
 
-        <span class="k">for</span> <span class="nv">affiliation</span> <span class="nv">in</span> <span class="nv">author</span>[<span class="s1">&#39;</span><span class="s">affiliations</span><span class="s1">&#39;</span>]:
+        <span class="k">for</span> <span class="nv">affiliation</span> <span class="nv">in</span> <span class="nv">author</span>[<span class="s2">&quot;</span><span class="s">affiliations</span><span class="s2">&quot;</span>]:
 
-            <span class="nv">rows</span>.<span class="nv">append</span><span class="ss">((</span><span class="nv">author</span>[<span class="s1">&#39;</span><span class="s">name</span><span class="s1">&#39;</span>], <span class="nv">affiliation</span><span class="ss">))</span>
+            <span class="nv">rows</span>.<span class="nv">append</span><span class="ss">((</span><span class="nv">author</span>[<span class="s2">&quot;</span><span class="s">name</span><span class="s2">&quot;</span>], <span class="nv">affiliation</span><span class="ss">))</span>
 
     <span class="k">if</span> <span class="nv">not</span> <span class="nv">rows</span>:
 
         <span class="k">return</span> <span class="nv">variables</span>
 
-    <span class="nv">affil_map_df</span> <span class="o">=</span> <span class="nv">pandas</span>.<span class="nv">DataFrame</span><span class="ss">(</span><span class="nv">rows</span>, <span class="nv">columns</span><span class="o">=</span>[<span class="s1">&#39;</span><span class="s">name</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">affiliation</span><span class="s1">&#39;</span>]<span class="ss">)</span>
+    <span class="nv">affil_map_df</span> <span class="o">=</span> <span class="nv">pandas</span>.<span class="nv">DataFrame</span><span class="ss">(</span><span class="nv">rows</span>, <span class="nv">columns</span><span class="o">=</span>[<span class="s2">&quot;</span><span class="s">name</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">affiliation</span><span class="s2">&quot;</span>]<span class="ss">)</span>
 
-    <span class="nv">affiliation_df</span> <span class="o">=</span> <span class="nv">affil_map_df</span>[[<span class="s1">&#39;</span><span class="s">affiliation</span><span class="s1">&#39;</span>]].<span class="nv">drop_duplicates</span><span class="ss">()</span>
+    <span class="nv">affiliation_df</span> <span class="o">=</span> <span class="nv">affil_map_df</span>[[<span class="s2">&quot;</span><span class="s">affiliation</span><span class="s2">&quot;</span>]].<span class="nv">drop_duplicates</span><span class="ss">()</span>
 
-    <span class="nv">affiliation_df</span>[<span class="s1">&#39;</span><span class="s">affiliation_number</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">range</span><span class="ss">(</span><span class="mi">1</span>, <span class="mi">1</span> <span class="o">+</span> <span class="nv">len</span><span class="ss">(</span><span class="nv">affiliation_df</span><span class="ss">))</span>
+    <span class="nv">affiliation_df</span>[<span class="s2">&quot;</span><span class="s">affiliation_number</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">range</span><span class="ss">(</span><span class="mi">1</span>, <span class="mi">1</span> <span class="o">+</span> <span class="nv">len</span><span class="ss">(</span><span class="nv">affiliation_df</span><span class="ss">))</span>
 
     <span class="nv">affil_map_df</span> <span class="o">=</span> <span class="nv">affil_map_df</span>.<span class="nv">merge</span><span class="ss">(</span><span class="nv">affiliation_df</span><span class="ss">)</span>
 
-    <span class="nv">name_to_numbers</span> <span class="o">=</span> {<span class="nv">name</span>: <span class="nv">sorted</span><span class="ss">(</span><span class="nv">df</span>.<span class="nv">affiliation_number</span><span class="ss">)</span> <span class="k">for</span> <span class="nv">name</span>, <span class="nv">df</span> <span class="nv">in</span>
+    <span class="nv">name_to_numbers</span> <span class="o">=</span> {
 
-                       <span class="nv">affil_map_df</span>.<span class="nv">groupby</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">name</span><span class="s1">&#39;</span><span class="ss">)</span>}
+        <span class="nv">name</span>: <span class="nv">sorted</span><span class="ss">(</span><span class="nv">df</span>.<span class="nv">affiliation_number</span><span class="ss">)</span> <span class="k">for</span> <span class="nv">name</span>, <span class="nv">df</span> <span class="nv">in</span> <span class="nv">affil_map_df</span>.<span class="nv">groupby</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">name</span><span class="s2">&quot;</span><span class="ss">)</span>
 
-    <span class="k">for</span> <span class="nv">author</span> <span class="nv">in</span> <span class="nv">variables</span>[<span class="s1">&#39;</span><span class="s">authors</span><span class="s1">&#39;</span>]:
+    }
 
-        <span class="nv">author</span>[<span class="s1">&#39;</span><span class="s">affiliation_numbers</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">name_to_numbers</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">author</span>[<span class="s1">&#39;</span><span class="s">name</span><span class="s1">&#39;</span>], []<span class="ss">)</span>
+    <span class="k">for</span> <span class="nv">author</span> <span class="nv">in</span> <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">authors</span><span class="s2">&quot;</span>]:
 
-    <span class="nv">variables</span>[<span class="s1">&#39;</span><span class="s">affiliations</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">affiliation_df</span>.<span class="nv">to_dict</span><span class="ss">(</span><span class="nv">orient</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">records</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">author</span>[<span class="s2">&quot;</span><span class="s">affiliation_numbers</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">name_to_numbers</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">author</span>[<span class="s2">&quot;</span><span class="s">name</span><span class="s2">&quot;</span>], []<span class="ss">)</span>
+
+    <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">affiliations</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">affiliation_df</span>.<span class="nv">to_dict</span><span class="ss">(</span><span class="nv">orient</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">records</span><span class="s2">&quot;</span><span class="ss">)</span>
 
     <span class="k">return</span> <span class="nv">variables</span>
 </pre></div>
@@ -1981,13 +2041,13 @@ affiliations, variables is left unmodified.</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">collision_df</span> <span class="o">=</span> <span class="nv">citekeys_df</span>[[<span class="s1">&#39;</span><span class="s">standard_citekey</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">short_citekey</span><span class="s1">&#39;</span>]].<span class="nv">drop_duplicates</span><span class="ss">()</span>
+    <span class="nv">collision_df</span> <span class="o">=</span> <span class="nv">citekeys_df</span>[[<span class="s2">&quot;</span><span class="s">standard_citekey</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">short_citekey</span><span class="s2">&quot;</span>]].<span class="nv">drop_duplicates</span><span class="ss">()</span>
 
     <span class="nv">collision_df</span> <span class="o">=</span> <span class="nv">collision_df</span>[<span class="nv">collision_df</span>.<span class="nv">short_citekey</span>.<span class="nv">duplicated</span><span class="ss">(</span><span class="nv">keep</span><span class="o">=</span><span class="nv">False</span><span class="ss">)</span>]
 
     <span class="k">if</span> <span class="nv">not</span> <span class="nv">collision_df</span>.<span class="nv">empty</span>:
 
-        <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">OMF! Hash collision. Congratulations.</span><span class="se">\n</span><span class="s">{collision_df}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">OMF! Hash collision. Congratulations.</span><span class="se">\n</span><span class="s">{collision_df}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
     <span class="k">return</span> <span class="nv">collision_df</span>
 </pre></div>
@@ -2010,13 +2070,17 @@ affiliations, variables is left unmodified.</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">message</span> <span class="o">=</span> <span class="nv">textwrap</span>.<span class="nv">dedent</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;&#39;&#39;</span><span class="s">\</span>
+    <span class="nv">message</span> <span class="o">=</span> <span class="nv">textwrap</span>.<span class="nv">dedent</span><span class="ss">(</span>
+
+        <span class="nv">f</span><span class="s2">&quot;&quot;&quot;</span><span class="s">\</span>
 
     {<span class="nv">len</span><span class="ss">(</span><span class="nv">citekeys_df</span><span class="ss">)</span>} <span class="nv">unique</span> <span class="nv">citations</span> <span class="nv">strings</span> <span class="nv">extracted</span> <span class="nv">from</span> <span class="nv">text</span>
 
     {<span class="nv">citekeys_df</span>.<span class="nv">standard_citekey</span>.<span class="nv">nunique</span><span class="ss">()</span>} <span class="nv">unique</span> <span class="nv">standard</span> <span class="nv">citations</span>\
 
-    <span class="s1">&#39;&#39;&#39;</span><span class="s">)</span>
+    <span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="ss">)</span>
 
     <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">message</span><span class="ss">)</span>
 
@@ -2024,9 +2088,13 @@ affiliations, variables is left unmodified.</p>
 
     <span class="k">if</span> <span class="nv">not</span> <span class="nv">multi_df</span>.<span class="nv">empty</span>:
 
-        <span class="nv">table</span> <span class="o">=</span> <span class="nv">multi_df</span>.<span class="nv">to_string</span><span class="ss">(</span><span class="nv">index</span><span class="o">=</span><span class="nv">False</span>, <span class="nv">columns</span><span class="o">=</span>[<span class="s1">&#39;</span><span class="s">standard_citekey</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">manuscript_citekey</span><span class="s1">&#39;</span>]<span class="ss">)</span>
+        <span class="nv">table</span> <span class="o">=</span> <span class="nv">multi_df</span>.<span class="nv">to_string</span><span class="ss">(</span>
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Multiple citekeys detected for the same reference:</span><span class="se">\n</span><span class="s">{table}</span><span class="s1">&#39;</span><span class="ss">)</span>
+            <span class="nv">index</span><span class="o">=</span><span class="nv">False</span>, <span class="nv">columns</span><span class="o">=</span>[<span class="s2">&quot;</span><span class="s">standard_citekey</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">manuscript_citekey</span><span class="s2">&quot;</span>]
+
+        <span class="ss">)</span>
+
+        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">Multiple citekeys detected for the same reference:</span><span class="se">\n</span><span class="s">{table}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
     <span class="k">return</span> <span class="nv">multi_df</span>
 </pre></div>
@@ -2063,11 +2131,15 @@ Writes references.json to disk and logs warnings for potential problems.</p>
 
     <span class="k">if</span> <span class="nv">args</span>.<span class="nv">clear_requests_cache</span>:
 
-        <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">Clearing requests-cache</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Clearing requests-cache</span><span class="s2">&quot;</span><span class="ss">)</span>
 
         <span class="nv">requests_cache</span>.<span class="nv">clear</span><span class="ss">()</span>
 
-    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">requests-cache starting with {len(cache.responses)} cached responses</span><span class="s1">&#39;</span><span class="ss">)</span>
+    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span>
+
+        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">requests-cache starting with {len(cache.responses)} cached responses</span><span class="s2">&quot;</span>
+
+    <span class="ss">)</span>
 
     <span class="nv">csl_items</span> <span class="o">=</span> <span class="nv">list</span><span class="ss">()</span>
 
@@ -2081,13 +2153,13 @@ Writes references.json to disk and logs warnings for potential problems.</p>
 
             <span class="k">continue</span>
 
-        <span class="nv">elif</span> <span class="nv">standard_citekey</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">raw:</span><span class="s1">&#39;</span><span class="ss">)</span>:
+        <span class="nv">elif</span> <span class="nv">standard_citekey</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">raw:</span><span class="s2">&quot;</span><span class="ss">)</span>:
 
             <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span>
 
-                <span class="nv">f</span><span class="s1">&#39;</span><span class="s">CSL JSON Data with a standard_citekey of {standard_citekey!r} not found in manual-references.json. </span><span class="s1">&#39;</span>
+                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">CSL JSON Data with a standard_citekey of {standard_citekey!r} not found in manual-references.json. </span><span class="s2">&quot;</span>
 
-                <span class="s1">&#39;</span><span class="s">Metadata must be provided for raw citekeys.</span><span class="s1">&#39;</span>
+                <span class="s2">&quot;</span><span class="s">Metadata must be provided for raw citekeys.</span><span class="s2">&quot;</span>
 
             <span class="ss">)</span>
 
@@ -2101,29 +2173,35 @@ Writes references.json to disk and logs warnings for potential problems.</p>
 
         <span class="nv">except</span> <span class="nv">Exception</span>:
 
-            <span class="nv">logging</span>.<span class="nv">exception</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Citeproc retrieval failure for {standard_citekey!r}</span><span class="s1">&#39;</span><span class="ss">)</span>
+            <span class="nv">logging</span>.<span class="nv">exception</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">Citeproc retrieval failure for {standard_citekey!r}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
             <span class="nv">failures</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">standard_citekey</span><span class="ss">)</span>
 
-    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">requests-cache finished with {len(cache.responses)} cached responses</span><span class="s1">&#39;</span><span class="ss">)</span>
+    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span>
+
+        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">requests-cache finished with {len(cache.responses)} cached responses</span><span class="s2">&quot;</span>
+
+    <span class="ss">)</span>
 
     <span class="nv">requests_cache</span>.<span class="nv">uninstall_cache</span><span class="ss">()</span>
 
     <span class="k">if</span> <span class="nv">failures</span>:
 
-        <span class="nv">message</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s">CSL JSON Data retrieval failed for the following standardized citation keys:</span><span class="se">\n</span><span class="s">{}</span><span class="s1">&#39;</span>.<span class="nv">format</span><span class="ss">(</span>
+        <span class="nv">message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">CSL JSON Data retrieval failed for the following standardized citation keys:</span><span class="se">\n</span><span class="s">{}</span><span class="s2">&quot;</span>.<span class="nv">format</span><span class="ss">(</span>
 
-            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">failures</span><span class="ss">))</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">failures</span><span class="ss">)</span>
+
+        <span class="ss">)</span>
 
         <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span><span class="nv">message</span><span class="ss">)</span>
 
     # <span class="nv">Write</span> <span class="nv">JSON</span> <span class="nv">CSL</span> <span class="nv">bibliography</span> <span class="k">for</span> <span class="nv">Pandoc</span>.
 
-    <span class="nv">with</span> <span class="nv">args</span>.<span class="nv">references_path</span>.<span class="nv">open</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">w</span><span class="s1">&#39;</span>, <span class="nv">encoding</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">utf-8</span><span class="s1">&#39;</span><span class="ss">)</span> <span class="nv">as</span> <span class="nv">write_file</span>:
+    <span class="nv">with</span> <span class="nv">args</span>.<span class="nv">references_path</span>.<span class="nv">open</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">w</span><span class="s2">&quot;</span>, <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">utf-8</span><span class="s2">&quot;</span><span class="ss">)</span> <span class="nv">as</span> <span class="nv">write_file</span>:
 
         <span class="nv">json</span>.<span class="nv">dump</span><span class="ss">(</span><span class="nv">csl_items</span>, <span class="nv">write_file</span>, <span class="nv">indent</span><span class="o">=</span><span class="mi">2</span>, <span class="nv">ensure_ascii</span><span class="o">=</span><span class="nv">False</span><span class="ss">)</span>
 
-        <span class="nv">write_file</span>.<span class="nv">write</span><span class="ss">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">write_file</span>.<span class="nv">write</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
 
     <span class="k">return</span> <span class="nv">csl_items</span>
 </pre></div>
@@ -2162,59 +2240,71 @@ citekeys_df is a pandas.DataFrame with the following columns:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">citekeys_df</span> <span class="o">=</span> <span class="nv">pandas</span>.<span class="nv">DataFrame</span><span class="ss">(</span>
-
-        {<span class="s1">&#39;</span><span class="s">manuscript_citekey</span><span class="s1">&#39;</span>: <span class="nv">get_citekeys</span><span class="ss">(</span><span class="nv">text</span><span class="ss">)</span>}
-
-    <span class="ss">)</span>
+    <span class="nv">citekeys_df</span> <span class="o">=</span> <span class="nv">pandas</span>.<span class="nv">DataFrame</span><span class="ss">(</span>{<span class="s2">&quot;</span><span class="s">manuscript_citekey</span><span class="s2">&quot;</span>: <span class="nv">get_citekeys</span><span class="ss">(</span><span class="nv">text</span><span class="ss">)</span>}<span class="ss">)</span>
 
     <span class="k">if</span> <span class="nv">args</span>.<span class="nv">citation_tags_path</span>.<span class="nv">is_file</span><span class="ss">()</span>:
 
-        <span class="nv">tag_df</span> <span class="o">=</span> <span class="nv">pandas</span>.<span class="nv">read_csv</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">citation_tags_path</span>, <span class="nv">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">tag_df</span> <span class="o">=</span> <span class="nv">pandas</span>.<span class="nv">read_csv</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">citation_tags_path</span>, <span class="nv">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="ss">)</span>
 
-        <span class="nv">na_rows_df</span> <span class="o">=</span> <span class="nv">tag_df</span>[<span class="nv">tag_df</span>.<span class="nv">isnull</span><span class="ss">()</span>.<span class="nv">any</span><span class="ss">(</span><span class="nv">axis</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">columns</span><span class="s1">&#39;</span><span class="ss">)</span>]
+        <span class="nv">na_rows_df</span> <span class="o">=</span> <span class="nv">tag_df</span>[<span class="nv">tag_df</span>.<span class="nv">isnull</span><span class="ss">()</span>.<span class="nv">any</span><span class="ss">(</span><span class="nv">axis</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">columns</span><span class="s2">&quot;</span><span class="ss">)</span>]
 
         <span class="k">if</span> <span class="nv">not</span> <span class="nv">na_rows_df</span>.<span class="nv">empty</span>:
 
             <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span>
 
-                <span class="nv">f</span><span class="s1">&#39;</span><span class="s">{args.citation_tags_path} contains rows with missing values:</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{args.citation_tags_path} contains rows with missing values:</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-                <span class="nv">f</span><span class="s1">&#39;</span><span class="s">{na_rows_df}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{na_rows_df}</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-                <span class="s1">&#39;</span><span class="s">This error can be caused by using spaces rather than tabs to delimit fields.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="s2">&quot;</span><span class="s">This error can be caused by using spaces rather than tabs to delimit fields.</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-                <span class="s1">&#39;</span><span class="s">Proceeding to reread TSV with delim_whitespace=True.</span><span class="s1">&#39;</span>
+                <span class="s2">&quot;</span><span class="s">Proceeding to reread TSV with delim_whitespace=True.</span><span class="s2">&quot;</span>
 
             <span class="ss">)</span>
 
             <span class="nv">tag_df</span> <span class="o">=</span> <span class="nv">pandas</span>.<span class="nv">read_csv</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">citation_tags_path</span>, <span class="nv">delim_whitespace</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
 
-        <span class="nv">tag_df</span>[<span class="s1">&#39;</span><span class="s">manuscript_citekey</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="s1">&#39;</span><span class="s">tag:</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nv">tag_df</span>.<span class="nv">tag</span>
+        <span class="nv">tag_df</span>[<span class="s2">&quot;</span><span class="s">manuscript_citekey</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="s2">&quot;</span><span class="s">tag:</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nv">tag_df</span>.<span class="nv">tag</span>
 
-        <span class="nv">tag_df</span> <span class="o">=</span> <span class="nv">tag_df</span>.<span class="nv">rename</span><span class="ss">(</span><span class="nv">columns</span><span class="o">=</span>{<span class="s1">&#39;</span><span class="s">citation</span><span class="s1">&#39;</span>: <span class="s1">&#39;</span><span class="s">detagged_citekey</span><span class="s1">&#39;</span>}<span class="ss">)</span>
+        <span class="nv">tag_df</span> <span class="o">=</span> <span class="nv">tag_df</span>.<span class="nv">rename</span><span class="ss">(</span><span class="nv">columns</span><span class="o">=</span>{<span class="s2">&quot;</span><span class="s">citation</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">detagged_citekey</span><span class="s2">&quot;</span>}<span class="ss">)</span>
 
         <span class="k">for</span> <span class="nv">detagged_citekey</span> <span class="nv">in</span> <span class="nv">tag_df</span>.<span class="nv">detagged_citekey</span>:
 
             <span class="nv">is_valid_citekey</span><span class="ss">(</span><span class="nv">detagged_citekey</span>, <span class="nv">allow_raw</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
 
-        <span class="nv">citekeys_df</span> <span class="o">=</span> <span class="nv">citekeys_df</span>.<span class="nv">merge</span><span class="ss">(</span><span class="nv">tag_df</span>[[<span class="s1">&#39;</span><span class="s">manuscript_citekey</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">detagged_citekey</span><span class="s1">&#39;</span>]], <span class="nv">how</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">left</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">citekeys_df</span> <span class="o">=</span> <span class="nv">citekeys_df</span>.<span class="nv">merge</span><span class="ss">(</span>
+
+            <span class="nv">tag_df</span>[[<span class="s2">&quot;</span><span class="s">manuscript_citekey</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">detagged_citekey</span><span class="s2">&quot;</span>]], <span class="nv">how</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">left</span><span class="s2">&quot;</span>
+
+        <span class="ss">)</span>
 
     <span class="k">else</span>:
 
-        <span class="nv">citekeys_df</span>[<span class="s1">&#39;</span><span class="s">detagged_citekey</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">None</span>
+        <span class="nv">citekeys_df</span>[<span class="s2">&quot;</span><span class="s">detagged_citekey</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">None</span>
 
-        <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">missing {args.citation_tags_path} file: no citation tags (citekey aliases) set</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span>
 
-    <span class="nv">citekeys_df</span>.<span class="nv">detagged_citekey</span>.<span class="nv">fillna</span><span class="ss">(</span><span class="nv">citekeys_df</span>.<span class="nv">manuscript_citekey</span>.<span class="nv">astype</span><span class="ss">(</span><span class="nv">str</span><span class="ss">)</span>, <span class="nv">inplace</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">missing {args.citation_tags_path} file: no citation tags (citekey aliases) set</span><span class="s2">&quot;</span>
 
-    <span class="nv">citekeys_df</span>[<span class="s1">&#39;</span><span class="s">standard_citekey</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">citekeys_df</span>.<span class="nv">detagged_citekey</span>.<span class="nv">map</span><span class="ss">(</span><span class="nv">standardize_citekey</span><span class="ss">)</span>
+        <span class="ss">)</span>
 
-    <span class="nv">citekeys_df</span>[<span class="s1">&#39;</span><span class="s">short_citekey</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">citekeys_df</span>.<span class="nv">standard_citekey</span>.<span class="nv">map</span><span class="ss">(</span><span class="nv">shorten_citekey</span><span class="ss">)</span>
+    <span class="nv">citekeys_df</span>.<span class="nv">detagged_citekey</span>.<span class="nv">fillna</span><span class="ss">(</span>
 
-    <span class="nv">citekeys_df</span> <span class="o">=</span> <span class="nv">citekeys_df</span>.<span class="nv">sort_values</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">standard_citekey</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">detagged_citekey</span><span class="s1">&#39;</span>]<span class="ss">)</span>
+        <span class="nv">citekeys_df</span>.<span class="nv">manuscript_citekey</span>.<span class="nv">astype</span><span class="ss">(</span><span class="nv">str</span><span class="ss">)</span>, <span class="nv">inplace</span><span class="o">=</span><span class="nv">True</span>
 
-    <span class="nv">citekeys_df</span>.<span class="nv">to_csv</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">citations_path</span>, <span class="nv">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span>, <span class="nv">index</span><span class="o">=</span><span class="nv">False</span><span class="ss">)</span>
+    <span class="ss">)</span>
+
+    <span class="nv">citekeys_df</span>[<span class="s2">&quot;</span><span class="s">standard_citekey</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">citekeys_df</span>.<span class="nv">detagged_citekey</span>.<span class="nv">map</span><span class="ss">(</span>
+
+        <span class="nv">standardize_citekey</span>
+
+    <span class="ss">)</span>
+
+    <span class="nv">citekeys_df</span>[<span class="s2">&quot;</span><span class="s">short_citekey</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">citekeys_df</span>.<span class="nv">standard_citekey</span>.<span class="nv">map</span><span class="ss">(</span><span class="nv">shorten_citekey</span><span class="ss">)</span>
+
+    <span class="nv">citekeys_df</span> <span class="o">=</span> <span class="nv">citekeys_df</span>.<span class="nv">sort_values</span><span class="ss">(</span>[<span class="s2">&quot;</span><span class="s">standard_citekey</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">detagged_citekey</span><span class="s2">&quot;</span>]<span class="ss">)</span>
+
+    <span class="nv">citekeys_df</span>.<span class="nv">to_csv</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">citations_path</span>, <span class="nv">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span>, <span class="nv">index</span><span class="o">=</span><span class="nv">False</span><span class="ss">)</span>
 
     <span class="nv">check_collisions</span><span class="ss">(</span><span class="nv">citekeys_df</span><span class="ss">)</span>
 
@@ -2251,7 +2341,7 @@ citekeys_df is a pandas.DataFrame with the following columns:
 
     <span class="k">if</span> <span class="nv">args</span>.<span class="nv">meta_yaml_path</span>.<span class="nv">is_file</span><span class="ss">()</span>:
 
-        <span class="nv">with</span> <span class="nv">args</span>.<span class="nv">meta_yaml_path</span>.<span class="nv">open</span><span class="ss">(</span><span class="nv">encoding</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">utf-8-sig</span><span class="s1">&#39;</span><span class="ss">)</span> <span class="nv">as</span> <span class="nv">read_file</span>:
+        <span class="nv">with</span> <span class="nv">args</span>.<span class="nv">meta_yaml_path</span>.<span class="nv">open</span><span class="ss">(</span><span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">utf-8-sig</span><span class="s2">&quot;</span><span class="ss">)</span> <span class="nv">as</span> <span class="nv">read_file</span>:
 
             <span class="nv">metadata</span> <span class="o">=</span> <span class="nv">yaml</span>.<span class="nv">safe_load</span><span class="ss">(</span><span class="nv">read_file</span><span class="ss">)</span>
 
@@ -2261,7 +2351,11 @@ citekeys_df is a pandas.DataFrame with the following columns:
 
         <span class="nv">metadata</span> <span class="o">=</span> {}
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">missing {args.meta_yaml_path} file with yaml_metadata_block for pandoc</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+
+            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">missing {args.meta_yaml_path} file with yaml_metadata_block for pandoc</span><span class="s2">&quot;</span>
+
+        <span class="ss">)</span>
 
     # <span class="nv">Add</span> <span class="nv">date</span> <span class="nv">to</span> <span class="nv">metadata</span>
 
@@ -2269,25 +2363,27 @@ citekeys_df is a pandas.DataFrame with the following columns:
 
     <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span>
 
-        <span class="nv">f</span><span class="s1">&#39;</span><span class="s">Using {now:%Z} timezone.</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Using {now:%Z} timezone.</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-        <span class="nv">f</span><span class="s1">&#39;</span><span class="s">Dating manuscript with the current datetime: {now.isoformat()}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Dating manuscript with the current datetime: {now.isoformat()}</span><span class="s2">&quot;</span>
 
-    <span class="nv">metadata</span>[<span class="s1">&#39;</span><span class="s">date-meta</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">now</span>.<span class="nv">date</span><span class="ss">()</span>.<span class="nv">isoformat</span><span class="ss">()</span>
+    <span class="ss">)</span>
 
-    <span class="nv">variables</span>[<span class="s1">&#39;</span><span class="s">date</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s1">&#39;</span><span class="s">{now:%B} {now.day}, {now.year}</span><span class="s1">&#39;</span>
+    <span class="nv">metadata</span>[<span class="s2">&quot;</span><span class="s">date-meta</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">now</span>.<span class="nv">date</span><span class="ss">()</span>.<span class="nv">isoformat</span><span class="ss">()</span>
+
+    <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">date</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{now:%B} {now.day}, {now.year}</span><span class="s2">&quot;</span>
 
     # <span class="nv">Process</span> <span class="nv">authors</span> <span class="nv">metadata</span>
 
-    <span class="nv">authors</span> <span class="o">=</span> <span class="nv">metadata</span>.<span class="nv">pop</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">author_info</span><span class="s1">&#39;</span>, []<span class="ss">)</span>
+    <span class="nv">authors</span> <span class="o">=</span> <span class="nv">metadata</span>.<span class="nv">pop</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">author_info</span><span class="s2">&quot;</span>, []<span class="ss">)</span>
 
     <span class="k">if</span> <span class="nv">authors</span> <span class="nv">is</span> <span class="nv">None</span>:
 
         <span class="nv">authors</span> <span class="o">=</span> []
 
-    <span class="nv">metadata</span>[<span class="s1">&#39;</span><span class="s">author-meta</span><span class="s1">&#39;</span>] <span class="o">=</span> [<span class="nv">author</span>[<span class="s1">&#39;</span><span class="s">name</span><span class="s1">&#39;</span>] <span class="k">for</span> <span class="nv">author</span> <span class="nv">in</span> <span class="nv">authors</span>]
+    <span class="nv">metadata</span>[<span class="s2">&quot;</span><span class="s">author-meta</span><span class="s2">&quot;</span>] <span class="o">=</span> [<span class="nv">author</span>[<span class="s2">&quot;</span><span class="s">name</span><span class="s2">&quot;</span>] <span class="k">for</span> <span class="nv">author</span> <span class="nv">in</span> <span class="nv">authors</span>]
 
-    <span class="nv">variables</span>[<span class="s1">&#39;</span><span class="s">authors</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">authors</span>
+    <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">authors</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">authors</span>
 
     <span class="nv">variables</span> <span class="o">=</span> <span class="nv">add_author_affiliations</span><span class="ss">(</span><span class="nv">variables</span><span class="ss">)</span>
 
@@ -2297,7 +2393,7 @@ citekeys_df is a pandas.DataFrame with the following columns:
 
     <span class="k">if</span> <span class="nv">ci_params</span>:
 
-        <span class="nv">variables</span>[<span class="s1">&#39;</span><span class="s">ci_source</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">add_manuscript_urls_to_ci_params</span><span class="ss">(</span><span class="nv">ci_params</span><span class="ss">)</span>
+        <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">ci_source</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">add_manuscript_urls_to_ci_params</span><span class="ss">(</span><span class="nv">ci_params</span><span class="ss">)</span>
 
     # <span class="nv">Update</span> <span class="nv">variables</span> <span class="nv">with</span> <span class="nv">user</span><span class="o">-</span><span class="nv">provided</span> <span class="nv">variables</span> <span class="nv">here</span>
 
@@ -2337,31 +2433,43 @@ for pandoc.</p>
 
     <span class="nv">citekey_mapping</span> <span class="o">=</span> <span class="nv">collections</span>.<span class="nv">OrderedDict</span><span class="ss">(</span>
 
-        <span class="nv">zip</span><span class="ss">(</span><span class="nv">citekeys_df</span>.<span class="nv">manuscript_citekey</span>, <span class="nv">citekeys_df</span>.<span class="nv">short_citekey</span><span class="ss">))</span>
+        <span class="nv">zip</span><span class="ss">(</span><span class="nv">citekeys_df</span>.<span class="nv">manuscript_citekey</span>, <span class="nv">citekeys_df</span>.<span class="nv">short_citekey</span><span class="ss">)</span>
+
+    <span class="ss">)</span>
 
     <span class="nv">text</span> <span class="o">=</span> <span class="nv">update_manuscript_citekeys</span><span class="ss">(</span><span class="nv">text</span>, <span class="nv">citekey_mapping</span><span class="ss">)</span>
 
     <span class="nv">metadata</span>, <span class="nv">variables</span> <span class="o">=</span> <span class="nv">get_metadata_and_variables</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>
 
-    <span class="nv">variables</span>[<span class="s1">&#39;</span><span class="s">manuscript_stats</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">get_manuscript_stats</span><span class="ss">(</span><span class="nv">text</span>, <span class="nv">citekeys_df</span><span class="ss">)</span>
+    <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">manuscript_stats</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">get_manuscript_stats</span><span class="ss">(</span><span class="nv">text</span>, <span class="nv">citekeys_df</span><span class="ss">)</span>
 
-    <span class="nv">with</span> <span class="nv">args</span>.<span class="nv">variables_path</span>.<span class="nv">open</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">w</span><span class="s1">&#39;</span>, <span class="nv">encoding</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">utf-8</span><span class="s1">&#39;</span><span class="ss">)</span> <span class="nv">as</span> <span class="nv">write_file</span>:
+    <span class="nv">with</span> <span class="nv">args</span>.<span class="nv">variables_path</span>.<span class="nv">open</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">w</span><span class="s2">&quot;</span>, <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">utf-8</span><span class="s2">&quot;</span><span class="ss">)</span> <span class="nv">as</span> <span class="nv">write_file</span>:
 
         <span class="nv">json</span>.<span class="nv">dump</span><span class="ss">(</span><span class="nv">variables</span>, <span class="nv">write_file</span>, <span class="nv">ensure_ascii</span><span class="o">=</span><span class="nv">False</span>, <span class="nv">indent</span><span class="o">=</span><span class="mi">2</span><span class="ss">)</span>
 
-        <span class="nv">write_file</span>.<span class="nv">write</span><span class="ss">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">write_file</span>.<span class="nv">write</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
 
     <span class="nv">text</span> <span class="o">=</span> <span class="nv">template_with_jinja2</span><span class="ss">(</span><span class="nv">text</span>, <span class="nv">variables</span><span class="ss">)</span>
 
     # <span class="nv">Write</span> <span class="nv">manuscript</span> <span class="k">for</span> <span class="nv">pandoc</span>
 
-    <span class="nv">with</span> <span class="nv">args</span>.<span class="nv">manuscript_path</span>.<span class="nv">open</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">w</span><span class="s1">&#39;</span>, <span class="nv">encoding</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">utf-8</span><span class="s1">&#39;</span><span class="ss">)</span> <span class="nv">as</span> <span class="nv">write_file</span>:
+    <span class="nv">with</span> <span class="nv">args</span>.<span class="nv">manuscript_path</span>.<span class="nv">open</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">w</span><span class="s2">&quot;</span>, <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">utf-8</span><span class="s2">&quot;</span><span class="ss">)</span> <span class="nv">as</span> <span class="nv">write_file</span>:
 
-        <span class="nv">yaml</span>.<span class="nv">dump</span><span class="ss">(</span><span class="nv">metadata</span>, <span class="nv">write_file</span>, <span class="nv">default_flow_style</span><span class="o">=</span><span class="nv">False</span>,
+        <span class="nv">yaml</span>.<span class="nv">dump</span><span class="ss">(</span>
 
-                  <span class="nv">explicit_start</span><span class="o">=</span><span class="nv">True</span>, <span class="nv">explicit_end</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+            <span class="nv">metadata</span>,
 
-        <span class="nv">write_file</span>.<span class="nv">write</span><span class="ss">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="ss">)</span>
+            <span class="nv">write_file</span>,
+
+            <span class="nv">default_flow_style</span><span class="o">=</span><span class="nv">False</span>,
+
+            <span class="nv">explicit_start</span><span class="o">=</span><span class="nv">True</span>,
+
+            <span class="nv">explicit_end</span><span class="o">=</span><span class="nv">True</span>,
+
+        <span class="ss">)</span>
+
+        <span class="nv">write_file</span>.<span class="nv">write</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
 
         <span class="nv">write_file</span>.<span class="nv">write</span><span class="ss">(</span><span class="nv">text</span><span class="ss">)</span>
 </pre></div>
@@ -2384,7 +2492,7 @@ for pandoc.</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="nv">re</span>.<span class="nv">match</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">^(http|ftp)s?://</span><span class="s1">&#39;</span>, <span class="nv">path</span><span class="ss">)</span>:
+    <span class="k">if</span> <span class="nv">re</span>.<span class="nv">match</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">^(http|ftp)s?://</span><span class="s2">&quot;</span>, <span class="nv">path</span><span class="ss">)</span>:
 
         <span class="nv">response</span> <span class="o">=</span> <span class="nv">requests</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">path</span><span class="ss">)</span>
 
@@ -2394,7 +2502,7 @@ for pandoc.</p>
 
         <span class="nv">path</span> <span class="o">=</span> <span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="nv">path</span><span class="ss">)</span>
 
-        <span class="nv">with</span> <span class="nv">path</span>.<span class="nv">open</span><span class="ss">(</span><span class="nv">encoding</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">utf-8-sig</span><span class="s1">&#39;</span><span class="ss">)</span> <span class="nv">as</span> <span class="nv">read_file</span>:
+        <span class="nv">with</span> <span class="nv">path</span>.<span class="nv">open</span><span class="ss">(</span><span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">utf-8-sig</span><span class="s2">&quot;</span><span class="ss">)</span> <span class="nv">as</span> <span class="nv">read_file</span>:
 
             <span class="nv">obj</span> <span class="o">=</span> <span class="nv">json</span>.<span class="nv">load</span><span class="ss">(</span><span class="nv">read_file</span>, <span class="nv">object_pairs_hook</span><span class="o">=</span><span class="nv">collections</span>.<span class="nv">OrderedDict</span><span class="ss">)</span>
 
@@ -2460,19 +2568,27 @@ top level. Namespaces should consist only of ASCII alphanumeric characters
 
     <span class="k">for</span> <span class="nv">path</span> <span class="nv">in</span> <span class="nv">paths</span>:
 
-        <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Read the following user-provided templating variables for {path}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span>
+
+            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Read the following user-provided templating variables for {path}</span><span class="s2">&quot;</span>
+
+        <span class="ss">)</span>
 
         # <span class="nv">Match</span> <span class="nv">only</span> <span class="nv">namespaces</span> <span class="nv">that</span> <span class="nv">are</span> <span class="nv">valid</span> <span class="nv">jinja2</span> <span class="nv">variable</span> <span class="nv">names</span>
 
         # <span class="nv">http</span>:<span class="o">//</span><span class="nv">jinja</span>.<span class="nv">pocoo</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">docs</span><span class="o">/</span><span class="mi">2</span>.<span class="mi">10</span><span class="o">/</span><span class="nv">api</span><span class="o">/</span>#<span class="nv">identifier</span><span class="o">-</span><span class="nv">naming</span>
 
-        <span class="nv">match</span> <span class="o">=</span> <span class="nv">re</span>.<span class="nv">match</span><span class="ss">(</span><span class="nv">r</span><span class="s1">&#39;</span><span class="s">([a-zA-Z_][a-zA-Z0-9_]*)=(.+)</span><span class="s1">&#39;</span>, <span class="nv">path</span><span class="ss">)</span>
+        <span class="nv">match</span> <span class="o">=</span> <span class="nv">re</span>.<span class="nv">match</span><span class="ss">(</span><span class="nv">r</span><span class="s2">&quot;</span><span class="s">([a-zA-Z_][a-zA-Z0-9_]*)=(.+)</span><span class="s2">&quot;</span>, <span class="nv">path</span><span class="ss">)</span>
 
         <span class="k">if</span> <span class="nv">match</span>:
 
             <span class="nv">namespace</span>, <span class="nv">path</span> <span class="o">=</span> <span class="nv">match</span>.<span class="nv">groups</span><span class="ss">()</span>
 
-            <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Using the &quot;{namespace}&quot; namespace for template variables from {path}</span><span class="s1">&#39;</span><span class="ss">)</span>
+            <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span>
+
+                <span class="nv">f</span><span class="s1">&#39;</span><span class="s">Using the &quot;{namespace}&quot; namespace for template variables from {path}</span><span class="s1">&#39;</span>
+
+            <span class="ss">)</span>
 
         <span class="nv">try</span>:
 
@@ -2480,7 +2596,7 @@ top level. Namespaces should consist only of ASCII alphanumeric characters
 
         <span class="nv">except</span> <span class="nv">Exception</span>:
 
-            <span class="nv">logging</span>.<span class="nv">exception</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Error reading template variables from {path}</span><span class="s1">&#39;</span><span class="ss">)</span>
+            <span class="nv">logging</span>.<span class="nv">exception</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error reading template variables from {path}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
             <span class="k">continue</span>
 
@@ -2496,17 +2612,21 @@ top level. Namespaces should consist only of ASCII alphanumeric characters
 
             <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
 
-                <span class="nv">f</span><span class="s1">&#39;</span><span class="s">Template variables in {path} overwrite existing </span><span class="s1">&#39;</span>
+                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Template variables in {path} overwrite existing </span><span class="s2">&quot;</span>
 
-                <span class="s1">&#39;</span><span class="s">values for the following keys:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">conflicts</span><span class="ss">)</span>
+                <span class="s2">&quot;</span><span class="s">values for the following keys:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">conflicts</span><span class="ss">)</span>
 
             <span class="ss">)</span>
 
         <span class="nv">user_variables</span>.<span class="nv">update</span><span class="ss">(</span><span class="nv">obj</span><span class="ss">)</span>
 
-    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">Reading user-provided templating variables complete:</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span>
 
-                 <span class="nv">f</span><span class="s1">&#39;</span><span class="s">{json.dumps(user_variables, indent=2, ensure_ascii=False)}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Reading user-provided templating variables complete:</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{json.dumps(user_variables, indent=2, ensure_ascii=False)}</span><span class="s2">&quot;</span>
+
+    <span class="ss">)</span>
 
     <span class="k">return</span> <span class="nv">user_variables</span>
 </pre></div>
@@ -2539,9 +2659,9 @@ arguments.</p>
 
         <span class="nv">undefined</span><span class="o">=</span><span class="nv">jinja2</span>.<span class="nv">make_logging_undefined</span><span class="ss">(</span><span class="nv">logging</span>.<span class="nv">getLogger</span><span class="ss">())</span>,
 
-        <span class="nv">comment_start_string</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">{##</span><span class="s1">&#39;</span>,
+        <span class="nv">comment_start_string</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">{##</span><span class="s2">&quot;</span>,
 
-        <span class="nv">comment_end_string</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">##}</span><span class="s1">&#39;</span>,
+        <span class="nv">comment_end_string</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">##}</span><span class="s2">&quot;</span>,
 
     <span class="ss">)</span>
 

@@ -1249,15 +1249,15 @@
 
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s1">&#39;Error in {retriever.__name__} for {url} &#39;</span>
+                <span class="n">f</span><span class="s2">&quot;Error in {retriever.__name__} for {url} &quot;</span>
 
-                <span class="n">f</span><span class="s1">&#39;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s1">{error}&#39;</span>
+                <span class="n">f</span><span class="s2">&quot;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s2">{error}&quot;</span>
 
             <span class="p">)</span>
 
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;all get_url_csl_item methods failed for {url}&#39;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;all get_url_csl_item methods failed for {url}&quot;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
 
@@ -1267,19 +1267,13 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">from</span> <span class="nn">manubot.cite.zotero</span> <span class="kn">import</span> <span class="p">(</span>
-
-        <span class="n">export_as_csl</span><span class="p">,</span>
-
-        <span class="n">web_query</span><span class="p">,</span>
-
-    <span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">manubot.cite.zotero</span> <span class="kn">import</span> <span class="n">export_as_csl</span><span class="p">,</span> <span class="n">web_query</span>
 
     <span class="n">zotero_data</span> <span class="o">=</span> <span class="n">web_query</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
     <span class="n">csl_data</span> <span class="o">=</span> <span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span>
 
-    <span class="n">csl_item</span><span class="p">,</span> <span class="o">=</span> <span class="n">csl_data</span>
+    <span class="p">(</span><span class="n">csl_item</span><span class="p">,)</span> <span class="o">=</span> <span class="n">csl_data</span>
 
     <span class="k">return</span> <span class="n">csl_item</span>
 
@@ -1313,19 +1307,15 @@
 
     <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
 
-        <span class="s1">&#39;Connection&#39;</span><span class="p">:</span> <span class="s1">&#39;close&#39;</span><span class="p">,</span>  <span class="c1"># https://github.com/kennethreitz/requests/issues/4023</span>
+        <span class="s2">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;close&quot;</span><span class="p">,</span>  <span class="c1"># https://github.com/kennethreitz/requests/issues/4023</span>
 
-        <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span>
+        <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span>
 
     <span class="p">}</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
 
-        <span class="s1">&#39;http://greycite.knowledgeblog.org/json&#39;</span><span class="p">,</span>
-
-        <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;uri&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">},</span>
-
-        <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+        <span class="s2">&quot;http://greycite.knowledgeblog.org/json&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">},</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span>
 
     <span class="p">)</span>
 
@@ -1335,11 +1325,11 @@
 
     <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;p&gt;\*\*\*.*&lt;p&gt;&quot;</span><span class="p">)</span>
 
-    <span class="n">text</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 
     <span class="n">csl_item</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-    <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;webpage&#39;</span>
+    <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;webpage&quot;</span>
 
     <span class="k">return</span> <span class="n">csl_item</span>
 
@@ -1351,13 +1341,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="p">{</span>
-
-        <span class="s1">&#39;URL&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
-
-        <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;webpage&#39;</span><span class="p">,</span>
-
-    <span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;URL&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;webpage&quot;</span><span class="p">}</span>
 
 <span class="n">url_retrievers</span> <span class="o">=</span> <span class="p">[</span>
 
@@ -1416,15 +1400,15 @@ non-failing method.</p>
 
             <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
 
-                <span class="nv">f</span><span class="s1">&#39;</span><span class="s">Error in {retriever.__name__} for {url} </span><span class="s1">&#39;</span>
+                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error in {retriever.__name__} for {url} </span><span class="s2">&quot;</span>
 
-                <span class="nv">f</span><span class="s1">&#39;</span><span class="s">due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s">{error}</span><span class="s1">&#39;</span>
+                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s">{error}</span><span class="s2">&quot;</span>
 
             <span class="ss">)</span>
 
             <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">error</span>, <span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
 
-    <span class="nv">raise</span> <span class="nv">Exception</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">all get_url_csl_item methods failed for {url}</span><span class="s1">&#39;</span><span class="ss">)</span>
+    <span class="nv">raise</span> <span class="nv">Exception</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">all get_url_csl_item methods failed for {url}</span><span class="s2">&quot;</span><span class="ss">)</span>
 </pre></div>
 
 
@@ -1475,19 +1459,15 @@ https://git.io/v9N2C</p>
 
     <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
 
-        <span class="s1">&#39;Connection&#39;</span><span class="p">:</span> <span class="s1">&#39;close&#39;</span><span class="p">,</span>  <span class="c1"># https://github.com/kennethreitz/requests/issues/4023</span>
+        <span class="s2">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;close&quot;</span><span class="p">,</span>  <span class="c1"># https://github.com/kennethreitz/requests/issues/4023</span>
 
-        <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span>
+        <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span>
 
     <span class="p">}</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
 
-        <span class="s1">&#39;http://greycite.knowledgeblog.org/json&#39;</span><span class="p">,</span>
-
-        <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;uri&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">},</span>
-
-        <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+        <span class="s2">&quot;http://greycite.knowledgeblog.org/json&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">},</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span>
 
     <span class="p">)</span>
 
@@ -1497,11 +1477,11 @@ https://git.io/v9N2C</p>
 
     <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;p&gt;\*\*\*.*&lt;p&gt;&quot;</span><span class="p">)</span>
 
-    <span class="n">text</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 
     <span class="n">csl_item</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-    <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;webpage&#39;</span>
+    <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;webpage&quot;</span>
 
     <span class="k">return</span> <span class="n">csl_item</span>
 </pre></div>
@@ -1524,13 +1504,7 @@ https://git.io/v9N2C</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="k">return</span> {
-
-        <span class="s1">&#39;</span><span class="s">URL</span><span class="s1">&#39;</span>: <span class="nv">url</span>,
-
-        <span class="s1">&#39;</span><span class="s">type</span><span class="s1">&#39;</span>: <span class="s1">&#39;</span><span class="s">webpage</span><span class="s1">&#39;</span>,
-
-    }
+    <span class="k">return</span> {<span class="s2">&quot;</span><span class="s">URL</span><span class="s2">&quot;</span>: <span class="nv">url</span>, <span class="s2">&quot;</span><span class="s">type</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">webpage</span><span class="s2">&quot;</span>}
 </pre></div>
 
 
@@ -1551,19 +1525,13 @@ https://git.io/v9N2C</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">from</span> <span class="nn">manubot.cite.zotero</span> <span class="kn">import</span> <span class="p">(</span>
-
-        <span class="n">export_as_csl</span><span class="p">,</span>
-
-        <span class="n">web_query</span><span class="p">,</span>
-
-    <span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">manubot.cite.zotero</span> <span class="kn">import</span> <span class="n">export_as_csl</span><span class="p">,</span> <span class="n">web_query</span>
 
     <span class="n">zotero_data</span> <span class="o">=</span> <span class="n">web_query</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
     <span class="n">csl_data</span> <span class="o">=</span> <span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span>
 
-    <span class="n">csl_item</span><span class="p">,</span> <span class="o">=</span> <span class="n">csl_data</span>
+    <span class="p">(</span><span class="n">csl_item</span><span class="p">,)</span> <span class="o">=</span> <span class="n">csl_data</span>
 
     <span class="k">return</span> <span class="n">csl_item</span>
 </pre></div>

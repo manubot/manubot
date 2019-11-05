@@ -1215,13 +1215,17 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://nyti.ms/1NuB0WJ&#39;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://nyti.ms/1NuB0WJ&quot;</span>
 
     <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Unraveling the Ties of Altitude, Oxygen and Lung Cancer&#39;</span>
+    <span class="k">assert</span> <span class="p">(</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;family&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Johnson&#39;</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Unraveling the Ties of Altitude, Oxygen and Lung Cancer&quot;</span>
+
+    <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Johnson&quot;</span>
 
 <span class="k">def</span> <span class="nf">test_get_url_csl_item_zotero_manubot</span><span class="p">():</span>
 
@@ -1245,21 +1249,19 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://greenelab.github.io/meta-review/v/0770300e1d5490a1ae8ff3a85ddca2cdc4ae0613/&#39;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://greenelab.github.io/meta-review/v/0770300e1d5490a1ae8ff3a85ddca2cdc4ae0613/&quot;</span>
 
     <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Open collaborative writing with Manubot&#39;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Open collaborative writing with Manubot&quot;</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;family&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Slochower&#39;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Slochower&quot;</span>
 
     <span class="c1"># Zotero CSL exporter returns mixed string/int date-parts</span>
 
     <span class="c1"># https://github.com/zotero/zotero/issues/1603</span>
 
-    <span class="k">assert</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;issued&#39;</span><span class="p">]</span>
-
-            <span class="p">[</span><span class="s1">&#39;date-parts&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">==</span> <span class="p">[</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">][</span><span class="s2">&quot;date-parts&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">==</span> <span class="p">[</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span>
 
 <span class="k">def</span> <span class="nf">test_get_url_csl_item_zotero_github</span><span class="p">():</span>
 
@@ -1297,15 +1299,15 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927&#39;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927&quot;</span>
 
     <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
     <span class="c1"># FIXME: arbitraryly, csl_item[&#39;abstract&#39;], and not csl_item[&#39;title&#39;] contains the title.</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Flexible and powerful data analysis&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Flexible and powerful data analysis&quot;</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;GitHub&#39;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;GitHub&quot;</span>
 </pre></div>
 
 
@@ -1367,15 +1369,15 @@ equivalent to:</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s">https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927</span><span class="s1">&#39;</span>
+    <span class="nv">url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927</span><span class="s2">&quot;</span>
 
     <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">get_url_csl_item_zotero</span><span class="ss">(</span><span class="nv">url</span><span class="ss">)</span>
 
     # <span class="nv">FIXME</span>: <span class="nv">arbitraryly</span>, <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">abstract</span><span class="s1">&#39;</span>], <span class="nv">and</span> <span class="nv">not</span> <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">title</span><span class="s1">&#39;</span>] <span class="nv">contains</span> <span class="nv">the</span> <span class="nv">title</span>.
 
-    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">title</span><span class="s1">&#39;</span>].<span class="nv">startswith</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">Flexible and powerful data analysis</span><span class="s1">&#39;</span><span class="ss">)</span>
+    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">title</span><span class="s2">&quot;</span>].<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Flexible and powerful data analysis</span><span class="s2">&quot;</span><span class="ss">)</span>
 
-    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">source</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="s1">&#39;</span><span class="s">GitHub</span><span class="s1">&#39;</span>
+    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">source</span><span class="s2">&quot;</span>] <span class="o">==</span> <span class="s2">&quot;</span><span class="s">GitHub</span><span class="s2">&quot;</span>
 </pre></div>
 
 
@@ -1415,21 +1417,19 @@ equivalent to:</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s">https://greenelab.github.io/meta-review/v/0770300e1d5490a1ae8ff3a85ddca2cdc4ae0613/</span><span class="s1">&#39;</span>
+    <span class="nv">url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">https://greenelab.github.io/meta-review/v/0770300e1d5490a1ae8ff3a85ddca2cdc4ae0613/</span><span class="s2">&quot;</span>
 
     <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">get_url_csl_item_zotero</span><span class="ss">(</span><span class="nv">url</span><span class="ss">)</span>
 
-    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">title</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="s1">&#39;</span><span class="s">Open collaborative writing with Manubot</span><span class="s1">&#39;</span>
+    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">title</span><span class="s2">&quot;</span>] <span class="o">==</span> <span class="s2">&quot;</span><span class="s">Open collaborative writing with Manubot</span><span class="s2">&quot;</span>
 
-    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">author</span><span class="s1">&#39;</span>][<span class="mi">1</span>][<span class="s1">&#39;</span><span class="s">family</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="s1">&#39;</span><span class="s">Slochower</span><span class="s1">&#39;</span>
+    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">author</span><span class="s2">&quot;</span>][<span class="mi">1</span>][<span class="s2">&quot;</span><span class="s">family</span><span class="s2">&quot;</span>] <span class="o">==</span> <span class="s2">&quot;</span><span class="s">Slochower</span><span class="s2">&quot;</span>
 
     # <span class="nv">Zotero</span> <span class="nv">CSL</span> <span class="nv">exporter</span> <span class="nv">returns</span> <span class="nv">mixed</span> <span class="nv">string</span><span class="o">/</span><span class="nv">int</span> <span class="nv">date</span><span class="o">-</span><span class="nv">parts</span>
 
     # <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">zotero</span><span class="o">/</span><span class="nv">zotero</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">1603</span>
 
-    <span class="nv">assert</span> [<span class="nv">int</span><span class="ss">(</span><span class="nv">x</span><span class="ss">)</span> <span class="k">for</span> <span class="nv">x</span> <span class="nv">in</span> <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">issued</span><span class="s1">&#39;</span>]
-
-            [<span class="s1">&#39;</span><span class="s">date-parts</span><span class="s1">&#39;</span>][<span class="mi">0</span>]] <span class="o">==</span> [<span class="mi">2018</span>, <span class="mi">12</span>, <span class="mi">18</span>]
+    <span class="nv">assert</span> [<span class="nv">int</span><span class="ss">(</span><span class="nv">x</span><span class="ss">)</span> <span class="k">for</span> <span class="nv">x</span> <span class="nv">in</span> <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">issued</span><span class="s2">&quot;</span>][<span class="s2">&quot;</span><span class="s">date-parts</span><span class="s2">&quot;</span>][<span class="mi">0</span>]] <span class="o">==</span> [<span class="mi">2018</span>, <span class="mi">12</span>, <span class="mi">18</span>]
 </pre></div>
 
 
@@ -1469,13 +1469,17 @@ equivalent to:</p>
 
 <span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://nyti.ms/1NuB0WJ&#39;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="ss">&quot;https://nyti.ms/1NuB0WJ&quot;</span>
 
     <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Unraveling the Ties of Altitude, Oxygen and Lung Cancer&#39;</span>
+    <span class="n">assert</span> <span class="p">(</span>
 
-    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;family&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Johnson&#39;</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;Unraveling the Ties of Altitude, Oxygen and Lung Cancer&quot;</span>
+
+    <span class="p">)</span>
+
+    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="ss">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;Johnson&quot;</span>
 </pre></div>
 
 

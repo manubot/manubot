@@ -1177,41 +1177,39 @@
                 
                 
                 <h1 id="module-manubotprocessteststest_manuscript">Module manubot.process.tests.test_manuscript</h1>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">manubot.process.manuscript</span> <span class="kn">import</span> <span class="p">(</span>
-
-    <span class="n">get_citekeys</span><span class="p">,</span>
-
-    <span class="n">update_manuscript_citekeys</span>
-
-<span class="p">)</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">manubot.process.manuscript</span> <span class="kn">import</span> <span class="n">get_citekeys</span><span class="p">,</span> <span class="n">update_manuscript_citekeys</span>
 
 <span class="k">def</span> <span class="nf">test_get_citekeys_1</span><span class="p">():</span>
 
-    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 
-<span class="s1">    Sci-Hub has released article request records from its server logs, covering 165 days from September 2015 through February 2016 [@doi:10.1126/science.352.6285.508; @doi:10.1126/science.aaf5664; @doi:10.5061/dryad.q447c/1].</span>
+<span class="s2">    Sci-Hub has released article request records from its server logs, covering 165 days from September 2015 through February 2016 [@doi:10.1126/science.352.6285.508; @doi:10.1126/science.aaf5664; @doi:10.5061/dryad.q447c/1].</span>
 
-<span class="s1">    We filtered for valid requests by excluding DOIs not included in our literature catalog and omitting requests that occurred before an article&#39;s publication date.</span>
+<span class="s2">    We filtered for valid requests by excluding DOIs not included in our literature catalog and omitting requests that occurred before an article&#39;s publication date.</span>
 
-<span class="s1">    Figure {@fig:citescore}B shows that articles from highly cited journals were visited much more frequently on average.</span>
+<span class="s2">    Figure {@fig:citescore}B shows that articles from highly cited journals were visited much more frequently on average.</span>
 
-<span class="s1">    @10.5061/bad_doi says blah but @url:https://www.courtlistener.com/docket/4355308/1/elsevier-inc-v-sci-hub/ disagrees.</span>
+<span class="s2">    @10.5061/bad_doi says blah but @url:https://www.courtlistener.com/docket/4355308/1/elsevier-inc-v-sci-hub/ disagrees.</span>
 
-<span class="s1">    &#39;&#39;&#39;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">citekeys</span> <span class="o">=</span> <span class="n">get_citekeys</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-    <span class="n">expected</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
 
-        <span class="s1">&#39;doi:10.1126/science.352.6285.508&#39;</span><span class="p">,</span>
+        <span class="p">[</span>
 
-        <span class="s1">&#39;doi:10.1126/science.aaf5664&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;doi:10.1126/science.352.6285.508&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;doi:10.5061/dryad.q447c/1&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;doi:10.1126/science.aaf5664&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;url:https://www.courtlistener.com/docket/4355308/1/elsevier-inc-v-sci-hub/&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">,</span>
 
-    <span class="p">])</span>
+            <span class="s2">&quot;url:https://www.courtlistener.com/docket/4355308/1/elsevier-inc-v-sci-hub/&quot;</span><span class="p">,</span>
+
+        <span class="p">]</span>
+
+    <span class="p">)</span>
 
     <span class="k">assert</span> <span class="n">citekeys</span> <span class="o">==</span> <span class="n">expected</span>
 
@@ -1231,17 +1229,17 @@
 
     <span class="n">string_to_id</span> <span class="o">=</span> <span class="p">{</span>
 
-        <span class="s1">&#39;url:https://github.com/manubot/manubot&#39;</span><span class="p">:</span> <span class="s1">&#39;mNMayr3f&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;url:https://github.com/manubot/manubot&quot;</span><span class="p">:</span> <span class="s2">&quot;mNMayr3f&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;url:https://github.com/greenelab/manubot-rootstock&#39;</span><span class="p">:</span> <span class="s1">&#39;1B7Y2HVtw&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;url:https://github.com/greenelab/manubot-rootstock&quot;</span><span class="p">:</span> <span class="s2">&quot;1B7Y2HVtw&quot;</span><span class="p">,</span>
 
     <span class="p">}</span>
 
-    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;our new Manubot tool [@url:https://github.com/greenelab/manubot-rootstock; @url:https://github.com/manubot/manubot] for automating manuscript generation.&#39;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;our new Manubot tool [@url:https://github.com/greenelab/manubot-rootstock; @url:https://github.com/manubot/manubot] for automating manuscript generation.&quot;</span>
 
     <span class="n">text</span> <span class="o">=</span> <span class="n">update_manuscript_citekeys</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">string_to_id</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="s1">&#39;[@1B7Y2HVtw; @mNMayr3f]&#39;</span> <span class="ow">in</span> <span class="n">text</span>
+    <span class="k">assert</span> <span class="s2">&quot;[@1B7Y2HVtw; @mNMayr3f]&quot;</span> <span class="ow">in</span> <span class="n">text</span>
 </pre></div>
 
 
@@ -1256,7 +1254,7 @@
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="nf">test_get_citekeys_1</span><span class="p">()</span><span class="o">:</span>
 
-    <span class="n">text</span> <span class="o">=</span> <span class="err">&#39;&#39;&#39;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
 
     <span class="n">Sci</span><span class="o">-</span><span class="n">Hub</span> <span class="n">has</span> <span class="n">released</span> <span class="n">article</span> <span class="n">request</span> <span class="n">records</span> <span class="n">from</span> <span class="n">its</span> <span class="n">server</span> <span class="n">logs</span><span class="p">,</span> <span class="n">covering</span> <span class="mi">165</span> <span class="n">days</span> <span class="n">from</span> <span class="n">September</span> <span class="mi">2015</span> <span class="n">through</span> <span class="n">February</span> <span class="mi">2016</span> <span class="p">[@</span><span class="nl">doi</span><span class="p">:</span><span class="mf">10.1126</span><span class="o">/</span><span class="n">science</span><span class="mf">.352.6285.508</span><span class="p">;</span> <span class="p">@</span><span class="nl">doi</span><span class="p">:</span><span class="mf">10.1126</span><span class="o">/</span><span class="n">science</span><span class="p">.</span><span class="n">aaf5664</span><span class="p">;</span> <span class="p">@</span><span class="nl">doi</span><span class="p">:</span><span class="mf">10.5061</span><span class="o">/</span><span class="n">dryad</span><span class="p">.</span><span class="n">q447c</span><span class="o">/</span><span class="mi">1</span><span class="p">].</span>
 
@@ -1266,21 +1264,25 @@
 
     <span class="mf">@10.5061</span><span class="o">/</span><span class="n">bad_doi</span> <span class="n">says</span> <span class="n">blah</span> <span class="n">but</span> <span class="p">@</span><span class="nl">url</span><span class="p">:</span><span class="nl">https</span><span class="p">:</span><span class="c1">//www.courtlistener.com/docket/4355308/1/elsevier-inc-v-sci-hub/ disagrees.</span>
 
-    <span class="err">&#39;&#39;&#39;</span>
+    <span class="s">&quot;&quot;&quot;</span>
 
     <span class="n">citekeys</span> <span class="o">=</span> <span class="n">get_citekeys</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-    <span class="n">expected</span> <span class="o">=</span> <span class="n">sorted</span><span class="p">([</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="n">sorted</span><span class="p">(</span>
 
-        <span class="err">&#39;</span><span class="nl">doi</span><span class="p">:</span><span class="mf">10.1126</span><span class="o">/</span><span class="n">science</span><span class="mf">.352.6285.508</span><span class="err">&#39;</span><span class="p">,</span>
+        <span class="p">[</span>
 
-        <span class="err">&#39;</span><span class="nl">doi</span><span class="p">:</span><span class="mf">10.1126</span><span class="o">/</span><span class="n">science</span><span class="p">.</span><span class="n">aaf5664</span><span class="err">&#39;</span><span class="p">,</span>
+            <span class="s">&quot;doi:10.1126/science.352.6285.508&quot;</span><span class="p">,</span>
 
-        <span class="err">&#39;</span><span class="nl">doi</span><span class="p">:</span><span class="mf">10.5061</span><span class="o">/</span><span class="n">dryad</span><span class="p">.</span><span class="n">q447c</span><span class="o">/</span><span class="mi">1</span><span class="err">&#39;</span><span class="p">,</span>
+            <span class="s">&quot;doi:10.1126/science.aaf5664&quot;</span><span class="p">,</span>
 
-        <span class="err">&#39;</span><span class="nl">url</span><span class="p">:</span><span class="nl">https</span><span class="p">:</span><span class="c1">//www.courtlistener.com/docket/4355308/1/elsevier-inc-v-sci-hub/&#39;,</span>
+            <span class="s">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">,</span>
 
-    <span class="p">])</span>
+            <span class="s">&quot;url:https://www.courtlistener.com/docket/4355308/1/elsevier-inc-v-sci-hub/&quot;</span><span class="p">,</span>
+
+        <span class="p">]</span>
+
+    <span class="p">)</span>
 
     <span class="n">assert</span> <span class="n">citekeys</span> <span class="o">==</span> <span class="n">expected</span>
 </pre></div>
@@ -1316,17 +1318,17 @@ manuscript generation.</p>
 
     <span class="n">string_to_id</span> <span class="o">=</span> <span class="p">{</span>
 
-        <span class="err">&#39;</span><span class="nl">url</span><span class="p">:</span><span class="nl">https</span><span class="p">:</span><span class="c1">//github.com/manubot/manubot&#39;: &#39;mNMayr3f&#39;,</span>
+        <span class="s">&quot;url:https://github.com/manubot/manubot&quot;</span><span class="o">:</span> <span class="s">&quot;mNMayr3f&quot;</span><span class="p">,</span>
 
-        <span class="err">&#39;</span><span class="nl">url</span><span class="p">:</span><span class="nl">https</span><span class="p">:</span><span class="c1">//github.com/greenelab/manubot-rootstock&#39;: &#39;1B7Y2HVtw&#39;,</span>
+        <span class="s">&quot;url:https://github.com/greenelab/manubot-rootstock&quot;</span><span class="o">:</span> <span class="s">&quot;1B7Y2HVtw&quot;</span><span class="p">,</span>
 
     <span class="p">}</span>
 
-    <span class="n">text</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">our</span> <span class="n">new</span> <span class="n">Manubot</span> <span class="n">tool</span> <span class="p">[@</span><span class="nl">url</span><span class="p">:</span><span class="nl">https</span><span class="p">:</span><span class="c1">//github.com/greenelab/manubot-rootstock; @url:https://github.com/manubot/manubot] for automating manuscript generation.&#39;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s">&quot;our new Manubot tool [@url:https://github.com/greenelab/manubot-rootstock; @url:https://github.com/manubot/manubot] for automating manuscript generation.&quot;</span>
 
     <span class="n">text</span> <span class="o">=</span> <span class="n">update_manuscript_citekeys</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">string_to_id</span><span class="p">)</span>
 
-    <span class="n">assert</span> <span class="err">&#39;</span><span class="p">[</span><span class="mi">@1</span><span class="n">B7Y2HVtw</span><span class="p">;</span> <span class="p">@</span><span class="n">mNMayr3f</span><span class="p">]</span><span class="err">&#39;</span> <span class="k">in</span> <span class="n">text</span>
+    <span class="n">assert</span> <span class="s">&quot;[@1B7Y2HVtw; @mNMayr3f]&quot;</span> <span class="k">in</span> <span class="n">text</span>
 </pre></div>
 
 

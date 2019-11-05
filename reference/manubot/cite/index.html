@@ -1219,23 +1219,17 @@
                 <h1 id="module-manubotcite">Module manubot.cite</h1>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
 
-    <span class="s1">&#39;citation_to_citeproc&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;citation_to_citeproc&quot;</span><span class="p">,</span>
 
-    <span class="s1">&#39;citekey_to_csl_item&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;citekey_to_csl_item&quot;</span><span class="p">,</span>
 
-    <span class="s1">&#39;standardize_citation&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;standardize_citation&quot;</span><span class="p">,</span>
 
-    <span class="s1">&#39;standardize_citekey&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;standardize_citekey&quot;</span><span class="p">,</span>
 
 <span class="p">]</span>
 
-<span class="kn">from</span> <span class="nn">manubot.cite.citekey</span> <span class="kn">import</span> <span class="p">(</span>
-
-    <span class="n">citekey_to_csl_item</span><span class="p">,</span>
-
-    <span class="n">standardize_citekey</span><span class="p">,</span>
-
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">manubot.cite.citekey</span> <span class="kn">import</span> <span class="n">citekey_to_csl_item</span><span class="p">,</span> <span class="n">standardize_citekey</span>
 
 <span class="k">def</span> <span class="nf">citation_to_citeproc</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
@@ -1245,7 +1239,11 @@
 
         <span class="s2">&quot;&#39;citation_to_citeproc&#39; has been renamed to &#39;citekey_to_csl_item&#39;&quot;</span>
 
-        <span class="s2">&quot; and will be removed in a future release.&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+        <span class="s2">&quot; and will be removed in a future release.&quot;</span><span class="p">,</span>
+
+        <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">,</span>
+
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -1257,7 +1255,11 @@
 
         <span class="s2">&quot;&#39;standardize_citation&#39; has been renamed to &#39;standardize_citekey&#39;&quot;</span>
 
-        <span class="s2">&quot; and will be removed in a future release.&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+        <span class="s2">&quot; and will be removed in a future release.&quot;</span><span class="p">,</span>
+
+        <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">,</span>
+
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
@@ -1296,7 +1298,11 @@
 
         <span class="s2">&quot;&#39;citation_to_citeproc&#39; has been renamed to &#39;citekey_to_csl_item&#39;&quot;</span>
 
-        <span class="s2">&quot; and will be removed in a future release.&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+        <span class="s2">&quot; and will be removed in a future release.&quot;</span><span class="p">,</span>
+
+        <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">,</span>
+
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
@@ -1326,11 +1332,11 @@
 
     <span class="n">citekey</span> <span class="o">==</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">warn_if_changed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-    <span class="n">source</span><span class="p">,</span> <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">source</span><span class="p">,</span> <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">source</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">citeproc_retrievers</span><span class="p">:</span>
 
-        <span class="n">msg</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;Unsupported citation source {source!r} in {citekey!r}&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;Unsupported citation source {source!r} in {citekey!r}&quot;</span>
 
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
@@ -1340,13 +1346,9 @@
 
     <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-    <span class="n">note_text</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;This CSL JSON Item was automatically generated by Manubot v{manubot_version} using citation-by-identifier.&#39;</span>
+    <span class="n">note_text</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;This CSL JSON Item was automatically generated by Manubot v{manubot_version} using citation-by-identifier.&quot;</span>
 
-    <span class="n">note_dict</span> <span class="o">=</span> <span class="p">{</span>
-
-        <span class="s1">&#39;standard_id&#39;</span><span class="p">:</span> <span class="n">citekey</span><span class="p">,</span>
-
-    <span class="p">}</span>
+    <span class="n">note_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="n">citekey</span><span class="p">}</span>
 
     <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">note_text</span><span class="p">)</span>
 
@@ -1379,7 +1381,11 @@
 
         <span class="s2">&quot;&#39;standardize_citation&#39; has been renamed to &#39;standardize_citekey&#39;&quot;</span>
 
-        <span class="s2">&quot; and will be removed in a future release.&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+        <span class="s2">&quot; and will be removed in a future release.&quot;</span><span class="p">,</span>
+
+        <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">,</span>
+
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
@@ -1405,11 +1411,11 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">source</span><span class="p">,</span> <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">source</span><span class="p">,</span> <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;doi&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">&quot;doi&quot;</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="n">identifier</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;10/&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">identifier</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;10/&quot;</span><span class="p">):</span>
 
             <span class="kn">from</span> <span class="nn">manubot.cite.doi</span> <span class="kn">import</span> <span class="n">expand_short_doi</span>
 
@@ -1427,9 +1433,9 @@
 
                 <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
 
-                    <span class="n">f</span><span class="s1">&#39;Error in expand_short_doi for {identifier} &#39;</span>
+                    <span class="n">f</span><span class="s2">&quot;Error in expand_short_doi for {identifier} &quot;</span>
 
-                    <span class="n">f</span><span class="s1">&#39;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s1">{error}&#39;</span>
+                    <span class="n">f</span><span class="s2">&quot;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s2">{error}&quot;</span>
 
                 <span class="p">)</span>
 
@@ -1437,21 +1443,21 @@
 
         <span class="n">identifier</span> <span class="o">=</span> <span class="n">identifier</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;isbn&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">&quot;isbn&quot;</span><span class="p">:</span>
 
         <span class="kn">from</span> <span class="nn">isbnlib</span> <span class="kn">import</span> <span class="n">to_isbn13</span>
 
         <span class="n">identifier</span> <span class="o">=</span> <span class="n">to_isbn13</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
 
-    <span class="n">standard_citekey</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{source}:{identifier}&#39;</span>
+    <span class="n">standard_citekey</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{source}:{identifier}&quot;</span>
 
     <span class="k">if</span> <span class="n">warn_if_changed</span> <span class="ow">and</span> <span class="n">citekey</span> <span class="o">!=</span> <span class="n">standard_citekey</span><span class="p">:</span>
 
         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-            <span class="n">f</span><span class="s1">&#39;standardize_citekey expected citekey to already be standardized.</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">f</span><span class="s2">&quot;standardize_citekey expected citekey to already be standardized.</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-            <span class="n">f</span><span class="s1">&#39;Instead citekey was changed from {citekey!r} to {standard_citekey!r}&#39;</span>
+            <span class="n">f</span><span class="s2">&quot;Instead citekey was changed from {citekey!r} to {standard_citekey!r}&quot;</span>
 
         <span class="p">)</span>
 

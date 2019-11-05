@@ -1221,11 +1221,11 @@
 
 <span class="k">def</span> <span class="nf">test_citekey_to_csl_item_isbnlib_title_with_quotation_mark</span><span class="p">():</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_isbn_csl_item_isbnlib</span><span class="p">(</span><span class="s1">&#39;9780312353780&#39;</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_isbn_csl_item_isbnlib</span><span class="p">(</span><span class="s2">&quot;9780312353780&quot;</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;book&#39;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;book&quot;</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&quot;F&quot; is for Fugitive&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&quot;F&quot; is for Fugitive&#39;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">test_get_isbn_csl_item_citoid_weird_date</span><span class="p">():</span>
 
@@ -1237,11 +1237,11 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_isbn_csl_item_citoid</span><span class="p">(</span><span class="s1">&#39;9780719561023&#39;</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_isbn_csl_item_citoid</span><span class="p">(</span><span class="s2">&quot;9780719561023&quot;</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;issued&#39;</span><span class="p">][</span><span class="s1">&#39;date-parts&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[[</span><span class="mi">2004</span><span class="p">]]</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">][</span><span class="s2">&quot;date-parts&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[[</span><span class="mi">2004</span><span class="p">]]</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;ISBN&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;9780719561023&#39;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;ISBN&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;9780719561023&quot;</span>
 
 <span class="k">def</span> <span class="nf">test_get_isbn_csl_item_citoid_not_found</span><span class="p">():</span>
 
@@ -1253,9 +1253,9 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Metadata for ISBN [0-9]{10,13} not found&#39;</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Metadata for ISBN [0-9]{10,13} not found&quot;</span><span class="p">):</span>
 
-        <span class="n">get_isbn_csl_item_citoid</span><span class="p">(</span><span class="s1">&#39;9781439566039&#39;</span><span class="p">)</span>
+        <span class="n">get_isbn_csl_item_citoid</span><span class="p">(</span><span class="s2">&quot;9781439566039&quot;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">test_get_isbn_csl_item_zotero_with_note_issue</span><span class="p">():</span>
 
@@ -1269,11 +1269,11 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">isbn</span> <span class="o">=</span> <span class="s1">&#39;9780262517638&#39;</span>
+    <span class="n">isbn</span> <span class="o">=</span> <span class="s2">&quot;9780262517638&quot;</span>
 
     <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_isbn_csl_item_zotero</span><span class="p">(</span><span class="n">isbn</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;family&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Suber&#39;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Suber&quot;</span>
 </pre></div>
 
 
@@ -1290,11 +1290,11 @@
 
 <span class="nv">def</span> <span class="nv">test_citekey_to_csl_item_isbnlib_title_with_quotation_mark</span><span class="ss">()</span>:
 
-    <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">get_isbn_csl_item_isbnlib</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">9780312353780</span><span class="s1">&#39;</span><span class="ss">)</span>
+    <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">get_isbn_csl_item_isbnlib</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">9780312353780</span><span class="s2">&quot;</span><span class="ss">)</span>
 
-    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">type</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="s1">&#39;</span><span class="s">book</span><span class="s1">&#39;</span>
+    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">type</span><span class="s2">&quot;</span>] <span class="o">==</span> <span class="s2">&quot;</span><span class="s">book</span><span class="s2">&quot;</span>
 
-    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">title</span><span class="s1">&#39;</span>].<span class="nv">startswith</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">&quot;F&quot; is for Fugitive</span><span class="s1">&#39;</span><span class="ss">)</span>
+    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">title</span><span class="s2">&quot;</span>].<span class="nv">startswith</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">&quot;F&quot; is for Fugitive</span><span class="s1">&#39;</span><span class="ss">)</span>
 </pre></div>
 
 
@@ -1318,9 +1318,9 @@ https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9781439566039</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">with</span> <span class="nv">pytest</span>.<span class="nv">raises</span><span class="ss">(</span><span class="nv">KeyError</span>, <span class="nv">match</span><span class="o">=</span><span class="nv">r</span><span class="s1">&#39;</span><span class="s">Metadata for ISBN [0-9]{10,13} not found</span><span class="s1">&#39;</span><span class="ss">)</span>:
+    <span class="nv">with</span> <span class="nv">pytest</span>.<span class="nv">raises</span><span class="ss">(</span><span class="nv">KeyError</span>, <span class="nv">match</span><span class="o">=</span><span class="nv">r</span><span class="s2">&quot;</span><span class="s">Metadata for ISBN [0-9]{10,13} not found</span><span class="s2">&quot;</span><span class="ss">)</span>:
 
-        <span class="nv">get_isbn_csl_item_citoid</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">9781439566039</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">get_isbn_csl_item_citoid</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">9781439566039</span><span class="s2">&quot;</span><span class="ss">)</span>
 </pre></div>
 
 
@@ -1344,11 +1344,11 @@ https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9780719561023</p>
 
 <span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_isbn_csl_item_citoid</span><span class="p">(</span><span class="s1">&#39;9780719561023&#39;</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_isbn_csl_item_citoid</span><span class="p">(</span><span class="ss">&quot;9780719561023&quot;</span><span class="p">)</span>
 
-    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;issued&#39;</span><span class="p">][</span><span class="s1">&#39;date-parts&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[[</span><span class="mi">2004</span><span class="p">]]</span>
+    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;issued&quot;</span><span class="p">][</span><span class="ss">&quot;date-parts&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[[</span><span class="mi">2004</span><span class="p">]]</span>
 
-    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;ISBN&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;9780719561023&#39;</span>
+    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;ISBN&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;9780719561023&quot;</span>
 </pre></div>
 
 
@@ -1375,11 +1375,11 @@ https://github.com/zotero/translation-server/issues/67</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">isbn</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s">9780262517638</span><span class="s1">&#39;</span>
+    <span class="nv">isbn</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">9780262517638</span><span class="s2">&quot;</span>
 
     <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">get_isbn_csl_item_zotero</span><span class="ss">(</span><span class="nv">isbn</span><span class="ss">)</span>
 
-    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s1">&#39;</span><span class="s">author</span><span class="s1">&#39;</span>][<span class="mi">0</span>][<span class="s1">&#39;</span><span class="s">family</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="s1">&#39;</span><span class="s">Suber</span><span class="s1">&#39;</span>
+    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">author</span><span class="s2">&quot;</span>][<span class="mi">0</span>][<span class="s2">&quot;</span><span class="s">family</span><span class="s2">&quot;</span>] <span class="o">==</span> <span class="s2">&quot;</span><span class="s">Suber</span><span class="s2">&quot;</span>
 </pre></div>
 
 

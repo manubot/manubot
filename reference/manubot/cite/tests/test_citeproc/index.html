@@ -1211,31 +1211,23 @@
 
 <span class="kn">import</span> <span class="nn">pytest</span>
 
-<span class="kn">from</span> <span class="nn">manubot.cite.citeproc</span> <span class="kn">import</span> <span class="p">(</span>
-
-    <span class="n">remove_jsonschema_errors</span><span class="p">,</span>
-
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">manubot.cite.citeproc</span> <span class="kn">import</span> <span class="n">remove_jsonschema_errors</span>
 
 <span class="n">directory</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
 
-<span class="n">csl_instances</span> <span class="o">=</span> <span class="p">[</span>
-
-    <span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">directory</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;csl-json/*-csl&#39;</span><span class="p">)</span>
-
-<span class="p">]</span>
+<span class="n">csl_instances</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">directory</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;csl-json/*-csl&quot;</span><span class="p">)]</span>
 
 <span class="k">def</span> <span class="nf">load_json</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
 
-    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">))</span>
 
 <span class="k">def</span> <span class="nf">test_json_is_readable_on_windows_in_different_oem_encoding</span><span class="p">():</span>
 
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;crossref-deep-review-csl&#39;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;crossref-deep-review-csl&quot;</span>
 
-    <span class="n">path</span> <span class="o">=</span> <span class="n">directory</span> <span class="o">/</span> <span class="s1">&#39;csl-json&#39;</span> <span class="o">/</span> <span class="n">name</span> <span class="o">/</span> <span class="s1">&#39;raw.json&#39;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">directory</span> <span class="o">/</span> <span class="s2">&quot;csl-json&quot;</span> <span class="o">/</span> <span class="n">name</span> <span class="o">/</span> <span class="s2">&quot;raw.json&quot;</span>
 
-    <span class="n">content</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
 
     <span class="k">assert</span> <span class="n">content</span>
 
@@ -1243,7 +1235,7 @@
 
     <span class="k">assert</span> <span class="n">json1</span>
 
-<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">csl_instances</span><span class="p">)</span>
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">csl_instances</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">test_remove_jsonschema_errors</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
 
@@ -1269,11 +1261,11 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">data_dir</span> <span class="o">=</span> <span class="n">directory</span> <span class="o">/</span> <span class="s1">&#39;csl-json&#39;</span> <span class="o">/</span> <span class="n">name</span>
+    <span class="n">data_dir</span> <span class="o">=</span> <span class="n">directory</span> <span class="o">/</span> <span class="s2">&quot;csl-json&quot;</span> <span class="o">/</span> <span class="n">name</span>
 
-    <span class="n">raw</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s1">&#39;raw.json&#39;</span><span class="p">)</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;raw.json&quot;</span><span class="p">)</span>
 
-    <span class="n">expected</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s1">&#39;pruned.json&#39;</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;pruned.json&quot;</span><span class="p">)</span>
 
     <span class="n">pruned</span> <span class="o">=</span> <span class="n">remove_jsonschema_errors</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
@@ -1301,7 +1293,7 @@
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">load_json</span><span class="ss">(</span><span class="nv">path</span><span class="ss">)</span>:
 
-    <span class="k">return</span> <span class="nv">json</span>.<span class="nv">loads</span><span class="ss">(</span><span class="nv">path</span>.<span class="nv">read_text</span><span class="ss">(</span><span class="nv">encoding</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">utf-8-sig</span><span class="s1">&#39;</span><span class="ss">))</span>
+    <span class="k">return</span> <span class="nv">json</span>.<span class="nv">loads</span><span class="ss">(</span><span class="nv">path</span>.<span class="nv">read_text</span><span class="ss">(</span><span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">utf-8-sig</span><span class="s2">&quot;</span><span class="ss">))</span>
 </pre></div>
 
 
@@ -1315,11 +1307,11 @@
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_json_is_readable_on_windows_in_different_oem_encoding</span><span class="p">():</span>
 
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;crossref-deep-review-csl&#39;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="ss">&quot;crossref-deep-review-csl&quot;</span>
 
-    <span class="n">path</span> <span class="o">=</span> <span class="n">directory</span> <span class="o">/</span> <span class="s1">&#39;csl-json&#39;</span> <span class="o">/</span> <span class="n">name</span> <span class="o">/</span> <span class="s1">&#39;raw.json&#39;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">directory</span> <span class="o">/</span> <span class="ss">&quot;csl-json&quot;</span> <span class="o">/</span> <span class="n">name</span> <span class="o">/</span> <span class="ss">&quot;raw.json&quot;</span>
 
-    <span class="n">content</span> <span class="o">=</span> <span class="n">path</span><span class="p">.</span><span class="n">read_text</span><span class="p">(</span><span class="k">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">path</span><span class="p">.</span><span class="n">read_text</span><span class="p">(</span><span class="k">encoding</span><span class="o">=</span><span class="ss">&quot;utf-8-sig&quot;</span><span class="p">)</span>
 
     <span class="n">assert</span> <span class="n">content</span>
 
@@ -1346,7 +1338,7 @@ generate be tested.</p>
 <p>To create a new test case, derive pruned.json from raw.json, by manually
 deleting any invalid fields. Do not use <code>manubot cite</code> to directly generate
 pruned.json as that also relies on remove_jsonschema_errors for pruning.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>@<span class="nv">pytest</span>.<span class="nv">mark</span>.<span class="nv">parametrize</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">name</span><span class="s1">&#39;</span>, <span class="nv">csl_instances</span><span class="ss">)</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>@<span class="nv">pytest</span>.<span class="nv">mark</span>.<span class="nv">parametrize</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">name</span><span class="s2">&quot;</span>, <span class="nv">csl_instances</span><span class="ss">)</span>
 
 <span class="nv">def</span> <span class="nv">test_remove_jsonschema_errors</span><span class="ss">(</span><span class="nv">name</span><span class="ss">)</span>:
 
@@ -1372,11 +1364,11 @@ pruned.json as that also relies on remove_jsonschema_errors for pruning.</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">data_dir</span> <span class="o">=</span> <span class="nv">directory</span> <span class="o">/</span> <span class="s1">&#39;</span><span class="s">csl-json</span><span class="s1">&#39;</span> <span class="o">/</span> <span class="nv">name</span>
+    <span class="nv">data_dir</span> <span class="o">=</span> <span class="nv">directory</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s">csl-json</span><span class="s2">&quot;</span> <span class="o">/</span> <span class="nv">name</span>
 
-    <span class="nv">raw</span> <span class="o">=</span> <span class="nv">load_json</span><span class="ss">(</span><span class="nv">data_dir</span> <span class="o">/</span> <span class="s1">&#39;</span><span class="s">raw.json</span><span class="s1">&#39;</span><span class="ss">)</span>
+    <span class="nv">raw</span> <span class="o">=</span> <span class="nv">load_json</span><span class="ss">(</span><span class="nv">data_dir</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s">raw.json</span><span class="s2">&quot;</span><span class="ss">)</span>
 
-    <span class="nv">expected</span> <span class="o">=</span> <span class="nv">load_json</span><span class="ss">(</span><span class="nv">data_dir</span> <span class="o">/</span> <span class="s1">&#39;</span><span class="s">pruned.json</span><span class="s1">&#39;</span><span class="ss">)</span>
+    <span class="nv">expected</span> <span class="o">=</span> <span class="nv">load_json</span><span class="ss">(</span><span class="nv">data_dir</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s">pruned.json</span><span class="s2">&quot;</span><span class="ss">)</span>
 
     <span class="nv">pruned</span> <span class="o">=</span> <span class="nv">remove_jsonschema_errors</span><span class="ss">(</span><span class="nv">raw</span><span class="ss">)</span>
 

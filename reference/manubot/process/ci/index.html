@@ -1193,13 +1193,7 @@
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="n">supported_providers</span> <span class="o">=</span> <span class="p">[</span>
-
-    <span class="s1">&#39;travis&#39;</span><span class="p">,</span>
-
-    <span class="s1">&#39;appveyor&#39;</span><span class="p">,</span>
-
-<span class="p">]</span>
+<span class="n">supported_providers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;travis&quot;</span><span class="p">,</span> <span class="s2">&quot;appveyor&quot;</span><span class="p">]</span>
 
 <span class="k">def</span> <span class="nf">get_continuous_integration_parameters</span><span class="p">():</span>
 
@@ -1233,79 +1227,87 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;CI&#39;</span><span class="p">,</span> <span class="s1">&#39;false&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;true&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CI&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
 
         <span class="c1"># No continuous integration environment detected</span>
 
         <span class="k">return</span> <span class="bp">None</span>
 
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TRAVIS&#39;</span><span class="p">,</span> <span class="s1">&#39;false&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;true&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;TRAVIS&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
 
         <span class="c1"># https://docs.travis-ci.com/user/environment-variables/</span>
 
-        <span class="n">repo_slug</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TRAVIS_REPO_SLUG&#39;</span><span class="p">]</span>
+        <span class="n">repo_slug</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TRAVIS_REPO_SLUG&quot;</span><span class="p">]</span>
 
-        <span class="n">repo_owner</span><span class="p">,</span> <span class="n">repo_name</span> <span class="o">=</span> <span class="n">repo_slug</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+        <span class="n">repo_owner</span><span class="p">,</span> <span class="n">repo_name</span> <span class="o">=</span> <span class="n">repo_slug</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="p">{</span>
 
-            <span class="s1">&#39;provider&#39;</span><span class="p">:</span> <span class="s1">&#39;travis&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;provider&quot;</span><span class="p">:</span> <span class="s2">&quot;travis&quot;</span><span class="p">,</span>
 
-            <span class="s1">&#39;repo_slug&#39;</span><span class="p">:</span> <span class="n">repo_slug</span><span class="p">,</span>
+            <span class="s2">&quot;repo_slug&quot;</span><span class="p">:</span> <span class="n">repo_slug</span><span class="p">,</span>
 
-            <span class="s1">&#39;repo_owner&#39;</span><span class="p">:</span> <span class="n">repo_owner</span><span class="p">,</span>
+            <span class="s2">&quot;repo_owner&quot;</span><span class="p">:</span> <span class="n">repo_owner</span><span class="p">,</span>
 
-            <span class="s1">&#39;repo_name&#39;</span><span class="p">:</span> <span class="n">repo_name</span><span class="p">,</span>
+            <span class="s2">&quot;repo_name&quot;</span><span class="p">:</span> <span class="n">repo_name</span><span class="p">,</span>
 
-            <span class="s1">&#39;commit&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TRAVIS_COMMIT&#39;</span><span class="p">],</span>
+            <span class="s2">&quot;commit&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TRAVIS_COMMIT&quot;</span><span class="p">],</span>
 
-            <span class="s1">&#39;triggering_commit&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TRAVIS_PULL_REQUEST_SHA&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TRAVIS_COMMIT&#39;</span><span class="p">],</span>
+            <span class="s2">&quot;triggering_commit&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;TRAVIS_PULL_REQUEST_SHA&quot;</span><span class="p">)</span>
 
-            <span class="s1">&#39;build_url&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TRAVIS_BUILD_WEB_URL&#39;</span><span class="p">],</span>
+            <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TRAVIS_COMMIT&quot;</span><span class="p">],</span>
 
-            <span class="s1">&#39;job_url&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TRAVIS_JOB_WEB_URL&#39;</span><span class="p">],</span>
+            <span class="s2">&quot;build_url&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TRAVIS_BUILD_WEB_URL&quot;</span><span class="p">],</span>
+
+            <span class="s2">&quot;job_url&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TRAVIS_JOB_WEB_URL&quot;</span><span class="p">],</span>
 
         <span class="p">}</span>
 
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;APPVEYOR&#39;</span><span class="p">,</span> <span class="s1">&#39;false&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;true&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;APPVEYOR&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
 
         <span class="c1"># https://www.appveyor.com/docs/environment-variables/</span>
 
-        <span class="n">repo_slug</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;APPVEYOR_REPO_NAME&#39;</span><span class="p">]</span>
+        <span class="n">repo_slug</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;APPVEYOR_REPO_NAME&quot;</span><span class="p">]</span>
 
-        <span class="n">repo_owner</span><span class="p">,</span> <span class="n">repo_name</span> <span class="o">=</span> <span class="n">repo_slug</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+        <span class="n">repo_owner</span><span class="p">,</span> <span class="n">repo_name</span> <span class="o">=</span> <span class="n">repo_slug</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 
-        <span class="n">provider_url</span> <span class="o">=</span> <span class="s1">&#39;{APPVEYOR_URL}/project/{APPVEYOR_ACCOUNT_NAME}/{APPVEYOR_PROJECT_SLUG}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>
+        <span class="n">provider_url</span> <span class="o">=</span> <span class="s2">&quot;{APPVEYOR_URL}/project/{APPVEYOR_ACCOUNT_NAME}/{APPVEYOR_PROJECT_SLUG}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+
+            <span class="o">**</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span>
+
+        <span class="p">)</span>
 
         <span class="k">return</span> <span class="p">{</span>
 
-            <span class="s1">&#39;provider&#39;</span><span class="p">:</span> <span class="s1">&#39;appveyor&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;provider&quot;</span><span class="p">:</span> <span class="s2">&quot;appveyor&quot;</span><span class="p">,</span>
 
-            <span class="s1">&#39;provider_account&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;APPVEYOR_ACCOUNT_NAME&#39;</span><span class="p">],</span>
+            <span class="s2">&quot;provider_account&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;APPVEYOR_ACCOUNT_NAME&quot;</span><span class="p">],</span>
 
-            <span class="s1">&#39;repo_slug&#39;</span><span class="p">:</span> <span class="n">repo_slug</span><span class="p">,</span>
+            <span class="s2">&quot;repo_slug&quot;</span><span class="p">:</span> <span class="n">repo_slug</span><span class="p">,</span>
 
-            <span class="s1">&#39;repo_owner&#39;</span><span class="p">:</span> <span class="n">repo_owner</span><span class="p">,</span>
+            <span class="s2">&quot;repo_owner&quot;</span><span class="p">:</span> <span class="n">repo_owner</span><span class="p">,</span>
 
-            <span class="s1">&#39;repo_name&#39;</span><span class="p">:</span> <span class="n">repo_name</span><span class="p">,</span>
+            <span class="s2">&quot;repo_name&quot;</span><span class="p">:</span> <span class="n">repo_name</span><span class="p">,</span>
 
-            <span class="s1">&#39;commit&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;APPVEYOR_REPO_COMMIT&#39;</span><span class="p">],</span>
+            <span class="s2">&quot;commit&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;APPVEYOR_REPO_COMMIT&quot;</span><span class="p">],</span>
 
-            <span class="s1">&#39;triggering_commit&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;APPVEYOR_PULL_REQUEST_HEAD_COMMIT&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;APPVEYOR_REPO_COMMIT&#39;</span><span class="p">],</span>
+            <span class="s2">&quot;triggering_commit&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;APPVEYOR_PULL_REQUEST_HEAD_COMMIT&quot;</span><span class="p">)</span>
 
-            <span class="s1">&#39;build_url&#39;</span><span class="p">:</span> <span class="n">f</span><span class="s2">&quot;{provider_url}/builds/{os.environ[&#39;APPVEYOR_BUILD_ID&#39;]}&quot;</span><span class="p">,</span>
+            <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;APPVEYOR_REPO_COMMIT&quot;</span><span class="p">],</span>
 
-            <span class="s1">&#39;job_url&#39;</span><span class="p">:</span> <span class="n">f</span><span class="s2">&quot;{provider_url}/build/job/{os.environ[&#39;APPVEYOR_JOB_ID&#39;]}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;build_url&quot;</span><span class="p">:</span> <span class="n">f</span><span class="s2">&quot;{provider_url}/builds/{os.environ[&#39;APPVEYOR_BUILD_ID&#39;]}&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;job_url&quot;</span><span class="p">:</span> <span class="n">f</span><span class="s2">&quot;{provider_url}/build/job/{os.environ[&#39;APPVEYOR_JOB_ID&#39;]}&quot;</span><span class="p">,</span>
 
         <span class="p">}</span>
 
     <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-        <span class="s1">&#39;Detected CI environment variable, but get_continuous_integration_parameters &#39;</span>
+        <span class="s2">&quot;Detected CI environment variable, but get_continuous_integration_parameters &quot;</span>
 
-        <span class="s1">&#39;did not detect environment variables for a supported CI provider. &#39;</span>
+        <span class="s2">&quot;did not detect environment variables for a supported CI provider. &quot;</span>
 
-        <span class="s1">&#39;Supported providers are: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supported_providers</span><span class="p">))</span>
+        <span class="s2">&quot;Supported providers are: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supported_providers</span><span class="p">))</span>
 
     <span class="p">)</span>
 
@@ -1329,21 +1331,19 @@
 
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ci_params</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
 
-    <span class="n">provider</span> <span class="o">=</span> <span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;provider&#39;</span><span class="p">)</span>
+    <span class="n">provider</span> <span class="o">=</span> <span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;provider&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">provider</span> <span class="o">==</span> <span class="s1">&#39;travis&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&quot;travis&quot;</span><span class="p">:</span>
 
-        <span class="n">ci_params</span><span class="p">[</span><span class="s1">&#39;manuscript_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">ci_params</span><span class="p">[</span>
 
-            <span class="s2">&quot;https://{repo_owner}.github.io/{repo_name}/v/{commit}/&quot;</span>
+            <span class="s2">&quot;manuscript_url&quot;</span>
 
-            <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">ci_params</span><span class="p">)</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;https://{repo_owner}.github.io/{repo_name}/v/{commit}/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">ci_params</span><span class="p">)</span>
 
-        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&quot;appveyor&quot;</span><span class="p">:</span>
 
-    <span class="k">if</span> <span class="n">provider</span> <span class="o">==</span> <span class="s1">&#39;appveyor&#39;</span><span class="p">:</span>
-
-        <span class="n">ci_params</span><span class="p">[</span><span class="s1">&#39;manuscript_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{ci_params[&#39;build_url&#39;]}/artifacts&quot;</span>
+        <span class="n">ci_params</span><span class="p">[</span><span class="s2">&quot;manuscript_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{ci_params[&#39;build_url&#39;]}/artifacts&quot;</span>
 
     <span class="k">return</span> <span class="n">ci_params</span>
 </pre></div>
@@ -1384,21 +1384,19 @@ AppVeyor is used for storing manuscript artifacts for pull request builds.</p>
 
     <span class="nv">assert</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">ci_params</span>, <span class="nv">dict</span><span class="ss">)</span>
 
-    <span class="nv">provider</span> <span class="o">=</span> <span class="nv">ci_params</span>.<span class="nv">get</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">provider</span><span class="s1">&#39;</span><span class="ss">)</span>
+    <span class="nv">provider</span> <span class="o">=</span> <span class="nv">ci_params</span>.<span class="nv">get</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">provider</span><span class="s2">&quot;</span><span class="ss">)</span>
 
-    <span class="k">if</span> <span class="nv">provider</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="s">travis</span><span class="s1">&#39;</span>:
+    <span class="k">if</span> <span class="nv">provider</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">travis</span><span class="s2">&quot;</span>:
 
-        <span class="nv">ci_params</span>[<span class="s1">&#39;</span><span class="s">manuscript_url</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="ss">(</span>
+        <span class="nv">ci_params</span>[
 
-            <span class="s2">&quot;</span><span class="s">https://{repo_owner}.github.io/{repo_name}/v/{commit}/</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;</span><span class="s">manuscript_url</span><span class="s2">&quot;</span>
 
-            .<span class="nv">format</span><span class="ss">(</span><span class="o">**</span><span class="nv">ci_params</span><span class="ss">)</span>
+        ] <span class="o">=</span> <span class="s2">&quot;</span><span class="s">https://{repo_owner}.github.io/{repo_name}/v/{commit}/</span><span class="s2">&quot;</span>.<span class="nv">format</span><span class="ss">(</span><span class="o">**</span><span class="nv">ci_params</span><span class="ss">)</span>
 
-        <span class="ss">)</span>
+    <span class="k">if</span> <span class="nv">provider</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">appveyor</span><span class="s2">&quot;</span>:
 
-    <span class="k">if</span> <span class="nv">provider</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="s">appveyor</span><span class="s1">&#39;</span>:
-
-        <span class="nv">ci_params</span>[<span class="s1">&#39;</span><span class="s">manuscript_url</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{ci_params[&#39;build_url&#39;]}/artifacts</span><span class="s2">&quot;</span>
+        <span class="nv">ci_params</span>[<span class="s2">&quot;</span><span class="s">manuscript_url</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{ci_params[&#39;build_url&#39;]}/artifacts</span><span class="s2">&quot;</span>
 
     <span class="k">return</span> <span class="nv">ci_params</span>
 </pre></div>
@@ -1457,79 +1455,87 @@ inferred from environment variables.</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="nv">os</span>.<span class="k">getenv</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">CI</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">false</span><span class="s1">&#39;</span><span class="ss">)</span>.<span class="nv">lower</span><span class="ss">()</span> <span class="o">!=</span> <span class="s1">&#39;</span><span class="s">true</span><span class="s1">&#39;</span>:
+    <span class="k">if</span> <span class="nv">os</span>.<span class="k">getenv</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">CI</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">false</span><span class="s2">&quot;</span><span class="ss">)</span>.<span class="nv">lower</span><span class="ss">()</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="s">true</span><span class="s2">&quot;</span>:
 
         # <span class="nv">No</span> <span class="nv">continuous</span> <span class="nv">integration</span> <span class="nv">environment</span> <span class="nv">detected</span>
 
         <span class="k">return</span> <span class="nv">None</span>
 
-    <span class="k">if</span> <span class="nv">os</span>.<span class="k">getenv</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">TRAVIS</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">false</span><span class="s1">&#39;</span><span class="ss">)</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="s">true</span><span class="s1">&#39;</span>:
+    <span class="k">if</span> <span class="nv">os</span>.<span class="k">getenv</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">TRAVIS</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">false</span><span class="s2">&quot;</span><span class="ss">)</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">true</span><span class="s2">&quot;</span>:
 
         # <span class="nv">https</span>:<span class="o">//</span><span class="nv">docs</span>.<span class="nv">travis</span><span class="o">-</span><span class="nv">ci</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">user</span><span class="o">/</span><span class="nv">environment</span><span class="o">-</span><span class="nv">variables</span><span class="o">/</span>
 
-        <span class="nv">repo_slug</span> <span class="o">=</span> <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s1">&#39;</span><span class="s">TRAVIS_REPO_SLUG</span><span class="s1">&#39;</span>]
+        <span class="nv">repo_slug</span> <span class="o">=</span> <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s2">&quot;</span><span class="s">TRAVIS_REPO_SLUG</span><span class="s2">&quot;</span>]
 
-        <span class="nv">repo_owner</span>, <span class="nv">repo_name</span> <span class="o">=</span> <span class="nv">repo_slug</span>.<span class="nv">split</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">/</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">repo_owner</span>, <span class="nv">repo_name</span> <span class="o">=</span> <span class="nv">repo_slug</span>.<span class="nv">split</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">/</span><span class="s2">&quot;</span><span class="ss">)</span>
 
         <span class="k">return</span> {
 
-            <span class="s1">&#39;</span><span class="s">provider</span><span class="s1">&#39;</span>: <span class="s1">&#39;</span><span class="s">travis</span><span class="s1">&#39;</span>,
+            <span class="s2">&quot;</span><span class="s">provider</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">travis</span><span class="s2">&quot;</span>,
 
-            <span class="s1">&#39;</span><span class="s">repo_slug</span><span class="s1">&#39;</span>: <span class="nv">repo_slug</span>,
+            <span class="s2">&quot;</span><span class="s">repo_slug</span><span class="s2">&quot;</span>: <span class="nv">repo_slug</span>,
 
-            <span class="s1">&#39;</span><span class="s">repo_owner</span><span class="s1">&#39;</span>: <span class="nv">repo_owner</span>,
+            <span class="s2">&quot;</span><span class="s">repo_owner</span><span class="s2">&quot;</span>: <span class="nv">repo_owner</span>,
 
-            <span class="s1">&#39;</span><span class="s">repo_name</span><span class="s1">&#39;</span>: <span class="nv">repo_name</span>,
+            <span class="s2">&quot;</span><span class="s">repo_name</span><span class="s2">&quot;</span>: <span class="nv">repo_name</span>,
 
-            <span class="s1">&#39;</span><span class="s">commit</span><span class="s1">&#39;</span>: <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s1">&#39;</span><span class="s">TRAVIS_COMMIT</span><span class="s1">&#39;</span>],
+            <span class="s2">&quot;</span><span class="s">commit</span><span class="s2">&quot;</span>: <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s2">&quot;</span><span class="s">TRAVIS_COMMIT</span><span class="s2">&quot;</span>],
 
-            <span class="s1">&#39;</span><span class="s">triggering_commit</span><span class="s1">&#39;</span>: <span class="nv">os</span>.<span class="k">getenv</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">TRAVIS_PULL_REQUEST_SHA</span><span class="s1">&#39;</span><span class="ss">)</span> <span class="nv">or</span> <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s1">&#39;</span><span class="s">TRAVIS_COMMIT</span><span class="s1">&#39;</span>],
+            <span class="s2">&quot;</span><span class="s">triggering_commit</span><span class="s2">&quot;</span>: <span class="nv">os</span>.<span class="k">getenv</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">TRAVIS_PULL_REQUEST_SHA</span><span class="s2">&quot;</span><span class="ss">)</span>
 
-            <span class="s1">&#39;</span><span class="s">build_url</span><span class="s1">&#39;</span>: <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s1">&#39;</span><span class="s">TRAVIS_BUILD_WEB_URL</span><span class="s1">&#39;</span>],
+            <span class="nv">or</span> <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s2">&quot;</span><span class="s">TRAVIS_COMMIT</span><span class="s2">&quot;</span>],
 
-            <span class="s1">&#39;</span><span class="s">job_url</span><span class="s1">&#39;</span>: <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s1">&#39;</span><span class="s">TRAVIS_JOB_WEB_URL</span><span class="s1">&#39;</span>],
+            <span class="s2">&quot;</span><span class="s">build_url</span><span class="s2">&quot;</span>: <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s2">&quot;</span><span class="s">TRAVIS_BUILD_WEB_URL</span><span class="s2">&quot;</span>],
+
+            <span class="s2">&quot;</span><span class="s">job_url</span><span class="s2">&quot;</span>: <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s2">&quot;</span><span class="s">TRAVIS_JOB_WEB_URL</span><span class="s2">&quot;</span>],
 
         }
 
-    <span class="k">if</span> <span class="nv">os</span>.<span class="k">getenv</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">APPVEYOR</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">false</span><span class="s1">&#39;</span><span class="ss">)</span>.<span class="nv">lower</span><span class="ss">()</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="s">true</span><span class="s1">&#39;</span>:
+    <span class="k">if</span> <span class="nv">os</span>.<span class="k">getenv</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">APPVEYOR</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">false</span><span class="s2">&quot;</span><span class="ss">)</span>.<span class="nv">lower</span><span class="ss">()</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">true</span><span class="s2">&quot;</span>:
 
         # <span class="nv">https</span>:<span class="o">//</span><span class="nv">www</span>.<span class="nv">appveyor</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">docs</span><span class="o">/</span><span class="nv">environment</span><span class="o">-</span><span class="nv">variables</span><span class="o">/</span>
 
-        <span class="nv">repo_slug</span> <span class="o">=</span> <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s1">&#39;</span><span class="s">APPVEYOR_REPO_NAME</span><span class="s1">&#39;</span>]
+        <span class="nv">repo_slug</span> <span class="o">=</span> <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s2">&quot;</span><span class="s">APPVEYOR_REPO_NAME</span><span class="s2">&quot;</span>]
 
-        <span class="nv">repo_owner</span>, <span class="nv">repo_name</span> <span class="o">=</span> <span class="nv">repo_slug</span>.<span class="nv">split</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">/</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">repo_owner</span>, <span class="nv">repo_name</span> <span class="o">=</span> <span class="nv">repo_slug</span>.<span class="nv">split</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">/</span><span class="s2">&quot;</span><span class="ss">)</span>
 
-        <span class="nv">provider_url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s">{APPVEYOR_URL}/project/{APPVEYOR_ACCOUNT_NAME}/{APPVEYOR_PROJECT_SLUG}</span><span class="s1">&#39;</span>.<span class="nv">format</span><span class="ss">(</span><span class="o">**</span><span class="nv">os</span>.<span class="nv">environ</span><span class="ss">)</span>
+        <span class="nv">provider_url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">{APPVEYOR_URL}/project/{APPVEYOR_ACCOUNT_NAME}/{APPVEYOR_PROJECT_SLUG}</span><span class="s2">&quot;</span>.<span class="nv">format</span><span class="ss">(</span>
+
+            <span class="o">**</span><span class="nv">os</span>.<span class="nv">environ</span>
+
+        <span class="ss">)</span>
 
         <span class="k">return</span> {
 
-            <span class="s1">&#39;</span><span class="s">provider</span><span class="s1">&#39;</span>: <span class="s1">&#39;</span><span class="s">appveyor</span><span class="s1">&#39;</span>,
+            <span class="s2">&quot;</span><span class="s">provider</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">appveyor</span><span class="s2">&quot;</span>,
 
-            <span class="s1">&#39;</span><span class="s">provider_account</span><span class="s1">&#39;</span>: <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s1">&#39;</span><span class="s">APPVEYOR_ACCOUNT_NAME</span><span class="s1">&#39;</span>],
+            <span class="s2">&quot;</span><span class="s">provider_account</span><span class="s2">&quot;</span>: <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s2">&quot;</span><span class="s">APPVEYOR_ACCOUNT_NAME</span><span class="s2">&quot;</span>],
 
-            <span class="s1">&#39;</span><span class="s">repo_slug</span><span class="s1">&#39;</span>: <span class="nv">repo_slug</span>,
+            <span class="s2">&quot;</span><span class="s">repo_slug</span><span class="s2">&quot;</span>: <span class="nv">repo_slug</span>,
 
-            <span class="s1">&#39;</span><span class="s">repo_owner</span><span class="s1">&#39;</span>: <span class="nv">repo_owner</span>,
+            <span class="s2">&quot;</span><span class="s">repo_owner</span><span class="s2">&quot;</span>: <span class="nv">repo_owner</span>,
 
-            <span class="s1">&#39;</span><span class="s">repo_name</span><span class="s1">&#39;</span>: <span class="nv">repo_name</span>,
+            <span class="s2">&quot;</span><span class="s">repo_name</span><span class="s2">&quot;</span>: <span class="nv">repo_name</span>,
 
-            <span class="s1">&#39;</span><span class="s">commit</span><span class="s1">&#39;</span>: <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s1">&#39;</span><span class="s">APPVEYOR_REPO_COMMIT</span><span class="s1">&#39;</span>],
+            <span class="s2">&quot;</span><span class="s">commit</span><span class="s2">&quot;</span>: <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s2">&quot;</span><span class="s">APPVEYOR_REPO_COMMIT</span><span class="s2">&quot;</span>],
 
-            <span class="s1">&#39;</span><span class="s">triggering_commit</span><span class="s1">&#39;</span>: <span class="nv">os</span>.<span class="k">getenv</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">APPVEYOR_PULL_REQUEST_HEAD_COMMIT</span><span class="s1">&#39;</span><span class="ss">)</span> <span class="nv">or</span> <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s1">&#39;</span><span class="s">APPVEYOR_REPO_COMMIT</span><span class="s1">&#39;</span>],
+            <span class="s2">&quot;</span><span class="s">triggering_commit</span><span class="s2">&quot;</span>: <span class="nv">os</span>.<span class="k">getenv</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">APPVEYOR_PULL_REQUEST_HEAD_COMMIT</span><span class="s2">&quot;</span><span class="ss">)</span>
 
-            <span class="s1">&#39;</span><span class="s">build_url</span><span class="s1">&#39;</span>: <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{provider_url}/builds/{os.environ[&#39;APPVEYOR_BUILD_ID&#39;]}</span><span class="s2">&quot;</span>,
+            <span class="nv">or</span> <span class="nv">os</span>.<span class="nv">environ</span>[<span class="s2">&quot;</span><span class="s">APPVEYOR_REPO_COMMIT</span><span class="s2">&quot;</span>],
 
-            <span class="s1">&#39;</span><span class="s">job_url</span><span class="s1">&#39;</span>: <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{provider_url}/build/job/{os.environ[&#39;APPVEYOR_JOB_ID&#39;]}</span><span class="s2">&quot;</span>,
+            <span class="s2">&quot;</span><span class="s">build_url</span><span class="s2">&quot;</span>: <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{provider_url}/builds/{os.environ[&#39;APPVEYOR_BUILD_ID&#39;]}</span><span class="s2">&quot;</span>,
+
+            <span class="s2">&quot;</span><span class="s">job_url</span><span class="s2">&quot;</span>: <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{provider_url}/build/job/{os.environ[&#39;APPVEYOR_JOB_ID&#39;]}</span><span class="s2">&quot;</span>,
 
         }
 
     <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
 
-        <span class="s1">&#39;</span><span class="s">Detected CI environment variable, but get_continuous_integration_parameters </span><span class="s1">&#39;</span>
+        <span class="s2">&quot;</span><span class="s">Detected CI environment variable, but get_continuous_integration_parameters </span><span class="s2">&quot;</span>
 
-        <span class="s1">&#39;</span><span class="s">did not detect environment variables for a supported CI provider. </span><span class="s1">&#39;</span>
+        <span class="s2">&quot;</span><span class="s">did not detect environment variables for a supported CI provider. </span><span class="s2">&quot;</span>
 
-        <span class="s1">&#39;</span><span class="s">Supported providers are: {}</span><span class="s1">&#39;</span>.<span class="nv">format</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">, </span><span class="s1">&#39;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">supported_providers</span><span class="ss">))</span>
+        <span class="s2">&quot;</span><span class="s">Supported providers are: {}</span><span class="s2">&quot;</span>.<span class="nv">format</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">, </span><span class="s2">&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">supported_providers</span><span class="ss">))</span>
 
     <span class="ss">)</span>
 

@@ -1225,7 +1225,7 @@
 
     <span class="n">stats</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="s1">&#39;pandoc&#39;</span><span class="p">,</span> <span class="s1">&#39;pandoc-citeproc&#39;</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="s2">&quot;pandoc&quot;</span><span class="p">,</span> <span class="s2">&quot;pandoc-citeproc&quot;</span><span class="p">:</span>
 
         <span class="n">path</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
 
@@ -1237,9 +1237,7 @@
 
         <span class="n">version</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
 
-            <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">command</span><span class="p">,</span> <span class="s1">&#39;--version&#39;</span><span class="p">],</span>
-
-            <span class="n">universal_newlines</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">command</span><span class="p">,</span> <span class="s2">&quot;--version&quot;</span><span class="p">],</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="bp">True</span>
 
         <span class="p">)</span>
 
@@ -1253,15 +1251,15 @@
 
         <span class="n">version</span> <span class="o">=</span> <span class="n">parse_version</span><span class="p">(</span><span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">release</span>
 
-        <span class="n">stats</span><span class="p">[</span><span class="n">f</span><span class="s1">&#39;{command} version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">version</span>
+        <span class="n">stats</span><span class="p">[</span><span class="n">f</span><span class="s2">&quot;{command} version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">version</span>
 
-        <span class="n">stats</span><span class="p">[</span><span class="n">f</span><span class="s1">&#39;{command} path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="n">stats</span><span class="p">[</span><span class="n">f</span><span class="s2">&quot;{command} path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">path</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;{k}: {v}&#39;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">stats</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{k}: {v}&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">stats</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
 
     <span class="k">return</span> <span class="n">stats</span>
 
-<span class="k">def</span> <span class="nf">get_pandoc_version</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="p">:</span>
+<span class="k">def</span> <span class="nf">get_pandoc_version</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1271,7 +1269,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="n">get_pandoc_info</span><span class="p">()[</span><span class="s1">&#39;pandoc version&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">get_pandoc_info</span><span class="p">()[</span><span class="s2">&quot;pandoc version&quot;</span><span class="p">]</span>
 </pre></div>
 
 
@@ -1342,7 +1340,7 @@ If the executables are missing, the output will be like:
 
     <span class="nv">stats</span> <span class="o">=</span> <span class="nv">dict</span><span class="ss">()</span>
 
-    <span class="k">for</span> <span class="nv">command</span> <span class="nv">in</span> <span class="s1">&#39;</span><span class="s">pandoc</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">pandoc-citeproc</span><span class="s1">&#39;</span>:
+    <span class="k">for</span> <span class="nv">command</span> <span class="nv">in</span> <span class="s2">&quot;</span><span class="s">pandoc</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">pandoc-citeproc</span><span class="s2">&quot;</span>:
 
         <span class="nv">path</span> <span class="o">=</span> <span class="nv">shutil</span>.<span class="nv">which</span><span class="ss">(</span><span class="nv">command</span><span class="ss">)</span>
 
@@ -1354,9 +1352,7 @@ If the executables are missing, the output will be like:
 
         <span class="nv">version</span> <span class="o">=</span> <span class="nv">subprocess</span>.<span class="nv">check_output</span><span class="ss">(</span>
 
-            <span class="nv">args</span><span class="o">=</span>[<span class="nv">command</span>, <span class="s1">&#39;</span><span class="s">--version</span><span class="s1">&#39;</span>],
-
-            <span class="nv">universal_newlines</span><span class="o">=</span><span class="nv">True</span>,
+            <span class="nv">args</span><span class="o">=</span>[<span class="nv">command</span>, <span class="s2">&quot;</span><span class="s">--version</span><span class="s2">&quot;</span>], <span class="nv">universal_newlines</span><span class="o">=</span><span class="nv">True</span>
 
         <span class="ss">)</span>
 
@@ -1370,11 +1366,11 @@ If the executables are missing, the output will be like:
 
         <span class="nv">version</span> <span class="o">=</span> <span class="nv">parse_version</span><span class="ss">(</span><span class="nv">version</span><span class="ss">)</span>.<span class="nv">release</span>
 
-        <span class="nv">stats</span>[<span class="nv">f</span><span class="s1">&#39;</span><span class="s">{command} version</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">version</span>
+        <span class="nv">stats</span>[<span class="nv">f</span><span class="s2">&quot;</span><span class="s">{command} version</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">version</span>
 
-        <span class="nv">stats</span>[<span class="nv">f</span><span class="s1">&#39;</span><span class="s">{command} path</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">path</span>
+        <span class="nv">stats</span>[<span class="nv">f</span><span class="s2">&quot;</span><span class="s">{command} path</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">path</span>
 
-    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">{k}: {v}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="nv">k</span>, <span class="nv">v</span> <span class="nv">in</span> <span class="nv">stats</span>.<span class="nv">items</span><span class="ss">()))</span>
+    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">{k}: {v}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="nv">k</span>, <span class="nv">v</span> <span class="nv">in</span> <span class="nv">stats</span>.<span class="nv">items</span><span class="ss">()))</span>
 
     <span class="k">return</span> <span class="nv">stats</span>
 </pre></div>
@@ -1390,7 +1386,7 @@ If the executables are missing, the output will be like:
 
 <p>Return pandoc version as tuple of major and minor 
 version numbers, for example: (2, 7, 2)</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_pandoc_version</span><span class="ss">()</span> <span class="o">-&gt;</span> <span class="ss">(</span><span class="nv">int</span>, <span class="nv">int</span>, <span class="nv">int</span><span class="ss">)</span> :
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_pandoc_version</span><span class="ss">()</span> <span class="o">-&gt;</span> <span class="ss">(</span><span class="nv">int</span>, <span class="nv">int</span>, <span class="nv">int</span><span class="ss">)</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -1400,7 +1396,7 @@ version numbers, for example: (2, 7, 2)</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="nv">get_pandoc_info</span><span class="ss">()</span>[<span class="s1">&#39;</span><span class="s">pandoc version</span><span class="s1">&#39;</span>]
+    <span class="k">return</span> <span class="nv">get_pandoc_info</span><span class="ss">()</span>[<span class="s2">&quot;</span><span class="s">pandoc version</span><span class="s2">&quot;</span>]
 </pre></div>
 
 

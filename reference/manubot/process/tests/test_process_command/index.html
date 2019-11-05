@@ -1187,9 +1187,11 @@
 
 <span class="c1"># List of manuscripts for testing. All subdirectories of ./manuscripts</span>
 
-<span class="n">manuscripts</span> <span class="o">=</span> <span class="p">[</span><span class="n">path</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span>
+<span class="n">manuscripts</span> <span class="o">=</span> <span class="p">[</span>
 
-               <span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;manuscripts&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()]</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;manuscripts&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span>
+
+<span class="p">]</span>
 
 <span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="s2">&quot;manuscript&quot;</span><span class="p">,</span> <span class="n">manuscripts</span><span class="p">)</span>
 
@@ -1201,41 +1203,43 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">manuscript_dir</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;manuscripts&#39;</span><span class="p">,</span> <span class="n">manuscript</span><span class="p">)</span>
+    <span class="n">manuscript_dir</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;manuscripts&quot;</span><span class="p">,</span> <span class="n">manuscript</span><span class="p">)</span>
 
     <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
 
-        <span class="s1">&#39;manubot&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;manubot&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;process&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;process&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;--log-level&#39;</span><span class="p">,</span> <span class="s1">&#39;INFO&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;--log-level&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;--content-directory&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">manuscript_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)),</span>
+        <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;--output-directory&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">manuscript_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">)),</span>
+        <span class="s2">&quot;--content-directory&quot;</span><span class="p">,</span>
+
+        <span class="nb">str</span><span class="p">(</span><span class="n">manuscript_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">)),</span>
+
+        <span class="s2">&quot;--output-directory&quot;</span><span class="p">,</span>
+
+        <span class="nb">str</span><span class="p">(</span><span class="n">manuscript_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)),</span>
 
     <span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">manuscript</span> <span class="o">==</span> <span class="s1">&#39;variables&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">manuscript</span> <span class="o">==</span> <span class="s2">&quot;variables&quot;</span><span class="p">:</span>
 
-        <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
 
-            <span class="s1">&#39;--template-variables-path&#39;</span><span class="p">,</span>
+            <span class="p">[</span>
 
-            <span class="nb">str</span><span class="p">(</span><span class="n">manuscript_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;content/template-variables.json&#39;</span><span class="p">)),</span>
+                <span class="s2">&quot;--template-variables-path&quot;</span><span class="p">,</span>
 
-        <span class="p">])</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">manuscript_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;content/template-variables.json&quot;</span><span class="p">)),</span>
 
-    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="p">]</span>
 
-        <span class="n">args</span><span class="p">,</span>
+        <span class="p">)</span>
 
-        <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
-
-        <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
-
-    <span class="p">)</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
 
     <span class="k">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
 
@@ -1274,41 +1278,43 @@
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">manuscript_dir</span> <span class="o">=</span> <span class="nv">directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">manuscripts</span><span class="s1">&#39;</span>, <span class="nv">manuscript</span><span class="ss">)</span>
+    <span class="nv">manuscript_dir</span> <span class="o">=</span> <span class="nv">directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">manuscripts</span><span class="s2">&quot;</span>, <span class="nv">manuscript</span><span class="ss">)</span>
 
     <span class="nv">args</span> <span class="o">=</span> [
 
-        <span class="s1">&#39;</span><span class="s">manubot</span><span class="s1">&#39;</span>,
+        <span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>,
 
-        <span class="s1">&#39;</span><span class="s">process</span><span class="s1">&#39;</span>,
+        <span class="s2">&quot;</span><span class="s">process</span><span class="s2">&quot;</span>,
 
-        <span class="s1">&#39;</span><span class="s">--log-level</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">INFO</span><span class="s1">&#39;</span>,
+        <span class="s2">&quot;</span><span class="s">--log-level</span><span class="s2">&quot;</span>,
 
-        <span class="s1">&#39;</span><span class="s">--content-directory</span><span class="s1">&#39;</span>, <span class="nv">str</span><span class="ss">(</span><span class="nv">manuscript_dir</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">content</span><span class="s1">&#39;</span><span class="ss">))</span>,
+        <span class="s2">&quot;</span><span class="s">INFO</span><span class="s2">&quot;</span>,
 
-        <span class="s1">&#39;</span><span class="s">--output-directory</span><span class="s1">&#39;</span>, <span class="nv">str</span><span class="ss">(</span><span class="nv">manuscript_dir</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">output</span><span class="s1">&#39;</span><span class="ss">))</span>,
+        <span class="s2">&quot;</span><span class="s">--content-directory</span><span class="s2">&quot;</span>,
+
+        <span class="nv">str</span><span class="ss">(</span><span class="nv">manuscript_dir</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">content</span><span class="s2">&quot;</span><span class="ss">))</span>,
+
+        <span class="s2">&quot;</span><span class="s">--output-directory</span><span class="s2">&quot;</span>,
+
+        <span class="nv">str</span><span class="ss">(</span><span class="nv">manuscript_dir</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">output</span><span class="s2">&quot;</span><span class="ss">))</span>,
 
     ]
 
-    <span class="k">if</span> <span class="nv">manuscript</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="s">variables</span><span class="s1">&#39;</span>:
+    <span class="k">if</span> <span class="nv">manuscript</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">variables</span><span class="s2">&quot;</span>:
 
-        <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[
+        <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>
 
-            <span class="s1">&#39;</span><span class="s">--template-variables-path</span><span class="s1">&#39;</span>,
+            [
 
-            <span class="nv">str</span><span class="ss">(</span><span class="nv">manuscript_dir</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">content/template-variables.json</span><span class="s1">&#39;</span><span class="ss">))</span>,
+                <span class="s2">&quot;</span><span class="s">--template-variables-path</span><span class="s2">&quot;</span>,
 
-        ]<span class="ss">)</span>
+                <span class="nv">str</span><span class="ss">(</span><span class="nv">manuscript_dir</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">content/template-variables.json</span><span class="s2">&quot;</span><span class="ss">))</span>,
 
-    <span class="nv">process</span> <span class="o">=</span> <span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span>
+            ]
 
-        <span class="nv">args</span>,
+        <span class="ss">)</span>
 
-        <span class="nv">stdout</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>,
-
-        <span class="nv">stderr</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>,
-
-    <span class="ss">)</span>
+    <span class="nv">process</span> <span class="o">=</span> <span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span><span class="nv">args</span>, <span class="nv">stdout</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>, <span class="nv">stderr</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span><span class="ss">)</span>
 
     <span class="nv">print</span><span class="ss">(</span><span class="nv">process</span>.<span class="nv">args</span><span class="ss">)</span>
 
