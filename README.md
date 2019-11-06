@@ -2,6 +2,7 @@
 
 [![Travis Linux Build Status](https://travis-ci.com/manubot/manubot.svg?branch=master)](https://travis-ci.com/manubot/manubot)
 [![AppVeyor Windows Build Status](https://ci.appveyor.com/api/projects/status/f20hvc6si5uiqd7e/branch/master?svg=true)](https://ci.appveyor.com/project/manubot/manubot/branch/master)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 [Manubot](https://manubot.org/ "Manubot homepage") is a workflow and set of tools for the next generation of scholarly publishing.
 This repository contains a Python package with several Manubot-related utilities, as described in the [usage section](#usage) below.

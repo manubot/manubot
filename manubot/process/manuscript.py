@@ -5,10 +5,7 @@ import logging
 import pathlib
 import re
 
-from manubot.cite.util import (
-    citekey_pattern,
-    is_valid_citekey,
-)
+from manubot.cite.citekey import citekey_pattern, is_valid_citekey
 
 
 def get_citekeys(text):
@@ -18,7 +15,9 @@ def get_citekeys(text):
     """
     citekeys = set(citekey_pattern.findall(text))
     citekeys = filter(
-        lambda x: is_valid_citekey(x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True),
+        lambda x: is_valid_citekey(
+            x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True
+        ),
         citekeys,
     )
     return sorted(citekeys)
@@ -30,12 +29,12 @@ def get_text(directory):
     Text files should be UTF-8 encoded.
     """
     section_dir = pathlib.Path(directory)
-    paths = sorted(section_dir.glob('[0-9]*.md'))
+    paths = sorted(section_dir.glob("[0-9]*.md"))
     name_to_text = collections.OrderedDict()
     for path in paths:
-        name_to_text[path.stem] = path.read_text(encoding='utf-8-sig')
-    logging.info('Manuscript content parts:\n' + '\n'.join(name_to_text))
-    return '\n\n'.join(name_to_text.values()) + '\n'
+        name_to_text[path.stem] = path.read_text(encoding="utf-8-sig")
+    logging.info("Manuscript content parts:\n" + "\n".join(name_to_text))
+    return "\n\n".join(name_to_text.values()) + "\n"
 
 
 def update_manuscript_citekeys(text, old_to_new):
@@ -51,8 +50,8 @@ def update_manuscript_citekeys(text, old_to_new):
     """
     for old, new in old_to_new.items():
         text = re.sub(
-            pattern=re.escape('@' + old) + r'(?![\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])',
-            repl='@' + new,
+            pattern=re.escape("@" + old) + r"(?![\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])",
+            repl="@" + new,
             string=text,
         )
     return text
@@ -66,15 +65,13 @@ def get_manuscript_stats(text, citekeys_df):
 
     # Number of distinct references by type
     ref_counts = (
-        citekeys_df
-        .standard_citekey
-        .drop_duplicates()
-        .map(lambda x: x.split(':')[0])
+        citekeys_df.standard_citekey.drop_duplicates()
+        .map(lambda x: x.split(":")[0])
         .pipe(collections.Counter)
     )
-    ref_counts['total'] = sum(ref_counts.values())
-    stats['reference_counts'] = ref_counts
-    stats['word_count'] = len(text.split())
+    ref_counts["total"] = sum(ref_counts.values())
+    stats["reference_counts"] = ref_counts
+    stats["word_count"] = len(text.split())
     logging.info(f"Generated manscript stats:\n{json.dumps(stats, indent=2)}")
     return stats
 
