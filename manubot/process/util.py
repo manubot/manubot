@@ -211,7 +211,19 @@ def get_metadata_and_variables(args):
     user_variables = read_jsons(args.template_variables_path)
     variables.update(user_variables)
 
+    # Add header-includes metadata with <meta> information for the HTML output's <head>
+    metadata["header-includes"] = get_header_includes(variables)
+
     return metadata, variables
+
+
+def get_header_includes(variables: dict) -> str:
+    """
+    Render `header-includes-template.html` using information from `variables`.
+    """
+    path = pathlib.Path(__file__).parent.joinpath("header-includes-template.html")
+    template = path.read_text(encoding="utf-8-sig")
+    return template_with_jinja2(template, variables)
 
 
 def get_citekeys_df(args, text):
