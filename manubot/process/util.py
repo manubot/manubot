@@ -222,8 +222,13 @@ def get_header_includes(variables: dict) -> str:
     Render `header-includes-template.html` using information from `variables`.
     """
     path = pathlib.Path(__file__).parent.joinpath("header-includes-template.html")
-    template = path.read_text(encoding="utf-8-sig")
-    return template_with_jinja2(template, variables)
+    try:
+        template = path.read_text(encoding="utf-8-sig")
+        header_includes = template_with_jinja2(template, variables)
+    except Exception:
+        logging.exception(f"Error generating header-includes.")
+        return ''
+    return header_includes
 
 
 def get_citekeys_df(args, text):
