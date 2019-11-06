@@ -227,7 +227,7 @@ def get_header_includes(variables: dict) -> str:
         header_includes = template_with_jinja2(template, variables)
     except Exception:
         logging.exception(f"Error generating header-includes.")
-        return ''
+        return ""
     return header_includes
 
 
