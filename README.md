@@ -226,30 +226,40 @@ optional arguments:
 
 ## Development
 
+### Environment
+
 Create a development environment using:
 
 ```shell
 conda create --name manubot-dev --channel conda-forge \
-  python=3.6 jinja2 pandas pytest pandoc
+  python=3.7 pandoc
 conda activate manubot-dev  # assumes conda >= 4.4
 pip install --editable ".[all]"
 ```
 
-Inside this environment, use `pytest` to run the test suite.
-You can also use the `manubot` CLI to build manuscripts.
-For example:
+### Commands
+
+Below are some common commands used for development.
+They assume the working directory is set to the repository's root, and the conda environment is activated. 
 
 ```shell
+# run the test suite
+pytest
+
+# reformat python files for according to the black style rules (required to pass CI)
+black .
+
+# regenerate the README codeblocks for --help messages
+python manubot/tests/test_readme.py
+
+# generate the docs
+portray as_html --overwrite --output_dir=docs
+
+# process the example testing manuscript 
 manubot process \
   --content-directory=tests/manuscripts/example/content \
   --output-directory=tests/manuscripts/example/output \
   --log-level=DEBUG
-```
-
-To automatically regenerate the README `--help` messages codeblocks, run:
-
-```shell
-python manubot/tests/test_readme.py
 ```
 
 ### Release instructions
