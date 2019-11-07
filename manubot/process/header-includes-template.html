@@ -2,27 +2,25 @@
 Manubot generated metadata rendered from header-includes-template.html.
 Suggest improvements at https://github.com/manubot/manubot/blob/master/manubot/process/header-includes-template.html
 -->
-
+<meta name="dc.format" content="text/html">
 {% if title is defined %}
+<meta name="dc.title" content="{{ title|escape }}">
 <meta name="citation_title" content="{{ title|escape }}">
-<meta name="DC.title" content="{{ title|escape }}">
 <meta property="og:title" content="{{ title|escape }}">
 <meta property="twitter:title" content="{{ title|escape }}">
 {% endif %}
 {% if iso_date is defined %}
+<meta name="dc.date" content="{{ iso_date }}">
 <meta name="citation_publication_date" content="{{ iso_date }}">
 {% endif %}
-{% if abstract is defined %}
-<meta name="dcterms.abstract" content="{{ abstract|escape }}">
-<meta name="dcterms.abstract" content="{{ abstract|escape }}">
-{% endif %}
 {% if lang is defined %}
+<meta name="dc.language" content="{{ lang }}">
 <meta name="citation_language" content="{{ lang }}">
 {% endif %}
+<meta name="dc.relation.ispartof" content="Manubot Preprint">
+<meta name="dc.publisher" content="Manubot">
 <meta name="citation_journal_title" content="Manubot Preprint">
-<meta name="DC.relation.ispartof" content="Manubot Preprint">
 <meta name="citation_technical_report_institution" content="Manubot">
-<meta name="DC.publisher" content="Manubot">
 <!-- author information --> 
 {% for author in authors|default([]) if author.name is defined %}
 <meta name="citation_author" content="{{ author.name|escape }}">
@@ -35,14 +33,14 @@ Suggest improvements at https://github.com/manubot/manubot/blob/master/manubot/p
 <meta name="citation_author_orcid" content="{{ author.orcid }}">
 {% endif %}
 {% if author.twitter is defined %}
-<meta name="twitter:creator" content="@{{ author.twitter }}" />
+<meta name="twitter:creator" content="@{{ author.twitter }}">
 {% endif %}
 {% endfor %}
 {% if html_url is defined %}
 <link rel="canonical" href="{{ html_url }}">
 <meta property="og:url" content="{{ html_url }}">
 <meta property="twitter:url" content="{{ html_url }}">
-<meta name="citation_fulltext_html_url" content="{{ html_url }}" />
+<meta name="citation_fulltext_html_url" content="{{ html_url }}">
 {% endif %}
 {% if pdf_url is defined %}
 <meta name="citation_pdf_url" content="{{ pdf_url }}" />
@@ -57,8 +55,13 @@ Suggest improvements at https://github.com/manubot/manubot/blob/master/manubot/p
 {% endif %}
 {% if description is defined %}
 <meta name="description" content="{{ description|escape }}">
+<meta name="dc.description" content="{{ description|escape }}"/>
 <meta property="og:description" content="{{ description|escape }}">
 <meta property="twitter:description" content="{{ description|escape }}">
+{% endif %}
+{% if abstract is defined %}
+<meta name="dc.abstract" content="{{ abstract|escape }}">
+<meta name="citation_abstract" content="{{ abstract|escape }}">
 {% endif %}
 <meta property="og:type" content="article">
 <meta property="twitter:card" content="summary_large_image">
@@ -67,8 +70,8 @@ Suggest improvements at https://github.com/manubot/manubot/blob/master/manubot/p
 <meta property="twitter:image" content="{{ thumbnail_url }}">
 {% endif %}
 <!-- favicons from manubot.org -->
-<link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
-<link rel="mask-icon" href="https://manubot.org/safari-pinned-tab.svg" color="#ad1457" />
-<link rel="apple-touch-icon" sizes="180x180" href="https://manubot.org/apple-touch-icon.png" />
-<meta name="theme-color" content="#ad1457" />
+<link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png">
+<link rel="mask-icon" href="https://manubot.org/safari-pinned-tab.svg" color="#ad1457">
+<link rel="apple-touch-icon" sizes="180x180" href="https://manubot.org/apple-touch-icon.png">
+<meta name="theme-color" content="#ad1457">
 <!-- end Manubot generated metadata --> 
