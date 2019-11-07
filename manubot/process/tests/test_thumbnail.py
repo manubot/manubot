@@ -50,6 +50,5 @@ example_thumbnail_url = (
     ],
 )
 def test_get_thumbnail_url(thumbnail, expected):
-    print(ci_params)
     thumbnail_url = get_thumbnail_url(thumbnail)
     assert expected == thumbnail_url
