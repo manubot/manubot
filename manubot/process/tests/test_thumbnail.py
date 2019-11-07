@@ -13,7 +13,8 @@ ci_only = pytest.mark.skipif(
 )
 
 repo_raw_url_template = (
-    f"https://github.com/manubot/manubot/raw/{ci_params.get('triggering_commit', '')}/"
+    f"https://github.com/{ci_params.get('repo_slug', '')}"
+    f"/raw/{ci_params.get('triggering_commit', '')}/"
 )
 example_thumbnail_url = (
     repo_raw_url_template + "manubot/process/tests/manuscripts/example/thumbnail.png"
