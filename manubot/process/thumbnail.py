@@ -6,19 +6,19 @@ import pathlib
 import subprocess
 from urllib.parse import urlparse
 
-# Valid schemes for URL detection
+"""Valid schemes for URL detection"""
 url_schemes = {"http", "https"}
 
 
 def get_thumbnail_url(thumbnail=None):
     """
     Starting with a user-specified `thumbnail` as either a path, URL, or None,
-    return a web-accessible URL with thumbnail. If provided `thumbnail` is a URL,
-    return the URL unmodified. If `thumbnail` is None, search for `thumbnail.png`
+    return an absolute URL pointing to the thumbnail image. If the provided `thumbnail`
+    is a URL, return this URL unmodified. If `thumbnail` is None, search for `thumbnail.png`
     within the git repository from which this function is executed. If `thumbnail`
-    is a local path, it should be relative to root directory of the git repository
-    if is located in. If a local path is provided or detected, convert that path
-    to a GitHub raw URL.
+    is a local path, the path should be relative to root directory of the git repository
+    it is located in. If a local path is provided or detected,
+    it is converted to a GitHub raw URL.
     """
     if not thumbnail:
         # thumbnail not provided, so find local path if exists
@@ -32,7 +32,8 @@ def get_thumbnail_url(thumbnail=None):
 def _find_thumbnail_path():
     """
     If this this function is executed with a working directory that is inside a git repository,
-    return the path to a `thumbnail.png` file located anywhere in that repository.
+    return the path to a `thumbnail.png` file located anywhere in that repository. Otherwise,
+    return `None`.
     """
     directory = git_repository_root()
     if not directory:
@@ -47,7 +48,7 @@ def _find_thumbnail_path():
 
 def _thumbnail_path_to_url(path):
     """
-    Convert a local thumbnail path (string) to a web-accessible URL using the GitHub
+    Convert a local thumbnail path (string) to an absolute URL using the GitHub
     repository location detected using `get_continuous_integration_parameters`.
     """
     if not path:
@@ -65,7 +66,7 @@ def _thumbnail_path_to_url(path):
 @functools.lru_cache()
 def git_repository_root():
     """
-    Return the path to repository root directory or None if indeterminate.
+    Return the path to repository root directory or `None` if indeterminate.
     """
     for cmd in (
         ["git", "rev-parse", "--show-superproject-working-tree"],
