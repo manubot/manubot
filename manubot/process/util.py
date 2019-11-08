@@ -17,6 +17,7 @@ from manubot.process.ci import (
     add_manuscript_urls_to_ci_params,
     get_continuous_integration_parameters,
 )
+from manubot.process.thumbnail import get_thumbnail_url
 from manubot.process.manuscript import (
     datetime_now,
     get_citekeys,
@@ -206,6 +207,11 @@ def get_metadata_and_variables(args):
     ci_params = get_continuous_integration_parameters()
     if ci_params:
         variables["ci_source"] = add_manuscript_urls_to_ci_params(ci_params)
+
+    # Add thumbnail URL if present
+    thumbnail_url = get_thumbnail_url(metadata.pop("thumbnail", None))
+    if thumbnail_url:
+        variables["thumbnail_url"] = thumbnail_url
 
     # Update variables with user-provided variables here
     user_variables = read_jsons(args.template_variables_path)
