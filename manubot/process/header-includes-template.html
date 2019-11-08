@@ -53,15 +53,16 @@ Suggest improvements at https://github.com/manubot/manubot/blob/master/manubot/p
 {% if pdf_url_versioned is defined %}
 <meta name="manubot_versioned_pdf_url" content="{{ pdf_url_versioned }}" />
 {% endif %}
+{% if abstract is defined %}
+<meta name="dc.abstract" content="{{ abstract|escape }}" />
+<meta name="citation_abstract" content="{{ abstract|escape }}" />
+{% if description is not defined %}{% set description = abstract %}{% endif %}
+{% endif %}
 {% if description is defined %}
 <meta name="description" content="{{ description|escape }}" />
 <meta name="dc.description" content="{{ description|escape }}"/>
 <meta property="og:description" content="{{ description|escape }}" />
 <meta property="twitter:description" content="{{ description|escape }}" />
-{% endif %}
-{% if abstract is defined %}
-<meta name="dc.abstract" content="{{ abstract|escape }}" />
-<meta name="citation_abstract" content="{{ abstract|escape }}" />
 {% endif %}
 <meta property="og:type" content="article" />
 <meta property="twitter:card" content="summary_large_image" />

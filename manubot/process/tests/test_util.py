@@ -2,7 +2,7 @@ import pathlib
 
 import pytest
 
-from manubot.process.util import add_author_affiliations, read_jsons
+from ..util import add_author_affiliations, get_header_includes, read_jsons
 
 directory = pathlib.Path(__file__).parent.resolve()
 
@@ -79,3 +79,32 @@ def test_add_author_affiliations():
     ]
     assert authors[0]["affiliation_numbers"] == [1, 2]
     assert authors[1]["affiliation_numbers"] == [2, 3]
+
+
+def test_get_header_includes_description_abstract():
+    # test that abstract and description set different fields if both supplied
+    variables = {
+        "abstract": "value for abstract",
+        "description": "value for description",
+    }
+    header_includes = get_header_includes(variables)
+    assert (
+        '<meta name="citation_abstract" content="value for abstract" />'
+        in header_includes
+    )
+    assert (
+        '<meta name="description" content="value for description" />' in header_includes
+    )
+    # test that abstract is used for description if description is not defined
+    del variables["description"]
+    header_includes = get_header_includes(variables)
+    assert (
+        '<meta name="citation_abstract" content="value for abstract" />'
+        in header_includes
+    )
+    assert '<meta name="description" content="value for abstract" />' in header_includes
+    # test that if neither abstract nor description is defined, neither are inserted
+    del variables["abstract"]
+    header_includes = get_header_includes(variables)
+    assert 'meta name="citation_abstract"' not in header_includes
+    assert 'meta name="description"' not in header_includes
