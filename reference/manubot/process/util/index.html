@@ -799,6 +799,18 @@
           
           
 
+
+  <li class="md-nav__item">
+    <a href="../thumbnail/" title="Thumbnail" class="md-nav__link">
+      Thumbnail
+    </a>
+  </li>
+
+        
+          
+          
+          
+
   
 
 
@@ -928,13 +940,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-7" type="checkbox" id="nav-3-1-6-7">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-8" type="checkbox" id="nav-3-1-6-8">
     
-    <label class="md-nav__link" for="nav-3-1-6-7">
+    <label class="md-nav__link" for="nav-3-1-6-8">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-6-7">
+      <label class="md-nav__title" for="nav-3-1-6-8">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -996,6 +1008,18 @@
   <li class="md-nav__item">
     <a href="../tests/test_process_command/" title="Test Process Command" class="md-nav__link">
       Test Process Command
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tests/test_thumbnail/" title="Test Thumbnail" class="md-nav__link">
+      Test Thumbnail
     </a>
   </li>
 
@@ -1320,6 +1344,8 @@
     <span class="n">get_continuous_integration_parameters</span><span class="p">,</span>
 
 <span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">manubot.process.thumbnail</span> <span class="kn">import</span> <span class="n">get_thumbnail_url</span>
 
 <span class="kn">from</span> <span class="nn">manubot.process.manuscript</span> <span class="kn">import</span> <span class="p">(</span>
 
@@ -1662,6 +1688,14 @@
     <span class="k">if</span> <span class="n">ci_params</span><span class="p">:</span>
 
         <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;ci_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_manuscript_urls_to_ci_params</span><span class="p">(</span><span class="n">ci_params</span><span class="p">)</span>
+
+    <span class="c1"># Add thumbnail URL if present</span>
+
+    <span class="n">thumbnail_url</span> <span class="o">=</span> <span class="n">get_thumbnail_url</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;thumbnail&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">thumbnail_url</span><span class="p">:</span>
+
+        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;thumbnail_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">thumbnail_url</span>
 
     <span class="c1"># Update variables with user-provided variables here</span>
 
@@ -2395,6 +2429,14 @@ citekeys_df is a pandas.DataFrame with the following columns:
 
         <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">ci_source</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">add_manuscript_urls_to_ci_params</span><span class="ss">(</span><span class="nv">ci_params</span><span class="ss">)</span>
 
+    # <span class="nv">Add</span> <span class="nv">thumbnail</span> <span class="nv">URL</span> <span class="k">if</span> <span class="nv">present</span>
+
+    <span class="nv">thumbnail_url</span> <span class="o">=</span> <span class="nv">get_thumbnail_url</span><span class="ss">(</span><span class="nv">metadata</span>.<span class="nv">pop</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">thumbnail</span><span class="s2">&quot;</span>, <span class="nv">None</span><span class="ss">))</span>
+
+    <span class="k">if</span> <span class="nv">thumbnail_url</span>:
+
+        <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">thumbnail_url</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">thumbnail_url</span>
+
     # <span class="nv">Update</span> <span class="nv">variables</span> <span class="nv">with</span> <span class="nv">user</span><span class="o">-</span><span class="nv">provided</span> <span class="nv">variables</span> <span class="nv">here</span>
 
     <span class="nv">user_variables</span> <span class="o">=</span> <span class="nv">read_jsons</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">template_variables_path</span><span class="ss">)</span>
@@ -2692,7 +2734,7 @@ arguments.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../process_command/" title="Process Command" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../thumbnail/" title="Thumbnail" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -2701,7 +2743,7 @@ arguments.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Process Command
+                Thumbnail
               </span>
             </div>
           </a>
