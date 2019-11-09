@@ -180,7 +180,7 @@ def load_metadata(args) -> dict:
     - user-specified fields inserted according to the `--template-variables-path` option.
     """
     # Generated manuscript variables
-    variables = {'pandoc': {}, 'manubot': {}}
+    variables = {"pandoc": {}, "manubot": {}}
 
     # Read metadata which contains pandoc_yaml_metadata
     # as well as author_info.
@@ -200,8 +200,8 @@ def load_metadata(args) -> dict:
         f"Using {now:%Z} timezone.\n"
         f"Dating manuscript with the current datetime: {now.isoformat()}"
     )
-    variables['pandoc']["date-meta"] = now.date().isoformat()
-    variables['manubot']["date"] = f"{now:%B} {now.day}, {now.year}"
+    variables["pandoc"]["date-meta"] = now.date().isoformat()
+    variables["manubot"]["date"] = f"{now:%B} {now.day}, {now.year}"
 
     # Process authors metadata
     authors = metadata.pop("author_info", [])
@@ -209,7 +209,7 @@ def load_metadata(args) -> dict:
         authors = []
     variables["pandoc"]["author-meta"] = [author["name"] for author in authors]
     variables["manubot"]["authors"] = authors
-    add_author_affiliations(variables['manubot'])
+    add_author_affiliations(variables["manubot"])
 
     # Set repository version metadata for CI builds
     ci_params = get_continuous_integration_parameters()
@@ -225,7 +225,7 @@ def load_metadata(args) -> dict:
     user_variables = read_jsons(args.template_variables_path)
     variables.update(user_variables)
 
-    return metadata, variables
+    return variables
 
 
 def get_citekeys_df(args, text):
