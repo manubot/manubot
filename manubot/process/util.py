@@ -167,9 +167,17 @@ def add_author_affiliations(variables):
     return variables
 
 
-def load_metadata(args):
+def load_metadata(args) -> dict:
     """
     Process metadata.yaml and create variables available for jinja2 templating.
+
+    Returns a dictionary with the following keys:
+    - `pandoc`: a dictionary for passing options to Pandoc via the `yaml_metadata_block`.
+      All fields from a manuscript's `metadata.yaml` are copied to this dictionary,
+      expect for special Manubot-defined fields. Special fields include `author_info` and
+      `thumbnail`.
+    - `manubot`: a dictionary with manubot-generated variables.
+    - user-specified fields inserted according to the `--template-variables-path` option.
     """
     # Generated manuscript variables
     variables = {'pandoc': {}, 'manubot': {}}
