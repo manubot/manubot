@@ -241,8 +241,8 @@ For example:
 
 ```shell
 manubot process \
-  --content-directory=tests/manuscripts/example/content \
-  --output-directory=tests/manuscripts/example/output \
+  --content-directory=manubot/process/tests/manuscripts/example/content \
+  --output-directory=manubot/process/tests/manuscripts/example/output \
   --log-level=DEBUG
 ```
 

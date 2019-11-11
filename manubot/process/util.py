@@ -167,9 +167,10 @@ def add_author_affiliations(variables):
     return variables
 
 
-def load_metadata(args) -> dict:
+def load_variables(args) -> dict:
     """
-    Process metadata.yaml and create variables available for jinja2 templating.
+    Read metadata.yaml and files specified by --template-variables-path to generate
+    manuscript variables available for jinja2 templating.
 
     Returns a dictionary with the following keys:
     - `pandoc`: a dictionary for passing options to Pandoc via the `yaml_metadata_block`.
@@ -359,7 +360,7 @@ def prepare_manuscript(args):
     )
     text = update_manuscript_citekeys(text, citekey_mapping)
 
-    variables = load_metadata(args)
+    variables = load_variables(args)
     variables["manubot"]["manuscript_stats"] = get_manuscript_stats(text, citekeys_df)
     with args.variables_path.open("w", encoding="utf-8") as write_file:
         json.dump(variables, write_file, ensure_ascii=False, indent=2)
