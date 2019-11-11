@@ -2,6 +2,7 @@
 Tools for manuscript thumbnial detection and processing.
 """
 import functools
+import logging
 import pathlib
 import subprocess
 
@@ -19,10 +20,16 @@ def get_thumbnail_url(thumbnail=None):
     from manubot.util import is_http_url
 
     if not thumbnail:
-        # thumbnail not provided, so find local path if exists
+        message = "get_thumbnail_url: thumbnail location not explicitly provided. "
         thumbnail = _find_thumbnail_path()
+        message += (
+            f"Thumbnail detected at {thumbnail!r}"
+            if thumbnail
+            else "No local thumbnail detected"
+        )
+        logging.debug(message)
     elif is_http_url(thumbnail):
-        # provided thumbnail is a URL. Pass it through.
+        logging.debug("provided thumbnail is a URL. Pass it through.")
         return thumbnail
     return _thumbnail_path_to_url(thumbnail)
 
