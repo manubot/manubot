@@ -246,7 +246,7 @@ They assume the working directory is set to the repository's root, and the conda
 # run the test suite
 pytest
 
-# reformat python files for according to the black style rules (required to pass CI)
+# reformat Python files according to the black style rules (required to pass CI)
 black .
 
 # regenerate the README codeblocks for --help messages
