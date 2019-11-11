@@ -42,3 +42,17 @@ def shlex_join(split_command):
     https://bugs.python.org/issue22454
     """
     return " ".join(shlex.quote(str(arg)) for arg in split_command)
+
+
+"""Valid schemes for HTTP URL detection"""
+_http_url_schemes = {"http", "https"}
+
+
+def is_http_url(string: str) -> bool:
+    """
+    Return whether `string` is an HTTP(s) Uniform Resource Locator (URL).
+    """
+    from urllib.parse import urlparse
+
+    parsed_url = urlparse(string)
+    return parsed_url.scheme in _http_url_schemes
