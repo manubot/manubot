@@ -355,8 +355,10 @@ def template_with_jinja2(text, variables):
     jinja_environment = jinja2.Environment(
         loader=jinja2.BaseLoader(),
         undefined=jinja2.make_logging_undefined(logging.getLogger()),
+        autoescape=False,
         comment_start_string="{##",
         comment_end_string="##}",
+        extensions=["jinja2.ext.do", "jinja2.ext.loopcontrols"],
     )
     template = jinja_environment.from_string(text)
     return template.render(**variables)

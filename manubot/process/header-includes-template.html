@@ -55,7 +55,7 @@ Suggest improvements at https://github.com/manubot/manubot/blob/master/manubot/p
 {% if pandoc.abstract is defined %}
 <meta name="dc.abstract" content="{{ pandoc.abstract|escape }}" />
 <meta name="citation_abstract" content="{{ pandoc.abstract|escape }}" />
-{% if manubot.description is not defined %}{% set manubot.description = pandoc.abstract %}{% endif %}
+{% if manubot.description is not defined %}{% do manubot.update({"description": pandoc.abstract}) %}{% endif %}
 {% endif %}
 {% if manubot.description is defined %}
 <meta name="description" content="{{ manubot.description|escape }}" />
