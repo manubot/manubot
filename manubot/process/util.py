@@ -12,6 +12,7 @@ import requests
 import requests_cache
 import yaml
 
+from manubot.util import is_http_url
 from manubot.process.bibliography import load_manual_references
 from manubot.process.ci import (
     add_manuscript_urls_to_ci_params,
@@ -68,7 +69,7 @@ def read_json(path):
     """
     Read json from a path or URL.
     """
-    if re.match("^(http|ftp)s?://", path):
+    if is_http_url(path):
         response = requests.get(path)
         obj = response.json(object_pairs_hook=collections.OrderedDict)
     else:
@@ -167,12 +168,21 @@ def add_author_affiliations(variables):
     return variables
 
 
-def get_metadata_and_variables(args):
+def load_variables(args) -> dict:
     """
-    Process metadata.yaml and create variables available for jinja2 templating.
+    Read metadata.yaml and files specified by --template-variables-path to generate
+    manuscript variables available for jinja2 templating.
+
+    Returns a dictionary with the following keys:
+    - `pandoc`: a dictionary for passing options to Pandoc via the `yaml_metadata_block`.
+      All fields from a manuscript's `metadata.yaml` are copied to this dictionary,
+      expect for special Manubot-defined fields. Special fields include `author_info` and
+      `thumbnail`.
+    - `manubot`: a dictionary with manubot-generated variables.
+    - user-specified fields inserted according to the `--template-variables-path` option.
     """
     # Generated manuscript variables
-    variables = collections.OrderedDict()
+    variables = {"pandoc": {}, "manubot": {}}
 
     # Read metadata which contains pandoc_yaml_metadata
     # as well as author_info.
@@ -192,26 +202,26 @@ def get_metadata_and_variables(args):
         f"Using {now:%Z} timezone.\n"
         f"Dating manuscript with the current datetime: {now.isoformat()}"
     )
-    metadata["date-meta"] = now.date().isoformat()
-    variables["date"] = f"{now:%B} {now.day}, {now.year}"
+    variables["pandoc"]["date-meta"] = now.date().isoformat()
+    variables["manubot"]["date"] = f"{now:%B} {now.day}, {now.year}"
 
     # Process authors metadata
     authors = metadata.pop("author_info", [])
     if authors is None:
         authors = []
-    metadata["author-meta"] = [author["name"] for author in authors]
-    variables["authors"] = authors
-    variables = add_author_affiliations(variables)
+    variables["pandoc"]["author-meta"] = [author["name"] for author in authors]
+    variables["manubot"]["authors"] = authors
+    add_author_affiliations(variables["manubot"])
 
     # Set repository version metadata for CI builds
     ci_params = get_continuous_integration_parameters()
     if ci_params:
-        variables["ci_source"] = add_manuscript_urls_to_ci_params(ci_params)
+        variables["manubot"]["ci_source"] = add_manuscript_urls_to_ci_params(ci_params)
 
     # Add thumbnail URL if present
     thumbnail_url = get_thumbnail_url(metadata.pop("thumbnail", None))
     if thumbnail_url:
-        variables["thumbnail_url"] = thumbnail_url
+        variables["manubot"]["thumbnail_url"] = thumbnail_url
 
     # Update variables with user-provided variables here
     user_variables = read_jsons(args.template_variables_path)
@@ -220,7 +230,7 @@ def get_metadata_and_variables(args):
     # Add header-includes metadata with <meta> information for the HTML output's <head>
     metadata["header-includes"] = get_header_includes(variables)
 
-    return metadata, variables
+    return variables
 
 
 def get_header_includes(variables: dict) -> str:
@@ -367,8 +377,8 @@ def prepare_manuscript(args):
     )
     text = update_manuscript_citekeys(text, citekey_mapping)
 
-    metadata, variables = get_metadata_and_variables(args)
-    variables["manuscript_stats"] = get_manuscript_stats(text, citekeys_df)
+    variables = load_variables(args)
+    variables["manubot"]["manuscript_stats"] = get_manuscript_stats(text, citekeys_df)
     with args.variables_path.open("w", encoding="utf-8") as write_file:
         json.dump(variables, write_file, ensure_ascii=False, indent=2)
         write_file.write("\n")
@@ -378,7 +388,7 @@ def prepare_manuscript(args):
     # Write manuscript for pandoc
     with args.manuscript_path.open("w", encoding="utf-8") as write_file:
         yaml.dump(
-            metadata,
+            variables["pandoc"],
             write_file,
             default_flow_style=False,
             explicit_start=True,

@@ -2,12 +2,9 @@
 Tools for manuscript thumbnial detection and processing.
 """
 import functools
+import logging
 import pathlib
 import subprocess
-from urllib.parse import urlparse
-
-"""Valid schemes for URL detection"""
-url_schemes = {"http", "https"}
 
 
 def get_thumbnail_url(thumbnail=None):
@@ -20,11 +17,19 @@ def get_thumbnail_url(thumbnail=None):
     it is located in. If a local path is provided or detected,
     it is converted to a GitHub raw URL.
     """
+    from manubot.util import is_http_url
+
     if not thumbnail:
-        # thumbnail not provided, so find local path if exists
+        message = "get_thumbnail_url: thumbnail location not explicitly provided. "
         thumbnail = _find_thumbnail_path()
-    elif urlparse(thumbnail).scheme in url_schemes:
-        # provided thumbnail is a URL. Pass it through.
+        message += (
+            f"Thumbnail detected at {thumbnail!r}"
+            if thumbnail
+            else "No local thumbnail detected"
+        )
+        logging.debug(message)
+    elif is_http_url(thumbnail):
+        logging.debug("provided thumbnail is a URL. Pass it through.")
         return thumbnail
     return _thumbnail_path_to_url(thumbnail)
 
