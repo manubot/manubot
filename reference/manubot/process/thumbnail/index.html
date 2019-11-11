@@ -828,13 +828,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#functions" class="md-nav__link">
     Functions
   </a>
@@ -1160,13 +1153,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#functions" class="md-nav__link">
     Functions
   </a>
@@ -1226,12 +1212,6 @@
 
 <span class="kn">import</span> <span class="nn">subprocess</span>
 
-<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
-
-<span class="sd">&quot;&quot;&quot;Valid schemes for URL detection&quot;&quot;&quot;</span>
-
-<span class="n">url_schemes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="s2">&quot;https&quot;</span><span class="p">}</span>
-
 <span class="k">def</span> <span class="nf">get_thumbnail_url</span><span class="p">(</span><span class="n">thumbnail</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1252,13 +1232,15 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">is_http_url</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">thumbnail</span><span class="p">:</span>
 
         <span class="c1"># thumbnail not provided, so find local path if exists</span>
 
         <span class="n">thumbnail</span> <span class="o">=</span> <span class="n">_find_thumbnail_path</span><span class="p">()</span>
 
-    <span class="k">elif</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">thumbnail</span><span class="p">)</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">in</span> <span class="n">url_schemes</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">is_http_url</span><span class="p">(</span><span class="n">thumbnail</span><span class="p">):</span>
 
         <span class="c1"># provided thumbnail is a URL. Pass it through.</span>
 
@@ -1359,11 +1341,6 @@
 
 
 </details>
-<h2 id="variables">Variables</h2>
-<div class="codehilite"><pre><span></span><span class="n">url_schemes</span>
-</pre></div>
-
-
 <h2 id="functions">Functions</h2>
 <h3 id="get_thumbnail_url">get_thumbnail_url</h3>
 <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_thumbnail_url</span><span class="p">(</span>
@@ -1379,39 +1356,41 @@ within the git repository from which this function is executed. If <code>thumbna
 is a local path, the path should be relative to root directory of the git repository
 it is located in. If a local path is provided or detected,
 it is converted to a GitHub raw URL.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_thumbnail_url</span><span class="ss">(</span><span class="nv">thumbnail</span><span class="o">=</span><span class="nv">None</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_thumbnail_url</span><span class="p">(</span><span class="n">thumbnail</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 
-    <span class="nv">Starting</span> <span class="nv">with</span> <span class="nv">a</span> <span class="nv">user</span><span class="o">-</span><span class="nv">specified</span> `<span class="nv">thumbnail</span>` <span class="nv">as</span> <span class="nv">either</span> <span class="nv">a</span> <span class="nv">path</span>, <span class="nv">URL</span>, <span class="nv">or</span> <span class="nv">None</span>,
+<span class="sd">    Starting with a user-specified `thumbnail` as either a path, URL, or None,</span>
 
-    <span class="k">return</span> <span class="nv">an</span> <span class="nv">absolute</span> <span class="nv">URL</span> <span class="nv">pointing</span> <span class="nv">to</span> <span class="nv">the</span> <span class="nv">thumbnail</span> <span class="nv">image</span>. <span class="k">If</span> <span class="nv">the</span> <span class="nv">provided</span> `<span class="nv">thumbnail</span>`
+<span class="sd">    return an absolute URL pointing to the thumbnail image. If the provided `thumbnail`</span>
 
-    <span class="nv">is</span> <span class="nv">a</span> <span class="nv">URL</span>, <span class="k">return</span> <span class="nv">this</span> <span class="nv">URL</span> <span class="nv">unmodified</span>. <span class="k">If</span> `<span class="nv">thumbnail</span>` <span class="nv">is</span> <span class="nv">None</span>, <span class="nv">search</span> <span class="k">for</span> `<span class="nv">thumbnail</span>.<span class="nv">png</span>`
+<span class="sd">    is a URL, return this URL unmodified. If `thumbnail` is None, search for `thumbnail.png`</span>
 
-    <span class="nv">within</span> <span class="nv">the</span> <span class="nv">git</span> <span class="nv">repository</span> <span class="nv">from</span> <span class="nv">which</span> <span class="nv">this</span> <span class="nv">function</span> <span class="nv">is</span> <span class="nv">executed</span>. <span class="k">If</span> `<span class="nv">thumbnail</span>`
+<span class="sd">    within the git repository from which this function is executed. If `thumbnail`</span>
 
-    <span class="nv">is</span> <span class="nv">a</span> <span class="nv">local</span> <span class="nv">path</span>, <span class="nv">the</span> <span class="nv">path</span> <span class="nv">should</span> <span class="nv">be</span> <span class="nv">relative</span> <span class="nv">to</span> <span class="nv">root</span> <span class="nv">directory</span> <span class="nv">of</span> <span class="nv">the</span> <span class="nv">git</span> <span class="nv">repository</span>
+<span class="sd">    is a local path, the path should be relative to root directory of the git repository</span>
 
-    <span class="nv">it</span> <span class="nv">is</span> <span class="nv">located</span> <span class="nv">in</span>. <span class="k">If</span> <span class="nv">a</span> <span class="nv">local</span> <span class="nv">path</span> <span class="nv">is</span> <span class="nv">provided</span> <span class="nv">or</span> <span class="nv">detected</span>,
+<span class="sd">    it is located in. If a local path is provided or detected,</span>
 
-    <span class="nv">it</span> <span class="nv">is</span> <span class="nv">converted</span> <span class="nv">to</span> <span class="nv">a</span> <span class="nv">GitHub</span> <span class="nv">raw</span> <span class="nv">URL</span>.
+<span class="sd">    it is converted to a GitHub raw URL.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">thumbnail</span>:
+    <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">is_http_url</span>
 
-        # <span class="nv">thumbnail</span> <span class="nv">not</span> <span class="nv">provided</span>, <span class="nv">so</span> <span class="nv">find</span> <span class="nv">local</span> <span class="nv">path</span> <span class="k">if</span> <span class="nv">exists</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">thumbnail</span><span class="p">:</span>
 
-        <span class="nv">thumbnail</span> <span class="o">=</span> <span class="nv">_find_thumbnail_path</span><span class="ss">()</span>
+        <span class="c1"># thumbnail not provided, so find local path if exists</span>
 
-    <span class="nv">elif</span> <span class="nv">urlparse</span><span class="ss">(</span><span class="nv">thumbnail</span><span class="ss">)</span>.<span class="nv">scheme</span> <span class="nv">in</span> <span class="nv">url_schemes</span>:
+        <span class="n">thumbnail</span> <span class="o">=</span> <span class="n">_find_thumbnail_path</span><span class="p">()</span>
 
-        # <span class="nv">provided</span> <span class="nv">thumbnail</span> <span class="nv">is</span> <span class="nv">a</span> <span class="nv">URL</span>. <span class="nv">Pass</span> <span class="nv">it</span> <span class="nv">through</span>.
+    <span class="k">elif</span> <span class="n">is_http_url</span><span class="p">(</span><span class="n">thumbnail</span><span class="p">):</span>
 
-        <span class="k">return</span> <span class="nv">thumbnail</span>
+        <span class="c1"># provided thumbnail is a URL. Pass it through.</span>
 
-    <span class="k">return</span> <span class="nv">_thumbnail_path_to_url</span><span class="ss">(</span><span class="nv">thumbnail</span><span class="ss">)</span>
+        <span class="k">return</span> <span class="n">thumbnail</span>
+
+    <span class="k">return</span> <span class="n">_thumbnail_path_to_url</span><span class="p">(</span><span class="n">thumbnail</span><span class="p">)</span>
 </pre></div>
 
 
