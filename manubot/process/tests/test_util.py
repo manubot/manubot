@@ -84,8 +84,8 @@ def test_add_author_affiliations():
 def test_get_header_includes_description_abstract():
     # test that abstract and description set different fields if both supplied
     variables = {
-        "abstract": "value for abstract",
-        "description": "value for description",
+        "pandoc": {"abstract": "value for abstract"},
+        "manubot": {"description": "value for description"},
     }
     header_includes = get_header_includes(variables)
     assert (
@@ -96,7 +96,7 @@ def test_get_header_includes_description_abstract():
         '<meta name="description" content="value for description" />' in header_includes
     )
     # test that abstract is used for description if description is not defined
-    del variables["description"]
+    del variables["manubot"]["description"]
     header_includes = get_header_includes(variables)
     assert (
         '<meta name="citation_abstract" content="value for abstract" />'
@@ -104,7 +104,7 @@ def test_get_header_includes_description_abstract():
     )
     assert '<meta name="description" content="value for abstract" />' in header_includes
     # test that if neither abstract nor description is defined, neither are inserted
-    del variables["abstract"]
+    del variables["pandoc"]["abstract"]
     header_includes = get_header_includes(variables)
     assert 'meta name="citation_abstract"' not in header_includes
     assert 'meta name="description"' not in header_includes
