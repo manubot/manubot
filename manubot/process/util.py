@@ -228,7 +228,7 @@ def load_variables(args) -> dict:
     variables.update(user_variables)
 
     # Add header-includes metadata with <meta> information for the HTML output's <head>
-    metadata["header-includes"] = get_header_includes(variables)
+    variables["pandoc"]["header-includes"] = get_header_includes(variables)
 
     return variables
 
@@ -395,6 +395,7 @@ def prepare_manuscript(args):
             default_flow_style=False,
             explicit_start=True,
             explicit_end=True,
+            width=float("inf"),
         )
         write_file.write("\n")
         write_file.write(text)
