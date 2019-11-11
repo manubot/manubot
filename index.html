@@ -311,6 +311,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#environment" class="md-nav__link">
+    Environment
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    Commands
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#release-instructions" class="md-nav__link">
     Release instructions
   </a>
@@ -1263,6 +1277,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#environment" class="md-nav__link">
+    Environment
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    Commands
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#release-instructions" class="md-nav__link">
     Release instructions
   </a>
@@ -1504,26 +1532,35 @@ For example, the following example generates CSL JSON for four references:</p>
 
 
 <h2 id="development">Development</h2>
+<h3 id="environment">Environment</h3>
 <p>Create a development environment using:</p>
 <div class="codehilite"><pre><span></span>conda create --name manubot-dev --channel conda-forge <span class="se">\</span>
-  <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6 jinja2 pandas pytest pandoc
+  <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 pandoc
 conda activate manubot-dev  <span class="c1"># assumes conda &gt;= 4.4</span>
 pip install --editable <span class="s2">&quot;.[all]&quot;</span>
 </pre></div>
 
 
-<p>Inside this environment, use <code>pytest</code> to run the test suite.
-You can also use the <code>manubot</code> CLI to build manuscripts.
-For example:</p>
-<div class="codehilite"><pre><span></span>manubot process <span class="se">\</span>
+<h3 id="commands">Commands</h3>
+<p>Below are some common commands used for development.
+They assume the working directory is set to the repository's root, and the conda environment is activated. </p>
+<div class="codehilite"><pre><span></span><span class="c1"># run the test suite</span>
+pytest
+
+<span class="c1"># reformat Python files according to the black style rules (required to pass CI)</span>
+black .
+
+<span class="c1"># regenerate the README codeblocks for --help messages</span>
+python manubot/tests/test_readme.py
+
+<span class="c1"># generate the docs</span>
+portray as_html --overwrite --output_dir<span class="o">=</span>docs
+
+<span class="c1"># process the example testing manuscript </span>
+manubot process <span class="se">\</span>
   --content-directory<span class="o">=</span>tests/manuscripts/example/content <span class="se">\</span>
   --output-directory<span class="o">=</span>tests/manuscripts/example/output <span class="se">\</span>
   --log-level<span class="o">=</span>DEBUG
-</pre></div>
-
-
-<p>To automatically regenerate the README <code>--help</code> messages codeblocks, run:</p>
-<div class="codehilite"><pre><span></span>python manubot/tests/test_readme.py
 </pre></div>
 
 
