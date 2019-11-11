@@ -883,8 +883,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#get_metadata_and_variables" class="md-nav__link">
-    get_metadata_and_variables
+  <a href="#load_variables" class="md-nav__link">
+    load_variables
   </a>
   
 </li>
@@ -1252,8 +1252,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#get_metadata_and_variables" class="md-nav__link">
-    get_metadata_and_variables
+  <a href="#load_variables" class="md-nav__link">
+    load_variables
   </a>
   
 </li>
@@ -1619,17 +1619,33 @@
 
     <span class="k">return</span> <span class="n">variables</span>
 
-<span class="k">def</span> <span class="nf">get_metadata_and_variables</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">load_variables</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Process metadata.yaml and create variables available for jinja2 templating.</span>
+<span class="sd">    Read metadata.yaml and files specified by --template-variables-path to generate</span>
+
+<span class="sd">    manuscript variables available for jinja2 templating.</span>
+
+<span class="sd">    Returns a dictionary with the following keys:</span>
+
+<span class="sd">    - `pandoc`: a dictionary for passing options to Pandoc via the `yaml_metadata_block`.</span>
+
+<span class="sd">      All fields from a manuscript&#39;s `metadata.yaml` are copied to this dictionary,</span>
+
+<span class="sd">      expect for special Manubot-defined fields. Special fields include `author_info` and</span>
+
+<span class="sd">      `thumbnail`.</span>
+
+<span class="sd">    - `manubot`: a dictionary with manubot-generated variables.</span>
+
+<span class="sd">    - user-specified fields inserted according to the `--template-variables-path` option.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Generated manuscript variables</span>
 
-    <span class="n">variables</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+    <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pandoc&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;manubot&quot;</span><span class="p">:</span> <span class="p">{}}</span>
 
     <span class="c1"># Read metadata which contains pandoc_yaml_metadata</span>
 
@@ -1665,9 +1681,9 @@
 
     <span class="p">)</span>
 
-    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;date-meta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;date-meta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 
-    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{now:%B} {now.day}, {now.year}&quot;</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{now:%B} {now.day}, {now.year}&quot;</span>
 
     <span class="c1"># Process authors metadata</span>
 
@@ -1677,11 +1693,11 @@
 
         <span class="n">authors</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;author-meta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">author</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">authors</span><span class="p">]</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;author-meta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">author</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">authors</span><span class="p">]</span>
 
-    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authors</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authors</span>
 
-    <span class="n">variables</span> <span class="o">=</span> <span class="n">add_author_affiliations</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
+    <span class="n">add_author_affiliations</span><span class="p">(</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">])</span>
 
     <span class="c1"># Set repository version metadata for CI builds</span>
 
@@ -1689,7 +1705,7 @@
 
     <span class="k">if</span> <span class="n">ci_params</span><span class="p">:</span>
 
-        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;ci_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_manuscript_urls_to_ci_params</span><span class="p">(</span><span class="n">ci_params</span><span class="p">)</span>
+        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;ci_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_manuscript_urls_to_ci_params</span><span class="p">(</span><span class="n">ci_params</span><span class="p">)</span>
 
     <span class="c1"># Add thumbnail URL if present</span>
 
@@ -1697,7 +1713,7 @@
 
     <span class="k">if</span> <span class="n">thumbnail_url</span><span class="p">:</span>
 
-        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;thumbnail_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">thumbnail_url</span>
+        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;thumbnail_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">thumbnail_url</span>
 
     <span class="c1"># Update variables with user-provided variables here</span>
 
@@ -1705,7 +1721,7 @@
 
     <span class="n">variables</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">user_variables</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">variables</span>
+    <span class="k">return</span> <span class="n">variables</span>
 
 <span class="k">def</span> <span class="nf">get_citekeys_df</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
 
@@ -1941,9 +1957,9 @@
 
     <span class="n">text</span> <span class="o">=</span> <span class="n">update_manuscript_citekeys</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citekey_mapping</span><span class="p">)</span>
 
-    <span class="n">metadata</span><span class="p">,</span> <span class="n">variables</span> <span class="o">=</span> <span class="n">get_metadata_and_variables</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">variables</span> <span class="o">=</span> <span class="n">load_variables</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manuscript_stats&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_manuscript_stats</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">)</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;manuscript_stats&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_manuscript_stats</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">variables_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
 
@@ -1959,7 +1975,7 @@
 
         <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
 
-            <span class="n">metadata</span><span class="p">,</span>
+            <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">],</span>
 
             <span class="n">write_file</span><span class="p">,</span>
 
@@ -2351,25 +2367,49 @@ citekeys_df is a pandas.DataFrame with the following columns:
 
 
 </details>
-<h3 id="get_metadata_and_variables">get_metadata_and_variables</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_metadata_and_variables</span><span class="p">(</span>
+<h3 id="load_variables">load_variables</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">load_variables</span><span class="p">(</span>
     <span class="n">args</span>
-<span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
 </pre></div>
 
 
-<p>Process metadata.yaml and create variables available for jinja2 templating.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_metadata_and_variables</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<p>Read metadata.yaml and files specified by --template-variables-path to generate
+manuscript variables available for jinja2 templating.</p>
+<p>Returns a dictionary with the following keys:
+- <code>pandoc</code>: a dictionary for passing options to Pandoc via the <code>yaml_metadata_block</code>.
+  All fields from a manuscript's <code>metadata.yaml</code> are copied to this dictionary,
+  expect for special Manubot-defined fields. Special fields include <code>author_info</code> and
+  <code>thumbnail</code>.
+- <code>manubot</code>: a dictionary with manubot-generated variables.
+- user-specified fields inserted according to the <code>--template-variables-path</code> option.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">load_variables</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span> <span class="o">-&gt;</span> <span class="nv">dict</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">Process</span> <span class="nv">metadata</span>.<span class="nv">yaml</span> <span class="nv">and</span> <span class="nv">create</span> <span class="nv">variables</span> <span class="nv">available</span> <span class="k">for</span> <span class="nv">jinja2</span> <span class="nv">templating</span>.
+    <span class="nv">Read</span> <span class="nv">metadata</span>.<span class="nv">yaml</span> <span class="nv">and</span> <span class="nv">files</span> <span class="nv">specified</span> <span class="nv">by</span> <span class="o">--</span><span class="nv">template</span><span class="o">-</span><span class="nv">variables</span><span class="o">-</span><span class="nv">path</span> <span class="nv">to</span> <span class="nv">generate</span>
+
+    <span class="nv">manuscript</span> <span class="nv">variables</span> <span class="nv">available</span> <span class="k">for</span> <span class="nv">jinja2</span> <span class="nv">templating</span>.
+
+    <span class="nv">Returns</span> <span class="nv">a</span> <span class="nv">dictionary</span> <span class="nv">with</span> <span class="nv">the</span> <span class="nv">following</span> <span class="nv">keys</span>:
+
+    <span class="o">-</span> `<span class="nv">pandoc</span>`: <span class="nv">a</span> <span class="nv">dictionary</span> <span class="k">for</span> <span class="nv">passing</span> <span class="nv">options</span> <span class="nv">to</span> <span class="nv">Pandoc</span> <span class="nv">via</span> <span class="nv">the</span> `<span class="nv">yaml_metadata_block</span>`.
+
+      <span class="nv">All</span> <span class="nv">fields</span> <span class="nv">from</span> <span class="nv">a</span> <span class="nv">manuscript</span><span class="s1">&#39;</span><span class="s">s `metadata.yaml` are copied to this dictionary,</span>
+
+      <span class="nv">expect</span> <span class="k">for</span> <span class="nv">special</span> <span class="nv">Manubot</span><span class="o">-</span><span class="nv">defined</span> <span class="nv">fields</span>. <span class="nv">Special</span> <span class="nv">fields</span> <span class="k">include</span> `<span class="nv">author_info</span>` <span class="nv">and</span>
+
+      `<span class="nv">thumbnail</span>`.
+
+    <span class="o">-</span> `<span class="nv">manubot</span>`: <span class="nv">a</span> <span class="nv">dictionary</span> <span class="nv">with</span> <span class="nv">manubot</span><span class="o">-</span><span class="nv">generated</span> <span class="nv">variables</span>.
+
+    <span class="o">-</span> <span class="nv">user</span><span class="o">-</span><span class="nv">specified</span> <span class="nv">fields</span> <span class="nv">inserted</span> <span class="nv">according</span> <span class="nv">to</span> <span class="nv">the</span> `<span class="o">--</span><span class="nv">template</span><span class="o">-</span><span class="nv">variables</span><span class="o">-</span><span class="nv">path</span>` <span class="nv">option</span>.
 
     <span class="s2">&quot;&quot;&quot;</span>
 
     # <span class="nv">Generated</span> <span class="nv">manuscript</span> <span class="nv">variables</span>
 
-    <span class="nv">variables</span> <span class="o">=</span> <span class="nv">collections</span>.<span class="nv">OrderedDict</span><span class="ss">()</span>
+    <span class="nv">variables</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">pandoc</span><span class="s2">&quot;</span>: {}, <span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>: {}}
 
     # <span class="nv">Read</span> <span class="nv">metadata</span> <span class="nv">which</span> <span class="nv">contains</span> <span class="nv">pandoc_yaml_metadata</span>
 
@@ -2405,9 +2445,9 @@ citekeys_df is a pandas.DataFrame with the following columns:
 
     <span class="ss">)</span>
 
-    <span class="nv">metadata</span>[<span class="s2">&quot;</span><span class="s">date-meta</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">now</span>.<span class="nv">date</span><span class="ss">()</span>.<span class="nv">isoformat</span><span class="ss">()</span>
+    <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">pandoc</span><span class="s2">&quot;</span>][<span class="s2">&quot;</span><span class="s">date-meta</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">now</span>.<span class="nv">date</span><span class="ss">()</span>.<span class="nv">isoformat</span><span class="ss">()</span>
 
-    <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">date</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{now:%B} {now.day}, {now.year}</span><span class="s2">&quot;</span>
+    <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>][<span class="s2">&quot;</span><span class="s">date</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{now:%B} {now.day}, {now.year}</span><span class="s2">&quot;</span>
 
     # <span class="nv">Process</span> <span class="nv">authors</span> <span class="nv">metadata</span>
 
@@ -2417,11 +2457,11 @@ citekeys_df is a pandas.DataFrame with the following columns:
 
         <span class="nv">authors</span> <span class="o">=</span> []
 
-    <span class="nv">metadata</span>[<span class="s2">&quot;</span><span class="s">author-meta</span><span class="s2">&quot;</span>] <span class="o">=</span> [<span class="nv">author</span>[<span class="s2">&quot;</span><span class="s">name</span><span class="s2">&quot;</span>] <span class="k">for</span> <span class="nv">author</span> <span class="nv">in</span> <span class="nv">authors</span>]
+    <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">pandoc</span><span class="s2">&quot;</span>][<span class="s2">&quot;</span><span class="s">author-meta</span><span class="s2">&quot;</span>] <span class="o">=</span> [<span class="nv">author</span>[<span class="s2">&quot;</span><span class="s">name</span><span class="s2">&quot;</span>] <span class="k">for</span> <span class="nv">author</span> <span class="nv">in</span> <span class="nv">authors</span>]
 
-    <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">authors</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">authors</span>
+    <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>][<span class="s2">&quot;</span><span class="s">authors</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">authors</span>
 
-    <span class="nv">variables</span> <span class="o">=</span> <span class="nv">add_author_affiliations</span><span class="ss">(</span><span class="nv">variables</span><span class="ss">)</span>
+    <span class="nv">add_author_affiliations</span><span class="ss">(</span><span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>]<span class="ss">)</span>
 
     # <span class="nv">Set</span> <span class="nv">repository</span> <span class="nv">version</span> <span class="nv">metadata</span> <span class="k">for</span> <span class="nv">CI</span> <span class="nv">builds</span>
 
@@ -2429,7 +2469,7 @@ citekeys_df is a pandas.DataFrame with the following columns:
 
     <span class="k">if</span> <span class="nv">ci_params</span>:
 
-        <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">ci_source</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">add_manuscript_urls_to_ci_params</span><span class="ss">(</span><span class="nv">ci_params</span><span class="ss">)</span>
+        <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>][<span class="s2">&quot;</span><span class="s">ci_source</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">add_manuscript_urls_to_ci_params</span><span class="ss">(</span><span class="nv">ci_params</span><span class="ss">)</span>
 
     # <span class="nv">Add</span> <span class="nv">thumbnail</span> <span class="nv">URL</span> <span class="k">if</span> <span class="nv">present</span>
 
@@ -2437,7 +2477,7 @@ citekeys_df is a pandas.DataFrame with the following columns:
 
     <span class="k">if</span> <span class="nv">thumbnail_url</span>:
 
-        <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">thumbnail_url</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">thumbnail_url</span>
+        <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>][<span class="s2">&quot;</span><span class="s">thumbnail_url</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">thumbnail_url</span>
 
     # <span class="nv">Update</span> <span class="nv">variables</span> <span class="nv">with</span> <span class="nv">user</span><span class="o">-</span><span class="nv">provided</span> <span class="nv">variables</span> <span class="nv">here</span>
 
@@ -2445,7 +2485,7 @@ citekeys_df is a pandas.DataFrame with the following columns:
 
     <span class="nv">variables</span>.<span class="nv">update</span><span class="ss">(</span><span class="nv">user_variables</span><span class="ss">)</span>
 
-    <span class="k">return</span> <span class="nv">metadata</span>, <span class="nv">variables</span>
+    <span class="k">return</span> <span class="nv">variables</span>
 </pre></div>
 
 
@@ -2483,9 +2523,9 @@ for pandoc.</p>
 
     <span class="nv">text</span> <span class="o">=</span> <span class="nv">update_manuscript_citekeys</span><span class="ss">(</span><span class="nv">text</span>, <span class="nv">citekey_mapping</span><span class="ss">)</span>
 
-    <span class="nv">metadata</span>, <span class="nv">variables</span> <span class="o">=</span> <span class="nv">get_metadata_and_variables</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>
+    <span class="nv">variables</span> <span class="o">=</span> <span class="nv">load_variables</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>
 
-    <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">manuscript_stats</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">get_manuscript_stats</span><span class="ss">(</span><span class="nv">text</span>, <span class="nv">citekeys_df</span><span class="ss">)</span>
+    <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>][<span class="s2">&quot;</span><span class="s">manuscript_stats</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">get_manuscript_stats</span><span class="ss">(</span><span class="nv">text</span>, <span class="nv">citekeys_df</span><span class="ss">)</span>
 
     <span class="nv">with</span> <span class="nv">args</span>.<span class="nv">variables_path</span>.<span class="nv">open</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">w</span><span class="s2">&quot;</span>, <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">utf-8</span><span class="s2">&quot;</span><span class="ss">)</span> <span class="nv">as</span> <span class="nv">write_file</span>:
 
@@ -2501,7 +2541,7 @@ for pandoc.</p>
 
         <span class="nv">yaml</span>.<span class="nv">dump</span><span class="ss">(</span>
 
-            <span class="nv">metadata</span>,
+            <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">pandoc</span><span class="s2">&quot;</span>],
 
             <span class="nv">write_file</span>,
 
