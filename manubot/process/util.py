@@ -12,6 +12,7 @@ import requests
 import requests_cache
 import yaml
 
+from manubot.util import is_http_url
 from manubot.process.bibliography import load_manual_references
 from manubot.process.ci import (
     add_manuscript_urls_to_ci_params,
@@ -68,7 +69,7 @@ def read_json(path):
     """
     Read json from a path or URL.
     """
-    if re.match("^(http|ftp)s?://", path):
+    if is_http_url(path):
         response = requests.get(path)
         obj = response.json(object_pairs_hook=collections.OrderedDict)
     else:
