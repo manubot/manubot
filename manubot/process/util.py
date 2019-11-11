@@ -223,6 +223,20 @@ def load_variables(args) -> dict:
     if thumbnail_url:
         variables["manubot"]["thumbnail_url"] = thumbnail_url
 
+    # Update variables with metadata.yaml pandoc/manubot dicts
+    for key in "pandoc", "manubot":
+        dict_ = metadata.pop(key, {})
+        if not isinstance(dict_, dict):
+            logging.warning(
+                f"load_variables expected metadata.yaml field {key!r} to be a dict."
+                f"Received a {type(dict_)} instead."
+            )
+            continue
+        variables[key].update(dict_)
+
+    # Update variables with uninterpreted metadata.yaml fields
+    variables.update(metadata)
+
     # Update variables with user-provided variables here
     user_variables = read_jsons(args.template_variables_path)
     variables.update(user_variables)
