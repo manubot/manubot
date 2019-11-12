@@ -1,4 +1,6 @@
 import importlib
+import json
+import logging
 import platform
 import shlex
 import sys
@@ -56,3 +58,53 @@ def is_http_url(string: str) -> bool:
 
     parsed_url = urlparse(string)
     return parsed_url.scheme in _http_url_schemes
+
+
+def read_serialized_data(path: str):
+    """
+    Read seralized data from a local file path or web-address.
+    If file format extension is not detected in path, assumes JSON.
+    """
+    import os
+    import pathlib
+    import requests
+
+    path_str = os.fspath(path)
+    path_lib = pathlib.Path(path)
+    if is_http_url(path_str):
+        response = requests.get(path_str)
+        # update path_lib for redirects which may have different suffixes
+        path_lib = pathlib.Path(response.url)
+        text = response.text
+    else:
+        text = path_lib.read_text(encoding="utf-8-sig")
+    suffixes = set(path_lib.suffixes)
+    if {".yaml", ".yml"} & suffixes:
+        import yaml
+
+        return yaml.safe_load(text)
+    if ".toml" in suffixes:
+        import toml
+
+        return toml.loads(text)
+    if ".json" not in suffixes:
+        logging.info(
+            f"read_serialized_data cannot infer serialization format from the extension of {path_str!r}. "
+            "Supported extensions are `.json`, `.yaml` or `.yml`, and `.toml`. "
+            "Assuming JSON."
+        )
+    return json.loads(text)
+
+
+def read_serialized_dict(path: str) -> dict:
+    """
+    Read serialized data, confirming that the top-level object is a dictionary.
+    Delegates to `read_serialized_data`.
+    """
+    data = read_serialized_data(path)
+    if isinstance(data, dict):
+        return data
+    raise TypeError(
+        f"Expected data encoded by {path!r} to be a dictionary at the top-level. "
+        f"Received {data.__class__.__name__!r} instead."
+    )

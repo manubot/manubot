@@ -12,7 +12,7 @@ import requests
 import requests_cache
 import yaml
 
-from manubot.util import is_http_url
+from manubot.util import read_serialized_data, read_serialized_dict
 from manubot.process.bibliography import load_manual_references
 from manubot.process.ci import (
     add_manuscript_urls_to_ci_params,
@@ -65,25 +65,12 @@ def check_multiple_citation_strings(citekeys_df):
     return multi_df
 
 
-def read_json(path):
+def read_variable_files(paths):
     """
-    Read json from a path or URL.
-    """
-    if is_http_url(path):
-        response = requests.get(path)
-        obj = response.json(object_pairs_hook=collections.OrderedDict)
-    else:
-        path = pathlib.Path(path)
-        with path.open(encoding="utf-8-sig") as read_file:
-            obj = json.load(read_file, object_pairs_hook=collections.OrderedDict)
-    return obj
-
-
-def read_jsons(paths):
-    """
-    Read multiple JSON files into a user_variables dictionary. Provide a list
-    of paths (URLs or filepaths). Paths can optionally have a namespace
-    prepended. For example:
+    Read multiple serialized data files into a user_variables dictionary.
+    Provide a list of paths (URLs or filepaths).
+    Paths can optionally have a namespace prepended.
+    For example:
 
     ```
     paths = [
@@ -100,7 +87,7 @@ def read_jsons(paths):
     user_variables = collections.OrderedDict()
     for path in paths:
         logging.info(
-            f"Read the following user-provided templating variables for {path}"
+            f"Read the following user-provided templating variables for {path!r}"
         )
         # Match only namespaces that are valid jinja2 variable names
         # http://jinja.pocoo.org/docs/2.10/api/#identifier-naming
@@ -108,20 +95,21 @@ def read_jsons(paths):
         if match:
             namespace, path = match.groups()
             logging.info(
-                f'Using the "{namespace}" namespace for template variables from {path}'
+                f"Using the {namespace!r} namespace for template variables from {path!r}"
             )
         try:
-            obj = read_json(path)
+            if match:
+                obj = {namespace: read_serialized_data(path)}
+            else:
+                obj = read_serialized_dict(path)
         except Exception:
-            logging.exception(f"Error reading template variables from {path}")
+            logging.exception(f"Error reading template variables from {path!r}")
             continue
-        if match:
-            obj = {namespace: obj}
         assert isinstance(obj, dict)
         conflicts = user_variables.keys() & obj.keys()
         if conflicts:
             logging.warning(
-                f"Template variables in {path} overwrite existing "
+                f"Template variables in {path!r} overwrite existing "
                 "values for the following keys:\n" + "\n".join(conflicts)
             )
         user_variables.update(obj)
@@ -187,9 +175,7 @@ def load_variables(args) -> dict:
     # Read metadata which contains pandoc_yaml_metadata
     # as well as author_info.
     if args.meta_yaml_path.is_file():
-        with args.meta_yaml_path.open(encoding="utf-8-sig") as read_file:
-            metadata = yaml.safe_load(read_file)
-            assert isinstance(metadata, dict)
+        metadata = read_serialized_dict(args.meta_yaml_path)
     else:
         metadata = {}
         logging.warning(
@@ -229,7 +215,7 @@ def load_variables(args) -> dict:
         if not isinstance(dict_, dict):
             logging.warning(
                 f"load_variables expected metadata.yaml field {key!r} to be a dict."
-                f"Received a {type(dict_)} instead."
+                f"Received a {dict_.__class__.__name__!r} instead."
             )
             continue
         variables[key].update(dict_)
@@ -238,7 +224,7 @@ def load_variables(args) -> dict:
     variables.update(metadata)
 
     # Update variables with user-provided variables here
-    user_variables = read_jsons(args.template_variables_path)
+    user_variables = read_variable_files(args.template_variables_path)
     variables.update(user_variables)
 
     return variables
