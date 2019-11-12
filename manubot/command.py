@@ -64,7 +64,9 @@ def add_subparser_process(subparsers):
         "--template-variables-path",
         action="append",
         default=[],
-        help="Path or URL of a JSON file containing template variables for jinja2. "
+        help="Path or URL of a file containing template variables for jinja2. "
+        "Serialization format is inferred from the file extension, with support for JSON, YAML, and TOML. "
+        "If the format cannot be detected, the parser assumes JSON. "
         "Specify this argument multiple times to read multiple files. "
         "Variables can be applied to a namespace (i.e. stored under a dictionary key) "
         "like `--template-variables-path=namespace=path_or_url`. "
