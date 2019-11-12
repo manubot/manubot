@@ -11,10 +11,10 @@ def test_shlex_join():
     assert output == "command 'positional arg' path_arg path"
 
 
-raw_manuscript_url = (
+raw_repo_url = (
     "https://github.com/manubot/manubot/raw/ebac7abd754015a5ec24a6fff39c35a72d4dffb0/"
-    "manubot/process/tests/manuscripts/example/"
 )
+raw_manuscript_url = f"{raw_repo_url}manubot/process/tests/manuscripts/example/"
 
 
 def test_read_serialized_data_url_yaml():
@@ -31,3 +31,9 @@ def test_read_serialized_data_url_json():
     assert obj[0]["container-title"] == "Engineuring"
     with pytest.raises(TypeError, match="Received 'list' instead"):
         manubot.util.read_serialized_dict(url)
+
+
+def test_read_serialized_dict_url_toml():
+    url = raw_repo_url + "pyproject.toml"
+    obj = manubot.util.read_serialized_dict(url)
+    assert "black" in obj["tool"]
