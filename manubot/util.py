@@ -64,6 +64,8 @@ def read_serialized_data(path: str):
     """
     Read seralized data from a local file path or web-address.
     If file format extension is not detected in path, assumes JSON.
+    If a URL does not contain the appropriate suffix, one workaround
+    is to hack the fragment like https://example.org#/variables.toml
     """
     import os
     import pathlib
@@ -71,14 +73,16 @@ def read_serialized_data(path: str):
 
     path_str = os.fspath(path)
     path_lib = pathlib.Path(path)
+    supported_suffixes = {".json", ".yaml", ".yml", ".toml"}
+    suffixes = set(path_lib.suffixes)
     if is_http_url(path_str):
         response = requests.get(path_str)
-        # update path_lib for redirects which may have different suffixes
-        path_lib = pathlib.Path(response.url)
+        if not suffixes & supported_suffixes:
+            # if URL has no supported suffixes, evaluate suffixes of final redirect
+            suffixes = set(pathlib.Path(response.url).suffixes)
         text = response.text
     else:
         text = path_lib.read_text(encoding="utf-8-sig")
-    suffixes = set(path_lib.suffixes)
     if {".yaml", ".yml"} & suffixes:
         import yaml
 
@@ -90,7 +94,7 @@ def read_serialized_data(path: str):
     if ".json" not in suffixes:
         logging.info(
             f"read_serialized_data cannot infer serialization format from the extension of {path_str!r}. "
-            "Supported extensions are `.json`, `.yaml` or `.yml`, and `.toml`. "
+            f"Supported extensions are {', '.join(supported_suffixes)}. "
             "Assuming JSON."
         )
     return json.loads(text)
