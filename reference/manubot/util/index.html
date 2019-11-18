@@ -375,6 +375,20 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#read_serialized_data" class="md-nav__link">
+    read_serialized_data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read_serialized_dict" class="md-nav__link">
+    read_serialized_dict
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#shlex_join" class="md-nav__link">
     shlex_join
   </a>
@@ -1208,6 +1222,20 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#read_serialized_data" class="md-nav__link">
+    read_serialized_data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read_serialized_dict" class="md-nav__link">
+    read_serialized_dict
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#shlex_join" class="md-nav__link">
     shlex_join
   </a>
@@ -1240,6 +1268,10 @@
                 
                 <h1 id="module-manubotutil">Module manubot.util</h1>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">importlib</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">import</span> <span class="nn">platform</span>
 
@@ -1330,6 +1362,100 @@
     <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">in</span> <span class="n">_http_url_schemes</span>
+
+<span class="k">def</span> <span class="nf">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Read seralized data from a local file path or web-address.</span>
+
+<span class="sd">    If file format extension is not detected in path, assumes JSON.</span>
+
+<span class="sd">    If a URL does not contain the appropriate suffix, one workaround</span>
+
+<span class="sd">    is to hack the fragment like https://example.org#/variables.toml</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">os</span>
+
+    <span class="kn">import</span> <span class="nn">pathlib</span>
+
+    <span class="kn">import</span> <span class="nn">requests</span>
+
+    <span class="n">path_str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="n">path_lib</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="n">supported_suffixes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;.toml&quot;</span><span class="p">}</span>
+
+    <span class="n">suffixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">path_lib</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_http_url</span><span class="p">(</span><span class="n">path_str</span><span class="p">):</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path_str</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">suffixes</span> <span class="o">&amp;</span> <span class="n">supported_suffixes</span><span class="p">:</span>
+
+            <span class="c1"># if URL has no supported suffixes, evaluate suffixes of final redirect</span>
+
+            <span class="n">suffixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="n">path_lib</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">{</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">}</span> <span class="o">&amp;</span> <span class="n">suffixes</span><span class="p">:</span>
+
+        <span class="kn">import</span> <span class="nn">yaml</span>
+
+        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;.toml&quot;</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
+
+        <span class="kn">import</span> <span class="nn">toml</span>
+
+        <span class="k">return</span> <span class="n">toml</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;.json&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+
+            <span class="n">f</span><span class="s2">&quot;read_serialized_data cannot infer serialization format from the extension of {path_str!r}. &quot;</span>
+
+            <span class="n">f</span><span class="s2">&quot;Supported extensions are {&#39;, &#39;.join(supported_suffixes)}. &quot;</span>
+
+            <span class="s2">&quot;Assuming JSON.&quot;</span>
+
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">read_serialized_dict</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Read serialized data, confirming that the top-level object is a dictionary.</span>
+
+<span class="sd">    Delegates to `read_serialized_data`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+
+        <span class="n">f</span><span class="s2">&quot;Expected data encoded by {path!r} to be a dictionary at the top-level. &quot;</span>
+
+        <span class="n">f</span><span class="s2">&quot;Received {data.__class__.__name__!r} instead.&quot;</span>
+
+    <span class="p">)</span>
 </pre></div>
 
 
@@ -1432,6 +1558,126 @@ returned as an object. See https://stackoverflow.com/a/8790232/4651668.</p>
     <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">in</span> <span class="n">_http_url_schemes</span>
+</pre></div>
+
+
+</details>
+<h3 id="read_serialized_data">read_serialized_data</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">read_serialized_data</span><span class="p">(</span>
+    <span class="n">path</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>Read seralized data from a local file path or web-address.
+If file format extension is not detected in path, assumes JSON.
+If a URL does not contain the appropriate suffix, one workaround
+is to hack the fragment like https://example.org#/variables.toml</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Read seralized data from a local file path or web-address.</span>
+
+<span class="sd">    If file format extension is not detected in path, assumes JSON.</span>
+
+<span class="sd">    If a URL does not contain the appropriate suffix, one workaround</span>
+
+<span class="sd">    is to hack the fragment like https://example.org#/variables.toml</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">os</span>
+
+    <span class="kn">import</span> <span class="nn">pathlib</span>
+
+    <span class="kn">import</span> <span class="nn">requests</span>
+
+    <span class="n">path_str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="n">path_lib</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="n">supported_suffixes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;.toml&quot;</span><span class="p">}</span>
+
+    <span class="n">suffixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">path_lib</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_http_url</span><span class="p">(</span><span class="n">path_str</span><span class="p">):</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path_str</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">suffixes</span> <span class="o">&amp;</span> <span class="n">supported_suffixes</span><span class="p">:</span>
+
+            <span class="c1"># if URL has no supported suffixes, evaluate suffixes of final redirect</span>
+
+            <span class="n">suffixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="n">path_lib</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">{</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">}</span> <span class="o">&amp;</span> <span class="n">suffixes</span><span class="p">:</span>
+
+        <span class="kn">import</span> <span class="nn">yaml</span>
+
+        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;.toml&quot;</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
+
+        <span class="kn">import</span> <span class="nn">toml</span>
+
+        <span class="k">return</span> <span class="n">toml</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;.json&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+
+            <span class="n">f</span><span class="s2">&quot;read_serialized_data cannot infer serialization format from the extension of {path_str!r}. &quot;</span>
+
+            <span class="n">f</span><span class="s2">&quot;Supported extensions are {&#39;, &#39;.join(supported_suffixes)}. &quot;</span>
+
+            <span class="s2">&quot;Assuming JSON.&quot;</span>
+
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+
+
+</details>
+<h3 id="read_serialized_dict">read_serialized_dict</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">read_serialized_dict</span><span class="p">(</span>
+    <span class="n">path</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
+</pre></div>
+
+
+<p>Read serialized data, confirming that the top-level object is a dictionary.
+Delegates to <code>read_serialized_data</code>.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">read_serialized_dict</span><span class="ss">(</span><span class="nv">path</span>: <span class="nv">str</span><span class="ss">)</span> <span class="o">-&gt;</span> <span class="nv">dict</span>:
+
+    <span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="nv">Read</span> <span class="nv">serialized</span> <span class="nv">data</span>, <span class="nv">confirming</span> <span class="nv">that</span> <span class="nv">the</span> <span class="nv">top</span><span class="o">-</span><span class="nv">level</span> <span class="nv">object</span> <span class="nv">is</span> <span class="nv">a</span> <span class="nv">dictionary</span>.
+
+    <span class="nv">Delegates</span> <span class="nv">to</span> `<span class="nv">read_serialized_data</span>`.
+
+    <span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="nv">data</span> <span class="o">=</span> <span class="nv">read_serialized_data</span><span class="ss">(</span><span class="nv">path</span><span class="ss">)</span>
+
+    <span class="k">if</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">data</span>, <span class="nv">dict</span><span class="ss">)</span>:
+
+        <span class="k">return</span> <span class="nv">data</span>
+
+    <span class="nv">raise</span> <span class="nv">TypeError</span><span class="ss">(</span>
+
+        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Expected data encoded by {path!r} to be a dictionary at the top-level. </span><span class="s2">&quot;</span>
+
+        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Received {data.__class__.__name__!r} instead.</span><span class="s2">&quot;</span>
+
+    <span class="ss">)</span>
 </pre></div>
 
 

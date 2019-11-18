@@ -897,15 +897,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#read_json" class="md-nav__link">
-    read_json
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#read_jsons" class="md-nav__link">
-    read_jsons
+  <a href="#read_variable_files" class="md-nav__link">
+    read_variable_files
   </a>
   
 </li>
@@ -1266,15 +1259,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#read_json" class="md-nav__link">
-    read_json
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#read_jsons" class="md-nav__link">
-    read_jsons
+  <a href="#read_variable_files" class="md-nav__link">
+    read_variable_files
   </a>
   
 </li>
@@ -1317,13 +1303,13 @@
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">import</span> <span class="nn">pathlib</span>
-
 <span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">import</span> <span class="nn">textwrap</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">jinja2</span>
 
@@ -1335,7 +1321,7 @@
 
 <span class="kn">import</span> <span class="nn">yaml</span>
 
-<span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">is_http_url</span>
+<span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">read_serialized_data</span><span class="p">,</span> <span class="n">read_serialized_dict</span>
 
 <span class="kn">from</span> <span class="nn">manubot.process.bibliography</span> <span class="kn">import</span> <span class="n">load_manual_references</span>
 
@@ -1429,41 +1415,19 @@
 
     <span class="k">return</span> <span class="n">multi_df</span>
 
-<span class="k">def</span> <span class="nf">read_json</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">read_variable_files</span><span class="p">(</span><span class="n">paths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">variables</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Read json from a path or URL.</span>
+<span class="sd">    Read multiple serialized data files into a user_variables dictionary.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    Provide `paths` (a list of URLs or local file paths).</span>
 
-    <span class="k">if</span> <span class="n">is_http_url</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="sd">    Paths can optionally have a namespace prepended.</span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="sd">    For example:</span>
 
-        <span class="n">obj</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="n">object_pairs_hook</span><span class="o">=</span><span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">)</span>
-
-    <span class="k">else</span><span class="p">:</span>
-
-        <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-
-        <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
-
-            <span class="n">obj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">read_file</span><span class="p">,</span> <span class="n">object_pairs_hook</span><span class="o">=</span><span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">obj</span>
-
-<span class="k">def</span> <span class="nf">read_jsons</span><span class="p">(</span><span class="n">paths</span><span class="p">):</span>
-
-    <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">    Read multiple JSON files into a user_variables dictionary. Provide a list</span>
-
-<span class="sd">    of paths (URLs or filepaths). Paths can optionally have a namespace</span>
-
-<span class="sd">    prepended. For example:</span>
-
-<span class="sd">    ```</span>
+<span class="sd">    ```python</span>
 
 <span class="sd">    paths = [</span>
 
@@ -1483,15 +1447,21 @@
 
 <span class="sd">    (includes underscores, first character cannot be numeric).</span>
 
+<span class="sd">    Pass a dictionary to `variables` to update an existing dictionary rather</span>
+
+<span class="sd">    than create a new dictionary.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">user_variables</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">variables</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
 
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
-            <span class="n">f</span><span class="s2">&quot;Read the following user-provided templating variables for {path}&quot;</span>
+            <span class="n">f</span><span class="s2">&quot;Read the following user-provided templating variables for {path!r}&quot;</span>
 
         <span class="p">)</span>
 
@@ -1507,51 +1477,53 @@
 
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s1">&#39;Using the &quot;{namespace}&quot; namespace for template variables from {path}&#39;</span>
+                <span class="n">f</span><span class="s2">&quot;Using the {namespace!r} namespace for template variables from {path!r}&quot;</span>
 
             <span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
 
-            <span class="n">obj</span> <span class="o">=</span> <span class="n">read_json</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+
+                <span class="n">obj</span> <span class="o">=</span> <span class="p">{</span><span class="n">namespace</span><span class="p">:</span> <span class="n">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">)}</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">read_serialized_dict</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Error reading template variables from {path}&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Error reading template variables from {path!r}&quot;</span><span class="p">)</span>
 
             <span class="k">continue</span>
 
-        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
-
-            <span class="n">obj</span> <span class="o">=</span> <span class="p">{</span><span class="n">namespace</span><span class="p">:</span> <span class="n">obj</span><span class="p">}</span>
-
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
 
-        <span class="n">conflicts</span> <span class="o">=</span> <span class="n">user_variables</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">obj</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">conflicts</span> <span class="o">=</span> <span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">obj</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">conflicts</span><span class="p">:</span>
 
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s2">&quot;Template variables in {path} overwrite existing &quot;</span>
+                <span class="n">f</span><span class="s2">&quot;Template variables in {path!r} overwrite existing &quot;</span>
 
                 <span class="s2">&quot;values for the following keys:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">conflicts</span><span class="p">)</span>
 
             <span class="p">)</span>
 
-        <span class="n">user_variables</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="n">variables</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
         <span class="n">f</span><span class="s2">&quot;Reading user-provided templating variables complete:</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-        <span class="n">f</span><span class="s2">&quot;{json.dumps(user_variables, indent=2, ensure_ascii=False)}&quot;</span>
+        <span class="n">f</span><span class="s2">&quot;{json.dumps(variables, indent=2, ensure_ascii=False)}&quot;</span>
 
     <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">user_variables</span>
+    <span class="k">return</span> <span class="n">variables</span>
 
-<span class="k">def</span> <span class="nf">add_author_affiliations</span><span class="p">(</span><span class="n">variables</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">add_author_affiliations</span><span class="p">(</span><span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1623,23 +1595,35 @@
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Read metadata.yaml and files specified by --template-variables-path to generate</span>
+<span class="sd">    Read `metadata.yaml` and files specified by `--template-variables-path` to generate</span>
 
 <span class="sd">    manuscript variables available for jinja2 templating.</span>
 
-<span class="sd">    Returns a dictionary with the following keys:</span>
+<span class="sd">    Returns a dictionary, refered to as `variables`, with the following keys:</span>
 
 <span class="sd">    - `pandoc`: a dictionary for passing options to Pandoc via the `yaml_metadata_block`.</span>
 
-<span class="sd">      All fields from a manuscript&#39;s `metadata.yaml` are copied to this dictionary,</span>
+<span class="sd">      Fields in `pandoc` are either generated by Manubot or hard-coded by the user if `metadata.yaml`</span>
 
-<span class="sd">      expect for special Manubot-defined fields. Special fields include `author_info` and</span>
+<span class="sd">      includes a `pandoc` dictionary.</span>
 
-<span class="sd">      `thumbnail`.</span>
+<span class="sd">    - `manubot`: a dictionary for manubot-related information and metadata.</span>
 
-<span class="sd">    - `manubot`: a dictionary with manubot-generated variables.</span>
+<span class="sd">      Fields in `manubot` are either generated by Manubot or hard-coded by the user if `metadata.yaml`</span>
 
-<span class="sd">    - user-specified fields inserted according to the `--template-variables-path` option.</span>
+<span class="sd">      includes a `manubot` dictionary.</span>
+
+<span class="sd">    - All fields from a manuscript&#39;s `metadata.yaml` that are not interpreted by Manubot are</span>
+
+<span class="sd">      copied to `variables`. Interpreted fields include `pandoc`, `manubot`, `title`,</span>
+
+<span class="sd">      `keywords`, `author_info`, `lang`, and `thumbnail`.</span>
+
+<span class="sd">    - User-specified fields inserted according to the `--template-variables-path` option.</span>
+
+<span class="sd">      User-specified variables take highest precedence and can overwrite values for existing</span>
+
+<span class="sd">      keys like `pandoc` or `manubot` (dangerous).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1653,11 +1637,7 @@
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">meta_yaml_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
 
-        <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">meta_yaml_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
-
-            <span class="n">metadata</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">read_file</span><span class="p">)</span>
-
-            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">read_serialized_dict</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">meta_yaml_path</span><span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
 
@@ -1668,6 +1648,16 @@
             <span class="n">f</span><span class="s2">&quot;missing {args.meta_yaml_path} file with yaml_metadata_block for pandoc&quot;</span>
 
         <span class="p">)</span>
+
+    <span class="c1"># Interpreted keys that are intended for pandoc</span>
+
+    <span class="n">move_to_pandoc</span> <span class="o">=</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;keywords&quot;</span><span class="p">,</span> <span class="s2">&quot;lang&quot;</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">move_to_pandoc</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+
+            <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
     <span class="c1"># Add date to metadata</span>
 
@@ -1715,11 +1705,33 @@
 
         <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;thumbnail_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">thumbnail_url</span>
 
+    <span class="c1"># Update variables with metadata.yaml pandoc/manubot dicts</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="s2">&quot;pandoc&quot;</span><span class="p">,</span> <span class="s2">&quot;manubot&quot;</span><span class="p">:</span>
+
+        <span class="n">dict_</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">{})</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dict_</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+                <span class="n">f</span><span class="s2">&quot;load_variables expected metadata.yaml field {key!r} to be a dict.&quot;</span>
+
+                <span class="n">f</span><span class="s2">&quot;Received a {dict_.__class__.__name__!r} instead.&quot;</span>
+
+            <span class="p">)</span>
+
+            <span class="k">continue</span>
+
+        <span class="n">variables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dict_</span><span class="p">)</span>
+
+    <span class="c1"># Update variables with uninterpreted metadata.yaml fields</span>
+
+    <span class="n">variables</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+
     <span class="c1"># Update variables with user-provided variables here</span>
 
-    <span class="n">user_variables</span> <span class="o">=</span> <span class="n">read_jsons</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">template_variables_path</span><span class="p">)</span>
-
-    <span class="n">variables</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">user_variables</span><span class="p">)</span>
+    <span class="n">variables</span> <span class="o">=</span> <span class="n">read_variable_files</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">template_variables_path</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">variables</span>
 
@@ -1826,6 +1838,8 @@
     <span class="c1"># Read manual references (overrides) in JSON CSL</span>
 
     <span class="n">manual_refs</span> <span class="o">=</span> <span class="n">load_manual_references</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">manual_references_paths</span><span class="p">)</span>
+
+    <span class="n">requests</span>  <span class="c1"># require `import requests` in case this is essential for monkey patching by requests_cache.</span>
 
     <span class="n">requests_cache</span><span class="o">.</span><span class="n">install_cache</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">requests_cache_path</span><span class="p">,</span> <span class="n">include_get_headers</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
@@ -1997,8 +2011,8 @@
 <h2 id="functions">Functions</h2>
 <h3 id="add_author_affiliations">add_author_affiliations</h3>
 <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">add_author_affiliations</span><span class="p">(</span>
-    <span class="n">variables</span>
-<span class="p">)</span>
+    <span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
 </pre></div>
 
 
@@ -2006,7 +2020,7 @@
 add a list of affiliation_numbers for each author and add a list of
 affiliations to the top-level of variables. If no authors have any
 affiliations, variables is left unmodified.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">add_author_affiliations</span><span class="ss">(</span><span class="nv">variables</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">add_author_affiliations</span><span class="ss">(</span><span class="nv">variables</span>: <span class="nv">dict</span><span class="ss">)</span> <span class="o">-&gt;</span> <span class="nv">dict</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -2163,99 +2177,101 @@ affiliations, variables is left unmodified.</p>
 
 <p>General CSL (citeproc) items for standard_citekeys in citekeys_df.
 Writes references.json to disk and logs warnings for potential problems.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">generate_csl_items</span><span class="ss">(</span><span class="nv">args</span>, <span class="nv">citekeys_df</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">generate_csl_items</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 
-    <span class="nv">General</span> <span class="nv">CSL</span> <span class="ss">(</span><span class="nv">citeproc</span><span class="ss">)</span> <span class="nv">items</span> <span class="k">for</span> <span class="nv">standard_citekeys</span> <span class="nv">in</span> <span class="nv">citekeys_df</span>.
+<span class="sd">    General CSL (citeproc) items for standard_citekeys in citekeys_df.</span>
 
-    <span class="nv">Writes</span> <span class="nv">references</span>.<span class="nv">json</span> <span class="nv">to</span> <span class="nv">disk</span> <span class="nv">and</span> <span class="nv">logs</span> <span class="nv">warnings</span> <span class="k">for</span> <span class="nv">potential</span> <span class="nv">problems</span>.
+<span class="sd">    Writes references.json to disk and logs warnings for potential problems.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    # <span class="nv">Read</span> <span class="nv">manual</span> <span class="nv">references</span> <span class="ss">(</span><span class="nv">overrides</span><span class="ss">)</span> <span class="nv">in</span> <span class="nv">JSON</span> <span class="nv">CSL</span>
+    <span class="c1"># Read manual references (overrides) in JSON CSL</span>
 
-    <span class="nv">manual_refs</span> <span class="o">=</span> <span class="nv">load_manual_references</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">manual_references_paths</span><span class="ss">)</span>
+    <span class="n">manual_refs</span> <span class="o">=</span> <span class="n">load_manual_references</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">manual_references_paths</span><span class="p">)</span>
 
-    <span class="nv">requests_cache</span>.<span class="nv">install_cache</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">requests_cache_path</span>, <span class="nv">include_get_headers</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+    <span class="n">requests</span>  <span class="c1"># require `import requests` in case this is essential for monkey patching by requests_cache.</span>
 
-    <span class="nv">cache</span> <span class="o">=</span> <span class="nv">requests_cache</span>.<span class="nv">get_cache</span><span class="ss">()</span>
+    <span class="n">requests_cache</span><span class="o">.</span><span class="n">install_cache</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">requests_cache_path</span><span class="p">,</span> <span class="n">include_get_headers</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nv">args</span>.<span class="nv">clear_requests_cache</span>:
+    <span class="n">cache</span> <span class="o">=</span> <span class="n">requests_cache</span><span class="o">.</span><span class="n">get_cache</span><span class="p">()</span>
 
-        <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Clearing requests-cache</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">clear_requests_cache</span><span class="p">:</span>
 
-        <span class="nv">requests_cache</span>.<span class="nv">clear</span><span class="ss">()</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Clearing requests-cache&quot;</span><span class="p">)</span>
 
-    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span>
+        <span class="n">requests_cache</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
-        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">requests-cache starting with {len(cache.responses)} cached responses</span><span class="s2">&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
-    <span class="ss">)</span>
+        <span class="n">f</span><span class="s2">&quot;requests-cache starting with {len(cache.responses)} cached responses&quot;</span>
 
-    <span class="nv">csl_items</span> <span class="o">=</span> <span class="nv">list</span><span class="ss">()</span>
+    <span class="p">)</span>
 
-    <span class="nv">failures</span> <span class="o">=</span> <span class="nv">list</span><span class="ss">()</span>
+    <span class="n">csl_items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="nv">standard_citekey</span> <span class="nv">in</span> <span class="nv">citekeys_df</span>.<span class="nv">standard_citekey</span>.<span class="nv">unique</span><span class="ss">()</span>:
+    <span class="n">failures</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="nv">standard_citekey</span> <span class="nv">in</span> <span class="nv">manual_refs</span>:
+    <span class="k">for</span> <span class="n">standard_citekey</span> <span class="ow">in</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
 
-            <span class="nv">csl_items</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">manual_refs</span>[<span class="nv">standard_citekey</span>]<span class="ss">)</span>
+        <span class="k">if</span> <span class="n">standard_citekey</span> <span class="ow">in</span> <span class="n">manual_refs</span><span class="p">:</span>
+
+            <span class="n">csl_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">manual_refs</span><span class="p">[</span><span class="n">standard_citekey</span><span class="p">])</span>
 
             <span class="k">continue</span>
 
-        <span class="nv">elif</span> <span class="nv">standard_citekey</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">raw:</span><span class="s2">&quot;</span><span class="ss">)</span>:
+        <span class="k">elif</span> <span class="n">standard_citekey</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;raw:&quot;</span><span class="p">):</span>
 
-            <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
 
-                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">CSL JSON Data with a standard_citekey of {standard_citekey!r} not found in manual-references.json. </span><span class="s2">&quot;</span>
+                <span class="n">f</span><span class="s2">&quot;CSL JSON Data with a standard_citekey of {standard_citekey!r} not found in manual-references.json. &quot;</span>
 
-                <span class="s2">&quot;</span><span class="s">Metadata must be provided for raw citekeys.</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;Metadata must be provided for raw citekeys.&quot;</span>
 
-            <span class="ss">)</span>
+            <span class="p">)</span>
 
-            <span class="nv">failures</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">standard_citekey</span><span class="ss">)</span>
+            <span class="n">failures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">)</span>
 
-        <span class="nv">try</span>:
+        <span class="k">try</span><span class="p">:</span>
 
-            <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">citekey_to_csl_item</span><span class="ss">(</span><span class="nv">standard_citekey</span><span class="ss">)</span>
+            <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">)</span>
 
-            <span class="nv">csl_items</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">csl_item</span><span class="ss">)</span>
+            <span class="n">csl_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-        <span class="nv">except</span> <span class="nv">Exception</span>:
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
-            <span class="nv">logging</span>.<span class="nv">exception</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">Citeproc retrieval failure for {standard_citekey!r}</span><span class="s2">&quot;</span><span class="ss">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Citeproc retrieval failure for {standard_citekey!r}&quot;</span><span class="p">)</span>
 
-            <span class="nv">failures</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">standard_citekey</span><span class="ss">)</span>
+            <span class="n">failures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">)</span>
 
-    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
-        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">requests-cache finished with {len(cache.responses)} cached responses</span><span class="s2">&quot;</span>
+        <span class="n">f</span><span class="s2">&quot;requests-cache finished with {len(cache.responses)} cached responses&quot;</span>
 
-    <span class="ss">)</span>
+    <span class="p">)</span>
 
-    <span class="nv">requests_cache</span>.<span class="nv">uninstall_cache</span><span class="ss">()</span>
+    <span class="n">requests_cache</span><span class="o">.</span><span class="n">uninstall_cache</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="nv">failures</span>:
+    <span class="k">if</span> <span class="n">failures</span><span class="p">:</span>
 
-        <span class="nv">message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">CSL JSON Data retrieval failed for the following standardized citation keys:</span><span class="se">\n</span><span class="s">{}</span><span class="s2">&quot;</span>.<span class="nv">format</span><span class="ss">(</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;CSL JSON Data retrieval failed for the following standardized citation keys:</span><span class="se">\n</span><span class="s2">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
 
-            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">failures</span><span class="ss">)</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">failures</span><span class="p">)</span>
 
-        <span class="ss">)</span>
+        <span class="p">)</span>
 
-        <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span><span class="nv">message</span><span class="ss">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
-    # <span class="nv">Write</span> <span class="nv">JSON</span> <span class="nv">CSL</span> <span class="nv">bibliography</span> <span class="k">for</span> <span class="nv">Pandoc</span>.
+    <span class="c1"># Write JSON CSL bibliography for Pandoc.</span>
 
-    <span class="nv">with</span> <span class="nv">args</span>.<span class="nv">references_path</span>.<span class="nv">open</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">w</span><span class="s2">&quot;</span>, <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">utf-8</span><span class="s2">&quot;</span><span class="ss">)</span> <span class="nv">as</span> <span class="nv">write_file</span>:
+    <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">references_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
 
-        <span class="nv">json</span>.<span class="nv">dump</span><span class="ss">(</span><span class="nv">csl_items</span>, <span class="nv">write_file</span>, <span class="nv">indent</span><span class="o">=</span><span class="mi">2</span>, <span class="nv">ensure_ascii</span><span class="o">=</span><span class="nv">False</span><span class="ss">)</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">csl_items</span><span class="p">,</span> <span class="n">write_file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
-        <span class="nv">write_file</span>.<span class="nv">write</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
+        <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="nv">csl_items</span>
+    <span class="k">return</span> <span class="n">csl_items</span>
 </pre></div>
 
 
@@ -2374,36 +2390,56 @@ citekeys_df is a pandas.DataFrame with the following columns:
 </pre></div>
 
 
-<p>Read metadata.yaml and files specified by --template-variables-path to generate
+<p>Read <code>metadata.yaml</code> and files specified by <code>--template-variables-path</code> to generate
 manuscript variables available for jinja2 templating.</p>
-<p>Returns a dictionary with the following keys:
-- <code>pandoc</code>: a dictionary for passing options to Pandoc via the <code>yaml_metadata_block</code>.
-  All fields from a manuscript's <code>metadata.yaml</code> are copied to this dictionary,
-  expect for special Manubot-defined fields. Special fields include <code>author_info</code> and
-  <code>thumbnail</code>.
-- <code>manubot</code>: a dictionary with manubot-generated variables.
-- user-specified fields inserted according to the <code>--template-variables-path</code> option.</p>
+<p>Returns a dictionary, refered to as <code>variables</code>, with the following keys:</p>
+<ul>
+<li><code>pandoc</code>: a dictionary for passing options to Pandoc via the <code>yaml_metadata_block</code>.
+  Fields in <code>pandoc</code> are either generated by Manubot or hard-coded by the user if <code>metadata.yaml</code>
+  includes a <code>pandoc</code> dictionary.</li>
+<li><code>manubot</code>: a dictionary for manubot-related information and metadata.
+  Fields in <code>manubot</code> are either generated by Manubot or hard-coded by the user if <code>metadata.yaml</code>
+  includes a <code>manubot</code> dictionary.</li>
+<li>All fields from a manuscript's <code>metadata.yaml</code> that are not interpreted by Manubot are
+  copied to <code>variables</code>. Interpreted fields include <code>pandoc</code>, <code>manubot</code>, <code>title</code>,
+  <code>keywords</code>, <code>author_info</code>, <code>lang</code>, and <code>thumbnail</code>.</li>
+<li>User-specified fields inserted according to the <code>--template-variables-path</code> option.
+  User-specified variables take highest precedence and can overwrite values for existing
+  keys like <code>pandoc</code> or <code>manubot</code> (dangerous).</li>
+</ul>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">load_variables</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span> <span class="o">-&gt;</span> <span class="nv">dict</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">Read</span> <span class="nv">metadata</span>.<span class="nv">yaml</span> <span class="nv">and</span> <span class="nv">files</span> <span class="nv">specified</span> <span class="nv">by</span> <span class="o">--</span><span class="nv">template</span><span class="o">-</span><span class="nv">variables</span><span class="o">-</span><span class="nv">path</span> <span class="nv">to</span> <span class="nv">generate</span>
+    <span class="nv">Read</span> `<span class="nv">metadata</span>.<span class="nv">yaml</span>` <span class="nv">and</span> <span class="nv">files</span> <span class="nv">specified</span> <span class="nv">by</span> `<span class="o">--</span><span class="nv">template</span><span class="o">-</span><span class="nv">variables</span><span class="o">-</span><span class="nv">path</span>` <span class="nv">to</span> <span class="nv">generate</span>
 
     <span class="nv">manuscript</span> <span class="nv">variables</span> <span class="nv">available</span> <span class="k">for</span> <span class="nv">jinja2</span> <span class="nv">templating</span>.
 
-    <span class="nv">Returns</span> <span class="nv">a</span> <span class="nv">dictionary</span> <span class="nv">with</span> <span class="nv">the</span> <span class="nv">following</span> <span class="nv">keys</span>:
+    <span class="nv">Returns</span> <span class="nv">a</span> <span class="nv">dictionary</span>, <span class="nv">refered</span> <span class="nv">to</span> <span class="nv">as</span> `<span class="nv">variables</span>`, <span class="nv">with</span> <span class="nv">the</span> <span class="nv">following</span> <span class="nv">keys</span>:
 
     <span class="o">-</span> `<span class="nv">pandoc</span>`: <span class="nv">a</span> <span class="nv">dictionary</span> <span class="k">for</span> <span class="nv">passing</span> <span class="nv">options</span> <span class="nv">to</span> <span class="nv">Pandoc</span> <span class="nv">via</span> <span class="nv">the</span> `<span class="nv">yaml_metadata_block</span>`.
 
-      <span class="nv">All</span> <span class="nv">fields</span> <span class="nv">from</span> <span class="nv">a</span> <span class="nv">manuscript</span><span class="s1">&#39;</span><span class="s">s `metadata.yaml` are copied to this dictionary,</span>
+      <span class="nv">Fields</span> <span class="nv">in</span> `<span class="nv">pandoc</span>` <span class="nv">are</span> <span class="nv">either</span> <span class="nv">generated</span> <span class="nv">by</span> <span class="nv">Manubot</span> <span class="nv">or</span> <span class="nv">hard</span><span class="o">-</span><span class="nv">coded</span> <span class="nv">by</span> <span class="nv">the</span> <span class="nv">user</span> <span class="k">if</span> `<span class="nv">metadata</span>.<span class="nv">yaml</span>`
 
-      <span class="nv">expect</span> <span class="k">for</span> <span class="nv">special</span> <span class="nv">Manubot</span><span class="o">-</span><span class="nv">defined</span> <span class="nv">fields</span>. <span class="nv">Special</span> <span class="nv">fields</span> <span class="k">include</span> `<span class="nv">author_info</span>` <span class="nv">and</span>
+      <span class="nv">includes</span> <span class="nv">a</span> `<span class="nv">pandoc</span>` <span class="nv">dictionary</span>.
 
-      `<span class="nv">thumbnail</span>`.
+    <span class="o">-</span> `<span class="nv">manubot</span>`: <span class="nv">a</span> <span class="nv">dictionary</span> <span class="k">for</span> <span class="nv">manubot</span><span class="o">-</span><span class="nv">related</span> <span class="nv">information</span> <span class="nv">and</span> <span class="nv">metadata</span>.
 
-    <span class="o">-</span> `<span class="nv">manubot</span>`: <span class="nv">a</span> <span class="nv">dictionary</span> <span class="nv">with</span> <span class="nv">manubot</span><span class="o">-</span><span class="nv">generated</span> <span class="nv">variables</span>.
+      <span class="nv">Fields</span> <span class="nv">in</span> `<span class="nv">manubot</span>` <span class="nv">are</span> <span class="nv">either</span> <span class="nv">generated</span> <span class="nv">by</span> <span class="nv">Manubot</span> <span class="nv">or</span> <span class="nv">hard</span><span class="o">-</span><span class="nv">coded</span> <span class="nv">by</span> <span class="nv">the</span> <span class="nv">user</span> <span class="k">if</span> `<span class="nv">metadata</span>.<span class="nv">yaml</span>`
 
-    <span class="o">-</span> <span class="nv">user</span><span class="o">-</span><span class="nv">specified</span> <span class="nv">fields</span> <span class="nv">inserted</span> <span class="nv">according</span> <span class="nv">to</span> <span class="nv">the</span> `<span class="o">--</span><span class="nv">template</span><span class="o">-</span><span class="nv">variables</span><span class="o">-</span><span class="nv">path</span>` <span class="nv">option</span>.
+      <span class="nv">includes</span> <span class="nv">a</span> `<span class="nv">manubot</span>` <span class="nv">dictionary</span>.
+
+    <span class="o">-</span> <span class="nv">All</span> <span class="nv">fields</span> <span class="nv">from</span> <span class="nv">a</span> <span class="nv">manuscript</span><span class="s1">&#39;</span><span class="s">s `metadata.yaml` that are not interpreted by Manubot are</span>
+
+      <span class="nv">copied</span> <span class="nv">to</span> `<span class="nv">variables</span>`. <span class="nv">Interpreted</span> <span class="nv">fields</span> <span class="k">include</span> `<span class="nv">pandoc</span>`, `<span class="nv">manubot</span>`, `<span class="nv">title</span>`,
+
+      `<span class="nv">keywords</span>`, `<span class="nv">author_info</span>`, `<span class="nv">lang</span>`, <span class="nv">and</span> `<span class="nv">thumbnail</span>`.
+
+    <span class="o">-</span> <span class="nv">User</span><span class="o">-</span><span class="nv">specified</span> <span class="nv">fields</span> <span class="nv">inserted</span> <span class="nv">according</span> <span class="nv">to</span> <span class="nv">the</span> `<span class="o">--</span><span class="nv">template</span><span class="o">-</span><span class="nv">variables</span><span class="o">-</span><span class="nv">path</span>` <span class="nv">option</span>.
+
+      <span class="nv">User</span><span class="o">-</span><span class="nv">specified</span> <span class="nv">variables</span> <span class="nv">take</span> <span class="nv">highest</span> <span class="nv">precedence</span> <span class="nv">and</span> <span class="nv">can</span> <span class="nv">overwrite</span> <span class="nv">values</span> <span class="k">for</span> <span class="nv">existing</span>
+
+      <span class="nv">keys</span> <span class="nv">like</span> `<span class="nv">pandoc</span>` <span class="nv">or</span> `<span class="nv">manubot</span>` <span class="ss">(</span><span class="nv">dangerous</span><span class="ss">)</span>.
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -2417,11 +2453,7 @@ manuscript variables available for jinja2 templating.</p>
 
     <span class="k">if</span> <span class="nv">args</span>.<span class="nv">meta_yaml_path</span>.<span class="nv">is_file</span><span class="ss">()</span>:
 
-        <span class="nv">with</span> <span class="nv">args</span>.<span class="nv">meta_yaml_path</span>.<span class="nv">open</span><span class="ss">(</span><span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">utf-8-sig</span><span class="s2">&quot;</span><span class="ss">)</span> <span class="nv">as</span> <span class="nv">read_file</span>:
-
-            <span class="nv">metadata</span> <span class="o">=</span> <span class="nv">yaml</span>.<span class="nv">safe_load</span><span class="ss">(</span><span class="nv">read_file</span><span class="ss">)</span>
-
-            <span class="nv">assert</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">metadata</span>, <span class="nv">dict</span><span class="ss">)</span>
+        <span class="nv">metadata</span> <span class="o">=</span> <span class="nv">read_serialized_dict</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">meta_yaml_path</span><span class="ss">)</span>
 
     <span class="k">else</span>:
 
@@ -2432,6 +2464,16 @@ manuscript variables available for jinja2 templating.</p>
             <span class="nv">f</span><span class="s2">&quot;</span><span class="s">missing {args.meta_yaml_path} file with yaml_metadata_block for pandoc</span><span class="s2">&quot;</span>
 
         <span class="ss">)</span>
+
+    # <span class="nv">Interpreted</span> <span class="nv">keys</span> <span class="nv">that</span> <span class="nv">are</span> <span class="nv">intended</span> <span class="k">for</span> <span class="nv">pandoc</span>
+
+    <span class="nv">move_to_pandoc</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">title</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">keywords</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">lang</span><span class="s2">&quot;</span>
+
+    <span class="k">for</span> <span class="nv">key</span> <span class="nv">in</span> <span class="nv">move_to_pandoc</span>:
+
+        <span class="k">if</span> <span class="nv">key</span> <span class="nv">in</span> <span class="nv">metadata</span>:
+
+            <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">pandoc</span><span class="s2">&quot;</span>][<span class="nv">key</span>] <span class="o">=</span> <span class="nv">metadata</span>.<span class="nv">pop</span><span class="ss">(</span><span class="nv">key</span><span class="ss">)</span>
 
     # <span class="nv">Add</span> <span class="nv">date</span> <span class="nv">to</span> <span class="nv">metadata</span>
 
@@ -2479,11 +2521,33 @@ manuscript variables available for jinja2 templating.</p>
 
         <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>][<span class="s2">&quot;</span><span class="s">thumbnail_url</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">thumbnail_url</span>
 
+    # <span class="nv">Update</span> <span class="nv">variables</span> <span class="nv">with</span> <span class="nv">metadata</span>.<span class="nv">yaml</span> <span class="nv">pandoc</span><span class="o">/</span><span class="nv">manubot</span> <span class="nv">dicts</span>
+
+    <span class="k">for</span> <span class="nv">key</span> <span class="nv">in</span> <span class="s2">&quot;</span><span class="s">pandoc</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>:
+
+        <span class="nv">dict_</span> <span class="o">=</span> <span class="nv">metadata</span>.<span class="nv">pop</span><span class="ss">(</span><span class="nv">key</span>, {}<span class="ss">)</span>
+
+        <span class="k">if</span> <span class="nv">not</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">dict_</span>, <span class="nv">dict</span><span class="ss">)</span>:
+
+            <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+
+                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">load_variables expected metadata.yaml field {key!r} to be a dict.</span><span class="s2">&quot;</span>
+
+                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Received a {dict_.__class__.__name__!r} instead.</span><span class="s2">&quot;</span>
+
+            <span class="ss">)</span>
+
+            <span class="k">continue</span>
+
+        <span class="nv">variables</span>[<span class="nv">key</span>].<span class="nv">update</span><span class="ss">(</span><span class="nv">dict_</span><span class="ss">)</span>
+
+    # <span class="nv">Update</span> <span class="nv">variables</span> <span class="nv">with</span> <span class="nv">uninterpreted</span> <span class="nv">metadata</span>.<span class="nv">yaml</span> <span class="nv">fields</span>
+
+    <span class="nv">variables</span>.<span class="nv">update</span><span class="ss">(</span><span class="nv">metadata</span><span class="ss">)</span>
+
     # <span class="nv">Update</span> <span class="nv">variables</span> <span class="nv">with</span> <span class="nv">user</span><span class="o">-</span><span class="nv">provided</span> <span class="nv">variables</span> <span class="nv">here</span>
 
-    <span class="nv">user_variables</span> <span class="o">=</span> <span class="nv">read_jsons</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">template_variables_path</span><span class="ss">)</span>
-
-    <span class="nv">variables</span>.<span class="nv">update</span><span class="ss">(</span><span class="nv">user_variables</span><span class="ss">)</span>
+    <span class="nv">variables</span> <span class="o">=</span> <span class="nv">read_variable_files</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">template_variables_path</span>, <span class="nv">variables</span><span class="ss">)</span>
 
     <span class="k">return</span> <span class="nv">variables</span>
 </pre></div>
@@ -2560,55 +2624,22 @@ for pandoc.</p>
 
 
 </details>
-<h3 id="read_json">read_json</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">read_json</span><span class="p">(</span>
-    <span class="n">path</span>
-<span class="p">)</span>
+<h3 id="read_variable_files">read_variable_files</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">read_variable_files</span><span class="p">(</span>
+    <span class="n">paths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">variables</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
 </pre></div>
 
 
-<p>Read json from a path or URL.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">read_json</span><span class="ss">(</span><span class="nv">path</span><span class="ss">)</span>:
-
-    <span class="s2">&quot;&quot;&quot;</span>
-
-    <span class="nv">Read</span> <span class="nv">json</span> <span class="nv">from</span> <span class="nv">a</span> <span class="nv">path</span> <span class="nv">or</span> <span class="nv">URL</span>.
-
-    <span class="s2">&quot;&quot;&quot;</span>
-
-    <span class="k">if</span> <span class="nv">is_http_url</span><span class="ss">(</span><span class="nv">path</span><span class="ss">)</span>:
-
-        <span class="nv">response</span> <span class="o">=</span> <span class="nv">requests</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">path</span><span class="ss">)</span>
-
-        <span class="nv">obj</span> <span class="o">=</span> <span class="nv">response</span>.<span class="nv">json</span><span class="ss">(</span><span class="nv">object_pairs_hook</span><span class="o">=</span><span class="nv">collections</span>.<span class="nv">OrderedDict</span><span class="ss">)</span>
-
-    <span class="k">else</span>:
-
-        <span class="nv">path</span> <span class="o">=</span> <span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="nv">path</span><span class="ss">)</span>
-
-        <span class="nv">with</span> <span class="nv">path</span>.<span class="nv">open</span><span class="ss">(</span><span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">utf-8-sig</span><span class="s2">&quot;</span><span class="ss">)</span> <span class="nv">as</span> <span class="nv">read_file</span>:
-
-            <span class="nv">obj</span> <span class="o">=</span> <span class="nv">json</span>.<span class="nv">load</span><span class="ss">(</span><span class="nv">read_file</span>, <span class="nv">object_pairs_hook</span><span class="o">=</span><span class="nv">collections</span>.<span class="nv">OrderedDict</span><span class="ss">)</span>
-
-    <span class="k">return</span> <span class="nv">obj</span>
-</pre></div>
-
-
-</details>
-<h3 id="read_jsons">read_jsons</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">read_jsons</span><span class="p">(</span>
-    <span class="n">paths</span>
-<span class="p">)</span>
-</pre></div>
-
-
-<p>Read multiple JSON files into a user_variables dictionary. Provide a list
-of paths (URLs or filepaths). Paths can optionally have a namespace
-prepended. For example:</p>
+<p>Read multiple serialized data files into a user_variables dictionary.
+Provide <code>paths</code> (a list of URLs or local file paths).
+Paths can optionally have a namespace prepended.
+For example:</p>
 <div class="codehilite"><pre><span></span><span class="n">paths</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;https://git.io/vbkqm&#39;</span><span class="p">,</span>  <span class="o">#</span> <span class="k">update</span> <span class="n">the</span> <span class="k">dictionary</span><span class="s1">&#39;s top-level</span>
-<span class="s1">    &#39;</span><span class="n">namespace_1</span><span class="o">=</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">vbkqm</span><span class="s1">&#39;,  # store under &#39;</span><span class="n">namespace_1</span><span class="s1">&#39; key</span>
-<span class="s1">    &#39;</span><span class="n">namespace_2</span><span class="o">=</span><span class="n">some_local_path</span><span class="p">.</span><span class="n">json</span><span class="s1">&#39;,  # store under &#39;</span><span class="n">namespace_2</span><span class="err">&#39;</span> <span class="k">key</span>
+    <span class="s1">&#39;https://git.io/vbkqm&#39;</span><span class="p">,</span>  <span class="c1"># update the dictionary&#39;s top-level</span>
+    <span class="s1">&#39;namespace_1=https://git.io/vbkqm&#39;</span><span class="p">,</span>  <span class="c1"># store under &#39;namespace_1&#39; key</span>
+    <span class="s1">&#39;namespace_2=some_local_path.json&#39;</span><span class="p">,</span>  <span class="c1"># store under &#39;namespace_2&#39; key</span>
 <span class="p">]</span>
 </pre></div>
 
@@ -2616,17 +2647,21 @@ prepended. For example:</p>
 <p>If a namespace is not provided, the JSON must contain a dictionary as its
 top level. Namespaces should consist only of ASCII alphanumeric characters
 (includes underscores, first character cannot be numeric).</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">read_jsons</span><span class="ss">(</span><span class="nv">paths</span><span class="ss">)</span>:
+<p>Pass a dictionary to <code>variables</code> to update an existing dictionary rather
+than create a new dictionary.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">read_variable_files</span><span class="ss">(</span><span class="nv">paths</span>: <span class="nv">List</span>[<span class="nv">str</span>], <span class="nv">variables</span>: <span class="nv">Optional</span>[<span class="nv">dict</span>] <span class="o">=</span> <span class="nv">None</span><span class="ss">)</span> <span class="o">-&gt;</span> <span class="nv">dict</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">Read</span> <span class="nv">multiple</span> <span class="nv">JSON</span> <span class="nv">files</span> <span class="nv">into</span> <span class="nv">a</span> <span class="nv">user_variables</span> <span class="nv">dictionary</span>. <span class="nv">Provide</span> <span class="nv">a</span> <span class="nv">list</span>
+    <span class="nv">Read</span> <span class="nv">multiple</span> <span class="nv">serialized</span> <span class="nv">data</span> <span class="nv">files</span> <span class="nv">into</span> <span class="nv">a</span> <span class="nv">user_variables</span> <span class="nv">dictionary</span>.
 
-    <span class="nv">of</span> <span class="nv">paths</span> <span class="ss">(</span><span class="nv">URLs</span> <span class="nv">or</span> <span class="nv">filepaths</span><span class="ss">)</span>. <span class="nv">Paths</span> <span class="nv">can</span> <span class="nv">optionally</span> <span class="nv">have</span> <span class="nv">a</span> <span class="nv">namespace</span>
+    <span class="nv">Provide</span> `<span class="nv">paths</span>` <span class="ss">(</span><span class="nv">a</span> <span class="nv">list</span> <span class="nv">of</span> <span class="nv">URLs</span> <span class="nv">or</span> <span class="nv">local</span> <span class="nv">file</span> <span class="nv">paths</span><span class="ss">)</span>.
 
-    <span class="nv">prepended</span>. <span class="k">For</span> <span class="nv">example</span>:
+    <span class="nv">Paths</span> <span class="nv">can</span> <span class="nv">optionally</span> <span class="nv">have</span> <span class="nv">a</span> <span class="nv">namespace</span> <span class="nv">prepended</span>.
 
-    ```
+    <span class="k">For</span> <span class="nv">example</span>:
+
+    ```<span class="nv">python</span>
 
     <span class="nv">paths</span> <span class="o">=</span> [
 
@@ -2646,15 +2681,21 @@ top level. Namespaces should consist only of ASCII alphanumeric characters
 
     <span class="ss">(</span><span class="nv">includes</span> <span class="nv">underscores</span>, <span class="nv">first</span> <span class="nv">character</span> <span class="nv">cannot</span> <span class="nv">be</span> <span class="nv">numeric</span><span class="ss">)</span>.
 
+    <span class="nv">Pass</span> <span class="nv">a</span> <span class="nv">dictionary</span> <span class="nv">to</span> `<span class="nv">variables</span>` <span class="nv">to</span> <span class="nv">update</span> <span class="nv">an</span> <span class="nv">existing</span> <span class="nv">dictionary</span> <span class="nv">rather</span>
+
+    <span class="nv">than</span> <span class="nv">create</span> <span class="nv">a</span> <span class="nv">new</span> <span class="nv">dictionary</span>.
+
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">user_variables</span> <span class="o">=</span> <span class="nv">collections</span>.<span class="nv">OrderedDict</span><span class="ss">()</span>
+    <span class="k">if</span> <span class="nv">variables</span> <span class="nv">is</span> <span class="nv">None</span>:
+
+        <span class="nv">variables</span> <span class="o">=</span> {}
 
     <span class="k">for</span> <span class="nv">path</span> <span class="nv">in</span> <span class="nv">paths</span>:
 
         <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span>
 
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Read the following user-provided templating variables for {path}</span><span class="s2">&quot;</span>
+            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Read the following user-provided templating variables for {path!r}</span><span class="s2">&quot;</span>
 
         <span class="ss">)</span>
 
@@ -2670,49 +2711,51 @@ top level. Namespaces should consist only of ASCII alphanumeric characters
 
             <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span>
 
-                <span class="nv">f</span><span class="s1">&#39;</span><span class="s">Using the &quot;{namespace}&quot; namespace for template variables from {path}</span><span class="s1">&#39;</span>
+                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Using the {namespace!r} namespace for template variables from {path!r}</span><span class="s2">&quot;</span>
 
             <span class="ss">)</span>
 
         <span class="nv">try</span>:
 
-            <span class="nv">obj</span> <span class="o">=</span> <span class="nv">read_json</span><span class="ss">(</span><span class="nv">path</span><span class="ss">)</span>
+            <span class="k">if</span> <span class="nv">match</span>:
+
+                <span class="nv">obj</span> <span class="o">=</span> {<span class="nv">namespace</span>: <span class="nv">read_serialized_data</span><span class="ss">(</span><span class="nv">path</span><span class="ss">)</span>}
+
+            <span class="k">else</span>:
+
+                <span class="nv">obj</span> <span class="o">=</span> <span class="nv">read_serialized_dict</span><span class="ss">(</span><span class="nv">path</span><span class="ss">)</span>
 
         <span class="nv">except</span> <span class="nv">Exception</span>:
 
-            <span class="nv">logging</span>.<span class="nv">exception</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error reading template variables from {path}</span><span class="s2">&quot;</span><span class="ss">)</span>
+            <span class="nv">logging</span>.<span class="nv">exception</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error reading template variables from {path!r}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
             <span class="k">continue</span>
 
-        <span class="k">if</span> <span class="nv">match</span>:
-
-            <span class="nv">obj</span> <span class="o">=</span> {<span class="nv">namespace</span>: <span class="nv">obj</span>}
-
         <span class="nv">assert</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">obj</span>, <span class="nv">dict</span><span class="ss">)</span>
 
-        <span class="nv">conflicts</span> <span class="o">=</span> <span class="nv">user_variables</span>.<span class="nv">keys</span><span class="ss">()</span> <span class="o">&amp;</span> <span class="nv">obj</span>.<span class="nv">keys</span><span class="ss">()</span>
+        <span class="nv">conflicts</span> <span class="o">=</span> <span class="nv">variables</span>.<span class="nv">keys</span><span class="ss">()</span> <span class="o">&amp;</span> <span class="nv">obj</span>.<span class="nv">keys</span><span class="ss">()</span>
 
         <span class="k">if</span> <span class="nv">conflicts</span>:
 
             <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
 
-                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Template variables in {path} overwrite existing </span><span class="s2">&quot;</span>
+                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Template variables in {path!r} overwrite existing </span><span class="s2">&quot;</span>
 
                 <span class="s2">&quot;</span><span class="s">values for the following keys:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">conflicts</span><span class="ss">)</span>
 
             <span class="ss">)</span>
 
-        <span class="nv">user_variables</span>.<span class="nv">update</span><span class="ss">(</span><span class="nv">obj</span><span class="ss">)</span>
+        <span class="nv">variables</span>.<span class="nv">update</span><span class="ss">(</span><span class="nv">obj</span><span class="ss">)</span>
 
     <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span>
 
         <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Reading user-provided templating variables complete:</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{json.dumps(user_variables, indent=2, ensure_ascii=False)}</span><span class="s2">&quot;</span>
+        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{json.dumps(variables, indent=2, ensure_ascii=False)}</span><span class="s2">&quot;</span>
 
     <span class="ss">)</span>
 
-    <span class="k">return</span> <span class="nv">user_variables</span>
+    <span class="k">return</span> <span class="nv">variables</span>
 </pre></div>
 
 
