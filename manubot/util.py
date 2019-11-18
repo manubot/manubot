@@ -1,4 +1,6 @@
 import importlib
+import json
+import logging
 import platform
 import shlex
 import sys
@@ -56,3 +58,57 @@ def is_http_url(string: str) -> bool:
 
     parsed_url = urlparse(string)
     return parsed_url.scheme in _http_url_schemes
+
+
+def read_serialized_data(path: str):
+    """
+    Read seralized data from a local file path or web-address.
+    If file format extension is not detected in path, assumes JSON.
+    If a URL does not contain the appropriate suffix, one workaround
+    is to hack the fragment like https://example.org#/variables.toml
+    """
+    import os
+    import pathlib
+    import requests
+
+    path_str = os.fspath(path)
+    path_lib = pathlib.Path(path)
+    supported_suffixes = {".json", ".yaml", ".yml", ".toml"}
+    suffixes = set(path_lib.suffixes)
+    if is_http_url(path_str):
+        response = requests.get(path_str)
+        if not suffixes & supported_suffixes:
+            # if URL has no supported suffixes, evaluate suffixes of final redirect
+            suffixes = set(pathlib.Path(response.url).suffixes)
+        text = response.text
+    else:
+        text = path_lib.read_text(encoding="utf-8-sig")
+    if {".yaml", ".yml"} & suffixes:
+        import yaml
+
+        return yaml.safe_load(text)
+    if ".toml" in suffixes:
+        import toml
+
+        return toml.loads(text)
+    if ".json" not in suffixes:
+        logging.info(
+            f"read_serialized_data cannot infer serialization format from the extension of {path_str!r}. "
+            f"Supported extensions are {', '.join(supported_suffixes)}. "
+            "Assuming JSON."
+        )
+    return json.loads(text)
+
+
+def read_serialized_dict(path: str) -> dict:
+    """
+    Read serialized data, confirming that the top-level object is a dictionary.
+    Delegates to `read_serialized_data`.
+    """
+    data = read_serialized_data(path)
+    if isinstance(data, dict):
+        return data
+    raise TypeError(
+        f"Expected data encoded by {path!r} to be a dictionary at the top-level. "
+        f"Received {data.__class__.__name__!r} instead."
+    )

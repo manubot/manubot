@@ -1,10 +1,10 @@
 import collections
 import json
 import logging
-import pathlib
 import re
 import textwrap
 import warnings
+from typing import List, Optional
 
 import jinja2
 import pandas
@@ -12,7 +12,7 @@ import requests
 import requests_cache
 import yaml
 
-from manubot.util import is_http_url
+from manubot.util import read_serialized_data, read_serialized_dict
 from manubot.process.bibliography import load_manual_references
 from manubot.process.ci import (
     add_manuscript_urls_to_ci_params,
@@ -65,27 +65,14 @@ def check_multiple_citation_strings(citekeys_df):
     return multi_df
 
 
-def read_json(path):
+def read_variable_files(paths: List[str], variables: Optional[dict] = None) -> dict:
     """
-    Read json from a path or URL.
-    """
-    if is_http_url(path):
-        response = requests.get(path)
-        obj = response.json(object_pairs_hook=collections.OrderedDict)
-    else:
-        path = pathlib.Path(path)
-        with path.open(encoding="utf-8-sig") as read_file:
-            obj = json.load(read_file, object_pairs_hook=collections.OrderedDict)
-    return obj
+    Read multiple serialized data files into a user_variables dictionary.
+    Provide `paths` (a list of URLs or local file paths).
+    Paths can optionally have a namespace prepended.
+    For example:
 
-
-def read_jsons(paths):
-    """
-    Read multiple JSON files into a user_variables dictionary. Provide a list
-    of paths (URLs or filepaths). Paths can optionally have a namespace
-    prepended. For example:
-
-    ```
+    ```python
     paths = [
         'https://git.io/vbkqm',  # update the dictionary's top-level
         'namespace_1=https://git.io/vbkqm',  # store under 'namespace_1' key
@@ -96,11 +83,15 @@ def read_jsons(paths):
     If a namespace is not provided, the JSON must contain a dictionary as its
     top level. Namespaces should consist only of ASCII alphanumeric characters
     (includes underscores, first character cannot be numeric).
+
+    Pass a dictionary to `variables` to update an existing dictionary rather
+    than create a new dictionary.
     """
-    user_variables = collections.OrderedDict()
+    if variables is None:
+        variables = {}
     for path in paths:
         logging.info(
-            f"Read the following user-provided templating variables for {path}"
+            f"Read the following user-provided templating variables for {path!r}"
         )
         # Match only namespaces that are valid jinja2 variable names
         # http://jinja.pocoo.org/docs/2.10/api/#identifier-naming
@@ -108,31 +99,32 @@ def read_jsons(paths):
         if match:
             namespace, path = match.groups()
             logging.info(
-                f'Using the "{namespace}" namespace for template variables from {path}'
+                f"Using the {namespace!r} namespace for template variables from {path!r}"
             )
         try:
-            obj = read_json(path)
+            if match:
+                obj = {namespace: read_serialized_data(path)}
+            else:
+                obj = read_serialized_dict(path)
         except Exception:
-            logging.exception(f"Error reading template variables from {path}")
+            logging.exception(f"Error reading template variables from {path!r}")
             continue
-        if match:
-            obj = {namespace: obj}
         assert isinstance(obj, dict)
-        conflicts = user_variables.keys() & obj.keys()
+        conflicts = variables.keys() & obj.keys()
         if conflicts:
             logging.warning(
-                f"Template variables in {path} overwrite existing "
+                f"Template variables in {path!r} overwrite existing "
                 "values for the following keys:\n" + "\n".join(conflicts)
             )
-        user_variables.update(obj)
+        variables.update(obj)
     logging.info(
         f"Reading user-provided templating variables complete:\n"
-        f"{json.dumps(user_variables, indent=2, ensure_ascii=False)}"
+        f"{json.dumps(variables, indent=2, ensure_ascii=False)}"
     )
-    return user_variables
+    return variables
 
 
-def add_author_affiliations(variables):
+def add_author_affiliations(variables: dict) -> dict:
     """
     Edit variables to contain numbered author affiliations. Specifically,
     add a list of affiliation_numbers for each author and add a list of
@@ -170,16 +162,23 @@ def add_author_affiliations(variables):
 
 def load_variables(args) -> dict:
     """
-    Read metadata.yaml and files specified by --template-variables-path to generate
+    Read `metadata.yaml` and files specified by `--template-variables-path` to generate
     manuscript variables available for jinja2 templating.
 
-    Returns a dictionary with the following keys:
+    Returns a dictionary, refered to as `variables`, with the following keys:
+
     - `pandoc`: a dictionary for passing options to Pandoc via the `yaml_metadata_block`.
-      All fields from a manuscript's `metadata.yaml` are copied to this dictionary,
-      expect for special Manubot-defined fields. Special fields include `author_info` and
-      `thumbnail`.
-    - `manubot`: a dictionary with manubot-generated variables.
-    - user-specified fields inserted according to the `--template-variables-path` option.
+      Fields in `pandoc` are either generated by Manubot or hard-coded by the user if `metadata.yaml`
+      includes a `pandoc` dictionary.
+    - `manubot`: a dictionary for manubot-related information and metadata.
+      Fields in `manubot` are either generated by Manubot or hard-coded by the user if `metadata.yaml`
+      includes a `manubot` dictionary.
+    - All fields from a manuscript's `metadata.yaml` that are not interpreted by Manubot are
+      copied to `variables`. Interpreted fields include `pandoc`, `manubot`, `title`,
+      `keywords`, `author_info`, `lang`, and `thumbnail`.
+    - User-specified fields inserted according to the `--template-variables-path` option.
+      User-specified variables take highest precedence and can overwrite values for existing
+      keys like `pandoc` or `manubot` (dangerous).
     """
     # Generated manuscript variables
     variables = {"pandoc": {}, "manubot": {}}
@@ -187,14 +186,18 @@ def load_variables(args) -> dict:
     # Read metadata which contains pandoc_yaml_metadata
     # as well as author_info.
     if args.meta_yaml_path.is_file():
-        with args.meta_yaml_path.open(encoding="utf-8-sig") as read_file:
-            metadata = yaml.safe_load(read_file)
-            assert isinstance(metadata, dict)
+        metadata = read_serialized_dict(args.meta_yaml_path)
     else:
         metadata = {}
         logging.warning(
             f"missing {args.meta_yaml_path} file with yaml_metadata_block for pandoc"
         )
+
+    # Interpreted keys that are intended for pandoc
+    move_to_pandoc = "title", "keywords", "lang"
+    for key in move_to_pandoc:
+        if key in metadata:
+            variables["pandoc"][key] = metadata.pop(key)
 
     # Add date to metadata
     now = datetime_now()
@@ -223,9 +226,22 @@ def load_variables(args) -> dict:
     if thumbnail_url:
         variables["manubot"]["thumbnail_url"] = thumbnail_url
 
+    # Update variables with metadata.yaml pandoc/manubot dicts
+    for key in "pandoc", "manubot":
+        dict_ = metadata.pop(key, {})
+        if not isinstance(dict_, dict):
+            logging.warning(
+                f"load_variables expected metadata.yaml field {key!r} to be a dict."
+                f"Received a {dict_.__class__.__name__!r} instead."
+            )
+            continue
+        variables[key].update(dict_)
+
+    # Update variables with uninterpreted metadata.yaml fields
+    variables.update(metadata)
+
     # Update variables with user-provided variables here
-    user_variables = read_jsons(args.template_variables_path)
-    variables.update(user_variables)
+    variables = read_variable_files(args.template_variables_path, variables)
 
     # Add header-includes metadata with <meta> information for the HTML output's <head>
     variables["pandoc"]["header-includes"] = get_header_includes(variables)
@@ -301,6 +317,7 @@ def generate_csl_items(args, citekeys_df):
     # Read manual references (overrides) in JSON CSL
     manual_refs = load_manual_references(args.manual_references_paths)
 
+    requests  # require `import requests` in case this is essential for monkey patching by requests_cache.
     requests_cache.install_cache(args.requests_cache_path, include_get_headers=True)
     cache = requests_cache.get_cache()
     if args.clear_requests_cache:

@@ -21,9 +21,9 @@ def get_arxiv_csl_item(arxiv_id):
     alert the user that an alternative version of record exists.
 
     References:
-    https://arxiv.org/help/api/index
-    http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
-    https://github.com/citation-style-language/schema/blob/master/csl-data.json
+    - https://arxiv.org/help/api/index
+    - http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
+    - https://github.com/citation-style-language/schema/blob/master/csl-data.json
     """
     url = "https://export.arxiv.org/api/query"
     params = {"id_list": arxiv_id, "max_results": 1}

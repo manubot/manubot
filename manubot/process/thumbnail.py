@@ -1,5 +1,5 @@
 """
-Tools for manuscript thumbnial detection and processing.
+Tools for manuscript thumbnail detection and processing.
 """
 import functools
 import logging

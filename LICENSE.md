@@ -1,6 +1,6 @@
 # BSD 3-Clause License
 
-_Copyright © 2017, The Greene Lab at the University of Pennsylvania_
+_Copyright © 2019, Contributors & the Greene Lab at the University of Pennsylvania_
 <br>
 _All rights reserved._
 

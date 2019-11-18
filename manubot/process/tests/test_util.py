@@ -3,18 +3,18 @@ import pathlib
 
 import pytest
 
-from ..util import add_author_affiliations, get_header_includes, read_jsons
+from ..util import add_author_affiliations, get_header_includes, read_variable_files
 
 directory = pathlib.Path(__file__).parent.resolve()
 
 
-def test_read_jsons_empty():
+def test_read_variable_files_empty():
     paths = []
-    user_variables = read_jsons(paths)
+    user_variables = read_variable_files(paths)
     assert isinstance(user_variables, dict) and not user_variables
 
 
-def test_read_jsons():
+def test_read_variable_files():
     """
     Test reading multiple JSON files, from both local paths and URLs.
     """
@@ -28,7 +28,7 @@ def test_read_jsons():
         f"namespace_2={local_path}",
         f"namespace_3={local_path}",
     ]
-    user_variables = read_jsons(paths)
+    user_variables = read_variable_files(paths)
     assert "namespace_1" in user_variables
     assert "namespace_2" in user_variables
     assert "namespace_3" in user_variables

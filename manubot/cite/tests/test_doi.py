@@ -32,7 +32,7 @@ def test_get_doi_csl_item_crosscite():
 
 def test_get_doi_csl_item_zotero():
     """
-    As of 2019-10-25, DOI Content Negotiation (i.e. crosscite) encodes the consurtium
+    As of 2019-10-25, DOI Content Negotiation (i.e. crosscite) encodes the consortium
     in author.name rather than author.literal. Zotero translation-server encodes
     the consortium in author.family, which is better than nothing since it's a valid
     CSL JSON field.
