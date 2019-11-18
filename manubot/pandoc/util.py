@@ -10,6 +10,7 @@ def get_pandoc_info():
     Return path and version information for the system's pandoc and
     pandoc-citeproc commands. When Pandoc is installed,
     the output will look like:
+    ```python
     {
         'pandoc': True,
         'pandoc path': '/PATH_TO_EXECUTABLES/pandoc',
@@ -18,11 +19,15 @@ def get_pandoc_info():
         'pandoc-citeproc path': '/PATH_TO_EXECUTABLES/pandoc-citeproc',
         'pandoc-citeproc version': (0, 15),
     }
+    ```
+
     If the executables are missing, the output will be like:
+    ```python
     {
         'pandoc': False,
         'pandoc-citeproc': False,
     }
+    ```
     """
     stats = dict()
     for command in "pandoc", "pandoc-citeproc":
@@ -47,7 +52,7 @@ def get_pandoc_info():
 
 def get_pandoc_version() -> (int, int, int):
     """
-    Return pandoc version as tuple of major and minor 
+    Return pandoc version as tuple of major and minor
     version numbers, for example: (2, 7, 2)
     """
     return get_pandoc_info()["pandoc version"]

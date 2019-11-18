@@ -108,7 +108,7 @@ def export_as_csl(zotero_data):
 def get_csl_item(identifier: str):
     """
     Use a translation-server serach query followed by an export query
-    to return a CSL Item (the first & only record of a the returned CSL JSON).
+    to return a CSL Item (the first & only record of the returned CSL JSON).
     """
     zotero_data = search_query(identifier)
     csl_data = export_as_csl(zotero_data)

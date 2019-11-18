@@ -6,6 +6,7 @@
 
 [Manubot](https://manubot.org/ "Manubot homepage") is a workflow and set of tools for the next generation of scholarly publishing.
 This repository contains a Python package with several Manubot-related utilities, as described in the [usage section](#usage) below.
+Package documentation is available at <https://manubot.github.io/manubot> (auto-generated from the Python source code).
 
 The `manubot cite` command-line interface retrieves and formats bibliographic metadata for user-supplied persistent identifiers like DOIs or PubMed IDs.
 The `manubot process` command-line interface prepares scholarly manuscripts for Pandoc consumption.
