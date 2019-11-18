@@ -74,6 +74,7 @@ setuptools.setup(
         "ratelimiter",
         "requests-cache",
         "requests",
+        "toml",
     ],
     # Additional groups of dependencies
     extras_require=extras_require,
