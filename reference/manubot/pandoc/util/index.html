@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.0">
     
     
       
@@ -40,7 +40,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/application.30686662.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/application.1b62728e.css">
       
         <link rel="stylesheet" href="../../../../assets/stylesheets/application-palette.a8b3c06d.css">
       
@@ -51,7 +51,7 @@
       
     
     
-      <script src="../../../../assets/javascripts/modernizr.74668098.js"></script>
+      <script src="../../../../assets/javascripts/modernizr.268332fc.js"></script>
     
     
       
@@ -1219,6 +1219,8 @@
 
 <span class="sd">    the output will look like:</span>
 
+<span class="sd">    ```python</span>
+
 <span class="sd">    {</span>
 
 <span class="sd">        &#39;pandoc&#39;: True,</span>
@@ -1235,7 +1237,11 @@
 
 <span class="sd">    }</span>
 
+<span class="sd">    ```</span>
+
 <span class="sd">    If the executables are missing, the output will be like:</span>
+
+<span class="sd">    ```python</span>
 
 <span class="sd">    {</span>
 
@@ -1244,6 +1250,8 @@
 <span class="sd">        &#39;pandoc-citeproc&#39;: False,</span>
 
 <span class="sd">    }</span>
+
+<span class="sd">    ```</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1308,20 +1316,26 @@
 
 <p>Return path and version information for the system's pandoc and
 pandoc-citeproc commands. When Pandoc is installed,
-the output will look like:
-{
-    'pandoc': True,
-    'pandoc path': '/PATH_TO_EXECUTABLES/pandoc',
-    'pandoc version': (2, 5),
-    'pandoc-citeproc': True,
-    'pandoc-citeproc path': '/PATH_TO_EXECUTABLES/pandoc-citeproc',
-    'pandoc-citeproc version': (0, 15),
-}
-If the executables are missing, the output will be like:
-{
-    'pandoc': False,
-    'pandoc-citeproc': False,
-}</p>
+the output will look like:</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;pandoc&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s1">&#39;pandoc path&#39;</span><span class="p">:</span> <span class="s1">&#39;/PATH_TO_EXECUTABLES/pandoc&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;pandoc version&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+    <span class="s1">&#39;pandoc-citeproc&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s1">&#39;pandoc-citeproc path&#39;</span><span class="p">:</span> <span class="s1">&#39;/PATH_TO_EXECUTABLES/pandoc-citeproc&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;pandoc-citeproc version&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>If the executables are missing, the output will be like:</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;pandoc&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s1">&#39;pandoc-citeproc&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+
+
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>@<span class="nv">functools</span>.<span class="nv">lru_cache</span><span class="ss">()</span>
 
 <span class="nv">def</span> <span class="nv">get_pandoc_info</span><span class="ss">()</span>:
@@ -1333,6 +1347,8 @@ If the executables are missing, the output will be like:
     <span class="nv">pandoc</span><span class="o">-</span><span class="nv">citeproc</span> <span class="nv">commands</span>. <span class="nv">When</span> <span class="nv">Pandoc</span> <span class="nv">is</span> <span class="nv">installed</span>,
 
     <span class="nv">the</span> <span class="nv">output</span> <span class="nv">will</span> <span class="nv">look</span> <span class="nv">like</span>:
+
+    ```<span class="nv">python</span>
 
     {
 
@@ -1350,7 +1366,11 @@ If the executables are missing, the output will be like:
 
     }
 
+    ```
+
     <span class="k">If</span> <span class="nv">the</span> <span class="nv">executables</span> <span class="nv">are</span> <span class="nv">missing</span>, <span class="nv">the</span> <span class="nv">output</span> <span class="nv">will</span> <span class="nv">be</span> <span class="nv">like</span>:
+
+    ```<span class="nv">python</span>
 
     {
 
@@ -1359,6 +1379,8 @@ If the executables are missing, the output will be like:
         <span class="s1">&#39;</span><span class="s">pandoc-citeproc</span><span class="s1">&#39;</span>: <span class="nv">False</span>,
 
     }
+
+    ```
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -1408,7 +1430,7 @@ If the executables are missing, the output will be like:
 </pre></div>
 
 
-<p>Return pandoc version as tuple of major and minor 
+<p>Return pandoc version as tuple of major and minor
 version numbers, for example: (2, 7, 2)</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_pandoc_version</span><span class="ss">()</span> <span class="o">-&gt;</span> <span class="ss">(</span><span class="nv">int</span>, <span class="nv">int</span>, <span class="nv">int</span><span class="ss">)</span>:
 
@@ -1495,7 +1517,7 @@ version numbers, for example: (2, 7, 2)</p>
       
     </div>
     
-      <script src="../../../../assets/javascripts/application.ac79c3b0.js"></script>
+      <script src="../../../../assets/javascripts/application.a8b5e56f.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../.."}})</script>
       
