@@ -301,7 +301,7 @@ def generate_csl_items(args, citekeys_df):
     # Read manual references (overrides) in JSON CSL
     manual_refs = load_manual_references(args.manual_references_paths)
 
-    requests  # in case requests_cache needs requests imported before monkey patching
+    requests  # require `import requests` in case this is essential for monkey patching by requests_cache.
     requests_cache.install_cache(args.requests_cache_path, include_get_headers=True)
     cache = requests_cache.get_cache()
     if args.clear_requests_cache:
