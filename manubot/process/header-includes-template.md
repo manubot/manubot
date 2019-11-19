@@ -48,10 +48,10 @@ Suggest improvements at https://github.com/manubot/manubot/blob/master/manubot/p
 {% endif -%}
 {% if manubot.html_url_versioned is defined -%}
 <link rel="alternate" type="text/html" href="{{ manubot.html_url_versioned }}" />
-<meta name="manubot_versioned_html_url" content="{{ manubot.html_url_versioned }}" />
+<meta name="manubot_html_url_versioned" content="{{ manubot.html_url_versioned }}" />
 {% endif -%}
 {% if manubot.pdf_url_versioned is defined -%}
-<meta name="manubot_versioned_pdf_url" content="{{ manubot.pdf_url_versioned }}" />
+<meta name="manubot_pdf_url_versioned" content="{{ manubot.pdf_url_versioned }}" />
 {% endif -%}
 {% if pandoc.abstract is defined -%}
 <meta name="dc.abstract" content="{{ pandoc.abstract|escape }}" />
