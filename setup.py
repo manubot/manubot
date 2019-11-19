@@ -84,7 +84,7 @@ setuptools.setup(
     package_data={
         "manubot": [
             "cite/*.lua",
-            "process/header-includes-template.md",
+            "process/header-includes-template.html",
             "webpage/redirect-template.html",
         ]
     },
