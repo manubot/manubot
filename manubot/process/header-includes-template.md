@@ -18,9 +18,9 @@ Suggest improvements at https://github.com/manubot/manubot/blob/master/manubot/p
 <meta name="dc.language" content="{{ pandoc.lang }}" />
 <meta name="citation_language" content="{{ pandoc.lang }}" />
 {% endif -%}
-<meta name="dc.relation.ispartof" content="Manubot Preprint" />
+<meta name="dc.relation.ispartof" content="Manubot" />
 <meta name="dc.publisher" content="Manubot" />
-<meta name="citation_journal_title" content="Manubot Preprint" />
+<meta name="citation_journal_title" content="Manubot" />
 <meta name="citation_technical_report_institution" content="Manubot" />
 {% for author in manubot.authors|default([]) if author.name is defined -%}
 <meta name="citation_author" content="{{ author.name|escape }}" />
