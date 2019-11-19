@@ -11,11 +11,11 @@ from urllib.parse import urljoin
 
 def get_header_includes(variables: dict) -> str:
     """
-    Render `header-includes-template.md` using information from `variables`.
+    Render `header-includes-template.html` using information from `variables`.
     """
     from .util import template_with_jinja2
 
-    path = pathlib.Path(__file__).parent.joinpath("header-includes-template.md")
+    path = pathlib.Path(__file__).parent.joinpath("header-includes-template.html")
     try:
         template = path.read_text(encoding="utf-8-sig")
         return template_with_jinja2(template, variables)
