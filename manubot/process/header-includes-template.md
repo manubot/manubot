@@ -1,6 +1,7 @@
+```html {=html}
 <!--
-Manubot generated metadata rendered from header-includes-template.html.
-Suggest improvements at https://github.com/manubot/manubot/blob/master/manubot/process/header-includes-template.html
+Manubot generated metadata rendered from header-includes-template.md.
+Suggest improvements at https://github.com/manubot/manubot/blob/master/manubot/process/header-includes-template.md
 -->
 <meta name="dc.format" content="text/html" />
 {% if pandoc.title is defined -%}
@@ -72,4 +73,5 @@ Suggest improvements at https://github.com/manubot/manubot/blob/master/manubot/p
 <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
 <link rel="mask-icon" href="https://manubot.org/safari-pinned-tab.svg" color="#ad1457" />
 <meta name="theme-color" content="#ad1457" />
-<!-- end Manubot generated metadata --> 
+<!-- end Manubot generated metadata -->
+```

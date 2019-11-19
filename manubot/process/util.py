@@ -15,7 +15,11 @@ import yaml
 from manubot.util import read_serialized_data, read_serialized_dict
 from manubot.process.bibliography import load_manual_references
 from manubot.process.ci import get_continuous_integration_parameters
-from manubot.process.metadata import get_thumbnail_url, get_manuscript_urls
+from manubot.process.metadata import (
+    get_header_includes,
+    get_thumbnail_url,
+    get_manuscript_urls,
+)
 from manubot.process.manuscript import (
     datetime_now,
     get_citekeys,
@@ -247,19 +251,6 @@ def load_variables(args) -> dict:
     variables["pandoc"]["header-includes"] = get_header_includes(variables)
 
     return variables
-
-
-def get_header_includes(variables: dict) -> str:
-    """
-    Render `header-includes-template.html` using information from `variables`.
-    """
-    path = pathlib.Path(__file__).parent.joinpath("header-includes-template.html")
-    try:
-        template = path.read_text(encoding="utf-8-sig")
-        return template_with_jinja2(template, variables)
-    except Exception:
-        logging.exception(f"Error generating header-includes.")
-        return ""
 
 
 def get_citekeys_df(args, text):

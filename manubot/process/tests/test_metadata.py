@@ -1,8 +1,40 @@
+import copy
+
 import pytest
 
 
-from ..metadata import get_thumbnail_url, get_manuscript_urls
+from ..metadata import get_header_includes, get_thumbnail_url, get_manuscript_urls
 from ..ci import get_continuous_integration_parameters
+
+
+def test_get_header_includes_description_abstract():
+    # test that abstract and description set different fields if both supplied
+    variables = {
+        "pandoc": {"abstract": "value for abstract"},
+        "manubot": {"description": "value for description"},
+    }
+    header_includes = get_header_includes(copy.deepcopy(variables))
+    assert (
+        '<meta name="citation_abstract" content="value for abstract" />'
+        in header_includes
+    )
+    assert (
+        '<meta name="description" content="value for description" />' in header_includes
+    )
+    # test that abstract is used for description if description is not defined
+    del variables["manubot"]["description"]
+    header_includes = get_header_includes(copy.deepcopy(variables))
+    assert (
+        '<meta name="citation_abstract" content="value for abstract" />'
+        in header_includes
+    )
+    assert '<meta name="description" content="value for abstract" />' in header_includes
+    # test that if neither abstract nor description is defined, neither are inserted
+    del variables["pandoc"]["abstract"]
+    header_includes = get_header_includes(copy.deepcopy(variables))
+    assert 'meta name="citation_abstract"' not in header_includes
+    assert 'meta name="description"' not in header_includes
+
 
 ci_params = get_continuous_integration_parameters() or {}
 local_only = pytest.mark.skipif(
