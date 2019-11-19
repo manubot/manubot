@@ -14,11 +14,8 @@ import yaml
 
 from manubot.util import read_serialized_data, read_serialized_dict
 from manubot.process.bibliography import load_manual_references
-from manubot.process.ci import (
-    add_manuscript_urls_to_ci_params,
-    get_continuous_integration_parameters,
-)
-from manubot.process.thumbnail import get_thumbnail_url
+from manubot.process.ci import get_continuous_integration_parameters
+from manubot.process.metadata import get_thumbnail_url, get_manuscript_urls
 from manubot.process.manuscript import (
     datetime_now,
     get_citekeys,
@@ -219,7 +216,10 @@ def load_variables(args) -> dict:
     # Set repository version metadata for CI builds
     ci_params = get_continuous_integration_parameters()
     if ci_params:
-        variables["manubot"]["ci_source"] = add_manuscript_urls_to_ci_params(ci_params)
+        variables["manubot"]["ci_source"] = ci_params
+
+    # Add manuscript URLs
+    variables["manubot"].update(get_manuscript_urls(metadata.pop("html_url", None)))
 
     # Add thumbnail URL if present
     thumbnail_url = get_thumbnail_url(metadata.pop("thumbnail", None))

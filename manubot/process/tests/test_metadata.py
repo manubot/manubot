@@ -1,7 +1,7 @@
 import pytest
 
 
-from ..metadata import get_thumbnail_url
+from ..metadata import get_thumbnail_url, get_manuscript_urls
 from ..ci import get_continuous_integration_parameters
 
 ci_params = get_continuous_integration_parameters() or {}
@@ -52,3 +52,45 @@ example_thumbnail_url = (
 def test_get_thumbnail_url(thumbnail, expected):
     thumbnail_url = get_thumbnail_url(thumbnail)
     assert expected == thumbnail_url
+
+
+@pytest.mark.parametrize(
+    ("html_url", "expected"),
+    [
+        pytest.param(None, {}, id="html_url-none-local", marks=local_only),
+        pytest.param(
+            "https://example.com/manuscript/",
+            {
+                "html_url": "https://example.com/manuscript/",
+                "pdf_url": "https://example.com/manuscript/manuscript.pdf",
+            },
+            id="html_url-set-local",
+            marks=local_only,
+        ),
+        pytest.param(
+            None,
+            {
+                "html_url": "https://manubot.github.io/manubot/",
+                "pdf_url": "https://manubot.github.io/manubot/manuscript.pdf",
+                "html_url_versioned": f"https://manubot.github.io/manubot/v/{ci_params.get('commit')}/",
+                "pdf_url_versioned": f"https://manubot.github.io/manubot/v/{ci_params.get('commit')}/manuscript.pdf",
+            },
+            id="html_url-none-ci",
+            marks=ci_only,
+        ),
+        pytest.param(
+            "https://example.com/manuscript/",
+            {
+                "html_url": "https://example.com/manuscript/",
+                "pdf_url": "https://example.com/manuscript/manuscript.pdf",
+                "html_url_versioned": f"https://example.com/manuscript/v/{ci_params.get('commit')}/",
+                "pdf_url_versioned": f"https://example.com/manuscript/v/{ci_params.get('commit')}/manuscript.pdf",
+            },
+            id="html_url-set-ci",
+            marks=ci_only,
+        ),
+    ],
+)
+def test_get_manuscript_urls(html_url, expected):
+    urls = get_manuscript_urls(html_url)
+    assert urls == expected

@@ -5,6 +5,8 @@ import functools
 import logging
 import pathlib
 import subprocess
+from typing import Optional
+from urllib.parse import urljoin
 
 
 def get_thumbnail_url(thumbnail=None):
@@ -84,3 +86,59 @@ def git_repository_root():
         except (subprocess.CalledProcessError, OSError):
             pass
     return None
+
+
+def get_manuscript_urls(html_url: Optional[str] = None) -> dict:
+    """
+    Return a dictionary with URLs for a manuscript.
+    An example for a manuscript where all URLs get set, inferred from continuous integration environment variables, is:
+    ```python
+    {
+        "html_url": "https://manubot.github.io/rootstock/",
+        "pdf_url": "https://manubot.github.io/rootstock/manuscript.pdf",
+        "html_url_versioned": "https://manubot.github.io/rootstock/v/7cf9071212ce33116ad09cf2237a370b180a3c35/",
+        "pdf_url_versioned": "https://manubot.github.io/rootstock/v/7cf9071212ce33116ad09cf2237a370b180a3c35/manuscript.pdf",
+    }
+    ```
+
+    Provide `html_url` to set a custom domain.
+    If `html_url="https://git.dhimmel.com/bitcoin-whitepaper/"`,
+    the return dictionary will be like:
+    ```python
+    {
+        "html_url": "https://git.dhimmel.com/bitcoin-whitepaper/",
+        "pdf_url": "https://git.dhimmel.com/bitcoin-whitepaper/manuscript.pdf",
+        "html_url_versioned": "https://git.dhimmel.com/bitcoin-whitepaper/v/cb1f2c12eec8b56db9ef5f641ec805e2d449d319/",
+        "pdf_url_versioned": "https://git.dhimmel.com/bitcoin-whitepaper/v/cb1f2c12eec8b56db9ef5f641ec805e2d449d319/manuscript.pdf",
+    }
+    ```
+    Note the trailing `/` in `html_url`, which is required for proper functioning.
+    """
+    import requests
+    from .ci import get_continuous_integration_parameters
+
+    urls = dict()
+    ci_params = get_continuous_integration_parameters()
+    if html_url is None:
+        if not ci_params:
+            return urls
+        html_url = "https://{repo_owner}.github.io/{repo_name}/".format(**ci_params)
+    urls["html_url"] = html_url
+    urls["pdf_url"] = urljoin(html_url, "manuscript.pdf")
+    if not ci_params:
+        return urls
+    urls["html_url_versioned"] = urljoin(html_url, "v/{commit}/".format(**ci_params))
+    urls["pdf_url_versioned"] = urljoin(urls["html_url_versioned"], "manuscript.pdf")
+    response = requests.head(html_url, allow_redirects=True)
+    if not response.ok:
+        logging.warning(
+            "html_url is not web accessible. "
+            f"{html_url} returned status code {response.status_code}. "
+            "Ignore this warning if the manuscript has not yet been deployed for the first time. "
+        )
+    if response.history:
+        logging.info(
+            "html_url includes redirects. In order of oldest to most recent:\n"
+            + "\n".join(x.url for x in response.history + [response])
+        )
+    return urls
