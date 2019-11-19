@@ -36,7 +36,7 @@
     
     
       
-        <title>Thumbnail - manubot</title>
+        <title>Metadata - manubot</title>
       
     
     
@@ -85,7 +85,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#module-manubotprocessthumbnail" tabindex="1" class="md-skip">
+      <a href="#module-manubotprocessmetadata" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -111,7 +111,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Thumbnail
+                Metadata
               
             </span>
           
@@ -787,18 +787,6 @@
           
           
 
-
-  <li class="md-nav__item">
-    <a href="../process_command/" title="Process Command" class="md-nav__link">
-      Process Command
-    </a>
-  </li>
-
-        
-          
-          
-          
-
   
 
 
@@ -810,11 +798,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Thumbnail
+        Metadata
       </label>
     
-    <a href="./" title="Thumbnail" class="md-nav__link md-nav__link--active">
-      Thumbnail
+    <a href="./" title="Metadata" class="md-nav__link md-nav__link--active">
+      Metadata
     </a>
     
       
@@ -834,6 +822,20 @@
   
     <nav class="md-nav">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_header_includes" class="md-nav__link">
+    get_header_includes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_manuscript_urls" class="md-nav__link">
+    get_manuscript_urls
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#get_thumbnail_url" class="md-nav__link">
@@ -862,6 +864,18 @@
   
 </nav>
     
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../process_command/" title="Process Command" class="md-nav__link">
+      Process Command
+    </a>
   </li>
 
         
@@ -950,8 +964,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../tests/test_process_command/" title="Test Process Command" class="md-nav__link">
-      Test Process Command
+    <a href="../tests/test_metadata/" title="Test Metadata" class="md-nav__link">
+      Test Metadata
     </a>
   </li>
 
@@ -962,8 +976,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../tests/test_thumbnail/" title="Test Thumbnail" class="md-nav__link">
-      Test Thumbnail
+    <a href="../tests/test_process_command/" title="Test Process Command" class="md-nav__link">
+      Test Process Command
     </a>
   </li>
 
@@ -1161,6 +1175,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#get_header_includes" class="md-nav__link">
+    get_header_includes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_manuscript_urls" class="md-nav__link">
+    get_manuscript_urls
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#get_thumbnail_url" class="md-nav__link">
     get_thumbnail_url
   </a>
@@ -1195,14 +1223,14 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/manubot/manubot/edit/master/reference/manubot/process/thumbnail.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/manubot/manubot/edit/master/reference/manubot/process/metadata.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="module-manubotprocessthumbnail">Module manubot.process.thumbnail</h1>
-<p>Tools for manuscript thumbnail detection and processing.</p>
+                <h1 id="module-manubotprocessmetadata">Module manubot.process.metadata</h1>
+<p>Tools for manuscript metadata processing including thumbnail detection and processing.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">Tools for manuscript thumbnail detection and processing.</span>
+<span class="sd">Tools for manuscript metadata processing including thumbnail detection and processing.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1213,6 +1241,34 @@
 <span class="kn">import</span> <span class="nn">pathlib</span>
 
 <span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+
+<span class="k">def</span> <span class="nf">get_header_includes</span><span class="p">(</span><span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Render `header-includes-template.md` using information from `variables`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">template_with_jinja2</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;header-includes-template.md&quot;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="n">template</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">template_with_jinja2</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Error generating header-includes.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
 <span class="k">def</span> <span class="nf">get_thumbnail_url</span><span class="p">(</span><span class="n">thumbnail</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 
@@ -1351,11 +1407,288 @@
             <span class="k">pass</span>
 
     <span class="k">return</span> <span class="bp">None</span>
+
+<span class="k">def</span> <span class="nf">get_manuscript_urls</span><span class="p">(</span><span class="n">html_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Return a dictionary with URLs for a manuscript.</span>
+
+<span class="sd">    An example for a manuscript where all URLs get set, inferred from continuous integration environment variables, is:</span>
+
+<span class="sd">    ```python</span>
+
+<span class="sd">    {</span>
+
+<span class="sd">        &quot;html_url&quot;: &quot;https://manubot.github.io/rootstock/&quot;,</span>
+
+<span class="sd">        &quot;pdf_url&quot;: &quot;https://manubot.github.io/rootstock/manuscript.pdf&quot;,</span>
+
+<span class="sd">        &quot;html_url_versioned&quot;: &quot;https://manubot.github.io/rootstock/v/7cf9071212ce33116ad09cf2237a370b180a3c35/&quot;,</span>
+
+<span class="sd">        &quot;pdf_url_versioned&quot;: &quot;https://manubot.github.io/rootstock/v/7cf9071212ce33116ad09cf2237a370b180a3c35/manuscript.pdf&quot;,</span>
+
+<span class="sd">    }</span>
+
+<span class="sd">    ```</span>
+
+<span class="sd">    Provide `html_url` to set a custom domain.</span>
+
+<span class="sd">    If `html_url=&quot;https://git.dhimmel.com/bitcoin-whitepaper/&quot;`,</span>
+
+<span class="sd">    the return dictionary will be like:</span>
+
+<span class="sd">    ```python</span>
+
+<span class="sd">    {</span>
+
+<span class="sd">        &quot;html_url&quot;: &quot;https://git.dhimmel.com/bitcoin-whitepaper/&quot;,</span>
+
+<span class="sd">        &quot;pdf_url&quot;: &quot;https://git.dhimmel.com/bitcoin-whitepaper/manuscript.pdf&quot;,</span>
+
+<span class="sd">        &quot;html_url_versioned&quot;: &quot;https://git.dhimmel.com/bitcoin-whitepaper/v/cb1f2c12eec8b56db9ef5f641ec805e2d449d319/&quot;,</span>
+
+<span class="sd">        &quot;pdf_url_versioned&quot;: &quot;https://git.dhimmel.com/bitcoin-whitepaper/v/cb1f2c12eec8b56db9ef5f641ec805e2d449d319/manuscript.pdf&quot;,</span>
+
+<span class="sd">    }</span>
+
+<span class="sd">    ```</span>
+
+<span class="sd">    Note the trailing `/` in `html_url`, which is required for proper functioning.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">requests</span>
+
+    <span class="kn">from</span> <span class="nn">.ci</span> <span class="kn">import</span> <span class="n">get_continuous_integration_parameters</span>
+
+    <span class="n">urls</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="n">ci_params</span> <span class="o">=</span> <span class="n">get_continuous_integration_parameters</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">html_url</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ci_params</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="n">urls</span>
+
+        <span class="n">html_url</span> <span class="o">=</span> <span class="s2">&quot;https://{repo_owner}.github.io/{repo_name}/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">ci_params</span><span class="p">)</span>
+
+    <span class="n">urls</span><span class="p">[</span><span class="s2">&quot;html_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">html_url</span>
+
+    <span class="n">urls</span><span class="p">[</span><span class="s2">&quot;pdf_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">html_url</span><span class="p">,</span> <span class="s2">&quot;manuscript.pdf&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ci_params</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="n">urls</span>
+
+    <span class="n">urls</span><span class="p">[</span><span class="s2">&quot;html_url_versioned&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">html_url</span><span class="p">,</span> <span class="s2">&quot;v/{commit}/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">ci_params</span><span class="p">))</span>
+
+    <span class="n">urls</span><span class="p">[</span><span class="s2">&quot;pdf_url_versioned&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">urls</span><span class="p">[</span><span class="s2">&quot;html_url_versioned&quot;</span><span class="p">],</span> <span class="s2">&quot;manuscript.pdf&quot;</span><span class="p">)</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">html_url</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+            <span class="s2">&quot;html_url is not web accessible. &quot;</span>
+
+            <span class="n">f</span><span class="s2">&quot;{html_url} returned status code {response.status_code}. &quot;</span>
+
+            <span class="s2">&quot;Ignore this warning if the manuscript has not yet been deployed for the first time. &quot;</span>
+
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">history</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+
+            <span class="s2">&quot;html_url includes redirects. In order of oldest to most recent:</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+            <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">url</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">history</span> <span class="o">+</span> <span class="p">[</span><span class="n">response</span><span class="p">])</span>
+
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">urls</span>
 </pre></div>
 
 
 </details>
 <h2 id="functions">Functions</h2>
+<h3 id="get_header_includes">get_header_includes</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_header_includes</span><span class="p">(</span>
+    <span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</pre></div>
+
+
+<p>Render <code>header-includes-template.md</code> using information from <code>variables</code>.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_header_includes</span><span class="p">(</span><span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Render `header-includes-template.md` using information from `variables`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">template_with_jinja2</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;header-includes-template.md&quot;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="n">template</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">template_with_jinja2</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Error generating header-includes.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+</pre></div>
+
+
+</details>
+<h3 id="get_manuscript_urls">get_manuscript_urls</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_manuscript_urls</span><span class="p">(</span>
+    <span class="n">html_url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
+</pre></div>
+
+
+<p>Return a dictionary with URLs for a manuscript.
+An example for a manuscript where all URLs get set, inferred from continuous integration environment variables, is:</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;html_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://manubot.github.io/rootstock/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pdf_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://manubot.github.io/rootstock/manuscript.pdf&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;html_url_versioned&quot;</span><span class="p">:</span> <span class="s2">&quot;https://manubot.github.io/rootstock/v/7cf9071212ce33116ad09cf2237a370b180a3c35/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pdf_url_versioned&quot;</span><span class="p">:</span> <span class="s2">&quot;https://manubot.github.io/rootstock/v/7cf9071212ce33116ad09cf2237a370b180a3c35/manuscript.pdf&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Provide <code>html_url</code> to set a custom domain.
+If <code>html_url="https://git.dhimmel.com/bitcoin-whitepaper/"</code>,
+the return dictionary will be like:</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;html_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://git.dhimmel.com/bitcoin-whitepaper/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pdf_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://git.dhimmel.com/bitcoin-whitepaper/manuscript.pdf&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;html_url_versioned&quot;</span><span class="p">:</span> <span class="s2">&quot;https://git.dhimmel.com/bitcoin-whitepaper/v/cb1f2c12eec8b56db9ef5f641ec805e2d449d319/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pdf_url_versioned&quot;</span><span class="p">:</span> <span class="s2">&quot;https://git.dhimmel.com/bitcoin-whitepaper/v/cb1f2c12eec8b56db9ef5f641ec805e2d449d319/manuscript.pdf&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Note the trailing <code>/</code> in <code>html_url</code>, which is required for proper functioning.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_manuscript_urls</span><span class="ss">(</span><span class="nv">html_url</span>: <span class="nv">Optional</span>[<span class="nv">str</span>] <span class="o">=</span> <span class="nv">None</span><span class="ss">)</span> <span class="o">-&gt;</span> <span class="nv">dict</span>:
+
+    <span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">Return</span> <span class="nv">a</span> <span class="nv">dictionary</span> <span class="nv">with</span> <span class="nv">URLs</span> <span class="k">for</span> <span class="nv">a</span> <span class="nv">manuscript</span>.
+
+    <span class="nv">An</span> <span class="nv">example</span> <span class="k">for</span> <span class="nv">a</span> <span class="nv">manuscript</span> <span class="nv">where</span> <span class="nv">all</span> <span class="nv">URLs</span> <span class="nv">get</span> <span class="nv">set</span>, <span class="nv">inferred</span> <span class="nv">from</span> <span class="nv">continuous</span> <span class="nv">integration</span> <span class="nv">environment</span> <span class="nv">variables</span>, <span class="nv">is</span>:
+
+    ```<span class="nv">python</span>
+
+    {
+
+        <span class="s2">&quot;</span><span class="s">html_url</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">https://manubot.github.io/rootstock/</span><span class="s2">&quot;</span>,
+
+        <span class="s2">&quot;</span><span class="s">pdf_url</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">https://manubot.github.io/rootstock/manuscript.pdf</span><span class="s2">&quot;</span>,
+
+        <span class="s2">&quot;</span><span class="s">html_url_versioned</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">https://manubot.github.io/rootstock/v/7cf9071212ce33116ad09cf2237a370b180a3c35/</span><span class="s2">&quot;</span>,
+
+        <span class="s2">&quot;</span><span class="s">pdf_url_versioned</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">https://manubot.github.io/rootstock/v/7cf9071212ce33116ad09cf2237a370b180a3c35/manuscript.pdf</span><span class="s2">&quot;</span>,
+
+    }
+
+    ```
+
+    <span class="nv">Provide</span> `<span class="nv">html_url</span>` <span class="nv">to</span> <span class="nv">set</span> <span class="nv">a</span> <span class="nv">custom</span> <span class="nv">domain</span>.
+
+    <span class="k">If</span> `<span class="nv">html_url</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">https://git.dhimmel.com/bitcoin-whitepaper/</span><span class="s2">&quot;</span>`,
+
+    <span class="nv">the</span> <span class="k">return</span> <span class="nv">dictionary</span> <span class="nv">will</span> <span class="nv">be</span> <span class="nv">like</span>:
+
+    ```<span class="nv">python</span>
+
+    {
+
+        <span class="s2">&quot;</span><span class="s">html_url</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">https://git.dhimmel.com/bitcoin-whitepaper/</span><span class="s2">&quot;</span>,
+
+        <span class="s2">&quot;</span><span class="s">pdf_url</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">https://git.dhimmel.com/bitcoin-whitepaper/manuscript.pdf</span><span class="s2">&quot;</span>,
+
+        <span class="s2">&quot;</span><span class="s">html_url_versioned</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">https://git.dhimmel.com/bitcoin-whitepaper/v/cb1f2c12eec8b56db9ef5f641ec805e2d449d319/</span><span class="s2">&quot;</span>,
+
+        <span class="s2">&quot;</span><span class="s">pdf_url_versioned</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">https://git.dhimmel.com/bitcoin-whitepaper/v/cb1f2c12eec8b56db9ef5f641ec805e2d449d319/manuscript.pdf</span><span class="s2">&quot;</span>,
+
+    }
+
+    ```
+
+    <span class="nv">Note</span> <span class="nv">the</span> <span class="nv">trailing</span> `<span class="o">/</span>` <span class="nv">in</span> `<span class="nv">html_url</span>`, <span class="nv">which</span> <span class="nv">is</span> <span class="nv">required</span> <span class="k">for</span> <span class="nv">proper</span> <span class="nv">functioning</span>.
+
+    <span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="nv">import</span> <span class="nv">requests</span>
+
+    <span class="nv">from</span> .<span class="nv">ci</span> <span class="nv">import</span> <span class="nv">get_continuous_integration_parameters</span>
+
+    <span class="nv">urls</span> <span class="o">=</span> <span class="nv">dict</span><span class="ss">()</span>
+
+    <span class="nv">ci_params</span> <span class="o">=</span> <span class="nv">get_continuous_integration_parameters</span><span class="ss">()</span>
+
+    <span class="k">if</span> <span class="nv">html_url</span> <span class="nv">is</span> <span class="nv">None</span>:
+
+        <span class="k">if</span> <span class="nv">not</span> <span class="nv">ci_params</span>:
+
+            <span class="k">return</span> <span class="nv">urls</span>
+
+        <span class="nv">html_url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">https://{repo_owner}.github.io/{repo_name}/</span><span class="s2">&quot;</span>.<span class="nv">format</span><span class="ss">(</span><span class="o">**</span><span class="nv">ci_params</span><span class="ss">)</span>
+
+    <span class="nv">urls</span>[<span class="s2">&quot;</span><span class="s">html_url</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">html_url</span>
+
+    <span class="nv">urls</span>[<span class="s2">&quot;</span><span class="s">pdf_url</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">urljoin</span><span class="ss">(</span><span class="nv">html_url</span>, <span class="s2">&quot;</span><span class="s">manuscript.pdf</span><span class="s2">&quot;</span><span class="ss">)</span>
+
+    <span class="k">if</span> <span class="nv">not</span> <span class="nv">ci_params</span>:
+
+        <span class="k">return</span> <span class="nv">urls</span>
+
+    <span class="nv">urls</span>[<span class="s2">&quot;</span><span class="s">html_url_versioned</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">urljoin</span><span class="ss">(</span><span class="nv">html_url</span>, <span class="s2">&quot;</span><span class="s">v/{commit}/</span><span class="s2">&quot;</span>.<span class="nv">format</span><span class="ss">(</span><span class="o">**</span><span class="nv">ci_params</span><span class="ss">))</span>
+
+    <span class="nv">urls</span>[<span class="s2">&quot;</span><span class="s">pdf_url_versioned</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">urljoin</span><span class="ss">(</span><span class="nv">urls</span>[<span class="s2">&quot;</span><span class="s">html_url_versioned</span><span class="s2">&quot;</span>], <span class="s2">&quot;</span><span class="s">manuscript.pdf</span><span class="s2">&quot;</span><span class="ss">)</span>
+
+    <span class="nv">response</span> <span class="o">=</span> <span class="nv">requests</span>.<span class="nv">head</span><span class="ss">(</span><span class="nv">html_url</span>, <span class="nv">allow_redirects</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+
+    <span class="k">if</span> <span class="nv">not</span> <span class="nv">response</span>.<span class="nv">ok</span>:
+
+        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+
+            <span class="s2">&quot;</span><span class="s">html_url is not web accessible. </span><span class="s2">&quot;</span>
+
+            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{html_url} returned status code {response.status_code}. </span><span class="s2">&quot;</span>
+
+            <span class="s2">&quot;</span><span class="s">Ignore this warning if the manuscript has not yet been deployed for the first time. </span><span class="s2">&quot;</span>
+
+        <span class="ss">)</span>
+
+    <span class="k">if</span> <span class="nv">response</span>.<span class="nv">history</span>:
+
+        <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span>
+
+            <span class="s2">&quot;</span><span class="s">html_url includes redirects. In order of oldest to most recent:</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+            <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">x</span>.<span class="nv">url</span> <span class="k">for</span> <span class="nv">x</span> <span class="nv">in</span> <span class="nv">response</span>.<span class="nv">history</span> <span class="o">+</span> [<span class="nv">response</span>]<span class="ss">)</span>
+
+        <span class="ss">)</span>
+
+    <span class="k">return</span> <span class="nv">urls</span>
+</pre></div>
+
+
+</details>
 <h3 id="get_thumbnail_url">get_thumbnail_url</h3>
 <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_thumbnail_url</span><span class="p">(</span>
     <span class="n">thumbnail</span><span class="o">=</span><span class="kc">None</span>
@@ -1484,7 +1817,7 @@ it is converted to a GitHub raw URL.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../process_command/" title="Process Command" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../manuscript/" title="Manuscript" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -1493,19 +1826,19 @@ it is converted to a GitHub raw URL.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Process Command
+                Manuscript
               </span>
             </div>
           </a>
         
         
-          <a href="../util/" title="Util" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../process_command/" title="Process Command" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Util
+                Process Command
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

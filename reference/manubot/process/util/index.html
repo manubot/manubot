@@ -789,8 +789,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../process_command/" title="Process Command" class="md-nav__link">
-      Process Command
+    <a href="../metadata/" title="Metadata" class="md-nav__link">
+      Metadata
     </a>
   </li>
 
@@ -801,8 +801,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../thumbnail/" title="Thumbnail" class="md-nav__link">
-      Thumbnail
+    <a href="../process_command/" title="Process Command" class="md-nav__link">
+      Process Command
     </a>
   </li>
 
@@ -999,8 +999,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../tests/test_process_command/" title="Test Process Command" class="md-nav__link">
-      Test Process Command
+    <a href="../tests/test_metadata/" title="Test Metadata" class="md-nav__link">
+      Test Metadata
     </a>
   </li>
 
@@ -1011,8 +1011,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../tests/test_thumbnail/" title="Test Thumbnail" class="md-nav__link">
-      Test Thumbnail
+    <a href="../tests/test_process_command/" title="Test Process Command" class="md-nav__link">
+      Test Process Command
     </a>
   </li>
 
@@ -1325,15 +1325,17 @@
 
 <span class="kn">from</span> <span class="nn">manubot.process.bibliography</span> <span class="kn">import</span> <span class="n">load_manual_references</span>
 
-<span class="kn">from</span> <span class="nn">manubot.process.ci</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">manubot.process.ci</span> <span class="kn">import</span> <span class="n">get_continuous_integration_parameters</span>
 
-    <span class="n">add_manuscript_urls_to_ci_params</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">manubot.process.metadata</span> <span class="kn">import</span> <span class="p">(</span>
 
-    <span class="n">get_continuous_integration_parameters</span><span class="p">,</span>
+    <span class="n">get_header_includes</span><span class="p">,</span>
+
+    <span class="n">get_thumbnail_url</span><span class="p">,</span>
+
+    <span class="n">get_manuscript_urls</span><span class="p">,</span>
 
 <span class="p">)</span>
-
-<span class="kn">from</span> <span class="nn">manubot.process.thumbnail</span> <span class="kn">import</span> <span class="n">get_thumbnail_url</span>
 
 <span class="kn">from</span> <span class="nn">manubot.process.manuscript</span> <span class="kn">import</span> <span class="p">(</span>
 
@@ -1695,7 +1697,11 @@
 
     <span class="k">if</span> <span class="n">ci_params</span><span class="p">:</span>
 
-        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;ci_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_manuscript_urls_to_ci_params</span><span class="p">(</span><span class="n">ci_params</span><span class="p">)</span>
+        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;ci_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ci_params</span>
+
+    <span class="c1"># Add manuscript URLs</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_manuscript_urls</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;html_url&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)))</span>
 
     <span class="c1"># Add thumbnail URL if present</span>
 
@@ -1732,6 +1738,10 @@
     <span class="c1"># Update variables with user-provided variables here</span>
 
     <span class="n">variables</span> <span class="o">=</span> <span class="n">read_variable_files</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">template_variables_path</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+
+    <span class="c1"># Add header-includes metadata with &lt;meta&gt; information for the HTML output&#39;s &lt;head&gt;</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;header-includes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_header_includes</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">variables</span>
 
@@ -1937,9 +1947,13 @@
 
         <span class="n">undefined</span><span class="o">=</span><span class="n">jinja2</span><span class="o">.</span><span class="n">make_logging_undefined</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()),</span>
 
+        <span class="n">autoescape</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+
         <span class="n">comment_start_string</span><span class="o">=</span><span class="s2">&quot;{##&quot;</span><span class="p">,</span>
 
         <span class="n">comment_end_string</span><span class="o">=</span><span class="s2">&quot;##}&quot;</span><span class="p">,</span>
+
+        <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;jinja2.ext.do&quot;</span><span class="p">,</span> <span class="s2">&quot;jinja2.ext.loopcontrols&quot;</span><span class="p">],</span>
 
     <span class="p">)</span>
 
@@ -1998,6 +2012,8 @@
             <span class="n">explicit_start</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
 
             <span class="n">explicit_end</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+
+            <span class="n">width</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
 
         <span class="p">)</span>
 
@@ -2511,7 +2527,11 @@ manuscript variables available for jinja2 templating.</p>
 
     <span class="k">if</span> <span class="nv">ci_params</span>:
 
-        <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>][<span class="s2">&quot;</span><span class="s">ci_source</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">add_manuscript_urls_to_ci_params</span><span class="ss">(</span><span class="nv">ci_params</span><span class="ss">)</span>
+        <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>][<span class="s2">&quot;</span><span class="s">ci_source</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">ci_params</span>
+
+    # <span class="nv">Add</span> <span class="nv">manuscript</span> <span class="nv">URLs</span>
+
+    <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>].<span class="nv">update</span><span class="ss">(</span><span class="nv">get_manuscript_urls</span><span class="ss">(</span><span class="nv">metadata</span>.<span class="nv">pop</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">html_url</span><span class="s2">&quot;</span>, <span class="nv">None</span><span class="ss">)))</span>
 
     # <span class="nv">Add</span> <span class="nv">thumbnail</span> <span class="nv">URL</span> <span class="k">if</span> <span class="nv">present</span>
 
@@ -2548,6 +2568,10 @@ manuscript variables available for jinja2 templating.</p>
     # <span class="nv">Update</span> <span class="nv">variables</span> <span class="nv">with</span> <span class="nv">user</span><span class="o">-</span><span class="nv">provided</span> <span class="nv">variables</span> <span class="nv">here</span>
 
     <span class="nv">variables</span> <span class="o">=</span> <span class="nv">read_variable_files</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">template_variables_path</span>, <span class="nv">variables</span><span class="ss">)</span>
+
+    # <span class="nv">Add</span> <span class="nv">header</span><span class="o">-</span><span class="nv">includes</span> <span class="nv">metadata</span> <span class="nv">with</span> <span class="o">&lt;</span><span class="nv">meta</span><span class="o">&gt;</span> <span class="nv">information</span> <span class="k">for</span> <span class="nv">the</span> <span class="nv">HTML</span> <span class="nv">output</span><span class="s1">&#39;</span><span class="s">s &lt;head&gt;</span>
+
+    <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">pandoc</span><span class="s2">&quot;</span>][<span class="s2">&quot;</span><span class="s">header-includes</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">get_header_includes</span><span class="ss">(</span><span class="nv">variables</span><span class="ss">)</span>
 
     <span class="k">return</span> <span class="nv">variables</span>
 </pre></div>
@@ -2614,6 +2638,8 @@ for pandoc.</p>
             <span class="nv">explicit_start</span><span class="o">=</span><span class="nv">True</span>,
 
             <span class="nv">explicit_end</span><span class="o">=</span><span class="nv">True</span>,
+
+            <span class="nv">width</span><span class="o">=</span><span class="nv">float</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">inf</span><span class="s2">&quot;</span><span class="ss">)</span>,
 
         <span class="ss">)</span>
 
@@ -2786,9 +2812,13 @@ arguments.</p>
 
         <span class="nv">undefined</span><span class="o">=</span><span class="nv">jinja2</span>.<span class="nv">make_logging_undefined</span><span class="ss">(</span><span class="nv">logging</span>.<span class="nv">getLogger</span><span class="ss">())</span>,
 
+        <span class="nv">autoescape</span><span class="o">=</span><span class="nv">False</span>,
+
         <span class="nv">comment_start_string</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">{##</span><span class="s2">&quot;</span>,
 
         <span class="nv">comment_end_string</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">##}</span><span class="s2">&quot;</span>,
+
+        <span class="nv">extensions</span><span class="o">=</span>[<span class="s2">&quot;</span><span class="s">jinja2.ext.do</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">jinja2.ext.loopcontrols</span><span class="s2">&quot;</span>],
 
     <span class="ss">)</span>
 
@@ -2819,7 +2849,7 @@ arguments.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../thumbnail/" title="Thumbnail" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../process_command/" title="Process Command" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -2828,7 +2858,7 @@ arguments.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Thumbnail
+                Process Command
               </span>
             </div>
           </a>

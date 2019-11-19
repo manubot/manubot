@@ -36,7 +36,7 @@
     
     
       
-        <title>Test Thumbnail - manubot</title>
+        <title>Test Metadata - manubot</title>
       
     
     
@@ -85,7 +85,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#module-manubotprocessteststest_thumbnail" tabindex="1" class="md-skip">
+      <a href="#module-manubotprocessteststest_metadata" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -111,7 +111,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Test Thumbnail
+                Test Metadata
               
             </span>
           
@@ -789,8 +789,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../process_command/" title="Process Command" class="md-nav__link">
-      Process Command
+    <a href="../../metadata/" title="Metadata" class="md-nav__link">
+      Metadata
     </a>
   </li>
 
@@ -801,8 +801,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../thumbnail/" title="Thumbnail" class="md-nav__link">
-      Thumbnail
+    <a href="../../process_command/" title="Process Command" class="md-nav__link">
+      Process Command
     </a>
   </li>
 
@@ -892,18 +892,6 @@
           
           
 
-
-  <li class="md-nav__item">
-    <a href="../test_process_command/" title="Test Process Command" class="md-nav__link">
-      Test Process Command
-    </a>
-  </li>
-
-        
-          
-          
-          
-
   
 
 
@@ -915,11 +903,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Test Thumbnail
+        Test Metadata
       </label>
     
-    <a href="./" title="Test Thumbnail" class="md-nav__link md-nav__link--active">
-      Test Thumbnail
+    <a href="./" title="Test Metadata" class="md-nav__link md-nav__link--active">
+      Test Metadata
     </a>
     
       
@@ -948,6 +936,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#test_get_header_includes_description_abstract" class="md-nav__link">
+    test_get_header_includes_description_abstract
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_get_manuscript_urls" class="md-nav__link">
+    test_get_manuscript_urls
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#test_get_thumbnail_url" class="md-nav__link">
     test_get_thumbnail_url
   </a>
@@ -967,6 +969,18 @@
   
 </nav>
     
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../test_process_command/" title="Test Process Command" class="md-nav__link">
+      Test Process Command
+    </a>
   </li>
 
         
@@ -1170,6 +1184,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#test_get_header_includes_description_abstract" class="md-nav__link">
+    test_get_header_includes_description_abstract
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_get_manuscript_urls" class="md-nav__link">
+    test_get_manuscript_urls
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#test_get_thumbnail_url" class="md-nav__link">
     test_get_thumbnail_url
   </a>
@@ -1197,15 +1225,71 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/manubot/manubot/edit/master/reference/manubot/process/tests/test_thumbnail.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/manubot/manubot/edit/master/reference/manubot/process/tests/test_metadata.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="module-manubotprocessteststest_thumbnail">Module manubot.process.tests.test_thumbnail</h1>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">pytest</span>
+                <h1 id="module-manubotprocessteststest_metadata">Module manubot.process.tests.test_metadata</h1>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">copy</span>
 
-<span class="kn">from</span> <span class="nn">..thumbnail</span> <span class="kn">import</span> <span class="n">get_thumbnail_url</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="kn">from</span> <span class="nn">..metadata</span> <span class="kn">import</span> <span class="n">get_header_includes</span><span class="p">,</span> <span class="n">get_thumbnail_url</span><span class="p">,</span> <span class="n">get_manuscript_urls</span>
 
 <span class="kn">from</span> <span class="nn">..ci</span> <span class="kn">import</span> <span class="n">get_continuous_integration_parameters</span>
+
+<span class="k">def</span> <span class="nf">test_get_header_includes_description_abstract</span><span class="p">():</span>
+
+    <span class="c1"># test that abstract and description set different fields if both supplied</span>
+
+    <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="s2">&quot;pandoc&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;abstract&quot;</span><span class="p">:</span> <span class="s2">&quot;value for abstract&quot;</span><span class="p">},</span>
+
+        <span class="s2">&quot;manubot&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;value for description&quot;</span><span class="p">},</span>
+
+    <span class="p">}</span>
+
+    <span class="n">header_includes</span> <span class="o">=</span> <span class="n">get_header_includes</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">variables</span><span class="p">))</span>
+
+    <span class="k">assert</span> <span class="p">(</span>
+
+        <span class="s1">&#39;&lt;meta name=&quot;citation_abstract&quot; content=&quot;value for abstract&quot; /&gt;&#39;</span>
+
+        <span class="ow">in</span> <span class="n">header_includes</span>
+
+    <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="p">(</span>
+
+        <span class="s1">&#39;&lt;meta name=&quot;description&quot; content=&quot;value for description&quot; /&gt;&#39;</span> <span class="ow">in</span> <span class="n">header_includes</span>
+
+    <span class="p">)</span>
+
+    <span class="c1"># test that abstract is used for description if description is not defined</span>
+
+    <span class="k">del</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;description&quot;</span><span class="p">]</span>
+
+    <span class="n">header_includes</span> <span class="o">=</span> <span class="n">get_header_includes</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">variables</span><span class="p">))</span>
+
+    <span class="k">assert</span> <span class="p">(</span>
+
+        <span class="s1">&#39;&lt;meta name=&quot;citation_abstract&quot; content=&quot;value for abstract&quot; /&gt;&#39;</span>
+
+        <span class="ow">in</span> <span class="n">header_includes</span>
+
+    <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="s1">&#39;&lt;meta name=&quot;description&quot; content=&quot;value for abstract&quot; /&gt;&#39;</span> <span class="ow">in</span> <span class="n">header_includes</span>
+
+    <span class="c1"># test that if neither abstract nor description is defined, neither are inserted</span>
+
+    <span class="k">del</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;abstract&quot;</span><span class="p">]</span>
+
+    <span class="n">header_includes</span> <span class="o">=</span> <span class="n">get_header_includes</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">variables</span><span class="p">))</span>
+
+    <span class="k">assert</span> <span class="s1">&#39;meta name=&quot;citation_abstract&quot;&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">header_includes</span>
+
+    <span class="k">assert</span> <span class="s1">&#39;meta name=&quot;description&quot;&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">header_includes</span>
 
 <span class="n">ci_params</span> <span class="o">=</span> <span class="n">get_continuous_integration_parameters</span><span class="p">()</span> <span class="ow">or</span> <span class="p">{}</span>
 
@@ -1296,6 +1380,86 @@
     <span class="n">thumbnail_url</span> <span class="o">=</span> <span class="n">get_thumbnail_url</span><span class="p">(</span><span class="n">thumbnail</span><span class="p">)</span>
 
     <span class="k">assert</span> <span class="n">expected</span> <span class="o">==</span> <span class="n">thumbnail_url</span>
+
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
+
+    <span class="p">(</span><span class="s2">&quot;html_url&quot;</span><span class="p">,</span> <span class="s2">&quot;expected&quot;</span><span class="p">),</span>
+
+    <span class="p">[</span>
+
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="p">{},</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;html_url-none-local&quot;</span><span class="p">,</span> <span class="n">marks</span><span class="o">=</span><span class="n">local_only</span><span class="p">),</span>
+
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+
+            <span class="s2">&quot;https://example.com/manuscript/&quot;</span><span class="p">,</span>
+
+            <span class="p">{</span>
+
+                <span class="s2">&quot;html_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.com/manuscript/&quot;</span><span class="p">,</span>
+
+                <span class="s2">&quot;pdf_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.com/manuscript/manuscript.pdf&quot;</span><span class="p">,</span>
+
+            <span class="p">},</span>
+
+            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;html_url-set-local&quot;</span><span class="p">,</span>
+
+            <span class="n">marks</span><span class="o">=</span><span class="n">local_only</span><span class="p">,</span>
+
+        <span class="p">),</span>
+
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+
+            <span class="bp">None</span><span class="p">,</span>
+
+            <span class="p">{</span>
+
+                <span class="s2">&quot;html_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://manubot.github.io/manubot/&quot;</span><span class="p">,</span>
+
+                <span class="s2">&quot;pdf_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://manubot.github.io/manubot/manuscript.pdf&quot;</span><span class="p">,</span>
+
+                <span class="s2">&quot;html_url_versioned&quot;</span><span class="p">:</span> <span class="n">f</span><span class="s2">&quot;https://manubot.github.io/manubot/v/{ci_params.get(&#39;commit&#39;)}/&quot;</span><span class="p">,</span>
+
+                <span class="s2">&quot;pdf_url_versioned&quot;</span><span class="p">:</span> <span class="n">f</span><span class="s2">&quot;https://manubot.github.io/manubot/v/{ci_params.get(&#39;commit&#39;)}/manuscript.pdf&quot;</span><span class="p">,</span>
+
+            <span class="p">},</span>
+
+            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;html_url-none-ci&quot;</span><span class="p">,</span>
+
+            <span class="n">marks</span><span class="o">=</span><span class="n">ci_only</span><span class="p">,</span>
+
+        <span class="p">),</span>
+
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+
+            <span class="s2">&quot;https://example.com/manuscript/&quot;</span><span class="p">,</span>
+
+            <span class="p">{</span>
+
+                <span class="s2">&quot;html_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.com/manuscript/&quot;</span><span class="p">,</span>
+
+                <span class="s2">&quot;pdf_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.com/manuscript/manuscript.pdf&quot;</span><span class="p">,</span>
+
+                <span class="s2">&quot;html_url_versioned&quot;</span><span class="p">:</span> <span class="n">f</span><span class="s2">&quot;https://example.com/manuscript/v/{ci_params.get(&#39;commit&#39;)}/&quot;</span><span class="p">,</span>
+
+                <span class="s2">&quot;pdf_url_versioned&quot;</span><span class="p">:</span> <span class="n">f</span><span class="s2">&quot;https://example.com/manuscript/v/{ci_params.get(&#39;commit&#39;)}/manuscript.pdf&quot;</span><span class="p">,</span>
+
+            <span class="p">},</span>
+
+            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;html_url-set-ci&quot;</span><span class="p">,</span>
+
+            <span class="n">marks</span><span class="o">=</span><span class="n">ci_only</span><span class="p">,</span>
+
+        <span class="p">),</span>
+
+    <span class="p">],</span>
+
+<span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_get_manuscript_urls</span><span class="p">(</span><span class="n">html_url</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+
+    <span class="n">urls</span> <span class="o">=</span> <span class="n">get_manuscript_urls</span><span class="p">(</span><span class="n">html_url</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">urls</span> <span class="o">==</span> <span class="n">expected</span>
 </pre></div>
 
 
@@ -1322,6 +1486,161 @@
 
 
 <h2 id="functions">Functions</h2>
+<h3 id="test_get_header_includes_description_abstract">test_get_header_includes_description_abstract</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_get_header_includes_description_abstract</span><span class="p">(</span>
+
+<span class="p">)</span>
+</pre></div>
+
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">test_get_header_includes_description_abstract</span><span class="ss">()</span>:
+
+    # <span class="nv">test</span> <span class="nv">that</span> <span class="nv">abstract</span> <span class="nv">and</span> <span class="nv">description</span> <span class="nv">set</span> <span class="nv">different</span> <span class="nv">fields</span> <span class="k">if</span> <span class="nv">both</span> <span class="nv">supplied</span>
+
+    <span class="nv">variables</span> <span class="o">=</span> {
+
+        <span class="s2">&quot;</span><span class="s">pandoc</span><span class="s2">&quot;</span>: {<span class="s2">&quot;</span><span class="s">abstract</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">value for abstract</span><span class="s2">&quot;</span>},
+
+        <span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>: {<span class="s2">&quot;</span><span class="s">description</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">value for description</span><span class="s2">&quot;</span>},
+
+    }
+
+    <span class="nv">header_includes</span> <span class="o">=</span> <span class="nv">get_header_includes</span><span class="ss">(</span><span class="nv">copy</span>.<span class="nv">deepcopy</span><span class="ss">(</span><span class="nv">variables</span><span class="ss">))</span>
+
+    <span class="nv">assert</span> <span class="ss">(</span>
+
+        <span class="s1">&#39;</span><span class="s">&lt;meta name=&quot;citation_abstract&quot; content=&quot;value for abstract&quot; /&gt;</span><span class="s1">&#39;</span>
+
+        <span class="nv">in</span> <span class="nv">header_includes</span>
+
+    <span class="ss">)</span>
+
+    <span class="nv">assert</span> <span class="ss">(</span>
+
+        <span class="s1">&#39;</span><span class="s">&lt;meta name=&quot;description&quot; content=&quot;value for description&quot; /&gt;</span><span class="s1">&#39;</span> <span class="nv">in</span> <span class="nv">header_includes</span>
+
+    <span class="ss">)</span>
+
+    # <span class="nv">test</span> <span class="nv">that</span> <span class="nv">abstract</span> <span class="nv">is</span> <span class="nv">used</span> <span class="k">for</span> <span class="nv">description</span> <span class="k">if</span> <span class="nv">description</span> <span class="nv">is</span> <span class="nv">not</span> <span class="nv">defined</span>
+
+    <span class="nv">del</span> <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>][<span class="s2">&quot;</span><span class="s">description</span><span class="s2">&quot;</span>]
+
+    <span class="nv">header_includes</span> <span class="o">=</span> <span class="nv">get_header_includes</span><span class="ss">(</span><span class="nv">copy</span>.<span class="nv">deepcopy</span><span class="ss">(</span><span class="nv">variables</span><span class="ss">))</span>
+
+    <span class="nv">assert</span> <span class="ss">(</span>
+
+        <span class="s1">&#39;</span><span class="s">&lt;meta name=&quot;citation_abstract&quot; content=&quot;value for abstract&quot; /&gt;</span><span class="s1">&#39;</span>
+
+        <span class="nv">in</span> <span class="nv">header_includes</span>
+
+    <span class="ss">)</span>
+
+    <span class="nv">assert</span> <span class="s1">&#39;</span><span class="s">&lt;meta name=&quot;description&quot; content=&quot;value for abstract&quot; /&gt;</span><span class="s1">&#39;</span> <span class="nv">in</span> <span class="nv">header_includes</span>
+
+    # <span class="nv">test</span> <span class="nv">that</span> <span class="k">if</span> <span class="nv">neither</span> <span class="nv">abstract</span> <span class="nv">nor</span> <span class="nv">description</span> <span class="nv">is</span> <span class="nv">defined</span>, <span class="nv">neither</span> <span class="nv">are</span> <span class="nv">inserted</span>
+
+    <span class="nv">del</span> <span class="nv">variables</span>[<span class="s2">&quot;</span><span class="s">pandoc</span><span class="s2">&quot;</span>][<span class="s2">&quot;</span><span class="s">abstract</span><span class="s2">&quot;</span>]
+
+    <span class="nv">header_includes</span> <span class="o">=</span> <span class="nv">get_header_includes</span><span class="ss">(</span><span class="nv">copy</span>.<span class="nv">deepcopy</span><span class="ss">(</span><span class="nv">variables</span><span class="ss">))</span>
+
+    <span class="nv">assert</span> <span class="s1">&#39;</span><span class="s">meta name=&quot;citation_abstract&quot;</span><span class="s1">&#39;</span> <span class="nv">not</span> <span class="nv">in</span> <span class="nv">header_includes</span>
+
+    <span class="nv">assert</span> <span class="s1">&#39;</span><span class="s">meta name=&quot;description&quot;</span><span class="s1">&#39;</span> <span class="nv">not</span> <span class="nv">in</span> <span class="nv">header_includes</span>
+</pre></div>
+
+
+</details>
+<h3 id="test_get_manuscript_urls">test_get_manuscript_urls</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_get_manuscript_urls</span><span class="p">(</span>
+    <span class="n">html_url</span><span class="p">,</span>
+    <span class="n">expected</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">(</span><span class="ss">&quot;html_url&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;expected&quot;</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">[</span><span class="n"></span>
+
+<span class="n">        pytest.param(None, {}, id=&quot;html_url-none-local&quot;, marks=local_only),</span>
+
+<span class="n">        pytest.param(</span>
+
+<span class="n">            &quot;https://example.com/manuscript/&quot;,</span>
+
+<span class="n">            {</span>
+
+<span class="n">                &quot;html_url&quot;: &quot;https://example.com/manuscript/&quot;,</span>
+
+<span class="n">                &quot;pdf_url&quot;: &quot;https://example.com/manuscript/manuscript.pdf&quot;,</span>
+
+<span class="n">            },</span>
+
+<span class="n">            id=&quot;html_url-set-local&quot;,</span>
+
+<span class="n">            marks=local_only,</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        pytest.param(</span>
+
+<span class="n">            None,</span>
+
+<span class="n">            {</span>
+
+<span class="n">                &quot;html_url&quot;: &quot;https://manubot.github.io/manubot/&quot;,</span>
+
+<span class="n">                &quot;pdf_url&quot;: &quot;https://manubot.github.io/manubot/manuscript.pdf&quot;,</span>
+
+<span class="n">                &quot;html_url_versioned&quot;: f&quot;https://manubot.github.io/manubot/v/{ci_params.get(&#39;commit&#39;)}/&quot;,</span>
+
+<span class="n">                &quot;pdf_url_versioned&quot;: f&quot;https://manubot.github.io/manubot/v/{ci_params.get(&#39;commit&#39;)}/manuscript.pdf&quot;,</span>
+
+<span class="n">            },</span>
+
+<span class="n">            id=&quot;html_url-none-ci&quot;,</span>
+
+<span class="n">            marks=ci_only,</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        pytest.param(</span>
+
+<span class="n">            &quot;https://example.com/manuscript/&quot;,</span>
+
+<span class="n">            {</span>
+
+<span class="n">                &quot;html_url&quot;: &quot;https://example.com/manuscript/&quot;,</span>
+
+<span class="n">                &quot;pdf_url&quot;: &quot;https://example.com/manuscript/manuscript.pdf&quot;,</span>
+
+<span class="n">                &quot;html_url_versioned&quot;: f&quot;https://example.com/manuscript/v/{ci_params.get(&#39;commit&#39;)}/&quot;,</span>
+
+<span class="n">                &quot;pdf_url_versioned&quot;: f&quot;https://example.com/manuscript/v/{ci_params.get(&#39;commit&#39;)}/manuscript.pdf&quot;,</span>
+
+<span class="n">            },</span>
+
+<span class="n">            id=&quot;html_url-set-ci&quot;,</span>
+
+<span class="n">            marks=ci_only,</span>
+
+<span class="n">        ),</span>
+
+<span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
+
+<span class="n">def</span><span class="w"> </span><span class="n">test_get_manuscript_urls</span><span class="p">(</span><span class="n">html_url</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">urls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_manuscript_urls</span><span class="p">(</span><span class="n">html_url</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">urls</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span><span class="w"></span>
+</pre></div>
+
+
+</details>
 <h3 id="test_get_thumbnail_url">test_get_thumbnail_url</h3>
 <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_get_thumbnail_url</span><span class="p">(</span>
     <span class="n">thumbnail</span><span class="p">,</span>
@@ -1415,7 +1734,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../test_process_command/" title="Test Process Command" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../test_manuscript/" title="Test Manuscript" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -1424,19 +1743,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Test Process Command
+                Test Manuscript
               </span>
             </div>
           </a>
         
         
-          <a href="../test_util/" title="Test Util" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../test_process_command/" title="Test Process Command" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Test Util
+                Test Process Command
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

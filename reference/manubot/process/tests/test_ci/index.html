@@ -789,8 +789,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../process_command/" title="Process Command" class="md-nav__link">
-      Process Command
+    <a href="../../metadata/" title="Metadata" class="md-nav__link">
+      Metadata
     </a>
   </li>
 
@@ -801,8 +801,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../thumbnail/" title="Thumbnail" class="md-nav__link">
-      Thumbnail
+    <a href="../../process_command/" title="Process Command" class="md-nav__link">
+      Process Command
     </a>
   </li>
 
@@ -912,13 +912,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#test_get_continuous_integration_parameters_no_ci" class="md-nav__link">
-    test_get_continuous_integration_parameters_no_ci
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#test_get_continuous_integration_parameters_travis" class="md-nav__link">
     test_get_continuous_integration_parameters_travis
   </a>
@@ -959,8 +952,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../test_process_command/" title="Test Process Command" class="md-nav__link">
-      Test Process Command
+    <a href="../test_metadata/" title="Test Metadata" class="md-nav__link">
+      Test Metadata
     </a>
   </li>
 
@@ -971,8 +964,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../test_thumbnail/" title="Test Thumbnail" class="md-nav__link">
-      Test Thumbnail
+    <a href="../test_process_command/" title="Test Process Command" class="md-nav__link">
+      Test Process Command
     </a>
   </li>
 
@@ -1177,13 +1170,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#test_get_continuous_integration_parameters_no_ci" class="md-nav__link">
-    test_get_continuous_integration_parameters_no_ci
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#test_get_continuous_integration_parameters_travis" class="md-nav__link">
     test_get_continuous_integration_parameters_travis
   </a>
@@ -1221,7 +1207,7 @@
 
 <span class="kn">import</span> <span class="nn">pytest</span>
 
-<span class="kn">from</span> <span class="nn">..ci</span> <span class="kn">import</span> <span class="n">add_manuscript_urls_to_ci_params</span><span class="p">,</span> <span class="n">get_continuous_integration_parameters</span>
+<span class="kn">from</span> <span class="nn">..ci</span> <span class="kn">import</span> <span class="n">get_continuous_integration_parameters</span>
 
 <span class="nd">@pytest.mark.skipif</span><span class="p">(</span>
 
@@ -1258,20 +1244,6 @@
     <span class="k">assert</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;build_url&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;https://travis-ci.com/manubot/manubot/builds/&quot;</span><span class="p">)</span>
 
     <span class="k">assert</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;job_url&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;https://travis-ci.com/manubot/manubot/jobs/&quot;</span><span class="p">)</span>
-
-    <span class="c1"># test add_manuscript_urls_to_ci_params</span>
-
-    <span class="n">info_updated</span> <span class="o">=</span> <span class="n">add_manuscript_urls_to_ci_params</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-
-    <span class="k">assert</span> <span class="n">info</span> <span class="ow">is</span> <span class="n">info_updated</span>
-
-    <span class="k">assert</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span>
-
-        <span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;https://manubot\.github\.io/manubot/v/[0-9a-f]{40}/&quot;</span><span class="p">,</span>
-
-        <span class="n">string</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;manuscript_url&quot;</span><span class="p">],</span>
-
-    <span class="p">)</span>
 
 <span class="nd">@pytest.mark.skipif</span><span class="p">(</span>
 
@@ -1319,37 +1291,13 @@
 
     <span class="p">)</span>
 
-    <span class="c1"># test add_manuscript_urls_to_ci_params</span>
-
-    <span class="n">info_updated</span> <span class="o">=</span> <span class="n">add_manuscript_urls_to_ci_params</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-
-    <span class="k">assert</span> <span class="n">info</span> <span class="ow">is</span> <span class="n">info_updated</span>
-
     <span class="k">assert</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span>
 
         <span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;https://ci\.appveyor\.com/project/manubot/manubot/builds/[0-9]+/artifacts&quot;</span><span class="p">,</span>
 
-        <span class="n">string</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;manuscript_url&quot;</span><span class="p">],</span>
+        <span class="n">string</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;artifact_url&quot;</span><span class="p">],</span>
 
     <span class="p">)</span>
-
-<span class="nd">@pytest.mark.skipif</span><span class="p">(</span>
-
-    <span class="s2">&quot;CI&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;tests function when run outside of a CI build&quot;</span>
-
-<span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">test_get_continuous_integration_parameters_no_ci</span><span class="p">():</span>
-
-    <span class="n">info</span> <span class="o">=</span> <span class="n">get_continuous_integration_parameters</span><span class="p">()</span>
-
-    <span class="k">assert</span> <span class="n">info</span> <span class="ow">is</span> <span class="bp">None</span>
-
-    <span class="c1"># test add_manuscript_urls_to_ci_params</span>
-
-    <span class="n">info_updated</span> <span class="o">=</span> <span class="n">add_manuscript_urls_to_ci_params</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-
-    <span class="k">assert</span> <span class="n">info_updated</span> <span class="ow">is</span> <span class="bp">None</span>
 </pre></div>
 
 
@@ -1408,47 +1356,13 @@
 
     <span class="ss">)</span>
 
-    # <span class="nv">test</span> <span class="nv">add_manuscript_urls_to_ci_params</span>
-
-    <span class="nv">info_updated</span> <span class="o">=</span> <span class="nv">add_manuscript_urls_to_ci_params</span><span class="ss">(</span><span class="nv">info</span><span class="ss">)</span>
-
-    <span class="nv">assert</span> <span class="nv">info</span> <span class="nv">is</span> <span class="nv">info_updated</span>
-
     <span class="nv">assert</span> <span class="nv">re</span>.<span class="nv">fullmatch</span><span class="ss">(</span>
 
         <span class="nv">pattern</span><span class="o">=</span><span class="nv">r</span><span class="s2">&quot;</span><span class="s">https://ci\.appveyor\.com/project/manubot/manubot/builds/[0-9]+/artifacts</span><span class="s2">&quot;</span>,
 
-        <span class="nv">string</span><span class="o">=</span><span class="nv">info</span>[<span class="s2">&quot;</span><span class="s">manuscript_url</span><span class="s2">&quot;</span>],
+        <span class="nv">string</span><span class="o">=</span><span class="nv">info</span>[<span class="s2">&quot;</span><span class="s">artifact_url</span><span class="s2">&quot;</span>],
 
     <span class="ss">)</span>
-</pre></div>
-
-
-</details>
-<h3 id="test_get_continuous_integration_parameters_no_ci">test_get_continuous_integration_parameters_no_ci</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_get_continuous_integration_parameters_no_ci</span><span class="p">(</span>
-
-<span class="p">)</span>
-</pre></div>
-
-
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">skipif</span><span class="p">(</span><span class="w"></span>
-
-<span class="w">    </span><span class="ss">&quot;CI&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">,</span><span class="w"> </span><span class="n">reason</span><span class="o">=</span><span class="ss">&quot;tests function when run outside of a CI build&quot;</span><span class="w"></span>
-
-<span class="p">)</span><span class="w"></span>
-
-<span class="n">def</span><span class="w"> </span><span class="n">test_get_continuous_integration_parameters_no_ci</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_continuous_integration_parameters</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
-
-<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="n">add_manuscript_urls_to_ci_params</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">info_updated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_manuscript_urls_to_ci_params</span><span class="p">(</span><span class="n">info</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">info_updated</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 </pre></div>
 
 
@@ -1495,20 +1409,6 @@
     <span class="nv">assert</span> <span class="nv">info</span>[<span class="s2">&quot;</span><span class="s">build_url</span><span class="s2">&quot;</span>].<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">https://travis-ci.com/manubot/manubot/builds/</span><span class="s2">&quot;</span><span class="ss">)</span>
 
     <span class="nv">assert</span> <span class="nv">info</span>[<span class="s2">&quot;</span><span class="s">job_url</span><span class="s2">&quot;</span>].<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">https://travis-ci.com/manubot/manubot/jobs/</span><span class="s2">&quot;</span><span class="ss">)</span>
-
-    # <span class="nv">test</span> <span class="nv">add_manuscript_urls_to_ci_params</span>
-
-    <span class="nv">info_updated</span> <span class="o">=</span> <span class="nv">add_manuscript_urls_to_ci_params</span><span class="ss">(</span><span class="nv">info</span><span class="ss">)</span>
-
-    <span class="nv">assert</span> <span class="nv">info</span> <span class="nv">is</span> <span class="nv">info_updated</span>
-
-    <span class="nv">assert</span> <span class="nv">re</span>.<span class="nv">fullmatch</span><span class="ss">(</span>
-
-        <span class="nv">pattern</span><span class="o">=</span><span class="nv">r</span><span class="s2">&quot;</span><span class="s">https://manubot\.github\.io/manubot/v/[0-9a-f]{40}/</span><span class="s2">&quot;</span>,
-
-        <span class="nv">string</span><span class="o">=</span><span class="nv">info</span>[<span class="s2">&quot;</span><span class="s">manuscript_url</span><span class="s2">&quot;</span>],
-
-    <span class="ss">)</span>
 </pre></div>
 
 

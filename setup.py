@@ -81,5 +81,11 @@ setuptools.setup(
     # Create command line script
     entry_points={"console_scripts": ["manubot = manubot.command:main"]},
     # Include package data files
-    package_data={"manubot": ["cite/*.lua", "webpage/redirect-template.html"]},
+    package_data={
+        "manubot": [
+            "cite/*.lua",
+            "process/header-includes-template.md",
+            "webpage/redirect-template.html",
+        ]
+    },
 )
