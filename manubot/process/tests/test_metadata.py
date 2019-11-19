@@ -1,7 +1,7 @@
 import pytest
 
 
-from ..thumbnail import get_thumbnail_url
+from ..metadata import get_thumbnail_url
 from ..ci import get_continuous_integration_parameters
 
 ci_params = get_continuous_integration_parameters() or {}
