@@ -14,11 +14,12 @@ import yaml
 
 from manubot.util import read_serialized_data, read_serialized_dict
 from manubot.process.bibliography import load_manual_references
-from manubot.process.ci import (
-    add_manuscript_urls_to_ci_params,
-    get_continuous_integration_parameters,
+from manubot.process.ci import get_continuous_integration_parameters
+from manubot.process.metadata import (
+    get_header_includes,
+    get_thumbnail_url,
+    get_manuscript_urls,
 )
-from manubot.process.thumbnail import get_thumbnail_url
 from manubot.process.manuscript import (
     datetime_now,
     get_citekeys,
@@ -219,7 +220,10 @@ def load_variables(args) -> dict:
     # Set repository version metadata for CI builds
     ci_params = get_continuous_integration_parameters()
     if ci_params:
-        variables["manubot"]["ci_source"] = add_manuscript_urls_to_ci_params(ci_params)
+        variables["manubot"]["ci_source"] = ci_params
+
+    # Add manuscript URLs
+    variables["manubot"].update(get_manuscript_urls(metadata.pop("html_url", None)))
 
     # Add thumbnail URL if present
     thumbnail_url = get_thumbnail_url(metadata.pop("thumbnail", None))
@@ -242,6 +246,9 @@ def load_variables(args) -> dict:
 
     # Update variables with user-provided variables here
     variables = read_variable_files(args.template_variables_path, variables)
+
+    # Add header-includes metadata with <meta> information for the HTML output's <head>
+    variables["pandoc"]["header-includes"] = get_header_includes(variables)
 
     return variables
 
@@ -356,8 +363,10 @@ def template_with_jinja2(text, variables):
     jinja_environment = jinja2.Environment(
         loader=jinja2.BaseLoader(),
         undefined=jinja2.make_logging_undefined(logging.getLogger()),
+        autoescape=False,
         comment_start_string="{##",
         comment_end_string="##}",
+        extensions=["jinja2.ext.do", "jinja2.ext.loopcontrols"],
     )
     template = jinja_environment.from_string(text)
     return template.render(**variables)
@@ -394,6 +403,7 @@ def prepare_manuscript(args):
             default_flow_style=False,
             explicit_start=True,
             explicit_end=True,
+            width=float("inf"),
         )
         write_file.write("\n")
         write_file.write(text)

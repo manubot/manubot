@@ -2,7 +2,7 @@ import pathlib
 
 import pytest
 
-from manubot.process.util import add_author_affiliations, read_variable_files
+from ..util import add_author_affiliations, read_variable_files
 
 directory = pathlib.Path(__file__).parent.resolve()
 
