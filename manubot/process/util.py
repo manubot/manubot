@@ -91,9 +91,7 @@ def read_variable_files(paths: List[str], variables: Optional[dict] = None) -> d
     if variables is None:
         variables = {}
     for path in paths:
-        logging.info(
-            f"Read the following user-provided templating variables for {path!r}"
-        )
+        logging.info(f"Reading user-provided templating variables at {path!r}")
         # Match only namespaces that are valid jinja2 variable names
         # http://jinja.pocoo.org/docs/2.10/api/#identifier-naming
         match = re.match(r"([a-zA-Z_][a-zA-Z0-9_]*)=(.+)", path)
@@ -118,7 +116,7 @@ def read_variable_files(paths: List[str], variables: Optional[dict] = None) -> d
                 "values for the following keys:\n" + "\n".join(conflicts)
             )
         variables.update(obj)
-    logging.info(
+    logging.debug(
         f"Reading user-provided templating variables complete:\n"
         f"{json.dumps(variables, indent=2, ensure_ascii=False)}"
     )
