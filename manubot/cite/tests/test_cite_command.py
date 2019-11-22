@@ -80,7 +80,7 @@ class Base_cite_command_render_stdout:
     version is different from pandoc version used by Travis and Appveyor):
 
         pytest -v -m "not pandoc_version_sensitive"
-        
+
     See .travis.yml and .appveyor.yml to find out current pandoc version used 
     for testing.
     """
@@ -89,15 +89,12 @@ class Base_cite_command_render_stdout:
 
     @classmethod
     def expected_output(cls, format, extension):
-        filename = f"references-{format}-{cls.pandoc_stamp}.{extension}"
         return (
             pathlib.Path(__file__)
-            .parent.joinpath("cite-command-rendered", filename)
+            .parent.joinpath("cite-command-rendered")
+            .joinpath(f"references-{format}-{cls.pandoc_stamp}.{extension}")
             .read_text()
         )
-        # Note: We wanted to introduce encoding='utf-8-sig' above
-        # for compatability, but that makes tests fail on Travis for
-        # Windows default encoding.
 
     @staticmethod
     def render(format_args):
@@ -141,7 +138,7 @@ class Test_cite_command_render_stdout_above_pandoc_v2(Base_cite_command_render_s
 @pytest.mark.pandoc_version_sensitive
 @pytest.mark.skipif(
     pandoc_version < (2, 5),
-    reason=("Testing markdown, html or jats formats " "assumes pandoc >= 2.5"),
+    reason=("Testing markdown, html or jats formats assumes pandoc >= 2.5"),
 )
 class Test_cite_command_render_stdout_above_pandoc_v2_5(
     Base_cite_command_render_stdout
