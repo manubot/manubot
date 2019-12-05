@@ -200,7 +200,7 @@ def get_rootstock_commit():
         )
     except subprocess.CalledProcessError as error:
         logging.warning(
-            f"get_rootstock_version: {shlex_join(error.cmd)!r} returned exit code {error.returncode} "
+            f"get_rootstock_commit: {shlex_join(error.cmd)!r} returned exit code {error.returncode} "
             f"with the following stdout:\n{error.stdout}\n"
             f"And the following stderr:\n{error.stderr}"
         )
