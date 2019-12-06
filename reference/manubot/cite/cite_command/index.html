@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
     
     
       
@@ -1494,95 +1494,95 @@
 
 
 <p>path is the path to write to.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">call_pandoc</span><span class="ss">(</span><span class="nv">metadata</span>, <span class="nv">path</span>, <span class="nv">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">plain</span><span class="s2">&quot;</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">call_pandoc</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="ss">&quot;plain&quot;</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">path</span> <span class="nv">is</span> <span class="nv">the</span> <span class="nv">path</span> <span class="nv">to</span> <span class="nv">write</span> <span class="nv">to</span>.
+<span class="ss">    path is the path to write to.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">_exit_without_pandoc</span><span class="ss">()</span>
+    <span class="n">_exit_without_pandoc</span><span class="p">()</span>
 
-    <span class="nv">info</span> <span class="o">=</span> <span class="nv">get_pandoc_info</span><span class="ss">()</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="n">get_pandoc_info</span><span class="p">()</span>
 
-    <span class="nv">_check_pandoc_version</span><span class="ss">(</span><span class="nv">info</span>, <span class="nv">metadata</span>, <span class="nv">format</span><span class="ss">)</span>
+    <span class="n">_check_pandoc_version</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">format</span><span class="p">)</span>
 
-    <span class="nv">metadata_block</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">---</span><span class="se">\n</span><span class="s">{yaml}</span><span class="se">\n</span><span class="s">...</span><span class="se">\n</span><span class="s2">&quot;</span>.<span class="nv">format</span><span class="ss">(</span>
+    <span class="n">metadata_block</span> <span class="o">=</span> <span class="ss">&quot;---\n{yaml}\n...\n&quot;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span>
 
-        <span class="nv">yaml</span><span class="o">=</span><span class="nv">json</span>.<span class="nv">dumps</span><span class="ss">(</span><span class="nv">metadata</span>, <span class="nv">ensure_ascii</span><span class="o">=</span><span class="nv">False</span>, <span class="nv">indent</span><span class="o">=</span><span class="mi">2</span><span class="ss">)</span>
+        <span class="n">yaml</span><span class="o">=</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-    <span class="ss">)</span>
+    <span class="p">)</span>
 
-    <span class="nv">args</span> <span class="o">=</span> [
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
 
-        <span class="s2">&quot;</span><span class="s">pandoc</span><span class="s2">&quot;</span>,
+        <span class="ss">&quot;pandoc&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;</span><span class="s">--filter</span><span class="s2">&quot;</span>,
+        <span class="ss">&quot;--filter&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;</span><span class="s">pandoc-citeproc</span><span class="s2">&quot;</span>,
+        <span class="ss">&quot;pandoc-citeproc&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;</span><span class="s">--output</span><span class="s2">&quot;</span>,
+        <span class="ss">&quot;--output&quot;</span><span class="p">,</span>
 
-        <span class="nv">str</span><span class="ss">(</span><span class="nv">path</span><span class="ss">)</span> <span class="k">if</span> <span class="nv">path</span> <span class="k">else</span> <span class="s2">&quot;</span><span class="s">-</span><span class="s2">&quot;</span>,
+        <span class="n">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">if</span> <span class="n">path</span> <span class="k">else</span> <span class="ss">&quot;-&quot;</span><span class="p">,</span>
 
-    ]
+    <span class="p">]</span>
 
-    <span class="k">if</span> <span class="nv">format</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">markdown</span><span class="s2">&quot;</span>:
+    <span class="k">if</span> <span class="n">format</span> <span class="o">==</span> <span class="ss">&quot;markdown&quot;</span><span class="p">:</span>
 
-        <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;</span><span class="s">--to</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">markdown_strict</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">--wrap</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">none</span><span class="s2">&quot;</span>]<span class="ss">)</span>
+        <span class="n">args</span><span class="p">.</span><span class="n">extend</span><span class="p">([</span><span class="ss">&quot;--to&quot;</span><span class="p">,</span> <span class="ss">&quot;markdown_strict&quot;</span><span class="p">,</span> <span class="ss">&quot;--wrap&quot;</span><span class="p">,</span> <span class="ss">&quot;none&quot;</span><span class="p">])</span>
 
-    <span class="nv">elif</span> <span class="nv">format</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">jats</span><span class="s2">&quot;</span>:
+    <span class="n">elif</span> <span class="n">format</span> <span class="o">==</span> <span class="ss">&quot;jats&quot;</span><span class="p">:</span>
 
-        <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;</span><span class="s">--to</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">jats</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">--standalone</span><span class="s2">&quot;</span>]<span class="ss">)</span>
+        <span class="n">args</span><span class="p">.</span><span class="n">extend</span><span class="p">([</span><span class="ss">&quot;--to&quot;</span><span class="p">,</span> <span class="ss">&quot;jats&quot;</span><span class="p">,</span> <span class="ss">&quot;--standalone&quot;</span><span class="p">])</span>
 
-    <span class="nv">elif</span> <span class="nv">format</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">docx</span><span class="s2">&quot;</span>:
+    <span class="n">elif</span> <span class="n">format</span> <span class="o">==</span> <span class="ss">&quot;docx&quot;</span><span class="p">:</span>
 
-        <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;</span><span class="s">--to</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">docx</span><span class="s2">&quot;</span>]<span class="ss">)</span>
+        <span class="n">args</span><span class="p">.</span><span class="n">extend</span><span class="p">([</span><span class="ss">&quot;--to&quot;</span><span class="p">,</span> <span class="ss">&quot;docx&quot;</span><span class="p">])</span>
 
-    <span class="nv">elif</span> <span class="nv">format</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">html</span><span class="s2">&quot;</span>:
+    <span class="n">elif</span> <span class="n">format</span> <span class="o">==</span> <span class="ss">&quot;html&quot;</span><span class="p">:</span>
 
-        <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;</span><span class="s">--to</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">html</span><span class="s2">&quot;</span>]<span class="ss">)</span>
+        <span class="n">args</span><span class="p">.</span><span class="n">extend</span><span class="p">([</span><span class="ss">&quot;--to&quot;</span><span class="p">,</span> <span class="ss">&quot;html&quot;</span><span class="p">])</span>
 
-    <span class="nv">elif</span> <span class="nv">format</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">plain</span><span class="s2">&quot;</span>:
+    <span class="n">elif</span> <span class="n">format</span> <span class="o">==</span> <span class="ss">&quot;plain&quot;</span><span class="p">:</span>
 
-        <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;</span><span class="s">--to</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">plain</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">--wrap</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">none</span><span class="s2">&quot;</span>]<span class="ss">)</span>
+        <span class="n">args</span><span class="p">.</span><span class="n">extend</span><span class="p">([</span><span class="ss">&quot;--to&quot;</span><span class="p">,</span> <span class="ss">&quot;plain&quot;</span><span class="p">,</span> <span class="ss">&quot;--wrap&quot;</span><span class="p">,</span> <span class="ss">&quot;none&quot;</span><span class="p">])</span>
 
-        <span class="k">if</span> <span class="nv">info</span>[<span class="s2">&quot;</span><span class="s">pandoc version</span><span class="s2">&quot;</span>] <span class="o">&gt;=</span> <span class="ss">(</span><span class="mi">2</span>,<span class="ss">)</span>:
+        <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="ss">&quot;pandoc version&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,):</span>
 
-            # <span class="k">Do</span> <span class="nv">not</span> <span class="nv">use</span> <span class="nv">ALL_CAPS</span> <span class="k">for</span> <span class="nv">bold</span> <span class="o">&amp;</span> <span class="nv">underscores</span> <span class="k">for</span> <span class="nv">italics</span>
+            <span class="o">#</span> <span class="k">Do</span> <span class="k">not</span> <span class="n">use</span> <span class="n">ALL_CAPS</span> <span class="k">for</span> <span class="n">bold</span> <span class="o">&amp;</span> <span class="n">underscores</span> <span class="k">for</span> <span class="n">italics</span>
 
-            # <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">jgm</span><span class="o">/</span><span class="nv">pandoc</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">4834</span>#<span class="nv">issuecomment</span><span class="o">-</span><span class="mi">412972008</span>
+            <span class="o">#</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">jgm</span><span class="o">/</span><span class="n">pandoc</span><span class="o">/</span><span class="n">issues</span><span class="o">/</span><span class="mi">4834</span><span class="o">#</span><span class="n">issuecomment</span><span class="o">-</span><span class="mi">412972008</span>
 
-            <span class="nv">filter_path</span> <span class="o">=</span> <span class="ss">(</span>
+            <span class="n">filter_path</span> <span class="o">=</span> <span class="p">(</span>
 
-                <span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="nv">__file__</span><span class="ss">)</span>
+                <span class="n">pathlib</span><span class="p">.</span><span class="n">Path</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
 
-                .<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">..</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">plain-pandoc-filter.lua</span><span class="s2">&quot;</span><span class="ss">)</span>
+                <span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;..&quot;</span><span class="p">,</span> <span class="ss">&quot;plain-pandoc-filter.lua&quot;</span><span class="p">)</span>
 
-                .<span class="nv">resolve</span><span class="ss">()</span>
+                <span class="p">.</span><span class="n">resolve</span><span class="p">()</span>
 
-            <span class="ss">)</span>
+            <span class="p">)</span>
 
-            <span class="nv">assert</span> <span class="nv">filter_path</span>.<span class="nv">exists</span><span class="ss">()</span>
+            <span class="n">assert</span> <span class="n">filter_path</span><span class="p">.</span><span class="k">exists</span><span class="p">()</span>
 
-            <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;</span><span class="s">--lua-filter</span><span class="s2">&quot;</span>, <span class="nv">str</span><span class="ss">(</span><span class="nv">filter_path</span><span class="ss">)</span>]<span class="ss">)</span>
+            <span class="n">args</span><span class="p">.</span><span class="n">extend</span><span class="p">([</span><span class="ss">&quot;--lua-filter&quot;</span><span class="p">,</span> <span class="n">str</span><span class="p">(</span><span class="n">filter_path</span><span class="p">)])</span>
 
-    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">call_pandoc subprocess args:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nv">shlex_join</span><span class="ss">(</span><span class="nv">args</span><span class="ss">))</span>
+    <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="ss">&quot;call_pandoc subprocess args:\n&quot;</span> <span class="o">+</span> <span class="n">shlex_join</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
 
-    <span class="nv">process</span> <span class="o">=</span> <span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span>
 
-        <span class="nv">args</span><span class="o">=</span><span class="nv">args</span>,
+        <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
 
-        <span class="nv">input</span><span class="o">=</span><span class="nv">metadata_block</span>.<span class="nv">encode</span><span class="ss">()</span>,
+        <span class="k">input</span><span class="o">=</span><span class="n">metadata_block</span><span class="p">.</span><span class="n">encode</span><span class="p">(),</span>
 
-        <span class="nv">stdout</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span> <span class="k">if</span> <span class="nv">path</span> <span class="k">else</span> <span class="nv">sys</span>.<span class="nv">stdout</span>,
+        <span class="k">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span> <span class="k">if</span> <span class="n">path</span> <span class="k">else</span> <span class="n">sys</span><span class="p">.</span><span class="k">stdout</span><span class="p">,</span>
 
-        <span class="nv">stderr</span><span class="o">=</span><span class="nv">sys</span>.<span class="nv">stderr</span>,
+        <span class="n">stderr</span><span class="o">=</span><span class="n">sys</span><span class="p">.</span><span class="n">stderr</span><span class="p">,</span>
 
-    <span class="ss">)</span>
+    <span class="p">)</span>
 
-    <span class="nv">process</span>.<span class="nv">check_returncode</span><span class="ss">()</span>
+    <span class="n">process</span><span class="p">.</span><span class="n">check_returncode</span><span class="p">()</span>
 </pre></div>
 
 
@@ -1598,81 +1598,81 @@
 <p>Does not allow user to directly specify Pandoc's --to argument, due to
 inconsistent citaiton rendering by output format. See
 https://github.com/jgm/pandoc/issues/4834</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">cli_cite</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">cli_cite</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Main</span> <span class="nv">function</span> <span class="k">for</span> <span class="nv">the</span> <span class="nv">manubot</span> <span class="nv">cite</span> <span class="nv">command</span><span class="o">-</span><span class="nv">line</span> <span class="nv">interface</span>.
+<span class="ss">    Main function for the manubot cite command-line interface.</span>
 
-    <span class="nv">Does</span> <span class="nv">not</span> <span class="nv">allow</span> <span class="nv">user</span> <span class="nv">to</span> <span class="nv">directly</span> <span class="nv">specify</span> <span class="nv">Pandoc</span><span class="s1">&#39;</span><span class="s">s --to argument, due to</span>
+<span class="ss">    Does not allow user to directly specify Pandoc&#39;s --to argument, due to</span>
 
-    <span class="nv">inconsistent</span> <span class="nv">citaiton</span> <span class="nv">rendering</span> <span class="nv">by</span> <span class="nv">output</span> <span class="nv">format</span>. <span class="nv">See</span>
+<span class="ss">    inconsistent citaiton rendering by output format. See</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">jgm</span><span class="o">/</span><span class="nv">pandoc</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">4834</span>
+<span class="ss">    https://github.com/jgm/pandoc/issues/4834</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    # <span class="nv">generate</span> <span class="nv">CSL</span> <span class="nv">JSON</span> <span class="nv">data</span>
+    <span class="o">#</span> <span class="n">generate</span> <span class="n">CSL</span> <span class="n">JSON</span> <span class="k">data</span>
 
-    <span class="nv">csl_list</span> <span class="o">=</span> <span class="nv">list</span><span class="ss">()</span>
+    <span class="n">csl_list</span> <span class="o">=</span> <span class="n">list</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="nv">citekey</span> <span class="nv">in</span> <span class="nv">args</span>.<span class="nv">citekeys</span>:
+    <span class="k">for</span> <span class="n">citekey</span> <span class="k">in</span> <span class="n">args</span><span class="p">.</span><span class="n">citekeys</span><span class="p">:</span>
 
-        <span class="nv">try</span>:
+        <span class="n">try</span><span class="p">:</span>
 
-            <span class="k">if</span> <span class="nv">not</span> <span class="nv">is_valid_citekey</span><span class="ss">(</span><span class="nv">citekey</span><span class="ss">)</span>:
+            <span class="k">if</span> <span class="k">not</span> <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">):</span>
 
                 <span class="k">continue</span>
 
-            <span class="nv">citekey</span> <span class="o">=</span> <span class="nv">standardize_citekey</span><span class="ss">(</span><span class="nv">citekey</span><span class="ss">)</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-            <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">citekey_to_csl_item</span><span class="ss">(</span><span class="nv">citekey</span>, <span class="nv">prune</span><span class="o">=</span><span class="nv">args</span>.<span class="nv">prune_csl</span><span class="ss">)</span>
+            <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">prune_csl</span><span class="p">)</span>
 
-            <span class="nv">csl_list</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">csl_item</span><span class="ss">)</span>
+            <span class="n">csl_list</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-        <span class="nv">except</span> <span class="nv">Exception</span> <span class="nv">as</span> <span class="nv">error</span>:
+        <span class="k">except</span> <span class="k">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
-            <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span>
+            <span class="n">logging</span><span class="p">.</span><span class="n">error</span><span class="p">(</span>
 
-                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">citekey_to_csl_item for {citekey!r} failed </span><span class="s2">&quot;</span>
+                <span class="n">f</span><span class="ss">&quot;citekey_to_csl_item for {citekey!r} failed &quot;</span>
 
-                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s">{error}</span><span class="s2">&quot;</span>
+                <span class="n">f</span><span class="ss">&quot;due to a {error.__class__.__name__}:\n{error}&quot;</span>
 
-            <span class="ss">)</span>
+            <span class="p">)</span>
 
-            <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">error</span>, <span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+            <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
 
-    # <span class="nv">output</span> <span class="nv">CSL</span> <span class="nv">JSON</span> <span class="nv">data</span>, <span class="k">if</span> <span class="o">--</span><span class="nv">render</span> <span class="nv">is</span> <span class="nv">False</span>
+    <span class="o">#</span> <span class="k">output</span> <span class="n">CSL</span> <span class="n">JSON</span> <span class="k">data</span><span class="p">,</span> <span class="k">if</span> <span class="c1">--render is False</span>
 
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">args</span>.<span class="nv">render</span>:
+    <span class="k">if</span> <span class="k">not</span> <span class="n">args</span><span class="p">.</span><span class="n">render</span><span class="p">:</span>
 
-        <span class="nv">write_file</span> <span class="o">=</span> <span class="ss">(</span>
+        <span class="n">write_file</span> <span class="o">=</span> <span class="p">(</span>
 
-            <span class="nv">args</span>.<span class="nv">output</span>.<span class="nv">open</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">w</span><span class="s2">&quot;</span>, <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">utf-8</span><span class="s2">&quot;</span><span class="ss">)</span> <span class="k">if</span> <span class="nv">args</span>.<span class="nv">output</span> <span class="k">else</span> <span class="nv">sys</span>.<span class="nv">stdout</span>
+            <span class="n">args</span><span class="p">.</span><span class="k">output</span><span class="p">.</span><span class="k">open</span><span class="p">(</span><span class="ss">&quot;w&quot;</span><span class="p">,</span> <span class="k">encoding</span><span class="o">=</span><span class="ss">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="k">output</span> <span class="k">else</span> <span class="n">sys</span><span class="p">.</span><span class="k">stdout</span>
 
-        <span class="ss">)</span>
+        <span class="p">)</span>
 
-        <span class="nv">with</span> <span class="nv">write_file</span>:
+        <span class="k">with</span> <span class="n">write_file</span><span class="p">:</span>
 
-            <span class="nv">json</span>.<span class="nv">dump</span><span class="ss">(</span><span class="nv">csl_list</span>, <span class="nv">write_file</span>, <span class="nv">ensure_ascii</span><span class="o">=</span><span class="nv">False</span>, <span class="nv">indent</span><span class="o">=</span><span class="mi">2</span><span class="ss">)</span>
+            <span class="n">json</span><span class="p">.</span><span class="n">dump</span><span class="p">(</span><span class="n">csl_list</span><span class="p">,</span> <span class="n">write_file</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-            <span class="nv">write_file</span>.<span class="nv">write</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
+            <span class="n">write_file</span><span class="p">.</span><span class="k">write</span><span class="p">(</span><span class="ss">&quot;\n&quot;</span><span class="p">)</span>
 
         <span class="k">return</span>
 
-    # <span class="nv">use</span> <span class="nv">Pandoc</span> <span class="nv">to</span> <span class="nv">render</span> <span class="nv">references</span>
+    <span class="o">#</span> <span class="n">use</span> <span class="n">Pandoc</span> <span class="k">to</span> <span class="n">render</span> <span class="k">references</span>
 
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">args</span>.<span class="nv">format</span> <span class="nv">and</span> <span class="nv">args</span>.<span class="nv">output</span>:
+    <span class="k">if</span> <span class="k">not</span> <span class="n">args</span><span class="p">.</span><span class="n">format</span> <span class="k">and</span> <span class="n">args</span><span class="p">.</span><span class="k">output</span><span class="p">:</span>
 
-        <span class="nv">vars</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>[<span class="s2">&quot;</span><span class="s">format</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">extension_to_format</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">output</span>.<span class="nv">suffix</span><span class="ss">)</span>
+        <span class="n">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)[</span><span class="ss">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extension_to_format</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="k">output</span><span class="p">.</span><span class="n">suffix</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">args</span>.<span class="nv">format</span>:
+    <span class="k">if</span> <span class="k">not</span> <span class="n">args</span><span class="p">.</span><span class="n">format</span><span class="p">:</span>
 
-        <span class="nv">vars</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>[<span class="s2">&quot;</span><span class="s">format</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="s2">&quot;</span><span class="s">plain</span><span class="s2">&quot;</span>
+        <span class="n">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)[</span><span class="ss">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="ss">&quot;plain&quot;</span>
 
-    <span class="nv">pandoc_metadata</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">nocite</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">@*</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">csl</span><span class="s2">&quot;</span>: <span class="nv">args</span>.<span class="nv">csl</span>, <span class="s2">&quot;</span><span class="s">references</span><span class="s2">&quot;</span>: <span class="nv">csl_list</span>}
+    <span class="n">pandoc_metadata</span> <span class="o">=</span> <span class="err">{</span><span class="ss">&quot;nocite&quot;</span><span class="p">:</span> <span class="ss">&quot;@*&quot;</span><span class="p">,</span> <span class="ss">&quot;csl&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">.</span><span class="n">csl</span><span class="p">,</span> <span class="ss">&quot;references&quot;</span><span class="p">:</span> <span class="n">csl_list</span><span class="err">}</span>
 
-    <span class="nv">call_pandoc</span><span class="ss">(</span><span class="nv">metadata</span><span class="o">=</span><span class="nv">pandoc_metadata</span>, <span class="nv">path</span><span class="o">=</span><span class="nv">args</span>.<span class="nv">output</span>, <span class="nv">format</span><span class="o">=</span><span class="nv">args</span>.<span class="nv">format</span><span class="ss">)</span>
+    <span class="n">call_pandoc</span><span class="p">(</span><span class="n">metadata</span><span class="o">=</span><span class="n">pandoc_metadata</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="k">output</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">format</span><span class="p">)</span>
 </pre></div>
 
 
@@ -1747,7 +1747,7 @@ https://github.com/jgm/pandoc/issues/4834</p>
       
     </div>
     
-      <script src="../../../../assets/javascripts/application.a8b5e56f.js"></script>
+      <script src="../../../../assets/javascripts/application.8e03edeb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../.."}})</script>
       

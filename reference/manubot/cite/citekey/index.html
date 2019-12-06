@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
     
     
       
@@ -1892,31 +1892,31 @@ tag that does, as defined in citation-tags.tsv.</p>
 <p>Passthrough citekey if it has a valid citation key prefix. Otherwise,
 if the lowercase citekey prefix is valid, convert the prefix to lowercase.
 Otherwise, assume citekey is raw and prepend "raw:".</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">infer_citekey_prefix</span><span class="ss">(</span><span class="nv">citekey</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>def infer_citekey_prefix<span class="p">(</span>citekey<span class="p">):</span>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">Passthrough</span> <span class="nv">citekey</span> <span class="k">if</span> <span class="nv">it</span> <span class="nv">has</span> <span class="nv">a</span> <span class="nv">valid</span> <span class="nv">citation</span> <span class="nv">key</span> <span class="nv">prefix</span>. <span class="nv">Otherwise</span>,
+<span class="s2">    Passthrough citekey if it has a valid citation key prefix. Otherwise,</span>
 
-    <span class="k">if</span> <span class="nv">the</span> <span class="nv">lowercase</span> <span class="nv">citekey</span> <span class="nv">prefix</span> <span class="nv">is</span> <span class="nv">valid</span>, <span class="nv">convert</span> <span class="nv">the</span> <span class="nv">prefix</span> <span class="nv">to</span> <span class="nv">lowercase</span>.
+<span class="s2">    if the lowercase citekey prefix is valid, convert the prefix to lowercase.</span>
 
-    <span class="nv">Otherwise</span>, <span class="nv">assume</span> <span class="nv">citekey</span> <span class="nv">is</span> <span class="nv">raw</span> <span class="nv">and</span> <span class="nv">prepend</span> <span class="s2">&quot;</span><span class="s">raw:</span><span class="s2">&quot;</span>.
+<span class="s2">    Otherwise, assume citekey is raw and prepend &quot;</span>raw<span class="p">:</span><span class="s2">&quot;.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="nv">prefixes</span> <span class="o">=</span> [<span class="nv">f</span><span class="s2">&quot;</span><span class="s">{x}:</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="nv">x</span> <span class="nv">in</span> <span class="nv">list</span><span class="ss">(</span><span class="nv">citeproc_retrievers</span><span class="ss">)</span> <span class="o">+</span> [<span class="s2">&quot;</span><span class="s">raw</span><span class="s2">&quot;</span>]]
+    <span class="ss">prefixes =</span> <span class="p">[</span>f<span class="s2">&quot;{x}:&quot;</span> for x <span class="k">in</span> list<span class="p">(</span>citeproc_retrievers<span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;raw&quot;</span><span class="p">]]</span>
 
-    <span class="k">for</span> <span class="nv">prefix</span> <span class="nv">in</span> <span class="nv">prefixes</span>:
+    for prefix <span class="k">in</span> prefixes<span class="p">:</span>
 
-        <span class="k">if</span> <span class="nv">citekey</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="nv">prefix</span><span class="ss">)</span>:
+        <span class="k">if</span> citekey<span class="o">.</span>startswith<span class="p">(</span>prefix<span class="p">):</span>
 
-            <span class="k">return</span> <span class="nv">citekey</span>
+            return citekey
 
-        <span class="k">if</span> <span class="nv">citekey</span>.<span class="nv">lower</span><span class="ss">()</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="nv">prefix</span><span class="ss">)</span>:
+        <span class="k">if</span> citekey<span class="o">.</span>lower<span class="p">()</span><span class="o">.</span>startswith<span class="p">(</span>prefix<span class="p">):</span>
 
-            <span class="k">return</span> <span class="nv">prefix</span> <span class="o">+</span> <span class="nv">citekey</span>[<span class="nv">len</span><span class="ss">(</span><span class="nv">prefix</span><span class="ss">)</span> :]
+            return prefix <span class="o">+</span> citekey<span class="p">[</span>len<span class="p">(</span>prefix<span class="p">)</span> <span class="p">:]</span>
 
-    <span class="k">return</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">raw:{citekey}</span><span class="s2">&quot;</span>
+    return f<span class="s2">&quot;raw:{citekey}&quot;</span>
 </pre></div>
 
 
@@ -1930,117 +1930,117 @@ Otherwise, assume citekey is raw and prepend "raw:".</p>
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a
 string describing the issue is returned. Otherwise returns None.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">inspect_citekey</span><span class="ss">(</span><span class="nv">citekey</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">inspect_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Check</span> <span class="nv">citekeys</span> <span class="nv">adhere</span> <span class="nv">to</span> <span class="nv">expected</span> <span class="nv">formats</span>. <span class="k">If</span> <span class="nv">an</span> <span class="nv">issue</span> <span class="nv">is</span> <span class="nv">detected</span> <span class="nv">a</span>
+<span class="ss">    Check citekeys adhere to expected formats. If an issue is detected a</span>
 
-    <span class="nv">string</span> <span class="nv">describing</span> <span class="nv">the</span> <span class="nv">issue</span> <span class="nv">is</span> <span class="nv">returned</span>. <span class="nv">Otherwise</span> <span class="nv">returns</span> <span class="nv">None</span>.
+<span class="ss">    string describing the issue is returned. Otherwise returns None.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">source</span>, <span class="nv">identifier</span> <span class="o">=</span> <span class="nv">citekey</span>.<span class="nv">split</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">:</span><span class="s2">&quot;</span>, <span class="mi">1</span><span class="ss">)</span>
+    <span class="k">source</span><span class="p">,</span> <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="ss">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nv">source</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">pmid</span><span class="s2">&quot;</span>:
+    <span class="k">if</span> <span class="k">source</span> <span class="o">==</span> <span class="ss">&quot;pmid&quot;</span><span class="p">:</span>
 
-        # <span class="nv">https</span>:<span class="o">//</span><span class="nv">www</span>.<span class="nv">nlm</span>.<span class="nv">nih</span>.<span class="nv">gov</span><span class="o">/</span><span class="nv">bsd</span><span class="o">/</span><span class="nv">mms</span><span class="o">/</span><span class="nv">medlineelements</span>.<span class="nv">html</span>#<span class="nv">pmid</span>
+        <span class="o">#</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">nlm</span><span class="p">.</span><span class="n">nih</span><span class="p">.</span><span class="n">gov</span><span class="o">/</span><span class="n">bsd</span><span class="o">/</span><span class="n">mms</span><span class="o">/</span><span class="n">medlineelements</span><span class="p">.</span><span class="n">html</span><span class="o">#</span><span class="n">pmid</span>
 
-        <span class="k">if</span> <span class="nv">identifier</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">PMC</span><span class="s2">&quot;</span><span class="ss">)</span>:
+        <span class="k">if</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;PMC&quot;</span><span class="p">):</span>
 
-            <span class="k">return</span> <span class="ss">(</span>
+            <span class="k">return</span> <span class="p">(</span>
 
-                <span class="s2">&quot;</span><span class="s">PubMed Identifiers should start with digits rather than PMC. </span><span class="s2">&quot;</span>
+                <span class="ss">&quot;PubMed Identifiers should start with digits rather than PMC. &quot;</span>
 
-                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Should {citekey!r} switch the citation source to &#39;pmcid&#39;?</span><span class="s2">&quot;</span>
+                <span class="n">f</span><span class="ss">&quot;Should {citekey!r} switch the citation source to &#39;pmcid&#39;?&quot;</span>
 
-            <span class="ss">)</span>
+            <span class="p">)</span>
 
-        <span class="nv">elif</span> <span class="nv">not</span> <span class="nv">regexes</span>[<span class="s2">&quot;</span><span class="s">pmid</span><span class="s2">&quot;</span>].<span class="nv">fullmatch</span><span class="ss">(</span><span class="nv">identifier</span><span class="ss">)</span>:
+        <span class="n">elif</span> <span class="k">not</span> <span class="n">regexes</span><span class="p">[</span><span class="ss">&quot;pmid&quot;</span><span class="p">].</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">):</span>
 
-            <span class="k">return</span> <span class="s2">&quot;</span><span class="s">PubMed Identifiers should be 1-8 digits with no leading zeros.</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="ss">&quot;PubMed Identifiers should be 1-8 digits with no leading zeros.&quot;</span>
 
-    <span class="k">if</span> <span class="nv">source</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">pmcid</span><span class="s2">&quot;</span>:
+    <span class="k">if</span> <span class="k">source</span> <span class="o">==</span> <span class="ss">&quot;pmcid&quot;</span><span class="p">:</span>
 
-        # <span class="nv">https</span>:<span class="o">//</span><span class="nv">www</span>.<span class="nv">nlm</span>.<span class="nv">nih</span>.<span class="nv">gov</span><span class="o">/</span><span class="nv">bsd</span><span class="o">/</span><span class="nv">mms</span><span class="o">/</span><span class="nv">medlineelements</span>.<span class="nv">html</span>#<span class="nv">pmc</span>
+        <span class="o">#</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">nlm</span><span class="p">.</span><span class="n">nih</span><span class="p">.</span><span class="n">gov</span><span class="o">/</span><span class="n">bsd</span><span class="o">/</span><span class="n">mms</span><span class="o">/</span><span class="n">medlineelements</span><span class="p">.</span><span class="n">html</span><span class="o">#</span><span class="n">pmc</span>
 
-        <span class="k">if</span> <span class="nv">not</span> <span class="nv">identifier</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">PMC</span><span class="s2">&quot;</span><span class="ss">)</span>:
+        <span class="k">if</span> <span class="k">not</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;PMC&quot;</span><span class="p">):</span>
 
-            <span class="k">return</span> <span class="s2">&quot;</span><span class="s">PubMed Central Identifiers must start with &#39;PMC&#39;.</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="ss">&quot;PubMed Central Identifiers must start with &#39;PMC&#39;.&quot;</span>
 
-        <span class="nv">elif</span> <span class="nv">not</span> <span class="nv">regexes</span>[<span class="s2">&quot;</span><span class="s">pmcid</span><span class="s2">&quot;</span>].<span class="nv">fullmatch</span><span class="ss">(</span><span class="nv">identifier</span><span class="ss">)</span>:
+        <span class="n">elif</span> <span class="k">not</span> <span class="n">regexes</span><span class="p">[</span><span class="ss">&quot;pmcid&quot;</span><span class="p">].</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">):</span>
 
-            <span class="k">return</span> <span class="ss">(</span>
+            <span class="k">return</span> <span class="p">(</span>
 
-                <span class="s2">&quot;</span><span class="s">Identifier does not conform to the PMCID regex. </span><span class="s2">&quot;</span>
+                <span class="ss">&quot;Identifier does not conform to the PMCID regex. &quot;</span>
 
-                <span class="s2">&quot;</span><span class="s">Double check the PMCID.</span><span class="s2">&quot;</span>
+                <span class="ss">&quot;Double check the PMCID.&quot;</span>
 
-            <span class="ss">)</span>
+            <span class="p">)</span>
 
-    <span class="k">if</span> <span class="nv">source</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">doi</span><span class="s2">&quot;</span>:
+    <span class="k">if</span> <span class="k">source</span> <span class="o">==</span> <span class="ss">&quot;doi&quot;</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="nv">identifier</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">10.</span><span class="s2">&quot;</span><span class="ss">)</span>:
+        <span class="k">if</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;10.&quot;</span><span class="p">):</span>
 
-            # <span class="nv">https</span>:<span class="o">//</span><span class="nv">www</span>.<span class="nv">crossref</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">blog</span><span class="o">/</span><span class="nv">dois</span><span class="o">-</span><span class="nv">and</span><span class="o">-</span><span class="nv">matching</span><span class="o">-</span><span class="nv">regular</span><span class="o">-</span><span class="nv">expressions</span><span class="o">/</span>
+            <span class="o">#</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">crossref</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">blog</span><span class="o">/</span><span class="n">dois</span><span class="o">-</span><span class="k">and</span><span class="o">-</span><span class="n">matching</span><span class="o">-</span><span class="n">regular</span><span class="o">-</span><span class="n">expressions</span><span class="o">/</span>
 
-            <span class="k">if</span> <span class="nv">not</span> <span class="nv">regexes</span>[<span class="s2">&quot;</span><span class="s">doi</span><span class="s2">&quot;</span>].<span class="nv">fullmatch</span><span class="ss">(</span><span class="nv">identifier</span><span class="ss">)</span>:
+            <span class="k">if</span> <span class="k">not</span> <span class="n">regexes</span><span class="p">[</span><span class="ss">&quot;doi&quot;</span><span class="p">].</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">):</span>
 
-                <span class="k">return</span> <span class="ss">(</span>
+                <span class="k">return</span> <span class="p">(</span>
 
-                    <span class="s2">&quot;</span><span class="s">Identifier does not conform to the DOI regex. </span><span class="s2">&quot;</span>
+                    <span class="ss">&quot;Identifier does not conform to the DOI regex. &quot;</span>
 
-                    <span class="s2">&quot;</span><span class="s">Double check the DOI.</span><span class="s2">&quot;</span>
+                    <span class="ss">&quot;Double check the DOI.&quot;</span>
 
-                <span class="ss">)</span>
+                <span class="p">)</span>
 
-        <span class="nv">elif</span> <span class="nv">identifier</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">10/</span><span class="s2">&quot;</span><span class="ss">)</span>:
+        <span class="n">elif</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;10/&quot;</span><span class="p">):</span>
 
-            # <span class="nv">shortDOI</span>, <span class="nv">see</span> <span class="nv">http</span>:<span class="o">//</span><span class="nv">shortdoi</span>.<span class="nv">org</span>
+            <span class="o">#</span> <span class="n">shortDOI</span><span class="p">,</span> <span class="n">see</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">shortdoi</span><span class="p">.</span><span class="n">org</span>
 
-            <span class="k">if</span> <span class="nv">not</span> <span class="nv">regexes</span>[<span class="s2">&quot;</span><span class="s">shortdoi</span><span class="s2">&quot;</span>].<span class="nv">fullmatch</span><span class="ss">(</span><span class="nv">identifier</span><span class="ss">)</span>:
+            <span class="k">if</span> <span class="k">not</span> <span class="n">regexes</span><span class="p">[</span><span class="ss">&quot;shortdoi&quot;</span><span class="p">].</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">):</span>
 
-                <span class="k">return</span> <span class="ss">(</span>
+                <span class="k">return</span> <span class="p">(</span>
 
-                    <span class="s2">&quot;</span><span class="s">Identifier does not conform to the shortDOI regex. </span><span class="s2">&quot;</span>
+                    <span class="ss">&quot;Identifier does not conform to the shortDOI regex. &quot;</span>
 
-                    <span class="s2">&quot;</span><span class="s">Double check the shortDOI.</span><span class="s2">&quot;</span>
+                    <span class="ss">&quot;Double check the shortDOI.&quot;</span>
 
-                <span class="ss">)</span>
+                <span class="p">)</span>
 
-        <span class="k">else</span>:
+        <span class="k">else</span><span class="p">:</span>
 
-            <span class="k">return</span> <span class="s2">&quot;</span><span class="s">DOIs must start with &#39;10.&#39; (or &#39;10/&#39; for shortDOIs).</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="ss">&quot;DOIs must start with &#39;10.&#39; (or &#39;10/&#39; for shortDOIs).&quot;</span>
 
-    <span class="k">if</span> <span class="nv">source</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">isbn</span><span class="s2">&quot;</span>:
+    <span class="k">if</span> <span class="k">source</span> <span class="o">==</span> <span class="ss">&quot;isbn&quot;</span><span class="p">:</span>
 
-        <span class="nv">import</span> <span class="nv">isbnlib</span>
+        <span class="n">import</span> <span class="n">isbnlib</span>
 
-        <span class="nv">fail</span> <span class="o">=</span> <span class="nv">isbnlib</span>.<span class="nv">notisbn</span><span class="ss">(</span><span class="nv">identifier</span>, <span class="nv">level</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">strict</span><span class="s2">&quot;</span><span class="ss">)</span>
+        <span class="n">fail</span> <span class="o">=</span> <span class="n">isbnlib</span><span class="p">.</span><span class="n">notisbn</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="k">level</span><span class="o">=</span><span class="ss">&quot;strict&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nv">fail</span>:
+        <span class="k">if</span> <span class="n">fail</span><span class="p">:</span>
 
-            <span class="k">return</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">identifier violates the ISBN syntax according to isbnlib v{isbnlib.__version__}</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="n">f</span><span class="ss">&quot;identifier violates the ISBN syntax according to isbnlib v{isbnlib.__version__}&quot;</span>
 
-    <span class="k">if</span> <span class="nv">source</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">wikidata</span><span class="s2">&quot;</span>:
+    <span class="k">if</span> <span class="k">source</span> <span class="o">==</span> <span class="ss">&quot;wikidata&quot;</span><span class="p">:</span>
 
-        # <span class="nv">https</span>:<span class="o">//</span><span class="nv">www</span>.<span class="nv">wikidata</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">wiki</span><span class="o">/</span><span class="nv">Wikidata</span>:<span class="nv">Identifiers</span>
+        <span class="o">#</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">wikidata</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">wiki</span><span class="o">/</span><span class="n">Wikidata</span><span class="p">:</span><span class="n">Identifiers</span>
 
-        <span class="k">if</span> <span class="nv">not</span> <span class="nv">identifier</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Q</span><span class="s2">&quot;</span><span class="ss">)</span>:
+        <span class="k">if</span> <span class="k">not</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;Q&quot;</span><span class="p">):</span>
 
-            <span class="k">return</span> <span class="s2">&quot;</span><span class="s">Wikidata item IDs must start with &#39;Q&#39;.</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="ss">&quot;Wikidata item IDs must start with &#39;Q&#39;.&quot;</span>
 
-        <span class="nv">elif</span> <span class="nv">not</span> <span class="nv">regexes</span>[<span class="s2">&quot;</span><span class="s">wikidata</span><span class="s2">&quot;</span>].<span class="nv">fullmatch</span><span class="ss">(</span><span class="nv">identifier</span><span class="ss">)</span>:
+        <span class="n">elif</span> <span class="k">not</span> <span class="n">regexes</span><span class="p">[</span><span class="ss">&quot;wikidata&quot;</span><span class="p">].</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">):</span>
 
-            <span class="k">return</span> <span class="ss">(</span>
+            <span class="k">return</span> <span class="p">(</span>
 
-                <span class="s2">&quot;</span><span class="s">Identifier does not conform to the Wikidata regex. </span><span class="s2">&quot;</span>
+                <span class="ss">&quot;Identifier does not conform to the Wikidata regex. &quot;</span>
 
-                <span class="s2">&quot;</span><span class="s">Double check the entity ID.</span><span class="s2">&quot;</span>
+                <span class="ss">&quot;Double check the entity ID.&quot;</span>
 
-            <span class="ss">)</span>
+            <span class="p">)</span>
 
-    <span class="k">return</span> <span class="nv">None</span>
+    <span class="k">return</span> <span class="k">None</span>
 </pre></div>
 
 
@@ -2427,7 +2427,7 @@ citekeys consist of characters in the following ranges: 0-9, a-z and A-Z.</p>
       
     </div>
     
-      <script src="../../../../assets/javascripts/application.a8b5e56f.js"></script>
+      <script src="../../../../assets/javascripts/application.8e03edeb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../.."}})</script>
       

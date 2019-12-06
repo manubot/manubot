@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
     
     
       
@@ -1315,9 +1315,9 @@
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">load_json</span><span class="ss">(</span><span class="nv">path</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">load_json</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
 
-    <span class="k">return</span> <span class="nv">json</span>.<span class="nv">loads</span><span class="ss">(</span><span class="nv">path</span>.<span class="nv">read_text</span><span class="ss">(</span><span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">utf-8-sig</span><span class="s2">&quot;</span><span class="ss">))</span>
+    <span class="k">return</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">path</span><span class="p">.</span><span class="n">read_text</span><span class="p">(</span><span class="k">encoding</span><span class="o">=</span><span class="ss">&quot;utf-8-sig&quot;</span><span class="p">))</span>
 </pre></div>
 
 
@@ -1362,41 +1362,41 @@ generate be tested.</p>
 <p>To create a new test case, derive pruned.json from raw.json, by manually
 deleting any invalid fields. Do not use <code>manubot cite</code> to directly generate
 pruned.json as that also relies on remove_jsonschema_errors for pruning.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>@<span class="nv">pytest</span>.<span class="nv">mark</span>.<span class="nv">parametrize</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">name</span><span class="s2">&quot;</span>, <span class="nv">csl_instances</span><span class="ss">)</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="ss">&quot;name&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">csl_instances</span><span class="p">)</span><span class="w"></span>
 
-<span class="nv">def</span> <span class="nv">test_remove_jsonschema_errors</span><span class="ss">(</span><span class="nv">name</span><span class="ss">)</span>:
+<span class="n">def</span><span class="w"> </span><span class="n">test_remove_jsonschema_errors</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Tests</span> <span class="nv">whether</span> <span class="nv">CSL</span> <span class="nv">pruning</span> <span class="nv">of</span> <span class="nv">raw</span>.<span class="nv">json</span> <span class="nv">produces</span> <span class="nv">the</span> <span class="nv">expected</span> <span class="nv">pruned</span>.<span class="nv">json</span>.
+<span class="ss">    Tests whether CSL pruning of raw.json produces the expected pruned.json.</span>
 
-    <span class="nv">The</span> <span class="nv">fidelity</span> <span class="nv">of</span> <span class="nv">the</span> <span class="nv">remove_jsonschema_errors</span> <span class="nv">implementation</span> <span class="nv">is</span>
+<span class="ss">    The fidelity of the remove_jsonschema_errors implementation is</span>
 
-    <span class="nv">difficult</span> <span class="nv">to</span> <span class="nv">assess</span> <span class="nv">theoretically</span>, <span class="nv">therefore</span> <span class="nv">its</span> <span class="nv">performance</span> <span class="nv">should</span> <span class="nv">be</span>
+<span class="ss">    difficult to assess theoretically, therefore its performance should be</span>
 
-    <span class="nv">evaluated</span> <span class="nv">empirically</span> <span class="nv">with</span> <span class="nv">thorough</span> <span class="nv">test</span> <span class="nv">coverage</span>. <span class="nv">It</span> <span class="nv">is</span> <span class="nv">recommended</span> <span class="nv">that</span>
+<span class="ss">    evaluated empirically with thorough test coverage. It is recommended that</span>
 
-    <span class="nv">all</span> <span class="nv">conceivable</span> <span class="nv">conformations</span> <span class="nv">of</span> <span class="nv">invalid</span> <span class="nv">CSL</span> <span class="nv">that</span> <span class="nv">citeproc</span> <span class="nv">methods</span> <span class="nv">may</span>
+<span class="ss">    all conceivable conformations of invalid CSL that citeproc methods may</span>
 
-    <span class="nv">generate</span> <span class="nv">be</span> <span class="nv">tested</span>.
+<span class="ss">    generate be tested.</span>
 
-    <span class="nv">To</span> <span class="nv">create</span> <span class="nv">a</span> <span class="nv">new</span> <span class="nv">test</span> <span class="nv">case</span>, <span class="nv">derive</span> <span class="nv">pruned</span>.<span class="nv">json</span> <span class="nv">from</span> <span class="nv">raw</span>.<span class="nv">json</span>, <span class="nv">by</span> <span class="nv">manually</span>
+<span class="ss">    To create a new test case, derive pruned.json from raw.json, by manually</span>
 
-    <span class="nv">deleting</span> <span class="nv">any</span> <span class="nv">invalid</span> <span class="nv">fields</span>. <span class="k">Do</span> <span class="nv">not</span> <span class="nv">use</span> `<span class="nv">manubot</span> <span class="nv">cite</span>` <span class="nv">to</span> <span class="nv">directly</span> <span class="nv">generate</span>
+<span class="ss">    deleting any invalid fields. Do not use `manubot cite` to directly generate</span>
 
-    <span class="nv">pruned</span>.<span class="nv">json</span> <span class="nv">as</span> <span class="nv">that</span> <span class="nv">also</span> <span class="nv">relies</span> <span class="nv">on</span> <span class="nv">remove_jsonschema_errors</span> <span class="k">for</span> <span class="nv">pruning</span>.
+<span class="ss">    pruned.json as that also relies on remove_jsonschema_errors for pruning.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="nv">data_dir</span> <span class="o">=</span> <span class="nv">directory</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s">csl-json</span><span class="s2">&quot;</span> <span class="o">/</span> <span class="nv">name</span>
+<span class="w">    </span><span class="n">data_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">directory</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="ss">&quot;csl-json&quot;</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">name</span><span class="w"></span>
 
-    <span class="nv">raw</span> <span class="o">=</span> <span class="nv">load_json</span><span class="ss">(</span><span class="nv">data_dir</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s">raw.json</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_json</span><span class="p">(</span><span class="n">data_dir</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="ss">&quot;raw.json&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nv">expected</span> <span class="o">=</span> <span class="nv">load_json</span><span class="ss">(</span><span class="nv">data_dir</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s">pruned.json</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_json</span><span class="p">(</span><span class="n">data_dir</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="ss">&quot;pruned.json&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nv">pruned</span> <span class="o">=</span> <span class="nv">remove_jsonschema_errors</span><span class="ss">(</span><span class="nv">raw</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">pruned</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">remove_jsonschema_errors</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nv">assert</span> <span class="nv">pruned</span> <span class="o">==</span> <span class="nv">expected</span>
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">pruned</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span><span class="w"></span>
 </pre></div>
 
 
@@ -1471,7 +1471,7 @@ pruned.json as that also relies on remove_jsonschema_errors for pruning.</p>
       
     </div>
     
-      <script src="../../../../../assets/javascripts/application.a8b5e56f.js"></script>
+      <script src="../../../../../assets/javascripts/application.8e03edeb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../../.."}})</script>
       

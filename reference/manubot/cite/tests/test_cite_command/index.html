@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
     
     
       
@@ -2154,119 +2154,119 @@ for xml (jats) output.</p>
 <p>Filenames must be adjusted accodingly when current pandoc version changes.</p>
 <p>Run tests locally skipping this test suit (makes sense if your local pandoc
 version is different from pandoc version used by Travis and Appveyor):</p>
-<div class="codehilite"><pre><span></span><span class="n">pytest</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">m</span> <span class="ss">&quot;not pandoc_version_sensitive&quot;</span>
+<div class="codehilite"><pre><span></span><span class="err">pytest -v -m &quot;not pandoc_version_sensitive&quot;</span>
 </pre></div>
 
 
 <p>See .travis.yml and .appveyor.yml to find out current pandoc version used 
 for testing.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">class</span> <span class="nv">Base_cite_command_render_stdout</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nl">Base_cite_command_render_stdout</span><span class="p">:</span><span class="w"></span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Expecting</span> <span class="nv">reference</span> <span class="nv">values</span> <span class="k">for</span> <span class="nv">test</span> <span class="nv">to</span> <span class="nv">be</span> <span class="nv">at</span> <span class="nv">files</span> <span class="nv">on</span> <span class="nv">path</span>:
+<span class="ss">    Expecting reference values for test to be at files on path:</span>
 
-    <span class="nv">cite</span><span class="o">-</span><span class="nv">command</span><span class="o">-</span><span class="nv">rendered</span><span class="o">/</span><span class="nv">references</span><span class="o">-</span>{<span class="nv">format</span>}<span class="o">-</span>{<span class="nv">pandoc_stamp</span>}.{<span class="nv">extension</span>}
+<span class="ss">    cite-command-rendered/references-{format}-{pandoc_stamp}.{extension}</span>
 
-    <span class="nv">Examples</span>:
+<span class="ss">    Examples:</span>
 
-    <span class="o">-</span> <span class="nv">references</span><span class="o">-</span><span class="nv">html</span><span class="o">-</span><span class="mi">2</span>.<span class="mi">7</span>.<span class="mi">2</span>.<span class="nv">html</span>
+<span class="ss">    - references-html-2.7.2.html</span>
 
-    <span class="o">-</span> <span class="nv">references</span><span class="o">-</span><span class="nv">plain</span><span class="o">-</span><span class="mi">2</span>.<span class="mi">7</span>.<span class="mi">2</span>.<span class="nv">txt</span>
+<span class="ss">    - references-plain-2.7.2.txt</span>
 
-    <span class="o">-</span> <span class="nv">references</span><span class="o">-</span><span class="nv">jats</span><span class="o">-</span><span class="mi">2</span>.<span class="mi">7</span>.<span class="mi">2</span>.<span class="nv">xml</span>
+<span class="ss">    - references-jats-2.7.2.xml</span>
 
-    <span class="o">-</span> <span class="nv">references</span><span class="o">-</span><span class="nv">jats</span><span class="o">-</span><span class="mi">2</span>.<span class="mi">7</span>.<span class="mi">3</span>.<span class="nv">xml</span>
+<span class="ss">    - references-jats-2.7.3.xml</span>
 
-    <span class="o">-</span> <span class="nv">references</span><span class="o">-</span><span class="nv">markdown</span><span class="o">-</span><span class="mi">2</span>.<span class="mi">7</span>.<span class="mi">2</span>.<span class="nv">md</span>
+<span class="ss">    - references-markdown-2.7.2.md</span>
 
-    <span class="mi">2</span>.<span class="mi">7</span>.<span class="mi">2</span> <span class="nv">was</span> <span class="nv">the</span> <span class="nv">current</span> <span class="nv">pandoc</span> <span class="nv">version</span> <span class="nv">on</span> <span class="nv">CI</span> <span class="nv">builds</span> <span class="k">for</span> <span class="nv">these</span> <span class="nv">builds</span>,
+<span class="ss">    2.7.2 was the current pandoc version on CI builds for these builds,</span>
 
-    <span class="nv">but</span> <span class="nv">a</span> <span class="nv">newer</span> <span class="nv">version</span> <span class="mi">2</span>.<span class="mi">7</span>.<span class="mi">3</span> <span class="nv">was</span> <span class="nv">available</span> <span class="nv">too</span> <span class="nv">and</span> <span class="nv">giving</span> <span class="nv">a</span> <span class="nv">different</span> <span class="nv">output</span>
+<span class="ss">    but a newer version 2.7.3 was available too and giving a different output</span>
 
-    <span class="k">for</span> <span class="nv">xml</span> <span class="ss">(</span><span class="nv">jats</span><span class="ss">)</span> <span class="nv">output</span>.
+<span class="ss">    for xml (jats) output.</span>
 
-    <span class="nv">Filenames</span> <span class="nv">must</span> <span class="nv">be</span> <span class="nv">adjusted</span> <span class="nv">accodingly</span> <span class="nv">when</span> <span class="nv">current</span> <span class="nv">pandoc</span> <span class="nv">version</span> <span class="nv">changes</span>.
+<span class="ss">    Filenames must be adjusted accodingly when current pandoc version changes.</span>
 
-    <span class="nv">Run</span> <span class="nv">tests</span> <span class="nv">locally</span> <span class="nv">skipping</span> <span class="nv">this</span> <span class="nv">test</span> <span class="nv">suit</span> <span class="ss">(</span><span class="nv">makes</span> <span class="nv">sense</span> <span class="k">if</span> <span class="nv">your</span> <span class="nv">local</span> <span class="nv">pandoc</span>
+<span class="ss">    Run tests locally skipping this test suit (makes sense if your local pandoc</span>
 
-    <span class="nv">version</span> <span class="nv">is</span> <span class="nv">different</span> <span class="nv">from</span> <span class="nv">pandoc</span> <span class="nv">version</span> <span class="nv">used</span> <span class="nv">by</span> <span class="nv">Travis</span> <span class="nv">and</span> <span class="nv">Appveyor</span><span class="ss">)</span>:
+<span class="ss">    version is different from pandoc version used by Travis and Appveyor):</span>
 
-        <span class="nv">pytest</span> <span class="o">-</span><span class="nv">v</span> <span class="o">-</span><span class="nv">m</span> <span class="s2">&quot;</span><span class="s">not pandoc_version_sensitive</span><span class="s2">&quot;</span>
+<span class="ss">        pytest -v -m &quot;</span><span class="ow">not</span><span class="w"> </span><span class="n">pandoc_version_sensitive</span><span class="ss">&quot;</span>
 
-    <span class="nv">See</span> .<span class="nv">travis</span>.<span class="nv">yml</span> <span class="nv">and</span> .<span class="nv">appveyor</span>.<span class="nv">yml</span> <span class="nv">to</span> <span class="nv">find</span> <span class="nv">out</span> <span class="nv">current</span> <span class="nv">pandoc</span> <span class="nv">version</span> <span class="nv">used</span>
+<span class="ss">    See .travis.yml and .appveyor.yml to find out current pandoc version used</span>
 
-    <span class="k">for</span> <span class="nv">testing</span>.
+<span class="ss">    for testing.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="nv">pandoc_stamp</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">.</span><span class="s2">&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">map</span><span class="ss">(</span><span class="nv">str</span>, <span class="nv">pandoc_version</span><span class="ss">))</span>
+<span class="w">    </span><span class="n">pandoc_stamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;.&quot;</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="k">map</span><span class="p">(</span><span class="nf">str</span><span class="p">,</span><span class="w"> </span><span class="n">pandoc_version</span><span class="p">))</span><span class="w"></span>
 
-    @<span class="nv">classmethod</span>
+<span class="w">    </span><span class="nv">@classmethod</span><span class="w"></span>
 
-    <span class="nv">def</span> <span class="nv">expected_output</span><span class="ss">(</span><span class="nv">cls</span>, <span class="nv">format</span>, <span class="nv">extension</span><span class="ss">)</span>:
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">expected_output</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="w"> </span><span class="nf">format</span><span class="p">,</span><span class="w"> </span><span class="n">extension</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">filename</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">references-{format}-{cls.pandoc_stamp}.{extension}</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="n">filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="ss">&quot;references-{format}-{cls.pandoc_stamp}.{extension}&quot;</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="ss">(</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 
-            <span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="nv">__file__</span><span class="ss">)</span>
+<span class="w">            </span><span class="n">pathlib</span><span class="p">.</span><span class="k">Path</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span><span class="w"></span>
 
-            .<span class="nv">parent</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">cite-command-rendered</span><span class="s2">&quot;</span>, <span class="nv">filename</span><span class="ss">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">parent</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;cite-command-rendered&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p">)</span><span class="w"></span>
 
-            .<span class="nv">read_text</span><span class="ss">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">read_text</span><span class="p">()</span><span class="w"></span>
 
-        <span class="ss">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-        # <span class="nv">Note</span>: <span class="nv">We</span> <span class="nv">wanted</span> <span class="nv">to</span> <span class="nv">introduce</span> <span class="nv">encoding</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">utf-8-sig</span><span class="s1">&#39;</span> <span class="nv">above</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="nl">Note</span><span class="p">:</span><span class="w"> </span><span class="n">We</span><span class="w"> </span><span class="n">wanted</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">introduce</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="w"> </span><span class="n">above</span><span class="w"></span>
 
-        # <span class="k">for</span> <span class="nv">compatability</span>, <span class="nv">but</span> <span class="nv">that</span> <span class="nv">makes</span> <span class="nv">tests</span> <span class="nv">fail</span> <span class="nv">on</span> <span class="nv">Travis</span> <span class="k">for</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">compatability</span><span class="p">,</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">makes</span><span class="w"> </span><span class="n">tests</span><span class="w"> </span><span class="n">fail</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">Travis</span><span class="w"> </span><span class="k">for</span><span class="w"></span>
 
-        # <span class="nv">Windows</span> <span class="nv">default</span> <span class="nv">encoding</span>.
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="n">Windows</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="n">encoding</span><span class="p">.</span><span class="w"></span>
 
-    @<span class="nv">staticmethod</span>
+<span class="w">    </span><span class="nv">@staticmethod</span><span class="w"></span>
 
-    <span class="nv">def</span> <span class="nv">render</span><span class="ss">(</span><span class="nv">format_args</span><span class="ss">)</span>:
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">render</span><span class="p">(</span><span class="n">format_args</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">args</span> <span class="o">=</span> [
+<span class="w">        </span><span class="n">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
 
-            <span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;manubot&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">cite</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;cite&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">--render</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;--render&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">--csl</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;--csl&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">arxiv:1806.05726v1</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;arxiv:1806.05726v1&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">doi:10.7717/peerj.338</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;doi:10.7717/peerj.338&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">pmid:29618526</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;pmid:29618526&quot;,</span>
 
-        ] <span class="o">+</span> <span class="nv">format_args</span>
+<span class="n">        </span><span class="o">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">format_args</span><span class="w"></span>
 
-        <span class="nv">process</span> <span class="o">=</span> <span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span>
+<span class="w">        </span><span class="n">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="w"></span>
 
-            <span class="nv">args</span>,
+<span class="w">            </span><span class="n">args</span><span class="p">,</span><span class="w"></span>
 
-            <span class="nv">stdout</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>,
+<span class="w">            </span><span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span><span class="w"></span>
 
-            <span class="nv">stderr</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>,
+<span class="w">            </span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span><span class="w"></span>
 
-            <span class="nv">universal_newlines</span><span class="o">=</span><span class="nv">True</span>,
+<span class="w">            </span><span class="n">universal_newlines</span><span class="o">=</span><span class="k">True</span><span class="p">,</span><span class="w"></span>
 
-        <span class="ss">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-        <span class="nv">print</span><span class="ss">(</span><span class="nv">shlex_join</span><span class="ss">(</span><span class="nv">process</span>.<span class="nv">args</span><span class="ss">))</span>
+<span class="w">        </span><span class="k">print</span><span class="p">(</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">args</span><span class="p">))</span><span class="w"></span>
 
-        <span class="nv">print</span><span class="ss">(</span><span class="nv">process</span>.<span class="nv">stdout</span><span class="ss">)</span>
+<span class="w">        </span><span class="k">print</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">stdout</span><span class="p">)</span><span class="w"></span>
 
-        <span class="nv">print</span><span class="ss">(</span><span class="nv">process</span>.<span class="nv">stderr</span><span class="ss">)</span>
+<span class="w">        </span><span class="k">print</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">stderr</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">process</span>.<span class="nv">stdout</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">stdout</span><span class="w"></span>
 </pre></div>
 
 
@@ -2295,21 +2295,21 @@ for testing.</p>
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>    @<span class="nv">classmethod</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="w">    </span><span class="nv">@classmethod</span><span class="w"></span>
 
-    <span class="nv">def</span> <span class="nv">expected_output</span><span class="ss">(</span><span class="nv">cls</span>, <span class="nv">format</span>, <span class="nv">extension</span><span class="ss">)</span>:
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">expected_output</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="w"> </span><span class="nf">format</span><span class="p">,</span><span class="w"> </span><span class="n">extension</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">filename</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">references-{format}-{cls.pandoc_stamp}.{extension}</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="n">filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="ss">&quot;references-{format}-{cls.pandoc_stamp}.{extension}&quot;</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="ss">(</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 
-            <span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="nv">__file__</span><span class="ss">)</span>
+<span class="w">            </span><span class="n">pathlib</span><span class="p">.</span><span class="k">Path</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span><span class="w"></span>
 
-            .<span class="nv">parent</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">cite-command-rendered</span><span class="s2">&quot;</span>, <span class="nv">filename</span><span class="ss">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">parent</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;cite-command-rendered&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p">)</span><span class="w"></span>
 
-            .<span class="nv">read_text</span><span class="ss">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">read_text</span><span class="p">()</span><span class="w"></span>
 
-        <span class="ss">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 </pre></div>
 
 
@@ -2321,49 +2321,49 @@ for testing.</p>
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>    @<span class="nv">staticmethod</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="w">    </span><span class="nv">@staticmethod</span><span class="w"></span>
 
-    <span class="nv">def</span> <span class="nv">render</span><span class="ss">(</span><span class="nv">format_args</span><span class="ss">)</span>:
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">render</span><span class="p">(</span><span class="n">format_args</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">args</span> <span class="o">=</span> [
+<span class="w">        </span><span class="n">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
 
-            <span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;manubot&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">cite</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;cite&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">--render</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;--render&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">--csl</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;--csl&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">arxiv:1806.05726v1</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;arxiv:1806.05726v1&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">doi:10.7717/peerj.338</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;doi:10.7717/peerj.338&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">pmid:29618526</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;pmid:29618526&quot;,</span>
 
-        ] <span class="o">+</span> <span class="nv">format_args</span>
+<span class="n">        </span><span class="o">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">format_args</span><span class="w"></span>
 
-        <span class="nv">process</span> <span class="o">=</span> <span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span>
+<span class="w">        </span><span class="n">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="w"></span>
 
-            <span class="nv">args</span>,
+<span class="w">            </span><span class="n">args</span><span class="p">,</span><span class="w"></span>
 
-            <span class="nv">stdout</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>,
+<span class="w">            </span><span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span><span class="w"></span>
 
-            <span class="nv">stderr</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>,
+<span class="w">            </span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span><span class="w"></span>
 
-            <span class="nv">universal_newlines</span><span class="o">=</span><span class="nv">True</span>,
+<span class="w">            </span><span class="n">universal_newlines</span><span class="o">=</span><span class="k">True</span><span class="p">,</span><span class="w"></span>
 
-        <span class="ss">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-        <span class="nv">print</span><span class="ss">(</span><span class="nv">shlex_join</span><span class="ss">(</span><span class="nv">process</span>.<span class="nv">args</span><span class="ss">))</span>
+<span class="w">        </span><span class="k">print</span><span class="p">(</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">args</span><span class="p">))</span><span class="w"></span>
 
-        <span class="nv">print</span><span class="ss">(</span><span class="nv">process</span>.<span class="nv">stdout</span><span class="ss">)</span>
+<span class="w">        </span><span class="k">print</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">stdout</span><span class="p">)</span><span class="w"></span>
 
-        <span class="nv">print</span><span class="ss">(</span><span class="nv">process</span>.<span class="nv">stderr</span><span class="ss">)</span>
+<span class="w">        </span><span class="k">print</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">stderr</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">process</span>.<span class="nv">stdout</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">stdout</span><span class="w"></span>
 </pre></div>
 
 
@@ -2391,7 +2391,7 @@ for xml (jats) output.</p>
 <p>Filenames must be adjusted accodingly when current pandoc version changes.</p>
 <p>Run tests locally skipping this test suit (makes sense if your local pandoc
 version is different from pandoc version used by Travis and Appveyor):</p>
-<div class="codehilite"><pre><span></span><span class="n">pytest</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">m</span> <span class="ss">&quot;not pandoc_version_sensitive&quot;</span>
+<div class="codehilite"><pre><span></span><span class="err">pytest -v -m &quot;not pandoc_version_sensitive&quot;</span>
 </pre></div>
 
 
@@ -2437,21 +2437,21 @@ for testing.</p>
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>    @<span class="nv">classmethod</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="w">    </span><span class="nv">@classmethod</span><span class="w"></span>
 
-    <span class="nv">def</span> <span class="nv">expected_output</span><span class="ss">(</span><span class="nv">cls</span>, <span class="nv">format</span>, <span class="nv">extension</span><span class="ss">)</span>:
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">expected_output</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="w"> </span><span class="nf">format</span><span class="p">,</span><span class="w"> </span><span class="n">extension</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">filename</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">references-{format}-{cls.pandoc_stamp}.{extension}</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="n">filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="ss">&quot;references-{format}-{cls.pandoc_stamp}.{extension}&quot;</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="ss">(</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 
-            <span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="nv">__file__</span><span class="ss">)</span>
+<span class="w">            </span><span class="n">pathlib</span><span class="p">.</span><span class="k">Path</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span><span class="w"></span>
 
-            .<span class="nv">parent</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">cite-command-rendered</span><span class="s2">&quot;</span>, <span class="nv">filename</span><span class="ss">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">parent</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;cite-command-rendered&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p">)</span><span class="w"></span>
 
-            .<span class="nv">read_text</span><span class="ss">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">read_text</span><span class="p">()</span><span class="w"></span>
 
-        <span class="ss">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 </pre></div>
 
 
@@ -2463,49 +2463,49 @@ for testing.</p>
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>    @<span class="nv">staticmethod</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="w">    </span><span class="nv">@staticmethod</span><span class="w"></span>
 
-    <span class="nv">def</span> <span class="nv">render</span><span class="ss">(</span><span class="nv">format_args</span><span class="ss">)</span>:
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">render</span><span class="p">(</span><span class="n">format_args</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">args</span> <span class="o">=</span> [
+<span class="w">        </span><span class="n">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
 
-            <span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;manubot&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">cite</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;cite&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">--render</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;--render&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">--csl</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;--csl&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">arxiv:1806.05726v1</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;arxiv:1806.05726v1&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">doi:10.7717/peerj.338</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;doi:10.7717/peerj.338&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">pmid:29618526</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;pmid:29618526&quot;,</span>
 
-        ] <span class="o">+</span> <span class="nv">format_args</span>
+<span class="n">        </span><span class="o">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">format_args</span><span class="w"></span>
 
-        <span class="nv">process</span> <span class="o">=</span> <span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span>
+<span class="w">        </span><span class="n">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="w"></span>
 
-            <span class="nv">args</span>,
+<span class="w">            </span><span class="n">args</span><span class="p">,</span><span class="w"></span>
 
-            <span class="nv">stdout</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>,
+<span class="w">            </span><span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span><span class="w"></span>
 
-            <span class="nv">stderr</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>,
+<span class="w">            </span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span><span class="w"></span>
 
-            <span class="nv">universal_newlines</span><span class="o">=</span><span class="nv">True</span>,
+<span class="w">            </span><span class="n">universal_newlines</span><span class="o">=</span><span class="k">True</span><span class="p">,</span><span class="w"></span>
 
-        <span class="ss">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-        <span class="nv">print</span><span class="ss">(</span><span class="nv">shlex_join</span><span class="ss">(</span><span class="nv">process</span>.<span class="nv">args</span><span class="ss">))</span>
+<span class="w">        </span><span class="k">print</span><span class="p">(</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">args</span><span class="p">))</span><span class="w"></span>
 
-        <span class="nv">print</span><span class="ss">(</span><span class="nv">process</span>.<span class="nv">stdout</span><span class="ss">)</span>
+<span class="w">        </span><span class="k">print</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">stdout</span><span class="p">)</span><span class="w"></span>
 
-        <span class="nv">print</span><span class="ss">(</span><span class="nv">process</span>.<span class="nv">stderr</span><span class="ss">)</span>
+<span class="w">        </span><span class="k">print</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">stderr</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">process</span>.<span class="nv">stdout</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">stdout</span><span class="w"></span>
 </pre></div>
 
 
@@ -2566,7 +2566,7 @@ for xml (jats) output.</p>
 <p>Filenames must be adjusted accodingly when current pandoc version changes.</p>
 <p>Run tests locally skipping this test suit (makes sense if your local pandoc
 version is different from pandoc version used by Travis and Appveyor):</p>
-<div class="codehilite"><pre><span></span><span class="n">pytest</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">m</span> <span class="ss">&quot;not pandoc_version_sensitive&quot;</span>
+<div class="codehilite"><pre><span></span><span class="err">pytest -v -m &quot;not pandoc_version_sensitive&quot;</span>
 </pre></div>
 
 
@@ -2620,21 +2620,21 @@ for testing.</p>
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>    @<span class="nv">classmethod</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="w">    </span><span class="nv">@classmethod</span><span class="w"></span>
 
-    <span class="nv">def</span> <span class="nv">expected_output</span><span class="ss">(</span><span class="nv">cls</span>, <span class="nv">format</span>, <span class="nv">extension</span><span class="ss">)</span>:
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">expected_output</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="w"> </span><span class="nf">format</span><span class="p">,</span><span class="w"> </span><span class="n">extension</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">filename</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">references-{format}-{cls.pandoc_stamp}.{extension}</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="n">filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="ss">&quot;references-{format}-{cls.pandoc_stamp}.{extension}&quot;</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="ss">(</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 
-            <span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="nv">__file__</span><span class="ss">)</span>
+<span class="w">            </span><span class="n">pathlib</span><span class="p">.</span><span class="k">Path</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span><span class="w"></span>
 
-            .<span class="nv">parent</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">cite-command-rendered</span><span class="s2">&quot;</span>, <span class="nv">filename</span><span class="ss">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">parent</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;cite-command-rendered&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p">)</span><span class="w"></span>
 
-            .<span class="nv">read_text</span><span class="ss">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">read_text</span><span class="p">()</span><span class="w"></span>
 
-        <span class="ss">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 </pre></div>
 
 
@@ -2646,49 +2646,49 @@ for testing.</p>
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>    @<span class="nv">staticmethod</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="w">    </span><span class="nv">@staticmethod</span><span class="w"></span>
 
-    <span class="nv">def</span> <span class="nv">render</span><span class="ss">(</span><span class="nv">format_args</span><span class="ss">)</span>:
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">render</span><span class="p">(</span><span class="n">format_args</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">args</span> <span class="o">=</span> [
+<span class="w">        </span><span class="n">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
 
-            <span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;manubot&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">cite</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;cite&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">--render</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;--render&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">--csl</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;--csl&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">arxiv:1806.05726v1</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;arxiv:1806.05726v1&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">doi:10.7717/peerj.338</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;doi:10.7717/peerj.338&quot;,</span>
 
-            <span class="s2">&quot;</span><span class="s">pmid:29618526</span><span class="s2">&quot;</span>,
+<span class="n">            &quot;pmid:29618526&quot;,</span>
 
-        ] <span class="o">+</span> <span class="nv">format_args</span>
+<span class="n">        </span><span class="o">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">format_args</span><span class="w"></span>
 
-        <span class="nv">process</span> <span class="o">=</span> <span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span>
+<span class="w">        </span><span class="n">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="w"></span>
 
-            <span class="nv">args</span>,
+<span class="w">            </span><span class="n">args</span><span class="p">,</span><span class="w"></span>
 
-            <span class="nv">stdout</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>,
+<span class="w">            </span><span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span><span class="w"></span>
 
-            <span class="nv">stderr</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>,
+<span class="w">            </span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span><span class="w"></span>
 
-            <span class="nv">universal_newlines</span><span class="o">=</span><span class="nv">True</span>,
+<span class="w">            </span><span class="n">universal_newlines</span><span class="o">=</span><span class="k">True</span><span class="p">,</span><span class="w"></span>
 
-        <span class="ss">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-        <span class="nv">print</span><span class="ss">(</span><span class="nv">shlex_join</span><span class="ss">(</span><span class="nv">process</span>.<span class="nv">args</span><span class="ss">))</span>
+<span class="w">        </span><span class="k">print</span><span class="p">(</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">args</span><span class="p">))</span><span class="w"></span>
 
-        <span class="nv">print</span><span class="ss">(</span><span class="nv">process</span>.<span class="nv">stdout</span><span class="ss">)</span>
+<span class="w">        </span><span class="k">print</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">stdout</span><span class="p">)</span><span class="w"></span>
 
-        <span class="nv">print</span><span class="ss">(</span><span class="nv">process</span>.<span class="nv">stderr</span><span class="ss">)</span>
+<span class="w">        </span><span class="k">print</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">stderr</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">process</span>.<span class="nv">stdout</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">stdout</span><span class="w"></span>
 </pre></div>
 
 
@@ -2810,7 +2810,7 @@ for testing.</p>
       
     </div>
     
-      <script src="../../../../../assets/javascripts/application.a8b5e56f.js"></script>
+      <script src="../../../../../assets/javascripts/application.8e03edeb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../../.."}})</script>
       

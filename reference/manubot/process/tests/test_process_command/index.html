@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
     
     
       
@@ -1292,59 +1292,59 @@
 
 
 <p>Test command line execution of manubot to build an example manuscript.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>@<span class="nv">pytest</span>.<span class="nv">mark</span>.<span class="nv">parametrize</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">manuscript</span><span class="s2">&quot;</span>, <span class="nv">manuscripts</span><span class="ss">)</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="ss">&quot;manuscript&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">manuscripts</span><span class="p">)</span><span class="w"></span>
 
-<span class="nv">def</span> <span class="nv">test_example_manuscript</span><span class="ss">(</span><span class="nv">manuscript</span><span class="ss">)</span>:
+<span class="n">def</span><span class="w"> </span><span class="n">test_example_manuscript</span><span class="p">(</span><span class="n">manuscript</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Test</span> <span class="nv">command</span> <span class="nv">line</span> <span class="nv">execution</span> <span class="nv">of</span> <span class="nv">manubot</span> <span class="nv">to</span> <span class="nv">build</span> <span class="nv">an</span> <span class="nv">example</span> <span class="nv">manuscript</span>.
+<span class="ss">    Test command line execution of manubot to build an example manuscript.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="nv">manuscript_dir</span> <span class="o">=</span> <span class="nv">directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">manuscripts</span><span class="s2">&quot;</span>, <span class="nv">manuscript</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">manuscript_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;manuscripts&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">manuscript</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nv">args</span> <span class="o">=</span> [
+<span class="w">    </span><span class="n">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
 
-        <span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>,
+<span class="n">        &quot;manubot&quot;,</span>
 
-        <span class="s2">&quot;</span><span class="s">process</span><span class="s2">&quot;</span>,
+<span class="n">        &quot;process&quot;,</span>
 
-        <span class="s2">&quot;</span><span class="s">--log-level</span><span class="s2">&quot;</span>,
+<span class="n">        &quot;--log-level&quot;,</span>
 
-        <span class="s2">&quot;</span><span class="s">INFO</span><span class="s2">&quot;</span>,
+<span class="n">        &quot;INFO&quot;,</span>
 
-        <span class="s2">&quot;</span><span class="s">--content-directory</span><span class="s2">&quot;</span>,
+<span class="n">        &quot;--content-directory&quot;,</span>
 
-        <span class="nv">str</span><span class="ss">(</span><span class="nv">manuscript_dir</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">content</span><span class="s2">&quot;</span><span class="ss">))</span>,
+<span class="n">        str(manuscript_dir.joinpath(&quot;content&quot;)),</span>
 
-        <span class="s2">&quot;</span><span class="s">--output-directory</span><span class="s2">&quot;</span>,
+<span class="n">        &quot;--output-directory&quot;,</span>
 
-        <span class="nv">str</span><span class="ss">(</span><span class="nv">manuscript_dir</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">output</span><span class="s2">&quot;</span><span class="ss">))</span>,
+<span class="n">        str(manuscript_dir.joinpath(&quot;output&quot;)),</span>
 
-    ]
+<span class="n">    </span><span class="o">]</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">manuscript</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">variables</span><span class="s2">&quot;</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">manuscript</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;variables&quot;</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>
+<span class="w">        </span><span class="n">args</span><span class="p">.</span><span class="n">extend</span><span class="p">(</span><span class="w"></span>
 
-            [
+<span class="w">            </span><span class="o">[</span><span class="n"></span>
 
-                <span class="s2">&quot;</span><span class="s">--template-variables-path</span><span class="s2">&quot;</span>,
+<span class="n">                &quot;--template-variables-path&quot;,</span>
 
-                <span class="nv">str</span><span class="ss">(</span><span class="nv">manuscript_dir</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">content/template-variables.json</span><span class="s2">&quot;</span><span class="ss">))</span>,
+<span class="n">                str(manuscript_dir.joinpath(&quot;content/template-variables.json&quot;)),</span>
 
-            ]
+<span class="n">            </span><span class="o">]</span><span class="w"></span>
 
-        <span class="ss">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-    <span class="nv">process</span> <span class="o">=</span> <span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span><span class="nv">args</span>, <span class="nv">stdout</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>, <span class="nv">stderr</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span><span class="w"> </span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nv">print</span><span class="ss">(</span><span class="nv">process</span>.<span class="nv">args</span><span class="ss">)</span>
+<span class="w">    </span><span class="k">print</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">args</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nv">print</span><span class="ss">(</span><span class="nv">process</span>.<span class="nv">stderr</span>.<span class="nv">decode</span><span class="ss">())</span>
+<span class="w">    </span><span class="k">print</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">stderr</span><span class="p">.</span><span class="n">decode</span><span class="p">())</span><span class="w"></span>
 
-    <span class="nv">assert</span> <span class="nv">process</span>.<span class="nv">returncode</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">returncode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
 </pre></div>
 
 
@@ -1419,7 +1419,7 @@
       
     </div>
     
-      <script src="../../../../../assets/javascripts/application.a8b5e56f.js"></script>
+      <script src="../../../../../assets/javascripts/application.8e03edeb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../../.."}})</script>
       

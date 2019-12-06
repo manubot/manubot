@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
     
     
       
@@ -1250,57 +1250,57 @@
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">cli_process</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">cli_process</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-    <span class="nv">args_dict</span> <span class="o">=</span> <span class="nv">vars</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>
+    <span class="n">args_dict</span> <span class="o">=</span> <span class="n">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    # <span class="nv">Set</span> <span class="nv">paths</span> <span class="k">for</span> <span class="nv">content</span>
+    <span class="o">#</span> <span class="k">Set</span> <span class="n">paths</span> <span class="k">for</span> <span class="n">content</span>
 
-    <span class="nv">content_dir</span> <span class="o">=</span> <span class="nv">args</span>.<span class="nv">content_directory</span>
+    <span class="n">content_dir</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">content_directory</span>
 
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">content_dir</span>.<span class="nv">is_dir</span><span class="ss">()</span>:
+    <span class="k">if</span> <span class="k">not</span> <span class="n">content_dir</span><span class="p">.</span><span class="n">is_dir</span><span class="p">():</span>
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">content directory does not exist: {content_dir}</span><span class="s2">&quot;</span><span class="ss">)</span>
+        <span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;content directory does not exist: {content_dir}&quot;</span><span class="p">)</span>
 
-    <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">citation_tags_path</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">content_dir</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">citation-tags.tsv</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;citation_tags_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">content_dir</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;citation-tags.tsv&quot;</span><span class="p">)</span>
 
-    <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">meta_yaml_path</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">content_dir</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">metadata.yaml</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;meta_yaml_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">content_dir</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;metadata.yaml&quot;</span><span class="p">)</span>
 
-    <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">manual_references_paths</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">sorted</span><span class="ss">(</span>
+    <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;manual_references_paths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sorted</span><span class="p">(</span>
 
-        <span class="nv">content_dir</span>.<span class="nv">rglob</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">manual-references*.*</span><span class="s2">&quot;</span><span class="ss">)</span>
+        <span class="n">content_dir</span><span class="p">.</span><span class="n">rglob</span><span class="p">(</span><span class="ss">&quot;manual-references*.*&quot;</span><span class="p">)</span>
 
-    <span class="ss">)</span>
+    <span class="p">)</span>
 
-    # <span class="nv">Set</span> <span class="nv">paths</span> <span class="k">for</span> <span class="nv">output</span>
+    <span class="o">#</span> <span class="k">Set</span> <span class="n">paths</span> <span class="k">for</span> <span class="k">output</span>
 
-    <span class="nv">output_dir</span> <span class="o">=</span> <span class="nv">args</span>.<span class="nv">output_directory</span>
+    <span class="n">output_dir</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">output_directory</span>
 
-    <span class="nv">output_dir</span>.<span class="nv">mkdir</span><span class="ss">(</span><span class="nv">parents</span><span class="o">=</span><span class="nv">True</span>, <span class="nv">exist_ok</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+    <span class="n">output_dir</span><span class="p">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="k">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
 
-    <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">manuscript_path</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">output_dir</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">manuscript.md</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;manuscript_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_dir</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;manuscript.md&quot;</span><span class="p">)</span>
 
-    <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">citations_path</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">output_dir</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">citations.tsv</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;citations_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_dir</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;citations.tsv&quot;</span><span class="p">)</span>
 
-    <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">references_path</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">output_dir</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">references.json</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;references_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_dir</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;references.json&quot;</span><span class="p">)</span>
 
-    <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">variables_path</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">output_dir</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">variables.json</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;variables_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_dir</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;variables.json&quot;</span><span class="p">)</span>
 
-    # <span class="nv">Set</span> <span class="nv">paths</span> <span class="k">for</span> <span class="nv">caching</span>
+    <span class="o">#</span> <span class="k">Set</span> <span class="n">paths</span> <span class="k">for</span> <span class="n">caching</span>
 
-    <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">cache_directory</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">args</span>.<span class="nv">cache_directory</span> <span class="nv">or</span> <span class="nv">output_dir</span>
+    <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;cache_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">cache_directory</span> <span class="k">or</span> <span class="n">output_dir</span>
 
-    <span class="nv">args</span>.<span class="nv">cache_directory</span>.<span class="nv">mkdir</span><span class="ss">(</span><span class="nv">parents</span><span class="o">=</span><span class="nv">True</span>, <span class="nv">exist_ok</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+    <span class="n">args</span><span class="p">.</span><span class="n">cache_directory</span><span class="p">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="k">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
 
-    <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">requests_cache_path</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">str</span><span class="ss">(</span>
+    <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;requests_cache_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">str</span><span class="p">(</span>
 
-        <span class="nv">args</span>.<span class="nv">cache_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">requests-cache</span><span class="s2">&quot;</span><span class="ss">)</span>
+        <span class="n">args</span><span class="p">.</span><span class="n">cache_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;requests-cache&quot;</span><span class="p">)</span>
 
-    <span class="ss">)</span>
+    <span class="p">)</span>
 
-    <span class="nv">from</span> <span class="nv">manubot</span>.<span class="nv">process</span>.<span class="nv">util</span> <span class="nv">import</span> <span class="nv">prepare_manuscript</span>
+    <span class="k">from</span> <span class="n">manubot</span><span class="p">.</span><span class="n">process</span><span class="p">.</span><span class="n">util</span> <span class="n">import</span> <span class="n">prepare_manuscript</span>
 
-    <span class="nv">prepare_manuscript</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>
+    <span class="n">prepare_manuscript</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 </pre></div>
 
 
@@ -1375,7 +1375,7 @@
       
     </div>
     
-      <script src="../../../../assets/javascripts/application.a8b5e56f.js"></script>
+      <script src="../../../../assets/javascripts/application.8e03edeb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../.."}})</script>
       

@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
     
     
       
@@ -1849,117 +1849,117 @@
 
 <p>article is a PubmedArticle xml element tree</p>
 <p>https://github.com/citation-style-language/schema/blob/master/csl-data.json</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">csl_item_from_pubmed_article</span><span class="ss">(</span><span class="nv">article</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span><span class="w"> </span><span class="n">csl_item_from_pubmed_article</span><span class="p">(</span><span class="n">article</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">article</span> <span class="nv">is</span> <span class="nv">a</span> <span class="nv">PubmedArticle</span> <span class="nv">xml</span> <span class="nv">element</span> <span class="nv">tree</span>
+<span class="ss">    article is a PubmedArticle xml element tree</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">citation</span><span class="o">-</span><span class="nv">style</span><span class="o">-</span><span class="nv">language</span><span class="o">/</span><span class="nv">schema</span><span class="o">/</span><span class="nv">blob</span><span class="o">/</span><span class="nv">master</span><span class="o">/</span><span class="nv">csl</span><span class="o">-</span><span class="nv">data</span>.<span class="nv">json</span>
+<span class="ss">    https://github.com/citation-style-language/schema/blob/master/csl-data.json</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">collections</span>.<span class="nv">OrderedDict</span><span class="ss">()</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">collections</span><span class="p">.</span><span class="n">OrderedDict</span><span class="p">()</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">article</span>.<span class="nv">find</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">MedlineCitation/Article</span><span class="s2">&quot;</span><span class="ss">)</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">article</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="ss">&quot;MedlineCitation/Article&quot;</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">raise</span> <span class="nv">NotImplementedError</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Unsupported PubMed record: no &lt;Article&gt; element</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">NotImplementedError</span><span class="p">(</span><span class="ss">&quot;Unsupported PubMed record: no &lt;Article&gt; element&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nv">title</span> <span class="o">=</span> <span class="nv">article</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">MedlineCitation/Article/ArticleTitle</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">article</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="ss">&quot;MedlineCitation/Article/ArticleTitle&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">title</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">title</span><span class="p">:</span><span class="w"></span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">title</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">title</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;title&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">title</span><span class="w"></span>
 
-    <span class="nv">volume</span> <span class="o">=</span> <span class="nv">article</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">MedlineCitation/Article/Journal/JournalIssue/Volume</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">volume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">article</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="ss">&quot;MedlineCitation/Article/Journal/JournalIssue/Volume&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">volume</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">volume</span><span class="p">:</span><span class="w"></span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">volume</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">volume</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;volume&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volume</span><span class="w"></span>
 
-    <span class="nv">issue</span> <span class="o">=</span> <span class="nv">article</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">MedlineCitation/Article/Journal/JournalIssue/Issue</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">issue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">article</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="ss">&quot;MedlineCitation/Article/Journal/JournalIssue/Issue&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">issue</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">issue</span><span class="p">:</span><span class="w"></span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">issue</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">issue</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;issue&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">issue</span><span class="w"></span>
 
-    <span class="nv">page</span> <span class="o">=</span> <span class="nv">article</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">MedlineCitation/Article/Pagination/MedlinePgn</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">page</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">article</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="ss">&quot;MedlineCitation/Article/Pagination/MedlinePgn&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">page</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">page</span><span class="p">:</span><span class="w"></span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">page</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">page</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;page&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">page</span><span class="w"></span>
 
-    <span class="nv">journal</span> <span class="o">=</span> <span class="nv">article</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">MedlineCitation/Article/Journal/Title</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">journal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">article</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="ss">&quot;MedlineCitation/Article/Journal/Title&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">journal</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">journal</span><span class="p">:</span><span class="w"></span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">container-title</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">journal</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;container-title&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">journal</span><span class="w"></span>
 
-    <span class="nv">journal_short</span> <span class="o">=</span> <span class="nv">article</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">MedlineCitation/Article/Journal/ISOAbbreviation</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">journal_short</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">article</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="ss">&quot;MedlineCitation/Article/Journal/ISOAbbreviation&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">journal_short</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">journal_short</span><span class="p">:</span><span class="w"></span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">container-title-short</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">journal_short</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;container-title-short&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">journal_short</span><span class="w"></span>
 
-    <span class="nv">issn</span> <span class="o">=</span> <span class="nv">article</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">MedlineCitation/Article/Journal/ISSN</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">issn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">article</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="ss">&quot;MedlineCitation/Article/Journal/ISSN&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">issn</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">issn</span><span class="p">:</span><span class="w"></span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">ISSN</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">issn</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;ISSN&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">issn</span><span class="w"></span>
 
-    <span class="nv">date_parts</span> <span class="o">=</span> <span class="nv">extract_publication_date_parts</span><span class="ss">(</span><span class="nv">article</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">date_parts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extract_publication_date_parts</span><span class="p">(</span><span class="n">article</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">date_parts</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">date_parts</span><span class="p">:</span><span class="w"></span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">issued</span><span class="s2">&quot;</span>] <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">date-parts</span><span class="s2">&quot;</span>: [<span class="nv">date_parts</span>]}
+<span class="w">        </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;issued&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;date-parts&quot;</span><span class="err">:</span><span class="w"> </span><span class="o">[</span><span class="n">date_parts</span><span class="o">]</span><span class="err">}</span><span class="w"></span>
 
-    <span class="nv">authors_csl</span> <span class="o">=</span> <span class="nv">list</span><span class="ss">()</span>
+<span class="w">    </span><span class="n">authors_csl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">()</span><span class="w"></span>
 
-    <span class="nv">authors</span> <span class="o">=</span> <span class="nv">article</span>.<span class="nv">findall</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">MedlineCitation/Article/AuthorList/Author</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">article</span><span class="p">.</span><span class="n">findall</span><span class="p">(</span><span class="ss">&quot;MedlineCitation/Article/AuthorList/Author&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">for</span> <span class="nv">author</span> <span class="nv">in</span> <span class="nv">authors</span>:
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">author</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">authors</span><span class="p">:</span><span class="w"></span>
 
-        <span class="nv">author_csl</span> <span class="o">=</span> <span class="nv">collections</span>.<span class="nv">OrderedDict</span><span class="ss">()</span>
+<span class="w">        </span><span class="n">author_csl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">collections</span><span class="p">.</span><span class="n">OrderedDict</span><span class="p">()</span><span class="w"></span>
 
-        <span class="nv">given</span> <span class="o">=</span> <span class="nv">author</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">ForeName</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">        </span><span class="n">given</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">author</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="ss">&quot;ForeName&quot;</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="nv">given</span>:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nl">given</span><span class="p">:</span><span class="w"></span>
 
-            <span class="nv">author_csl</span>[<span class="s2">&quot;</span><span class="s">given</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">given</span>
+<span class="w">            </span><span class="n">author_csl</span><span class="o">[</span><span class="n">&quot;given&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">given</span><span class="w"></span>
 
-        <span class="nv">family</span> <span class="o">=</span> <span class="nv">author</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">LastName</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">        </span><span class="n">family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">author</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="ss">&quot;LastName&quot;</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="nv">family</span>:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nl">family</span><span class="p">:</span><span class="w"></span>
 
-            <span class="nv">author_csl</span>[<span class="s2">&quot;</span><span class="s">family</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">family</span>
+<span class="w">            </span><span class="n">author_csl</span><span class="o">[</span><span class="n">&quot;family&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">family</span><span class="w"></span>
 
-        <span class="nv">authors_csl</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">author_csl</span><span class="ss">)</span>
+<span class="w">        </span><span class="n">authors_csl</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">author_csl</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">authors_csl</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">authors_csl</span><span class="p">:</span><span class="w"></span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">author</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">authors_csl</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;author&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">authors_csl</span><span class="w"></span>
 
-    <span class="k">for</span> <span class="nv">id_type</span>, <span class="nv">key</span> <span class="nv">in</span> <span class="ss">(</span><span class="s2">&quot;</span><span class="s">pubmed</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">PMID</span><span class="s2">&quot;</span><span class="ss">)</span>, <span class="ss">(</span><span class="s2">&quot;</span><span class="s">pmc</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">PMCID</span><span class="s2">&quot;</span><span class="ss">)</span>, <span class="ss">(</span><span class="s2">&quot;</span><span class="s">doi</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">DOI</span><span class="s2">&quot;</span><span class="ss">)</span>:
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">id_type</span><span class="p">,</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="p">(</span><span class="ss">&quot;pubmed&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;PMID&quot;</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="ss">&quot;pmc&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;PMCID&quot;</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="ss">&quot;doi&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;DOI&quot;</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">xpath</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">PubmedData/ArticleIdList/ArticleId[@IdType=&#39;{id_type}&#39;]</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="n">xpath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="ss">&quot;PubmedData/ArticleIdList/ArticleId[@IdType=&#39;{id_type}&#39;]&quot;</span><span class="w"></span>
 
-        <span class="nv">value</span> <span class="o">=</span> <span class="nv">article</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="nv">xpath</span><span class="ss">)</span>
+<span class="w">        </span><span class="k">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">article</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="n">xpath</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="nv">value</span>:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="k">value</span><span class="err">:</span><span class="w"></span>
 
-            <span class="nv">csl_item</span>[<span class="nv">key</span>] <span class="o">=</span> <span class="nv">value</span>.<span class="nv">lower</span><span class="ss">()</span> <span class="k">if</span> <span class="nv">key</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">DOI</span><span class="s2">&quot;</span> <span class="k">else</span> <span class="nv">value</span>
+<span class="w">            </span><span class="n">csl_item</span><span class="o">[</span><span class="n">key</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">value</span><span class="p">.</span><span class="nf">lower</span><span class="p">()</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;DOI&quot;</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">value</span><span class="w"></span>
 
-    <span class="nv">abstract</span> <span class="o">=</span> <span class="nv">article</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">MedlineCitation/Article/Abstract/AbstractText</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">abstract</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">article</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="ss">&quot;MedlineCitation/Article/Abstract/AbstractText&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">abstract</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">abstract</span><span class="p">:</span><span class="w"></span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">abstract</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">abstract</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;abstract&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">abstract</span><span class="w"></span>
 
-    <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">URL</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">https://www.ncbi.nlm.nih.gov/pubmed/{csl_item[&#39;PMID&#39;]}</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;URL&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="ss">&quot;https://www.ncbi.nlm.nih.gov/pubmed/{csl_item[&#39;PMID&#39;]}&quot;</span><span class="w"></span>
 
-    <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">type</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="s2">&quot;</span><span class="s">article-journal</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;type&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;article-journal&quot;</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="nv">csl_item</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">csl_item</span><span class="w"></span>
 </pre></div>
 
 
@@ -1972,63 +1972,63 @@
 
 
 <p>Extract date published from a PubmedArticle xml element tree.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">extract_publication_date_parts</span><span class="ss">(</span><span class="nv">article</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span><span class="w"> </span><span class="n">extract_publication_date_parts</span><span class="p">(</span><span class="n">article</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Extract</span> <span class="nv">date</span> <span class="nv">published</span> <span class="nv">from</span> <span class="nv">a</span> <span class="nv">PubmedArticle</span> <span class="nv">xml</span> <span class="nv">element</span> <span class="nv">tree</span>.
+<span class="ss">    Extract date published from a PubmedArticle xml element tree.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="nv">date_parts</span> <span class="o">=</span> []
+<span class="w">    </span><span class="n">date_parts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">[]</span><span class="w"></span>
 
-    # <span class="nv">Electronic</span> <span class="nv">articles</span>
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="n">Electronic</span><span class="w"> </span><span class="n">articles</span><span class="w"></span>
 
-    <span class="nv">date</span> <span class="o">=</span> <span class="nv">article</span>.<span class="nv">find</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">MedlineCitation/Article/ArticleDate</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="nc">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">article</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="ss">&quot;MedlineCitation/Article/ArticleDate&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">date</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nc">date</span><span class="err">:</span><span class="w"></span>
 
-        <span class="k">for</span> <span class="nv">part</span> <span class="nv">in</span> <span class="s2">&quot;</span><span class="s">Year</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">Month</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">Day</span><span class="s2">&quot;</span>:
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">part</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="ss">&quot;Year&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;Month&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;Day&quot;</span><span class="err">:</span><span class="w"></span>
 
-            <span class="nv">part</span> <span class="o">=</span> <span class="nv">date</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="nv">part</span><span class="ss">)</span>
+<span class="w">            </span><span class="n">part</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">date</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="n">part</span><span class="p">)</span><span class="w"></span>
 
-            <span class="k">if</span> <span class="nv">not</span> <span class="nv">part</span>:
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nl">part</span><span class="p">:</span><span class="w"></span>
 
-                <span class="k">break</span>
+<span class="w">                </span><span class="k">break</span><span class="w"></span>
 
-            <span class="nv">date_parts</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">int</span><span class="ss">(</span><span class="nv">part</span><span class="ss">))</span>
+<span class="w">            </span><span class="n">date_parts</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nc">int</span><span class="p">(</span><span class="n">part</span><span class="p">))</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">date_parts</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">date_parts</span><span class="w"></span>
 
-    # <span class="nv">Print</span> <span class="nv">articles</span>
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="k">Print</span><span class="w"> </span><span class="n">articles</span><span class="w"></span>
 
-    <span class="nv">date</span> <span class="o">=</span> <span class="nv">article</span>.<span class="nv">find</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">MedlineCitation/Article/Journal/JournalIssue/PubDate</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="nc">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">article</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="ss">&quot;MedlineCitation/Article/Journal/JournalIssue/PubDate&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nv">year</span> <span class="o">=</span> <span class="nv">date</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Year</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="nf">year</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">date</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="ss">&quot;Year&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">year</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nf">year</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">date_parts</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">int</span><span class="ss">(</span><span class="nv">year</span><span class="ss">))</span>
+<span class="w">        </span><span class="n">date_parts</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nc">int</span><span class="p">(</span><span class="nf">year</span><span class="p">))</span><span class="w"></span>
 
-    <span class="nv">month</span> <span class="o">=</span> <span class="nv">date</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Month</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="nf">month</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">date</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="ss">&quot;Month&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">month</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nf">month</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">try</span>:
+<span class="w">        </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
 
-            <span class="nv">date_parts</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">month_abbrev_to_int</span>[<span class="nv">month</span>]<span class="ss">)</span>
+<span class="w">            </span><span class="n">date_parts</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">month_abbrev_to_int</span><span class="o">[</span><span class="n">month</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
 
-        <span class="nv">except</span> <span class="nv">KeyError</span>:
+<span class="w">        </span><span class="ow">except</span><span class="w"> </span><span class="nl">KeyError</span><span class="p">:</span><span class="w"></span>
 
-            <span class="nv">date_parts</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">int</span><span class="ss">(</span><span class="nv">month</span><span class="ss">))</span>
+<span class="w">            </span><span class="n">date_parts</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nc">int</span><span class="p">(</span><span class="nf">month</span><span class="p">))</span><span class="w"></span>
 
-    <span class="nv">day</span> <span class="o">=</span> <span class="nv">date</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Day</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="nf">day</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">date</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="ss">&quot;Day&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">day</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nf">day</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">date_parts</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">int</span><span class="ss">(</span><span class="nv">day</span><span class="ss">))</span>
+<span class="w">        </span><span class="n">date_parts</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nc">int</span><span class="p">(</span><span class="nf">day</span><span class="p">))</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="nv">date_parts</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">date_parts</span><span class="w"></span>
 </pre></div>
 
 
@@ -2045,35 +2045,35 @@ DOI, using the NCBI Citation Exporter API.</p>
 <p>https://api.ncbi.nlm.nih.gov/lit/ctxp
 https://github.com/manubot/manubot/issues/21
 https://twitter.com/dhimmel/status/1061787168820092929</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_pmc_csl_item</span><span class="ss">(</span><span class="nv">pmcid</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">get_pmc_csl_item</span><span class="p">(</span><span class="n">pmcid</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Get</span> <span class="nv">the</span> <span class="nv">CSL</span> <span class="nv">Item</span> <span class="k">for</span> <span class="nv">a</span> <span class="nv">PubMed</span> <span class="nv">Central</span> <span class="nv">record</span> <span class="nv">by</span> <span class="nv">its</span> <span class="nv">PMID</span>, <span class="nv">PMCID</span>, <span class="nv">or</span>
+<span class="ss">    Get the CSL Item for a PubMed Central record by its PMID, PMCID, or</span>
 
-    <span class="nv">DOI</span>, <span class="nv">using</span> <span class="nv">the</span> <span class="nv">NCBI</span> <span class="nv">Citation</span> <span class="nv">Exporter</span> <span class="nv">API</span>.
+<span class="ss">    DOI, using the NCBI Citation Exporter API.</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">api</span>.<span class="nv">ncbi</span>.<span class="nv">nlm</span>.<span class="nv">nih</span>.<span class="nv">gov</span><span class="o">/</span><span class="nv">lit</span><span class="o">/</span><span class="nv">ctxp</span>
+<span class="ss">    https://api.ncbi.nlm.nih.gov/lit/ctxp</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">manubot</span><span class="o">/</span><span class="nv">manubot</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">21</span>
+<span class="ss">    https://github.com/manubot/manubot/issues/21</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">twitter</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">dhimmel</span><span class="o">/</span><span class="nv">status</span><span class="o">/</span><span class="mi">1061787168820092929</span>
+<span class="ss">    https://twitter.com/dhimmel/status/1061787168820092929</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">assert</span> <span class="nv">pmcid</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">PMC</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">assert</span> <span class="n">pmcid</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;PMC&quot;</span><span class="p">)</span>
 
-    <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">_get_literature_citation_exporter_csl_item</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">pmc</span><span class="s2">&quot;</span>, <span class="nv">pmcid</span>[<span class="mi">3</span>:]<span class="ss">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">_get_literature_citation_exporter_csl_item</span><span class="p">(</span><span class="ss">&quot;pmc&quot;</span><span class="p">,</span> <span class="n">pmcid</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span>
 
-    <span class="k">if</span> <span class="s2">&quot;</span><span class="s">URL</span><span class="s2">&quot;</span> <span class="nv">not</span> <span class="nv">in</span> <span class="nv">csl_item</span>:
+    <span class="k">if</span> <span class="ss">&quot;URL&quot;</span> <span class="k">not</span> <span class="k">in</span> <span class="n">csl_item</span><span class="p">:</span>
 
-        <span class="nv">csl_item</span>[
+        <span class="n">csl_item</span><span class="p">[</span>
 
-            <span class="s2">&quot;</span><span class="s">URL</span><span class="s2">&quot;</span>
+            <span class="ss">&quot;URL&quot;</span>
 
-        ] <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">https://www.ncbi.nlm.nih.gov/pmc/articles/{csl_item.get(&#39;PMCID&#39;, pmcid)}/</span><span class="s2">&quot;</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="ss">&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/{csl_item.get(&#39;PMCID&#39;, pmcid)}/&quot;</span>
 
-    <span class="k">return</span> <span class="nv">csl_item</span>
+    <span class="k">return</span> <span class="n">csl_item</span>
 </pre></div>
 
 
@@ -2088,81 +2088,81 @@ https://twitter.com/dhimmel/status/1061787168820092929</p>
 <p>Query PMC's ID Converter API to retrieve the PMCID and PMID for a DOI.
 Does not work for DOIs that are in Pubmed but not PubMed Central.
 https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_pmcid_and_pmid_for_doi</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">get_pmcid_and_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Query</span> <span class="nv">PMC</span><span class="s1">&#39;</span><span class="s">s ID Converter API to retrieve the PMCID and PMID for a DOI.</span>
+<span class="ss">    Query PMC&#39;s ID Converter API to retrieve the PMCID and PMID for a DOI.</span>
 
-    <span class="nv">Does</span> <span class="nv">not</span> <span class="nv">work</span> <span class="k">for</span> <span class="nv">DOIs</span> <span class="nv">that</span> <span class="nv">are</span> <span class="nv">in</span> <span class="nv">Pubmed</span> <span class="nv">but</span> <span class="nv">not</span> <span class="nv">PubMed</span> <span class="nv">Central</span>.
+<span class="ss">    Does not work for DOIs that are in Pubmed but not PubMed Central.</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">www</span>.<span class="nv">ncbi</span>.<span class="nv">nlm</span>.<span class="nv">nih</span>.<span class="nv">gov</span><span class="o">/</span><span class="nv">pmc</span><span class="o">/</span><span class="nv">tools</span><span class="o">/</span><span class="nv">id</span><span class="o">-</span><span class="nv">converter</span><span class="o">-</span><span class="nv">api</span><span class="o">/</span>
+<span class="ss">    https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">assert</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">doi</span>, <span class="nv">str</span><span class="ss">)</span>
+    <span class="n">assert</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">str</span><span class="p">)</span>
 
-    <span class="nv">assert</span> <span class="nv">doi</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">10.</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">assert</span> <span class="n">doi</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;10.&quot;</span><span class="p">)</span>
 
-    <span class="nb">params</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">ids</span><span class="s2">&quot;</span>: <span class="nv">doi</span>, <span class="s2">&quot;</span><span class="s">tool</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">manubot</span><span class="s2">&quot;</span>}
+    <span class="n">params</span> <span class="o">=</span> <span class="err">{</span><span class="ss">&quot;ids&quot;</span><span class="p">:</span> <span class="n">doi</span><span class="p">,</span> <span class="ss">&quot;tool&quot;</span><span class="p">:</span> <span class="ss">&quot;manubot&quot;</span><span class="err">}</span>
 
-    <span class="nv">url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/</span><span class="s2">&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="ss">&quot;https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/&quot;</span>
 
-    <span class="nv">response</span> <span class="o">=</span> <span class="nv">requests</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">url</span>, <span class="nb">params</span><span class="ss">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">response</span>.<span class="nv">ok</span>:
+    <span class="k">if</span> <span class="k">not</span> <span class="n">response</span><span class="p">.</span><span class="n">ok</span><span class="p">:</span>
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">Status code {response.status_code} querying {response.url}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
+        <span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;Status code {response.status_code} querying {response.url}\n&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> {}
+        <span class="k">return</span> <span class="err">{}</span>
 
-    <span class="nv">try</span>:
+    <span class="n">try</span><span class="p">:</span>
 
-        <span class="nv">element_tree</span> <span class="o">=</span> <span class="nv">xml</span>.<span class="nv">etree</span>.<span class="nv">ElementTree</span>.<span class="nv">fromstring</span><span class="ss">(</span><span class="nv">response</span>.<span class="nv">text</span><span class="ss">)</span>
+        <span class="n">element_tree</span> <span class="o">=</span> <span class="n">xml</span><span class="p">.</span><span class="n">etree</span><span class="p">.</span><span class="n">ElementTree</span><span class="p">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nb">text</span><span class="p">)</span>
 
-    <span class="nv">except</span> <span class="nv">Exception</span>:
+    <span class="k">except</span> <span class="k">Exception</span><span class="p">:</span>
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+        <span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span>
 
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error fetching PMC ID conversion for {doi}.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">f</span><span class="ss">&quot;Error fetching PMC ID conversion for {doi}.\n&quot;</span>
 
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Response from {response.url}:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s2">&quot;</span>
+            <span class="n">f</span><span class="ss">&quot;Response from {response.url}:\n{response.text}&quot;</span>
 
-        <span class="ss">)</span>
+        <span class="p">)</span>
 
-        <span class="k">return</span> {}
+        <span class="k">return</span> <span class="err">{}</span>
 
-    <span class="nv">records</span> <span class="o">=</span> <span class="nv">element_tree</span>.<span class="nv">findall</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">record</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">records</span> <span class="o">=</span> <span class="n">element_tree</span><span class="p">.</span><span class="n">findall</span><span class="p">(</span><span class="ss">&quot;record&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nv">len</span><span class="ss">(</span><span class="nv">records</span><span class="ss">)</span> <span class="o">!=</span> <span class="mi">1</span>:
+    <span class="k">if</span> <span class="n">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+        <span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span>
 
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Expected PubMed Central ID converter to return a single XML record for {doi}.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">f</span><span class="ss">&quot;Expected PubMed Central ID converter to return a single XML record for {doi}.\n&quot;</span>
 
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Response from {response.url}:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s2">&quot;</span>
+            <span class="n">f</span><span class="ss">&quot;Response from {response.url}:\n{response.text}&quot;</span>
 
-        <span class="ss">)</span>
+        <span class="p">)</span>
 
-        <span class="k">return</span> {}
+        <span class="k">return</span> <span class="err">{}</span>
 
-    <span class="ss">(</span><span class="nv">record</span>,<span class="ss">)</span> <span class="o">=</span> <span class="nv">records</span>
+    <span class="p">(</span><span class="n">record</span><span class="p">,)</span> <span class="o">=</span> <span class="n">records</span>
 
-    <span class="k">if</span> <span class="nv">record</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">status</span><span class="s2">&quot;</span>, <span class="nv">default</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">okay</span><span class="s2">&quot;</span><span class="ss">)</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">error</span><span class="s2">&quot;</span>:
+    <span class="k">if</span> <span class="n">record</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="ss">&quot;status&quot;</span><span class="p">,</span> <span class="k">default</span><span class="o">=</span><span class="ss">&quot;okay&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="ss">&quot;error&quot;</span><span class="p">:</span>
 
-        <span class="k">return</span> {}
+        <span class="k">return</span> <span class="err">{}</span>
 
-    <span class="nv">id_dict</span> <span class="o">=</span> {}
+    <span class="n">id_dict</span> <span class="o">=</span> <span class="err">{}</span>
 
-    <span class="k">for</span> <span class="nv">id_type</span> <span class="nv">in</span> <span class="s2">&quot;</span><span class="s">pmcid</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">pmid</span><span class="s2">&quot;</span>:
+    <span class="k">for</span> <span class="n">id_type</span> <span class="k">in</span> <span class="ss">&quot;pmcid&quot;</span><span class="p">,</span> <span class="ss">&quot;pmid&quot;</span><span class="p">:</span>
 
-        <span class="nv">id_</span> <span class="o">=</span> <span class="nv">record</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">id_type</span><span class="ss">)</span>
+        <span class="n">id_</span> <span class="o">=</span> <span class="n">record</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">id_type</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nv">id_</span>:
+        <span class="k">if</span> <span class="n">id_</span><span class="p">:</span>
 
-            <span class="nv">id_dict</span>[<span class="nv">id_type</span>.<span class="nv">upper</span><span class="ss">()</span>] <span class="o">=</span> <span class="nv">id_</span>
+            <span class="n">id_dict</span><span class="p">[</span><span class="n">id_type</span><span class="p">.</span><span class="k">upper</span><span class="p">()]</span> <span class="o">=</span> <span class="n">id_</span>
 
-    <span class="k">return</span> <span class="nv">id_dict</span>
+    <span class="k">return</span> <span class="n">id_dict</span>
 </pre></div>
 
 
@@ -2175,67 +2175,67 @@ https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/</p>
 
 
 <p>Query NCBI's E-utilities to retrieve the PMID for a DOI.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_pmid_for_doi</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span><span class="w"> </span><span class="n">get_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Query</span> <span class="nv">NCBI</span><span class="s1">&#39;</span><span class="s">s E-utilities to retrieve the PMID for a DOI.</span>
+<span class="ss">    Query NCBI&#39;s E-utilities to retrieve the PMID for a DOI.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="nv">assert</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">doi</span>, <span class="nv">str</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span><span class="w"> </span><span class="nf">str</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nv">assert</span> <span class="nv">doi</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">10.</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">doi</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;10.&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nb">params</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">db</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">pubmed</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">term</span><span class="s2">&quot;</span>: <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{doi}[DOI]</span><span class="s2">&quot;</span>}
+<span class="w">    </span><span class="n">params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;db&quot;</span><span class="err">:</span><span class="w"> </span><span class="ss">&quot;pubmed&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;term&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">f</span><span class="ss">&quot;{doi}[DOI]&quot;</span><span class="err">}</span><span class="w"></span>
 
-    <span class="nv">headers</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">User-Agent</span><span class="s2">&quot;</span>: <span class="nv">get_manubot_user_agent</span><span class="ss">()</span>}
+<span class="w">    </span><span class="n">headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;User-Agent&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">get_manubot_user_agent</span><span class="p">()</span><span class="err">}</span><span class="w"></span>
 
-    <span class="nv">url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&quot;</span><span class="w"></span>
 
-    <span class="nv">with</span> <span class="nv">_get_eutils_rate_limiter</span><span class="ss">()</span>:
+<span class="w">    </span><span class="k">with</span><span class="w"> </span><span class="n">_get_eutils_rate_limiter</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">response</span> <span class="o">=</span> <span class="nv">requests</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">url</span>, <span class="nb">params</span>, <span class="nv">headers</span><span class="o">=</span><span class="nv">headers</span><span class="ss">)</span>
+<span class="w">        </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requests</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p">,</span><span class="w"> </span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">response</span>.<span class="nv">ok</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">response</span><span class="p">.</span><span class="nl">ok</span><span class="p">:</span><span class="w"></span>
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">Status code {response.status_code} querying {response.url}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">        </span><span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;Status code {response.status_code} querying {response.url}\n&quot;</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">None</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 
-    <span class="nv">try</span>:
+<span class="w">    </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">element_tree</span> <span class="o">=</span> <span class="nv">xml</span>.<span class="nv">etree</span>.<span class="nv">ElementTree</span>.<span class="nv">fromstring</span><span class="ss">(</span><span class="nv">response</span>.<span class="nv">text</span><span class="ss">)</span>
+<span class="w">        </span><span class="n">element_tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">xml</span><span class="p">.</span><span class="n">etree</span><span class="p">.</span><span class="n">ElementTree</span><span class="p">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nc">text</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nv">except</span> <span class="nv">Exception</span>:
+<span class="w">    </span><span class="ow">except</span><span class="w"> </span><span class="k">Exception</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+<span class="w">        </span><span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="w"></span>
 
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error in ESearch XML for DOI: {doi}.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="ss">&quot;Error in ESearch XML for DOI: {doi}.\n&quot;</span><span class="w"></span>
 
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Response from {response.url}:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="ss">&quot;Response from {response.url}:\n{response.text}&quot;</span><span class="w"></span>
 
-        <span class="ss">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">None</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 
-    <span class="nv">id_elems</span> <span class="o">=</span> <span class="nv">element_tree</span>.<span class="nv">findall</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">IdList/Id</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">id_elems</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_tree</span><span class="p">.</span><span class="n">findall</span><span class="p">(</span><span class="ss">&quot;IdList/Id&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">len</span><span class="ss">(</span><span class="nv">id_elems</span><span class="ss">)</span> <span class="o">!=</span> <span class="mi">1</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nf">len</span><span class="p">(</span><span class="n">id_elems</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">1</span><span class="err">:</span><span class="w"></span>
 
-        <span class="nv">logging</span>.<span class="nv">debug</span><span class="ss">(</span>
+<span class="w">        </span><span class="n">logging</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="w"></span>
 
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">No PMIDs found for {doi}.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="ss">&quot;No PMIDs found for {doi}.\n&quot;</span><span class="w"></span>
 
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Response from {response.url}:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="ss">&quot;Response from {response.url}:\n{response.text}&quot;</span><span class="w"></span>
 
-        <span class="ss">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">None</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 
-    <span class="ss">(</span><span class="nv">id_elem</span>,<span class="ss">)</span> <span class="o">=</span> <span class="nv">id_elems</span>
+<span class="w">    </span><span class="p">(</span><span class="n">id_elem</span><span class="p">,)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">id_elems</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="nv">id_elem</span>.<span class="nv">text</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">id_elem</span><span class="p">.</span><span class="nc">text</span><span class="w"></span>
 </pre></div>
 
 
@@ -2250,61 +2250,61 @@ https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/</p>
 <p>Query NCBI E-Utilities to create CSL Items for PubMed IDs.</p>
 <p>https://github.com/manubot/manubot/issues/21
 https://github.com/ncbi/citation-exporter/issues/3#issuecomment-355313143</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_pubmed_csl_item</span><span class="ss">(</span><span class="nv">pmid</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>def get_pubmed_csl_item<span class="p">(</span>pmid<span class="p">):</span>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">Query</span> <span class="nv">NCBI</span> <span class="nv">E</span><span class="o">-</span><span class="nv">Utilities</span> <span class="nv">to</span> <span class="nv">create</span> <span class="nv">CSL</span> <span class="nv">Items</span> <span class="k">for</span> <span class="nv">PubMed</span> <span class="nv">IDs</span>.
+<span class="s2">    Query NCBI E-Utilities to create CSL Items for PubMed IDs.</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">manubot</span><span class="o">/</span><span class="nv">manubot</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">21</span>
+<span class="s2">    https://github.com/manubot/manubot/issues/21</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">ncbi</span><span class="o">/</span><span class="nv">citation</span><span class="o">-</span><span class="nv">exporter</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">3</span>#<span class="nv">issuecomment</span><span class="o">-</span><span class="mi">355313143</span>
+<span class="s2">    https://github.com/ncbi/citation-exporter/issues/3#issuecomment-355313143</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="nv">pmid</span> <span class="o">=</span> <span class="nv">str</span><span class="ss">(</span><span class="nv">pmid</span><span class="ss">)</span>
+    <span class="ss">pmid =</span> str<span class="p">(</span>pmid<span class="p">)</span>
 
-    <span class="nb">params</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">db</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">pubmed</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">id</span><span class="s2">&quot;</span>: <span class="nv">pmid</span>, <span class="s2">&quot;</span><span class="s">rettype</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">full</span><span class="s2">&quot;</span>}
+    <span class="ss">params =</span> <span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;pubmed&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> pmid<span class="p">,</span> <span class="s2">&quot;rettype&quot;</span><span class="p">:</span> <span class="s2">&quot;full&quot;</span><span class="p">}</span>
 
-    <span class="nv">headers</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">User-Agent</span><span class="s2">&quot;</span>: <span class="nv">get_manubot_user_agent</span><span class="ss">()</span>}
+    <span class="ss">headers =</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> get_manubot_user_agent<span class="p">()}</span>
 
-    <span class="nv">url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi</span><span class="s2">&quot;</span>
+    <span class="ss">url =</span> <span class="s2">&quot;https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi&quot;</span>
 
-    <span class="nv">with</span> <span class="nv">_get_eutils_rate_limiter</span><span class="ss">()</span>:
+    <span class="k">with</span> _get_eutils_rate_limiter<span class="p">():</span>
 
-        <span class="nv">response</span> <span class="o">=</span> <span class="nv">requests</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">url</span>, <span class="nb">params</span>, <span class="nv">headers</span><span class="o">=</span><span class="nv">headers</span><span class="ss">)</span>
+        <span class="ss">response =</span> requests<span class="o">.</span>get<span class="p">(</span>url<span class="p">,</span> params<span class="p">,</span> <span class="ss">headers=</span>headers<span class="p">)</span>
 
-    <span class="nv">try</span>:
+    try<span class="p">:</span>
 
-        <span class="nv">element_tree</span> <span class="o">=</span> <span class="nv">xml</span>.<span class="nv">etree</span>.<span class="nv">ElementTree</span>.<span class="nv">fromstring</span><span class="ss">(</span><span class="nv">response</span>.<span class="nv">text</span><span class="ss">)</span>
+        <span class="ss">element_tree =</span> xml<span class="o">.</span>etree<span class="o">.</span>ElementTree<span class="o">.</span>fromstring<span class="p">(</span>response<span class="o">.</span>text<span class="p">)</span>
 
-        <span class="ss">(</span><span class="nv">element_tree</span>,<span class="ss">)</span> <span class="o">=</span> <span class="nv">list</span><span class="ss">(</span><span class="nv">element_tree</span><span class="ss">)</span>
+        <span class="p">(</span>element_tree<span class="p">,)</span> <span class="o">=</span> list<span class="p">(</span>element_tree<span class="p">)</span>
 
-    <span class="nv">except</span> <span class="nv">Exception</span> <span class="nv">as</span> <span class="nv">error</span>:
+    except Exception as error<span class="p">:</span>
 
-        <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span>
+        logging<span class="o">.</span>error<span class="p">(</span>
 
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error fetching PubMed metadata for {pmid}.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            f<span class="s2">&quot;Error fetching PubMed metadata for {pmid}.</span><span class="se">\</span><span class="s2">n&quot;</span>
 
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Invalid XML response from {response.url}:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s2">&quot;</span>
+            f<span class="s2">&quot;Invalid XML response from {response.url}:</span><span class="se">\</span><span class="s2">n{response.text}&quot;</span>
 
-        <span class="ss">)</span>
+        <span class="p">)</span>
 
-        <span class="nv">raise</span> <span class="nv">error</span>
+        raise error
 
-    <span class="nv">try</span>:
+    try<span class="p">:</span>
 
-        <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">csl_item_from_pubmed_article</span><span class="ss">(</span><span class="nv">element_tree</span><span class="ss">)</span>
+        <span class="ss">csl_item =</span> csl_item_from_pubmed_article<span class="p">(</span>element_tree<span class="p">)</span>
 
-    <span class="nv">except</span> <span class="nv">Exception</span> <span class="nv">as</span> <span class="nv">error</span>:
+    except Exception as error<span class="p">:</span>
 
-        <span class="nv">msg</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error parsing the following PubMed metadata for PMID {pmid}:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s2">&quot;</span>
+        <span class="ss">msg =</span> f<span class="s2">&quot;Error parsing the following PubMed metadata for PMID {pmid}:</span><span class="se">\</span><span class="s2">n{response.text}&quot;</span>
 
-        <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span><span class="nv">msg</span><span class="ss">)</span>
+        logging<span class="o">.</span>error<span class="p">(</span>msg<span class="p">)</span>
 
-        <span class="nv">raise</span> <span class="nv">error</span>
+        raise error
 
-    <span class="k">return</span> <span class="nv">csl_item</span>
+    return csl_item
 </pre></div>
 
 
@@ -2318,27 +2318,27 @@ https://github.com/ncbi/citation-exporter/issues/3#issuecomment-355313143</p>
 
 <p>Return a dictionary with PMCID and PMID, if they exist, for the specified
 DOI. See https://github.com/manubot/manubot/issues/45.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_pubmed_ids_for_doi</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">get_pubmed_ids_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="k">Return</span> <span class="nv">a</span> <span class="nv">dictionary</span> <span class="nv">with</span> <span class="nv">PMCID</span> <span class="nv">and</span> <span class="nv">PMID</span>, <span class="k">if</span> <span class="nv">they</span> <span class="nv">exist</span>, <span class="k">for</span> <span class="nv">the</span> <span class="nv">specified</span>
+<span class="ss">    Return a dictionary with PMCID and PMID, if they exist, for the specified</span>
 
-    <span class="nv">DOI</span>. <span class="nv">See</span> <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">manubot</span><span class="o">/</span><span class="nv">manubot</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">45</span>.
+<span class="ss">    DOI. See https://github.com/manubot/manubot/issues/45.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">pubmed_ids</span> <span class="o">=</span> <span class="nv">get_pmcid_and_pmid_for_doi</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+    <span class="n">pubmed_ids</span> <span class="o">=</span> <span class="n">get_pmcid_and_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">pubmed_ids</span>:
+    <span class="k">if</span> <span class="k">not</span> <span class="n">pubmed_ids</span><span class="p">:</span>
 
-        <span class="nv">pmid</span> <span class="o">=</span> <span class="nv">get_pmid_for_doi</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+        <span class="n">pmid</span> <span class="o">=</span> <span class="n">get_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nv">pmid</span>:
+        <span class="k">if</span> <span class="n">pmid</span><span class="p">:</span>
 
-            <span class="nv">pubmed_ids</span>[<span class="s2">&quot;</span><span class="s">PMID</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">pmid</span>
+            <span class="n">pubmed_ids</span><span class="p">[</span><span class="ss">&quot;PMID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pmid</span>
 
-    <span class="k">return</span> <span class="nv">pubmed_ids</span>
+    <span class="k">return</span> <span class="n">pubmed_ids</span>
 </pre></div>
 
 
@@ -2413,7 +2413,7 @@ DOI. See https://github.com/manubot/manubot/issues/45.</p>
       
     </div>
     
-      <script src="../../../../assets/javascripts/application.a8b5e56f.js"></script>
+      <script src="../../../../assets/javascripts/application.8e03edeb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../.."}})</script>
       

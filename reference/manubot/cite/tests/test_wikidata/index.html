@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
     
     
       
@@ -1320,47 +1320,47 @@ Wikidata uses a "series ordinal" qualifier that must be considered or else autho
 ordering may be wrong.</p>
 <p>Author ordering was previously not properly set by the Wikidata translator
 https://github.com/zotero/translators/issues/1790</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">test_get_wikidata_csl_item_author_ordering</span><span class="ss">()</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_get_wikidata_csl_item_author_ordering</span><span class="p">():</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Test</span> <span class="nv">extraction</span> <span class="nv">of</span> <span class="nv">author</span> <span class="nv">ordering</span> <span class="nv">from</span> <span class="nv">https</span>:<span class="o">//</span><span class="nv">www</span>.<span class="nv">wikidata</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">wiki</span><span class="o">/</span><span class="nv">Q50051684</span>.
+<span class="ss">    Test extraction of author ordering from https://www.wikidata.org/wiki/Q50051684.</span>
 
-    <span class="nv">Wikidata</span> <span class="nv">uses</span> <span class="nv">a</span> <span class="s2">&quot;</span><span class="s">series ordinal</span><span class="s2">&quot;</span> <span class="nv">qualifier</span> <span class="nv">that</span> <span class="nv">must</span> <span class="nv">be</span> <span class="nv">considered</span> <span class="nv">or</span> <span class="k">else</span> <span class="nv">author</span>
+<span class="ss">    Wikidata uses a &quot;</span><span class="n">series</span> <span class="n">ordinal</span><span class="ss">&quot; qualifier that must be considered or else author</span>
 
-    <span class="nv">ordering</span> <span class="nv">may</span> <span class="nv">be</span> <span class="nv">wrong</span>.
+<span class="ss">    ordering may be wrong.</span>
 
-    <span class="nv">Author</span> <span class="nv">ordering</span> <span class="nv">was</span> <span class="nv">previously</span> <span class="nv">not</span> <span class="nv">properly</span> <span class="nv">set</span> <span class="nv">by</span> <span class="nv">the</span> <span class="nv">Wikidata</span> <span class="nv">translator</span>
+<span class="ss">    Author ordering was previously not properly set by the Wikidata translator</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">zotero</span><span class="o">/</span><span class="nv">translators</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">1790</span>
+<span class="ss">    https://github.com/zotero/translators/issues/1790</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">wikidata_id</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">Q50051684</span><span class="s2">&quot;</span>
+    <span class="n">wikidata_id</span> <span class="o">=</span> <span class="ss">&quot;Q50051684&quot;</span>
 
-    <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">get_wikidata_csl_item</span><span class="ss">(</span><span class="nv">wikidata_id</span><span class="ss">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_wikidata_csl_item</span><span class="p">(</span><span class="n">wikidata_id</span><span class="p">)</span>
 
-    <span class="nv">family_names</span> <span class="o">=</span> [<span class="nv">author</span>[<span class="s2">&quot;</span><span class="s">family</span><span class="s2">&quot;</span>] <span class="k">for</span> <span class="nv">author</span> <span class="nv">in</span> <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">author</span><span class="s2">&quot;</span>]]
+    <span class="n">family_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">author</span><span class="p">[</span><span class="ss">&quot;family&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">author</span> <span class="k">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;author&quot;</span><span class="p">]]</span>
 
-    <span class="nv">print</span><span class="ss">(</span><span class="nv">family_names</span><span class="ss">)</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">family_names</span><span class="p">)</span>
 
-    <span class="nv">assert</span> <span class="nv">family_names</span> <span class="o">==</span> [
+    <span class="n">assert</span> <span class="n">family_names</span> <span class="o">==</span> <span class="p">[</span>
 
-        <span class="s2">&quot;</span><span class="s">Himmelstein</span><span class="s2">&quot;</span>,
+        <span class="ss">&quot;Himmelstein&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;</span><span class="s">Romero</span><span class="s2">&quot;</span>,
+        <span class="ss">&quot;Romero&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;</span><span class="s">Levernier</span><span class="s2">&quot;</span>,
+        <span class="ss">&quot;Levernier&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;</span><span class="s">Munro</span><span class="s2">&quot;</span>,
+        <span class="ss">&quot;Munro&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;</span><span class="s">McLaughlin</span><span class="s2">&quot;</span>,
+        <span class="ss">&quot;McLaughlin&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;</span><span class="s">Greshake</span><span class="s2">&quot;</span>,  # <span class="nv">actually</span> <span class="nv">should</span> <span class="nv">be</span> <span class="nv">Greshake</span> <span class="nv">Tzovaras</span>
+        <span class="ss">&quot;Greshake&quot;</span><span class="p">,</span>  <span class="o">#</span> <span class="n">actually</span> <span class="n">should</span> <span class="n">be</span> <span class="n">Greshake</span> <span class="n">Tzovaras</span>
 
-        <span class="s2">&quot;</span><span class="s">Greene</span><span class="s2">&quot;</span>,
+        <span class="ss">&quot;Greene&quot;</span><span class="p">,</span>
 
-    ]
+    <span class="p">]</span>
 </pre></div>
 
 
@@ -1435,7 +1435,7 @@ https://github.com/zotero/translators/issues/1790</p>
       
     </div>
     
-      <script src="../../../../../assets/javascripts/application.a8b5e56f.js"></script>
+      <script src="../../../../../assets/javascripts/application.8e03edeb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../../.."}})</script>
       

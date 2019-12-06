@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
     
     
       
@@ -1673,57 +1673,57 @@ https://stackoverflow.com/a/2668947/4651668
 https://stackoverflow.com/a/16493707/4651668
 Command modeled after:
 git --work-tree=webpage checkout upstream/gh-pages -- v</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">checkout_existing_versions</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">checkout_existing_versions</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Must</span> <span class="nv">populate</span> <span class="nv">webpage</span><span class="o">/</span><span class="nv">v</span> <span class="nv">from</span> <span class="nv">the</span> <span class="nv">gh</span><span class="o">-</span><span class="nv">pages</span> <span class="nv">branch</span> <span class="nv">to</span> <span class="nv">get</span> <span class="nv">history</span>
+<span class="ss">    Must populate webpage/v from the gh-pages branch to get history</span>
 
-    <span class="nv">References</span>:
+<span class="ss">    References:</span>
 
-    <span class="nv">http</span>:<span class="o">//</span><span class="nv">clubmate</span>.<span class="nv">fi</span><span class="o">/</span><span class="nv">git</span><span class="o">-</span><span class="nv">checkout</span><span class="o">-</span><span class="nv">file</span><span class="o">-</span><span class="nv">or</span><span class="o">-</span><span class="nv">directories</span><span class="o">-</span><span class="nv">from</span><span class="o">-</span><span class="nv">another</span><span class="o">-</span><span class="nv">branch</span><span class="o">/</span>
+<span class="ss">    http://clubmate.fi/git-checkout-file-or-directories-from-another-branch/</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">stackoverflow</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">a</span><span class="o">/</span><span class="mi">2668947</span><span class="o">/</span><span class="mi">4651668</span>
+<span class="ss">    https://stackoverflow.com/a/2668947/4651668</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">stackoverflow</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">a</span><span class="o">/</span><span class="mi">16493707</span><span class="o">/</span><span class="mi">4651668</span>
+<span class="ss">    https://stackoverflow.com/a/16493707/4651668</span>
 
-    <span class="nv">Command</span> <span class="nv">modeled</span> <span class="nv">after</span>:
+<span class="ss">    Command modeled after:</span>
 
-    <span class="nv">git</span> <span class="o">--</span><span class="nv">work</span><span class="o">-</span><span class="nv">tree</span><span class="o">=</span><span class="nv">webpage</span> <span class="nv">checkout</span> <span class="nv">upstream</span><span class="o">/</span><span class="nv">gh</span><span class="o">-</span><span class="nv">pages</span> <span class="o">--</span> <span class="nv">v</span>
+<span class="ss">    git --work-tree=webpage checkout upstream/gh-pages -- v</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">args</span>.<span class="nv">checkout</span>:
+    <span class="k">if</span> <span class="k">not</span> <span class="n">args</span><span class="p">.</span><span class="n">checkout</span><span class="p">:</span>
 
         <span class="k">return</span>
 
-    <span class="nv">command</span> <span class="o">=</span> [
+    <span class="n">command</span> <span class="o">=</span> <span class="p">[</span>
 
-        <span class="s2">&quot;</span><span class="s">git</span><span class="s2">&quot;</span>,
+        <span class="ss">&quot;git&quot;</span><span class="p">,</span>
 
-        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">--work-tree={args.webpage_directory}</span><span class="s2">&quot;</span>,
+        <span class="n">f</span><span class="ss">&quot;--work-tree={args.webpage_directory}&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;</span><span class="s">checkout</span><span class="s2">&quot;</span>,
+        <span class="ss">&quot;checkout&quot;</span><span class="p">,</span>
 
-        <span class="nv">args</span>.<span class="nv">checkout</span>,
+        <span class="n">args</span><span class="p">.</span><span class="n">checkout</span><span class="p">,</span>
 
-        <span class="s2">&quot;</span><span class="s">--</span><span class="s2">&quot;</span>,
+        <span class="ss">&quot;--&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;</span><span class="s">v</span><span class="s2">&quot;</span>,
+        <span class="ss">&quot;v&quot;</span><span class="p">,</span>
 
-    ]
+    <span class="p">]</span>
 
-    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span>
+    <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span>
 
-        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Attempting checkout with the following command:</span><span class="se">\n</span><span class="s">{shlex_join(command)}</span><span class="s2">&quot;</span>
+        <span class="n">f</span><span class="ss">&quot;Attempting checkout with the following command:\n{shlex_join(command)}&quot;</span>
 
-    <span class="ss">)</span>
+    <span class="p">)</span>
 
-    <span class="nv">process</span> <span class="o">=</span> <span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span><span class="nv">command</span>, <span class="nv">stderr</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span><span class="ss">)</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nv">process</span>.<span class="nv">returncode</span> <span class="o">==</span> <span class="mi">0</span>:
+    <span class="k">if</span> <span class="n">process</span><span class="p">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 
-        # <span class="nv">Addresses</span> <span class="nv">an</span> <span class="nv">odd</span> <span class="nv">behavior</span> <span class="nv">where</span> <span class="nv">git</span> <span class="nv">checkout</span> <span class="nv">stages</span> <span class="nv">v</span><span class="cm">/* files that don&#39;t actually exist</span>
+        <span class="o">#</span> <span class="n">Addresses</span> <span class="n">an</span> <span class="n">odd</span> <span class="n">behavior</span> <span class="k">where</span> <span class="n">git</span> <span class="n">checkout</span> <span class="n">stages</span> <span class="n">v</span><span class="cm">/* files that don&#39;t actually exist</span>
 
 <span class="cm">        subprocess.run([&quot;git&quot;, &quot;add&quot;, &quot;v&quot;])</span>
 
@@ -1761,25 +1761,25 @@ git --work-tree=webpage checkout upstream/gh-pages -- v</p>
 
 <p>Execute manubot webpage commands.
 args should be an argparse.Namespace object created by parser.parse_args.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">cli_webpage</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">cli_webpage</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Execute</span> <span class="nv">manubot</span> <span class="nv">webpage</span> <span class="nv">commands</span>.
+<span class="ss">    Execute manubot webpage commands.</span>
 
-    <span class="nv">args</span> <span class="nv">should</span> <span class="nv">be</span> <span class="nv">an</span> <span class="nv">argparse</span>.<span class="nv">Namespace</span> <span class="nv">object</span> <span class="nv">created</span> <span class="nv">by</span> <span class="nv">parser</span>.<span class="nv">parse_args</span>.
+<span class="ss">    args should be an argparse.Namespace object created by parser.parse_args.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">configure_args</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>
+    <span class="n">configure_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="nv">logging</span>.<span class="nv">debug</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">Running `manubot webpage` with the following args:</span><span class="se">\n</span><span class="s">{args}</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">logging</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;Running `manubot webpage` with the following args:\n{args}&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nv">args</span>.<span class="nv">timestamp</span>:
+    <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="k">timestamp</span><span class="p">:</span>
 
-        <span class="nv">ots_upgrade</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>
+        <span class="n">ots_upgrade</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="nv">create_version</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>
+    <span class="n">create_version</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 </pre></div>
 
 
@@ -1795,121 +1795,121 @@ args should be an argparse.Namespace object created by parser.parse_args.</p>
 Derive additional variables and add them to args.
 For example, add directories to args and create them if neccessary.
 Note that versions_directory is the parent of version_directory.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">configure_args</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">configure_args</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Perform</span> <span class="nv">additional</span> <span class="nv">processing</span> <span class="nv">of</span> <span class="nv">arguments</span> <span class="nv">that</span> <span class="nv">is</span> <span class="nv">not</span> <span class="nv">handled</span> <span class="nv">by</span> <span class="nv">argparse</span>.
+<span class="ss">    Perform additional processing of arguments that is not handled by argparse.</span>
 
-    <span class="nv">Derive</span> <span class="nv">additional</span> <span class="nv">variables</span> <span class="nv">and</span> <span class="nv">add</span> <span class="nv">them</span> <span class="nv">to</span> <span class="nv">args</span>.
+<span class="ss">    Derive additional variables and add them to args.</span>
 
-    <span class="k">For</span> <span class="nv">example</span>, <span class="nv">add</span> <span class="nv">directories</span> <span class="nv">to</span> <span class="nv">args</span> <span class="nv">and</span> <span class="nv">create</span> <span class="nv">them</span> <span class="k">if</span> <span class="nv">neccessary</span>.
+<span class="ss">    For example, add directories to args and create them if neccessary.</span>
 
-    <span class="nv">Note</span> <span class="nv">that</span> <span class="nv">versions_directory</span> <span class="nv">is</span> <span class="nv">the</span> <span class="nv">parent</span> <span class="nv">of</span> <span class="nv">version_directory</span>.
+<span class="ss">    Note that versions_directory is the parent of version_directory.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">args_dict</span> <span class="o">=</span> <span class="nv">vars</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>
+    <span class="n">args_dict</span> <span class="o">=</span> <span class="n">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    # <span class="k">If</span> <span class="o">--</span><span class="nv">timestamp</span> <span class="nv">specified</span>, <span class="nv">check</span> <span class="nv">that</span> <span class="nv">opentimestamps</span><span class="o">-</span><span class="nv">client</span> <span class="nv">is</span> <span class="nv">installed</span>
+    <span class="o">#</span> <span class="k">If</span> <span class="c1">--timestamp specified, check that opentimestamps-client is installed</span>
 
-    <span class="k">if</span> <span class="nv">args</span>.<span class="nv">timestamp</span>:
+    <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="k">timestamp</span><span class="p">:</span>
 
-        <span class="nv">ots_executable_path</span> <span class="o">=</span> <span class="nv">shutil</span>.<span class="nv">which</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">ots</span><span class="s2">&quot;</span><span class="ss">)</span>
+        <span class="n">ots_executable_path</span> <span class="o">=</span> <span class="n">shutil</span><span class="p">.</span><span class="n">which</span><span class="p">(</span><span class="ss">&quot;ots&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nv">not</span> <span class="nv">ots_executable_path</span>:
+        <span class="k">if</span> <span class="k">not</span> <span class="n">ots_executable_path</span><span class="p">:</span>
 
-            <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span>
+            <span class="n">logging</span><span class="p">.</span><span class="n">error</span><span class="p">(</span>
 
-                <span class="s2">&quot;</span><span class="s">manubot webpage --timestamp was specified but opentimestamps-client not found on system. </span><span class="s2">&quot;</span>
+                <span class="ss">&quot;manubot webpage --timestamp was specified but opentimestamps-client not found on system. &quot;</span>
 
-                <span class="s2">&quot;</span><span class="s">Setting --timestamp=False. </span><span class="s2">&quot;</span>
+                <span class="ss">&quot;Setting --timestamp=False. &quot;</span>
 
-                <span class="s2">&quot;</span><span class="s">Fix this by installing https://pypi.org/project/opentimestamps-client/</span><span class="s2">&quot;</span>
+                <span class="ss">&quot;Fix this by installing https://pypi.org/project/opentimestamps-client/&quot;</span>
 
-            <span class="ss">)</span>
+            <span class="p">)</span>
 
-            <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">timestamp</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">False</span>
+            <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="k">False</span>
 
-    # <span class="nv">Directory</span> <span class="nv">where</span> <span class="nv">Manubot</span> <span class="nv">outputs</span> <span class="nv">reside</span>
+    <span class="o">#</span> <span class="n">Directory</span> <span class="k">where</span> <span class="n">Manubot</span> <span class="n">outputs</span> <span class="n">reside</span>
 
-    <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">output_directory</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">output</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;output_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pathlib</span><span class="p">.</span><span class="n">Path</span><span class="p">(</span><span class="ss">&quot;output&quot;</span><span class="p">)</span>
 
-    # <span class="nv">Set</span> <span class="nv">webpage</span> <span class="nv">directory</span>
+    <span class="o">#</span> <span class="k">Set</span> <span class="n">webpage</span> <span class="n">directory</span>
 
-    <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">webpage_directory</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">webpage</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;webpage_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pathlib</span><span class="p">.</span><span class="n">Path</span><span class="p">(</span><span class="ss">&quot;webpage&quot;</span><span class="p">)</span>
 
-    <span class="nv">args</span>.<span class="nv">webpage_directory</span>.<span class="nv">mkdir</span><span class="ss">(</span><span class="nv">exist_ok</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+    <span class="n">args</span><span class="p">.</span><span class="n">webpage_directory</span><span class="p">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
 
-    # <span class="nv">Create</span> <span class="nv">webpage</span><span class="o">/</span><span class="nv">v</span> <span class="nv">directory</span> <span class="ss">(</span><span class="k">if</span> <span class="nv">it</span> <span class="nv">doesn</span><span class="s1">&#39;</span><span class="s">t already exist)</span>
+    <span class="o">#</span> <span class="k">Create</span> <span class="n">webpage</span><span class="o">/</span><span class="n">v</span> <span class="n">directory</span> <span class="p">(</span><span class="k">if</span> <span class="n">it</span> <span class="n">doesn</span><span class="err">&#39;</span><span class="n">t</span> <span class="n">already</span> <span class="n">exist</span><span class="p">)</span>
 
-    <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">versions_directory</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">args</span>.<span class="nv">webpage_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">v</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;versions_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">webpage_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;v&quot;</span><span class="p">)</span>
 
-    <span class="nv">args</span>.<span class="nv">versions_directory</span>.<span class="nv">mkdir</span><span class="ss">(</span><span class="nv">exist_ok</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+    <span class="n">args</span><span class="p">.</span><span class="n">versions_directory</span><span class="p">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
 
-    # <span class="nv">Checkout</span> <span class="nv">existing</span> <span class="nv">version</span> <span class="nv">directories</span>
+    <span class="o">#</span> <span class="n">Checkout</span> <span class="k">existing</span> <span class="k">version</span> <span class="n">directories</span>
 
-    <span class="nv">checkout_existing_versions</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>
+    <span class="n">checkout_existing_versions</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    # <span class="nv">Apply</span> <span class="o">--</span><span class="nv">version</span> <span class="nv">argument</span> <span class="nv">defaults</span>
+    <span class="o">#</span> <span class="n">Apply</span> <span class="c1">--version argument defaults</span>
 
-    <span class="k">if</span> <span class="nv">args</span>.<span class="nv">version</span> <span class="nv">is</span> <span class="nv">None</span>:
+    <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="k">version</span> <span class="k">is</span> <span class="k">None</span><span class="p">:</span>
 
-        <span class="nv">from</span> <span class="nv">manubot</span>.<span class="nv">process</span>.<span class="nv">ci</span> <span class="nv">import</span> <span class="nv">get_continuous_integration_parameters</span>
+        <span class="k">from</span> <span class="n">manubot</span><span class="p">.</span><span class="n">process</span><span class="p">.</span><span class="n">ci</span> <span class="n">import</span> <span class="n">get_continuous_integration_parameters</span>
 
-        <span class="nv">ci_params</span> <span class="o">=</span> <span class="nv">get_continuous_integration_parameters</span><span class="ss">()</span>
+        <span class="n">ci_params</span> <span class="o">=</span> <span class="n">get_continuous_integration_parameters</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="nv">ci_params</span>:
+        <span class="k">if</span> <span class="n">ci_params</span><span class="p">:</span>
 
-            <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">version</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">ci_params</span>.<span class="nv">get</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">commit</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">local</span><span class="s2">&quot;</span><span class="ss">)</span>
+            <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ci_params</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="ss">&quot;commit&quot;</span><span class="p">,</span> <span class="ss">&quot;local&quot;</span><span class="p">)</span>
 
-        <span class="k">else</span>:
+        <span class="k">else</span><span class="p">:</span>
 
-            <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">version</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="s2">&quot;</span><span class="s">local</span><span class="s2">&quot;</span>
+            <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="ss">&quot;local&quot;</span>
 
-    # <span class="nv">Create</span> <span class="nv">empty</span> <span class="nv">webpage</span><span class="o">/</span><span class="nv">v</span><span class="o">/</span><span class="nv">version</span> <span class="nv">directory</span>
+    <span class="o">#</span> <span class="k">Create</span> <span class="n">empty</span> <span class="n">webpage</span><span class="o">/</span><span class="n">v</span><span class="o">/</span><span class="k">version</span> <span class="n">directory</span>
 
-    <span class="nv">version_directory</span> <span class="o">=</span> <span class="nv">args</span>.<span class="nv">versions_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">version</span><span class="ss">)</span>
+    <span class="n">version_directory</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">versions_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="k">version</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nv">version_directory</span>.<span class="nv">is_dir</span><span class="ss">()</span>:
+    <span class="k">if</span> <span class="n">version_directory</span><span class="p">.</span><span class="n">is_dir</span><span class="p">():</span>
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+        <span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span>
 
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{version_directory} exists: replacing it with an empty directory</span><span class="s2">&quot;</span>
+            <span class="n">f</span><span class="ss">&quot;{version_directory} exists: replacing it with an empty directory&quot;</span>
 
-        <span class="ss">)</span>
+        <span class="p">)</span>
 
-        <span class="nv">shutil</span>.<span class="nv">rmtree</span><span class="ss">(</span><span class="nv">version_directory</span><span class="ss">)</span>
+        <span class="n">shutil</span><span class="p">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">version_directory</span><span class="p">)</span>
 
-    <span class="nv">version_directory</span>.<span class="nv">mkdir</span><span class="ss">()</span>
+    <span class="n">version_directory</span><span class="p">.</span><span class="n">mkdir</span><span class="p">()</span>
 
-    <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">version_directory</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">version_directory</span>
+    <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;version_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">version_directory</span>
 
-    # <span class="nv">Symlink</span> <span class="nv">webpage</span><span class="o">/</span><span class="nv">v</span><span class="o">/</span><span class="nv">latest</span> <span class="nv">to</span> <span class="nv">point</span> <span class="nv">to</span> <span class="nv">webpage</span><span class="o">/</span><span class="nv">v</span><span class="o">/</span><span class="nv">commit</span>
+    <span class="o">#</span> <span class="n">Symlink</span> <span class="n">webpage</span><span class="o">/</span><span class="n">v</span><span class="o">/</span><span class="n">latest</span> <span class="k">to</span> <span class="n">point</span> <span class="k">to</span> <span class="n">webpage</span><span class="o">/</span><span class="n">v</span><span class="o">/</span><span class="k">commit</span>
 
-    <span class="nv">latest_directory</span> <span class="o">=</span> <span class="nv">args</span>.<span class="nv">versions_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">latest</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">latest_directory</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">versions_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;latest&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nv">latest_directory</span>.<span class="nv">is_symlink</span><span class="ss">()</span> <span class="nv">or</span> <span class="nv">latest_directory</span>.<span class="nv">is_file</span><span class="ss">()</span>:
+    <span class="k">if</span> <span class="n">latest_directory</span><span class="p">.</span><span class="n">is_symlink</span><span class="p">()</span> <span class="k">or</span> <span class="n">latest_directory</span><span class="p">.</span><span class="n">is_file</span><span class="p">():</span>
 
-        <span class="nv">latest_directory</span>.<span class="k">unlink</span><span class="ss">()</span>
+        <span class="n">latest_directory</span><span class="p">.</span><span class="n">unlink</span><span class="p">()</span>
 
-    <span class="nv">elif</span> <span class="nv">latest_directory</span>.<span class="nv">is_dir</span><span class="ss">()</span>:
+    <span class="n">elif</span> <span class="n">latest_directory</span><span class="p">.</span><span class="n">is_dir</span><span class="p">():</span>
 
-        <span class="nv">shutil</span>.<span class="nv">rmtree</span><span class="ss">(</span><span class="nv">latest_directory</span><span class="ss">)</span>
+        <span class="n">shutil</span><span class="p">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">latest_directory</span><span class="p">)</span>
 
-    <span class="nv">latest_directory</span>.<span class="nv">symlink_to</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">version</span>, <span class="nv">target_is_directory</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+    <span class="n">latest_directory</span><span class="p">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="k">version</span><span class="p">,</span> <span class="n">target_is_directory</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
 
-    <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">latest_directory</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">latest_directory</span>
+    <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;latest_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">latest_directory</span>
 
-    # <span class="nv">Create</span> <span class="nv">freeze</span> <span class="nv">directory</span>
+    <span class="o">#</span> <span class="k">Create</span> <span class="k">freeze</span> <span class="n">directory</span>
 
-    <span class="nv">freeze_directory</span> <span class="o">=</span> <span class="nv">args</span>.<span class="nv">versions_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">freeze</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">freeze_directory</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">versions_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;freeze&quot;</span><span class="p">)</span>
 
-    <span class="nv">freeze_directory</span>.<span class="nv">mkdir</span><span class="ss">(</span><span class="nv">exist_ok</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+    <span class="n">freeze_directory</span><span class="p">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
 
-    <span class="nv">args_dict</span>[<span class="s2">&quot;</span><span class="s">freeze_directory</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">freeze_directory</span>
+    <span class="n">args_dict</span><span class="p">[</span><span class="ss">&quot;freeze_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">freeze_directory</span>
 
-    <span class="k">return</span> <span class="nv">args</span>
+    <span class="k">return</span> <span class="n">args</span>
 </pre></div>
 
 
@@ -1922,51 +1922,51 @@ Note that versions_directory is the parent of version_directory.</p>
 
 
 <p>Populate the version directory for a new version.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">create_version</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">create_version</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Populate</span> <span class="nv">the</span> <span class="nv">version</span> <span class="nv">directory</span> <span class="k">for</span> <span class="nv">a</span> <span class="nv">new</span> <span class="nv">version</span>.
+<span class="ss">    Populate the version directory for a new version.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    # <span class="nv">Copy</span> <span class="nv">content</span><span class="o">/</span><span class="nv">images</span> <span class="nv">to</span> <span class="nv">webpage</span><span class="o">/</span><span class="nv">v</span><span class="o">/</span><span class="nv">commit</span><span class="o">/</span><span class="nv">images</span>
+    <span class="o">#</span> <span class="k">Copy</span> <span class="n">content</span><span class="o">/</span><span class="n">images</span> <span class="k">to</span> <span class="n">webpage</span><span class="o">/</span><span class="n">v</span><span class="o">/</span><span class="k">commit</span><span class="o">/</span><span class="n">images</span>
 
-    <span class="nv">images_src</span> <span class="o">=</span> <span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">content/images</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">images_src</span> <span class="o">=</span> <span class="n">pathlib</span><span class="p">.</span><span class="n">Path</span><span class="p">(</span><span class="ss">&quot;content/images&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nv">images_src</span>.<span class="nv">exists</span><span class="ss">()</span>:
+    <span class="k">if</span> <span class="n">images_src</span><span class="p">.</span><span class="k">exists</span><span class="p">():</span>
 
-        <span class="nv">shutil</span>.<span class="nv">copytree</span><span class="ss">(</span><span class="nv">src</span><span class="o">=</span><span class="nv">images_src</span>, <span class="nv">dst</span><span class="o">=</span><span class="nv">args</span>.<span class="nv">version_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">images</span><span class="s2">&quot;</span><span class="ss">))</span>
+        <span class="n">shutil</span><span class="p">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">images_src</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">version_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;images&quot;</span><span class="p">))</span>
 
-    # <span class="nv">Copy</span> <span class="nv">output</span> <span class="nv">files</span> <span class="nv">to</span> <span class="nv">to</span> <span class="nv">webpage</span><span class="o">/</span><span class="nv">v</span><span class="o">/</span><span class="nv">version</span><span class="o">/</span>
+    <span class="o">#</span> <span class="k">Copy</span> <span class="k">output</span> <span class="n">files</span> <span class="k">to</span> <span class="k">to</span> <span class="n">webpage</span><span class="o">/</span><span class="n">v</span><span class="o">/</span><span class="k">version</span><span class="o">/</span>
 
-    <span class="nv">renamer</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">manuscript.html</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">index.html</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">manuscript.pdf</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">manuscript.pdf</span><span class="s2">&quot;</span>}
+    <span class="n">renamer</span> <span class="o">=</span> <span class="err">{</span><span class="ss">&quot;manuscript.html&quot;</span><span class="p">:</span> <span class="ss">&quot;index.html&quot;</span><span class="p">,</span> <span class="ss">&quot;manuscript.pdf&quot;</span><span class="p">:</span> <span class="ss">&quot;manuscript.pdf&quot;</span><span class="err">}</span>
 
-    <span class="k">for</span> <span class="nv">src</span>, <span class="nv">dst</span> <span class="nv">in</span> <span class="nv">renamer</span>.<span class="nv">items</span><span class="ss">()</span>:
+    <span class="k">for</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span> <span class="k">in</span> <span class="n">renamer</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
 
-        <span class="nv">src_path</span> <span class="o">=</span> <span class="nv">args</span>.<span class="nv">output_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="nv">src</span><span class="ss">)</span>
+        <span class="n">src_path</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">output_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nv">not</span> <span class="nv">src_path</span>.<span class="nv">exists</span><span class="ss">()</span>:
+        <span class="k">if</span> <span class="k">not</span> <span class="n">src_path</span><span class="p">.</span><span class="k">exists</span><span class="p">():</span>
 
             <span class="k">continue</span>
 
-        <span class="nv">dst_path</span> <span class="o">=</span> <span class="nv">args</span>.<span class="nv">version_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="nv">dst</span><span class="ss">)</span>
+        <span class="n">dst_path</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">version_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
 
-        <span class="nv">shutil</span>.<span class="nv">copy2</span><span class="ss">(</span><span class="nv">src</span><span class="o">=</span><span class="nv">src_path</span>, <span class="nv">dst</span><span class="o">=</span><span class="nv">dst_path</span><span class="ss">)</span>
+        <span class="n">shutil</span><span class="p">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">src_path</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">dst_path</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nv">args</span>.<span class="nv">timestamp</span>:
+        <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="k">timestamp</span><span class="p">:</span>
 
-            <span class="nv">ots_stamp</span><span class="ss">(</span><span class="nv">dst_path</span><span class="ss">)</span>
+            <span class="n">ots_stamp</span><span class="p">(</span><span class="n">dst_path</span><span class="p">)</span>
 
-    # <span class="nv">Create</span> <span class="nv">v</span><span class="o">/</span><span class="nv">freeze</span> <span class="nv">to</span> <span class="nv">redirect</span> <span class="nv">to</span> <span class="nv">v</span><span class="o">/</span><span class="nv">commit</span>
+    <span class="o">#</span> <span class="k">Create</span> <span class="n">v</span><span class="o">/</span><span class="k">freeze</span> <span class="k">to</span> <span class="n">redirect</span> <span class="k">to</span> <span class="n">v</span><span class="o">/</span><span class="k">commit</span>
 
-    <span class="nv">path</span> <span class="o">=</span> <span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="nv">__file__</span><span class="ss">)</span>.<span class="nv">with_name</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">redirect-template.html</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="p">.</span><span class="n">Path</span><span class="p">(</span><span class="n">__file__</span><span class="p">).</span><span class="n">with_name</span><span class="p">(</span><span class="ss">&quot;redirect-template.html&quot;</span><span class="p">)</span>
 
-    <span class="nv">redirect_html</span> <span class="o">=</span> <span class="nv">path</span>.<span class="nv">read_text</span><span class="ss">()</span>
+    <span class="n">redirect_html</span> <span class="o">=</span> <span class="n">path</span><span class="p">.</span><span class="n">read_text</span><span class="p">()</span>
 
-    <span class="nv">redirect_html</span> <span class="o">=</span> <span class="nv">redirect_html</span>.<span class="nv">format</span><span class="ss">(</span><span class="nv">url</span><span class="o">=</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">../{args.version}/</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">redirect_html</span> <span class="o">=</span> <span class="n">redirect_html</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">f</span><span class="ss">&quot;../{args.version}/&quot;</span><span class="p">)</span>
 
-    <span class="nv">args</span>.<span class="nv">freeze_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">index.html</span><span class="s2">&quot;</span><span class="ss">)</span>.<span class="nv">write_text</span><span class="ss">(</span><span class="nv">redirect_html</span><span class="ss">)</span>
+    <span class="n">args</span><span class="p">.</span><span class="n">freeze_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;index.html&quot;</span><span class="p">).</span><span class="n">write_text</span><span class="p">(</span><span class="n">redirect_html</span><span class="p">)</span>
 </pre></div>
 
 
@@ -1980,23 +1980,23 @@ Note that versions_directory is the parent of version_directory.</p>
 
 <p>Extract versions from the webpage/v directory, which should each contain
 a manuscript.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_versions</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">get_versions</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Extract</span> <span class="nv">versions</span> <span class="nv">from</span> <span class="nv">the</span> <span class="nv">webpage</span><span class="o">/</span><span class="nv">v</span> <span class="nv">directory</span>, <span class="nv">which</span> <span class="nv">should</span> <span class="nv">each</span> <span class="nv">contain</span>
+<span class="ss">    Extract versions from the webpage/v directory, which should each contain</span>
 
-    <span class="nv">a</span> <span class="nv">manuscript</span>.
+<span class="ss">    a manuscript.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">versions</span> <span class="o">=</span> {<span class="nv">x</span>.<span class="nv">name</span> <span class="k">for</span> <span class="nv">x</span> <span class="nv">in</span> <span class="nv">args</span>.<span class="nv">versions_directory</span>.<span class="nv">iterdir</span><span class="ss">()</span> <span class="k">if</span> <span class="nv">x</span>.<span class="nv">is_dir</span><span class="ss">()</span>}
+    <span class="n">versions</span> <span class="o">=</span> <span class="err">{</span><span class="n">x</span><span class="p">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="k">in</span> <span class="n">args</span><span class="p">.</span><span class="n">versions_directory</span><span class="p">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="p">.</span><span class="n">is_dir</span><span class="p">()</span><span class="err">}</span>
 
-    <span class="nv">versions</span> <span class="o">-=</span> {<span class="s2">&quot;</span><span class="s">freeze</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">latest</span><span class="s2">&quot;</span>}
+    <span class="n">versions</span> <span class="o">-=</span> <span class="err">{</span><span class="ss">&quot;freeze&quot;</span><span class="p">,</span> <span class="ss">&quot;latest&quot;</span><span class="err">}</span>
 
-    <span class="nv">versions</span> <span class="o">=</span> <span class="nv">sorted</span><span class="ss">(</span><span class="nv">versions</span><span class="ss">)</span>
+    <span class="n">versions</span> <span class="o">=</span> <span class="n">sorted</span><span class="p">(</span><span class="n">versions</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="nv">versions</span>
+    <span class="k">return</span> <span class="n">versions</span>
 </pre></div>
 
 
@@ -2011,37 +2011,37 @@ a manuscript.</p>
 <p>Timestamp a file using OpenTimestamps.
 This function calls <code>ots stamp path</code>.
 If <code>path</code> does not exist, this function does nothing.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">ots_stamp</span><span class="ss">(</span><span class="nv">path</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="nf">ots_stamp</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">Timestamp</span> <span class="nv">a</span> <span class="nv">file</span> <span class="nv">using</span> <span class="nv">OpenTimestamps</span>.
+<span class="s2">    Timestamp a file using OpenTimestamps.</span>
 
-    <span class="nv">This</span> <span class="nv">function</span> <span class="nv">calls</span> `<span class="nv">ots</span> <span class="nv">stamp</span> <span class="nv">path</span>`.
+<span class="s2">    This function calls `ots stamp path`.</span>
 
-    <span class="k">If</span> `<span class="nv">path</span>` <span class="nv">does</span> <span class="nv">not</span> <span class="nv">exist</span>, <span class="nv">this</span> <span class="nv">function</span> <span class="nv">does</span> <span class="nv">nothing</span>.
+<span class="s2">    If `path` does not exist, this function does nothing.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="nv">process_args</span> <span class="o">=</span> [<span class="s2">&quot;</span><span class="s">ots</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">stamp</span><span class="s2">&quot;</span>, <span class="nv">str</span><span class="ss">(</span><span class="nv">path</span><span class="ss">)</span>]
+    <span class="n">process_args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ots&quot;</span><span class="p">,</span> <span class="s2">&quot;stamp&quot;</span><span class="p">,</span> <span class="nf">str</span><span class="p">(</span><span class="n">path</span><span class="p">)]</span>
 
-    <span class="nv">process</span> <span class="o">=</span> <span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span>
 
-        <span class="nv">process_args</span>, <span class="nv">stderr</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>, <span class="nv">universal_newlines</span><span class="o">=</span><span class="nv">True</span>
+        <span class="n">process_args</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="no">True</span>
 
-    <span class="ss">)</span>
+    <span class="p">)</span>
 
-    <span class="k">if</span> <span class="nv">process</span>.<span class="nv">returncode</span> <span class="o">!=</span> <span class="mi">0</span>:
+    <span class="k">if</span> <span class="n">process</span><span class="p">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+        <span class="n">logging</span><span class="p">.</span><span class="nf">warning</span><span class="p">(</span>
 
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">OpenTimestamp command returned nonzero code ({process.returncode}).</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">f</span><span class="s2">&quot;OpenTimestamp command returned nonzero code ({process.returncode}).\n&quot;</span>
 
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">&gt;&gt;&gt; {shlex_join(process.args)}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">f</span><span class="s2">&quot;&gt;&gt;&gt; {shlex_join(process.args)}\n&quot;</span>
 
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{process.stderr}</span><span class="s2">&quot;</span>
+            <span class="n">f</span><span class="s2">&quot;{process.stderr}&quot;</span>
 
-        <span class="ss">)</span>
+        <span class="p">)</span>
 </pre></div>
 
 
@@ -2056,73 +2056,73 @@ If <code>path</code> does not exist, this function does nothing.</p>
 <p>Upgrade OpenTimestamps .ots files in versioned commit directory trees.
 Upgrades each .ots file with a separate ots upgrade subprocess call due to
 https://github.com/opentimestamps/opentimestamps-client/issues/71</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">ots_upgrade</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">ots_upgrade</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Upgrade</span> <span class="nv">OpenTimestamps</span> .<span class="nv">ots</span> <span class="nv">files</span> <span class="nv">in</span> <span class="nv">versioned</span> <span class="nv">commit</span> <span class="nv">directory</span> <span class="nv">trees</span>.
+<span class="ss">    Upgrade OpenTimestamps .ots files in versioned commit directory trees.</span>
 
-    <span class="nv">Upgrades</span> <span class="nv">each</span> .<span class="nv">ots</span> <span class="nv">file</span> <span class="nv">with</span> <span class="nv">a</span> <span class="nv">separate</span> <span class="nv">ots</span> <span class="nv">upgrade</span> <span class="nv">subprocess</span> <span class="k">call</span> <span class="nl">due</span> <span class="nv">to</span>
+<span class="ss">    Upgrades each .ots file with a separate ots upgrade subprocess call due to</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">opentimestamps</span><span class="o">/</span><span class="nv">opentimestamps</span><span class="o">-</span><span class="nv">client</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">71</span>
+<span class="ss">    https://github.com/opentimestamps/opentimestamps-client/issues/71</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">ots_paths</span> <span class="o">=</span> <span class="nv">list</span><span class="ss">()</span>
+    <span class="n">ots_paths</span> <span class="o">=</span> <span class="n">list</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="nv">version</span> <span class="nv">in</span> <span class="nv">get_versions</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+    <span class="k">for</span> <span class="k">version</span> <span class="k">in</span> <span class="n">get_versions</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-        <span class="nv">ots_paths</span>.<span class="nv">extend</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">versions_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="nv">version</span><span class="ss">)</span>.<span class="nv">glob</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">**/*.ots</span><span class="s2">&quot;</span><span class="ss">))</span>
+        <span class="n">ots_paths</span><span class="p">.</span><span class="n">extend</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">versions_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="k">version</span><span class="p">).</span><span class="n">glob</span><span class="p">(</span><span class="ss">&quot;**/*.ots&quot;</span><span class="p">))</span>
 
-    <span class="nv">ots_paths</span>.<span class="nv">sort</span><span class="ss">()</span>
+    <span class="n">ots_paths</span><span class="p">.</span><span class="n">sort</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="nv">ots_path</span> <span class="nv">in</span> <span class="nv">ots_paths</span>:
+    <span class="k">for</span> <span class="n">ots_path</span> <span class="k">in</span> <span class="n">ots_paths</span><span class="p">:</span>
 
-        <span class="nv">process_args</span> <span class="o">=</span> [<span class="s2">&quot;</span><span class="s">ots</span><span class="s2">&quot;</span>]
+        <span class="n">process_args</span> <span class="o">=</span> <span class="p">[</span><span class="ss">&quot;ots&quot;</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="nv">args</span>.<span class="nv">no_ots_cache</span>:
+        <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">no_ots_cache</span><span class="p">:</span>
 
-            <span class="nv">process_args</span>.<span class="nv">append</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">--no-cache</span><span class="s2">&quot;</span><span class="ss">)</span>
+            <span class="n">process_args</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="ss">&quot;--no-cache&quot;</span><span class="p">)</span>
 
-        <span class="k">else</span>:
+        <span class="k">else</span><span class="p">:</span>
 
-            <span class="nv">process_args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;</span><span class="s">--cache</span><span class="s2">&quot;</span>, <span class="nv">str</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">ots_cache</span><span class="ss">)</span>]<span class="ss">)</span>
+            <span class="n">process_args</span><span class="p">.</span><span class="n">extend</span><span class="p">([</span><span class="ss">&quot;--cache&quot;</span><span class="p">,</span> <span class="n">str</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">ots_cache</span><span class="p">)])</span>
 
-        <span class="nv">process_args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;</span><span class="s">upgrade</span><span class="s2">&quot;</span>, <span class="nv">str</span><span class="ss">(</span><span class="nv">ots_path</span><span class="ss">)</span>]<span class="ss">)</span>
+        <span class="n">process_args</span><span class="p">.</span><span class="n">extend</span><span class="p">([</span><span class="ss">&quot;upgrade&quot;</span><span class="p">,</span> <span class="n">str</span><span class="p">(</span><span class="n">ots_path</span><span class="p">)])</span>
 
-        <span class="nv">process</span> <span class="o">=</span> <span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span>
+        <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span>
 
-            <span class="nv">process_args</span>, <span class="nv">stderr</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>, <span class="nv">universal_newlines</span><span class="o">=</span><span class="nv">True</span>
+            <span class="n">process_args</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="k">True</span>
 
-        <span class="ss">)</span>
+        <span class="p">)</span>
 
-        <span class="nv">message</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">&gt;&gt;&gt; {shlex_join(process.args)}</span><span class="se">\n</span><span class="s">{process.stderr}</span><span class="s2">&quot;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">f</span><span class="ss">&quot;&gt;&gt;&gt; {shlex_join(process.args)}\n{process.stderr}&quot;</span>
 
-        <span class="k">if</span> <span class="nv">process</span>.<span class="nv">returncode</span> <span class="o">!=</span> <span class="mi">0</span>:
+        <span class="k">if</span> <span class="n">process</span><span class="p">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
 
-            <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+            <span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span>
 
-                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">OpenTimestamp upgrade failed with exit code {process.returncode}.</span><span class="se">\n</span><span class="s">{message}</span><span class="s2">&quot;</span>
+                <span class="n">f</span><span class="ss">&quot;OpenTimestamp upgrade failed with exit code {process.returncode}.\n{message}&quot;</span>
 
-            <span class="ss">)</span>
+            <span class="p">)</span>
 
-        <span class="nv">elif</span> <span class="nv">not</span> <span class="nv">process</span>.<span class="nv">stderr</span>.<span class="nv">strip</span><span class="ss">()</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">Success! Timestamp complete</span><span class="s2">&quot;</span>:
+        <span class="n">elif</span> <span class="k">not</span> <span class="n">process</span><span class="p">.</span><span class="n">stderr</span><span class="p">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="ss">&quot;Success! Timestamp complete&quot;</span><span class="p">:</span>
 
-            <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">message</span><span class="ss">)</span>
+            <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
-        <span class="nv">backup_path</span> <span class="o">=</span> <span class="nv">ots_path</span>.<span class="nv">with_suffix</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">.ots.bak</span><span class="s2">&quot;</span><span class="ss">)</span>
+        <span class="n">backup_path</span> <span class="o">=</span> <span class="n">ots_path</span><span class="p">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="ss">&quot;.ots.bak&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nv">backup_path</span>.<span class="nv">exists</span><span class="ss">()</span>:
+        <span class="k">if</span> <span class="n">backup_path</span><span class="p">.</span><span class="k">exists</span><span class="p">():</span>
 
-            <span class="k">if</span> <span class="nv">process</span>.<span class="nv">returncode</span> <span class="o">==</span> <span class="mi">0</span>:
+            <span class="k">if</span> <span class="n">process</span><span class="p">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 
-                <span class="nv">backup_path</span>.<span class="k">unlink</span><span class="ss">()</span>
+                <span class="n">backup_path</span><span class="p">.</span><span class="n">unlink</span><span class="p">()</span>
 
-            <span class="k">else</span>:
+            <span class="k">else</span><span class="p">:</span>
 
-                # <span class="nv">Restore</span> <span class="nv">original</span> <span class="nv">timestamp</span> <span class="k">if</span> <span class="nv">failure</span>
+                <span class="o">#</span> <span class="n">Restore</span> <span class="n">original</span> <span class="k">timestamp</span> <span class="k">if</span> <span class="n">failure</span>
 
-                <span class="nv">backup_path</span>.<span class="nv">rename</span><span class="ss">(</span><span class="nv">ots_path</span><span class="ss">)</span>
+                <span class="n">backup_path</span><span class="p">.</span><span class="k">rename</span><span class="p">(</span><span class="n">ots_path</span><span class="p">)</span>
 </pre></div>
 
 
@@ -2183,7 +2183,7 @@ https://github.com/opentimestamps/opentimestamps-client/issues/71</p>
       
     </div>
     
-      <script src="../../../../assets/javascripts/application.a8b5e56f.js"></script>
+      <script src="../../../../assets/javascripts/application.8e03edeb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../.."}})</script>
       

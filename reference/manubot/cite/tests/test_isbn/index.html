@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
     
     
       
@@ -1310,15 +1310,15 @@
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>@<span class="nv">pytest</span>.<span class="nv">mark</span>.<span class="nv">xfail</span><span class="ss">(</span><span class="nv">reason</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Quotation in title removed at some upstream point</span><span class="s2">&quot;</span><span class="ss">)</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">reason</span><span class="o">=</span><span class="ss">&quot;Quotation in title removed at some upstream point&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="nv">def</span> <span class="nv">test_citekey_to_csl_item_isbnlib_title_with_quotation_mark</span><span class="ss">()</span>:
+<span class="n">def</span><span class="w"> </span><span class="n">test_citekey_to_csl_item_isbnlib_title_with_quotation_mark</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
 
-    <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">get_isbn_csl_item_isbnlib</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">9780312353780</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_isbn_csl_item_isbnlib</span><span class="p">(</span><span class="ss">&quot;9780312353780&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">type</span><span class="s2">&quot;</span>] <span class="o">==</span> <span class="s2">&quot;</span><span class="s">book</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;type&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;book&quot;</span><span class="w"></span>
 
-    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">title</span><span class="s2">&quot;</span>].<span class="nv">startswith</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">&quot;F&quot; is for Fugitive</span><span class="s1">&#39;</span><span class="ss">)</span>
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;title&quot;</span><span class="o">]</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&quot;F&quot; is for Fugitive&#39;</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 
 
@@ -1332,19 +1332,19 @@
 
 <p>isbn:9781439566039 is not found by Citoid:
 https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9781439566039</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">test_get_isbn_csl_item_citoid_not_found</span><span class="ss">()</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_get_isbn_csl_item_citoid_not_found</span><span class="p">():</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">isbn</span>:<span class="mi">9781439566039</span> <span class="nv">is</span> <span class="nv">not</span> <span class="nv">found</span> <span class="nv">by</span> <span class="nv">Citoid</span>:
+<span class="ss">    isbn:9781439566039 is not found by Citoid:</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">en</span>.<span class="nv">wikipedia</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">api</span><span class="o">/</span><span class="nv">rest_v1</span><span class="o">/</span><span class="nv">data</span><span class="o">/</span><span class="nv">citation</span><span class="o">/</span><span class="nv">mediawiki</span><span class="o">/</span><span class="mi">9781439566039</span>
+<span class="ss">    https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9781439566039</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">with</span> <span class="nv">pytest</span>.<span class="nv">raises</span><span class="ss">(</span><span class="nv">KeyError</span>, <span class="nv">match</span><span class="o">=</span><span class="nv">r</span><span class="s2">&quot;</span><span class="s">Metadata for ISBN [0-9]{10,13} not found</span><span class="s2">&quot;</span><span class="ss">)</span>:
+    <span class="k">with</span> <span class="n">pytest</span><span class="p">.</span><span class="n">raises</span><span class="p">(</span><span class="n">KeyError</span><span class="p">,</span> <span class="k">match</span><span class="o">=</span><span class="n">r</span><span class="ss">&quot;Metadata for ISBN [0-9]{10,13} not found&quot;</span><span class="p">):</span>
 
-        <span class="nv">get_isbn_csl_item_citoid</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">9781439566039</span><span class="s2">&quot;</span><span class="ss">)</span>
+        <span class="n">get_isbn_csl_item_citoid</span><span class="p">(</span><span class="ss">&quot;9781439566039&quot;</span><span class="p">)</span>
 </pre></div>
 
 
@@ -1387,23 +1387,23 @@ https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9780719561023</p>
 <p>translation-server returns two metadata records for this ISBN.
 The second has itemType=note and previously caused CSL export to fail.
 https://github.com/zotero/translation-server/issues/67</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">test_get_isbn_csl_item_zotero_with_note_issue</span><span class="ss">()</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_get_isbn_csl_item_zotero_with_note_issue</span><span class="p">():</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">translation</span><span class="o">-</span><span class="nv">server</span> <span class="nv">returns</span> <span class="nv">two</span> <span class="nv">metadata</span> <span class="nv">records</span> <span class="k">for</span> <span class="nv">this</span> <span class="nv">ISBN</span>.
+<span class="ss">    translation-server returns two metadata records for this ISBN.</span>
 
-    <span class="nv">The</span> <span class="nv">second</span> <span class="nv">has</span> <span class="nv">itemType</span><span class="o">=</span><span class="nv">note</span> <span class="nv">and</span> <span class="nv">previously</span> <span class="nv">caused</span> <span class="nv">CSL</span> <span class="nv">export</span> <span class="nv">to</span> <span class="nv">fail</span>.
+<span class="ss">    The second has itemType=note and previously caused CSL export to fail.</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">zotero</span><span class="o">/</span><span class="nv">translation</span><span class="o">-</span><span class="nv">server</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">67</span>
+<span class="ss">    https://github.com/zotero/translation-server/issues/67</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">isbn</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">9780262517638</span><span class="s2">&quot;</span>
+    <span class="n">isbn</span> <span class="o">=</span> <span class="ss">&quot;9780262517638&quot;</span>
 
-    <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">get_isbn_csl_item_zotero</span><span class="ss">(</span><span class="nv">isbn</span><span class="ss">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_isbn_csl_item_zotero</span><span class="p">(</span><span class="n">isbn</span><span class="p">)</span>
 
-    <span class="nv">assert</span> <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">author</span><span class="s2">&quot;</span>][<span class="mi">0</span>][<span class="s2">&quot;</span><span class="s">family</span><span class="s2">&quot;</span>] <span class="o">==</span> <span class="s2">&quot;</span><span class="s">Suber</span><span class="s2">&quot;</span>
+    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="ss">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;Suber&quot;</span>
 </pre></div>
 
 
@@ -1478,7 +1478,7 @@ https://github.com/zotero/translation-server/issues/67</p>
       
     </div>
     
-      <script src="../../../../../assets/javascripts/application.a8b5e56f.js"></script>
+      <script src="../../../../../assets/javascripts/application.8e03edeb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../../.."}})</script>
       

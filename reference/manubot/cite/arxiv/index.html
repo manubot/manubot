@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
     
     
       
@@ -1351,137 +1351,137 @@ alert the user that an alternative version of record exists.</p>
 - https://arxiv.org/help/api/index
 - http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
 - https://github.com/citation-style-language/schema/blob/master/csl-data.json</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_arxiv_csl_item</span><span class="ss">(</span><span class="nv">arxiv_id</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">get_arxiv_csl_item</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="k">Return</span> <span class="nv">csl_item</span> <span class="nv">item</span> <span class="k">for</span> <span class="nv">an</span> <span class="nv">arXiv</span> <span class="nv">record</span>.
+<span class="ss">    Return csl_item item for an arXiv record.</span>
 
-    <span class="nv">arxiv_id</span> <span class="nv">can</span> <span class="nv">be</span> <span class="nv">versioned</span>, <span class="nv">like</span> `<span class="mi">1512</span>.<span class="mi">00567</span><span class="nv">v2</span>`, <span class="nv">or</span> <span class="nv">versionless</span>, <span class="nv">like</span>
+<span class="ss">    arxiv_id can be versioned, like `1512.00567v2`, or versionless, like</span>
 
-    `<span class="mi">1512</span>.<span class="mi">00567</span>`. <span class="k">If</span> <span class="nv">versionless</span>, <span class="nv">the</span> <span class="nv">arXiv</span> <span class="nv">API</span> <span class="nv">will</span> <span class="k">return</span> <span class="nv">metadata</span> <span class="k">for</span> <span class="nv">the</span>
+<span class="ss">    `1512.00567`. If versionless, the arXiv API will return metadata for the</span>
 
-    <span class="nv">latest</span> <span class="nv">version</span>. <span class="nv">Legacy</span> <span class="nv">IDs</span>, <span class="nv">such</span> <span class="nv">as</span> `<span class="nv">cond</span><span class="o">-</span><span class="nv">mat</span><span class="o">/</span><span class="mi">0703470</span><span class="nv">v2</span>`, <span class="nv">are</span> <span class="nv">also</span>
+<span class="ss">    latest version. Legacy IDs, such as `cond-mat/0703470v2`, are also</span>
 
-    <span class="nv">supported</span>.
+<span class="ss">    supported.</span>
 
-    <span class="k">If</span> <span class="nv">arXiv</span> <span class="nv">has</span> <span class="nv">an</span> <span class="nv">associated</span> <span class="nv">DOI</span> <span class="k">for</span> <span class="nv">the</span> <span class="nv">record</span>, <span class="nv">a</span> <span class="nv">warning</span> <span class="nv">is</span> <span class="nv">logged</span> <span class="nv">to</span>
+<span class="ss">    If arXiv has an associated DOI for the record, a warning is logged to</span>
 
-    <span class="nv">alert</span> <span class="nv">the</span> <span class="nv">user</span> <span class="nv">that</span> <span class="nv">an</span> <span class="nv">alternative</span> <span class="nv">version</span> <span class="nv">of</span> <span class="nv">record</span> <span class="nv">exists</span>.
+<span class="ss">    alert the user that an alternative version of record exists.</span>
 
-    <span class="nv">References</span>:
+<span class="ss">    References:</span>
 
-    <span class="o">-</span> <span class="nv">https</span>:<span class="o">//</span><span class="nv">arxiv</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">help</span><span class="o">/</span><span class="nv">api</span><span class="o">/</span><span class="nv">index</span>
+<span class="ss">    - https://arxiv.org/help/api/index</span>
 
-    <span class="o">-</span> <span class="nv">http</span>:<span class="o">//</span><span class="nv">citeproc</span><span class="o">-</span><span class="nv">js</span>.<span class="nv">readthedocs</span>.<span class="nv">io</span><span class="o">/</span><span class="nv">en</span><span class="o">/</span><span class="nv">latest</span><span class="o">/</span><span class="nv">csl</span><span class="o">-</span><span class="nv">json</span><span class="o">/</span><span class="nv">markup</span>.<span class="nv">html</span>
+<span class="ss">    - http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html</span>
 
-    <span class="o">-</span> <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">citation</span><span class="o">-</span><span class="nv">style</span><span class="o">-</span><span class="nv">language</span><span class="o">/</span><span class="nv">schema</span><span class="o">/</span><span class="nv">blob</span><span class="o">/</span><span class="nv">master</span><span class="o">/</span><span class="nv">csl</span><span class="o">-</span><span class="nv">data</span>.<span class="nv">json</span>
+<span class="ss">    - https://github.com/citation-style-language/schema/blob/master/csl-data.json</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">https://export.arxiv.org/api/query</span><span class="s2">&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="ss">&quot;https://export.arxiv.org/api/query&quot;</span>
 
-    <span class="nb">params</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">id_list</span><span class="s2">&quot;</span>: <span class="nv">arxiv_id</span>, <span class="s2">&quot;</span><span class="s">max_results</span><span class="s2">&quot;</span>: <span class="mi">1</span>}
+    <span class="n">params</span> <span class="o">=</span> <span class="err">{</span><span class="ss">&quot;id_list&quot;</span><span class="p">:</span> <span class="n">arxiv_id</span><span class="p">,</span> <span class="ss">&quot;max_results&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="err">}</span>
 
-    <span class="nv">headers</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">User-Agent</span><span class="s2">&quot;</span>: <span class="nv">get_manubot_user_agent</span><span class="ss">()</span>}
+    <span class="n">headers</span> <span class="o">=</span> <span class="err">{</span><span class="ss">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">()</span><span class="err">}</span>
 
-    <span class="nv">response</span> <span class="o">=</span> <span class="nv">requests</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">url</span>, <span class="nb">params</span>, <span class="nv">headers</span><span class="o">=</span><span class="nv">headers</span><span class="ss">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
-    # <span class="nv">XML</span> <span class="nv">namespace</span> <span class="nv">prefixes</span>
+    <span class="o">#</span> <span class="n">XML</span> <span class="n">namespace</span> <span class="n">prefixes</span>
 
-    <span class="nv">prefix</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">{http://www.w3.org/2005/Atom}</span><span class="s2">&quot;</span>
+    <span class="k">prefix</span> <span class="o">=</span> <span class="ss">&quot;{http://www.w3.org/2005/Atom}&quot;</span>
 
-    <span class="nv">alt_prefix</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">{http://arxiv.org/schemas/atom}</span><span class="s2">&quot;</span>
+    <span class="n">alt_prefix</span> <span class="o">=</span> <span class="ss">&quot;{http://arxiv.org/schemas/atom}&quot;</span>
 
-    # <span class="nv">Parse</span> <span class="nv">XML</span>
+    <span class="o">#</span> <span class="n">Parse</span> <span class="n">XML</span>
 
-    <span class="nv">xml_tree</span> <span class="o">=</span> <span class="nv">xml</span>.<span class="nv">etree</span>.<span class="nv">ElementTree</span>.<span class="nv">fromstring</span><span class="ss">(</span><span class="nv">response</span>.<span class="nv">text</span><span class="ss">)</span>
+    <span class="n">xml_tree</span> <span class="o">=</span> <span class="n">xml</span><span class="p">.</span><span class="n">etree</span><span class="p">.</span><span class="n">ElementTree</span><span class="p">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nb">text</span><span class="p">)</span>
 
-    <span class="ss">(</span><span class="nv">entry</span>,<span class="ss">)</span> <span class="o">=</span> <span class="nv">xml_tree</span>.<span class="nv">findall</span><span class="ss">(</span><span class="nv">prefix</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="s">entry</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="p">(</span><span class="n">entry</span><span class="p">,)</span> <span class="o">=</span> <span class="n">xml_tree</span><span class="p">.</span><span class="n">findall</span><span class="p">(</span><span class="k">prefix</span> <span class="o">+</span> <span class="ss">&quot;entry&quot;</span><span class="p">)</span>
 
-    # <span class="nv">Create</span> <span class="nv">dictionary</span> <span class="k">for</span> <span class="nv">CSL</span> <span class="nv">Item</span>
+    <span class="o">#</span> <span class="k">Create</span> <span class="k">dictionary</span> <span class="k">for</span> <span class="n">CSL</span> <span class="n">Item</span>
 
-    <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">collections</span>.<span class="nv">OrderedDict</span><span class="ss">()</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">collections</span><span class="p">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
-    # <span class="nv">Extract</span> <span class="nv">versioned</span> <span class="nv">arXiv</span> <span class="nv">ID</span>
+    <span class="o">#</span> <span class="k">Extract</span> <span class="n">versioned</span> <span class="n">arXiv</span> <span class="n">ID</span>
 
-    <span class="nv">url</span> <span class="o">=</span> <span class="nv">entry</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="nv">prefix</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="s">id</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">entry</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="k">prefix</span> <span class="o">+</span> <span class="ss">&quot;id&quot;</span><span class="p">)</span>
 
-    <span class="nv">pattern</span> <span class="o">=</span> <span class="nv">re</span>.<span class="nv">compile</span><span class="ss">(</span><span class="nv">r</span><span class="s2">&quot;</span><span class="s">arxiv.org/abs/(.+)</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">compile</span><span class="p">(</span><span class="n">r</span><span class="ss">&quot;arxiv.org/abs/(.+)&quot;</span><span class="p">)</span>
 
-    <span class="nv">match</span> <span class="o">=</span> <span class="nv">pattern</span>.<span class="nv">search</span><span class="ss">(</span><span class="nv">url</span><span class="ss">)</span>
+    <span class="k">match</span> <span class="o">=</span> <span class="n">pattern</span><span class="p">.</span><span class="k">search</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-    <span class="nv">versioned_id</span> <span class="o">=</span> <span class="nv">match</span>.<span class="nv">group</span><span class="ss">(</span><span class="mi">1</span><span class="ss">)</span>
+    <span class="n">versioned_id</span> <span class="o">=</span> <span class="k">match</span><span class="p">.</span><span class="k">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">number</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">versioned_id</span>
+    <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">versioned_id</span>
 
-    <span class="nv">_</span>, <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">version</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">versioned_id</span>.<span class="nv">rsplit</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">v</span><span class="s2">&quot;</span>, <span class="mi">1</span><span class="ss">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">versioned_id</span><span class="p">.</span><span class="n">rsplit</span><span class="p">(</span><span class="ss">&quot;v&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">URL</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="s2">&quot;</span><span class="s">https://arxiv.org/abs/</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nv">versioned_id</span>
+    <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="ss">&quot;https://arxiv.org/abs/&quot;</span> <span class="o">+</span> <span class="n">versioned_id</span>
 
-    # <span class="nv">Extrat</span> <span class="nv">CSL</span> <span class="nv">title</span> <span class="nv">field</span>
+    <span class="o">#</span> <span class="n">Extrat</span> <span class="n">CSL</span> <span class="n">title</span> <span class="n">field</span>
 
-    <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">title</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">entry</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="nv">prefix</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="s">title</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="k">prefix</span> <span class="o">+</span> <span class="ss">&quot;title&quot;</span><span class="p">)</span>
 
-    # <span class="nv">Extract</span> <span class="nv">CSL</span> <span class="nv">date</span> <span class="nv">field</span>
+    <span class="o">#</span> <span class="k">Extract</span> <span class="n">CSL</span> <span class="nb">date</span> <span class="n">field</span>
 
-    <span class="nv">published</span> <span class="o">=</span> <span class="nv">entry</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="nv">prefix</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="s">published</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">published</span> <span class="o">=</span> <span class="n">entry</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="k">prefix</span> <span class="o">+</span> <span class="ss">&quot;published&quot;</span><span class="p">)</span>
 
-    <span class="nv">published</span>, <span class="nv">_</span> <span class="o">=</span> <span class="nv">published</span>.<span class="nv">split</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">T</span><span class="s2">&quot;</span>, <span class="mi">1</span><span class="ss">)</span>
+    <span class="n">published</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">published</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="ss">&quot;T&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">issued</span><span class="s2">&quot;</span>] <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">date-parts</span><span class="s2">&quot;</span>: [[<span class="nv">int</span><span class="ss">(</span><span class="nv">x</span><span class="ss">)</span> <span class="k">for</span> <span class="nv">x</span> <span class="nv">in</span> <span class="nv">published</span>.<span class="nv">split</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">-</span><span class="s2">&quot;</span><span class="ss">)</span>]]}
+    <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;issued&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="err">{</span><span class="ss">&quot;date-parts&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="k">in</span> <span class="n">published</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="ss">&quot;-&quot;</span><span class="p">)]]</span><span class="err">}</span>
 
-    # <span class="nv">Extract</span> <span class="nv">authors</span>
+    <span class="o">#</span> <span class="k">Extract</span> <span class="n">authors</span>
 
-    <span class="nv">authors</span> <span class="o">=</span> <span class="nv">list</span><span class="ss">()</span>
+    <span class="n">authors</span> <span class="o">=</span> <span class="n">list</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="nv">elem</span> <span class="nv">in</span> <span class="nv">entry</span>.<span class="nv">findall</span><span class="ss">(</span><span class="nv">prefix</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="s">author</span><span class="s2">&quot;</span><span class="ss">)</span>:
+    <span class="k">for</span> <span class="n">elem</span> <span class="k">in</span> <span class="n">entry</span><span class="p">.</span><span class="n">findall</span><span class="p">(</span><span class="k">prefix</span> <span class="o">+</span> <span class="ss">&quot;author&quot;</span><span class="p">):</span>
 
-        <span class="nv">name</span> <span class="o">=</span> <span class="nv">elem</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="nv">prefix</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="s">name</span><span class="s2">&quot;</span><span class="ss">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">elem</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="k">prefix</span> <span class="o">+</span> <span class="ss">&quot;name&quot;</span><span class="p">)</span>
 
-        <span class="nv">author</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">literal</span><span class="s2">&quot;</span>: <span class="nv">name</span>}
+        <span class="n">author</span> <span class="o">=</span> <span class="err">{</span><span class="ss">&quot;literal&quot;</span><span class="p">:</span> <span class="n">name</span><span class="err">}</span>
 
-        <span class="nv">authors</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">author</span><span class="ss">)</span>
+        <span class="n">authors</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">author</span><span class="p">)</span>
 
-    <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">author</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">authors</span>
+    <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;author&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authors</span>
 
-    # <span class="nv">Set</span> <span class="nv">publisher</span> <span class="nv">to</span> <span class="nv">arXiv</span>
+    <span class="o">#</span> <span class="k">Set</span> <span class="n">publisher</span> <span class="k">to</span> <span class="n">arXiv</span>
 
-    <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">container-title</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="s2">&quot;</span><span class="s">arXiv</span><span class="s2">&quot;</span>
+    <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;container-title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="ss">&quot;arXiv&quot;</span>
 
-    <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">publisher</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="s2">&quot;</span><span class="s">arXiv</span><span class="s2">&quot;</span>
+    <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;publisher&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="ss">&quot;arXiv&quot;</span>
 
-    # <span class="nv">Extract</span> <span class="nv">abstract</span>
+    <span class="o">#</span> <span class="k">Extract</span> <span class="n">abstract</span>
 
-    <span class="nv">abstract</span> <span class="o">=</span> <span class="nv">entry</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="nv">prefix</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="s">summary</span><span class="s2">&quot;</span><span class="ss">)</span>.<span class="nv">strip</span><span class="ss">()</span>
+    <span class="n">abstract</span> <span class="o">=</span> <span class="n">entry</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="k">prefix</span> <span class="o">+</span> <span class="ss">&quot;summary&quot;</span><span class="p">).</span><span class="n">strip</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="nv">abstract</span>:
+    <span class="k">if</span> <span class="n">abstract</span><span class="p">:</span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">abstract</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">abstract</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;abstract&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">abstract</span>
 
-    # <span class="nv">Check</span> <span class="k">if</span> <span class="nv">the</span> <span class="nv">article</span> <span class="nv">has</span> <span class="nv">been</span> <span class="nv">published</span> <span class="nv">with</span> <span class="nv">a</span> <span class="nv">DOI</span>
+    <span class="o">#</span> <span class="k">Check</span> <span class="k">if</span> <span class="n">the</span> <span class="n">article</span> <span class="n">has</span> <span class="n">been</span> <span class="n">published</span> <span class="k">with</span> <span class="n">a</span> <span class="n">DOI</span>
 
-    <span class="nv">DOI</span> <span class="o">=</span> <span class="nv">entry</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">{http://arxiv.org/schemas/atom}doi</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">DOI</span> <span class="o">=</span> <span class="n">entry</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="ss">&quot;{http://arxiv.org/schemas/atom}doi&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nv">DOI</span>:
+    <span class="k">if</span> <span class="n">DOI</span><span class="p">:</span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">DOI</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">DOI</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;DOI&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DOI</span>
 
-        <span class="nv">journal_ref</span> <span class="o">=</span> <span class="nv">entry</span>.<span class="nv">findtext</span><span class="ss">(</span><span class="nv">alt_prefix</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="s">journal_ref</span><span class="s2">&quot;</span><span class="ss">)</span>
+        <span class="n">journal_ref</span> <span class="o">=</span> <span class="n">entry</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="n">alt_prefix</span> <span class="o">+</span> <span class="ss">&quot;journal_ref&quot;</span><span class="p">)</span>
 
-        <span class="nv">msg</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">arXiv article {arxiv_id} published at https://doi.org/{DOI}</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">f</span><span class="ss">&quot;arXiv article {arxiv_id} published at https://doi.org/{DOI}&quot;</span>
 
-        <span class="k">if</span> <span class="nv">journal_ref</span>:
+        <span class="k">if</span> <span class="n">journal_ref</span><span class="p">:</span>
 
-            <span class="nv">msg</span> <span class="o">+=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s"> — {journal_ref}</span><span class="s2">&quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="n">f</span><span class="ss">&quot; — {journal_ref}&quot;</span>
 
-        <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="nv">msg</span><span class="ss">)</span>
+        <span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-    # <span class="nv">Set</span> <span class="nv">CSL</span> <span class="nv">type</span> <span class="nv">to</span> <span class="nv">report</span> <span class="k">for</span> <span class="nv">preprint</span>
+    <span class="o">#</span> <span class="k">Set</span> <span class="n">CSL</span> <span class="k">type</span> <span class="k">to</span> <span class="n">report</span> <span class="k">for</span> <span class="n">preprint</span>
 
-    <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">type</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="s2">&quot;</span><span class="s">report</span><span class="s2">&quot;</span>
+    <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="ss">&quot;report&quot;</span>
 
-    <span class="k">return</span> <span class="nv">csl_item</span>
+    <span class="k">return</span> <span class="n">csl_item</span>
 </pre></div>
 
 
@@ -1556,7 +1556,7 @@ alert the user that an alternative version of record exists.</p>
       
     </div>
     
-      <script src="../../../../assets/javascripts/application.a8b5e56f.js"></script>
+      <script src="../../../../assets/javascripts/application.8e03edeb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../.."}})</script>
       

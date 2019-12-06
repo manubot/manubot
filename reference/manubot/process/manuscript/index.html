@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
     
     
       
@@ -1415,19 +1415,19 @@
 
 <p>Return the current datetime, with timezone awareness
 https://stackoverflow.com/a/39079819/4651668</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">datetime_now</span><span class="ss">()</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">datetime_now</span><span class="p">():</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="k">Return</span> <span class="nv">the</span> <span class="nv">current</span> <span class="nv">datetime</span>, <span class="nv">with</span> <span class="nv">timezone</span> <span class="nv">awareness</span>
+<span class="ss">    Return the current datetime, with timezone awareness</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">stackoverflow</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">a</span><span class="o">/</span><span class="mi">39079819</span><span class="o">/</span><span class="mi">4651668</span>
+<span class="ss">    https://stackoverflow.com/a/39079819/4651668</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">tzinfo</span> <span class="o">=</span> <span class="nv">datetime</span>.<span class="nv">datetime</span>.<span class="nv">now</span><span class="ss">(</span><span class="nv">datetime</span>.<span class="nv">timezone</span>.<span class="nv">utc</span><span class="ss">)</span>.<span class="nv">astimezone</span><span class="ss">()</span>.<span class="nv">tzinfo</span>
+    <span class="n">tzinfo</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">timezone</span><span class="p">.</span><span class="n">utc</span><span class="p">).</span><span class="n">astimezone</span><span class="p">().</span><span class="n">tzinfo</span>
 
-    <span class="k">return</span> <span class="nv">datetime</span>.<span class="nv">datetime</span>.<span class="nv">now</span><span class="ss">(</span><span class="nv">tzinfo</span><span class="ss">)</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">(</span><span class="n">tzinfo</span><span class="p">)</span>
 </pre></div>
 
 
@@ -1441,31 +1441,31 @@ https://stackoverflow.com/a/39079819/4651668</p>
 
 <p>Extract the deduplicated list of citations in a text. Citations that are
 clearly invalid such as <code>doi:/453</code> are not returned.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_citekeys</span><span class="ss">(</span><span class="nv">text</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">get_citekeys</span><span class="p">(</span><span class="nb">text</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Extract</span> <span class="nv">the</span> <span class="nv">deduplicated</span> <span class="nv">list</span> <span class="nv">of</span> <span class="nv">citations</span> <span class="nv">in</span> <span class="nv">a</span> <span class="nv">text</span>. <span class="nv">Citations</span> <span class="nv">that</span> <span class="nv">are</span>
+<span class="ss">    Extract the deduplicated list of citations in a text. Citations that are</span>
 
-    <span class="nv">clearly</span> <span class="nv">invalid</span> <span class="nv">such</span> <span class="nv">as</span> `<span class="nv">doi</span>:<span class="o">/</span><span class="mi">453</span>` <span class="nv">are</span> <span class="nv">not</span> <span class="nv">returned</span>.
+<span class="ss">    clearly invalid such as `doi:/453` are not returned.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">citekeys</span> <span class="o">=</span> <span class="nv">set</span><span class="ss">(</span><span class="nv">citekey_pattern</span>.<span class="nv">findall</span><span class="ss">(</span><span class="nv">text</span><span class="ss">))</span>
+    <span class="n">citekeys</span> <span class="o">=</span> <span class="k">set</span><span class="p">(</span><span class="n">citekey_pattern</span><span class="p">.</span><span class="n">findall</span><span class="p">(</span><span class="nb">text</span><span class="p">))</span>
 
-    <span class="nv">citekeys</span> <span class="o">=</span> <span class="nv">filter</span><span class="ss">(</span>
+    <span class="n">citekeys</span> <span class="o">=</span> <span class="n">filter</span><span class="p">(</span>
 
-        <span class="nv">lambda</span> <span class="nv">x</span>: <span class="nv">is_valid_citekey</span><span class="ss">(</span>
+        <span class="n">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">is_valid_citekey</span><span class="p">(</span>
 
-            <span class="nv">x</span>, <span class="nv">allow_tag</span><span class="o">=</span><span class="nv">True</span>, <span class="nv">allow_raw</span><span class="o">=</span><span class="nv">True</span>, <span class="nv">allow_pandoc_xnos</span><span class="o">=</span><span class="nv">True</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">allow_tag</span><span class="o">=</span><span class="k">True</span><span class="p">,</span> <span class="n">allow_raw</span><span class="o">=</span><span class="k">True</span><span class="p">,</span> <span class="n">allow_pandoc_xnos</span><span class="o">=</span><span class="k">True</span>
 
-        <span class="ss">)</span>,
+        <span class="p">),</span>
 
-        <span class="nv">citekeys</span>,
+        <span class="n">citekeys</span><span class="p">,</span>
 
-    <span class="ss">)</span>
+    <span class="p">)</span>
 
-    <span class="k">return</span> <span class="nv">sorted</span><span class="ss">(</span><span class="nv">citekeys</span><span class="ss">)</span>
+    <span class="k">return</span> <span class="n">sorted</span><span class="p">(</span><span class="n">citekeys</span><span class="p">)</span>
 </pre></div>
 
 
@@ -1479,37 +1479,37 @@ clearly invalid such as <code>doi:/453</code> are not returned.</p>
 
 
 <p>Compute manuscript statistics.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_manuscript_stats</span><span class="ss">(</span><span class="nv">text</span>, <span class="nv">citekeys_df</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">get_manuscript_stats</span><span class="p">(</span><span class="nb">text</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="nv">Compute</span> <span class="nv">manuscript</span> <span class="nv">statistics</span>.
+<span class="ss">    Compute manuscript statistics.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">stats</span> <span class="o">=</span> <span class="nv">collections</span>.<span class="nv">OrderedDict</span><span class="ss">()</span>
+    <span class="n">stats</span> <span class="o">=</span> <span class="n">collections</span><span class="p">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
-    # <span class="nv">Number</span> <span class="nv">of</span> <span class="nv">distinct</span> <span class="nv">references</span> <span class="nv">by</span> <span class="nv">type</span>
+    <span class="o">#</span> <span class="nb">Number</span> <span class="k">of</span> <span class="k">distinct</span> <span class="k">references</span> <span class="k">by</span> <span class="k">type</span>
 
-    <span class="nv">ref_counts</span> <span class="o">=</span> <span class="ss">(</span>
+    <span class="n">ref_counts</span> <span class="o">=</span> <span class="p">(</span>
 
-        <span class="nv">citekeys_df</span>.<span class="nv">standard_citekey</span>.<span class="nv">drop_duplicates</span><span class="ss">()</span>
+        <span class="n">citekeys_df</span><span class="p">.</span><span class="n">standard_citekey</span><span class="p">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
 
-        .<span class="nv">map</span><span class="ss">(</span><span class="nv">lambda</span> <span class="nv">x</span>: <span class="nv">x</span>.<span class="nv">split</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">:</span><span class="s2">&quot;</span><span class="ss">)</span>[<span class="mi">0</span>]<span class="ss">)</span>
+        <span class="p">.</span><span class="k">map</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="ss">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
 
-        .<span class="nv">pipe</span><span class="ss">(</span><span class="nv">collections</span>.<span class="nv">Counter</span><span class="ss">)</span>
+        <span class="p">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">collections</span><span class="p">.</span><span class="n">Counter</span><span class="p">)</span>
 
-    <span class="ss">)</span>
+    <span class="p">)</span>
 
-    <span class="nv">ref_counts</span>[<span class="s2">&quot;</span><span class="s">total</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">sum</span><span class="ss">(</span><span class="nv">ref_counts</span>.<span class="nv">values</span><span class="ss">())</span>
+    <span class="n">ref_counts</span><span class="p">[</span><span class="ss">&quot;total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="k">sum</span><span class="p">(</span><span class="n">ref_counts</span><span class="p">.</span><span class="k">values</span><span class="p">())</span>
 
-    <span class="nv">stats</span>[<span class="s2">&quot;</span><span class="s">reference_counts</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">ref_counts</span>
+    <span class="n">stats</span><span class="p">[</span><span class="ss">&quot;reference_counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ref_counts</span>
 
-    <span class="nv">stats</span>[<span class="s2">&quot;</span><span class="s">word_count</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">len</span><span class="ss">(</span><span class="nv">text</span>.<span class="nv">split</span><span class="ss">())</span>
+    <span class="n">stats</span><span class="p">[</span><span class="ss">&quot;word_count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="nb">text</span><span class="p">.</span><span class="n">split</span><span class="p">())</span>
 
-    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">Generated manscript stats:</span><span class="se">\n</span><span class="s">{json.dumps(stats, indent=2)}</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;Generated manscript stats:\n{json.dumps(stats, indent=2)}&quot;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="nv">stats</span>
+    <span class="k">return</span> <span class="n">stats</span>
 </pre></div>
 
 
@@ -1523,29 +1523,29 @@ clearly invalid such as <code>doi:/453</code> are not returned.</p>
 
 <p>Return a concatenated string of section texts from the specified directory.
 Text files should be UTF-8 encoded.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">def</span> <span class="nv">get_text</span><span class="ss">(</span><span class="nv">directory</span><span class="ss">)</span>:
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">get_text</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="k">Return</span> <span class="nv">a</span> <span class="nv">concatenated</span> <span class="nv">string</span> <span class="nv">of</span> <span class="nv">section</span> <span class="nv">texts</span> <span class="nv">from</span> <span class="nv">the</span> <span class="nv">specified</span> <span class="nv">directory</span>.
+<span class="ss">    Return a concatenated string of section texts from the specified directory.</span>
 
-    <span class="nv">Text</span> <span class="nv">files</span> <span class="nv">should</span> <span class="nv">be</span> <span class="nv">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="nv">encoded</span>.
+<span class="ss">    Text files should be UTF-8 encoded.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="nv">section_dir</span> <span class="o">=</span> <span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="nv">directory</span><span class="ss">)</span>
+    <span class="n">section_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="p">.</span><span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
 
-    <span class="nv">paths</span> <span class="o">=</span> <span class="nv">sorted</span><span class="ss">(</span><span class="nv">section_dir</span>.<span class="nv">glob</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">[0-9]*.md</span><span class="s2">&quot;</span><span class="ss">))</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="n">sorted</span><span class="p">(</span><span class="n">section_dir</span><span class="p">.</span><span class="n">glob</span><span class="p">(</span><span class="ss">&quot;[0-9]*.md&quot;</span><span class="p">))</span>
 
-    <span class="nv">name_to_text</span> <span class="o">=</span> <span class="nv">collections</span>.<span class="nv">OrderedDict</span><span class="ss">()</span>
+    <span class="n">name_to_text</span> <span class="o">=</span> <span class="n">collections</span><span class="p">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="nv">path</span> <span class="nv">in</span> <span class="nv">paths</span>:
+    <span class="k">for</span> <span class="n">path</span> <span class="k">in</span> <span class="n">paths</span><span class="p">:</span>
 
-        <span class="nv">name_to_text</span>[<span class="nv">path</span>.<span class="nv">stem</span>] <span class="o">=</span> <span class="nv">path</span>.<span class="nv">read_text</span><span class="ss">(</span><span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">utf-8-sig</span><span class="s2">&quot;</span><span class="ss">)</span>
+        <span class="n">name_to_text</span><span class="p">[</span><span class="n">path</span><span class="p">.</span><span class="n">stem</span><span class="p">]</span> <span class="o">=</span> <span class="n">path</span><span class="p">.</span><span class="n">read_text</span><span class="p">(</span><span class="k">encoding</span><span class="o">=</span><span class="ss">&quot;utf-8-sig&quot;</span><span class="p">)</span>
 
-    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Manuscript content parts:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">name_to_text</span><span class="ss">))</span>
+    <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="ss">&quot;Manuscript content parts:\n&quot;</span> <span class="o">+</span> <span class="ss">&quot;\n&quot;</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="n">name_to_text</span><span class="p">))</span>
 
-    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">name_to_text</span>.<span class="nv">values</span><span class="ss">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="ss">&quot;\n\n&quot;</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="n">name_to_text</span><span class="p">.</span><span class="k">values</span><span class="p">())</span> <span class="o">+</span> <span class="ss">&quot;\n&quot;</span>
 </pre></div>
 
 
@@ -1669,7 +1669,7 @@ doi:10.7287/peerj.preprints.3100v1 → 11cb5HXoY</p>
       
     </div>
     
-      <script src="../../../../assets/javascripts/application.a8b5e56f.js"></script>
+      <script src="../../../../assets/javascripts/application.8e03edeb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../.."}})</script>
       

@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
     
     
       
@@ -1327,43 +1327,43 @@ output. To enable this check for output in a codeblock, use the following
 construct:</p>
 <!-- test codeblock contains output of `{command}` -->
 
-<div class="codehilite"><pre><span></span><span class="err">{</span><span class="n">expected</span><span class="err">}</span>
+<div class="codehilite"><pre><span></span><span class="err">{expected}</span>
 </pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>@<span class="nv">pytest</span>.<span class="nv">mark</span>.<span class="nv">parametrize</span><span class="ss">(</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
 
-    <span class="nv">argnames</span><span class="o">=</span>[<span class="s2">&quot;</span><span class="s">command</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">expected</span><span class="s2">&quot;</span>],
+<span class="w">    </span><span class="n">argnames</span><span class="o">=[</span><span class="n">&quot;command&quot;, &quot;expected&quot;</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
-    <span class="nv">argvalues</span><span class="o">=</span>[<span class="nv">match</span>.<span class="nv">groups</span><span class="ss">()</span> <span class="k">for</span> <span class="nv">match</span> <span class="nv">in</span> <span class="nv">matches</span>],
+<span class="w">    </span><span class="n">argvalues</span><span class="o">=[</span><span class="n">match.groups() for match in matches</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
-    <span class="nv">ids</span><span class="o">=</span>[<span class="nv">match</span>.<span class="nv">group</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">command</span><span class="s2">&quot;</span><span class="ss">)</span> <span class="k">for</span> <span class="nv">match</span> <span class="nv">in</span> <span class="nv">matches</span>],
+<span class="w">    </span><span class="n">ids</span><span class="o">=[</span><span class="n">match.group(&quot;command&quot;) for match in matches</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
-<span class="ss">)</span>
+<span class="p">)</span><span class="w"></span>
 
-<span class="nv">def</span> <span class="nv">test_readme_codeblock_contains_output_from</span><span class="ss">(</span><span class="nv">command</span>, <span class="nv">expected</span><span class="ss">)</span>:
+<span class="n">def</span><span class="w"> </span><span class="n">test_readme_codeblock_contains_output_from</span><span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
-    <span class="k">If</span> <span class="nv">this</span> <span class="nv">test</span> <span class="nv">fails</span>, <span class="nv">ensure</span> <span class="nv">that</span> <span class="nv">codeblocks</span> <span class="nv">in</span> <span class="nv">README</span>.<span class="nv">md</span> <span class="nv">have</span> <span class="nv">the</span> <span class="nv">correct</span>
+<span class="ss">    If this test fails, ensure that codeblocks in README.md have the correct</span>
 
-    <span class="nv">output</span>. <span class="nv">To</span> <span class="nv">enable</span> <span class="nv">this</span> <span class="nv">check</span> <span class="k">for</span> <span class="nv">output</span> <span class="nv">in</span> <span class="nv">a</span> <span class="nv">codeblock</span>, <span class="nv">use</span> <span class="nv">the</span> <span class="nv">following</span>
+<span class="ss">    output. To enable this check for output in a codeblock, use the following</span>
 
-    <span class="nv">construct</span>:
+<span class="ss">    construct:</span>
 
-    <span class="o">&lt;!--</span> <span class="nv">test</span> <span class="nv">codeblock</span> <span class="nv">contains</span> <span class="nv">output</span> <span class="nv">of</span> `{<span class="nv">command</span>}` <span class="o">--&gt;</span>
+<span class="ss">    &lt;!-- test codeblock contains output of `{command}` --&gt;</span>
 
-    ```
+<span class="ss">    ```</span>
 
-    {<span class="nv">expected</span>}
+<span class="ss">    {expected}</span>
 
-    ```
+<span class="ss">    ```</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="nv">output</span> <span class="o">=</span> <span class="nv">_get_output_from</span><span class="ss">(</span><span class="nv">command</span><span class="ss">)</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_get_output_from</span><span class="p">(</span><span class="n">command</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nv">assert</span> <span class="nv">output</span> <span class="o">==</span> <span class="nv">expected</span>
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="k">output</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span><span class="w"></span>
 </pre></div>
 
 
@@ -1438,7 +1438,7 @@ construct:</p>
       
     </div>
     
-      <script src="../../../../assets/javascripts/application.a8b5e56f.js"></script>
+      <script src="../../../../assets/javascripts/application.8e03edeb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../.."}})</script>
       
