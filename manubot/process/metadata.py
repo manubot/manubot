@@ -157,3 +157,62 @@ def get_manuscript_urls(html_url: Optional[str] = None) -> dict:
             + "\n".join(x.url for x in response.history + [response])
         )
     return urls
+
+
+def get_software_versions() -> dict:
+    """
+    Return a dictionary of software versions for softwares components:
+
+    - manubot_version: the semantic version number of the manubot python package.
+    - rootstock_commit: the version of the rootstock repository, as a commit hash,
+      included in the manuscript repository.
+
+    Values whose detection fails are set to None.
+    """
+    from manubot import __version__ as manubot_version
+
+    return {
+        "manubot_version": manubot_version,
+        "rootstock_commit": get_rootstock_commit(),
+    }
+
+
+def get_rootstock_commit() -> Optional[str]:
+    """
+    Return the most recent commit in common between the git repository
+    this function is run within (usually a Manubot manuscript repository)
+    and the `master` branch of the `rootstock` remote.
+
+    WARNING: This function may modify the git repository its executed within:
+
+    - if the repository has not set the `roostock` remote, it is set to
+      point to the default Rootstock repository of <https://github.com/manubot/rootstock>. 
+    - fetches the latest commits in the `master` branch of the `rootstock` remote
+    """
+    from manubot.util import shlex_join
+
+    # add rootstock remote if remote is not already set
+    rootstock_remote = "https://github.com/manubot/rootstock.git"
+    args = ["git", "remote", "add", "rootstock", rootstock_remote]
+    process = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if process.returncode == 0:
+        logging.info(
+            "get_rootstock_commit added a `rootstock` remote to the git repository."
+        )
+    # find most recent common ancestor commit
+    try:
+        args = ["git", "fetch", "rootstock", "master"]
+        subprocess.check_output(args, stderr=subprocess.PIPE, universal_newlines=True)
+        args = ["git", "merge-base", "master", "rootstock/master"]
+        output = subprocess.check_output(
+            args, stderr=subprocess.PIPE, universal_newlines=True
+        )
+    except subprocess.CalledProcessError as error:
+        logging.warning(
+            f"get_rootstock_commit: {shlex_join(error.cmd)!r} returned exit code {error.returncode} "
+            f"with the following stdout:\n{error.stdout}\n"
+            f"And the following stderr:\n{error.stderr}"
+        )
+        return None
+    rootstock_commit = output.strip()
+    return rootstock_commit

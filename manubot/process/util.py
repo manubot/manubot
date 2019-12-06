@@ -19,6 +19,7 @@ from manubot.process.metadata import (
     get_header_includes,
     get_thumbnail_url,
     get_manuscript_urls,
+    get_software_versions,
 )
 from manubot.process.manuscript import (
     datetime_now,
@@ -222,6 +223,9 @@ def load_variables(args) -> dict:
 
     # Add manuscript URLs
     variables["manubot"].update(get_manuscript_urls(metadata.pop("html_url", None)))
+
+    # Add software versions
+    variables["manubot"].update(get_software_versions())
 
     # Add thumbnail URL if present
     thumbnail_url = get_thumbnail_url(metadata.pop("thumbnail", None))
