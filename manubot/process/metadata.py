@@ -159,7 +159,16 @@ def get_manuscript_urls(html_url: Optional[str] = None) -> dict:
     return urls
 
 
-def get_software_versions():
+def get_software_versions() -> dict:
+    """
+    Return a dictionary of software versions for softwares components:
+
+    - manubot_version: the semantic version number of the manubot python package.
+    - rootstock_commit: the version of the rootstock repository, as a commit hash,
+      included in the manuscript repository.
+
+    Values whose detection fails are set to None.
+    """
     from manubot import __version__ as manubot_version
 
     return {
@@ -168,7 +177,7 @@ def get_software_versions():
     }
 
 
-def get_rootstock_commit():
+def get_rootstock_commit() -> Optional[str]:
     """
     Return the most recent commit in common between the git repository
     this function is run within (usually a Manubot manuscript repository)
