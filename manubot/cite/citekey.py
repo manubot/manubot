@@ -309,3 +309,40 @@ def infer_citekey_prefix(citekey):
         if citekey.lower().startswith(prefix):
             return prefix + citekey[len(prefix) :]
     return f"raw:{citekey}"
+
+
+def url_to_citekey(url):
+    """
+    Convert a HTTP(s) URL into a citekey.
+    For supproted sources, convert from url citekey to an alternative source like doi.
+    """
+    from urllib.parse import urlparse, unquote
+
+    parsed_url = urlparse(url)
+    if parsed_url.hostname.split(".")[-2:] == ["doi", "org"]:
+        # DOI URLs
+        doi = unquote(parsed_url.path.lstrip("/"))
+        return f"doi:{doi}"
+    is_ncbi_url = parsed_url.hostname.endswith("ncbi.nlm.nih.gov")
+    if is_ncbi_url and parsed_url.path.startswith("/pubmed/"):
+        # PubMed URLs
+        pmid = parsed_url.path.split("/")[2]
+        return f"pmid:{pmid}"
+    if is_ncbi_url and parsed_url.path.startswith("/pmc/"):
+        # PubMed Central URLs
+        pmcid = parsed_url.path.split("/")[3]
+        return f"pmcid:{pmcid}"
+    if parsed_url.hostname.split(".")[-2:] == [
+        "wikidata",
+        "org",
+    ] and parsed_url.path.startswith("/wiki/"):
+        # Wikidata URLs
+        wikidata_id = parsed_url.path.split("/")[2]
+        return f"wikidata:{wikidata_id}"
+    if parsed_url.hostname.split(".")[-2:] == ["arxiv", "org"]:
+        # arXiv identifiers. See https://arxiv.org/help/arxiv_identifier
+        arxiv_id = parsed_url.path.split("/", maxsplit=2)[2]
+        if arxiv_id.endswith(".pdf"):
+            arxiv_id = arxiv_id[:-4]
+        return f"arxiv:{arxiv_id}"
+    return f"url:{url}"

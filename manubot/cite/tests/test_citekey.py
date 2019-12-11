@@ -7,6 +7,7 @@ from manubot.cite.citekey import (
     shorten_citekey,
     infer_citekey_prefix,
     inspect_citekey,
+    url_to_citekey,
 )
 
 
@@ -119,3 +120,26 @@ def test_inspect_citekey_fails(citekey, contains):
 )
 def test_infer_citekey_prefix(citation, expect):
     assert infer_citekey_prefix(citation) == expect
+
+
+@pytest.mark.parametrize(
+    ["url", "citekey"],
+    [
+        (
+            "https://doi.org/10.1097%2F00004032-200403000-00012",
+            "doi:10.1097/00004032-200403000-00012",
+        ),
+        ("http://dx.doi.org/10.7554/eLife.46574", "doi:10.7554/eLife.46574"),
+        ("https://doi.org/10/b6vnmd#anchor", "doi:10/b6vnmd"),
+        ("https://www.ncbi.nlm.nih.gov/pubmed/31233491", "pmid:31233491"),
+        ("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4304851/", "pmcid:PMC4304851"),
+        ("https://www.wikidata.org/wiki/Q50051684", "wikidata:Q50051684"),
+        ("https://arxiv.org/abs/1912.03529v1", "arxiv:1912.03529v1"),
+        ("https://arxiv.org/pdf/1912.03529v1.pdf", "arxiv:1912.03529v1"),
+        ("https://arxiv.org/ps/1912.03529v1", "arxiv:1912.03529v1"),
+        ("https://arxiv.org/abs/hep-th/9305059", "arxiv:hep-th/9305059"),
+        ("https://arxiv.org/pdf/hep-th/9305059.pdf", "arxiv:hep-th/9305059"),
+    ],
+)
+def test_url_to_citekey(url, citekey):
+    assert url_to_citekey(url) == citekey
