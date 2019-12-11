@@ -131,6 +131,7 @@ def test_infer_citekey_prefix(citation, expect):
         ),
         ("http://dx.doi.org/10.7554/eLife.46574", "doi:10.7554/eLife.46574"),
         ("https://doi.org/10/b6vnmd#anchor", "doi:10/b6vnmd"),
+        ("https://www.biorxiv.org/content/10.1101/087619v3", "doi:10.1101/087619"),
         ("https://www.ncbi.nlm.nih.gov/pubmed/31233491", "pmid:31233491"),
         ("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4304851/", "pmcid:PMC4304851"),
         ("https://www.wikidata.org/wiki/Q50051684", "wikidata:Q50051684"),

@@ -323,6 +323,10 @@ def url_to_citekey(url):
         # DOI URLs
         doi = unquote(parsed_url.path.lstrip("/"))
         return f"doi:{doi}"
+    if parsed_url.hostname.split(".")[-2:] == ["biorxiv", "org"]:
+        # bioRxiv URL to DOI
+        (biorxiv_id,) = re.findall(r"/([0-9]{6})", parsed_url.path)
+        return f"doi:10.1101/{biorxiv_id}"
     is_ncbi_url = parsed_url.hostname.endswith("ncbi.nlm.nih.gov")
     if is_ncbi_url and parsed_url.path.startswith("/pubmed/"):
         # PubMed URLs
