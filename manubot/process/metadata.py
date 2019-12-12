@@ -186,7 +186,7 @@ def get_rootstock_commit() -> Optional[str]:
     WARNING: This function may modify the git repository its executed within:
 
     - if the repository has not set the `roostock` remote, it is set to
-      point to the default Rootstock repository of <https://github.com/manubot/rootstock>. 
+      point to the default Rootstock repository of <https://github.com/manubot/rootstock>.
     - fetches the latest commits in the `master` branch of the `rootstock` remote
     """
     from manubot.util import shlex_join
