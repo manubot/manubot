@@ -12,7 +12,7 @@ import logging
 
 import requests
 
-from manubot.util import get_manubot_user_agent
+from manubot.util import get_manubot_user_agent, is_http_url
 
 base_url = "https://translate.manubot.org"
 
@@ -46,8 +46,15 @@ def web_query(url):
 
 def search_query(identifier):
     """
-    Supports DOI, ISBN, PMID, arXiv ID.
-    curl -d 10.2307/4486062 -H 'Content-Type: text/plain' http://127.0.0.1:1969/search
+    Retrive Zotero metadata for a DOI, ISBN, PMID, or arXiv ID.
+    Example usage:
+
+    ```shell
+    curl --silent
+      --data '10.2307/4486062' \
+      --header 'Content-Type: text/plain' \
+      http://127.0.0.1:1969/search
+    ```
     """
     api_url = f"{base_url}/search"
     headers = {"User-Agent": get_manubot_user_agent(), "Content-Type": "text/plain"}
@@ -107,10 +114,23 @@ def export_as_csl(zotero_data):
 
 def get_csl_item(identifier: str):
     """
-    Use a translation-server serach query followed by an export query
+    Use a translation-server search query followed by an export query
     to return a CSL Item (the first & only record of the returned CSL JSON).
     """
     zotero_data = search_query(identifier)
     csl_data = export_as_csl(zotero_data)
     (csl_item,) = csl_data
     return csl_item
+
+
+def search_or_web_query(identifier: str) -> list:
+    """
+    Detect whether `identifier` is a URL. If so,
+    retrieve zotero metadata using a /web query.
+    Otherwise, retrieve zotero metadata using a /search query.
+    """
+    if is_http_url(identifier):
+        zotero_data = web_query(identifier)
+    else:
+        zotero_data = search_query(identifier)
+    return zotero_data
