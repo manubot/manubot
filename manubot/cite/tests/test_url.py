@@ -1,3 +1,5 @@
+import pytest
+
 from manubot.cite.url import get_url_csl_item_zotero
 
 
@@ -40,6 +42,9 @@ def test_get_url_csl_item_zotero_manubot():
     assert [int(x) for x in csl_item["issued"]["date-parts"][0]] == [2018, 12, 18]
 
 
+@pytest.mark.skip(
+    reason="test intermittently fails as metadata varies between two states"
+)
 def test_get_url_csl_item_zotero_github():
     """
     This command creates two translation-server queries. The first query is
