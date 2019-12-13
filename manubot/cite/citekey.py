@@ -366,7 +366,6 @@ def url_to_citekey(url):
             citekey = f"wikidata:{wikidata_id}"
         except IndexError:
             pass
-
     if parsed_url.hostname.split(".")[-2:] == ["arxiv", "org"]:
         # arXiv identifiers. See https://arxiv.org/help/arxiv_identifier
         try:
