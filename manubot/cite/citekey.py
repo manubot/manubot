@@ -86,6 +86,9 @@ def standardize_citekey(citekey, warn_if_changed=False):
 
 
 regexes = {
+    "arxiv": re.compile(
+        r"([0-9]{4}\.[0-9]{4,5}|[a-z\-]+(\.[A-Z]{2})?/[0-9]{7})(v[0-9]+)?"
+    ),
     "pmid": re.compile(r"[1-9][0-9]{0,7}"),
     "pmcid": re.compile(r"PMC[0-9]+"),
     "doi": re.compile(r"10\.[0-9]{4,9}/\S+"),
@@ -100,6 +103,11 @@ def inspect_citekey(citekey):
     string describing the issue is returned. Otherwise returns None.
     """
     source, identifier = citekey.split(":", 1)
+
+    if source == "arxiv":
+        # https://arxiv.org/help/arxiv_identifier
+        if not regexes["arxiv"].fullmatch(identifier):
+            return "arXiv identifiers must conform to syntax described at https://arxiv.org/help/arxiv_identifier."
 
     if source == "pmid":
         # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmid
@@ -309,3 +317,64 @@ def infer_citekey_prefix(citekey):
         if citekey.lower().startswith(prefix):
             return prefix + citekey[len(prefix) :]
     return f"raw:{citekey}"
+
+
+def url_to_citekey(url):
+    """
+    Convert a HTTP(s) URL into a citekey.
+    For supported sources, convert from url citekey to an alternative source like doi.
+    If citekeys fail inspection, revert alternative sources to URLs.
+    """
+    from urllib.parse import urlparse, unquote
+
+    citekey = None
+    parsed_url = urlparse(url)
+    if parsed_url.hostname.split(".")[-2:] == ["doi", "org"]:
+        # DOI URLs
+        doi = unquote(parsed_url.path.lstrip("/"))
+        citekey = f"doi:{doi}"
+    if parsed_url.hostname.split(".")[-2:] == ["biorxiv", "org"]:
+        # bioRxiv URL to DOI. See https://git.io/Je9Hq
+        match = re.search(
+            r"/(?P<biorxiv_id>([0-9]{4}\.[0-9]{2}\.[0-9]{2}\.)?[0-9]{6,})",
+            parsed_url.path,
+        )
+        if match:
+            citekey = f"doi:10.1101/{match.group('biorxiv_id')}"
+    is_ncbi_url = parsed_url.hostname.endswith("ncbi.nlm.nih.gov")
+    if is_ncbi_url and parsed_url.path.startswith("/pubmed/"):
+        # PubMed URLs
+        try:
+            pmid = parsed_url.path.split("/")[2]
+            citekey = f"pmid:{pmid}"
+        except IndexError:
+            pass
+    if is_ncbi_url and parsed_url.path.startswith("/pmc/"):
+        # PubMed Central URLs
+        try:
+            pmcid = parsed_url.path.split("/")[3]
+            citekey = f"pmcid:{pmcid}"
+        except IndexError:
+            pass
+    if parsed_url.hostname.split(".")[-2:] == [
+        "wikidata",
+        "org",
+    ] and parsed_url.path.startswith("/wiki/"):
+        # Wikidata URLs
+        try:
+            wikidata_id = parsed_url.path.split("/")[2]
+            citekey = f"wikidata:{wikidata_id}"
+        except IndexError:
+            pass
+    if parsed_url.hostname.split(".")[-2:] == ["arxiv", "org"]:
+        # arXiv identifiers. See https://arxiv.org/help/arxiv_identifier
+        try:
+            arxiv_id = parsed_url.path.split("/", maxsplit=2)[2]
+            if arxiv_id.endswith(".pdf"):
+                arxiv_id = arxiv_id[:-4]
+            citekey = f"arxiv:{arxiv_id}"
+        except IndexError:
+            pass
+    if citekey is None or inspect_citekey(citekey) is not None:
+        citekey = f"url:{url}"
+    return citekey
