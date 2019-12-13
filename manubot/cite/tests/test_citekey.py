@@ -148,6 +148,7 @@ def test_infer_citekey_prefix(citation, expect):
             "https://www.biorxiv.org/about-biorxiv",
             "url:https://www.biorxiv.org/about-biorxiv",
         ),
+        ("https://sci-hub.tw/10.1038/nature19057", "doi:10.1038/nature19057"),
         ("https://www.biorxiv.org/content/10.1101/087619v3", "doi:10.1101/087619"),
         ("https://www.biorxiv.org/content/10.1101/087619v3.full", "doi:10.1101/087619"),
         (
