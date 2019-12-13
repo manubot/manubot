@@ -73,6 +73,8 @@ def get_arxiv_csl_item(arxiv_id):
     # Extract abstract
     abstract = entry.findtext(prefix + "summary").strip()
     if abstract:
+        # remove newlines that were added to wrap abstract
+        abstract = re.sub(pattern=r"\n(?!\s)", repl=" ", string=abstract)
         csl_item["abstract"] = abstract
 
     # Check if the article has been published with a DOI
