@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.0">
     
     
       
@@ -56,7 +56,7 @@
     
       
         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
@@ -1215,7 +1215,9 @@
                 
                 
                 <h1 id="module-manubotciteteststest_url">Module manubot.cite.tests.test_url</h1>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">manubot.cite.url</span> <span class="kn">import</span> <span class="n">get_url_csl_item_zotero</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="kn">from</span> <span class="nn">manubot.cite.url</span> <span class="kn">import</span> <span class="n">get_url_csl_item_zotero</span>
 
 <span class="k">def</span> <span class="nf">test_get_url_csl_item_zotero_nyt</span><span class="p">():</span>
 
@@ -1287,6 +1289,12 @@
 
     <span class="k">assert</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">][</span><span class="s2">&quot;date-parts&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">==</span> <span class="p">[</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span>
 
+<span class="nd">@pytest.mark.skip</span><span class="p">(</span>
+
+    <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;test intermittently fails as metadata varies between two states&quot;</span>
+
+<span class="p">)</span>
+
 <span class="k">def</span> <span class="nf">test_get_url_csl_item_zotero_github</span><span class="p">():</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1357,9 +1365,15 @@ equivalent to:</p>
     https://github.com/manubot/manubot/pull/139#discussion_r328703233</p>
 <p>Proposed action:
     Probably should inquire upstream or change the test.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_get_url_csl_item_zotero_github</span><span class="p">():</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">skip</span><span class="p">(</span><span class="w"></span>
 
-    <span class="ss">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="n">reason</span><span class="o">=</span><span class="ss">&quot;test intermittently fails as metadata varies between two states&quot;</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
+
+<span class="n">def</span><span class="w"> </span><span class="n">test_get_url_csl_item_zotero_github</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
 <span class="ss">    This command creates two translation-server queries. The first query is</span>
 
@@ -1369,7 +1383,7 @@ equivalent to:</p>
 
 <span class="ss">    curl --verbose \</span>
 
-<span class="ss">      --header &quot;</span><span class="n">Content</span><span class="o">-</span><span class="k">Type</span><span class="p">:</span> <span class="nb">text</span><span class="o">/</span><span class="n">plain</span><span class="ss">&quot; \</span>
+<span class="ss">      --header &quot;</span><span class="n">Content</span><span class="o">-</span><span class="nl">Type</span><span class="p">:</span><span class="w"> </span><span class="nc">text</span><span class="o">/</span><span class="n">plain</span><span class="ss">&quot; \</span>
 
 <span class="ss">      --data &#39;https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927&#39; \</span>
 
@@ -1391,17 +1405,17 @@ equivalent to:</p>
 
 <span class="ss">        Probably should inquire upstream or change the test.</span>
 
-<span class="ss">    &quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="ss">&quot;https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927&quot;</span>
+<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927&quot;</span><span class="w"></span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="w"></span>
 
-    <span class="o">#</span> <span class="n">FIXME</span><span class="p">:</span> <span class="n">arbitraryly</span><span class="p">,</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;abstract&#39;</span><span class="p">],</span> <span class="k">and</span> <span class="k">not</span> <span class="n">csl_item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="k">contains</span> <span class="n">the</span> <span class="n">title</span><span class="p">.</span>
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="nl">FIXME</span><span class="p">:</span><span class="w"> </span><span class="n">arbitraryly</span><span class="p">,</span><span class="w"> </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&#39;abstract&#39;</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&#39;title&#39;</span><span class="o">]</span><span class="w"> </span><span class="k">contains</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">title</span><span class="p">.</span><span class="w"></span>
 
-    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;title&quot;</span><span class="p">].</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;Flexible and powerful data analysis&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;title&quot;</span><span class="o">]</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;Flexible and powerful data analysis&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;source&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;GitHub&quot;</span>
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;source&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;GitHub&quot;</span><span class="w"></span>
 </pre></div>
 
 
@@ -1511,6 +1525,7 @@ equivalent to:</p>
                 
                   
                 
+                
               
               
                 
@@ -1578,7 +1593,7 @@ equivalent to:</p>
       
     </div>
     
-      <script src="../../../../../assets/javascripts/application.8e03edeb.js"></script>
+      <script src="../../../../../assets/javascripts/application.808e90bb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../../.."}})</script>
       

@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.0">
     
     
       
@@ -56,7 +56,7 @@
     
       
         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
@@ -613,6 +613,13 @@
           <li class="md-nav__item">
   <a href="#test_shorten_citekey" class="md-nav__link">
     test_shorten_citekey
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_url_to_citekey" class="md-nav__link">
+    test_url_to_citekey
   </a>
   
 </li>
@@ -1246,6 +1253,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#test_url_to_citekey" class="md-nav__link">
+    test_url_to_citekey
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1285,6 +1299,8 @@
     <span class="n">infer_citekey_prefix</span><span class="p">,</span>
 
     <span class="n">inspect_citekey</span><span class="p">,</span>
+
+    <span class="n">url_to_citekey</span><span class="p">,</span>
 
 <span class="p">)</span>
 
@@ -1386,6 +1402,16 @@
 
         <span class="s2">&quot;arxiv:1407.3561&quot;</span><span class="p">,</span>
 
+        <span class="s2">&quot;arxiv:1407.3561v1&quot;</span><span class="p">,</span>
+
+        <span class="s2">&quot;arxiv:math.GT/0309136&quot;</span><span class="p">,</span>
+
+        <span class="s2">&quot;arxiv:math.GT/0309136v1&quot;</span><span class="p">,</span>
+
+        <span class="s2">&quot;arxiv:hep-th/9305059&quot;</span><span class="p">,</span>
+
+        <span class="s2">&quot;arxiv:hep-th/9305059v2&quot;</span><span class="p">,</span>
+
         <span class="s2">&quot;isbn:978-1-339-91988-1&quot;</span><span class="p">,</span>
 
         <span class="s2">&quot;isbn:1-339-91988-5&quot;</span><span class="p">,</span>
@@ -1440,6 +1466,8 @@
 
         <span class="p">(</span><span class="s2">&quot;wikidata:QABCD&quot;</span><span class="p">,</span> <span class="s2">&quot;does not conform to the Wikidata regex&quot;</span><span class="p">),</span>
 
+        <span class="p">(</span><span class="s2">&quot;arxiv:YYMM.number&quot;</span><span class="p">,</span> <span class="s2">&quot;must conform to syntax&quot;</span><span class="p">),</span>
+
     <span class="p">],</span>
 
 <span class="p">)</span>
@@ -1485,6 +1513,146 @@
 <span class="k">def</span> <span class="nf">test_infer_citekey_prefix</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="n">expect</span><span class="p">):</span>
 
     <span class="k">assert</span> <span class="n">infer_citekey_prefix</span><span class="p">(</span><span class="n">citation</span><span class="p">)</span> <span class="o">==</span> <span class="n">expect</span>
+
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
+
+    <span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="s2">&quot;citekey&quot;</span><span class="p">],</span>
+
+    <span class="p">[</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://www.doi.org/&quot;</span><span class="p">,</span> <span class="s2">&quot;url:https://www.doi.org/&quot;</span><span class="p">,),</span>
+
+        <span class="p">(</span>
+
+            <span class="s2">&quot;https://www.doi.org/factsheets/Identifier_Interoper.html&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;url:https://www.doi.org/factsheets/Identifier_Interoper.html&quot;</span><span class="p">,</span>
+
+        <span class="p">),</span>
+
+        <span class="p">(</span>
+
+            <span class="s2">&quot;https://doi.org/10.1097</span><span class="si">%2F</span><span class="s2">00004032-200403000-00012&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;doi:10.1097/00004032-200403000-00012&quot;</span><span class="p">,</span>
+
+        <span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;http://dx.doi.org/10.7554/eLife.46574&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.7554/eLife.46574&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://doi.org/10/b6vnmd#anchor&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10/b6vnmd&quot;</span><span class="p">),</span>
+
+        <span class="c1"># ShortDOI URLs without `10/` prefix not yet supported`</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://doi.org/b6vnmd&quot;</span><span class="p">,</span> <span class="s2">&quot;url:https://doi.org/b6vnmd&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span>
+
+            <span class="s2">&quot;https://www.biorxiv.org/about-biorxiv&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;url:https://www.biorxiv.org/about-biorxiv&quot;</span><span class="p">,</span>
+
+        <span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://www.biorxiv.org/content/10.1101/087619v3&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.1101/087619&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://www.biorxiv.org/content/10.1101/087619v3.full&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.1101/087619&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span>
+
+            <span class="s2">&quot;https://www.biorxiv.org/content/early/2017/08/31/087619.full.pdf&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;doi:10.1101/087619&quot;</span><span class="p">,</span>
+
+        <span class="p">),</span>
+
+        <span class="p">(</span>
+
+            <span class="s2">&quot;https://www.biorxiv.org/content/10.1101/2019.12.11.872580v1&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;doi:10.1101/2019.12.11.872580&quot;</span><span class="p">,</span>
+
+        <span class="p">),</span>
+
+        <span class="p">(</span>
+
+            <span class="s2">&quot;https://www.biorxiv.org/content/10.1101/2019.12.11.872580v1.full.pdf+html&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;doi:10.1101/2019.12.11.872580&quot;</span><span class="p">,</span>
+
+        <span class="p">),</span>
+
+        <span class="p">(</span>
+
+            <span class="s2">&quot;https://www.biorxiv.org/content/10.1101/2019.12.11.872580v1.full.pdf&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;doi:10.1101/2019.12.11.872580&quot;</span><span class="p">,</span>
+
+        <span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov&quot;</span><span class="p">,</span> <span class="s2">&quot;url:https://www.ncbi.nlm.nih.gov&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span>
+
+            <span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pubmed&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;url:https://www.ncbi.nlm.nih.gov/pubmed&quot;</span><span class="p">,</span>
+
+        <span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pubmed/31233491&quot;</span><span class="p">,</span> <span class="s2">&quot;pmid:31233491&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pmc/&quot;</span><span class="p">,</span> <span class="s2">&quot;url:https://www.ncbi.nlm.nih.gov/pmc/&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span>
+
+            <span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pmc/about/intro/&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;url:https://www.ncbi.nlm.nih.gov/pmc/about/intro/&quot;</span><span class="p">,</span>
+
+        <span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4304851/&quot;</span><span class="p">,</span> <span class="s2">&quot;pmcid:PMC4304851&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span>
+
+            <span class="s2">&quot;https://www.wikidata.org/wiki/Wikidata:Main_Page&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;url:https://www.wikidata.org/wiki/Wikidata:Main_Page&quot;</span><span class="p">,</span>
+
+        <span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://www.wikidata.org/wiki/Q50051684&quot;</span><span class="p">,</span> <span class="s2">&quot;wikidata:Q50051684&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://arxiv.org/&quot;</span><span class="p">,</span> <span class="s2">&quot;url:https://arxiv.org/&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span>
+
+            <span class="s2">&quot;https://arxiv.org/list/q-fin/recent&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;url:https://arxiv.org/list/q-fin/recent&quot;</span><span class="p">,</span>
+
+        <span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://arxiv.org/abs/1912.03529v1&quot;</span><span class="p">,</span> <span class="s2">&quot;arxiv:1912.03529v1&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://arxiv.org/pdf/1912.03529v1.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;arxiv:1912.03529v1&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://arxiv.org/ps/1912.03529v1&quot;</span><span class="p">,</span> <span class="s2">&quot;arxiv:1912.03529v1&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://arxiv.org/abs/math.GT/0309136&quot;</span><span class="p">,</span> <span class="s2">&quot;arxiv:math.GT/0309136&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://arxiv.org/abs/hep-th/9305059&quot;</span><span class="p">,</span> <span class="s2">&quot;arxiv:hep-th/9305059&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;https://arxiv.org/pdf/hep-th/9305059.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;arxiv:hep-th/9305059&quot;</span><span class="p">),</span>
+
+    <span class="p">],</span>
+
+<span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_url_to_citekey</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+
+    <span class="k">assert</span> <span class="n">url_to_citekey</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="n">citekey</span>
 </pre></div>
 
 
@@ -1649,6 +1817,8 @@
 
 <span class="n">        (&quot;wikidata:QABCD&quot;, &quot;does not conform to the Wikidata regex&quot;),</span>
 
+<span class="n">        (&quot;arxiv:YYMM.number&quot;, &quot;must conform to syntax&quot;),</span>
+
 <span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
 <span class="p">)</span><span class="w"></span>
@@ -1695,6 +1865,16 @@
 <span class="n">        &quot;pmid:25648772&quot;,</span>
 
 <span class="n">        &quot;arxiv:1407.3561&quot;,</span>
+
+<span class="n">        &quot;arxiv:1407.3561v1&quot;,</span>
+
+<span class="n">        &quot;arxiv:math.GT/0309136&quot;,</span>
+
+<span class="n">        &quot;arxiv:math.GT/0309136v1&quot;,</span>
+
+<span class="n">        &quot;arxiv:hep-th/9305059&quot;,</span>
+
+<span class="n">        &quot;arxiv:hep-th/9305059v2&quot;,</span>
 
 <span class="n">        &quot;isbn:978-1-339-91988-1&quot;,</span>
 
@@ -1758,8 +1938,160 @@
 
 
 </details>
+<h3 id="test_url_to_citekey">test_url_to_citekey</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_url_to_citekey</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">,</span>
+    <span class="n">citekey</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">[</span><span class="n">&quot;url&quot;, &quot;citekey&quot;</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">[</span><span class="n"></span>
+
+<span class="n">        (&quot;https://www.doi.org/&quot;, &quot;url:https://www.doi.org/&quot;,),</span>
+
+<span class="n">        (</span>
+
+<span class="n">            &quot;https://www.doi.org/factsheets/Identifier_Interoper.html&quot;,</span>
+
+<span class="n">            &quot;url:https://www.doi.org/factsheets/Identifier_Interoper.html&quot;,</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        (</span>
+
+<span class="n">            &quot;https://doi.org/10.1097%2F00004032-200403000-00012&quot;,</span>
+
+<span class="n">            &quot;doi:10.1097/00004032-200403000-00012&quot;,</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        (&quot;http://dx.doi.org/10.7554/eLife.46574&quot;, &quot;doi:10.7554/eLife.46574&quot;),</span>
+
+<span class="n">        (&quot;https://doi.org/10/b6vnmd#anchor&quot;, &quot;doi:10/b6vnmd&quot;),</span>
+
+<span class="n">        # ShortDOI URLs without `10/` prefix not yet supported`</span>
+
+<span class="n">        (&quot;https://doi.org/b6vnmd&quot;, &quot;url:https://doi.org/b6vnmd&quot;),</span>
+
+<span class="n">        (</span>
+
+<span class="n">            &quot;https://www.biorxiv.org/about-biorxiv&quot;,</span>
+
+<span class="n">            &quot;url:https://www.biorxiv.org/about-biorxiv&quot;,</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        (&quot;https://www.biorxiv.org/content/10.1101/087619v3&quot;, &quot;doi:10.1101/087619&quot;),</span>
+
+<span class="n">        (&quot;https://www.biorxiv.org/content/10.1101/087619v3.full&quot;, &quot;doi:10.1101/087619&quot;),</span>
+
+<span class="n">        (</span>
+
+<span class="n">            &quot;https://www.biorxiv.org/content/early/2017/08/31/087619.full.pdf&quot;,</span>
+
+<span class="n">            &quot;doi:10.1101/087619&quot;,</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        (</span>
+
+<span class="n">            &quot;https://www.biorxiv.org/content/10.1101/2019.12.11.872580v1&quot;,</span>
+
+<span class="n">            &quot;doi:10.1101/2019.12.11.872580&quot;,</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        (</span>
+
+<span class="n">            &quot;https://www.biorxiv.org/content/10.1101/2019.12.11.872580v1.full.pdf+html&quot;,</span>
+
+<span class="n">            &quot;doi:10.1101/2019.12.11.872580&quot;,</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        (</span>
+
+<span class="n">            &quot;https://www.biorxiv.org/content/10.1101/2019.12.11.872580v1.full.pdf&quot;,</span>
+
+<span class="n">            &quot;doi:10.1101/2019.12.11.872580&quot;,</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        (&quot;https://www.ncbi.nlm.nih.gov&quot;, &quot;url:https://www.ncbi.nlm.nih.gov&quot;),</span>
+
+<span class="n">        (</span>
+
+<span class="n">            &quot;https://www.ncbi.nlm.nih.gov/pubmed&quot;,</span>
+
+<span class="n">            &quot;url:https://www.ncbi.nlm.nih.gov/pubmed&quot;,</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        (&quot;https://www.ncbi.nlm.nih.gov/pubmed/31233491&quot;, &quot;pmid:31233491&quot;),</span>
+
+<span class="n">        (&quot;https://www.ncbi.nlm.nih.gov/pmc/&quot;, &quot;url:https://www.ncbi.nlm.nih.gov/pmc/&quot;),</span>
+
+<span class="n">        (</span>
+
+<span class="n">            &quot;https://www.ncbi.nlm.nih.gov/pmc/about/intro/&quot;,</span>
+
+<span class="n">            &quot;url:https://www.ncbi.nlm.nih.gov/pmc/about/intro/&quot;,</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        (&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4304851/&quot;, &quot;pmcid:PMC4304851&quot;),</span>
+
+<span class="n">        (</span>
+
+<span class="n">            &quot;https://www.wikidata.org/wiki/Wikidata:Main_Page&quot;,</span>
+
+<span class="n">            &quot;url:https://www.wikidata.org/wiki/Wikidata:Main_Page&quot;,</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        (&quot;https://www.wikidata.org/wiki/Q50051684&quot;, &quot;wikidata:Q50051684&quot;),</span>
+
+<span class="n">        (&quot;https://arxiv.org/&quot;, &quot;url:https://arxiv.org/&quot;),</span>
+
+<span class="n">        (</span>
+
+<span class="n">            &quot;https://arxiv.org/list/q-fin/recent&quot;,</span>
+
+<span class="n">            &quot;url:https://arxiv.org/list/q-fin/recent&quot;,</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        (&quot;https://arxiv.org/abs/1912.03529v1&quot;, &quot;arxiv:1912.03529v1&quot;),</span>
+
+<span class="n">        (&quot;https://arxiv.org/pdf/1912.03529v1.pdf&quot;, &quot;arxiv:1912.03529v1&quot;),</span>
+
+<span class="n">        (&quot;https://arxiv.org/ps/1912.03529v1&quot;, &quot;arxiv:1912.03529v1&quot;),</span>
+
+<span class="n">        (&quot;https://arxiv.org/abs/math.GT/0309136&quot;, &quot;arxiv:math.GT/0309136&quot;),</span>
+
+<span class="n">        (&quot;https://arxiv.org/abs/hep-th/9305059&quot;, &quot;arxiv:hep-th/9305059&quot;),</span>
+
+<span class="n">        (&quot;https://arxiv.org/pdf/hep-th/9305059.pdf&quot;, &quot;arxiv:hep-th/9305059&quot;),</span>
+
+<span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
+
+<span class="n">def</span><span class="w"> </span><span class="n">test_url_to_citekey</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">url_to_citekey</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">citekey</span><span class="w"></span>
+</pre></div>
+
+
+</details>
                 
                   
+                
                 
               
               
@@ -1828,7 +2160,7 @@
       
     </div>
     
-      <script src="../../../../../assets/javascripts/application.8e03edeb.js"></script>
+      <script src="../../../../../assets/javascripts/application.808e90bb.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../../.."}})</script>
       
