@@ -571,6 +571,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../tests/test_arxiv/" title="Test Arxiv" class="md-nav__link">
+      Test Arxiv
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../tests/test_cite_command/" title="Test Cite Command" class="md-nav__link">
       Test Cite Command
     </a>
@@ -1303,6 +1315,10 @@
 
     <span class="k">if</span> <span class="n">abstract</span><span class="p">:</span>
 
+        <span class="c1"># remove newlines that were added to wrap abstract</span>
+
+        <span class="n">abstract</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\n(?!\s)&quot;</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">abstract</span><span class="p">)</span>
+
         <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;abstract&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">abstract</span>
 
     <span class="c1"># Check if the article has been published with a DOI</span>
@@ -1456,6 +1472,10 @@ alert the user that an alternative version of record exists.</p>
     <span class="n">abstract</span> <span class="o">=</span> <span class="n">entry</span><span class="p">.</span><span class="n">findtext</span><span class="p">(</span><span class="k">prefix</span> <span class="o">+</span> <span class="ss">&quot;summary&quot;</span><span class="p">).</span><span class="n">strip</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">abstract</span><span class="p">:</span>
+
+        <span class="o">#</span> <span class="n">remove</span> <span class="n">newlines</span> <span class="n">that</span> <span class="n">were</span> <span class="n">added</span> <span class="k">to</span> <span class="n">wrap</span> <span class="n">abstract</span>
+
+        <span class="n">abstract</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="n">r</span><span class="ss">&quot;\n(?!\s)&quot;</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="ss">&quot; &quot;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">abstract</span><span class="p">)</span>
 
         <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;abstract&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">abstract</span>
 
