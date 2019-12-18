@@ -1855,7 +1855,9 @@
 
 <span class="s s-Atom">    parsed_url = urlparse(url)</span>
 
-<span class="s s-Atom">    if parsed_url.hostname.split(&quot;.&quot;)[-2:] == [&quot;doi&quot;, &quot;org&quot;]:</span>
+<span class="s s-Atom">    domain_levels = parsed_url.hostname.split(&quot;.&quot;)</span>
+
+<span class="s s-Atom">    if domain_levels[-2:] == [&quot;doi&quot;, &quot;org&quot;]:</span>
 
 <span class="s s-Atom">        # DOI URLs</span>
 
@@ -1863,7 +1865,15 @@
 
 <span class="s s-Atom">        citekey = f&quot;doi:{doi}&quot;</span>
 
-<span class="s s-Atom">    if parsed_url.hostname.split(&quot;.&quot;)[-2:] == [&quot;biorxiv&quot;, &quot;org&quot;]:</span>
+<span class="s s-Atom">    if domain_levels[-2] == &quot;sci-hub&quot;:</span>
+
+<span class="s s-Atom">        # Sci-Hub domains</span>
+
+<span class="s s-Atom">        doi = parsed_url.path.lstrip(&quot;/&quot;)</span>
+
+<span class="s s-Atom">        citekey = f&quot;doi:{doi}&quot;</span>
+
+<span class="s s-Atom">    if domain_levels[-2:] == [&quot;biorxiv&quot;, &quot;org&quot;]:</span>
 
 <span class="s s-Atom">        # bioRxiv URL to DOI. See https://git.io/Je9Hq</span>
 
@@ -1909,13 +1919,11 @@
 
 <span class="s2">            pass</span>
 
-<span class="s2">    if parsed_url.hostname.split(&quot;</span><span class="p">.</span><span class="s2">&quot;)[-2:] == [</span>
+<span class="s2">    if domain_levels[-2:] == [&quot;</span><span class="s s-Atom">wikidata</span><span class="s2">&quot;, &quot;</span><span class="s s-Atom">org</span><span class="s2">&quot;] and parsed_url.path.startswith(</span>
 
-<span class="s2">        &quot;</span><span class="s s-Atom">wikidata</span><span class="s2">&quot;,</span>
+<span class="s2">        &quot;</span><span class="o">/</span><span class="s s-Atom">wiki/</span><span class="s2">&quot;</span>
 
-<span class="s2">        &quot;</span><span class="s s-Atom">org</span><span class="s2">&quot;,</span>
-
-<span class="s2">    ] and parsed_url.path.startswith(&quot;</span><span class="o">/</span><span class="s s-Atom">wiki/</span><span class="s2">&quot;):</span>
+<span class="s2">    ):</span>
 
 <span class="s2">        # Wikidata URLs</span>
 
@@ -1929,7 +1937,7 @@
 
 <span class="s2">            pass</span>
 
-<span class="s2">    if parsed_url.hostname.split(&quot;</span><span class="p">.</span><span class="s2">&quot;)[-2:] == [&quot;</span><span class="s s-Atom">arxiv</span><span class="s2">&quot;, &quot;</span><span class="s s-Atom">org</span><span class="s2">&quot;]:</span>
+<span class="s2">    if domain_levels[-2:] == [&quot;</span><span class="s s-Atom">arxiv</span><span class="s2">&quot;, &quot;</span><span class="s s-Atom">org</span><span class="s2">&quot;]:</span>
 
 <span class="s2">        # arXiv identifiers. See https://arxiv.org/help/arxiv_identifier</span>
 
@@ -2549,7 +2557,9 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
     <span class="s s-Atom">parsed_url</span> <span class="o">=</span> <span class="nf">urlparse</span><span class="p">(</span><span class="s s-Atom">url</span><span class="p">)</span>
 
-    <span class="s s-Atom">if</span> <span class="s s-Atom">parsed_url</span><span class="p">.</span><span class="s s-Atom">hostname</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="s s-Atom">:</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;org&quot;</span><span class="p">]</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">domain_levels</span> <span class="o">=</span> <span class="s s-Atom">parsed_url</span><span class="p">.</span><span class="s s-Atom">hostname</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+
+    <span class="s s-Atom">if</span> <span class="s s-Atom">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="s s-Atom">:</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;org&quot;</span><span class="p">]</span><span class="s s-Atom">:</span>
 
         <span class="s s-Atom">#</span> <span class="nv">DOI</span> <span class="nv">URLs</span>
 
@@ -2557,7 +2567,15 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
         <span class="s s-Atom">citekey</span> <span class="o">=</span> <span class="s s-Atom">f</span><span class="s2">&quot;doi:{doi}&quot;</span>
 
-    <span class="s s-Atom">if</span> <span class="s s-Atom">parsed_url</span><span class="p">.</span><span class="s s-Atom">hostname</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="s s-Atom">:</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;biorxiv&quot;</span><span class="p">,</span> <span class="s2">&quot;org&quot;</span><span class="p">]</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">if</span> <span class="s s-Atom">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;sci-hub&quot;</span><span class="s s-Atom">:</span>
+
+        <span class="s s-Atom">#</span> <span class="nv">Sci</span><span class="o">-</span><span class="nv">Hub</span> <span class="s s-Atom">domains</span>
+
+        <span class="s s-Atom">doi</span> <span class="o">=</span> <span class="s s-Atom">parsed_url</span><span class="p">.</span><span class="s s-Atom">path</span><span class="p">.</span><span class="nf">lstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+
+        <span class="s s-Atom">citekey</span> <span class="o">=</span> <span class="s s-Atom">f</span><span class="s2">&quot;doi:{doi}&quot;</span>
+
+    <span class="s s-Atom">if</span> <span class="s s-Atom">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="s s-Atom">:</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;biorxiv&quot;</span><span class="p">,</span> <span class="s2">&quot;org&quot;</span><span class="p">]</span><span class="s s-Atom">:</span>
 
         <span class="s s-Atom">#</span> <span class="s s-Atom">bioRxiv</span> <span class="nv">URL</span> <span class="s s-Atom">to</span> <span class="nv">DOI</span><span class="p">.</span> <span class="nv">See</span> <span class="nn">https</span><span class="p">:</span><span class="o">//</span><span class="s s-Atom">git</span><span class="p">.</span><span class="s s-Atom">io</span><span class="o">/</span><span class="nv">Je9Hq</span>
 
@@ -2603,13 +2621,11 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
 <span class="s2">            pass</span>
 
-<span class="s2">    if parsed_url.hostname.split(&quot;</span><span class="p">.</span><span class="s2">&quot;)[-2:] == [</span>
+<span class="s2">    if domain_levels[-2:] == [&quot;</span><span class="s s-Atom">wikidata</span><span class="s2">&quot;, &quot;</span><span class="s s-Atom">org</span><span class="s2">&quot;] and parsed_url.path.startswith(</span>
 
-<span class="s2">        &quot;</span><span class="s s-Atom">wikidata</span><span class="s2">&quot;,</span>
+<span class="s2">        &quot;</span><span class="o">/</span><span class="s s-Atom">wiki/</span><span class="s2">&quot;</span>
 
-<span class="s2">        &quot;</span><span class="s s-Atom">org</span><span class="s2">&quot;,</span>
-
-<span class="s2">    ] and parsed_url.path.startswith(&quot;</span><span class="o">/</span><span class="s s-Atom">wiki/</span><span class="s2">&quot;):</span>
+<span class="s2">    ):</span>
 
 <span class="s2">        # Wikidata URLs</span>
 
@@ -2623,7 +2639,7 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
 <span class="s2">            pass</span>
 
-<span class="s2">    if parsed_url.hostname.split(&quot;</span><span class="p">.</span><span class="s2">&quot;)[-2:] == [&quot;</span><span class="s s-Atom">arxiv</span><span class="s2">&quot;, &quot;</span><span class="s s-Atom">org</span><span class="s2">&quot;]:</span>
+<span class="s2">    if domain_levels[-2:] == [&quot;</span><span class="s s-Atom">arxiv</span><span class="s2">&quot;, &quot;</span><span class="s s-Atom">org</span><span class="s2">&quot;]:</span>
 
 <span class="s2">        # arXiv identifiers. See https://arxiv.org/help/arxiv_identifier</span>
 
