@@ -1629,7 +1629,7 @@
 
 <span class="sd">      copied to `variables`. Interpreted fields include `pandoc`, `manubot`, `title`,</span>
 
-<span class="sd">      `keywords`, `author_info`, `lang`, and `thumbnail`.</span>
+<span class="sd">      `keywords`, `authors` (formerly `author_info`, now deprecated), `lang`, and `thumbnail`.</span>
 
 <span class="sd">    - User-specified fields inserted according to the `--template-variables-path` option.</span>
 
@@ -1645,7 +1645,7 @@
 
     <span class="c1"># Read metadata which contains pandoc_yaml_metadata</span>
 
-    <span class="c1"># as well as author_info.</span>
+    <span class="c1"># as well as authors information.</span>
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">meta_yaml_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
 
@@ -1689,7 +1689,21 @@
 
     <span class="c1"># Process authors metadata</span>
 
-    <span class="n">authors</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;author_info&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="k">if</span> <span class="s2">&quot;author_info&quot;</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+
+        <span class="n">authors</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;author_info&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+
+            <span class="s2">&quot;metadata.yaml: &#39;author_info&#39; is deprecated. Use &#39;authors&#39; instead.&quot;</span><span class="p">,</span>
+
+            <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">,</span>
+
+        <span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">authors</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
     <span class="k">if</span> <span class="n">authors</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 
@@ -2432,7 +2446,7 @@ manuscript variables available for jinja2 templating.</p>
   includes a <code>manubot</code> dictionary.</li>
 <li>All fields from a manuscript's <code>metadata.yaml</code> that are not interpreted by Manubot are
   copied to <code>variables</code>. Interpreted fields include <code>pandoc</code>, <code>manubot</code>, <code>title</code>,
-  <code>keywords</code>, <code>author_info</code>, <code>lang</code>, and <code>thumbnail</code>.</li>
+  <code>keywords</code>, <code>authors</code> (formerly <code>author_info</code>, now deprecated), <code>lang</code>, and <code>thumbnail</code>.</li>
 <li>User-specified fields inserted according to the <code>--template-variables-path</code> option.
   User-specified variables take highest precedence and can overwrite values for existing
   keys like <code>pandoc</code> or <code>manubot</code> (dangerous).</li>
@@ -2463,7 +2477,7 @@ manuscript variables available for jinja2 templating.</p>
 
 <span class="s2">      copied to `variables`. Interpreted fields include `pandoc`, `manubot`, `title`,</span>
 
-<span class="s2">      `keywords`, `author_info`, `lang`, and `thumbnail`.</span>
+<span class="s2">      `keywords`, `authors` (formerly `author_info`, now deprecated), `lang`, and `thumbnail`.</span>
 
 <span class="s2">    - User-specified fields inserted according to the `--template-variables-path` option.</span>
 
@@ -2479,7 +2493,7 @@ manuscript variables available for jinja2 templating.</p>
 
     <span class="c1"># Read metadata which contains pandoc_yaml_metadata</span>
 
-    <span class="c1"># as well as author_info.</span>
+    <span class="c1"># as well as authors information.</span>
 
     <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">meta_yaml_path</span><span class="p">.</span><span class="nf">is_file</span><span class="p">():</span>
 
@@ -2523,7 +2537,21 @@ manuscript variables available for jinja2 templating.</p>
 
     <span class="c1"># Process authors metadata</span>
 
-    <span class="n">authors</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">.</span><span class="nf">pop</span><span class="p">(</span><span class="s2">&quot;author_info&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="k">if</span> <span class="s2">&quot;author_info&quot;</span> <span class="k">in</span> <span class="n">metadata</span><span class="p">:</span>
+
+        <span class="n">authors</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">.</span><span class="nf">pop</span><span class="p">(</span><span class="s2">&quot;author_info&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="n">warnings</span><span class="p">.</span><span class="nf">warn</span><span class="p">(</span>
+
+            <span class="s2">&quot;metadata.yaml: &#39;author_info&#39; is deprecated. Use &#39;authors&#39; instead.&quot;</span><span class="p">,</span>
+
+            <span class="n">category</span><span class="o">=</span><span class="n">DeprecationWarning</span><span class="p">,</span>
+
+        <span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">authors</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">.</span><span class="nf">pop</span><span class="p">(</span><span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
     <span class="k">if</span> <span class="n">authors</span> <span class="k">is</span> <span class="n">None</span><span class="p">:</span>
 
