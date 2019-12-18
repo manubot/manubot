@@ -329,11 +329,16 @@ def url_to_citekey(url):
 
     citekey = None
     parsed_url = urlparse(url)
-    if parsed_url.hostname.split(".")[-2:] == ["doi", "org"]:
+    domain_levels = parsed_url.hostname.split(".")
+    if domain_levels[-2:] == ["doi", "org"]:
         # DOI URLs
         doi = unquote(parsed_url.path.lstrip("/"))
         citekey = f"doi:{doi}"
-    if parsed_url.hostname.split(".")[-2:] == ["biorxiv", "org"]:
+    if domain_levels[-2] == "sci-hub":
+        # Sci-Hub domains
+        doi = parsed_url.path.lstrip("/")
+        citekey = f"doi:{doi}"
+    if domain_levels[-2:] == ["biorxiv", "org"]:
         # bioRxiv URL to DOI. See https://git.io/Je9Hq
         match = re.search(
             r"/(?P<biorxiv_id>([0-9]{4}\.[0-9]{2}\.[0-9]{2}\.)?[0-9]{6,})",
@@ -356,17 +361,16 @@ def url_to_citekey(url):
             citekey = f"pmcid:{pmcid}"
         except IndexError:
             pass
-    if parsed_url.hostname.split(".")[-2:] == [
-        "wikidata",
-        "org",
-    ] and parsed_url.path.startswith("/wiki/"):
+    if domain_levels[-2:] == ["wikidata", "org"] and parsed_url.path.startswith(
+        "/wiki/"
+    ):
         # Wikidata URLs
         try:
             wikidata_id = parsed_url.path.split("/")[2]
             citekey = f"wikidata:{wikidata_id}"
         except IndexError:
             pass
-    if parsed_url.hostname.split(".")[-2:] == ["arxiv", "org"]:
+    if domain_levels[-2:] == ["arxiv", "org"]:
         # arXiv identifiers. See https://arxiv.org/help/arxiv_identifier
         try:
             arxiv_id = parsed_url.path.split("/", maxsplit=2)[2]
