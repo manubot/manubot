@@ -175,7 +175,7 @@ def load_variables(args) -> dict:
       includes a `manubot` dictionary.
     - All fields from a manuscript's `metadata.yaml` that are not interpreted by Manubot are
       copied to `variables`. Interpreted fields include `pandoc`, `manubot`, `title`,
-      `keywords`, `author_info`, `lang`, and `thumbnail`.
+      `keywords`, `authors` (formerly `author_info`, now deprecated), `lang`, and `thumbnail`.
     - User-specified fields inserted according to the `--template-variables-path` option.
       User-specified variables take highest precedence and can overwrite values for existing
       keys like `pandoc` or `manubot` (dangerous).
@@ -184,7 +184,7 @@ def load_variables(args) -> dict:
     variables = {"pandoc": {}, "manubot": {}}
 
     # Read metadata which contains pandoc_yaml_metadata
-    # as well as author_info.
+    # as well as authors information.
     if args.meta_yaml_path.is_file():
         metadata = read_serialized_dict(args.meta_yaml_path)
     else:
@@ -209,7 +209,14 @@ def load_variables(args) -> dict:
     variables["manubot"]["date"] = f"{now:%B} {now.day}, {now.year}"
 
     # Process authors metadata
-    authors = metadata.pop("author_info", [])
+    if "author_info" in metadata:
+        authors = metadata.pop("author_info", [])
+        warnings.warn(
+            "metadata.yaml: 'author_info' is deprecated. Use 'authors' instead.",
+            category=DeprecationWarning,
+        )
+    else:
+        authors = metadata.pop("authors", [])
     if authors is None:
         authors = []
     variables["pandoc"]["author-meta"] = [author["name"] for author in authors]
