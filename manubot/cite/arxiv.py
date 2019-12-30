@@ -5,6 +5,7 @@ import xml.etree.ElementTree
 
 import requests
 
+from .csl_item import CSL_Item
 from manubot.util import get_manubot_user_agent
 
 
@@ -39,7 +40,7 @@ def get_arxiv_csl_item(arxiv_id):
     (entry,) = xml_tree.findall(prefix + "entry")
 
     # Create dictionary for CSL Item
-    csl_item = collections.OrderedDict()
+    csl_item = CSL_Item()
 
     # Extract versioned arXiv ID
     url = entry.findtext(prefix + "id")
@@ -55,8 +56,7 @@ def get_arxiv_csl_item(arxiv_id):
 
     # Extract CSL date field
     published = entry.findtext(prefix + "published")
-    published, _ = published.split("T", 1)
-    csl_item["issued"] = {"date-parts": [[int(x) for x in published.split("-")]]}
+    csl_item.set_date_variable(published)
 
     # Extract authors
     authors = list()

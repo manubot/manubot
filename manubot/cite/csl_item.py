@@ -55,7 +55,7 @@ class CSL_Item(dict):
     # The ideas for CSL_Item methods come from the following parts of code:
     #  - [ ] citekey_to_csl_item(citekey, prune=True)
     # The methods in CSL_Item class provide primitives to reconstruct
-    # fucntions above.
+    # functions above.
 
     type_mapping = {
         "journal-article": "article-journal",
@@ -151,6 +151,73 @@ class CSL_Item(dict):
         if prune:
             self.validate_against_schema()
         return self
+
+    def set_date_variable(self, iso_date, variable="issued"):
+        """
+        iso_date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
+            or as a Python date object (datetime.date or datetime.datetime).
+        variable: which variable to assing the date to.
+        """
+        import datetime
+
+        if iso_date is None:
+            return self
+        if isinstance(iso_date, (datetime.date, datetime.datetime)):
+            iso_date = iso_date.isoformat()
+        if not isinstance(iso_date, str):
+            raise ValueError(f"set_date_variable: unsupported type for {iso_date}")
+        iso_date = iso_date.strip()
+        re_year = r"(?P<year>[0-9]{4})"
+        re_month = r"(?P<month>1[0-2]|0[1-9])"
+        re_day = r"(?P<day>[0-3][0-9])"
+        patterns = [
+            f"{re_year}-{re_month}-{re_day}",
+            f"{re_year}-{re_month}",
+            f"{re_year}",
+            f".*",  # regex to match anything
+        ]
+        for pattern in patterns:
+            match = re.match(pattern, iso_date)
+            if match:
+                break
+        date_parts = []
+        for part in "year", "month", "date":
+            value = match.groups.get(part)
+            if not value:
+                break
+            date_parts.append(int(value))
+        if date_parts:
+            self[variable] = {"date-parts": [date_parts]}
+        return self
+
+    def get_date_variable(self, variable="issued", fill=False):
+        """
+        Return a CSL date-variable as ISO formatted string:
+        ('YYYY', 'YYYY-MM', 'YYYY-MM-DD', or None).
+
+        variable: which CSL JSON date variable to retrieve
+        fill: if True, set missing months to January
+            and missing days to the first day of the month.
+        """
+        try:
+            date_parts = self[variable]["date-parts"][0]
+        except (IndexError, KeyError):
+            return None
+        while fill and 1 <= len(date_parts) < 3:
+            date_parts.append(1)
+        widths = 4, 2, 2
+        str_parts = []
+        for i, part in enumerate(date_parts):
+            width = widths[i]
+            if isinstance(part, int):
+                part = str(part).zfill(width)
+            if not isinstance(part, str) or len(part) != width or not part.isdigit():
+                break
+            str_parts.append(part)
+        if not str_parts:
+            return None
+        iso_str = "-".join(str_parts)
+        return iso_str
 
     @property
     def note(self) -> str:
