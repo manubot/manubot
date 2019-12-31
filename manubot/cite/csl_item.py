@@ -158,34 +158,7 @@ class CSL_Item(dict):
             or as a Python date object (datetime.date or datetime.datetime).
         variable: which variable to assing the date to.
         """
-        import datetime
-
-        if iso_date is None:
-            return self
-        if isinstance(iso_date, (datetime.date, datetime.datetime)):
-            iso_date = iso_date.isoformat()
-        if not isinstance(iso_date, str):
-            raise ValueError(f"set_date_variable: unsupported type for {iso_date}")
-        iso_date = iso_date.strip()
-        re_year = r"(?P<year>[0-9]{4})"
-        re_month = r"(?P<month>1[0-2]|0[1-9])"
-        re_day = r"(?P<day>[0-3][0-9])"
-        patterns = [
-            f"{re_year}-{re_month}-{re_day}",
-            f"{re_year}-{re_month}",
-            f"{re_year}",
-            f".*",  # regex to match anything
-        ]
-        for pattern in patterns:
-            match = re.match(pattern, iso_date)
-            if match:
-                break
-        date_parts = []
-        for part in "year", "month", "date":
-            value = match.groups.get(part)
-            if not value:
-                break
-            date_parts.append(int(value))
+        date_parts = date_to_date_parts(iso_date)
         if date_parts:
             self[variable] = {"date-parts": [date_parts]}
         return self
@@ -203,21 +176,7 @@ class CSL_Item(dict):
             date_parts = self[variable]["date-parts"][0]
         except (IndexError, KeyError):
             return None
-        while fill and 1 <= len(date_parts) < 3:
-            date_parts.append(1)
-        widths = 4, 2, 2
-        str_parts = []
-        for i, part in enumerate(date_parts):
-            width = widths[i]
-            if isinstance(part, int):
-                part = str(part).zfill(width)
-            if not isinstance(part, str) or len(part) != width or not part.isdigit():
-                break
-            str_parts.append(part)
-        if not str_parts:
-            return None
-        iso_str = "-".join(str_parts)
-        return iso_str
+        return date_parts_to_string(date_parts, fill=fill)
 
     @property
     def note(self) -> str:
@@ -342,3 +301,75 @@ class CSL_Item(dict):
 def assert_csl_item_type(x):
     if not isinstance(x, CSL_Item):
         raise TypeError(f"Expected CSL_Item object, got {type(x)}")
+
+
+def date_to_date_parts(iso_date):
+    """
+    Convert a date string or object to a date parts list.
+
+    iso_date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
+        or as a Python date object (datetime.date or datetime.datetime).
+    """
+    import datetime
+
+    if iso_date is None:
+        return None
+    if isinstance(iso_date, (datetime.date, datetime.datetime)):
+        iso_date = iso_date.isoformat()
+    if not isinstance(iso_date, str):
+        raise ValueError(f"date_to_date_parts: unsupported type for {iso_date}")
+    iso_date = iso_date.strip()
+    re_year = r"(?P<year>[0-9]{4})"
+    re_month = r"(?P<month>1[0-2]|0[1-9])"
+    re_day = r"(?P<day>[0-3][0-9])"
+    patterns = [
+        f"{re_year}-{re_month}-{re_day}",
+        f"{re_year}-{re_month}",
+        f"{re_year}",
+        f".*",  # regex to match anything
+    ]
+    for pattern in patterns:
+        match = re.match(pattern, iso_date)
+        if match:
+            break
+    date_parts = []
+    for part in "year", "month", "day":
+        try:
+            value = match.group(part)
+        except IndexError:
+            break
+        if not value:
+            break
+        date_parts.append(int(value))
+    if date_parts:
+        return date_parts
+
+
+def date_parts_to_string(date_parts, fill: bool = False):
+    """
+    Return a CSL date-parts list as ISO formatted string:
+    ('YYYY', 'YYYY-MM', 'YYYY-MM-DD', or None).
+
+    date_parts: list or tuple like [year, month, day] as integers.
+    fill: if True, set missing months to January
+        and missing days to the first day of the month.
+    """
+    if not date_parts:
+        return None
+    if not isinstance(date_parts, (tuple, list)):
+        raise ValueError(f"date_parts must be a tuple or list")
+    while fill and 1 <= len(date_parts) < 3:
+        date_parts.append(1)
+    widths = 4, 2, 2
+    str_parts = []
+    for i, part in enumerate(date_parts[:3]):
+        width = widths[i]
+        if isinstance(part, int):
+            part = str(part).zfill(width)
+        if not isinstance(part, str) or len(part) != width or not part.isdigit():
+            break
+        str_parts.append(part)
+    if not str_parts:
+        return None
+    iso_str = "-".join(str_parts)
+    return iso_str
