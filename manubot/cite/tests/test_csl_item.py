@@ -212,18 +212,22 @@ def test_date_to_date_parts(date, expected):
     ["expected", "date_parts", "fill"],
     [
         (None, None, False),
+        (None, [], True),
         (None, [], False),
+        (None, None, True),
         ("2019", [2019], False),
         ("2019-01-01", [2019], True),
         ("2019-01", [2019, 1], False),
         ("2019-12", [2019, 12], False),
         ("2019-12-01", [2019, 12], True),
         ("2019-12-31", [2019, 12, 31], False),
+        ("2019-12-31", [2019, 12, 31], True),
         ("2019-12", [2019, 12, "bad day"], False),
         ("2019-12-01", [2019, 12, 1], False),
         ("2019-12-01", ["2019", "12", "01"], False),
-        ("2019-12-30", [2019, 12, 30], False),
+        ("2019-02-01", ["2019", "2", "1"], False),
         ("2019-12-31", [2019, 12, 31, 23, 32, 16], False),
+        ("2019-12-31", [2019, 12, 31, 23, 32, 16], True),
     ],
 )
 def test_date_parts_to_string(expected, date_parts, fill):

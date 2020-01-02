@@ -26,6 +26,7 @@ for csl_data that is JSON-serialized.
 import copy
 import logging
 import re
+from typing import List, Optional
 
 from manubot.cite.citekey import (
     standardize_citekey,
@@ -152,18 +153,18 @@ class CSL_Item(dict):
             self.validate_against_schema()
         return self
 
-    def set_date_variable(self, iso_date, variable="issued"):
+    def set_date(self, date, variable="issued"):
         """
-        iso_date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
+        date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
             or as a Python date object (datetime.date or datetime.datetime).
-        variable: which variable to assing the date to.
+        variable: which variable to assign the date to.
         """
-        date_parts = date_to_date_parts(iso_date)
+        date_parts = date_to_date_parts(date)
         if date_parts:
             self[variable] = {"date-parts": [date_parts]}
         return self
 
-    def get_date_variable(self, variable="issued", fill=False):
+    def get_date(self, variable="issued", fill=False):
         """
         Return a CSL date-variable as ISO formatted string:
         ('YYYY', 'YYYY-MM', 'YYYY-MM-DD', or None).
@@ -303,22 +304,22 @@ def assert_csl_item_type(x):
         raise TypeError(f"Expected CSL_Item object, got {type(x)}")
 
 
-def date_to_date_parts(iso_date):
+def date_to_date_parts(date) -> Optional[List[int]]:
     """
     Convert a date string or object to a date parts list.
 
-    iso_date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
+    date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
         or as a Python date object (datetime.date or datetime.datetime).
     """
     import datetime
 
-    if iso_date is None:
+    if date is None:
         return None
-    if isinstance(iso_date, (datetime.date, datetime.datetime)):
-        iso_date = iso_date.isoformat()
-    if not isinstance(iso_date, str):
-        raise ValueError(f"date_to_date_parts: unsupported type for {iso_date}")
-    iso_date = iso_date.strip()
+    if isinstance(date, (datetime.date, datetime.datetime)):
+        date = date.isoformat()
+    if not isinstance(date, str):
+        raise ValueError(f"date_to_date_parts: unsupported type for {date}")
+    date = date.strip()
     re_year = r"(?P<year>[0-9]{4})"
     re_month = r"(?P<month>1[0-2]|0[1-9])"
     re_day = r"(?P<day>[0-3][0-9])"
@@ -329,7 +330,7 @@ def date_to_date_parts(iso_date):
         f".*",  # regex to match anything
     ]
     for pattern in patterns:
-        match = re.match(pattern, iso_date)
+        match = re.match(pattern, date)
         if match:
             break
     date_parts = []
@@ -345,12 +346,13 @@ def date_to_date_parts(iso_date):
         return date_parts
 
 
-def date_parts_to_string(date_parts, fill: bool = False):
+def date_parts_to_string(date_parts, fill: bool = False) -> Optional[str]:
     """
     Return a CSL date-parts list as ISO formatted string:
     ('YYYY', 'YYYY-MM', 'YYYY-MM-DD', or None).
 
     date_parts: list or tuple like [year, month, day] as integers.
+        Also supports [year, month] and [year] for situations where the day or month-and-day are missing.
     fill: if True, set missing months to January
         and missing days to the first day of the month.
     """

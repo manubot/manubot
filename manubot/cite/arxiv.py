@@ -56,7 +56,7 @@ def get_arxiv_csl_item(arxiv_id):
 
     # Extract CSL date field
     published = entry.findtext(prefix + "published")
-    csl_item.set_date_variable(published)
+    csl_item.set_date(published, variable="issued")
 
     # Extract authors
     authors = list()
