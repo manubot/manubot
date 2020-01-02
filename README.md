@@ -244,7 +244,7 @@ pip install --editable ".[all]"
 ### Commands
 
 Below are some common commands used for development.
-They assume the working directory is set to the repository's root, and the conda environment is activated. 
+They assume the working directory is set to the repository's root, and the conda environment is activated.
 
 ```shell
 # run the test suite
@@ -259,7 +259,7 @@ python manubot/tests/test_readme.py
 # generate the docs
 portray as_html --overwrite --output_dir=docs
 
-# process the example testing manuscript 
+# process the example testing manuscript
 manubot process \
   --content-directory=manubot/process/tests/manuscripts/example/content \
   --output-directory=manubot/process/tests/manuscripts/example/output \

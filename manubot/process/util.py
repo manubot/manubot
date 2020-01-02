@@ -19,6 +19,7 @@ from manubot.process.metadata import (
     get_header_includes,
     get_thumbnail_url,
     get_manuscript_urls,
+    get_software_versions,
 )
 from manubot.process.manuscript import (
     datetime_now,
@@ -91,9 +92,7 @@ def read_variable_files(paths: List[str], variables: Optional[dict] = None) -> d
     if variables is None:
         variables = {}
     for path in paths:
-        logging.info(
-            f"Read the following user-provided templating variables for {path!r}"
-        )
+        logging.info(f"Reading user-provided templating variables at {path!r}")
         # Match only namespaces that are valid jinja2 variable names
         # http://jinja.pocoo.org/docs/2.10/api/#identifier-naming
         match = re.match(r"([a-zA-Z_][a-zA-Z0-9_]*)=(.+)", path)
@@ -118,7 +117,7 @@ def read_variable_files(paths: List[str], variables: Optional[dict] = None) -> d
                 "values for the following keys:\n" + "\n".join(conflicts)
             )
         variables.update(obj)
-    logging.info(
+    logging.debug(
         f"Reading user-provided templating variables complete:\n"
         f"{json.dumps(variables, indent=2, ensure_ascii=False)}"
     )
@@ -176,7 +175,7 @@ def load_variables(args) -> dict:
       includes a `manubot` dictionary.
     - All fields from a manuscript's `metadata.yaml` that are not interpreted by Manubot are
       copied to `variables`. Interpreted fields include `pandoc`, `manubot`, `title`,
-      `keywords`, `author_info`, `lang`, and `thumbnail`.
+      `keywords`, `authors` (formerly `author_info`, now deprecated), `lang`, and `thumbnail`.
     - User-specified fields inserted according to the `--template-variables-path` option.
       User-specified variables take highest precedence and can overwrite values for existing
       keys like `pandoc` or `manubot` (dangerous).
@@ -185,7 +184,7 @@ def load_variables(args) -> dict:
     variables = {"pandoc": {}, "manubot": {}}
 
     # Read metadata which contains pandoc_yaml_metadata
-    # as well as author_info.
+    # as well as authors information.
     if args.meta_yaml_path.is_file():
         metadata = read_serialized_dict(args.meta_yaml_path)
     else:
@@ -210,7 +209,14 @@ def load_variables(args) -> dict:
     variables["manubot"]["date"] = f"{now:%B} {now.day}, {now.year}"
 
     # Process authors metadata
-    authors = metadata.pop("author_info", [])
+    if "author_info" in metadata:
+        authors = metadata.pop("author_info", [])
+        warnings.warn(
+            "metadata.yaml: 'author_info' is deprecated. Use 'authors' instead.",
+            category=DeprecationWarning,
+        )
+    else:
+        authors = metadata.pop("authors", [])
     if authors is None:
         authors = []
     variables["pandoc"]["author-meta"] = [author["name"] for author in authors]
@@ -224,6 +230,9 @@ def load_variables(args) -> dict:
 
     # Add manuscript URLs
     variables["manubot"].update(get_manuscript_urls(metadata.pop("html_url", None)))
+
+    # Add software versions
+    variables["manubot"].update(get_software_versions())
 
     # Add thumbnail URL if present
     thumbnail_url = get_thumbnail_url(metadata.pop("thumbnail", None))

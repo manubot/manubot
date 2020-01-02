@@ -64,7 +64,7 @@ class Base_cite_command_render_stdout:
     cite-command-rendered/references-{format}-{pandoc_stamp}.{extension}
 
     Examples:
-    - references-html-2.7.2.html  
+    - references-html-2.7.2.html
     - references-plain-2.7.2.txt
     - references-jats-2.7.2.xml
     - references-jats-2.7.3.xml
@@ -81,7 +81,7 @@ class Base_cite_command_render_stdout:
 
         pytest -v -m "not pandoc_version_sensitive"
 
-    See .travis.yml and .appveyor.yml to find out current pandoc version used 
+    See .travis.yml and .appveyor.yml to find out current pandoc version used
     for testing.
     """
 
