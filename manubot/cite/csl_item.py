@@ -26,6 +26,7 @@ for csl_data that is JSON-serialized.
 import copy
 import logging
 import re
+from typing import List, Optional
 
 from manubot.cite.citekey import (
     standardize_citekey,
@@ -55,7 +56,7 @@ class CSL_Item(dict):
     # The ideas for CSL_Item methods come from the following parts of code:
     #  - [ ] citekey_to_csl_item(citekey, prune=True)
     # The methods in CSL_Item class provide primitives to reconstruct
-    # fucntions above.
+    # functions above.
 
     type_mapping = {
         "journal-article": "article-journal",
@@ -151,6 +152,32 @@ class CSL_Item(dict):
         if prune:
             self.validate_against_schema()
         return self
+
+    def set_date(self, date, variable="issued"):
+        """
+        date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
+            or as a Python date object (datetime.date or datetime.datetime).
+        variable: which variable to assign the date to.
+        """
+        date_parts = date_to_date_parts(date)
+        if date_parts:
+            self[variable] = {"date-parts": [date_parts]}
+        return self
+
+    def get_date(self, variable="issued", fill=False):
+        """
+        Return a CSL date-variable as ISO formatted string:
+        ('YYYY', 'YYYY-MM', 'YYYY-MM-DD', or None).
+
+        variable: which CSL JSON date variable to retrieve
+        fill: if True, set missing months to January
+            and missing days to the first day of the month.
+        """
+        try:
+            date_parts = self[variable]["date-parts"][0]
+        except (IndexError, KeyError):
+            return None
+        return date_parts_to_string(date_parts, fill=fill)
 
     @property
     def note(self) -> str:
@@ -275,3 +302,79 @@ class CSL_Item(dict):
 def assert_csl_item_type(x):
     if not isinstance(x, CSL_Item):
         raise TypeError(f"Expected CSL_Item object, got {type(x)}")
+
+
+def date_to_date_parts(date) -> Optional[List[int]]:
+    """
+    Convert a date string or object to a date parts list.
+
+    date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
+        or as a Python date object (datetime.date or datetime.datetime).
+    """
+    import datetime
+
+    if date is None:
+        return None
+    if isinstance(date, (datetime.date, datetime.datetime)):
+        date = date.isoformat()
+    if not isinstance(date, str):
+        raise ValueError(f"date_to_date_parts: unsupported type for {date}")
+    date = date.strip()
+    re_year = r"(?P<year>[0-9]{4})"
+    re_month = r"(?P<month>1[0-2]|0[1-9])"
+    re_day = r"(?P<day>[0-3][0-9])"
+    patterns = [
+        f"{re_year}-{re_month}-{re_day}",
+        f"{re_year}-{re_month}",
+        f"{re_year}",
+        f".*",  # regex to match anything
+    ]
+    for pattern in patterns:
+        match = re.match(pattern, date)
+        if match:
+            break
+    date_parts = []
+    for part in "year", "month", "day":
+        try:
+            value = match.group(part)
+        except IndexError:
+            break
+        if not value:
+            break
+        date_parts.append(int(value))
+    if date_parts:
+        return date_parts
+
+
+def date_parts_to_string(date_parts, fill: bool = False) -> Optional[str]:
+    """
+    Return a CSL date-parts list as ISO formatted string:
+    ('YYYY', 'YYYY-MM', 'YYYY-MM-DD', or None).
+
+    date_parts: list or tuple like [year, month, day] as integers.
+        Also supports [year, month] and [year] for situations where the day or month-and-day are missing.
+    fill: if True, set missing months to January
+        and missing days to the first day of the month.
+    """
+    if not date_parts:
+        return None
+    if not isinstance(date_parts, (tuple, list)):
+        raise ValueError(f"date_parts must be a tuple or list")
+    while fill and 1 <= len(date_parts) < 3:
+        date_parts.append(1)
+    widths = 4, 2, 2
+    str_parts = []
+    for i, part in enumerate(date_parts[:3]):
+        width = widths[i]
+        if isinstance(part, int):
+            part = str(part)
+        if not isinstance(part, str):
+            break
+        part = part.zfill(width)
+        if len(part) != width or not part.isdigit():
+            break
+        str_parts.append(part)
+    if not str_parts:
+        return None
+    iso_str = "-".join(str_parts)
+    return iso_str

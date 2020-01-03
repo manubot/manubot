@@ -1,8 +1,14 @@
 import copy
+import datetime
 
 import pytest
 
-from manubot.cite.csl_item import CSL_Item, assert_csl_item_type
+from ..csl_item import (
+    CSL_Item,
+    assert_csl_item_type,
+    date_to_date_parts,
+    date_parts_to_string,
+)
 
 
 class Test_CSL_Item:
@@ -179,3 +185,52 @@ def test_csl_item_note_append(input_note, text, dictionary, expected_note):
 def test_csl_item_note_dict(note, dictionary):
     csl_item = CSL_Item(note=note)
     assert csl_item.note_dict == dictionary
+
+
+@pytest.mark.parametrize(
+    ["date", "expected"],
+    [
+        (None, None),
+        ("", None),
+        ("2019", [2019]),
+        ("2019-01", [2019, 1]),
+        ("2019-12", [2019, 12]),
+        ("2019-12-31", [2019, 12, 31]),
+        ("2019-12-99", [2019, 12]),
+        ("2019-12-01", [2019, 12, 1]),
+        (" 2019-12-01 ", [2019, 12, 1]),
+        ("2019-12-30T23:32:16Z", [2019, 12, 30]),
+        (datetime.date(2019, 12, 31), [2019, 12, 31]),
+        (datetime.datetime(2019, 12, 31, 23, 32, 16), [2019, 12, 31]),
+    ],
+)
+def test_date_to_date_parts(date, expected):
+    assert date_to_date_parts(date) == expected
+
+
+@pytest.mark.parametrize(
+    ["expected", "date_parts", "fill"],
+    [
+        (None, None, False),
+        (None, [], True),
+        (None, [], False),
+        (None, None, True),
+        ("2019", [2019], False),
+        ("2019-01-01", [2019], True),
+        ("2019-01", [2019, 1], False),
+        ("2019-12", [2019, 12], False),
+        ("2019-12-01", [2019, 12], True),
+        ("2019-12-31", [2019, 12, 31], False),
+        ("2019-12-31", [2019, 12, 31], True),
+        ("2019-12", [2019, 12, "bad day"], False),
+        ("2019-12-01", [2019, 12, 1], False),
+        ("2019-12-01", ["2019", "12", "01"], False),
+        ("2019-02-01", ["2019", "2", "1"], False),
+        ("2019-12-31", [2019, 12, 31, 23, 32, 16], False),
+        ("2019-12-31", [2019, 12, 31, 23, 32, 16], True),
+        ("0080-07-14", [80, 7, 14], False),
+        ("0080-07-14", ["80", "07", 14], False),
+    ],
+)
+def test_date_parts_to_string(expected, date_parts, fill):
+    assert expected == date_parts_to_string(date_parts, fill=fill)
