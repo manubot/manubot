@@ -1,19 +1,50 @@
-# The manuscript bot for automated scholarly publishing
+# Python utilities for Manubot: Manuscripts, open and automated
 
 [![Travis Linux Build Status](https://travis-ci.com/manubot/manubot.svg?branch=master)](https://travis-ci.com/manubot/manubot)
 [![AppVeyor Windows Build Status](https://ci.appveyor.com/api/projects/status/f20hvc6si5uiqd7e/branch/master?svg=true)](https://ci.appveyor.com/project/manubot/manubot/branch/master)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-The Manubot Python package prepares scholarly manuscripts for Pandoc consumption.
-It automates and scripts several aspects of manuscript creation, including fetching bibliographic metadata for citations.
+[Manubot](https://manubot.org/ "Manubot homepage") is a workflow and set of tools for the next generation of scholarly publishing.
+This repository contains a Python package with several Manubot-related utilities, as described in the [usage section](#usage) below.
+Package documentation is available at <https://manubot.github.io/manubot> (auto-generated from the Python source code).
 
-This program is designed to be used with clones of [Manubot Rootstock](https://github.com/greenelab/manubot-rootstock), which perform Pandoc conversion and continuous deployment.
-See the Manubot Rootstock [usage guide](https://github.com/greenelab/manubot-rootstock/blob/master/USAGE.md) for more information.
+The `manubot cite` command-line interface retrieves and formats bibliographic metadata for user-supplied persistent identifiers like DOIs or PubMed IDs.
+The `manubot process` command-line interface prepares scholarly manuscripts for Pandoc consumption.
+The `manubot process` command is used by Manubot manuscripts, which are based off the [Rootstock template](https://github.com/manubot/rootstock), to automate several aspects of manuscript generation.
+See Rootstock's [manuscript usage guide](https://github.com/manubot/rootstock/blob/master/USAGE.md) for more information.
+
+**Note:**
+If you want to experience Manubot by editing an existing manuscript, see <https://github.com/manubot/try-manubot>.
+If you want to create a new manuscript, see <https://github.com/manubot/rootstock>.
 
 To cite the Manubot project or for more information on its design and history, see:
 
 > **Open collaborative writing with Manubot**<br>
 Daniel S. Himmelstein, Vincent Rubinetti, David R. Slochower, Dongbo Hu, Venkat S. Malladi, Casey S. Greene, Anthony Gitter<br>
-_Manubot Preprint_ (2019) <https://greenelab.github.io/meta-review/>
+*PLOS Computational Biology* (2019-06-24) <https://doi.org/c7np><br>
+DOI: [10.1371/journal.pcbi.1007128](https://doi.org/10.1371/journal.pcbi.1007128) · PMID: [31233491](https://www.ncbi.nlm.nih.gov/pubmed/31233491) · PMCID: [PMC6611653](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6611653)
+
+The Manubot version of this manuscript is available at <https://greenelab.github.io/meta-review/>.
+
+## Installation
+
+If you are using the `manubot` Python package as part of a manuscript repository, installation of this package is handled though the Rootstock's [environment specification](https://github.com/manubot/rootstock/blob/master/build/environment.yml).
+For other use cases, this package can be installed via `pip`.
+
+Install the latest release version [from PyPI](https://pypi.org/project/manubot/):
+
+```sh
+pip install --upgrade manubot
+```
+
+Or install from the source code on [GitHub](https://github.com/manubot/manubot), using the version specified by a commit hash:
+
+```sh
+COMMIT=d2160151e52750895571079a6e257beb6e0b1278
+pip install --upgrade git+https://github.com/manubot/manubot@$COMMIT
+```
+
+The `--upgrade` argument ensures `pip` updates an existing `manubot` installation if present.
 
 ## Usage
 
@@ -22,20 +53,21 @@ Here is the usage information as per `manubot --help`:
 
 <!-- test codeblock contains output of `manubot --help` -->
 ```
-usage: manubot [-h] [--version] {process,cite} ...
+usage: manubot [-h] [--version] {process,cite,webpage} ...
 
 Manubot: the manuscript bot for scholarly writing
 
 optional arguments:
-  -h, --help      show this help message and exit
-  --version       show program's version number and exit
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
 
 subcommands:
   All operations are done through subcommands:
 
-  {process,cite}
-    process       process manuscript content
-    cite          citation to CSL command line utility
+  {process,cite,webpage}
+    process             process manuscript content
+    cite                citation to CSL command line utility
+    webpage             deploy Manubot outputs to a webpage directory tree
 ```
 
 Note that all operations are done through the following sub-commands.
@@ -77,13 +109,16 @@ optional arguments:
   --output-directory OUTPUT_DIRECTORY
                         Directory to output files generated by this script.
   --template-variables-path TEMPLATE_VARIABLES_PATH
-                        Path or URL of a JSON file containing template
-                        variables for jinja2. Specify this argument multiple
-                        times to read multiple files. Variables can be applied
-                        to a namespace (i.e. stored under a dictionary key)
-                        like `--template-variables-
-                        path=namespace=path_or_url`. Namespaces must match the
-                        regex `[a-zA-Z_][a-zA-Z0-9_]*`.
+                        Path or URL of a file containing template variables
+                        for jinja2. Serialization format is inferred from the
+                        file extension, with support for JSON, YAML, and TOML.
+                        If the format cannot be detected, the parser assumes
+                        JSON. Specify this argument multiple times to read
+                        multiple files. Variables can be applied to a
+                        namespace (i.e. stored under a dictionary key) like
+                        `--template-variables-path=namespace=path_or_url`.
+                        Namespaces must match the regex `[a-zA-
+                        Z_][a-zA-Z0-9_]*`.
   --cache-directory CACHE_DIRECTORY
                         Custom cache directory. If not specified, caches to
                         output-directory.
@@ -98,14 +133,14 @@ Manubot has the ability to rely on user-provided reference metadata rather than 
 `manubot process` searches the content directory for files containing manually-provided reference metadata that match the glob `manual-references*.*`.
 If a manual reference filename ends with `.json` or `.yaml`, it's assumed to contain CSL Data (i.e. Citation Style Language JSON).
 Otherwise, the format is inferred from the extension and converted to CSL JSON using the `pandoc-citeproc --bib2json` [utility](https://github.com/jgm/pandoc-citeproc/blob/master/man/pandoc-citeproc.1.md#convert-mode).
-The standard citation for manual references is inferred from the CSL JSON `id` or `note` field.
+The standard citation key for manual references is inferred from the CSL JSON `id` or `note` field.
 When no prefix is provided, such as `doi:`, `url:`, or `raw:`, a `raw:` prefix is automatically added.
 If multiple manual reference files load metadata for the same standard citation `id`, precedence is assigned according to descending filename order.
 
 ### Cite
 
-`manubot cite` is a command line utility to create [CSL JSON items](http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html#items) for one or more citations.
-Citations should be in the format `source:identifier`.
+`manubot cite` is a command line utility to create [CSL JSON items](http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html#items) for one or more citation keys.
+Citation keys should be in the format `source:identifier`.
 For example, the following example generates CSL JSON for four references:
 
 ```sh
@@ -124,13 +159,13 @@ usage: manubot cite [-h] [--render] [--csl CSL]
                     [--format {plain,markdown,docx,html,jats}]
                     [--output OUTPUT] [--allow-invalid-csl-data]
                     [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
-                    citations [citations ...]
+                    citekeys [citekeys ...]
 
-Retrieve bibliographic metadata for one or more citation identifiers.
+Retrieve bibliographic metadata for one or more citation keys.
 
 positional arguments:
-  citations             One or more (space separated) citations to produce CSL
-                        for.
+  citekeys              One or more (space separated) citation keys to produce
+                        CSL for.
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -154,40 +189,84 @@ optional arguments:
                         Set the logging level for stderr logging
 ```
 
-## Installation
+### Webpage
 
-Install the version specified by a git commit hash using:
+The `manubot webpage` command populates a `webpage` directory with Manubot output files.
 
-```sh
-COMMIT=33e512d21218263423de5f0d127aac4f8635468f
-pip install git+https://github.com/manubot/manubot@$COMMIT
+<!-- test codeblock contains output of `manubot webpage --help` -->
 ```
+usage: manubot webpage [-h] [--checkout [CHECKOUT]] [--version VERSION]
+                       [--timestamp] [--no-ots-cache | --ots-cache OTS_CACHE]
+                       [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
 
-Use the `--upgrade` argument to reinstall `manubot` with a different commit hash.
+Update the webpage directory tree with Manubot output files. This command
+should be run from the root directory of a Manubot manuscript that follows the
+Rootstock layout, containing `output` and `webpage` directories. HTML and PDF
+outputs are copied to the webpage directory, which is structured as static
+source files for website hosting.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --checkout [CHECKOUT]
+                        branch to checkout /v directory contents from. For
+                        example, --checkout=upstream/gh-pages. --checkout is
+                        equivalent to --checkout=gh-pages. If --checkout is
+                        ommitted, no checkout is performed.
+  --version VERSION     Used to create webpage/v/{version} directory.
+                        Generally a commit hash, tag, or 'local'. When
+                        omitted, version defaults to the commit hash on CI
+                        builds and 'local' elsewhere.
+  --timestamp           timestamp versioned manuscripts in webpage/v using
+                        OpenTimestamps. Specify this flag to create timestamps
+                        for the current HTML and PDF outputs and upgrade any
+                        timestamps from past manuscript versions.
+  --no-ots-cache        disable the timestamp cache.
+  --ots-cache OTS_CACHE
+                        location for the timestamp cache (default:
+                        ci/cache/ots).
+  --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
+                        Set the logging level for stderr logging
+```
 
 ## Development
 
+### Environment
+
 Create a development environment using:
 
-```sh
+```shell
 conda create --name manubot-dev --channel conda-forge \
-  python=3.6 jinja2 pandas pytest pandoc
+  python=3.7 pandoc=2.8
 conda activate manubot-dev  # assumes conda >= 4.4
-pip install --editable .
+pip install --editable ".[all]"
 ```
 
-Inside this environment, use `pytest` to run the test suite.
-You can also use the `manubot` CLI to build manuscripts.
-For example:
+### Commands
 
-```sh
+Below are some common commands used for development.
+They assume the working directory is set to the repository's root, and the conda environment is activated.
+
+```shell
+# run the test suite
+pytest
+
+# reformat Python files according to the black style rules (required to pass CI)
+black .
+
+# regenerate the README codeblocks for --help messages
+python manubot/tests/test_readme.py
+
+# generate the docs
+portray as_html --overwrite --output_dir=docs
+
+# process the example testing manuscript
 manubot process \
-  --content-directory=tests/manuscripts/example/content \
-  --output-directory=tests/manuscripts/example/output \
+  --content-directory=manubot/process/tests/manuscripts/example/content \
+  --output-directory=manubot/process/tests/manuscripts/example/output \
   --log-level=DEBUG
 ```
 
-## Release instructions
+### Release instructions
 
 [![PyPI](https://img.shields.io/pypi/v/manubot.svg)](https://pypi.org/project/manubot/)
 
@@ -202,7 +281,7 @@ TAG=v`python setup.py --version`
 git add manubot/__init__.py release-notes/$TAG.md
 git commit --message="Prepare $TAG release"
 git push
-# Create & push tag (assuming upstream is greenelab remote)
+# Create & push tag (assuming upstream is the manubot organization remote)
 git tag --annotate $TAG --file=release-notes/$TAG.md
 git push upstream $TAG
 ```

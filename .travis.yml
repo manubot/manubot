@@ -1,25 +1,41 @@
-dist: trusty
+dist: bionic
 sudo: true
 language: python
 python:
   - "3.6"
+  - "3.7"
+  - "3.8"
 cache:
   - pip
 before_install:
-  - wget --quiet https://github.com/jgm/pandoc/releases/download/2.7.2/pandoc-2.7.2-1-amd64.deb
-  - sudo dpkg --install pandoc-2.7.2-1-amd64.deb
+  - wget --quiet https://github.com/jgm/pandoc/releases/download/2.8/pandoc-2.8-1-amd64.deb
+  - sudo dpkg --install pandoc-2.8-1-amd64.deb
 install:
-  - pip install .
+  - pip install ".[all]"
   - python setup.py sdist bdist_wheel
 script:
-  - pytest
+  - pytest --verbose --color=yes
+  # if the following command fails, run `black .` locally to reformat the code.
+  # ensure your local version of black matches the version installed on Travis,
+  # which will usually be the latest version from https://pypi.org/project/black/
+  - black --check --diff .
+  # temporary workaround for portray "Module not found" error https://git.io/JeR9C
+  - export PYTHONPATH=.
+  - portray as_html --overwrite --output_dir=docs
 deploy:
-  provider: pypi
-  user: dhimmel
-  password:
-    secure: KFuV0ou/lmBbCj9dz13U/eJZ/mgYefk32BE+L9jiSBf4DPb8eagunpDWEnJThb1/8ULk4KIsY6LZA49UV9ZafipMSXsrO8+Bf2qH0XinJ7sPb9Isyb3yaLMDLzgxvCsDI9MoDGMQNd52RGJBsp5UDUViOv0hIJgVSmLn1F4tw+hXWQsN81zrkucq8ws2nlFVZLTkC+axpaQXxqrzJU2ODML7i2Q+zP4+rFfQRF/3uAnDQ/o08rtE4TeipKWrAyJMLdhBSzvCaiqqzSyttR6df2hkxU/rkeLF2qHmugpewShEXINfbACYapAzcIKd1lCzU9wqRXtczXjNkb4FMiuHha8yAxW6dKQjogbs64NLUaSUCDnidDy5UsOBxH0+55czJ2s2FJn4bEk6yVIJcLfPW9pE59ypzPVfFNRByqsCGhVlKGSQxx+mf17lZSKTtWM0434ZsOGx8C04ny4r7iwRVRGy7+0s5eMUYsvIKP2R3hog7gfDBHtU5LPYRsDnjIMXdWNQEagpDH3/f9qAQXqTLIcOx6Rmrw8tZYaRxHUb0iVlCsqueqO2CCSVsqaTaPTYpoF122neJqm8uU3AnWGoSeV0W5Lj0ZFlOtdywUYfCU8h67xdWMUMbpJcLkVJWJoXeGcamLSytS3sIF5xlKJeOetdfZaQ+stYQJhwblIMs0I=
-  on:
-    python: '3.6'
-    repo: manubot/manubot
-    tags: true
-  distributions: sdist bdist_wheel
+  - provider: pypi
+    user: __token__
+    password: $PYPI_PASSWORD
+    on:
+      python: '3.6'
+      repo: manubot/manubot
+      tags: true
+    distributions: sdist bdist_wheel
+  - provider: script
+    script: bash ci/deploy-docs.sh
+    skip_cleanup: true
+    on:
+      python: "3.7"
+      repo: manubot/manubot
+      branch: master
+      condition: $TRAVIS_EVENT_TYPE = "push"

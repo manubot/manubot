@@ -18,12 +18,11 @@ build: off
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - "python -m pip install --upgrade pip"
-  - "%CMD_IN_ENV% pip install ."
+  - "%CMD_IN_ENV% pip install .[all]"
 
 before_test:
-  - "%CMD_IN_ENV% pip install pytest"
-  - choco install pandoc --version 2.7.2
+  - choco install pandoc --version 2.8
   - ps: $env:Path += ";C:\Program Files\Pandoc\"
 
 test_script:
-  - "%CMD_IN_ENV% pytest -rs"
+  - "%CMD_IN_ENV% pytest --verbose --color=yes"
