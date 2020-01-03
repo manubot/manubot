@@ -367,8 +367,11 @@ def date_parts_to_string(date_parts, fill: bool = False) -> Optional[str]:
     for i, part in enumerate(date_parts[:3]):
         width = widths[i]
         if isinstance(part, int):
-            part = str(part).zfill(width)
-        if not isinstance(part, str) or len(part) != width or not part.isdigit():
+            part = str(part)
+        if not isinstance(part, str):
+            break
+        part = part.zfill(width)
+        if not len(part) != width or not part.isdigit():
             break
         str_parts.append(part)
     if not str_parts:
