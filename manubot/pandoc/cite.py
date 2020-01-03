@@ -36,7 +36,7 @@ from manubot.process.util import (
 
 
 global_variables = {
-    "citation_strings": list(),
+    "manuscript_citekeys": list(),
 }
 
 
@@ -71,8 +71,8 @@ def _get_citation_string_action(elem, doc):
     """
     if not isinstance(elem, pf.Citation):
         return None
-    citation_strings = global_variables["citation_strings"]
-    citation_strings.append(elem.id)
+    manuscript_citekeys = global_variables["manuscript_citekeys"]
+    manuscript_citekeys.append(elem.id)
     return None
 
 
@@ -83,10 +83,9 @@ def _citation_to_id_action(elem, doc):
     """
     if not isinstance(elem, pf.Citation):
         return None
-    mapper = global_variables["citation_id_mapper"]
-    citation_string = f"@{elem.id}"
-    if citation_string in mapper:
-        elem.id = mapper[citation_string]
+    mapper = global_variables["citekey_shortener"]
+    if elem.id in mapper:
+        elem.id = mapper[elem.id]
     return None
 
 
@@ -97,27 +96,27 @@ def process_citations(doc):
 
     The following Pandoc metadata fields are considered (NotImplemented):
     - bibliography (use to define reference metadata manually)
-    - manubot-citation-tags (use to define tags for cite-by-id citations)
+    - manubot-citekey-aliases (use to define tags for cite-by-id citations)
     - manubot-requests-cache-path
     - manubot-clear-requests-cache
     """
 
     doc.walk(_get_citation_string_action)
-    citations_strings = set(global_variables["citation_strings"])
-    citations_strings = sorted(
+    manuscript_citekeys = set(global_variables["manuscript_citekeys"])
+    manuscript_citekeys = sorted(
         filter(
             lambda x: is_valid_citekey(
                 x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True
             ),
-            citations_strings,
+            manuscript_citekeys,
         )
     )
-    global_variables["citation_strings"] = citations_strings
-    tag_to_string = doc.get_metadata("citation-tags", default={}, builtin=True)
-    citation_df = get_citekeys_df(citations_strings, tag_to_string)
-    global_variables["citation_df"] = citation_df
-    global_variables["citation_id_mapper"] = dict(
-        zip((f"@{x}" for x in citation_df["string"]), citation_df["citation_id"])
+    global_variables["manuscript_citekeys"] = manuscript_citekeys
+    tag_to_string = doc.get_metadata("citekey-aliases", default={}, builtin=True)
+    citekeys_df = get_citekeys_df(manuscript_citekeys, tag_to_string)
+    global_variables["citekeys_df"] = citekeys_df
+    global_variables["citekey_shortener"] = dict(
+        zip((citekeys_df["manuscript_citekey"]), citekeys_df["short_citekey"])
     )
     doc.walk(_citation_to_id_action)
     manual_refs = doc.get_metadata("references", default=[], builtin=True)
@@ -127,8 +126,8 @@ def process_citations(doc):
     manual_refs = load_manual_references(
         bibliography_paths, extra_csl_items=manual_refs
     )
-    citations = citation_df.standard_citation.unique()
-    csl_items = generate_csl_items(citations, manual_refs)
+    standard_citekeys = citekeys_df.standard_citekey.unique()
+    csl_items = generate_csl_items(standard_citekeys, manual_refs)
     doc.metadata["references"] = csl_items
 
 
