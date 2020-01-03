@@ -4,23 +4,18 @@ import subprocess
 
 import pytest
 
-from manubot.pandoc.util import (
-    get_pandoc_info,
-)
-from manubot.pandoc.cite import (
-    csl_item_set_standard_citation,
-)
+from manubot.pandoc.util import get_pandoc_info
+from manubot.pandoc.cite import csl_item_set_standard_citation
 
 directory = pathlib.Path(__file__).parent
 
 
 @pytest.mark.skipif(
-    not shutil.which('pandoc'),
-    reason='pandoc installation not found on system'
+    not shutil.which("pandoc"), reason="pandoc installation not found on system"
 )
 @pytest.mark.skipif(
-    not shutil.which('pandoc-citeproc'),
-    reason='pandoc-citeproc installation not found on system'
+    not shutil.which("pandoc-citeproc"),
+    reason="pandoc-citeproc installation not found on system",
 )
 def test_cite_pandoc_filter():
     """
@@ -40,18 +35,23 @@ def test_cite_pandoc_filter():
     manubot/pandoc/tests/input-with-cites.md
     ```
     """
-    pandoc_version = get_pandoc_info()['pandoc version']
+    pandoc_version = get_pandoc_info()["pandoc version"]
     if pandoc_version < (1, 12):
         pytest.skip("Test requires pandoc >= 1.12 to support --filter")
-    input_md = directory.joinpath('input-with-cites.md').read_text()
-    expected = directory.joinpath('output-with-cites.txt').read_text()
+    input_md = directory.joinpath("input-with-cites.md").read_text()
+    expected = directory.joinpath("output-with-cites.txt").read_text()
     args = [
-        'pandoc',
-        '--wrap', 'preserve',
-        '--csl', 'https://github.com/manubot/rootstock/raw/af1d47a0ec5f33d8fc99deab2ac23b697983b673/build/assets/style.csl',
-        '--filter', 'pandoc-manubot-cite',
-        '--filter', 'pandoc-citeproc',
-        '--to', 'plain',
+        "pandoc",
+        "--wrap",
+        "preserve",
+        "--csl",
+        "https://github.com/manubot/rootstock/raw/af1d47a0ec5f33d8fc99deab2ac23b697983b673/build/assets/style.csl",
+        "--filter",
+        "pandoc-manubot-cite",
+        "--filter",
+        "pandoc-citeproc",
+        "--to",
+        "plain",
     ]
     process = subprocess.run(
         args,
@@ -60,7 +60,7 @@ def test_cite_pandoc_filter():
         stderr=subprocess.PIPE,
         universal_newlines=True,
     )
-    print(' '.join(process.args))
+    print(" ".join(process.args))
     print(process.stdout)
     print(process.stderr)
     assert process.stdout == expected
