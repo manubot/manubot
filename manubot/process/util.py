@@ -262,16 +262,35 @@ def load_variables(args) -> dict:
     return variables
 
 
-def get_citekeys_df(args, text):
+def get_citekeys_df(citekeys: list, citekey_aliases: dict = {}):
     """
-    Generate citekeys_df and save it to 'citations.tsv'.
+    Generate and return citekeys_df.
     citekeys_df is a pandas.DataFrame with the following columns:
     - manuscript_citekey: citation keys extracted from the manuscript content files.
     - detagged_citekey: manuscript_citekey but with tag citekeys dereferenced
     - standard_citekey: detagged_citekey standardized
     - short_citekey: standard_citekey hashed to create a shortened citekey
     """
-    citekeys_df = pandas.DataFrame({"manuscript_citekey": get_citekeys(text)})
+    citekeys_df = pandas.DataFrame({"manuscript_citekey": list(citekeys)}).drop_duplicates()
+    citekeys_df['detagged_citekey'] = citekeys_df.manuscript_citekey.map(
+        lambda citekey: citekey_aliases.get(citekey, citekey))
+    for citation in citekeys_df.detagged_citekey:
+        is_valid_citekey(citation, allow_raw=True)
+    citekeys_df["standard_citekey"] = citekeys_df.detagged_citekey.map(
+        standardize_citekey
+    )
+    citekeys_df["short_citekey"] = citekeys_df.standard_citekey.map(shorten_citekey)
+    citekeys_df = citekeys_df.sort_values(["standard_citekey", "detagged_citekey"])
+    check_collisions(citekeys_df)
+    check_multiple_citation_strings(citekeys_df)
+    return citekeys_df
+
+
+def _get_citekeys_df(args, text):
+    """
+    Generate citekeys_df from manubot process args and save it to 'citations.tsv'.
+    """
+    manuscript_citekeys = get_citekeys(text)
     if args.citation_tags_path.is_file():
         tag_df = pandas.read_csv(args.citation_tags_path, sep="\t")
         na_rows_df = tag_df[tag_df.isnull().any(axis="columns")]
@@ -285,27 +304,14 @@ def get_citekeys_df(args, text):
             tag_df = pandas.read_csv(args.citation_tags_path, delim_whitespace=True)
         tag_df["manuscript_citekey"] = "tag:" + tag_df.tag
         tag_df = tag_df.rename(columns={"citation": "detagged_citekey"})
-        for detagged_citekey in tag_df.detagged_citekey:
-            is_valid_citekey(detagged_citekey, allow_raw=True)
-        citekeys_df = citekeys_df.merge(
-            tag_df[["manuscript_citekey", "detagged_citekey"]], how="left"
-        )
+        citekey_aliases = dict(zip(tag_df['manuscript_citekey'], tag_df['detagged_citekey']))
     else:
-        citekeys_df["detagged_citekey"] = None
+        citekey_aliases = {}
         logging.info(
             f"missing {args.citation_tags_path} file: no citation tags (citekey aliases) set"
         )
-    citekeys_df.detagged_citekey.fillna(
-        citekeys_df.manuscript_citekey.astype(str), inplace=True
-    )
-    citekeys_df["standard_citekey"] = citekeys_df.detagged_citekey.map(
-        standardize_citekey
-    )
-    citekeys_df["short_citekey"] = citekeys_df.standard_citekey.map(shorten_citekey)
-    citekeys_df = citekeys_df.sort_values(["standard_citekey", "detagged_citekey"])
+    citekeys_df = get_citekeys_df(manuscript_citekeys, citekey_aliases)
     citekeys_df.to_csv(args.citations_path, sep="\t", index=False)
-    check_collisions(citekeys_df)
-    check_multiple_citation_strings(citekeys_df)
     return citekeys_df
 
 
@@ -387,7 +393,7 @@ def prepare_manuscript(args):
     for pandoc.
     """
     text = get_text(args.content_directory)
-    citekeys_df = get_citekeys_df(args, text)
+    citekeys_df = _get_citekeys_df(args, text)
 
     generate_csl_items(args, citekeys_df)
 
