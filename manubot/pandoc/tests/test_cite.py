@@ -5,7 +5,6 @@ import subprocess
 import pytest
 
 from manubot.pandoc.util import get_pandoc_info
-from manubot.pandoc.cite import csl_item_set_standard_citation
 
 directory = pathlib.Path(__file__).parent
 

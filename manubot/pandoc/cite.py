@@ -23,15 +23,13 @@ http://scorreia.com/software/panflute/code.html#panflute.elements.Citation
 import argparse
 import sys
 
-import panflute
+import panflute as pf
 
-from manubot.cite.util import (
-    citation_to_citeproc,
-    is_valid_citation_string,
-    csl_item_set_standard_citation,
+from manubot.cite.citekey import (
+    is_valid_citekey,
 )
 from manubot.process.util import (
-    get_citation_df,
+    get_citekeys_df,
     generate_csl_items,
     load_manual_references,
 )
@@ -71,7 +69,7 @@ def _get_citation_string_action(elem, doc):
     """
     Panflute action to extract citationId from all Citations in the AST.
     """
-    if not isinstance(elem, panflute.Citation):
+    if not isinstance(elem, pf.Citation):
         return None
     citation_strings = global_variables["citation_strings"]
     citation_strings.append(elem.id)
@@ -83,7 +81,7 @@ def _citation_to_id_action(elem, doc):
     Panflute action to update the citationId of Citations in the AST
     with their manubot-created keys.
     """
-    if not isinstance(elem, panflute.Citation):
+    if not isinstance(elem, pf.Citation):
         return None
     mapper = global_variables["citation_id_mapper"]
     citation_string = f"@{elem.id}"
@@ -108,15 +106,15 @@ def process_citations(doc):
     citations_strings = set(global_variables["citation_strings"])
     citations_strings = sorted(
         filter(
-            lambda x: is_valid_citation_string(
-                f"@{x}", allow_tag=True, allow_raw=True, allow_pandoc_xnos=True
+            lambda x: is_valid_citekey(
+                x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True
             ),
             citations_strings,
         )
     )
     global_variables["citation_strings"] = citations_strings
     tag_to_string = doc.get_metadata("citation-tags", default={}, builtin=True)
-    citation_df = get_citation_df(citations_strings, tag_to_string)
+    citation_df = get_citekeys_df(citations_strings, tag_to_string)
     global_variables["citation_df"] = citation_df
     global_variables["citation_id_mapper"] = dict(
         zip((f"@{x}" for x in citation_df["string"]), citation_df["citation_id"])
@@ -136,10 +134,10 @@ def process_citations(doc):
 
 def main():
     args = parse_args()
-    panflute.debug(sys.argv)
-    doc = panflute.load(args.input)
+    pf.debug(sys.argv)
+    doc = pf.load(args.input)
     process_citations(doc)
-    panflute.dump(doc, args.output)
+    pf.dump(doc, args.output)
 
 
 if __name__ == "__main__":
