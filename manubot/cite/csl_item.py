@@ -371,7 +371,7 @@ def date_parts_to_string(date_parts, fill: bool = False) -> Optional[str]:
         if not isinstance(part, str):
             break
         part = part.zfill(width)
-        if not len(part) != width or not part.isdigit():
+        if len(part) != width or not part.isdigit():
             break
         str_parts.append(part)
     if not str_parts:

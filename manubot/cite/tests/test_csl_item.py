@@ -228,6 +228,8 @@ def test_date_to_date_parts(date, expected):
         ("2019-02-01", ["2019", "2", "1"], False),
         ("2019-12-31", [2019, 12, 31, 23, 32, 16], False),
         ("2019-12-31", [2019, 12, 31, 23, 32, 16], True),
+        ("0080-07-14", [80, 7, 14], False),
+        ("0080-07-14", ["80", "07", 14], False),
     ],
 )
 def test_date_parts_to_string(expected, date_parts, fill):
