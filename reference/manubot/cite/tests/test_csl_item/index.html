@@ -665,6 +665,20 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#test_date_parts_to_string" class="md-nav__link">
+    test_date_parts_to_string
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_date_to_date_parts" class="md-nav__link">
+    test_date_to_date_parts
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1374,6 +1388,20 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#test_date_parts_to_string" class="md-nav__link">
+    test_date_parts_to_string
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_date_to_date_parts" class="md-nav__link">
+    test_date_to_date_parts
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1517,9 +1545,21 @@
                 <h1 id="module-manubotciteteststest_csl_item">Module manubot.cite.tests.test_csl_item</h1>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">copy</span>
 
+<span class="kn">import</span> <span class="nn">datetime</span>
+
 <span class="kn">import</span> <span class="nn">pytest</span>
 
-<span class="kn">from</span> <span class="nn">manubot.cite.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span><span class="p">,</span> <span class="n">assert_csl_item_type</span>
+<span class="kn">from</span> <span class="nn">..csl_item</span> <span class="kn">import</span> <span class="p">(</span>
+
+    <span class="n">CSL_Item</span><span class="p">,</span>
+
+    <span class="n">assert_csl_item_type</span><span class="p">,</span>
+
+    <span class="n">date_to_date_parts</span><span class="p">,</span>
+
+    <span class="n">date_parts_to_string</span><span class="p">,</span>
+
+<span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">Test_CSL_Item</span><span class="p">:</span>
 
@@ -1820,6 +1860,96 @@
     <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">note</span><span class="o">=</span><span class="n">note</span><span class="p">)</span>
 
     <span class="k">assert</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span> <span class="o">==</span> <span class="n">dictionary</span>
+
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
+
+    <span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;expected&quot;</span><span class="p">],</span>
+
+    <span class="p">[</span>
+
+        <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">]),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-12&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">]),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">]),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-12-99&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">]),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-12-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+
+        <span class="p">(</span><span class="s2">&quot; 2019-12-01 &quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-12-30T23:32:16Z&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">30</span><span class="p">]),</span>
+
+        <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">),</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">]),</span>
+
+        <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">]),</span>
+
+    <span class="p">],</span>
+
+<span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_date_to_date_parts</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+
+    <span class="k">assert</span> <span class="n">date_to_date_parts</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">==</span> <span class="n">expected</span>
+
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
+
+    <span class="p">[</span><span class="s2">&quot;expected&quot;</span><span class="p">,</span> <span class="s2">&quot;date_parts&quot;</span><span class="p">,</span> <span class="s2">&quot;fill&quot;</span><span class="p">],</span>
+
+    <span class="p">[</span>
+
+        <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="p">[],</span> <span class="bp">True</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="p">[],</span> <span class="bp">False</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">],</span> <span class="bp">False</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-01-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">],</span> <span class="bp">True</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">False</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-12&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span> <span class="bp">False</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-12-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span> <span class="bp">True</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span> <span class="bp">False</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span> <span class="bp">True</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-12&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="s2">&quot;bad day&quot;</span><span class="p">],</span> <span class="bp">False</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-12-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">False</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-12-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;2019&quot;</span><span class="p">,</span> <span class="s2">&quot;12&quot;</span><span class="p">,</span> <span class="s2">&quot;01&quot;</span><span class="p">],</span> <span class="bp">False</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-02-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;2019&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">],</span> <span class="bp">False</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="bp">False</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="bp">True</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;0080-07-14&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">80</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span> <span class="bp">False</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;0080-07-14&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;80&quot;</span><span class="p">,</span> <span class="s2">&quot;07&quot;</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span> <span class="bp">False</span><span class="p">),</span>
+
+    <span class="p">],</span>
+
+<span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_date_parts_to_string</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">date_parts</span><span class="p">,</span> <span class="n">fill</span><span class="p">):</span>
+
+    <span class="k">assert</span> <span class="n">expected</span> <span class="o">==</span> <span class="n">date_parts_to_string</span><span class="p">(</span><span class="n">date_parts</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">fill</span><span class="p">)</span>
 </pre></div>
 
 
@@ -2120,6 +2250,119 @@ note fields.</p>
     <span class="n">csl_item_2</span> <span class="o">=</span> <span class="k">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">csl_item</span><span class="p">.</span><span class="n">standardize_id</span><span class="p">())</span>
 
     <span class="n">assert</span> <span class="n">csl_item_1</span> <span class="o">==</span> <span class="n">csl_item_2</span>
+</pre></div>
+
+
+</details>
+<h3 id="test_date_parts_to_string">test_date_parts_to_string</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_date_parts_to_string</span><span class="p">(</span>
+    <span class="n">expected</span><span class="p">,</span>
+    <span class="n">date_parts</span><span class="p">,</span>
+    <span class="n">fill</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">[</span><span class="n">&quot;expected&quot;, &quot;date_parts&quot;, &quot;fill&quot;</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">[</span><span class="n"></span>
+
+<span class="n">        (None, None, False),</span>
+
+<span class="n">        (None, [</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">True</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="k">None</span><span class="p">,</span><span class="w"> </span><span class="err">[]</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="k">None</span><span class="p">,</span><span class="w"> </span><span class="k">None</span><span class="p">,</span><span class="w"> </span><span class="k">True</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-01-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">True</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 1</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-12&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-12-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">True</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-12-31&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12, 31</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-12-31&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12, 31</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">True</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-12&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12, &quot;bad day&quot;</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-12-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12, 1</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-12-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">&quot;2019&quot;, &quot;12&quot;, &quot;01&quot;</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-02-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">&quot;2019&quot;, &quot;2&quot;, &quot;1&quot;</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-12-31&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12, 31, 23, 32, 16</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-12-31&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12, 31, 23, 32, 16</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">True</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;0080-07-14&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">80, 7, 14</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;0080-07-14&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">&quot;80&quot;, &quot;07&quot;, 14</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">    </span><span class="err">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
+
+<span class="n">def</span><span class="w"> </span><span class="n">test_date_parts_to_string</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span><span class="w"> </span><span class="n">date_parts</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">date_parts_to_string</span><span class="p">(</span><span class="n">date_parts</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">fill</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+
+
+</details>
+<h3 id="test_date_to_date_parts">test_date_to_date_parts</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_date_to_date_parts</span><span class="p">(</span>
+    <span class="n">date</span><span class="p">,</span>
+    <span class="n">expected</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">[</span><span class="n">&quot;date&quot;, &quot;expected&quot;</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">[</span><span class="n"></span>
+
+<span class="n">        (None, None),</span>
+
+<span class="n">        (&quot;&quot;, None),</span>
+
+<span class="n">        (&quot;2019&quot;, [2019</span><span class="o">]</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 1</span><span class="o">]</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-12&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12</span><span class="o">]</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-12-31&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12, 31</span><span class="o">]</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-12-99&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12</span><span class="o">]</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-12-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12, 1</span><span class="o">]</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot; 2019-12-01 &quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12, 1</span><span class="o">]</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="ss">&quot;2019-12-30T23:32:16Z&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12, 30</span><span class="o">]</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="nc">datetime</span><span class="p">.</span><span class="nc">date</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">),</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12, 31</span><span class="o">]</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">(</span><span class="nc">datetime</span><span class="p">.</span><span class="nc">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">,</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">),</span><span class="w"> </span><span class="o">[</span><span class="n">2019, 12, 31</span><span class="o">]</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">    </span><span class="err">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
+
+<span class="n">def</span><span class="w"> </span><span class="n">test_date_to_date_parts</span><span class="p">(</span><span class="nc">date</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">date_to_date_parts</span><span class="p">(</span><span class="nc">date</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span><span class="w"></span>
 </pre></div>
 
 
