@@ -49,16 +49,10 @@ def parse_args():
     parser.add_argument("target_format")
     parser.add_argument("--pandocversion", help="The pandoc version.")
     parser.add_argument(
-        "--input",
-        nargs="?",
-        type=argparse.FileType("r", encoding="utf-8"),
-        default="-",
+        "--input", nargs="?", type=argparse.FileType("r", encoding="utf-8"),
     )
     parser.add_argument(
-        "--output",
-        nargs="?",
-        type=argparse.FileType("w", encoding="utf-8"),
-        default="-",
+        "--output", nargs="?", type=argparse.FileType("w", encoding="utf-8"),
     )
     args = parser.parse_args()
     return args
@@ -172,9 +166,11 @@ def process_citations(doc):
 def main():
     args = parse_args()
     pf.debug(sys.argv)
-    doc = pf.load(args.input)
+    # Let panflute handle io to sys.stdout / sys.stdin to set utf-8 encoding.
+    # args.input=None for stdin, args.output=None for stdout
+    doc = pf.load(input_stream=args.input)
     process_citations(doc)
-    pf.dump(doc, args.output)
+    pf.dump(doc, output_stream=args.output)
 
 
 if __name__ == "__main__":
