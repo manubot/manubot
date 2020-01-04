@@ -52,13 +52,13 @@ def parse_args():
         "--input",
         nargs="?",
         type=argparse.FileType("r", encoding="utf-8"),
-        default=sys.stdin,
+        default="-",
     )
     parser.add_argument(
         "--output",
         nargs="?",
         type=argparse.FileType("w", encoding="utf-8"),
-        default=sys.stdout,
+        default="-",
     )
     args = parser.parse_args()
     return args
