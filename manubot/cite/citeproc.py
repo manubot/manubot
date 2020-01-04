@@ -19,7 +19,7 @@ def get_jsonschema_csl_validator():
     import jsonref
     import jsonschema
 
-    url = 'https://github.com/dhimmel/schema/raw/manubot/csl-data.json'
+    url = "https://github.com/dhimmel/schema/raw/manubot/csl-data.json"
     # Use jsonref to workaround https://github.com/Julian/jsonschema/issues/447
     schema = jsonref.load_uri(url, jsonschema=True)
     Validator = jsonschema.validators.validator_for(schema)
@@ -62,7 +62,7 @@ def remove_jsonschema_errors(instance, recurse_depth=5, in_place=False):
     return remove_jsonschema_errors(instance, recurse_depth - 1, in_place=in_place)
 
 
-def _delete_elem(instance, path, absolute_path=None, message=''):
+def _delete_elem(instance, path, absolute_path=None, message=""):
     """
     Helper function for remove_jsonschema_errors that deletes an element in the
     JSON-like input instance at the specified path. absolute_path is relative
@@ -73,9 +73,9 @@ def _delete_elem(instance, path, absolute_path=None, message=''):
     if absolute_path is None:
         absolute_path = path
     logging.debug(
-        (f'{message}\n' if message else message) +
-        '_delete_elem deleting CSL element at: ' +
-        '/'.join(map(str, absolute_path))
+        (f"{message}\n" if message else message)
+        + "_delete_elem deleting CSL element at: "
+        + "/".join(map(str, absolute_path))
     )
     *head, tail = path
     try:
@@ -106,31 +106,31 @@ def _remove_error(instance, error):
         # https://github.com/citation-style-language/schema/issues/154
         already_removed_additional = False
         for sub_error in sub_errors:
-            if sub_error.validator == 'additionalProperties':
+            if sub_error.validator == "additionalProperties":
                 if already_removed_additional:
                     continue
                 already_removed_additional = True
             sub_instance = _deep_get(instance, error.path)
             _remove_error(sub_instance, sub_error)
-    elif error.validator == 'additionalProperties':
-        extras = set(error.instance) - set(error.schema['properties'])
+    elif error.validator == "additionalProperties":
+        extras = set(error.instance) - set(error.schema["properties"])
         logging.debug(
-            error.message +
-            f'\nWill now remove these {len(extras)} additional properties.'
+            error.message
+            + f"\nWill now remove these {len(extras)} additional properties."
         )
         for key in extras:
             _delete_elem(
                 instance=instance,
                 path=list(error.path) + [key],
-                absolute_path=list(error.absolute_path) + [key]
+                absolute_path=list(error.absolute_path) + [key],
             )
-    elif error.validator in {'enum', 'type', 'minItems', 'maxItems'}:
+    elif error.validator in {"enum", "type", "minItems", "maxItems"}:
         _delete_elem(instance, error.path, error.absolute_path, error.message)
-    elif error.validator == 'required':
+    elif error.validator == "required":
         logging.warning(
-            (f'{error.message}\n' if error.message else error.message) +
-            'requried element missing at: ' +
-            '/'.join(map(str, error.absolute_path))
+            (f"{error.message}\n" if error.message else error.message)
+            + "requried element missing at: "
+            + "/".join(map(str, error.absolute_path))
         )
     else:
-        raise NotImplementedError(f'{error.validator} is not yet supported')
+        raise NotImplementedError(f"{error.validator} is not yet supported")

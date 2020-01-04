@@ -1,4 +1,3 @@
-
 def test_imports():
     import manubot.cite
     import manubot.cite.arxiv
@@ -7,6 +6,8 @@ def test_imports():
     import manubot.cite.url
     import manubot.process.manuscript
 
+
 def assert_instance_type():
     from manubot.cite.citekey import citeproc_retrievers
+
     assert isinstance(citeproc_retrievers, dict)
