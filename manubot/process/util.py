@@ -271,9 +271,12 @@ def get_citekeys_df(citekeys: list, citekey_aliases: dict = {}):
     - standard_citekey: detagged_citekey standardized
     - short_citekey: standard_citekey hashed to create a shortened citekey
     """
-    citekeys_df = pandas.DataFrame({"manuscript_citekey": list(citekeys)}).drop_duplicates()
-    citekeys_df['detagged_citekey'] = citekeys_df.manuscript_citekey.map(
-        lambda citekey: citekey_aliases.get(citekey, citekey))
+    citekeys_df = pandas.DataFrame(
+        {"manuscript_citekey": list(citekeys)}
+    ).drop_duplicates()
+    citekeys_df["detagged_citekey"] = citekeys_df.manuscript_citekey.map(
+        lambda citekey: citekey_aliases.get(citekey, citekey)
+    )
     for citation in citekeys_df.detagged_citekey:
         is_valid_citekey(citation, allow_raw=True)
     citekeys_df["standard_citekey"] = citekeys_df.detagged_citekey.map(
@@ -304,7 +307,9 @@ def _get_citekeys_df(args, text):
             tag_df = pandas.read_csv(args.citation_tags_path, delim_whitespace=True)
         tag_df["manuscript_citekey"] = "tag:" + tag_df.tag
         tag_df = tag_df.rename(columns={"citation": "detagged_citekey"})
-        citekey_aliases = dict(zip(tag_df['manuscript_citekey'], tag_df['detagged_citekey']))
+        citekey_aliases = dict(
+            zip(tag_df["manuscript_citekey"], tag_df["detagged_citekey"])
+        )
     else:
         citekey_aliases = {}
         logging.info(
@@ -315,7 +320,9 @@ def _get_citekeys_df(args, text):
     return citekeys_df
 
 
-def generate_csl_items(citekeys, manual_refs={}, requests_cache_path=None, clear_requests_cache=False):
+def generate_csl_items(
+    citekeys, manual_refs={}, requests_cache_path=None, clear_requests_cache=False
+):
     """
     General CSL (citeproc) items for standard_citekeys in citekeys_df.
 
