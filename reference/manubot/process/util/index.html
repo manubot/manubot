@@ -1773,11 +1773,11 @@
 
     <span class="k">return</span> <span class="n">variables</span>
 
-<span class="k">def</span> <span class="nf">get_citekeys_df</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_citekeys_df</span><span class="p">(</span><span class="n">citekeys</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">citekey_aliases</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Generate citekeys_df and save it to &#39;citations.tsv&#39;.</span>
+<span class="sd">    Generate and return citekeys_df.</span>
 
 <span class="sd">    citekeys_df is a pandas.DataFrame with the following columns:</span>
 
@@ -1791,7 +1791,47 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;manuscript_citekey&quot;</span><span class="p">:</span> <span class="n">get_citekeys</span><span class="p">(</span><span class="n">text</span><span class="p">)})</span>
+    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+
+        <span class="p">{</span><span class="s2">&quot;manuscript_citekey&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">citekeys</span><span class="p">)}</span>
+
+    <span class="p">)</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+
+    <span class="n">citekeys_df</span><span class="p">[</span><span class="s2">&quot;detagged_citekey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">manuscript_citekey</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+
+        <span class="k">lambda</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">citekey_aliases</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span>
+
+    <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">citation</span> <span class="ow">in</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">detagged_citekey</span><span class="p">:</span>
+
+        <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="n">allow_raw</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">citekeys_df</span><span class="p">[</span><span class="s2">&quot;standard_citekey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">detagged_citekey</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+
+        <span class="n">standardize_citekey</span>
+
+    <span class="p">)</span>
+
+    <span class="n">citekeys_df</span><span class="p">[</span><span class="s2">&quot;short_citekey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">shorten_citekey</span><span class="p">)</span>
+
+    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">&quot;standard_citekey&quot;</span><span class="p">,</span> <span class="s2">&quot;detagged_citekey&quot;</span><span class="p">])</span>
+
+    <span class="n">check_collisions</span><span class="p">(</span><span class="n">citekeys_df</span><span class="p">)</span>
+
+    <span class="n">check_multiple_citation_strings</span><span class="p">(</span><span class="n">citekeys_df</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">citekeys_df</span>
+
+<span class="k">def</span> <span class="nf">_get_citekeys_df</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Generate citekeys_df from manubot process args and save it to &#39;citations.tsv&#39;.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">manuscript_citekeys</span> <span class="o">=</span> <span class="n">get_citekeys</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">citation_tags_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
 
@@ -1819,19 +1859,15 @@
 
         <span class="n">tag_df</span> <span class="o">=</span> <span class="n">tag_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;citation&quot;</span><span class="p">:</span> <span class="s2">&quot;detagged_citekey&quot;</span><span class="p">})</span>
 
-        <span class="k">for</span> <span class="n">detagged_citekey</span> <span class="ow">in</span> <span class="n">tag_df</span><span class="o">.</span><span class="n">detagged_citekey</span><span class="p">:</span>
+        <span class="n">citekey_aliases</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
 
-            <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">detagged_citekey</span><span class="p">,</span> <span class="n">allow_raw</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-
-        <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
-
-            <span class="n">tag_df</span><span class="p">[[</span><span class="s2">&quot;manuscript_citekey&quot;</span><span class="p">,</span> <span class="s2">&quot;detagged_citekey&quot;</span><span class="p">]],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span>
+            <span class="nb">zip</span><span class="p">(</span><span class="n">tag_df</span><span class="p">[</span><span class="s2">&quot;manuscript_citekey&quot;</span><span class="p">],</span> <span class="n">tag_df</span><span class="p">[</span><span class="s2">&quot;detagged_citekey&quot;</span><span class="p">])</span>
 
         <span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
 
-        <span class="n">citekeys_df</span><span class="p">[</span><span class="s2">&quot;detagged_citekey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">citekey_aliases</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
@@ -1839,67 +1875,77 @@
 
         <span class="p">)</span>
 
-    <span class="n">citekeys_df</span><span class="o">.</span><span class="n">detagged_citekey</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span>
-
-        <span class="n">citekeys_df</span><span class="o">.</span><span class="n">manuscript_citekey</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span>
-
-    <span class="p">)</span>
-
-    <span class="n">citekeys_df</span><span class="p">[</span><span class="s2">&quot;standard_citekey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">detagged_citekey</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
-
-        <span class="n">standardize_citekey</span>
-
-    <span class="p">)</span>
-
-    <span class="n">citekeys_df</span><span class="p">[</span><span class="s2">&quot;short_citekey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">shorten_citekey</span><span class="p">)</span>
-
-    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">&quot;standard_citekey&quot;</span><span class="p">,</span> <span class="s2">&quot;detagged_citekey&quot;</span><span class="p">])</span>
+    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">get_citekeys_df</span><span class="p">(</span><span class="n">manuscript_citekeys</span><span class="p">,</span> <span class="n">citekey_aliases</span><span class="p">)</span>
 
     <span class="n">citekeys_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">citations_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
-    <span class="n">check_collisions</span><span class="p">(</span><span class="n">citekeys_df</span><span class="p">)</span>
-
-    <span class="n">check_multiple_citation_strings</span><span class="p">(</span><span class="n">citekeys_df</span><span class="p">)</span>
-
     <span class="k">return</span> <span class="n">citekeys_df</span>
 
-<span class="k">def</span> <span class="nf">generate_csl_items</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">generate_csl_items</span><span class="p">(</span>
+
+    <span class="n">citekeys</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+
+    <span class="n">manual_refs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{},</span>
+
+    <span class="n">requests_cache_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+
+    <span class="n">clear_requests_cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span>
+
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    General CSL (citeproc) items for standard_citekeys in citekeys_df.</span>
 
-<span class="sd">    Writes references.json to disk and logs warnings for potential problems.</span>
+<span class="sd">    Parameters:</span>
+
+<span class="sd">    - citekeys: list of standard_citekeys</span>
+
+<span class="sd">    - manual_refs: mapping from standard_citekey to csl_item for manual references</span>
+
+<span class="sd">    - requests_cache_path: path for the requests cache database.</span>
+
+<span class="sd">      Passed as cache_name to `requests_cache.install_cache`.</span>
+
+<span class="sd">      requests_cache may append an extension to this path, so it is not always the exact</span>
+
+<span class="sd">      path to the cache. If None, do not use requests_cache.</span>
+
+<span class="sd">    - clear_requests_cache: If True, clear the requests cache before generating citekey metadata.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Read manual references (overrides) in JSON CSL</span>
+    <span class="c1"># Deduplicate citations</span>
 
-    <span class="n">manual_refs</span> <span class="o">=</span> <span class="n">load_manual_references</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">manual_references_paths</span><span class="p">)</span>
+    <span class="n">citekeys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">citekeys</span><span class="p">))</span>
 
-    <span class="n">requests</span>  <span class="c1"># require `import requests` in case this is essential for monkey patching by requests_cache.</span>
+    <span class="c1"># Install cache</span>
 
-    <span class="n">requests_cache</span><span class="o">.</span><span class="n">install_cache</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">requests_cache_path</span><span class="p">,</span> <span class="n">include_get_headers</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">requests_cache_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
 
-    <span class="n">cache</span> <span class="o">=</span> <span class="n">requests_cache</span><span class="o">.</span><span class="n">get_cache</span><span class="p">()</span>
+        <span class="n">requests</span>  <span class="c1"># require `import requests` in case this is essential for monkey patching by requests_cache.</span>
 
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">clear_requests_cache</span><span class="p">:</span>
+        <span class="n">requests_cache</span><span class="o">.</span><span class="n">install_cache</span><span class="p">(</span><span class="n">requests_cache_path</span><span class="p">,</span> <span class="n">include_get_headers</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Clearing requests-cache&quot;</span><span class="p">)</span>
+        <span class="n">cache</span> <span class="o">=</span> <span class="n">requests_cache</span><span class="o">.</span><span class="n">get_cache</span><span class="p">()</span>
 
-        <span class="n">requests_cache</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">clear_requests_cache</span><span class="p">:</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Clearing requests-cache&quot;</span><span class="p">)</span>
 
-        <span class="n">f</span><span class="s2">&quot;requests-cache starting with {len(cache.responses)} cached responses&quot;</span>
+            <span class="n">requests_cache</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
-    <span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+
+            <span class="n">f</span><span class="s2">&quot;requests-cache starting with {len(cache.responses)} cached responses&quot;</span>
+
+        <span class="p">)</span>
 
     <span class="n">csl_items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
     <span class="n">failures</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="n">standard_citekey</span> <span class="ow">in</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">standard_citekey</span> <span class="ow">in</span> <span class="n">citekeys</span><span class="p">:</span>
 
         <span class="k">if</span> <span class="n">standard_citekey</span> <span class="ow">in</span> <span class="n">manual_refs</span><span class="p">:</span>
 
@@ -1931,13 +1977,17 @@
 
             <span class="n">failures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">)</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+    <span class="c1"># Uninstall cache</span>
 
-        <span class="n">f</span><span class="s2">&quot;requests-cache finished with {len(cache.responses)} cached responses&quot;</span>
+    <span class="k">if</span> <span class="n">requests_cache_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
 
-    <span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
-    <span class="n">requests_cache</span><span class="o">.</span><span class="n">uninstall_cache</span><span class="p">()</span>
+            <span class="n">f</span><span class="s2">&quot;requests-cache finished with {len(cache.responses)} cached responses&quot;</span>
+
+        <span class="p">)</span>
+
+        <span class="n">requests_cache</span><span class="o">.</span><span class="n">uninstall_cache</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">failures</span><span class="p">:</span>
 
@@ -1948,6 +1998,36 @@
         <span class="p">)</span>
 
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">csl_items</span>
+
+<span class="k">def</span> <span class="nf">_generate_csl_items</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    General CSL (citeproc) items for standard_citekeys in citekeys_df.</span>
+
+<span class="sd">    Writes references.json to disk and logs warnings for potential problems.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Read manual references (overrides) in JSON CSL</span>
+
+    <span class="n">manual_refs</span> <span class="o">=</span> <span class="n">load_manual_references</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">manual_references_paths</span><span class="p">)</span>
+
+    <span class="c1"># Retrieve CSL Items</span>
+
+    <span class="n">csl_items</span> <span class="o">=</span> <span class="n">generate_csl_items</span><span class="p">(</span>
+
+        <span class="n">citekeys</span><span class="o">=</span><span class="n">citekeys_df</span><span class="o">.</span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span>
+
+        <span class="n">manual_refs</span><span class="o">=</span><span class="n">manual_refs</span><span class="p">,</span>
+
+        <span class="n">requests_cache_path</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">requests_cache_path</span><span class="p">,</span>
+
+        <span class="n">clear_requests_cache</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">clear_requests_cache</span><span class="p">,</span>
+
+    <span class="p">)</span>
 
     <span class="c1"># Write JSON CSL bibliography for Pandoc.</span>
 
@@ -2001,9 +2081,9 @@
 
     <span class="n">text</span> <span class="o">=</span> <span class="n">get_text</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">content_directory</span><span class="p">)</span>
 
-    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">get_citekeys_df</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">_get_citekeys_df</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
 
-    <span class="n">generate_csl_items</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">)</span>
+    <span class="n">_generate_csl_items</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">)</span>
 
     <span class="n">citekey_mapping</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(</span>
 
@@ -2213,51 +2293,90 @@ affiliations, variables is left unmodified.</p>
 </details>
 <h3 id="generate_csl_items">generate_csl_items</h3>
 <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">generate_csl_items</span><span class="p">(</span>
-    <span class="n">args</span><span class="p">,</span>
-    <span class="n">citekeys_df</span>
-<span class="p">)</span>
+    <span class="n">citekeys</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+    <span class="n">manual_refs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">requests_cache_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">clear_requests_cache</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span>
 </pre></div>
 
 
-<p>General CSL (citeproc) items for standard_citekeys in citekeys_df.
-Writes references.json to disk and logs warnings for potential problems.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">generate_csl_items</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">):</span>
+<p>General CSL (citeproc) items for standard_citekeys in citekeys_df.</p>
+<p>Parameters:</p>
+<ul>
+<li>citekeys: list of standard_citekeys</li>
+<li>manual_refs: mapping from standard_citekey to csl_item for manual references</li>
+<li>requests_cache_path: path for the requests cache database.
+  Passed as cache_name to <code>requests_cache.install_cache</code>.
+  requests_cache may append an extension to this path, so it is not always the exact
+  path to the cache. If None, do not use requests_cache.</li>
+<li>clear_requests_cache: If True, clear the requests cache before generating citekey metadata.</li>
+</ul>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">generate_csl_items</span><span class="p">(</span>
+
+    <span class="n">citekeys</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+
+    <span class="n">manual_refs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{},</span>
+
+    <span class="n">requests_cache_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+
+    <span class="n">clear_requests_cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span>
+
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    General CSL (citeproc) items for standard_citekeys in citekeys_df.</span>
 
-<span class="sd">    Writes references.json to disk and logs warnings for potential problems.</span>
+<span class="sd">    Parameters:</span>
+
+<span class="sd">    - citekeys: list of standard_citekeys</span>
+
+<span class="sd">    - manual_refs: mapping from standard_citekey to csl_item for manual references</span>
+
+<span class="sd">    - requests_cache_path: path for the requests cache database.</span>
+
+<span class="sd">      Passed as cache_name to `requests_cache.install_cache`.</span>
+
+<span class="sd">      requests_cache may append an extension to this path, so it is not always the exact</span>
+
+<span class="sd">      path to the cache. If None, do not use requests_cache.</span>
+
+<span class="sd">    - clear_requests_cache: If True, clear the requests cache before generating citekey metadata.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Read manual references (overrides) in JSON CSL</span>
+    <span class="c1"># Deduplicate citations</span>
 
-    <span class="n">manual_refs</span> <span class="o">=</span> <span class="n">load_manual_references</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">manual_references_paths</span><span class="p">)</span>
+    <span class="n">citekeys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">citekeys</span><span class="p">))</span>
 
-    <span class="n">requests</span>  <span class="c1"># require `import requests` in case this is essential for monkey patching by requests_cache.</span>
+    <span class="c1"># Install cache</span>
 
-    <span class="n">requests_cache</span><span class="o">.</span><span class="n">install_cache</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">requests_cache_path</span><span class="p">,</span> <span class="n">include_get_headers</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">requests_cache_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
 
-    <span class="n">cache</span> <span class="o">=</span> <span class="n">requests_cache</span><span class="o">.</span><span class="n">get_cache</span><span class="p">()</span>
+        <span class="n">requests</span>  <span class="c1"># require `import requests` in case this is essential for monkey patching by requests_cache.</span>
 
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">clear_requests_cache</span><span class="p">:</span>
+        <span class="n">requests_cache</span><span class="o">.</span><span class="n">install_cache</span><span class="p">(</span><span class="n">requests_cache_path</span><span class="p">,</span> <span class="n">include_get_headers</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Clearing requests-cache&quot;</span><span class="p">)</span>
+        <span class="n">cache</span> <span class="o">=</span> <span class="n">requests_cache</span><span class="o">.</span><span class="n">get_cache</span><span class="p">()</span>
 
-        <span class="n">requests_cache</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">clear_requests_cache</span><span class="p">:</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Clearing requests-cache&quot;</span><span class="p">)</span>
 
-        <span class="n">f</span><span class="s2">&quot;requests-cache starting with {len(cache.responses)} cached responses&quot;</span>
+            <span class="n">requests_cache</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
-    <span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+
+            <span class="n">f</span><span class="s2">&quot;requests-cache starting with {len(cache.responses)} cached responses&quot;</span>
+
+        <span class="p">)</span>
 
     <span class="n">csl_items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
     <span class="n">failures</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="n">standard_citekey</span> <span class="ow">in</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">standard_citekey</span> <span class="ow">in</span> <span class="n">citekeys</span><span class="p">:</span>
 
         <span class="k">if</span> <span class="n">standard_citekey</span> <span class="ow">in</span> <span class="n">manual_refs</span><span class="p">:</span>
 
@@ -2289,13 +2408,17 @@ Writes references.json to disk and logs warnings for potential problems.</p>
 
             <span class="n">failures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">)</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+    <span class="c1"># Uninstall cache</span>
 
-        <span class="n">f</span><span class="s2">&quot;requests-cache finished with {len(cache.responses)} cached responses&quot;</span>
+    <span class="k">if</span> <span class="n">requests_cache_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
 
-    <span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
-    <span class="n">requests_cache</span><span class="o">.</span><span class="n">uninstall_cache</span><span class="p">()</span>
+            <span class="n">f</span><span class="s2">&quot;requests-cache finished with {len(cache.responses)} cached responses&quot;</span>
+
+        <span class="p">)</span>
+
+        <span class="n">requests_cache</span><span class="o">.</span><span class="n">uninstall_cache</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">failures</span><span class="p">:</span>
 
@@ -2307,14 +2430,6 @@ Writes references.json to disk and logs warnings for potential problems.</p>
 
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
-    <span class="c1"># Write JSON CSL bibliography for Pandoc.</span>
-
-    <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">references_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
-
-        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">csl_items</span><span class="p">,</span> <span class="n">write_file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-
-        <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-
     <span class="k">return</span> <span class="n">csl_items</span>
 </pre></div>
 
@@ -2322,23 +2437,23 @@ Writes references.json to disk and logs warnings for potential problems.</p>
 </details>
 <h3 id="get_citekeys_df">get_citekeys_df</h3>
 <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_citekeys_df</span><span class="p">(</span>
-    <span class="n">args</span><span class="p">,</span>
-    <span class="n">text</span>
+    <span class="n">citekeys</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+    <span class="n">citekey_aliases</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="p">)</span>
 </pre></div>
 
 
-<p>Generate citekeys_df and save it to 'citations.tsv'.
+<p>Generate and return citekeys_df.
 citekeys_df is a pandas.DataFrame with the following columns:
 - manuscript_citekey: citation keys extracted from the manuscript content files.
 - detagged_citekey: manuscript_citekey but with tag citekeys dereferenced
 - standard_citekey: detagged_citekey standardized
 - short_citekey: standard_citekey hashed to create a shortened citekey</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">get_citekeys_df</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">text</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">get_citekeys_df</span><span class="p">(</span><span class="n">citekeys</span><span class="p">:</span> <span class="n">list</span><span class="p">,</span> <span class="n">citekey_aliases</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="err">{}</span><span class="p">):</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
-<span class="ss">    Generate citekeys_df and save it to &#39;citations.tsv&#39;.</span>
+<span class="ss">    Generate and return citekeys_df.</span>
 
 <span class="ss">    citekeys_df is a pandas.DataFrame with the following columns:</span>
 
@@ -2352,59 +2467,21 @@ citekeys_df is a pandas.DataFrame with the following columns:
 
 <span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="err">{</span><span class="ss">&quot;manuscript_citekey&quot;</span><span class="p">:</span> <span class="n">get_citekeys</span><span class="p">(</span><span class="nb">text</span><span class="p">)</span><span class="err">}</span><span class="p">)</span>
+    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span>
 
-    <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">citation_tags_path</span><span class="p">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="err">{</span><span class="ss">&quot;manuscript_citekey&quot;</span><span class="p">:</span> <span class="n">list</span><span class="p">(</span><span class="n">citekeys</span><span class="p">)</span><span class="err">}</span>
 
-        <span class="n">tag_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">citation_tags_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="ss">&quot;\t&quot;</span><span class="p">)</span>
+    <span class="p">).</span><span class="n">drop_duplicates</span><span class="p">()</span>
 
-        <span class="n">na_rows_df</span> <span class="o">=</span> <span class="n">tag_df</span><span class="p">[</span><span class="n">tag_df</span><span class="p">.</span><span class="k">isnull</span><span class="p">().</span><span class="k">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="ss">&quot;columns&quot;</span><span class="p">)]</span>
+    <span class="n">citekeys_df</span><span class="p">[</span><span class="ss">&quot;detagged_citekey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="p">.</span><span class="n">manuscript_citekey</span><span class="p">.</span><span class="k">map</span><span class="p">(</span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">na_rows_df</span><span class="p">.</span><span class="n">empty</span><span class="p">:</span>
-
-            <span class="n">logging</span><span class="p">.</span><span class="n">error</span><span class="p">(</span>
-
-                <span class="n">f</span><span class="ss">&quot;{args.citation_tags_path} contains rows with missing values:\n&quot;</span>
-
-                <span class="n">f</span><span class="ss">&quot;{na_rows_df}\n&quot;</span>
-
-                <span class="ss">&quot;This error can be caused by using spaces rather than tabs to delimit fields.\n&quot;</span>
-
-                <span class="ss">&quot;Proceeding to reread TSV with delim_whitespace=True.&quot;</span>
-
-            <span class="p">)</span>
-
-            <span class="n">tag_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">citation_tags_path</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
-
-        <span class="n">tag_df</span><span class="p">[</span><span class="ss">&quot;manuscript_citekey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="ss">&quot;tag:&quot;</span> <span class="o">+</span> <span class="n">tag_df</span><span class="p">.</span><span class="n">tag</span>
-
-        <span class="n">tag_df</span> <span class="o">=</span> <span class="n">tag_df</span><span class="p">.</span><span class="k">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="err">{</span><span class="ss">&quot;citation&quot;</span><span class="p">:</span> <span class="ss">&quot;detagged_citekey&quot;</span><span class="err">}</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">detagged_citekey</span> <span class="k">in</span> <span class="n">tag_df</span><span class="p">.</span><span class="n">detagged_citekey</span><span class="p">:</span>
-
-            <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">detagged_citekey</span><span class="p">,</span> <span class="n">allow_raw</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
-
-        <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span>
-
-            <span class="n">tag_df</span><span class="p">[[</span><span class="ss">&quot;manuscript_citekey&quot;</span><span class="p">,</span> <span class="ss">&quot;detagged_citekey&quot;</span><span class="p">]],</span> <span class="n">how</span><span class="o">=</span><span class="ss">&quot;left&quot;</span>
-
-        <span class="p">)</span>
-
-    <span class="k">else</span><span class="p">:</span>
-
-        <span class="n">citekeys_df</span><span class="p">[</span><span class="ss">&quot;detagged_citekey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="k">None</span>
-
-        <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span>
-
-            <span class="n">f</span><span class="ss">&quot;missing {args.citation_tags_path} file: no citation tags (citekey aliases) set&quot;</span>
-
-        <span class="p">)</span>
-
-    <span class="n">citekeys_df</span><span class="p">.</span><span class="n">detagged_citekey</span><span class="p">.</span><span class="n">fillna</span><span class="p">(</span>
-
-        <span class="n">citekeys_df</span><span class="p">.</span><span class="n">manuscript_citekey</span><span class="p">.</span><span class="n">astype</span><span class="p">(</span><span class="n">str</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="k">True</span>
+        <span class="n">lambda</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">citekey_aliases</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span>
 
     <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">citation</span> <span class="k">in</span> <span class="n">citekeys_df</span><span class="p">.</span><span class="n">detagged_citekey</span><span class="p">:</span>
+
+        <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="n">allow_raw</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
 
     <span class="n">citekeys_df</span><span class="p">[</span><span class="ss">&quot;standard_citekey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="p">.</span><span class="n">detagged_citekey</span><span class="p">.</span><span class="k">map</span><span class="p">(</span>
 
@@ -2415,8 +2492,6 @@ citekeys_df is a pandas.DataFrame with the following columns:
     <span class="n">citekeys_df</span><span class="p">[</span><span class="ss">&quot;short_citekey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="p">.</span><span class="n">standard_citekey</span><span class="p">.</span><span class="k">map</span><span class="p">(</span><span class="n">shorten_citekey</span><span class="p">)</span>
 
     <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="p">.</span><span class="n">sort_values</span><span class="p">([</span><span class="ss">&quot;standard_citekey&quot;</span><span class="p">,</span> <span class="ss">&quot;detagged_citekey&quot;</span><span class="p">])</span>
-
-    <span class="n">citekeys_df</span><span class="p">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">citations_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="ss">&quot;\t&quot;</span><span class="p">,</span> <span class="k">index</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
 
     <span class="n">check_collisions</span><span class="p">(</span><span class="n">citekeys_df</span><span class="p">)</span>
 
@@ -2645,9 +2720,9 @@ for pandoc.</p>
 
     <span class="nb">text</span> <span class="o">=</span> <span class="n">get_text</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">content_directory</span><span class="p">)</span>
 
-    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">get_citekeys_df</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">text</span><span class="p">)</span>
+    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">_get_citekeys_df</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">text</span><span class="p">)</span>
 
-    <span class="n">generate_csl_items</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">)</span>
+    <span class="n">_generate_csl_items</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">)</span>
 
     <span class="n">citekey_mapping</span> <span class="o">=</span> <span class="n">collections</span><span class="p">.</span><span class="n">OrderedDict</span><span class="p">(</span>
 
