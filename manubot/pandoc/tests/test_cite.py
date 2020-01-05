@@ -5,6 +5,7 @@ import subprocess
 import pytest
 
 from manubot.pandoc.util import get_pandoc_info
+from manubot.util import shlex_join
 
 directory = pathlib.Path(__file__).parent
 
@@ -59,7 +60,7 @@ def test_cite_pandoc_filter():
         stderr=subprocess.PIPE,
         universal_newlines=True,
     )
-    print(" ".join(process.args))
+    print(shlex_join(process.args))
     print(process.stdout)
     print(process.stderr)
     assert process.stdout == expected
