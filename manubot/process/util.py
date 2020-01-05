@@ -321,17 +321,23 @@ def _get_citekeys_df(args, text):
 
 
 def generate_csl_items(
-    citekeys, manual_refs={}, requests_cache_path=None, clear_requests_cache=False
-):
+    citekeys: list,
+    manual_refs: dict = {},
+    requests_cache_path: Optional[str] = None,
+    clear_requests_cache: Optional[bool] = False,
+) -> list:
     """
     General CSL (citeproc) items for standard_citekeys in citekeys_df.
 
-    Parameters
-    ----------
-    citekeys: list
-        list of standard_citekeys
-    manual_refs: dict
-        mapping from standard_citekey to csl_item for manual references
+    Parameters:
+
+    - citekeys: list of standard_citekeys
+    - manual_refs: mapping from standard_citekey to csl_item for manual references
+    - requests_cache_path: path for the requests cache database.
+      Passed as cache_name to `requests_cache.install_cache`.
+      requests_cache may append an extension to this path, so it is not always the exact
+      path to the cache. If None, do not use requests_cache.
+    - clear_requests_cache: If True, clear the requests cache before generating citekey metadata.
     """
     # Deduplicate citations
     citekeys = list(dict.fromkeys(citekeys))
