@@ -32,14 +32,14 @@ def test_cite_pandoc_filter():
     --output=manubot/pandoc/tests/output-with-cites.txt \
     --filter=pandoc-manubot-cite \
     --filter=pandoc-citeproc \
-    manubot/pandoc/tests/input-with-cites.md
+    manubot/pandoc/tests/test_cite_filter/input.md
     ```
     """
     pandoc_version = get_pandoc_info()["pandoc version"]
     if pandoc_version < (1, 12):
         pytest.skip("Test requires pandoc >= 1.12 to support --filter")
-    input_md = directory.joinpath("input-with-cites.md").read_text()
-    expected = directory.joinpath("output-with-cites.txt").read_text()
+    input_md = directory.joinpath("test_cite_filter", "input.md").read_text()
+    expected = directory.joinpath("test_cite_filter", "output.txt").read_text()
     args = [
         "pandoc",
         "--wrap",
