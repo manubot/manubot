@@ -127,18 +127,18 @@ def process_citations(doc):
     Pandoc's Abstract Syntax Tree.
 
     The following Pandoc metadata fields are considered (NotImplemented):
+
     - bibliography (use to define reference metadata manually)
-    - manubot-citekey-aliases (use to define tags for cite-by-id citations)
+    - citekey-aliases (use to define tags for cite-by-id citations)
     - manubot-requests-cache-path
     - manubot-clear-requests-cache
     """
-    citekey_aliases = doc.get_metadata(
-        "citekey-aliases", default={}, builtin=True
-    )
+    citekey_aliases = doc.get_metadata("citekey-aliases", default={})
     if not isinstance(citekey_aliases, dict):
         logging.warning(
             f"Expected metadata.citekey-aliases to be a dict, "
-            f"but received a {citekey_aliases.__class__.__name__}. Disregarding.")
+            f"but received a {citekey_aliases.__class__.__name__}. Disregarding."
+        )
         citekey_aliases = dict()
 
     global_variables["citekey_aliases"] = citekey_aliases
@@ -165,8 +165,8 @@ def process_citations(doc):
         zip((citekeys_df["manuscript_citekey"]), citekeys_df["short_citekey"])
     )
     doc.walk(_citation_to_id_action)
-    manual_refs = doc.get_metadata("references", default=[], builtin=True)
-    bibliography_paths = doc.get_metadata("bibliography", default=[], builtin=True)
+    manual_refs = doc.get_metadata("references", default=[])
+    bibliography_paths = doc.get_metadata("bibliography", default=[])
     if not isinstance(bibliography_paths, list):
         bibliography_paths = [bibliography_paths]
     manual_refs = load_manual_references(
@@ -174,7 +174,9 @@ def process_citations(doc):
     )
     standard_citekeys = citekeys_df.standard_citekey.unique()
     csl_items = generate_csl_items(standard_citekeys, manual_refs)
+    doc.metadata["bibliography"] = []
     doc.metadata["references"] = csl_items
+    doc.metadata["citekey_aliases"] = citekey_aliases
 
 
 def main():
