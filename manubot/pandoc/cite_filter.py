@@ -1,28 +1,34 @@
 """
-Preliminary testing command:
+This module defines a pandoc filter for manubot cite functionality.
 
+Related development commands:
+
+```shell
+# export to plain text
 pandoc \
   --to=plain \
   --standalone \
+  --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.json \
+  --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.bib \
   --filter=pandoc-manubot-cite \
   --filter pandoc-citeproc \
   manubot/pandoc/tests/test_cite_filter/input.md
 
-
+# call the filter manually using pandoc JSON output
 pandoc \
   --to=json \
   manubot/pandoc/tests/test_cite_filter/input.md \
-  | python manubot/pandoc/cite.py markdown
-"""
+  | python manubot/pandoc/test_cite.py markdown
+```
 
-"""
-https://github.com/jgm/pandocfilters
-https://github.com/sergiocorreia/panflute
-http://scorreia.com/software/panflute/code.html#panflute.elements.Citation
+Related resources on pandoc filters:
+
+- [python pandocfilters package](https://github.com/jgm/pandocfilters)
+- [python panflute package](https://github.com/sergiocorreia/panflute)
+- [panflute Citation class](http://scorreia.com/software/panflute/code.html#panflute.elements.Citation)
 """
 import argparse
 import logging
-import sys
 
 import panflute as pf
 
@@ -126,20 +132,28 @@ def process_citations(doc):
     - manubot-requests-cache-path
     - manubot-clear-requests-cache
     """
-    global_variables["citekey_aliases"] = doc.get_metadata(
+    citekey_aliases = doc.get_metadata(
         "citekey-aliases", default={}, builtin=True
     )
+    if not isinstance(citekey_aliases, dict):
+        logging.warning(
+            f"Expected metadata.citekey-aliases to be a dict, "
+            f"but received a {citekey_aliases.__class__.__name__}. Disregarding.")
+        citekey_aliases = dict()
+
+    global_variables["citekey_aliases"] = citekey_aliases
+
     manuscript_citekeys = set(global_variables["manuscript_citekeys"])
 
     doc.walk(_get_reference_link_citekey_aliases)
     doc.walk(_get_citekeys_action)
-    manuscript_citekeys = set(global_variables["manuscript_citekeys"])
+    manuscript_citekeys = global_variables["manuscript_citekeys"]
     manuscript_citekeys = sorted(
         filter(
             lambda x: is_valid_citekey(
                 x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True
             ),
-            manuscript_citekeys,
+            set(manuscript_citekeys),
         )
     )
     global_variables["manuscript_citekeys"] = manuscript_citekeys
@@ -165,7 +179,6 @@ def process_citations(doc):
 
 def main():
     args = parse_args()
-    pf.debug(sys.argv)
     # Let panflute handle io to sys.stdout / sys.stdin to set utf-8 encoding.
     # args.input=None for stdin, args.output=None for stdout
     doc = pf.load(input_stream=args.input)
