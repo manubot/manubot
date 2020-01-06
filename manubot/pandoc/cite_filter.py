@@ -50,15 +50,23 @@ def parse_args():
     Read command line arguments
     """
     parser = argparse.ArgumentParser(
-        description="Pandoc filter for citation by persistent identifier"
+        description="Pandoc filter for citation by persistent identifier. "
+        "Filters are command-line programs that read and write a JSON-encoded abstract syntax tree for Pandoc. "
+        "Unless you are debugging, run this filter as part of a pandoc command by specifying --filter=pandoc-manubot-cite."
     )
     parser.add_argument("target_format")
     parser.add_argument("--pandocversion", help="The pandoc version.")
     parser.add_argument(
-        "--input", nargs="?", type=argparse.FileType("r", encoding="utf-8"),
+        "--input",
+        nargs="?",
+        type=argparse.FileType("r", encoding="utf-8"),
+        help="path read JSON input (defaults to stdin)",
     )
     parser.add_argument(
-        "--output", nargs="?", type=argparse.FileType("w", encoding="utf-8"),
+        "--output",
+        nargs="?",
+        type=argparse.FileType("w", encoding="utf-8"),
+        help="path to write JSON output (defaults to stdout)",
     )
     args = parser.parse_args()
     return args
