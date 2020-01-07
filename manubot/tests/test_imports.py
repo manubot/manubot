@@ -6,6 +6,8 @@ def test_imports():
     import manubot.cite.url
     import manubot.process.manuscript
 
+    manubot
+
 
 def assert_instance_type():
     from manubot.cite.citekey import citeproc_retrievers
