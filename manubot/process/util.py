@@ -435,14 +435,15 @@ def prepare_manuscript(args):
     for pandoc.
     """
     text = get_text(args.content_directory)
-    citekeys_df = _get_citekeys_df(args, text)
-
-    _generate_csl_items(args, citekeys_df)
-
-    citekey_mapping = collections.OrderedDict(
-        zip(citekeys_df.manuscript_citekey, citekeys_df.short_citekey)
-    )
-    text = update_manuscript_citekeys(text, citekey_mapping)
+    if args.skip_citations:
+        citekeys_df = None
+    else:
+        citekeys_df = _get_citekeys_df(args, text)
+        _generate_csl_items(args, citekeys_df)
+        citekey_mapping = collections.OrderedDict(
+            zip(citekeys_df.manuscript_citekey, citekeys_df.short_citekey)
+        )
+        text = update_manuscript_citekeys(text, citekey_mapping)
 
     variables = load_variables(args)
     variables["manubot"]["manuscript_stats"] = get_manuscript_stats(text, citekeys_df)

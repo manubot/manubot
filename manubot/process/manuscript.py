@@ -57,20 +57,21 @@ def update_manuscript_citekeys(text, old_to_new):
     return text
 
 
-def get_manuscript_stats(text, citekeys_df):
+def get_manuscript_stats(text, citekeys_df=None):
     """
     Compute manuscript statistics.
     """
     stats = collections.OrderedDict()
 
-    # Number of distinct references by type
-    ref_counts = (
-        citekeys_df.standard_citekey.drop_duplicates()
-        .map(lambda x: x.split(":")[0])
-        .pipe(collections.Counter)
-    )
-    ref_counts["total"] = sum(ref_counts.values())
-    stats["reference_counts"] = ref_counts
+    if citekeys_df is not None:
+        # Number of distinct references by type
+        ref_counts = (
+            citekeys_df.standard_citekey.drop_duplicates()
+            .map(lambda x: x.split(":")[0])
+            .pipe(collections.Counter)
+        )
+        ref_counts["total"] = sum(ref_counts.values())
+        stats["reference_counts"] = ref_counts
     stats["word_count"] = len(text.split())
     logging.info(f"Generated manscript stats:\n{json.dumps(stats, indent=2)}")
     return stats

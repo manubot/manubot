@@ -95,7 +95,7 @@ See `manubot process --help` for documentation of all command line arguments:
 usage: manubot process [-h] --content-directory CONTENT_DIRECTORY
                        --output-directory OUTPUT_DIRECTORY
                        [--template-variables-path TEMPLATE_VARIABLES_PATH]
-                       [--cache-directory CACHE_DIRECTORY]
+                       [--skip-citations] [--cache-directory CACHE_DIRECTORY]
                        [--clear-requests-cache]
                        [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
 
@@ -119,6 +119,7 @@ optional arguments:
                         `--template-variables-path=namespace=path_or_url`.
                         Namespaces must match the regex `[a-zA-
                         Z_][a-zA-Z0-9_]*`.
+  --skip-citations      Skip citation and reference processing.
   --cache-directory CACHE_DIRECTORY
                         Custom cache directory. If not specified, caches to
                         output-directory.

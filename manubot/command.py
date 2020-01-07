@@ -73,9 +73,14 @@ def add_subparser_process(subparsers):
         "Namespaces must match the regex `[a-zA-Z_][a-zA-Z0-9_]*`.",
     )
     parser.add_argument(
+        "--skip-citations",
+        action="store_true",
+        help="Skip citation and reference processing.",
+    )
+    parser.add_argument(
         "--cache-directory",
         type=pathlib.Path,
-        help="Custom cache directory. " "If not specified, caches to output-directory.",
+        help="Custom cache directory. If not specified, caches to output-directory.",
     )
     parser.add_argument("--clear-requests-cache", action="store_true")
     parser.set_defaults(function="manubot.process.process_command.cli_process")
