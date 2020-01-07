@@ -173,15 +173,16 @@ def add_subparser_webpage(subparsers):
     parser.set_defaults(function="manubot.webpage.webpage_command.cli_webpage")
 
 
-def main():
+def setup_logging_and_errors() -> dict:
     """
-    Called as a console_scripts entry point in setup.py. This function defines
-    the manubot command line script.
+    Configure warnings and logging.
+    Set up an ErrorHandler to detect whether messages have been logged
+    at or above the ERROR level.
     """
-    # Track if message gets logged with severity of error or greater
-    # See https://stackoverflow.com/a/45446664/4651668
     import errorhandler
 
+    # Track if message gets logged with severity of error or greater
+    # See https://stackoverflow.com/a/45446664/4651668
     error_handler = errorhandler.ErrorHandler()
 
     # Log DeprecationWarnings
@@ -195,13 +196,30 @@ def main():
         logging.Formatter("## {levelname}\n{message}", style="{")
     )
     logger.addHandler(stream_handler)
+    return {
+        "logger": logger,
+        "error_handler": error_handler,
+    }
 
-    args = parse_arguments()
-    logger.setLevel(getattr(logging, args.log_level))
 
-    function = import_function(args.function)
-    function(args)
-
+def exit_if_error_handler_fired(error_handler):
+    """
+    If a message has been logged with severity of ERROR or greater,
+    exit Python with a nonzero code.
+    """
     if error_handler.fired:
         logging.critical("Failure: exiting with code 1 due to logged errors")
         raise SystemExit(1)
+
+
+def main():
+    """
+    Called as a console_scripts entry point in setup.py. This function defines
+    the manubot command line script.
+    """
+    diagnostics = setup_logging_and_errors()
+    args = parse_arguments()
+    diagnostics["logger"].setLevel(getattr(logging, args.log_level))
+    function = import_function(args.function)
+    function(args)
+    exit_if_error_handler_fired(diagnostics["error_handler"])

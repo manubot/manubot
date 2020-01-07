@@ -134,12 +134,12 @@ def process_citations(doc):
     Apply citation-by-identifier to a Python object representation of
     Pandoc's Abstract Syntax Tree.
 
-    The following Pandoc metadata fields are considered (NotImplemented):
+    The following Pandoc metadata fields are considered:
 
     - bibliography (use to define reference metadata manually)
     - citekey-aliases (use to define tags for cite-by-id citations)
-    - manubot-requests-cache-path
-    - manubot-clear-requests-cache
+    - manubot.requests-cache-path
+    - manubot.clear-requests-cache
     """
     citekey_aliases = doc.get_metadata("citekey-aliases", default={})
     if not isinstance(citekey_aliases, dict):
@@ -166,7 +166,7 @@ def process_citations(doc):
     )
     global_variables["manuscript_citekeys"] = manuscript_citekeys
     citekeys_df = get_citekeys_df(
-        manuscript_citekeys, global_variables["citekey_aliases"]
+        manuscript_citekeys, global_variables["citekey_aliases"],
     )
     global_variables["citekeys_df"] = citekeys_df
     global_variables["citekey_shortener"] = dict(
@@ -181,19 +181,31 @@ def process_citations(doc):
         bibliography_paths, extra_csl_items=manual_refs
     )
     standard_citekeys = citekeys_df.standard_citekey.unique()
-    csl_items = generate_csl_items(standard_citekeys, manual_refs)
+    csl_items = generate_csl_items(
+        citekeys=standard_citekeys,
+        manual_refs=manual_refs,
+        requests_cache_path=doc.get_metadata("manubot.requests-cache-path"),
+        clear_requests_cache=doc.get_metadata("manubot.clear-requests-cache", False),
+    )
     doc.metadata["bibliography"] = []
     doc.metadata["references"] = csl_items
     doc.metadata["citekey_aliases"] = citekey_aliases
 
 
 def main():
+    from manubot.command import setup_logging_and_errors, exit_if_error_handler_fired
+
+    diagnostics = setup_logging_and_errors()
     args = parse_args()
     # Let panflute handle io to sys.stdout / sys.stdin to set utf-8 encoding.
     # args.input=None for stdin, args.output=None for stdout
     doc = pf.load(input_stream=args.input)
+    log_level = doc.get_metadata("manubot.log-level", "WARNING")
+    diagnostics["logger"].setLevel(getattr(logging, log_level))
     process_citations(doc)
     pf.dump(doc, output_stream=args.output)
+    if doc.get_metadata("manubot.fail-on-errors", False):
+        exit_if_error_handler_fired(diagnostics["error_handler"])
 
 
 if __name__ == "__main__":
