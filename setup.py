@@ -19,7 +19,7 @@ long_description = readme_path.read_text(encoding="utf-8-sig")
 # extra dependencies with an "all" option
 extras_require = {
     "webpage": ["opentimestamps-client"],
-    "test": ["black", "ghp-import", "portray", "pytest"],
+    "dev": ["black", "flake8", "ghp-import", "portray", "pytest"],
 }
 extras_require["all"] = list(
     dict.fromkeys(itertools.chain.from_iterable(extras_require.values()))

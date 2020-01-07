@@ -1,5 +1,6 @@
 # Python utilities for Manubot: Manuscripts, open and automated
 
+[![documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs)](https://manubot.github.io/manubot/)
 [![Travis Linux Build Status](https://travis-ci.com/manubot/manubot.svg?branch=master)](https://travis-ci.com/manubot/manubot)
 [![AppVeyor Windows Build Status](https://ci.appveyor.com/api/projects/status/f20hvc6si5uiqd7e/branch/master?svg=true)](https://ci.appveyor.com/project/manubot/manubot/branch/master)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -289,6 +290,9 @@ pytest
 
 # reformat Python files according to the black style rules (required to pass CI)
 black .
+
+# detect any flake8 linting violations
+flake8
 
 # regenerate the README codeblocks for --help messages
 python manubot/tests/test_readme.py

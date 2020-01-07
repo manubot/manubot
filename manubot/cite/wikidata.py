@@ -10,6 +10,6 @@ def get_wikidata_csl_item(identifier):
     csl_item = get_url_csl_item_zotero(url)
     if "DOI" in csl_item:
         csl_item["DOI"] = csl_item["DOI"].lower()
-    if not "URL" in csl_item:
+    if "URL" not in csl_item:
         csl_item["URL"] = url
     return csl_item
