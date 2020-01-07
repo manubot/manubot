@@ -254,6 +254,9 @@ pytest
 # reformat Python files according to the black style rules (required to pass CI)
 black .
 
+# detect any flake8 linting violations
+flake8
+
 # regenerate the README codeblocks for --help messages
 python manubot/tests/test_readme.py
 
