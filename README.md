@@ -201,8 +201,7 @@ At some point in the future, we may migrate entirely from `manubot process` to `
 
 <!-- test codeblock contains output of `pandoc-manubot-cite --help` -->
 ```
-usage: pandoc-manubot-cite [-h] [--pandocversion PANDOCVERSION]
-                           [--input [INPUT]] [--output [OUTPUT]]
+usage: pandoc-manubot-cite [-h] [--input [INPUT]] [--output [OUTPUT]]
                            target_format
 
 Pandoc filter for citation by persistent identifier. Filters are command-line
@@ -214,11 +213,9 @@ positional arguments:
   target_format
 
 optional arguments:
-  -h, --help            show this help message and exit
-  --pandocversion PANDOCVERSION
-                        The pandoc version.
-  --input [INPUT]       path read JSON input (defaults to stdin)
-  --output [OUTPUT]     path to write JSON output (defaults to stdout)
+  -h, --help         show this help message and exit
+  --input [INPUT]    path read JSON input (defaults to stdin)
+  --output [OUTPUT]  path to write JSON output (defaults to stdout)
 ```
 
 Other pandoc filters exist that do something similar:

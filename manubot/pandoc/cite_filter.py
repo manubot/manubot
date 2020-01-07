@@ -29,6 +29,7 @@ Related resources on pandoc filters:
 """
 import argparse
 import logging
+import pathlib
 
 import panflute as pf
 
@@ -55,7 +56,6 @@ def parse_args():
         "Unless you are debugging, run this filter as part of a pandoc command by specifying --filter=pandoc-manubot-cite."
     )
     parser.add_argument("target_format")
-    parser.add_argument("--pandocversion", help="The pandoc version.")
     parser.add_argument(
         "--input",
         nargs="?",
@@ -181,6 +181,9 @@ def process_citations(doc):
         bibliography_paths, extra_csl_items=manual_refs
     )
     standard_citekeys = citekeys_df.standard_citekey.unique()
+    requests_cache_path = doc.get_metadata("manubot.requests-cache-path")
+    if requests_cache_path:
+        pathlib.Path(requests_cache_path).parent.mkdir(parents=True, exist_ok=True)
     csl_items = generate_csl_items(
         citekeys=standard_citekeys,
         manual_refs=manual_refs,
