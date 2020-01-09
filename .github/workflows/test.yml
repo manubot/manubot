@@ -1,0 +1,42 @@
+name: Python Package Tests
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.6, 3.7, 3.8]
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        pandoc-version: [2.9.1]
+    steps:
+    - name: Install pandoc on Linux
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        wget --quiet --output-document=pandoc.deb \
+          https://github.com/jgm/pandoc/releases/download/${{ matrix.pandoc-version }}/pandoc-${{ matrix.pandoc-version }}-1-amd64.deb
+        sudo dpkg --install pandoc.deb
+    - name: Install pandoc on Windows
+      if: matrix.os == 'windows-latest'
+      run: choco install pandoc --version ${{ matrix.pandoc-version }}
+    - name: Install pandoc on Mac
+      if: matrix.os == 'macOS-latest'
+      run: |
+        wget --quiet --output-document=pandoc.pkg \
+          https://github.com/jgm/pandoc/releases/download/${{ matrix.pandoc-version }}/pandoc-${{ matrix.pandoc-version }}-macOS.pkg
+        sudo installer -pkg pandoc.pkg -target /
+    - name: Checkout git repository
+      uses: actions/checkout@v1
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install ".[all]"
+    - name: Test with pytest
+      run: |
+        pytest --verbose --color=yes -m "not pandoc_version_sensitive"
