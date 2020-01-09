@@ -1,6 +1,7 @@
 import collections
 import json
 import logging
+import pathlib
 import re
 import textwrap
 import warnings
@@ -405,11 +406,22 @@ def _generate_csl_items(args, citekeys_df):
         clear_requests_cache=args.clear_requests_cache,
     )
 
-    # Write JSON CSL bibliography for Pandoc.
-    with args.references_path.open("w", encoding="utf-8") as write_file:
+    # Write CSL JSON bibliography for Pandoc.
+    write_csl_json(csl_items, args.references_path)
+    return csl_items
+
+
+def write_csl_json(csl_items, path):
+    """
+    Write CSL Items to a JSON file at `path`.
+    If `path` evaluates as False, do nothing.
+    """
+    if not path:
+        return
+    path = pathlib.Path(path)
+    with path.open("w", encoding="utf-8") as write_file:
         json.dump(csl_items, write_file, indent=2, ensure_ascii=False)
         write_file.write("\n")
-    return csl_items
 
 
 def template_with_jinja2(text, variables):
