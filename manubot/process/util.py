@@ -357,7 +357,7 @@ def _citation_tags_to_reference_links(args) -> str:
     for key, value in citekey_aliases.items():
         text += f"[@{key}]: {value}\n"
     logging.warning(
-        "citation-tags.tsv is deprecated."
+        "citation-tags.tsv is deprecated. "
         f"Consider deleting citation-tags.tsv and inserting the following paragraph into your Markdown content:{text}"
     )
     return text
