@@ -1,6 +1,7 @@
 import collections
 import json
 import logging
+import os
 import pathlib
 import re
 import textwrap
@@ -259,6 +260,16 @@ def load_variables(args) -> dict:
 
     # Add header-includes metadata with <meta> information for the HTML output's <head>
     variables["pandoc"]["header-includes"] = get_header_includes(variables)
+
+    # Extend Pandoc's metadata.bibliography field with manual references paths
+    if args.skip_citations:
+        bibliographies = variables["pandoc"].get("bibliography", [])
+        if isinstance(bibliographies, str):
+            bibliographies = [bibliographies]
+        assert isinstance(bibliographies, list)
+        bibliographies.extend(args.manual_references_paths)
+        bibliographies = list(map(os.fspath, bibliographies))
+        variables["pandoc"]["bibliography"] = bibliographies
 
     return variables
 

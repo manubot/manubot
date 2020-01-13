@@ -120,10 +120,13 @@ optional arguments:
                         `--template-variables-path=namespace=path_or_url`.
                         Namespaces must match the regex `[a-zA-
                         Z_][a-zA-Z0-9_]*`.
-  --skip-citations      Skip citation and reference processing. If --skip-
-                        citations and citation-tags.tsv is found in content,
-                        these tags will be inserted in the markdown output
-                        using the reference-link syntax for citekey aliases.
+  --skip-citations      Skip citation and reference processing. Specify when
+                        using the pandoc-manubot-cite filter. If citation-
+                        tags.tsv is found in content, these tags will be
+                        inserted in the markdown output using the reference-
+                        link syntax for citekey aliases. Appends
+                        content/manual-references*.* paths to Pandoc's
+                        metadata.bibliography field.
   --cache-directory CACHE_DIRECTORY
                         Custom cache directory. If not specified, caches to
                         output-directory.
