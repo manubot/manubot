@@ -75,7 +75,9 @@ def add_subparser_process(subparsers):
     parser.add_argument(
         "--skip-citations",
         action="store_true",
-        help="Skip citation and reference processing.",
+        help="Skip citation and reference processing. "
+        "If --skip-citations and citation-tags.tsv is found in content, "
+        "these tags will be inserted in the markdown output using the reference-link syntax for citekey aliases.",
     )
     parser.add_argument(
         "--cache-directory",

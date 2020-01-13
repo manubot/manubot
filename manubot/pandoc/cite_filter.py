@@ -121,8 +121,11 @@ def _get_reference_link_citekey_aliases(elem, doc):
             # save info to citekeys and remove from paragraph
             citekey = elem.content[0].citations[0].id  # differs from pandoc-url2cite
             citekey_aliases = global_variables["citekey_aliases"]
-            if citekey in citekey_aliases:
-                logging.warning(f"duplicate citekey {citekey}")
+            if (
+                citekey in citekey_aliases
+                and citekey_aliases[citekey] != destination.text
+            ):
+                logging.warning(f"multiple aliases defined for @{citekey}")
             citekey_aliases[citekey] = destination.text
             # found citation, add it to citekeys and remove it from document
             elem.content = elem.content[space_index + 1 :]

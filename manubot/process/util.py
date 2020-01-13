@@ -290,35 +290,54 @@ def get_citekeys_df(citekeys: list, citekey_aliases: dict = {}):
     return citekeys_df
 
 
+def read_citations_tsv(path) -> dict:
+    """
+    Read citekey aliases from a citation-tags.tsv file.
+    """
+    if not path.is_file():
+        logging.info(
+            f"no citation tags file at {path!r}. "
+            "Not reading citekey_aliases from citation-tags.tsv."
+        )
+        return {}
+    tag_df = pandas.read_csv(path, sep="\t")
+    na_rows_df = tag_df[tag_df.isnull().any(axis="columns")]
+    if not na_rows_df.empty:
+        logging.error(
+            f"{path} contains rows with missing values:\n"
+            f"{na_rows_df}\n"
+            "This error can be caused by using spaces rather than tabs to delimit fields.\n"
+            "Proceeding to reread TSV with delim_whitespace=True."
+        )
+        tag_df = pandas.read_csv(path, delim_whitespace=True)
+    tag_df["manuscript_citekey"] = "tag:" + tag_df.tag
+    tag_df = tag_df.rename(columns={"citation": "detagged_citekey"})
+    citekey_aliases = dict(
+        zip(tag_df["manuscript_citekey"], tag_df["detagged_citekey"])
+    )
+    return citekey_aliases
+
+
 def _get_citekeys_df(args, text):
     """
     Generate citekeys_df from manubot process args and save it to 'citations.tsv'.
     """
     manuscript_citekeys = get_citekeys(text)
-    if args.citation_tags_path.is_file():
-        tag_df = pandas.read_csv(args.citation_tags_path, sep="\t")
-        na_rows_df = tag_df[tag_df.isnull().any(axis="columns")]
-        if not na_rows_df.empty:
-            logging.error(
-                f"{args.citation_tags_path} contains rows with missing values:\n"
-                f"{na_rows_df}\n"
-                "This error can be caused by using spaces rather than tabs to delimit fields.\n"
-                "Proceeding to reread TSV with delim_whitespace=True."
-            )
-            tag_df = pandas.read_csv(args.citation_tags_path, delim_whitespace=True)
-        tag_df["manuscript_citekey"] = "tag:" + tag_df.tag
-        tag_df = tag_df.rename(columns={"citation": "detagged_citekey"})
-        citekey_aliases = dict(
-            zip(tag_df["manuscript_citekey"], tag_df["detagged_citekey"])
-        )
-    else:
-        citekey_aliases = {}
-        logging.info(
-            f"missing {args.citation_tags_path} file: no citation tags (citekey aliases) set"
-        )
+    citekey_aliases = read_citations_tsv(args.citation_tags_path)
     citekeys_df = get_citekeys_df(manuscript_citekeys, citekey_aliases)
     citekeys_df.to_csv(args.citations_path, sep="\t", index=False)
     return citekeys_df
+
+
+def _citation_tags_to_reference_links(args) -> str:
+    """
+    Convert citation-tags.tsv to markdown reference link syntax
+    """
+    citekey_aliases = read_citations_tsv(args.citation_tags_path)
+    text = "\n\n"
+    for key, value in citekey_aliases.items():
+        text += f"[@{key}]: {value}\n"
+    return text
 
 
 def generate_csl_items(
@@ -449,6 +468,7 @@ def prepare_manuscript(args):
     text = get_text(args.content_directory)
     if args.skip_citations:
         citekeys_df = None
+        text += _citation_tags_to_reference_links(args)
     else:
         citekeys_df = _get_citekeys_df(args, text)
         _generate_csl_items(args, citekeys_df)
