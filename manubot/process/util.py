@@ -261,8 +261,8 @@ def load_variables(args) -> dict:
     # Add header-includes metadata with <meta> information for the HTML output's <head>
     variables["pandoc"]["header-includes"] = get_header_includes(variables)
 
-    # Extend Pandoc's metadata.bibliography field with manual references paths
     if args.skip_citations:
+        # Extend Pandoc's metadata.bibliography field with manual references paths
         bibliographies = variables["pandoc"].get("bibliography", [])
         if isinstance(bibliographies, str):
             bibliographies = [bibliographies]
@@ -270,6 +270,14 @@ def load_variables(args) -> dict:
         bibliographies.extend(args.manual_references_paths)
         bibliographies = list(map(os.fspath, bibliographies))
         variables["pandoc"]["bibliography"] = bibliographies
+        # enable pandoc-manubot-cite option to write bibliography to a file
+        variables["pandoc"]["manubot-output-bibliography"] = os.fspath(
+            args.citations_path
+        )
+        variables["pandoc"]["manubot-requests-cache-path"] = os.fspath(
+            args.requests_cache_path
+        )
+        variables["pandoc"]["manubot-clear-requests-cache"] = args.clear_requests_cache
 
     return variables
 

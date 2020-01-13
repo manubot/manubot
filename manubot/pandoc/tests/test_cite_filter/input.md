@@ -11,9 +11,8 @@ references:
   container-title: Greene Laboratory
   location: University of Pennsylvania
   issued: {'date-parts': [[2018, 12, 19]]}
-manubot:
-  requests-cache-path: .cache/requests-cache
-  log-level: INFO
+manubot-requests-cache-path: .cache/requests-cache
+manubot-log-level: INFO
 ...
 
 # Testing markdown document for pandoc-manubot-cite filter

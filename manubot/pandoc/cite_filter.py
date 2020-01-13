@@ -151,9 +151,9 @@ def process_citations(doc):
 
     - bibliography (use to define reference metadata manually)
     - citekey-aliases (use to define tags for cite-by-id citations)
-    - manubot.requests-cache-path
-    - manubot.clear-requests-cache
-    - manubot.output-bibliography: path to write generated CSL JSON bibliography
+    - manubot-requests-cache-path
+    - manubot-clear-requests-cache
+    - manubot-output-bibliography: path to write generated CSL JSON bibliography
     """
     citekey_aliases = doc.get_metadata("citekey-aliases", default={})
     if not isinstance(citekey_aliases, dict):
@@ -192,16 +192,16 @@ def process_citations(doc):
         bibliography_paths, extra_csl_items=manual_refs
     )
     standard_citekeys = citekeys_df.standard_citekey.unique()
-    requests_cache_path = doc.get_metadata("manubot.requests-cache-path")
+    requests_cache_path = doc.get_metadata("manubot-requests-cache-path")
     if requests_cache_path:
         pathlib.Path(requests_cache_path).parent.mkdir(parents=True, exist_ok=True)
     csl_items = generate_csl_items(
         citekeys=standard_citekeys,
         manual_refs=manual_refs,
-        requests_cache_path=doc.get_metadata("manubot.requests-cache-path"),
-        clear_requests_cache=doc.get_metadata("manubot.clear-requests-cache", False),
+        requests_cache_path=doc.get_metadata("manubot-requests-cache-path"),
+        clear_requests_cache=doc.get_metadata("manubot-clear-requests-cache", False),
     )
-    output_bibliography = doc.get_metadata("manubot.output-bibliography")
+    output_bibliography = doc.get_metadata("manubot-output-bibliography")
     write_csl_json(csl_items, output_bibliography)
     # Update pandoc metadata with fields that this filter
     # has either consumed, created, or modified.
@@ -218,11 +218,11 @@ def main():
     # Let panflute handle io to sys.stdout / sys.stdin to set utf-8 encoding.
     # args.input=None for stdin, args.output=None for stdout
     doc = pf.load(input_stream=args.input)
-    log_level = doc.get_metadata("manubot.log-level", "WARNING")
+    log_level = doc.get_metadata("manubot-log-level", "WARNING")
     diagnostics["logger"].setLevel(getattr(logging, log_level))
     process_citations(doc)
     pf.dump(doc, output_stream=args.output)
-    if doc.get_metadata("manubot.fail-on-errors", False):
+    if doc.get_metadata("manubot-fail-on-errors", False):
         exit_if_error_handler_fired(diagnostics["error_handler"])
 
 
