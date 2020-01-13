@@ -272,8 +272,9 @@ def load_variables(args) -> dict:
         variables["pandoc"]["bibliography"] = bibliographies
         # enable pandoc-manubot-cite option to write bibliography to a file
         variables["pandoc"]["manubot-output-bibliography"] = os.fspath(
-            args.citations_path
+            args.references_path
         )
+        variables["pandoc"]["manubot-output-citekeys"] = os.fspath(args.citations_path)
         variables["pandoc"]["manubot-requests-cache-path"] = os.fspath(
             args.requests_cache_path
         )
@@ -344,8 +345,14 @@ def _get_citekeys_df(args, text):
     manuscript_citekeys = get_citekeys(text)
     citekey_aliases = read_citations_tsv(args.citation_tags_path)
     citekeys_df = get_citekeys_df(manuscript_citekeys, citekey_aliases)
-    citekeys_df.to_csv(args.citations_path, sep="\t", index=False)
+    write_citekeys_tsv(citekeys_df, args.citations_path)
     return citekeys_df
+
+
+def write_citekeys_tsv(citekeys_df, path):
+    if not path:
+        return
+    citekeys_df.to_csv(path, sep="\t", index=False)
 
 
 def _citation_tags_to_reference_links(args) -> str:

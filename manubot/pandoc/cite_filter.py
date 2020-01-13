@@ -38,6 +38,7 @@ from manubot.process.util import (
     get_citekeys_df,
     generate_csl_items,
     load_manual_references,
+    write_citekeys_tsv,
     write_csl_json,
 )
 
@@ -153,6 +154,7 @@ def process_citations(doc):
     - citekey-aliases (use to define tags for cite-by-id citations)
     - manubot-requests-cache-path
     - manubot-clear-requests-cache
+    - manubot-output-citekeys: path to write TSV table of citekeys
     - manubot-output-bibliography: path to write generated CSL JSON bibliography
     """
     citekey_aliases = doc.get_metadata("citekey-aliases", default={})
@@ -201,8 +203,8 @@ def process_citations(doc):
         requests_cache_path=doc.get_metadata("manubot-requests-cache-path"),
         clear_requests_cache=doc.get_metadata("manubot-clear-requests-cache", False),
     )
-    output_bibliography = doc.get_metadata("manubot-output-bibliography")
-    write_csl_json(csl_items, output_bibliography)
+    write_citekeys_tsv(citekeys_df, path=doc.get_metadata("manubot-output-citekeys"))
+    write_csl_json(csl_items, path=doc.get_metadata("manubot-output-bibliography"))
     # Update pandoc metadata with fields that this filter
     # has either consumed, created, or modified.
     doc.metadata["bibliography"] = []
