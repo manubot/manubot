@@ -11,7 +11,7 @@ pandoc \
   --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.json \
   --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.bib \
   --filter=pandoc-manubot-cite \
-  --filter pandoc-citeproc \
+  --filter=pandoc-citeproc \
   manubot/pandoc/tests/test_cite_filter/input.md
 
 # call the filter manually using pandoc JSON output

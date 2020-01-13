@@ -194,7 +194,7 @@ optional arguments:
 ### Pandoc filter
 
 This package creates the `pandoc-manubot-cite` Pandoc filter,
-providing access to Manubot's cite-by-ID functionality from within a pandoc workflow.
+providing access to Manubot's cite-by-ID functionality from within a Pandoc workflow.
 
 Currently, this filter is experimental and subject to breaking changes at any point.
 At some point in the future, we may migrate entirely from `manubot process` to `pandoc-manubot-cite` for citation processing.
@@ -206,7 +206,7 @@ usage: pandoc-manubot-cite [-h] [--input [INPUT]] [--output [OUTPUT]]
 
 Pandoc filter for citation by persistent identifier. Filters are command-line
 programs that read and write a JSON-encoded abstract syntax tree for Pandoc.
-Unless you are debugging, run this filter as part of a pandoc command by
+Unless you are debugging, run this filter as part of a Pandoc command by
 specifying --filter=pandoc-manubot-cite.
 
 positional arguments:
@@ -214,11 +214,11 @@ positional arguments:
 
 optional arguments:
   -h, --help         show this help message and exit
-  --input [INPUT]    path read JSON input (defaults to stdin)
+  --input [INPUT]    path to read JSON input (defaults to stdin)
   --output [OUTPUT]  path to write JSON output (defaults to stdout)
 ```
 
-Other pandoc filters exist that do something similar:
+Other Pandoc filters exist that do something similar:
 [`pandoc-url2cite`](https://github.com/phiresky/pandoc-url2cite) &
 [`pwcite`](https://github.com/wikicite/wcite#filter-pwcite).
 Currently, `pandoc-manubot-cite` supports the most types of persistent identifiers.
