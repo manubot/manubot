@@ -56,7 +56,10 @@ def parse_args():
         "Filters are command-line programs that read and write a JSON-encoded abstract syntax tree for Pandoc. "
         "Unless you are debugging, run this filter as part of a pandoc command by specifying --filter=pandoc-manubot-cite."
     )
-    parser.add_argument("target_format")
+    parser.add_argument(
+        "target_format",
+        help="output format of the pandoc command, as per Pandoc's --to option",
+    )
     parser.add_argument(
         "--input",
         nargs="?",
@@ -99,27 +102,32 @@ def _citation_to_id_action(elem, doc):
 
 def _get_reference_link_citekey_aliases(elem, doc):
     """
-    Based on TypeScript implementation by phiresky at
-    https://github.com/phiresky/pandoc-url2cite/blob/b28374a9a037a5ce1747b8567160d8dffd64177e/index.ts#L118-L152
-
-    Uses markdown's link reference syntax to define citekey aliases (tags)
+    Extract citekey aliases from the document that were defined
+    using markdown's link reference syntax.
     https://spec.commonmark.org/0.29/#link-reference-definitions
+
+    Based on pandoc-url2cite implementation by phiresky at
+    https://github.com/phiresky/pandoc-url2cite/blob/b28374a9a037a5ce1747b8567160d8dffd64177e/index.ts#L118-L152
     """
     if type(elem) != pf.Para:
+        # require link reference definitions to be in their own paragraph
         return
     while (
         len(elem.content) >= 3
         and type(elem.content[0]) == pf.Cite
-        and len(elem.content[0].citations) == 1  # differs from pandoc-url2cite
+        and len(elem.content[0].citations) == 1
         and type(elem.content[1]) == pf.Str
         and elem.content[1].text == ":"
     ):
+        # paragraph consists of at least a Cite (with one Citaiton),
+        # a Str (equal to ":"), and additional elements, such as a
+        # link destination and possibly more link-reference definitions.
         space_index = 3 if type(elem.content[2]) == pf.Space else 2
         destination = elem.content[space_index]
         if type(destination) == pf.Str:
-            # paragraph starts with [@something]: something
+            # paragraph starts with `[@something]: something`
             # save info to citekeys and remove from paragraph
-            citekey = elem.content[0].citations[0].id  # differs from pandoc-url2cite
+            citekey = elem.content[0].citations[0].id
             citekey_aliases = global_variables["citekey_aliases"]
             if (
                 citekey in citekey_aliases
@@ -129,6 +137,7 @@ def _get_reference_link_citekey_aliases(elem, doc):
             citekey_aliases[citekey] = destination.text
             # found citation, add it to citekeys and remove it from document
             elem.content = elem.content[space_index + 1 :]
+        # remove leading SoftBreak, before continuing
         if len(elem.content) > 0 and type(elem.content[0]) == pf.SoftBreak:
             elem.content.pop(0)
 
@@ -155,9 +164,6 @@ def process_citations(doc):
         citekey_aliases = dict()
 
     global_variables["citekey_aliases"] = citekey_aliases
-
-    manuscript_citekeys = set(global_variables["manuscript_citekeys"])
-
     doc.walk(_get_reference_link_citekey_aliases)
     doc.walk(_get_citekeys_action)
     manuscript_citekeys = global_variables["manuscript_citekeys"]
@@ -197,6 +203,8 @@ def process_citations(doc):
     )
     output_bibliography = doc.get_metadata("manubot.output-bibliography")
     write_csl_json(csl_items, output_bibliography)
+    # Update pandoc metadata with fields that this filter
+    # has either consumed, created, or modified.
     doc.metadata["bibliography"] = []
     doc.metadata["references"] = csl_items
     doc.metadata["citekey_aliases"] = citekey_aliases

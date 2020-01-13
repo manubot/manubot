@@ -213,7 +213,8 @@ Unless you are debugging, run this filter as part of a pandoc command by
 specifying --filter=pandoc-manubot-cite.
 
 positional arguments:
-  target_format
+  target_format      output format of the pandoc command, as per Pandoc's --to
+                     option
 
 optional arguments:
   -h, --help         show this help message and exit
