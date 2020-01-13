@@ -315,7 +315,7 @@ def read_citations_tsv(path) -> dict:
     """
     if not path.is_file():
         logging.info(
-            f"no citation tags file at {path!r}. "
+            f"no citation tags file at {path} "
             "Not reading citekey_aliases from citation-tags.tsv."
         )
         return {}
@@ -356,6 +356,10 @@ def _citation_tags_to_reference_links(args) -> str:
     text = "\n\n"
     for key, value in citekey_aliases.items():
         text += f"[@{key}]: {value}\n"
+    logging.warning(
+        "citation-tags.tsv is deprecated."
+        f"Consider deleting citation-tags.tsv and inserting the following paragraph into your Markdown content:{text}"
+    )
     return text
 
 
