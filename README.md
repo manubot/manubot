@@ -120,7 +120,10 @@ optional arguments:
                         `--template-variables-path=namespace=path_or_url`.
                         Namespaces must match the regex `[a-zA-
                         Z_][a-zA-Z0-9_]*`.
-  --skip-citations      Skip citation and reference processing.
+  --skip-citations      Skip citation and reference processing. If --skip-
+                        citations and citation-tags.tsv is found in content,
+                        these tags will be inserted in the markdown output
+                        using the reference-link syntax for citekey aliases.
   --cache-directory CACHE_DIRECTORY
                         Custom cache directory. If not specified, caches to
                         output-directory.
@@ -206,7 +209,7 @@ usage: pandoc-manubot-cite [-h] [--input [INPUT]] [--output [OUTPUT]]
 
 Pandoc filter for citation by persistent identifier. Filters are command-line
 programs that read and write a JSON-encoded abstract syntax tree for Pandoc.
-Unless you are debugging, run this filter as part of a Pandoc command by
+Unless you are debugging, run this filter as part of a pandoc command by
 specifying --filter=pandoc-manubot-cite.
 
 positional arguments:
@@ -214,7 +217,7 @@ positional arguments:
 
 optional arguments:
   -h, --help         show this help message and exit
-  --input [INPUT]    path to read JSON input (defaults to stdin)
+  --input [INPUT]    path read JSON input (defaults to stdin)
   --output [OUTPUT]  path to write JSON output (defaults to stdout)
 ```
 
