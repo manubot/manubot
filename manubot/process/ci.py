@@ -1,7 +1,7 @@
 import os
 import logging
 
-supported_providers = ["travis", "appveyor"]
+supported_providers = ["github", "travis", "appveyor"]
 
 
 def get_continuous_integration_parameters():
@@ -15,15 +15,34 @@ def get_continuous_integration_parameters():
     - repo_owner: owner from repo_slug, i.e. "manubot"
     - repo_name: name from repo_slug, i.e. "rootstock"
     - commit: git commit being evaluated by the CI build
-    - triggering_commit: git commit that triggered the CI build. For pull requests,
-        CI services often build a merge commit with the default branch rather than
-        the commit that was added to the pull request.
+        For pull requests, CI services often build a merge commit
+        with the default branch rather than the commit that was
+        added to the pull request. In these cases, commit refers
+        to this merge commit.
+    - triggering_commit: git commit that triggered the CI build.
     - build_url: URL for the webpage with build details
     - job_url: URL for the webpage with job details
     """
-    if os.getenv("CI", "false").lower() != "true":
-        # No continuous integration environment detected
-        return None
+    if os.getenv("GITHUB_ACTIONS", "false") == "true":
+        # https://git.io/JvUf7
+        repo_slug = os.environ["GITHUB_REPOSITORY"]
+        repo_owner, repo_name = repo_slug.split("/")
+        action_id = os.environ["GITHUB_ACTION"]
+        event_name = os.environ["GITHUB_EVENT_NAME"]
+        # GITHUB_SHA for pull_request event: Last merge commit on the GITHUB_REF branch
+        # GITHUB_SHA for push event: Commit pushed, unless deleting a branch (when it's the default branch)
+        # https://git.io/JvUfd
+        github_sha = os.environ["GITHUB_SHA"]
+        return {
+            "provider": "github",
+            "repo_slug": repo_slug,
+            "repo_owner": repo_owner,
+            "repo_name": repo_name,
+            "commit": github_sha,
+            "triggering_commit": github_sha if event_name == "push" else None,
+            "build_url": f"https://github.com/{repo_slug}/commit/{github_sha}/checks",
+            "job_url": f"https://github.com/{repo_slug}/runs/{action_id}",
+        }
 
     if os.getenv("TRAVIS", "false") == "true":
         # https://docs.travis-ci.com/user/environment-variables/
@@ -63,9 +82,10 @@ def get_continuous_integration_parameters():
             "artifact_url": f"{build_url}/artifacts",
         }
 
-    logging.warning(
-        "Detected CI environment variable, but get_continuous_integration_parameters "
-        "did not detect environment variables for a supported CI provider. "
-        "Supported providers are: {}".format(", ".join(supported_providers))
-    )
+    if os.getenv("CI", "false").lower() != "true":
+        logging.warning(
+            "Detected CI environment variable, but get_continuous_integration_parameters "
+            "did not detect environment variables for a supported CI provider. "
+            "Supported providers are: {}".format(", ".join(supported_providers))
+        )
     return None
