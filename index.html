@@ -291,6 +291,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pandoc-filter" class="md-nav__link">
+    Pandoc filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#webpage" class="md-nav__link">
     Webpage
   </a>
@@ -825,6 +832,18 @@
 
 
   <li class="md-nav__item">
+    <a href="reference/manubot/pandoc/cite_filter/" title="Cite Filter" class="md-nav__link">
+      Cite Filter
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="reference/manubot/pandoc/" title="Index" class="md-nav__link">
       Index
     </a>
@@ -1269,6 +1288,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pandoc-filter" class="md-nav__link">
+    Pandoc filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#webpage" class="md-nav__link">
     Webpage
   </a>
@@ -1421,7 +1447,7 @@ Under this setup, you can run the Manubot using:</p>
 <div class="codehilite"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">manubot</span> <span class="n">process</span> <span class="o">[-</span><span class="n">h</span><span class="o">]</span> <span class="o">--</span><span class="n">content</span><span class="o">-</span><span class="n">directory</span> <span class="n">CONTENT_DIRECTORY</span>
                        <span class="o">--</span><span class="n">output</span><span class="o">-</span><span class="n">directory</span> <span class="n">OUTPUT_DIRECTORY</span>
                        <span class="o">[--</span><span class="n">template</span><span class="o">-</span><span class="n">variables</span><span class="o">-</span><span class="n">path</span> <span class="n">TEMPLATE_VARIABLES_PATH</span><span class="o">]</span>
-                       <span class="o">[--</span><span class="n">cache</span><span class="o">-</span><span class="n">directory</span> <span class="n">CACHE_DIRECTORY</span><span class="o">]</span>
+                       <span class="o">[--</span><span class="n">skip</span><span class="o">-</span><span class="n">citations</span><span class="o">]</span> <span class="o">[--</span><span class="n">cache</span><span class="o">-</span><span class="n">directory</span> <span class="n">CACHE_DIRECTORY</span><span class="o">]</span>
                        <span class="o">[--</span><span class="n">clear</span><span class="o">-</span><span class="n">requests</span><span class="o">-</span><span class="n">cache</span><span class="o">]</span>
                        <span class="o">[--</span><span class="n">log</span><span class="o">-</span><span class="n">level</span> <span class="p">{</span><span class="n">DEBUG</span><span class="p">,</span><span class="n">INFO</span><span class="p">,</span><span class="n">WARNING</span><span class="p">,</span><span class="k">ERROR</span><span class="p">,</span><span class="n">CRITICAL</span><span class="p">}</span><span class="o">]</span>
 
@@ -1445,6 +1471,13 @@ Under this setup, you can run the Manubot using:</p>
                         <span class="err">`</span><span class="o">--</span><span class="n">template</span><span class="o">-</span><span class="n">variables</span><span class="o">-</span><span class="n">path</span><span class="o">=</span><span class="n">namespace</span><span class="o">=</span><span class="n">path_or_url</span><span class="err">`</span><span class="p">.</span>
                         <span class="n">Namespaces</span> <span class="n">must</span> <span class="n">match</span> <span class="n">the</span> <span class="n">regex</span> <span class="err">`</span><span class="o">[</span><span class="n">a</span><span class="o">-</span><span class="n">zA</span><span class="o">-</span>
                         <span class="n">Z_</span><span class="o">][</span><span class="n">a</span><span class="o">-</span><span class="n">zA</span><span class="o">-</span><span class="n">Z0</span><span class="o">-</span><span class="mi">9</span><span class="n">_</span><span class="o">]*</span><span class="err">`</span><span class="p">.</span>
+  <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">citations</span>      <span class="n">Skip</span> <span class="n">citation</span> <span class="ow">and</span> <span class="n">reference</span> <span class="n">processing</span><span class="p">.</span> <span class="n">Specify</span> <span class="k">when</span>
+                        <span class="k">using</span> <span class="n">the</span> <span class="n">pandoc</span><span class="o">-</span><span class="n">manubot</span><span class="o">-</span><span class="n">cite</span> <span class="n">filter</span><span class="p">.</span> <span class="k">If</span> <span class="n">citation</span><span class="o">-</span>
+                        <span class="n">tags</span><span class="p">.</span><span class="n">tsv</span> <span class="ow">is</span> <span class="n">found</span> <span class="ow">in</span> <span class="n">content</span><span class="p">,</span> <span class="n">these</span> <span class="n">tags</span> <span class="n">will</span> <span class="n">be</span>
+                        <span class="n">inserted</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">markdown</span> <span class="n">output</span> <span class="k">using</span> <span class="n">the</span> <span class="n">reference</span><span class="o">-</span>
+                        <span class="n">link</span> <span class="n">syntax</span> <span class="k">for</span> <span class="n">citekey</span> <span class="n">aliases</span><span class="p">.</span> <span class="n">Appends</span>
+                        <span class="n">content</span><span class="o">/</span><span class="n">manual</span><span class="o">-</span><span class="n">references</span><span class="o">*</span><span class="p">.</span><span class="o">*</span> <span class="n">paths</span> <span class="k">to</span> <span class="n">Pandoc</span><span class="c">&#39;s</span>
+                        <span class="n">metadata</span><span class="p">.</span><span class="n">bibliography</span> <span class="n">field</span><span class="p">.</span>
   <span class="o">--</span><span class="n">cache</span><span class="o">-</span><span class="n">directory</span> <span class="n">CACHE_DIRECTORY</span>
                         <span class="n">Custom</span> <span class="n">cache</span> <span class="n">directory</span><span class="p">.</span> <span class="k">If</span> <span class="k">not</span> <span class="n">specified</span><span class="p">,</span> <span class="n">caches</span> <span class="k">to</span>
                         <span class="n">output</span><span class="o">-</span><span class="n">directory</span><span class="p">.</span>
@@ -1510,6 +1543,37 @@ For example, the following example generates CSL JSON for four references:</p>
 </pre></div>
 
 
+<h3 id="pandoc-filter">Pandoc filter</h3>
+<p>This package creates the <code>pandoc-manubot-cite</code> Pandoc filter,
+providing access to Manubot's cite-by-ID functionality from within a Pandoc workflow.</p>
+<p>Currently, this filter is experimental and subject to breaking changes at any point.
+At some point in the future, we may migrate entirely from <code>manubot process</code> to <code>pandoc-manubot-cite</code> for citation processing.</p>
+<!-- test codeblock contains output of `pandoc-manubot-cite --help` -->
+
+<div class="codehilite"><pre><span></span><span class="k">usage</span><span class="err">:</span><span class="w"> </span><span class="n">pandoc</span><span class="o">-</span><span class="n">manubot</span><span class="o">-</span><span class="n">cite</span><span class="w"> </span><span class="o">[</span><span class="n">-h</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">--input [INPUT</span><span class="o">]</span><span class="err">]</span><span class="w"> </span><span class="o">[</span><span class="n">--output [OUTPUT</span><span class="o">]</span><span class="err">]</span><span class="w"></span>
+<span class="w">                           </span><span class="n">target_format</span><span class="w"></span>
+
+<span class="n">Pandoc</span><span class="w"> </span><span class="k">filter</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">citation</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">persistent</span><span class="w"> </span><span class="n">identifier</span><span class="p">.</span><span class="w"> </span><span class="n">Filters</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">command</span><span class="o">-</span><span class="n">line</span><span class="w"></span>
+<span class="n">programs</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">read</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="k">write</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">JSON</span><span class="o">-</span><span class="n">encoded</span><span class="w"> </span><span class="n">abstract</span><span class="w"> </span><span class="n">syntax</span><span class="w"> </span><span class="n">tree</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">Pandoc</span><span class="p">.</span><span class="w"></span>
+<span class="n">Unless</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">debugging</span><span class="p">,</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="k">filter</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">part</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">pandoc</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="k">by</span><span class="w"></span>
+<span class="n">specifying</span><span class="w"> </span><span class="c1">--filter=pandoc-manubot-cite.</span>
+
+<span class="n">positional</span><span class="w"> </span><span class="nl">arguments</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">target_format</span><span class="w">      </span><span class="k">output</span><span class="w"> </span><span class="nf">format</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">pandoc</span><span class="w"> </span><span class="n">command</span><span class="p">,</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">per</span><span class="w"> </span><span class="n">Pandoc</span><span class="err">&#39;</span><span class="n">s</span><span class="w"> </span><span class="c1">--to</span>
+<span class="w">                     </span><span class="k">option</span><span class="w"></span>
+
+<span class="n">optional</span><span class="w"> </span><span class="nl">arguments</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="o">-</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="c1">--help         show this help message and exit</span>
+<span class="w">  </span><span class="c1">--input [INPUT]    path read JSON input (defaults to stdin)</span>
+<span class="w">  </span><span class="c1">--output [OUTPUT]  path to write JSON output (defaults to stdout)</span>
+</pre></div>
+
+
+<p>Other Pandoc filters exist that do something similar:
+<a href="https://github.com/phiresky/pandoc-url2cite"><code>pandoc-url2cite</code></a> &amp;
+<a href="https://github.com/wikicite/wcite#filter-pwcite"><code>pwcite</code></a>.
+Currently, <code>pandoc-manubot-cite</code> supports the most types of persistent identifiers.
+We're interested in creating as much compatibility as possible between these filters and their syntaxes.</p>
 <h3 id="webpage">Webpage</h3>
 <p>The <code>manubot webpage</code> command populates a <code>webpage</code> directory with Manubot output files.</p>
 <!-- test codeblock contains output of `manubot webpage --help` -->

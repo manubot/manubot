@@ -344,6 +344,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#exit_if_error_handler_fired" class="md-nav__link">
+    exit_if_error_handler_fired
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#main" class="md-nav__link">
     main
   </a>
@@ -353,6 +360,13 @@
           <li class="md-nav__item">
   <a href="#parse_arguments" class="md-nav__link">
     parse_arguments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setup_logging_and_errors" class="md-nav__link">
+    setup_logging_and_errors
   </a>
   
 </li>
@@ -772,6 +786,18 @@
   <li class="md-nav__item">
     <a href="../pandoc/bibliography/" title="Bibliography" class="md-nav__link">
       Bibliography
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../pandoc/cite_filter/" title="Cite Filter" class="md-nav__link">
+      Cite Filter
     </a>
   </li>
 
@@ -1213,6 +1239,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#exit_if_error_handler_fired" class="md-nav__link">
+    exit_if_error_handler_fired
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#main" class="md-nav__link">
     main
   </a>
@@ -1222,6 +1255,13 @@
           <li class="md-nav__item">
   <a href="#parse_arguments" class="md-nav__link">
     parse_arguments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setup_logging_and_errors" class="md-nav__link">
+    setup_logging_and_errors
   </a>
   
 </li>
@@ -1392,11 +1432,29 @@
 
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
 
+        <span class="s2">&quot;--skip-citations&quot;</span><span class="p">,</span>
+
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Skip citation and reference processing. &quot;</span>
+
+        <span class="s2">&quot;Specify when using the pandoc-manubot-cite filter. &quot;</span>
+
+        <span class="s2">&quot;If citation-tags.tsv is found in content, &quot;</span>
+
+        <span class="s2">&quot;these tags will be inserted in the markdown output using the reference-link syntax for citekey aliases. &quot;</span>
+
+        <span class="s2">&quot;Appends content/manual-references*.* paths to Pandoc&#39;s metadata.bibliography field.&quot;</span><span class="p">,</span>
+
+    <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+
         <span class="s2">&quot;--cache-directory&quot;</span><span class="p">,</span>
 
         <span class="nb">type</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Custom cache directory. &quot;</span> <span class="s2">&quot;If not specified, caches to output-directory.&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Custom cache directory. If not specified, caches to output-directory.&quot;</span><span class="p">,</span>
 
     <span class="p">)</span>
 
@@ -1570,21 +1628,23 @@
 
     <span class="n">parser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">function</span><span class="o">=</span><span class="s2">&quot;manubot.webpage.webpage_command.cli_webpage&quot;</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">setup_logging_and_errors</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Called as a console_scripts entry point in setup.py. This function defines</span>
+<span class="sd">    Configure warnings and logging.</span>
 
-<span class="sd">    the manubot command line script.</span>
+<span class="sd">    Set up an ErrorHandler to detect whether messages have been logged</span>
+
+<span class="sd">    at or above the ERROR level.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">errorhandler</span>
 
     <span class="c1"># Track if message gets logged with severity of error or greater</span>
 
     <span class="c1"># See https://stackoverflow.com/a/45446664/4651668</span>
-
-    <span class="kn">import</span> <span class="nn">errorhandler</span>
 
     <span class="n">error_handler</span> <span class="o">=</span> <span class="n">errorhandler</span><span class="o">.</span><span class="n">ErrorHandler</span><span class="p">()</span>
 
@@ -1608,19 +1668,51 @@
 
     <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">stream_handler</span><span class="p">)</span>
 
-    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_arguments</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">{</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">log_level</span><span class="p">))</span>
+        <span class="s2">&quot;logger&quot;</span><span class="p">:</span> <span class="n">logger</span><span class="p">,</span>
 
-    <span class="n">function</span> <span class="o">=</span> <span class="n">import_function</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">function</span><span class="p">)</span>
+        <span class="s2">&quot;error_handler&quot;</span><span class="p">:</span> <span class="n">error_handler</span><span class="p">,</span>
 
-    <span class="n">function</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">exit_if_error_handler_fired</span><span class="p">(</span><span class="n">error_handler</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    If a message has been logged with severity of ERROR or greater,</span>
+
+<span class="sd">    exit Python with a nonzero code.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">error_handler</span><span class="o">.</span><span class="n">fired</span><span class="p">:</span>
 
         <span class="n">logging</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;Failure: exiting with code 1 due to logged errors&quot;</span><span class="p">)</span>
 
         <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Called as a console_scripts entry point in setup.py. This function defines</span>
+
+<span class="sd">    the manubot command line script.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">diagnostics</span> <span class="o">=</span> <span class="n">setup_logging_and_errors</span><span class="p">()</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_arguments</span><span class="p">()</span>
+
+    <span class="n">diagnostics</span><span class="p">[</span><span class="s2">&quot;logger&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">log_level</span><span class="p">))</span>
+
+    <span class="n">function</span> <span class="o">=</span> <span class="n">import_function</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">function</span><span class="p">)</span>
+
+    <span class="n">function</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="n">exit_if_error_handler_fired</span><span class="p">(</span><span class="n">diagnostics</span><span class="p">[</span><span class="s2">&quot;error_handler&quot;</span><span class="p">])</span>
 </pre></div>
 
 
@@ -1791,11 +1883,29 @@
 
     <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span>
 
+        <span class="ss">&quot;--skip-citations&quot;</span><span class="p">,</span>
+
+        <span class="n">action</span><span class="o">=</span><span class="ss">&quot;store_true&quot;</span><span class="p">,</span>
+
+        <span class="n">help</span><span class="o">=</span><span class="ss">&quot;Skip citation and reference processing. &quot;</span>
+
+        <span class="ss">&quot;Specify when using the pandoc-manubot-cite filter. &quot;</span>
+
+        <span class="ss">&quot;If citation-tags.tsv is found in content, &quot;</span>
+
+        <span class="ss">&quot;these tags will be inserted in the markdown output using the reference-link syntax for citekey aliases. &quot;</span>
+
+        <span class="ss">&quot;Appends content/manual-references*.* paths to Pandoc&#39;s metadata.bibliography field.&quot;</span><span class="p">,</span>
+
+    <span class="p">)</span>
+
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span>
+
         <span class="ss">&quot;--cache-directory&quot;</span><span class="p">,</span>
 
         <span class="k">type</span><span class="o">=</span><span class="n">pathlib</span><span class="p">.</span><span class="n">Path</span><span class="p">,</span>
 
-        <span class="n">help</span><span class="o">=</span><span class="ss">&quot;Custom cache directory. &quot;</span> <span class="ss">&quot;If not specified, caches to output-directory.&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="ss">&quot;Custom cache directory. If not specified, caches to output-directory.&quot;</span><span class="p">,</span>
 
     <span class="p">)</span>
 
@@ -1898,6 +2008,34 @@
 
 
 </details>
+<h3 id="exit_if_error_handler_fired">exit_if_error_handler_fired</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">exit_if_error_handler_fired</span><span class="p">(</span>
+    <span class="n">error_handler</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>If a message has been logged with severity of ERROR or greater,
+exit Python with a nonzero code.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">exit_if_error_handler_fired</span><span class="p">(</span><span class="n">error_handler</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    If a message has been logged with severity of ERROR or greater,</span>
+
+<span class="ss">    exit Python with a nonzero code.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">error_handler</span><span class="p">.</span><span class="n">fired</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="p">.</span><span class="n">critical</span><span class="p">(</span><span class="ss">&quot;Failure: exiting with code 1 due to logged errors&quot;</span><span class="p">)</span>
+
+        <span class="n">raise</span> <span class="n">SystemExit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+
+</details>
 <h3 id="main">main</h3>
 <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span>
 
@@ -1907,57 +2045,27 @@
 
 <p>Called as a console_scripts entry point in setup.py. This function defines
 the manubot command line script.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">main</span><span class="p">():</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
-<span class="sd">    Called as a console_scripts entry point in setup.py. This function defines</span>
+<span class="ss">    Called as a console_scripts entry point in setup.py. This function defines</span>
 
-<span class="sd">    the manubot command line script.</span>
+<span class="ss">    the manubot command line script.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Track if message gets logged with severity of error or greater</span>
-
-    <span class="c1"># See https://stackoverflow.com/a/45446664/4651668</span>
-
-    <span class="kn">import</span> <span class="nn">errorhandler</span>
-
-    <span class="n">error_handler</span> <span class="o">=</span> <span class="n">errorhandler</span><span class="o">.</span><span class="n">ErrorHandler</span><span class="p">()</span>
-
-    <span class="c1"># Log DeprecationWarnings</span>
-
-    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;always&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
-
-    <span class="n">logging</span><span class="o">.</span><span class="n">captureWarnings</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
-
-    <span class="c1"># Log to stderr</span>
-
-    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
-
-    <span class="n">stream_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-
-    <span class="n">stream_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span>
-
-        <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;## {levelname}</span><span class="se">\n</span><span class="s2">{message}&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;{&quot;</span><span class="p">)</span>
-
-    <span class="p">)</span>
-
-    <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">stream_handler</span><span class="p">)</span>
+    <span class="k">diagnostics</span> <span class="o">=</span> <span class="n">setup_logging_and_errors</span><span class="p">()</span>
 
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_arguments</span><span class="p">()</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">log_level</span><span class="p">))</span>
+    <span class="k">diagnostics</span><span class="p">[</span><span class="ss">&quot;logger&quot;</span><span class="p">].</span><span class="n">setLevel</span><span class="p">(</span><span class="n">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">log_level</span><span class="p">))</span>
 
-    <span class="n">function</span> <span class="o">=</span> <span class="n">import_function</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">function</span><span class="p">)</span>
+    <span class="k">function</span> <span class="o">=</span> <span class="n">import_function</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="k">function</span><span class="p">)</span>
 
-    <span class="n">function</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">function</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">error_handler</span><span class="o">.</span><span class="n">fired</span><span class="p">:</span>
-
-        <span class="n">logging</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;Failure: exiting with code 1 due to logged errors&quot;</span><span class="p">)</span>
-
-        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">exit_if_error_handler_fired</span><span class="p">(</span><span class="k">diagnostics</span><span class="p">[</span><span class="ss">&quot;error_handler&quot;</span><span class="p">])</span>
 </pre></div>
 
 
@@ -2025,6 +2133,67 @@ the manubot command line script.</p>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">parse_args</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">args</span>
+</pre></div>
+
+
+</details>
+<h3 id="setup_logging_and_errors">setup_logging_and_errors</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">setup_logging_and_errors</span><span class="p">(</span>
+
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
+</pre></div>
+
+
+<p>Configure warnings and logging.
+Set up an ErrorHandler to detect whether messages have been logged
+at or above the ERROR level.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">setup_logging_and_errors</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Configure warnings and logging.</span>
+
+<span class="sd">    Set up an ErrorHandler to detect whether messages have been logged</span>
+
+<span class="sd">    at or above the ERROR level.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">errorhandler</span>
+
+    <span class="c1"># Track if message gets logged with severity of error or greater</span>
+
+    <span class="c1"># See https://stackoverflow.com/a/45446664/4651668</span>
+
+    <span class="n">error_handler</span> <span class="o">=</span> <span class="n">errorhandler</span><span class="o">.</span><span class="n">ErrorHandler</span><span class="p">()</span>
+
+    <span class="c1"># Log DeprecationWarnings</span>
+
+    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;always&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">captureWarnings</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="c1"># Log to stderr</span>
+
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+
+    <span class="n">stream_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+    <span class="n">stream_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;## {levelname}</span><span class="se">\n</span><span class="s2">{message}&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;{&quot;</span><span class="p">)</span>
+
+    <span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">stream_handler</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+
+        <span class="s2">&quot;logger&quot;</span><span class="p">:</span> <span class="n">logger</span><span class="p">,</span>
+
+        <span class="s2">&quot;error_handler&quot;</span><span class="p">:</span> <span class="n">error_handler</span><span class="p">,</span>
+
+    <span class="p">}</span>
 </pre></div>
 
 

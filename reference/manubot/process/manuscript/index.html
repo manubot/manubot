@@ -703,6 +703,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../pandoc/cite_filter/" title="Cite Filter" class="md-nav__link">
+      Cite Filter
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../pandoc/" title="Index" class="md-nav__link">
       Index
     </a>
@@ -1363,7 +1375,7 @@
 
     <span class="k">return</span> <span class="n">text</span>
 
-<span class="k">def</span> <span class="nf">get_manuscript_stats</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_manuscript_stats</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1373,21 +1385,23 @@
 
     <span class="n">stats</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
-    <span class="c1"># Number of distinct references by type</span>
+    <span class="k">if</span> <span class="n">citekeys_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
 
-    <span class="n">ref_counts</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="c1"># Number of distinct references by type</span>
 
-        <span class="n">citekeys_df</span><span class="o">.</span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="n">ref_counts</span> <span class="o">=</span> <span class="p">(</span>
 
-        <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">citekeys_df</span><span class="o">.</span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
 
-        <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
 
-    <span class="p">)</span>
+            <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">)</span>
 
-    <span class="n">ref_counts</span><span class="p">[</span><span class="s2">&quot;total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ref_counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="p">)</span>
 
-    <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;reference_counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ref_counts</span>
+        <span class="n">ref_counts</span><span class="p">[</span><span class="s2">&quot;total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ref_counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+        <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;reference_counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ref_counts</span>
 
     <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;word_count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
 
@@ -1485,13 +1499,13 @@ clearly invalid such as <code>doi:/453</code> are not returned.</p>
 <h3 id="get_manuscript_stats">get_manuscript_stats</h3>
 <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_manuscript_stats</span><span class="p">(</span>
     <span class="n">text</span><span class="p">,</span>
-    <span class="n">citekeys_df</span>
+    <span class="n">citekeys_df</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">)</span>
 </pre></div>
 
 
 <p>Compute manuscript statistics.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">get_manuscript_stats</span><span class="p">(</span><span class="nb">text</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">get_manuscript_stats</span><span class="p">(</span><span class="nb">text</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
@@ -1501,21 +1515,23 @@ clearly invalid such as <code>doi:/453</code> are not returned.</p>
 
     <span class="n">stats</span> <span class="o">=</span> <span class="n">collections</span><span class="p">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
-    <span class="o">#</span> <span class="nb">Number</span> <span class="k">of</span> <span class="k">distinct</span> <span class="k">references</span> <span class="k">by</span> <span class="k">type</span>
+    <span class="k">if</span> <span class="n">citekeys_df</span> <span class="k">is</span> <span class="k">not</span> <span class="k">None</span><span class="p">:</span>
 
-    <span class="n">ref_counts</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="o">#</span> <span class="nb">Number</span> <span class="k">of</span> <span class="k">distinct</span> <span class="k">references</span> <span class="k">by</span> <span class="k">type</span>
 
-        <span class="n">citekeys_df</span><span class="p">.</span><span class="n">standard_citekey</span><span class="p">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="n">ref_counts</span> <span class="o">=</span> <span class="p">(</span>
 
-        <span class="p">.</span><span class="k">map</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="ss">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">citekeys_df</span><span class="p">.</span><span class="n">standard_citekey</span><span class="p">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
 
-        <span class="p">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">collections</span><span class="p">.</span><span class="n">Counter</span><span class="p">)</span>
+            <span class="p">.</span><span class="k">map</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="ss">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
 
-    <span class="p">)</span>
+            <span class="p">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">collections</span><span class="p">.</span><span class="n">Counter</span><span class="p">)</span>
 
-    <span class="n">ref_counts</span><span class="p">[</span><span class="ss">&quot;total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="k">sum</span><span class="p">(</span><span class="n">ref_counts</span><span class="p">.</span><span class="k">values</span><span class="p">())</span>
+        <span class="p">)</span>
 
-    <span class="n">stats</span><span class="p">[</span><span class="ss">&quot;reference_counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ref_counts</span>
+        <span class="n">ref_counts</span><span class="p">[</span><span class="ss">&quot;total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="k">sum</span><span class="p">(</span><span class="n">ref_counts</span><span class="p">.</span><span class="k">values</span><span class="p">())</span>
+
+        <span class="n">stats</span><span class="p">[</span><span class="ss">&quot;reference_counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ref_counts</span>
 
     <span class="n">stats</span><span class="p">[</span><span class="ss">&quot;word_count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="nb">text</span><span class="p">.</span><span class="n">split</span><span class="p">())</span>
 
