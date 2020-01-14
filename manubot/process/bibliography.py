@@ -56,6 +56,7 @@ def load_manual_references(paths=[], extra_csl_items=[]) -> dict:
     from manubot.cite.csl_item import CSL_Item
 
     csl_items = []
+    paths = list(dict.fromkeys(paths))  # remove duplicates
     for path in paths:
         path = pathlib.Path(path)
         if not path.is_file():

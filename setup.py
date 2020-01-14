@@ -69,6 +69,7 @@ setuptools.setup(
         "jsonschema",
         "packaging",
         "pandas",
+        "panflute",
         "pybase62",
         "pyyaml",
         "ratelimiter",
@@ -79,7 +80,12 @@ setuptools.setup(
     # Additional groups of dependencies
     extras_require=extras_require,
     # Create command line script
-    entry_points={"console_scripts": ["manubot = manubot.command:main"]},
+    entry_points={
+        "console_scripts": [
+            "manubot = manubot.command:main",
+            "pandoc-manubot-cite = manubot.pandoc.cite_filter:main",
+        ],
+    },
     # Include package data files
     package_data={
         "manubot": [

@@ -1,6 +1,8 @@
 import collections
 import json
 import logging
+import os
+import pathlib
 import re
 import textwrap
 import warnings
@@ -259,6 +261,25 @@ def load_variables(args) -> dict:
     # Add header-includes metadata with <meta> information for the HTML output's <head>
     variables["pandoc"]["header-includes"] = get_header_includes(variables)
 
+    if args.skip_citations:
+        # Extend Pandoc's metadata.bibliography field with manual references paths
+        bibliographies = variables["pandoc"].get("bibliography", [])
+        if isinstance(bibliographies, str):
+            bibliographies = [bibliographies]
+        assert isinstance(bibliographies, list)
+        bibliographies.extend(args.manual_references_paths)
+        bibliographies = list(map(os.fspath, bibliographies))
+        variables["pandoc"]["bibliography"] = bibliographies
+        # enable pandoc-manubot-cite option to write bibliography to a file
+        variables["pandoc"]["manubot-output-bibliography"] = os.fspath(
+            args.references_path
+        )
+        variables["pandoc"]["manubot-output-citekeys"] = os.fspath(args.citations_path)
+        variables["pandoc"]["manubot-requests-cache-path"] = os.fspath(
+            args.requests_cache_path
+        )
+        variables["pandoc"]["manubot-clear-requests-cache"] = args.clear_requests_cache
+
     return variables
 
 
@@ -289,35 +310,64 @@ def get_citekeys_df(citekeys: list, citekey_aliases: dict = {}):
     return citekeys_df
 
 
+def read_citations_tsv(path) -> dict:
+    """
+    Read citekey aliases from a citation-tags.tsv file.
+    """
+    if not path.is_file():
+        logging.info(
+            f"no citation tags file at {path} "
+            "Not reading citekey_aliases from citation-tags.tsv."
+        )
+        return {}
+    tag_df = pandas.read_csv(path, sep="\t")
+    na_rows_df = tag_df[tag_df.isnull().any(axis="columns")]
+    if not na_rows_df.empty:
+        logging.error(
+            f"{path} contains rows with missing values:\n"
+            f"{na_rows_df}\n"
+            "This error can be caused by using spaces rather than tabs to delimit fields.\n"
+            "Proceeding to reread TSV with delim_whitespace=True."
+        )
+        tag_df = pandas.read_csv(path, delim_whitespace=True)
+    tag_df["manuscript_citekey"] = "tag:" + tag_df.tag
+    tag_df = tag_df.rename(columns={"citation": "detagged_citekey"})
+    citekey_aliases = dict(
+        zip(tag_df["manuscript_citekey"], tag_df["detagged_citekey"])
+    )
+    return citekey_aliases
+
+
 def _get_citekeys_df(args, text):
     """
     Generate citekeys_df from manubot process args and save it to 'citations.tsv'.
     """
     manuscript_citekeys = get_citekeys(text)
-    if args.citation_tags_path.is_file():
-        tag_df = pandas.read_csv(args.citation_tags_path, sep="\t")
-        na_rows_df = tag_df[tag_df.isnull().any(axis="columns")]
-        if not na_rows_df.empty:
-            logging.error(
-                f"{args.citation_tags_path} contains rows with missing values:\n"
-                f"{na_rows_df}\n"
-                "This error can be caused by using spaces rather than tabs to delimit fields.\n"
-                "Proceeding to reread TSV with delim_whitespace=True."
-            )
-            tag_df = pandas.read_csv(args.citation_tags_path, delim_whitespace=True)
-        tag_df["manuscript_citekey"] = "tag:" + tag_df.tag
-        tag_df = tag_df.rename(columns={"citation": "detagged_citekey"})
-        citekey_aliases = dict(
-            zip(tag_df["manuscript_citekey"], tag_df["detagged_citekey"])
-        )
-    else:
-        citekey_aliases = {}
-        logging.info(
-            f"missing {args.citation_tags_path} file: no citation tags (citekey aliases) set"
-        )
+    citekey_aliases = read_citations_tsv(args.citation_tags_path)
     citekeys_df = get_citekeys_df(manuscript_citekeys, citekey_aliases)
-    citekeys_df.to_csv(args.citations_path, sep="\t", index=False)
+    write_citekeys_tsv(citekeys_df, args.citations_path)
     return citekeys_df
+
+
+def write_citekeys_tsv(citekeys_df, path):
+    if not path:
+        return
+    citekeys_df.to_csv(path, sep="\t", index=False)
+
+
+def _citation_tags_to_reference_links(args) -> str:
+    """
+    Convert citation-tags.tsv to markdown reference link syntax
+    """
+    citekey_aliases = read_citations_tsv(args.citation_tags_path)
+    text = "\n\n"
+    for key, value in citekey_aliases.items():
+        text += f"[@{key}]: {value}\n"
+    logging.warning(
+        "citation-tags.tsv is deprecated. "
+        f"Consider deleting citation-tags.tsv and inserting the following paragraph into your Markdown content:{text}"
+    )
+    return text
 
 
 def generate_csl_items(
@@ -405,11 +455,22 @@ def _generate_csl_items(args, citekeys_df):
         clear_requests_cache=args.clear_requests_cache,
     )
 
-    # Write JSON CSL bibliography for Pandoc.
-    with args.references_path.open("w", encoding="utf-8") as write_file:
+    # Write CSL JSON bibliography for Pandoc.
+    write_csl_json(csl_items, args.references_path)
+    return csl_items
+
+
+def write_csl_json(csl_items, path):
+    """
+    Write CSL Items to a JSON file at `path`.
+    If `path` evaluates as False, do nothing.
+    """
+    if not path:
+        return
+    path = pathlib.Path(path)
+    with path.open("w", encoding="utf-8") as write_file:
         json.dump(csl_items, write_file, indent=2, ensure_ascii=False)
         write_file.write("\n")
-    return csl_items
 
 
 def template_with_jinja2(text, variables):
@@ -435,14 +496,16 @@ def prepare_manuscript(args):
     for pandoc.
     """
     text = get_text(args.content_directory)
-    citekeys_df = _get_citekeys_df(args, text)
-
-    _generate_csl_items(args, citekeys_df)
-
-    citekey_mapping = collections.OrderedDict(
-        zip(citekeys_df.manuscript_citekey, citekeys_df.short_citekey)
-    )
-    text = update_manuscript_citekeys(text, citekey_mapping)
+    if args.skip_citations:
+        citekeys_df = None
+        text += _citation_tags_to_reference_links(args)
+    else:
+        citekeys_df = _get_citekeys_df(args, text)
+        _generate_csl_items(args, citekeys_df)
+        citekey_mapping = collections.OrderedDict(
+            zip(citekeys_df.manuscript_citekey, citekeys_df.short_citekey)
+        )
+        text = update_manuscript_citekeys(text, citekey_mapping)
 
     variables = load_variables(args)
     variables["manubot"]["manuscript_stats"] = get_manuscript_stats(text, citekeys_df)

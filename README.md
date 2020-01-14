@@ -96,7 +96,7 @@ See `manubot process --help` for documentation of all command line arguments:
 usage: manubot process [-h] --content-directory CONTENT_DIRECTORY
                        --output-directory OUTPUT_DIRECTORY
                        [--template-variables-path TEMPLATE_VARIABLES_PATH]
-                       [--cache-directory CACHE_DIRECTORY]
+                       [--skip-citations] [--cache-directory CACHE_DIRECTORY]
                        [--clear-requests-cache]
                        [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
 
@@ -120,6 +120,13 @@ optional arguments:
                         `--template-variables-path=namespace=path_or_url`.
                         Namespaces must match the regex `[a-zA-
                         Z_][a-zA-Z0-9_]*`.
+  --skip-citations      Skip citation and reference processing. Specify when
+                        using the pandoc-manubot-cite filter. If citation-
+                        tags.tsv is found in content, these tags will be
+                        inserted in the markdown output using the reference-
+                        link syntax for citekey aliases. Appends
+                        content/manual-references*.* paths to Pandoc's
+                        metadata.bibliography field.
   --cache-directory CACHE_DIRECTORY
                         Custom cache directory. If not specified, caches to
                         output-directory.
@@ -189,6 +196,40 @@ optional arguments:
   --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
                         Set the logging level for stderr logging
 ```
+
+### Pandoc filter
+
+This package creates the `pandoc-manubot-cite` Pandoc filter,
+providing access to Manubot's cite-by-ID functionality from within a Pandoc workflow.
+
+Currently, this filter is experimental and subject to breaking changes at any point.
+At some point in the future, we may migrate entirely from `manubot process` to `pandoc-manubot-cite` for citation processing.
+
+<!-- test codeblock contains output of `pandoc-manubot-cite --help` -->
+```
+usage: pandoc-manubot-cite [-h] [--input [INPUT]] [--output [OUTPUT]]
+                           target_format
+
+Pandoc filter for citation by persistent identifier. Filters are command-line
+programs that read and write a JSON-encoded abstract syntax tree for Pandoc.
+Unless you are debugging, run this filter as part of a pandoc command by
+specifying --filter=pandoc-manubot-cite.
+
+positional arguments:
+  target_format      output format of the pandoc command, as per Pandoc's --to
+                     option
+
+optional arguments:
+  -h, --help         show this help message and exit
+  --input [INPUT]    path read JSON input (defaults to stdin)
+  --output [OUTPUT]  path to write JSON output (defaults to stdout)
+```
+
+Other Pandoc filters exist that do something similar:
+[`pandoc-url2cite`](https://github.com/phiresky/pandoc-url2cite) &
+[`pwcite`](https://github.com/wikicite/wcite#filter-pwcite).
+Currently, `pandoc-manubot-cite` supports the most types of persistent identifiers.
+We're interested in creating as much compatibility as possible between these filters and their syntaxes.
 
 ### Webpage
 
