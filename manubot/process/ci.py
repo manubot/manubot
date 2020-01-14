@@ -22,13 +22,20 @@ def get_continuous_integration_parameters():
     - triggering_commit: git commit that triggered the CI build.
     - build_url: URL for the webpage with build details
     - job_url: URL for the webpage with job details
+
+    GitHub Actions does not set an environment variable with triggering_commit
+    for pull requests. Therefore, set the following environment variable in your workflow:
+
+    ```yaml
+    env:
+      GITHUB_PULL_REQUEST_SHA: ${{ github.event.pull_request.head.sha }}
+    ```
     """
     if os.getenv("GITHUB_ACTIONS", "false") == "true":
         # https://git.io/JvUf7
         repo_slug = os.environ["GITHUB_REPOSITORY"]
         repo_owner, repo_name = repo_slug.split("/")
         action_id = os.environ["GITHUB_ACTION"]
-        event_name = os.environ["GITHUB_EVENT_NAME"]
         # GITHUB_SHA for pull_request event: Last merge commit on the GITHUB_REF branch
         # GITHUB_SHA for push event: Commit pushed, unless deleting a branch (when it's the default branch)
         # https://git.io/JvUfd
@@ -39,11 +46,11 @@ def get_continuous_integration_parameters():
             "repo_owner": repo_owner,
             "repo_name": repo_name,
             "commit": github_sha,
+            "triggering_commit": os.getenv("GITHUB_PULL_REQUEST_SHA")
+            or github_sha,
             "build_url": f"https://github.com/{repo_slug}/commit/{github_sha}/checks",
             "job_url": f"https://github.com/{repo_slug}/runs/{action_id}",
         }
-        if event_name == "push":
-            ci_params["triggering_commit"]: github_sha
         return ci_params
 
     if os.getenv("TRAVIS", "false") == "true":
