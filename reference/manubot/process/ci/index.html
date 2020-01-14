@@ -1227,7 +1227,7 @@
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="n">supported_providers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;travis&quot;</span><span class="p">,</span> <span class="s2">&quot;appveyor&quot;</span><span class="p">]</span>
+<span class="n">supported_providers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;github&quot;</span><span class="p">,</span> <span class="s2">&quot;travis&quot;</span><span class="p">,</span> <span class="s2">&quot;appveyor&quot;</span><span class="p">]</span>
 
 <span class="k">def</span> <span class="nf">get_continuous_integration_parameters</span><span class="p">():</span>
 
@@ -1249,23 +1249,73 @@
 
 <span class="sd">    - commit: git commit being evaluated by the CI build</span>
 
-<span class="sd">    - triggering_commit: git commit that triggered the CI build. For pull requests,</span>
+<span class="sd">        For pull requests, CI services often build a merge commit</span>
 
-<span class="sd">        CI services often build a merge commit with the default branch rather than</span>
+<span class="sd">        with the default branch rather than the commit that was</span>
 
-<span class="sd">        the commit that was added to the pull request.</span>
+<span class="sd">        added to the pull request. In these cases, commit refers</span>
+
+<span class="sd">        to this merge commit.</span>
+
+<span class="sd">    - triggering_commit: git commit that triggered the CI build.</span>
 
 <span class="sd">    - build_url: URL for the webpage with build details</span>
 
 <span class="sd">    - job_url: URL for the webpage with job details</span>
 
+<span class="sd">    GitHub Actions does not set an environment variable with triggering_commit</span>
+
+<span class="sd">    for pull requests. Therefore, set the following environment variable in your workflow:</span>
+
+<span class="sd">    ```yaml</span>
+
+<span class="sd">    env:</span>
+
+<span class="sd">      GITHUB_PULL_REQUEST_SHA: ${{ github.event.pull_request.head.sha }}</span>
+
+<span class="sd">    ```</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CI&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;GITHUB_ACTIONS&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
 
-        <span class="c1"># No continuous integration environment detected</span>
+        <span class="c1"># https://git.io/JvUf7</span>
 
-        <span class="k">return</span> <span class="bp">None</span>
+        <span class="n">repo_slug</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;GITHUB_REPOSITORY&quot;</span><span class="p">]</span>
+
+        <span class="n">repo_owner</span><span class="p">,</span> <span class="n">repo_name</span> <span class="o">=</span> <span class="n">repo_slug</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+
+        <span class="n">action_id</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;GITHUB_ACTION&quot;</span><span class="p">]</span>
+
+        <span class="c1"># GITHUB_SHA for pull_request event: Last merge commit on the GITHUB_REF branch</span>
+
+        <span class="c1"># GITHUB_SHA for push event: Commit pushed, unless deleting a branch (when it&#39;s the default branch)</span>
+
+        <span class="c1"># https://git.io/JvUfd</span>
+
+        <span class="n">github_sha</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;GITHUB_SHA&quot;</span><span class="p">]</span>
+
+        <span class="n">ci_params</span> <span class="o">=</span> <span class="p">{</span>
+
+            <span class="s2">&quot;provider&quot;</span><span class="p">:</span> <span class="s2">&quot;github&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;repo_slug&quot;</span><span class="p">:</span> <span class="n">repo_slug</span><span class="p">,</span>
+
+            <span class="s2">&quot;repo_owner&quot;</span><span class="p">:</span> <span class="n">repo_owner</span><span class="p">,</span>
+
+            <span class="s2">&quot;repo_name&quot;</span><span class="p">:</span> <span class="n">repo_name</span><span class="p">,</span>
+
+            <span class="s2">&quot;commit&quot;</span><span class="p">:</span> <span class="n">github_sha</span><span class="p">,</span>
+
+            <span class="s2">&quot;triggering_commit&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;GITHUB_PULL_REQUEST_SHA&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">github_sha</span><span class="p">,</span>
+
+            <span class="s2">&quot;build_url&quot;</span><span class="p">:</span> <span class="n">f</span><span class="s2">&quot;https://github.com/{repo_slug}/commit/{github_sha}/checks&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;job_url&quot;</span><span class="p">:</span> <span class="n">f</span><span class="s2">&quot;https://github.com/{repo_slug}/runs/{action_id}&quot;</span><span class="p">,</span>
+
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">ci_params</span>
 
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;TRAVIS&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
 
@@ -1339,15 +1389,17 @@
 
         <span class="p">}</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CI&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
 
-        <span class="s2">&quot;Detected CI environment variable, but get_continuous_integration_parameters &quot;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-        <span class="s2">&quot;did not detect environment variables for a supported CI provider. &quot;</span>
+            <span class="s2">&quot;Detected CI environment variable, but get_continuous_integration_parameters &quot;</span>
 
-        <span class="s2">&quot;Supported providers are: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supported_providers</span><span class="p">))</span>
+            <span class="s2">&quot;did not detect environment variables for a supported CI provider. &quot;</span>
 
-    <span class="p">)</span>
+            <span class="s2">&quot;Supported providers are: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supported_providers</span><span class="p">))</span>
+
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">None</span>
 </pre></div>
@@ -1375,132 +1427,193 @@ inferred from environment variables.</p>
 - repo_owner: owner from repo_slug, i.e. "manubot"
 - repo_name: name from repo_slug, i.e. "rootstock"
 - commit: git commit being evaluated by the CI build
-- triggering_commit: git commit that triggered the CI build. For pull requests,
-    CI services often build a merge commit with the default branch rather than
-    the commit that was added to the pull request.
+    For pull requests, CI services often build a merge commit
+    with the default branch rather than the commit that was
+    added to the pull request. In these cases, commit refers
+    to this merge commit.
+- triggering_commit: git commit that triggered the CI build.
 - build_url: URL for the webpage with build details
 - job_url: URL for the webpage with job details</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">get_continuous_integration_parameters</span><span class="p">():</span>
+<p>GitHub Actions does not set an environment variable with triggering_commit
+for pull requests. Therefore, set the following environment variable in your workflow:</p>
+<div class="codehilite"><pre><span></span><span class="nt">env</span><span class="p">:</span>
+  <span class="nt">GITHUB_PULL_REQUEST_SHA</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${{ github.event.pull_request.head.sha }}</span>
+</pre></div>
 
-    <span class="ss">&quot;&quot;&quot;</span>
 
-<span class="ss">    Return a dictionary with information on a continuous integration build</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>def get_continuous_integration_parameters():
 
-<span class="ss">    inferred from environment variables.</span>
+    &quot;&quot;&quot;
 
-<span class="ss">    The following dictionary keys are set (all values are also strings):</span>
+    Return a dictionary with information on a continuous integration build
 
-<span class="ss">    - provider: name of CI provider, such as &quot;</span><span class="n">travis</span><span class="ss">&quot; or &quot;</span><span class="n">appveyor</span><span class="ss">&quot;.</span>
+    inferred from environment variables.
 
-<span class="ss">    - repo_slug: owner/name of the source code repository, i.e. &quot;</span><span class="n">manubot</span><span class="o">/</span><span class="n">rootstock</span><span class="ss">&quot;</span>
+    The following dictionary keys are set (all values are also strings):
 
-<span class="ss">    - repo_owner: owner from repo_slug, i.e. &quot;</span><span class="n">manubot</span><span class="ss">&quot;</span>
+    - provider: name of CI provider, such as &quot;travis&quot; or &quot;appveyor&quot;.
 
-<span class="ss">    - repo_name: name from repo_slug, i.e. &quot;</span><span class="n">rootstock</span><span class="ss">&quot;</span>
+    - repo_slug: owner/name of the source code repository, i.e. &quot;manubot/rootstock&quot;
 
-<span class="ss">    - commit: git commit being evaluated by the CI build</span>
+    - repo_owner: owner from repo_slug, i.e. &quot;manubot&quot;
 
-<span class="ss">    - triggering_commit: git commit that triggered the CI build. For pull requests,</span>
+    - repo_name: name from repo_slug, i.e. &quot;rootstock&quot;
 
-<span class="ss">        CI services often build a merge commit with the default branch rather than</span>
+    - commit: git commit being evaluated by the CI build
 
-<span class="ss">        the commit that was added to the pull request.</span>
+        For pull requests, CI services often build a merge commit
 
-<span class="ss">    - build_url: URL for the webpage with build details</span>
+        with the default branch rather than the commit that was
 
-<span class="ss">    - job_url: URL for the webpage with job details</span>
+        added to the pull request. In these cases, commit refers
 
-<span class="ss">    &quot;&quot;&quot;</span>
+        to this merge commit.
 
-    <span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="ss">&quot;CI&quot;</span><span class="p">,</span> <span class="ss">&quot;false&quot;</span><span class="p">).</span><span class="k">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="ss">&quot;true&quot;</span><span class="p">:</span>
+    - triggering_commit: git commit that triggered the CI build.
 
-        <span class="o">#</span> <span class="k">No</span> <span class="n">continuous</span> <span class="n">integration</span> <span class="n">environment</span> <span class="n">detected</span>
+    - build_url: URL for the webpage with build details
 
-        <span class="k">return</span> <span class="k">None</span>
+    - job_url: URL for the webpage with job details
 
-    <span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="ss">&quot;TRAVIS&quot;</span><span class="p">,</span> <span class="ss">&quot;false&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="ss">&quot;true&quot;</span><span class="p">:</span>
+    GitHub Actions does not set an environment variable with triggering_commit
 
-        <span class="o">#</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">docs</span><span class="p">.</span><span class="n">travis</span><span class="o">-</span><span class="n">ci</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="k">user</span><span class="o">/</span><span class="n">environment</span><span class="o">-</span><span class="n">variables</span><span class="o">/</span>
+    for pull requests. Therefore, set the following environment variable in your workflow:
 
-        <span class="n">repo_slug</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="ss">&quot;TRAVIS_REPO_SLUG&quot;</span><span class="p">]</span>
+    ```yaml
 
-        <span class="n">repo_owner</span><span class="p">,</span> <span class="n">repo_name</span> <span class="o">=</span> <span class="n">repo_slug</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="ss">&quot;/&quot;</span><span class="p">)</span>
+    env:
 
-        <span class="k">return</span> <span class="err">{</span>
+      GITHUB_PULL_REQUEST_SHA: <span class="cp">${</span><span class="p">{</span> <span class="n">github</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">pull_request</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">sha</span> <span class="cp">}</span>}
 
-            <span class="ss">&quot;provider&quot;</span><span class="p">:</span> <span class="ss">&quot;travis&quot;</span><span class="p">,</span>
+    ```
 
-            <span class="ss">&quot;repo_slug&quot;</span><span class="p">:</span> <span class="n">repo_slug</span><span class="p">,</span>
+    &quot;&quot;&quot;
 
-            <span class="ss">&quot;repo_owner&quot;</span><span class="p">:</span> <span class="n">repo_owner</span><span class="p">,</span>
+    if os.getenv(&quot;GITHUB_ACTIONS&quot;, &quot;false&quot;) == &quot;true&quot;:
 
-            <span class="ss">&quot;repo_name&quot;</span><span class="p">:</span> <span class="n">repo_name</span><span class="p">,</span>
+        # https://git.io/JvUf7
 
-            <span class="ss">&quot;commit&quot;</span><span class="p">:</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="ss">&quot;TRAVIS_COMMIT&quot;</span><span class="p">],</span>
+        repo_slug = os.environ[&quot;GITHUB_REPOSITORY&quot;]
 
-            <span class="ss">&quot;triggering_commit&quot;</span><span class="p">:</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="ss">&quot;TRAVIS_PULL_REQUEST_SHA&quot;</span><span class="p">)</span>
+        repo_owner, repo_name = repo_slug.split(&quot;/&quot;)
 
-            <span class="k">or</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="ss">&quot;TRAVIS_COMMIT&quot;</span><span class="p">],</span>
+        action_id = os.environ[&quot;GITHUB_ACTION&quot;]
 
-            <span class="ss">&quot;build_url&quot;</span><span class="p">:</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="ss">&quot;TRAVIS_BUILD_WEB_URL&quot;</span><span class="p">],</span>
+        # GITHUB_SHA for pull_request event: Last merge commit on the GITHUB_REF branch
 
-            <span class="ss">&quot;job_url&quot;</span><span class="p">:</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="ss">&quot;TRAVIS_JOB_WEB_URL&quot;</span><span class="p">],</span>
+        # GITHUB_SHA for push event: Commit pushed, unless deleting a branch (when it&#39;s the default branch)
 
-        <span class="err">}</span>
+        # https://git.io/JvUfd
 
-    <span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="ss">&quot;APPVEYOR&quot;</span><span class="p">,</span> <span class="ss">&quot;false&quot;</span><span class="p">).</span><span class="k">lower</span><span class="p">()</span> <span class="o">==</span> <span class="ss">&quot;true&quot;</span><span class="p">:</span>
+        github_sha = os.environ[&quot;GITHUB_SHA&quot;]
 
-        <span class="o">#</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">appveyor</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">environment</span><span class="o">-</span><span class="n">variables</span><span class="o">/</span>
+        ci_params = {
 
-        <span class="n">repo_slug</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="ss">&quot;APPVEYOR_REPO_NAME&quot;</span><span class="p">]</span>
+            &quot;provider&quot;: &quot;github&quot;,
 
-        <span class="n">repo_owner</span><span class="p">,</span> <span class="n">repo_name</span> <span class="o">=</span> <span class="n">repo_slug</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="ss">&quot;/&quot;</span><span class="p">)</span>
+            &quot;repo_slug&quot;: repo_slug,
 
-        <span class="n">provider_url</span> <span class="o">=</span> <span class="ss">&quot;{APPVEYOR_URL}/project/{APPVEYOR_ACCOUNT_NAME}/{APPVEYOR_PROJECT_SLUG}&quot;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span>
+            &quot;repo_owner&quot;: repo_owner,
 
-            <span class="o">**</span><span class="n">os</span><span class="p">.</span><span class="n">environ</span>
+            &quot;repo_name&quot;: repo_name,
 
-        <span class="p">)</span>
+            &quot;commit&quot;: github_sha,
 
-        <span class="n">build_url</span> <span class="o">=</span> <span class="n">f</span><span class="ss">&quot;{provider_url}/builds/{os.environ[&#39;APPVEYOR_BUILD_ID&#39;]}&quot;</span>
+            &quot;triggering_commit&quot;: os.getenv(&quot;GITHUB_PULL_REQUEST_SHA&quot;) or github_sha,
 
-        <span class="k">return</span> <span class="err">{</span>
+            &quot;build_url&quot;: f&quot;https://github.com/{repo_slug}/commit/{github_sha}/checks&quot;,
 
-            <span class="ss">&quot;provider&quot;</span><span class="p">:</span> <span class="ss">&quot;appveyor&quot;</span><span class="p">,</span>
+            &quot;job_url&quot;: f&quot;https://github.com/{repo_slug}/runs/{action_id}&quot;,
 
-            <span class="ss">&quot;provider_account&quot;</span><span class="p">:</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="ss">&quot;APPVEYOR_ACCOUNT_NAME&quot;</span><span class="p">],</span>
+        }
 
-            <span class="ss">&quot;repo_slug&quot;</span><span class="p">:</span> <span class="n">repo_slug</span><span class="p">,</span>
+        return ci_params
 
-            <span class="ss">&quot;repo_owner&quot;</span><span class="p">:</span> <span class="n">repo_owner</span><span class="p">,</span>
+    if os.getenv(&quot;TRAVIS&quot;, &quot;false&quot;) == &quot;true&quot;:
 
-            <span class="ss">&quot;repo_name&quot;</span><span class="p">:</span> <span class="n">repo_name</span><span class="p">,</span>
+        # https://docs.travis-ci.com/user/environment-variables/
 
-            <span class="ss">&quot;commit&quot;</span><span class="p">:</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="ss">&quot;APPVEYOR_REPO_COMMIT&quot;</span><span class="p">],</span>
+        repo_slug = os.environ[&quot;TRAVIS_REPO_SLUG&quot;]
 
-            <span class="ss">&quot;triggering_commit&quot;</span><span class="p">:</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="ss">&quot;APPVEYOR_PULL_REQUEST_HEAD_COMMIT&quot;</span><span class="p">)</span>
+        repo_owner, repo_name = repo_slug.split(&quot;/&quot;)
 
-            <span class="k">or</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="ss">&quot;APPVEYOR_REPO_COMMIT&quot;</span><span class="p">],</span>
+        return {
 
-            <span class="ss">&quot;build_url&quot;</span><span class="p">:</span> <span class="n">build_url</span><span class="p">,</span>
+            &quot;provider&quot;: &quot;travis&quot;,
 
-            <span class="ss">&quot;job_url&quot;</span><span class="p">:</span> <span class="n">f</span><span class="ss">&quot;{provider_url}/build/job/{os.environ[&#39;APPVEYOR_JOB_ID&#39;]}&quot;</span><span class="p">,</span>
+            &quot;repo_slug&quot;: repo_slug,
 
-            <span class="ss">&quot;artifact_url&quot;</span><span class="p">:</span> <span class="n">f</span><span class="ss">&quot;{build_url}/artifacts&quot;</span><span class="p">,</span>
+            &quot;repo_owner&quot;: repo_owner,
 
-        <span class="err">}</span>
+            &quot;repo_name&quot;: repo_name,
 
-    <span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span>
+            &quot;commit&quot;: os.environ[&quot;TRAVIS_COMMIT&quot;],
 
-        <span class="ss">&quot;Detected CI environment variable, but get_continuous_integration_parameters &quot;</span>
+            &quot;triggering_commit&quot;: os.getenv(&quot;TRAVIS_PULL_REQUEST_SHA&quot;)
 
-        <span class="ss">&quot;did not detect environment variables for a supported CI provider. &quot;</span>
+            or os.environ[&quot;TRAVIS_COMMIT&quot;],
 
-        <span class="ss">&quot;Supported providers are: {}&quot;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="ss">&quot;, &quot;</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="n">supported_providers</span><span class="p">))</span>
+            &quot;build_url&quot;: os.environ[&quot;TRAVIS_BUILD_WEB_URL&quot;],
 
-    <span class="p">)</span>
+            &quot;job_url&quot;: os.environ[&quot;TRAVIS_JOB_WEB_URL&quot;],
 
-    <span class="k">return</span> <span class="k">None</span>
+        }
+
+    if os.getenv(&quot;APPVEYOR&quot;, &quot;false&quot;).lower() == &quot;true&quot;:
+
+        # https://www.appveyor.com/docs/environment-variables/
+
+        repo_slug = os.environ[&quot;APPVEYOR_REPO_NAME&quot;]
+
+        repo_owner, repo_name = repo_slug.split(&quot;/&quot;)
+
+        provider_url = &quot;{APPVEYOR_URL}/project/{APPVEYOR_ACCOUNT_NAME}/{APPVEYOR_PROJECT_SLUG}&quot;.format(
+
+            **os.environ
+
+        )
+
+        build_url = f&quot;{provider_url}/builds/{os.environ[&#39;APPVEYOR_BUILD_ID&#39;]}&quot;
+
+        return {
+
+            &quot;provider&quot;: &quot;appveyor&quot;,
+
+            &quot;provider_account&quot;: os.environ[&quot;APPVEYOR_ACCOUNT_NAME&quot;],
+
+            &quot;repo_slug&quot;: repo_slug,
+
+            &quot;repo_owner&quot;: repo_owner,
+
+            &quot;repo_name&quot;: repo_name,
+
+            &quot;commit&quot;: os.environ[&quot;APPVEYOR_REPO_COMMIT&quot;],
+
+            &quot;triggering_commit&quot;: os.getenv(&quot;APPVEYOR_PULL_REQUEST_HEAD_COMMIT&quot;)
+
+            or os.environ[&quot;APPVEYOR_REPO_COMMIT&quot;],
+
+            &quot;build_url&quot;: build_url,
+
+            &quot;job_url&quot;: f&quot;{provider_url}/build/job/{os.environ[&#39;APPVEYOR_JOB_ID&#39;]}&quot;,
+
+            &quot;artifact_url&quot;: f&quot;{build_url}/artifacts&quot;,
+
+        }
+
+    if os.getenv(&quot;CI&quot;, &quot;false&quot;).lower() != &quot;true&quot;:
+
+        logging.warning(
+
+            &quot;Detected CI environment variable, but get_continuous_integration_parameters &quot;
+
+            &quot;did not detect environment variables for a supported CI provider. &quot;
+
+            &quot;Supported providers are: {}&quot;.format(&quot;, &quot;.join(supported_providers))
+
+        )
+
+    return None
 </pre></div>
 
 
