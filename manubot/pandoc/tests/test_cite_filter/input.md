@@ -1,7 +1,7 @@
 ---
 # yaml_metadata_block with pandoc metadata
 citekey-aliases:
-  tag:meta-review: url:https://greenelab.github.io/meta-review/
+  tag:meta-review: url:https://greenelab.github.io/meta-review/v/6afcab41acf01822f8af8760184cd3cb2d67ab5f/
   tag:deep-review: doi:10.1098/rsif.2017.0387
   tag:paper-of-future: url:http://blogs.nature.com/naturejobs/2017/06/01/techblog-c-titus-brown-predicting-the-paper-of-the-future
 references:
