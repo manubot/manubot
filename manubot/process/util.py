@@ -360,6 +360,8 @@ def _citation_tags_to_reference_links(args) -> str:
     Convert citation-tags.tsv to markdown reference link syntax
     """
     citekey_aliases = read_citations_tsv(args.citation_tags_path)
+    if not citekey_aliases:
+        return ""
     text = "\n\n"
     for key, value in citekey_aliases.items():
         text += f"[@{key}]: {value}\n"
