@@ -33,16 +33,18 @@ def get_continuous_integration_parameters():
         # GITHUB_SHA for push event: Commit pushed, unless deleting a branch (when it's the default branch)
         # https://git.io/JvUfd
         github_sha = os.environ["GITHUB_SHA"]
-        return {
+        ci_params = {
             "provider": "github",
             "repo_slug": repo_slug,
             "repo_owner": repo_owner,
             "repo_name": repo_name,
             "commit": github_sha,
-            "triggering_commit": github_sha if event_name == "push" else None,
             "build_url": f"https://github.com/{repo_slug}/commit/{github_sha}/checks",
             "job_url": f"https://github.com/{repo_slug}/runs/{action_id}",
         }
+        if event_name == "push":
+            ci_params["triggering_commit"]: github_sha
+        return ci_params
 
     if os.getenv("TRAVIS", "false") == "true":
         # https://docs.travis-ci.com/user/environment-variables/
