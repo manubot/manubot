@@ -46,8 +46,7 @@ def get_continuous_integration_parameters():
             "repo_owner": repo_owner,
             "repo_name": repo_name,
             "commit": github_sha,
-            "triggering_commit": os.getenv("GITHUB_PULL_REQUEST_SHA")
-            or github_sha,
+            "triggering_commit": os.getenv("GITHUB_PULL_REQUEST_SHA") or github_sha,
             "build_url": f"https://github.com/{repo_slug}/commit/{github_sha}/checks",
             "job_url": f"https://github.com/{repo_slug}/runs/{action_id}",
         }
