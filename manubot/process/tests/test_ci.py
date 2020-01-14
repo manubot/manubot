@@ -7,6 +7,26 @@ from ..ci import get_continuous_integration_parameters
 
 
 @pytest.mark.skipif(
+    "GITHUB_ACTION" not in os.environ,
+    reason="tests environment variables set by GitHub Actions only",
+)
+@pytest.mark.skipif(
+    os.getenv("GITHUB_REPOSITORY") != "manubot/manubot", reason="test fails on forks"
+)
+def test_get_continuous_integration_parameters_github():
+    info = get_continuous_integration_parameters()
+    assert info is not None
+    assert info["provider"] == "github"
+    assert info["repo_slug"] == "manubot/manubot"
+    assert info["repo_owner"] == "manubot"
+    assert info["repo_name"] == "manubot"
+    assert info["commit"]
+    assert info["triggering_commit"]
+    assert info["build_url"].startswith("https://github.com/manubot/manubot/commit/")
+    assert info["job_url"].startswith("https://github.com/manubot/manubot/runs/")
+
+
+@pytest.mark.skipif(
     "TRAVIS" not in os.environ,
     reason="tests environment variables set by Travis builds only",
 )
