@@ -1,16 +1,22 @@
-name: Python Package Tests
-
-on: [push, pull_request]
-
+name: Tests
+on:
+- push
+- pull_request
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.6, 3.7]
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-        pandoc-version: [2.9.1]
+        python-version:
+        - 3.6
+        - 3.7
+        os:
+        - ubuntu-latest
+        - windows-latest
+        - macOS-latest
+        pandoc-version:
+        - 2.9.1
     steps:
     - name: Install pandoc on Linux
       if: matrix.os == 'ubuntu-latest'
@@ -28,7 +34,7 @@ jobs:
           https://github.com/jgm/pandoc/releases/download/${{ matrix.pandoc-version }}/pandoc-${{ matrix.pandoc-version }}-macOS.pkg
         sudo installer -pkg pandoc.pkg -target /
     - name: Checkout git repository
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
@@ -42,3 +48,39 @@ jobs:
         GITHUB_PULL_REQUEST_SHA: ${{ github.event.pull_request.head.sha }}
       run: |
         pytest -rs --color=yes -m "not pandoc_version_sensitive"
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout git repository
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Delete me
+      run: echo "testing how this workflow will work"
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+    - name: Dump job context
+      env:
+        JOB_CONTEXT: ${{ toJson(job) }}
+      run: echo "$JOB_CONTEXT"
+    - name: Dump steps context
+      env:
+        STEPS_CONTEXT: ${{ toJson(steps) }}
+      run: echo "$STEPS_CONTEXT"
+    - name: Dump runner context
+      env:
+        RUNNER_CONTEXT: ${{ toJson(runner) }}
+      run: echo "$RUNNER_CONTEXT"
+    - name: Dump strategy context
+      env:
+        STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+      run: echo "$STRATEGY_CONTEXT"
+    - name: Dump matrix context
+      env:
+        MATRIX_CONTEXT: ${{ toJson(matrix) }}
+      run: echo "$MATRIX_CONTEXT"
