@@ -5,7 +5,40 @@ import xml.etree.ElementTree
 import requests
 
 from .csl_item import CSL_Item
+from .citekey import regexes
 from manubot.util import get_manubot_user_agent
+
+
+class CSL_Item_arXiv(CSL_Item):
+    def _set_invariant_fields(self):
+        # Set journal/publisher to arXiv
+        self["container-title"] = "arXiv"
+        self["publisher"] = "arXiv"
+        # Set CSL type to report for preprint
+        self["type"] = "report"
+        return self
+
+    def log_journal_doi(self, arxiv_id, journal_ref=None):
+        msg = f"arXiv article {arxiv_id} published at https://doi.org/{self['doi']}"
+        if journal_ref:
+            msg += f" — {journal_ref}"
+        logging.info(msg)
+
+    def set_identifier_fields(self, arxiv_id):
+        self.set_id(f"arxiv:{arxiv_id}")
+        self["URL"] = f"https://arxiv.org/abs/{arxiv_id}"
+        self["number"] = arxiv_id
+        match = re.match(regexes["arxiv"], arxiv_id)
+        version = match.group("version")
+        if version:
+            self["version"] = version
+
+
+def query_arxiv_api(url, params):
+    headers = {"User-Agent": get_manubot_user_agent()}
+    response = requests.get(url, params, headers=headers)
+    xml_tree = xml.etree.ElementTree.fromstring(response.text)
+    return xml_tree
 
 
 def get_arxiv_csl_item(arxiv_id):
@@ -25,30 +58,27 @@ def get_arxiv_csl_item(arxiv_id):
     - http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
     - https://github.com/citation-style-language/schema/blob/master/csl-data.json
     """
-    url = "https://export.arxiv.org/api/query"
-    params = {"id_list": arxiv_id, "max_results": 1}
-    headers = {"User-Agent": get_manubot_user_agent()}
-    response = requests.get(url, params, headers=headers)
+    xml_tree = query_arxiv_api(
+        url="https://export.arxiv.org/api/query",
+        params={"id_list": arxiv_id, "max_results": 1},
+    )
 
     # XML namespace prefixes
     prefix = "{http://www.w3.org/2005/Atom}"
     alt_prefix = "{http://arxiv.org/schemas/atom}"
 
     # Parse XML
-    xml_tree = xml.etree.ElementTree.fromstring(response.text)
     (entry,) = xml_tree.findall(prefix + "entry")
 
     # Create dictionary for CSL Item
-    csl_item = CSL_Item()
+    csl_item = CSL_Item_arXiv()
 
     # Extract versioned arXiv ID
     url = entry.findtext(prefix + "id")
     pattern = re.compile(r"arxiv.org/abs/(.+)")
     match = pattern.search(url)
     versioned_id = match.group(1)
-    csl_item["number"] = versioned_id
-    _, csl_item["version"] = versioned_id.rsplit("v", 1)
-    csl_item["URL"] = "https://arxiv.org/abs/" + versioned_id
+    csl_item.set_identifier_fields(versioned_id)
 
     # Extrat CSL title field
     csl_item["title"] = entry.findtext(prefix + "title")
@@ -65,9 +95,7 @@ def get_arxiv_csl_item(arxiv_id):
         authors.append(author)
     csl_item["author"] = authors
 
-    # Set publisher to arXiv
-    csl_item["container-title"] = "arXiv"
-    csl_item["publisher"] = "arXiv"
+    csl_item._set_invariant_fields()
 
     # Extract abstract
     abstract = entry.findtext(prefix + "summary").strip()
@@ -77,16 +105,11 @@ def get_arxiv_csl_item(arxiv_id):
         csl_item["abstract"] = abstract
 
     # Check if the article has been published with a DOI
-    DOI = entry.findtext("{http://arxiv.org/schemas/atom}doi")
-    if DOI:
-        csl_item["DOI"] = DOI
+    doi = entry.findtext(f"{alt_prefix}doi")
+    if doi:
+        csl_item["DOI"] = doi
         journal_ref = entry.findtext(alt_prefix + "journal_ref")
-        msg = f"arXiv article {arxiv_id} published at https://doi.org/{DOI}"
-        if journal_ref:
-            msg += f" — {journal_ref}"
-        logging.warning(msg)
-    # Set CSL type to report for preprint
-    csl_item["type"] = "report"
+        csl_item.log_journal_doi(arxiv_id, journal_ref)
     return csl_item
 
 
@@ -96,37 +119,46 @@ def remove_newlines(text):
 
 def get_arxiv_csl_item_oai(arxiv_id):
     """
-    Must be unversioned ID.
+    Generate a CSL Item for an unversioned arXiv identifier
+    using arXiv's OAI_PMH v2.0 API <https://arxiv.org/help/oa>.
+    This endpoint does not support versioned `arxiv_id`.
     """
     # XML namespace prefixes
     ns_oai = "{http://www.openarchives.org/OAI/2.0/}"
     ns_arxiv = "{http://arxiv.org/OAI/arXiv/}"
 
-    url = "https://export.arxiv.org/oai2"
-    params = {
-        "verb": "GetRecord",
-        "metadataPrefix": "arXiv",
-        "identifier": f"oai:arXiv.org:{arxiv_id}",
-    }
-    headers = {"User-Agent": get_manubot_user_agent()}
-    response = requests.get(url, params, headers=headers)
+    xml_tree = query_arxiv_api(
+        url="https://export.arxiv.org/oai2",
+        params={
+            "verb": "GetRecord",
+            "metadataPrefix": "arXiv",
+            "identifier": f"oai:arXiv.org:{arxiv_id}",
+        },
+    )
 
     # Create dictionary for CSL Item
-    csl_item = CSL_Item()
+    csl_item = CSL_Item_arXiv()
 
-    xml_tree = xml.etree.ElementTree.fromstring(response.text)
-    header_elem, = xml_tree.findall(f"{ns_oai}GetRecord/{ns_oai}record/{ns_oai}header")
-    metadata_elem, = xml_tree.findall(f"{ns_oai}GetRecord/{ns_oai}record/{ns_oai}metadata")
-    arxiv_elem, = metadata_elem.findall(f"{ns_arxiv}arXiv")
+    (header_elem,) = xml_tree.findall(
+        f"{ns_oai}GetRecord/{ns_oai}record/{ns_oai}header"
+    )
+    (metadata_elem,) = xml_tree.findall(
+        f"{ns_oai}GetRecord/{ns_oai}record/{ns_oai}metadata"
+    )
+    (arxiv_elem,) = metadata_elem.findall(f"{ns_arxiv}arXiv")
     title = arxiv_elem.findtext(f"{ns_arxiv}title")
     if title:
-        csl_item["title"] = ' '.join(title.split())
+        csl_item["title"] = " ".join(title.split())
     datestamp = header_elem.findtext(f"{ns_oai}datestamp")
     csl_item.set_date(datestamp, "issued")
 
-    # Set publisher to arXiv
-    csl_item["container-title"] = "arXiv"
-    csl_item["publisher"] = "arXiv"
+    response_arxiv_id = arxiv_elem.findtext(f"{ns_arxiv}id")
+    if arxiv_id != response_arxiv_id:
+        logging.warning(
+            f"arXiv oai2 query returned a different arxiv_id:"
+            " {arxiv_id} became {response_arxiv_id}"
+        )
+    csl_item.set_identifier_fields(response_arxiv_id)
 
     # Extract authors
     author_elems = arxiv_elem.findall(f"{ns_arxiv}authors/{ns_arxiv}author")
@@ -142,6 +174,8 @@ def get_arxiv_csl_item_oai(arxiv_id):
         authors.append(author)
     csl_item["author"] = authors
 
+    csl_item._set_invariant_fields()
+
     abstract = arxiv_elem.findtext(f"{ns_arxiv}abstract")
     if abstract:
         csl_item["abstract"] = remove_newlines(abstract)
@@ -150,6 +184,9 @@ def get_arxiv_csl_item_oai(arxiv_id):
     if license:
         csl_item.note_append_dict({"license": license})
 
-    #import pdb; pdb.set_trace()
+    doi = arxiv_elem.findtext(f"{ns_arxiv}doi")
+    if doi:
+        csl_item["DOI"] = doi
+        journal_ref = arxiv_elem.findtext(f"{ns_arxiv}journal-ref")
+        csl_item.log_journal_doi(arxiv_id, journal_ref)
     return csl_item
-

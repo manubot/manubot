@@ -87,7 +87,7 @@ def standardize_citekey(citekey, warn_if_changed=False):
 
 regexes = {
     "arxiv": re.compile(
-        r"([0-9]{4}\.[0-9]{4,5}|[a-z\-]+(\.[A-Z]{2})?/[0-9]{7})(v[0-9]+)?"
+        r"([0-9]{4}\.[0-9]{4,5}|[a-z\-]+(\.[A-Z]{2})?/[0-9]{7})(?P<version>v[0-9]+)?"
     ),
     "pmid": re.compile(r"[1-9][0-9]{0,7}"),
     "pmcid": re.compile(r"PMC[0-9]+"),
