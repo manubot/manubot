@@ -73,7 +73,7 @@ def get_arxiv_csl_item(arxiv_id):
     abstract = entry.findtext(prefix + "summary").strip()
     if abstract:
         # remove newlines that were added to wrap abstract
-        abstract = re.sub(pattern=r"\n(?!\s)", repl=" ", string=abstract)
+        abstract = remove_newlines(abstract)
         csl_item["abstract"] = abstract
 
     # Check if the article has been published with a DOI
@@ -88,3 +88,68 @@ def get_arxiv_csl_item(arxiv_id):
     # Set CSL type to report for preprint
     csl_item["type"] = "report"
     return csl_item
+
+
+def remove_newlines(text):
+    return re.sub(pattern=r"\n(?!\s)", repl=" ", string=text)
+
+
+def get_arxiv_csl_item_oai(arxiv_id):
+    """
+    Must be unversioned ID.
+    """
+    # XML namespace prefixes
+    ns_oai = "{http://www.openarchives.org/OAI/2.0/}"
+    ns_arxiv = "{http://arxiv.org/OAI/arXiv/}"
+
+    url = "https://export.arxiv.org/oai2"
+    params = {
+        "verb": "GetRecord",
+        "metadataPrefix": "arXiv",
+        "identifier": f"oai:arXiv.org:{arxiv_id}",
+    }
+    headers = {"User-Agent": get_manubot_user_agent()}
+    response = requests.get(url, params, headers=headers)
+
+    # Create dictionary for CSL Item
+    csl_item = CSL_Item()
+
+    xml_tree = xml.etree.ElementTree.fromstring(response.text)
+    header_elem, = xml_tree.findall(f"{ns_oai}GetRecord/{ns_oai}record/{ns_oai}header")
+    metadata_elem, = xml_tree.findall(f"{ns_oai}GetRecord/{ns_oai}record/{ns_oai}metadata")
+    arxiv_elem, = metadata_elem.findall(f"{ns_arxiv}arXiv")
+    title = arxiv_elem.findtext(f"{ns_arxiv}title")
+    if title:
+        csl_item["title"] = ' '.join(title.split())
+    datestamp = header_elem.findtext(f"{ns_oai}datestamp")
+    csl_item.set_date(datestamp, "issued")
+
+    # Set publisher to arXiv
+    csl_item["container-title"] = "arXiv"
+    csl_item["publisher"] = "arXiv"
+
+    # Extract authors
+    author_elems = arxiv_elem.findall(f"{ns_arxiv}authors/{ns_arxiv}author")
+    authors = list()
+    for author_elem in author_elems:
+        author = {}
+        given = author_elem.findtext(f"{ns_arxiv}forenames")
+        family = author_elem.findtext(f"{ns_arxiv}keyname")
+        if given:
+            author["given"] = given
+        if family:
+            author["family"] = family
+        authors.append(author)
+    csl_item["author"] = authors
+
+    abstract = arxiv_elem.findtext(f"{ns_arxiv}abstract")
+    if abstract:
+        csl_item["abstract"] = remove_newlines(abstract)
+
+    license = arxiv_elem.findtext(f"{ns_arxiv}license")
+    if license:
+        csl_item.note_append_dict({"license": license})
+
+    #import pdb; pdb.set_trace()
+    return csl_item
+

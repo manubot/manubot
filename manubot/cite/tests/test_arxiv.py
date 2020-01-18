@@ -1,4 +1,4 @@
-from ..arxiv import get_arxiv_csl_item
+from ..arxiv import get_arxiv_csl_item, get_arxiv_csl_item_oai
 
 
 def test_get_arxiv_csl_item_abstract_whitespace():
@@ -20,3 +20,11 @@ def test_get_arxiv_csl_item_abstract_whitespace():
         "\n  Applicability of the algorithm is demonstrated for 3D cone beam computed tomography from real measurement data of an organic phantom. Additionally, we examine scalability and reconstruction quality in comparison to established learned reconstruction methods in two dimensions for low dose computed tomography on human phantoms."
     )
     assert csl_item["abstract"] == abstract
+
+
+def test_get_arxiv_csl_item_oai():
+    """
+    https://export.arxiv.org/oai2?verb=GetRecord&identifier=oai:arXiv.org:1912.04616&metadataPrefix=arXiv
+    """
+    csl_item = get_arxiv_csl_item_oai("1912.04616")
+    assert csl_item["title"] == "OpenBioLink: A resource and benchmarking framework for large-scale biomedical link prediction"
