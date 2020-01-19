@@ -28,10 +28,28 @@ class CSL_Item_arXiv(CSL_Item):
         self.set_id(f"arxiv:{arxiv_id}")
         self["URL"] = f"https://arxiv.org/abs/{arxiv_id}"
         self["number"] = arxiv_id
-        match = re.match(regexes["arxiv"], arxiv_id)
-        version = match.group("version")
+        version = get_arxiv_id_version(arxiv_id)
         if version:
             self["version"] = version
+
+
+def get_arxiv_id_version(arxiv_id: str):
+    """
+    Return version suffix like 'v2' or None.
+    """
+    match = re.match(regexes["arxiv"], arxiv_id)
+    return match.group("version")
+
+
+def get_arxiv_csl_item(arxiv_id: str):
+    """
+    Return csl_item item for an arXiv identifier.
+    Chooses which arXiv API to use based on whether arxiv_id
+    is versioned, since only one endpoint supports versioning.
+    """
+    if get_arxiv_id_version(arxiv_id):
+        return get_arxiv_csl_item_export_api(arxiv_id)
+    return get_arxiv_csl_item_oai(arxiv_id)
 
 
 def query_arxiv_api(url, params):
@@ -41,7 +59,7 @@ def query_arxiv_api(url, params):
     return xml_tree
 
 
-def get_arxiv_csl_item(arxiv_id):
+def get_arxiv_csl_item_export_api(arxiv_id):
     """
     Return csl_item item for an arXiv record.
 
@@ -111,10 +129,6 @@ def get_arxiv_csl_item(arxiv_id):
         journal_ref = entry.findtext(alt_prefix + "journal_ref")
         csl_item.log_journal_doi(arxiv_id, journal_ref)
     return csl_item
-
-
-def remove_newlines(text):
-    return re.sub(pattern=r"\n(?!\s)", repl=" ", string=text)
 
 
 def get_arxiv_csl_item_oai(arxiv_id):
@@ -190,3 +204,7 @@ def get_arxiv_csl_item_oai(arxiv_id):
         journal_ref = arxiv_elem.findtext(f"{ns_arxiv}journal-ref")
         csl_item.log_journal_doi(arxiv_id, journal_ref)
     return csl_item
+
+
+def remove_newlines(text):
+    return re.sub(pattern=r"\n(?!\s)", repl=" ", string=text)

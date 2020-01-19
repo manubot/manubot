@@ -1,4 +1,4 @@
-from ..arxiv import get_arxiv_csl_item, get_arxiv_csl_item_oai
+from ..arxiv import get_arxiv_csl_item_export_api, get_arxiv_csl_item_oai
 
 
 def test_get_arxiv_csl_item_abstract_whitespace():
@@ -13,7 +13,7 @@ def test_get_arxiv_csl_item_abstract_whitespace():
     When the abstract is formatted for email announcement,
     it will be wrapped to 80 characters.
     """
-    csl_item = get_arxiv_csl_item("1908.00936v2")
+    csl_item = get_arxiv_csl_item_export_api("1908.00936v2")
     assert csl_item["title"] == "Multi-Scale Learned Iterative Reconstruction"
     assert csl_item["URL"] == "https://arxiv.org/abs/1908.00936v2"
     assert csl_item["version"] == "v2"
