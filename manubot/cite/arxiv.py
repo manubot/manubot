@@ -19,7 +19,9 @@ class CSL_Item_arXiv(CSL_Item):
         return self
 
     def log_journal_doi(self, arxiv_id, journal_ref=None):
-        msg = f"arXiv article {arxiv_id} published at https://doi.org/{self['doi']}"
+        if "DOI" not in self:
+            return
+        msg = f"arXiv article {arxiv_id} published at https://doi.org/{self['DOI']}"
         if journal_ref:
             msg += f" — {journal_ref}"
         logging.info(msg)
@@ -127,7 +129,7 @@ def get_arxiv_csl_item_export_api(arxiv_id):
     if doi:
         csl_item["DOI"] = doi
         journal_ref = entry.findtext(alt_prefix + "journal_ref")
-        csl_item.log_journal_doi(arxiv_id, journal_ref)
+    csl_item.log_journal_doi(arxiv_id, journal_ref)
     return csl_item
 
 
@@ -152,7 +154,7 @@ def get_arxiv_csl_item_oai(arxiv_id):
 
     # Create dictionary for CSL Item
     csl_item = CSL_Item_arXiv()
-
+    # Extract parent XML elements
     (header_elem,) = xml_tree.findall(
         f"{ns_oai}GetRecord/{ns_oai}record/{ns_oai}header"
     )
@@ -160,12 +162,7 @@ def get_arxiv_csl_item_oai(arxiv_id):
         f"{ns_oai}GetRecord/{ns_oai}record/{ns_oai}metadata"
     )
     (arxiv_elem,) = metadata_elem.findall(f"{ns_arxiv}arXiv")
-    title = arxiv_elem.findtext(f"{ns_arxiv}title")
-    if title:
-        csl_item["title"] = " ".join(title.split())
-    datestamp = header_elem.findtext(f"{ns_oai}datestamp")
-    csl_item.set_date(datestamp, "issued")
-
+    # Set identifier fields
     response_arxiv_id = arxiv_elem.findtext(f"{ns_arxiv}id")
     if arxiv_id != response_arxiv_id:
         logging.warning(
@@ -173,6 +170,12 @@ def get_arxiv_csl_item_oai(arxiv_id):
             " {arxiv_id} became {response_arxiv_id}"
         )
     csl_item.set_identifier_fields(response_arxiv_id)
+    # Set title and date
+    title = arxiv_elem.findtext(f"{ns_arxiv}title")
+    if title:
+        csl_item["title"] = " ".join(title.split())
+    datestamp = header_elem.findtext(f"{ns_oai}datestamp")
+    csl_item.set_date(datestamp, "issued")
 
     # Extract authors
     author_elems = arxiv_elem.findall(f"{ns_arxiv}authors/{ns_arxiv}author")
@@ -202,7 +205,7 @@ def get_arxiv_csl_item_oai(arxiv_id):
     if doi:
         csl_item["DOI"] = doi
         journal_ref = arxiv_elem.findtext(f"{ns_arxiv}journal-ref")
-        csl_item.log_journal_doi(arxiv_id, journal_ref)
+    csl_item.log_journal_doi(arxiv_id, journal_ref)
     return csl_item
 
 
