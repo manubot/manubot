@@ -33,13 +33,13 @@ class Unpaywall_DOI:
         ]
 
     @property
-    def best_openly_licensed_pdf(self) -> Unpaywall_Location:
+    def best_openly_licensed_pdf(self) -> "Unpaywall_Location":
         for location in self.locations:
             if location.has_openly_licensed_pdf:
                 return location
 
     @property
-    def best_pdf(self) -> Unpaywall_Location:
+    def best_pdf(self) -> "Unpaywall_Location":
         for location in self.locations:
             if location.has_pdf:
                 return location
