@@ -129,7 +129,7 @@ def get_arxiv_csl_item_export_api(arxiv_id):
     if doi:
         csl_item["DOI"] = doi
         journal_ref = entry.findtext(alt_prefix + "journal_ref")
-    csl_item.log_journal_doi(arxiv_id, journal_ref)
+        csl_item.log_journal_doi(arxiv_id, journal_ref)
     return csl_item
 
 
@@ -205,7 +205,7 @@ def get_arxiv_csl_item_oai(arxiv_id):
     if doi:
         csl_item["DOI"] = doi
         journal_ref = arxiv_elem.findtext(f"{ns_arxiv}journal-ref")
-    csl_item.log_journal_doi(arxiv_id, journal_ref)
+        csl_item.log_journal_doi(arxiv_id, journal_ref)
     return csl_item
 
 
