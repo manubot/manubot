@@ -16,34 +16,29 @@ open_licenses = {"cc0", "cc-by", "cc-by-sa", "pd"}
 
 class Unpaywall:
     """
-    From https://unpaywall.org/data-format:
-
-    > The DOI object is more or less a row in our main database...
-    it's everything we know about a given DOI-assigned resource,
-    including metadata about the resource itself,
-    and information about its OA status.
-    It includes a list of zero or more OA Location Objects,
-    as well as a `best_oa_location` property that's probably the OA Location you'll want to use.
+    A class to handle open access locations in the Unpaywall data format.
+    Create new Unpaywall objects using the `from_csl_item` and `from_citekey` methods,
+    or by using __init__ of a subclass like `Unpaywall_DOI`.
     """
 
     csl_item = None
 
     @abc.abstractmethod
-    def set_locations(self):
+    def set_oa_locations(self):
         """
-        Set `self.locations`, which is a list of `Unpaywall_Location` objects.
+        Set `self.oa_locations`, which is a list of `Unpaywall_Location` objects.
         """
-        self.locations = []
+        self.oa_locations = []
 
     @property
     def best_openly_licensed_pdf(self) -> "Unpaywall_Location":
-        for location in self.locations:
+        for location in self.oa_locations:
             if location.has_openly_licensed_pdf:
                 return location
 
     @property
     def best_pdf(self) -> "Unpaywall_Location":
-        for location in self.locations:
+        for location in self.oa_locations:
             if location.has_pdf:
                 return location
 
@@ -62,7 +57,7 @@ class Unpaywall:
         source, identifier = citekey.split(":", 1)
         if source in source_to_unpaywaller:
             unpaywaller = source_to_unpaywaller[source]
-            unpaywall = unpaywaller(identifier, set_locations=False)
+            unpaywall = unpaywaller(identifier, set_oa_locations=False)
         else:
             raise ValueError(
                 f"Cannot Unpaywall {citekey}. "
@@ -70,7 +65,7 @@ class Unpaywall:
                 "Received {source!r}."
             )
         unpaywall.csl_item = csl_item
-        unpaywall.set_locations()
+        unpaywall.set_oa_locations()
         return unpaywall
 
     @classmethod
@@ -100,35 +95,35 @@ class Unpaywall_DOI(Unpaywall):
     as well as a `best_oa_location` property that's probably the OA Location you'll want to use.
     """
 
-    def __init__(self, doi, set_locations=True):
+    def __init__(self, doi, set_oa_locations=True):
         self.doi = doi.lower()
-        if set_locations:
-            self.set_locations()
+        if set_oa_locations:
+            self.set_oa_locations()
 
-    def set_locations(self):
+    def set_oa_locations(self):
         from manubot.util import contact_email
 
         url = f"https://api.unpaywall.org/v2/{self.doi}"
         params = {"email": contact_email}
         response = requests.get(url, params=params)
         self.results = response.json()
-        self.locations = [
+        self.oa_locations = [
             Unpaywall_Location(location)
             for location in self.results.get("oa_locations", [])
         ]
 
 
 class Unpaywall_arXiv(Unpaywall):
-    def __init__(self, arxiv_id, set_locations=True, use_doi=True):
+    def __init__(self, arxiv_id, set_oa_locations=True, use_doi=True):
         from .arxiv import split_arxiv_id_version
 
         self.arxiv_id = arxiv_id
         self.arxiv_id_latest, self.arxiv_id_version = split_arxiv_id_version(arxiv_id)
         self.use_doi = use_doi
-        if set_locations:
-            self.set_locations()
+        if set_oa_locations:
+            self.set_oa_locations()
 
-    def set_locations(self):
+    def set_oa_locations(self):
         from .arxiv import get_arxiv_csl_item
 
         if not self.csl_item:
@@ -137,10 +132,10 @@ class Unpaywall_arXiv(Unpaywall):
         if self.use_doi and doi:
             unpaywall_doi = Unpaywall_DOI(doi)
             self.doi = unpaywall_doi.doi
-            self.locations = unpaywall_doi.locations
+            self.oa_locations = unpaywall_doi.oa_locations
             return
         location = self.location_from_arvix_id()
-        self.locations = [location]
+        self.oa_locations = [location]
 
     def location_from_arvix_id(self):
         import datetime
@@ -209,7 +204,7 @@ class Unpaywall_Location(dict):
     the OA Location object describes these key attributes.
     An OA Location Object is always a Child of a DOI Object.
 
-    Example locations from the Unpaywall API are:
+    Example oa_locations from the Unpaywall API are:
 
     ```json
     {
