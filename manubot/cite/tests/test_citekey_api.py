@@ -56,7 +56,7 @@ def test_citekey_to_csl_item_arxiv():
     assert csl_item["id"] == "ES92tcdg"
     assert csl_item["URL"] == "https://arxiv.org/abs/cond-mat/0703470v2"
     assert csl_item["number"] == "cond-mat/0703470v2"
-    assert csl_item["version"] == "2"
+    assert csl_item["version"] == "v2"
     assert csl_item["type"] == "report"
     assert csl_item["container-title"] == "arXiv"
     assert csl_item["title"] == "Portraits of Complex Networks"
