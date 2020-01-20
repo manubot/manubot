@@ -248,7 +248,7 @@ class CSL_Item(dict):
 
     def infer_id(self):
         """
-        Detect and set a non-null/empty for "id" or else raise a ValueError.
+        Detect and set a non-null/empty value for "id" or else raise a ValueError.
         """
         if self.get("standard_citation"):
             # "standard_citation" field is set with a non-null/empty value

@@ -1,11 +1,11 @@
 """
 Utilities for accessing <https://unpaywall.org/> data to provide access
-information for DOIs.
+information for DOIs. Also supports identifier sources not directly
+supported by Unpaywall, such as arXiv IDs.
 """
 import abc
 
 import requests
-
 
 """
 Unpaywall license choices used by Location.has_open_license.
@@ -26,8 +26,13 @@ class Unpaywall:
     as well as a `best_oa_location` property that's probably the OA Location you'll want to use.
     """
 
+    csl_item = None
+
     @abc.abstractmethod
     def set_locations(self):
+        """
+        Set `self.locations`, which is a list of `Unpaywall_Location` objects.
+        """
         self.locations = []
 
     @property
@@ -42,6 +47,46 @@ class Unpaywall:
             if location.has_pdf:
                 return location
 
+    @staticmethod
+    def from_citekey(citekey, csl_item=None):
+        """
+        Create an Unpaywall object for `citekey`.
+        `csl_item` is an optional field that can avoid an
+        external web request to generate to a new CSL Item.
+        """
+        from .citekey import standardize_citekey, is_valid_citekey
+
+        if not is_valid_citekey(citekey):
+            raise ValueError(f"Invalid citekey {citekey}")
+        citekey = standardize_citekey(citekey)
+        source, identifier = citekey.split(":", 1)
+        if source in source_to_unpaywaller:
+            unpaywaller = source_to_unpaywaller[source]
+            unpaywall = unpaywaller(identifier, set_locations=False)
+        else:
+            raise ValueError(
+                f"Cannot Unpaywall {citekey}. "
+                f"Supported citations sources are {', '.join(source_to_unpaywaller)}. "
+                "Received {source!r}."
+            )
+        unpaywall.csl_item = csl_item
+        unpaywall.set_locations()
+        return unpaywall
+
+    @classmethod
+    def from_csl_item(cls, csl_item):
+        """
+        Create an Unpaywall object for `csl_item`.
+        """
+        from .csl_item import CSL_Item
+
+        csl_item = CSL_Item(csl_item)
+        doi = csl_item.get("DOI")
+        if doi:
+            return cls.from_citekey(f"doi:{doi}", csl_item=csl_item)
+        csl_item.infer_id()
+        return cls.from_citekey(csl_item["id"], csl_item=csl_item)
+
 
 class Unpaywall_DOI(Unpaywall):
     """
@@ -55,9 +100,10 @@ class Unpaywall_DOI(Unpaywall):
     as well as a `best_oa_location` property that's probably the OA Location you'll want to use.
     """
 
-    def __init__(self, doi):
+    def __init__(self, doi, set_locations=True):
         self.doi = doi.lower()
-        self.set_locations()
+        if set_locations:
+            self.set_locations()
 
     def set_locations(self):
         from manubot.util import contact_email
@@ -73,26 +119,50 @@ class Unpaywall_DOI(Unpaywall):
 
 
 class Unpaywall_arXiv(Unpaywall):
-    def __init__(self, arxiv_id, use_doi=True):
+    def __init__(self, arxiv_id, set_locations=True, use_doi=True):
         from .arxiv import split_arxiv_id_version
 
         self.arxiv_id = arxiv_id
         self.arxiv_id_latest, self.arxiv_id_version = split_arxiv_id_version(arxiv_id)
         self.use_doi = use_doi
-        self.set_locations()
+        if set_locations:
+            self.set_locations()
 
     def set_locations(self):
         from .arxiv import get_arxiv_csl_item
 
-        self.csl_item = get_arxiv_csl_item(self.arxiv_id)
+        if not self.csl_item:
+            self.csl_item = get_arxiv_csl_item(self.arxiv_id)
         doi = self.csl_item.get("DOI")
         if self.use_doi and doi:
             unpaywall_doi = Unpaywall_DOI(doi)
             self.doi = unpaywall_doi.doi
             self.locations = unpaywall_doi.locations
             return
-        location = self.location_from_arix_id()
+        location = self.location_from_arvix_id()
         self.locations = [location]
+
+    def location_from_arvix_id(self):
+        import datetime
+
+        url_for_pdf = f"https://arxiv.org/pdf/{self.arxiv_id}.pdf"
+        location = Unpaywall_Location(
+            {
+                "endpoint_id": None,
+                "evidence": "oa repository",
+                "host_type": "repository",
+                "is_best": True,
+                "license": self.get_license(),
+                "pmh_id": f"oai:arXiv.org:{self.arxiv_id_latest}",
+                "repository_institution": "Cornell University - arXiv",
+                "updated": datetime.datetime.now().isoformat(),
+                "url": url_for_pdf,
+                "url_for_landing_page": f"https://arxiv.org/abs/{self.arxiv_id}",
+                "url_for_pdf": url_for_pdf,
+                "version": "submittedVersion",
+            }
+        )
+        return location
 
     def get_license(self):
         """
@@ -122,27 +192,11 @@ class Unpaywall_arXiv(Unpaywall):
                 return "cc0"
             return f"cc-{abbrev}"
 
-    def location_from_arix_id(self):
-        import datetime
 
-        url_for_pdf = f"https://arxiv.org/pdf/{self.arxiv_id}.pdf"
-        location = Unpaywall_Location(
-            {
-                "endpoint_id": None,
-                "evidence": "oa repository",
-                "host_type": "repository",
-                "is_best": True,
-                "license": self.get_license(),
-                "pmh_id": f"oai:arXiv.org:{self.arxiv_id_latest}",
-                "repository_institution": "Cornell University - arXiv",
-                "updated": datetime.datetime.now().isoformat(),
-                "url": url_for_pdf,
-                "url_for_landing_page": f"https://arxiv.org/abs/{self.arxiv_id}",
-                "url_for_pdf": url_for_pdf,
-                "version": "submittedVersion",
-            }
-        )
-        return location
+source_to_unpaywaller = {
+    "doi": Unpaywall_DOI,
+    "arxiv": Unpaywall_arXiv,
+}
 
 
 class Unpaywall_Location(dict):
