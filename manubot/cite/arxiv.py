@@ -211,3 +211,12 @@ def get_arxiv_csl_item_oai(arxiv_id):
 
 def remove_newlines(text):
     return re.sub(pattern=r"\n(?!\s)", repl=" ", string=text)
+
+
+def get_arxiv_csl_item_zotero(arxiv_id):
+    """
+    Generate CSL JSON Data for an arXiv ID using Zotero's translation-server.
+    """
+    from manubot.cite.zotero import get_csl_item
+
+    return get_csl_item(f"arxiv:{arxiv_id}")
