@@ -563,6 +563,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#test_get_arxiv_csl_item_oai" class="md-nav__link">
+    test_get_arxiv_csl_item_oai
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1186,6 +1193,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#test_get_arxiv_csl_item_oai" class="md-nav__link">
+    test_get_arxiv_csl_item_oai
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1211,7 +1225,7 @@
                 
                 
                 <h1 id="module-manubotciteteststest_arxiv">Module manubot.cite.tests.test_arxiv</h1>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">..arxiv</span> <span class="kn">import</span> <span class="n">get_arxiv_csl_item</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">..arxiv</span> <span class="kn">import</span> <span class="n">get_arxiv_csl_item_export_api</span><span class="p">,</span> <span class="n">get_arxiv_csl_item_oai</span>
 
 <span class="k">def</span> <span class="nf">test_get_arxiv_csl_item_abstract_whitespace</span><span class="p">():</span>
 
@@ -1235,9 +1249,13 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_arxiv_csl_item</span><span class="p">(</span><span class="s2">&quot;1908.00936v2&quot;</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_arxiv_csl_item_export_api</span><span class="p">(</span><span class="s2">&quot;1908.00936v2&quot;</span><span class="p">)</span>
 
     <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Multi-Scale Learned Iterative Reconstruction&quot;</span>
+
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://arxiv.org/abs/1908.00936v2&quot;</span>
+
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;v2&quot;</span>
 
     <span class="n">abstract</span> <span class="o">=</span> <span class="p">(</span>
 
@@ -1248,6 +1266,30 @@
     <span class="p">)</span>
 
     <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;abstract&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">abstract</span>
+
+<span class="k">def</span> <span class="nf">test_get_arxiv_csl_item_oai</span><span class="p">():</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    https://export.arxiv.org/oai2?verb=GetRecord&amp;identifier=oai:arXiv.org:1912.04616&amp;metadataPrefix=arXiv</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_arxiv_csl_item_oai</span><span class="p">(</span><span class="s2">&quot;1912.04616&quot;</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="p">(</span>
+
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+
+        <span class="o">==</span> <span class="s2">&quot;OpenBioLink: A resource and benchmarking framework for large-scale biomedical link prediction&quot;</span>
+
+    <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://arxiv.org/abs/1912.04616&quot;</span>
+
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span><span class="p">[</span><span class="s2">&quot;license&quot;</span><span class="p">]</span>
+
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Breit&quot;</span>
 </pre></div>
 
 
@@ -1292,9 +1334,13 @@ it will be wrapped to 80 characters.</p>
 
 <span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_arxiv_csl_item</span><span class="p">(</span><span class="ss">&quot;1908.00936v2&quot;</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_arxiv_csl_item_export_api</span><span class="p">(</span><span class="ss">&quot;1908.00936v2&quot;</span><span class="p">)</span>
 
     <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;Multi-Scale Learned Iterative Reconstruction&quot;</span>
+
+    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;https://arxiv.org/abs/1908.00936v2&quot;</span>
+
+    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;version&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;v2&quot;</span>
 
     <span class="n">abstract</span> <span class="o">=</span> <span class="p">(</span>
 
@@ -1305,6 +1351,41 @@ it will be wrapped to 80 characters.</p>
     <span class="p">)</span>
 
     <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;abstract&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">abstract</span>
+</pre></div>
+
+
+</details>
+<h3 id="test_get_arxiv_csl_item_oai">test_get_arxiv_csl_item_oai</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_get_arxiv_csl_item_oai</span><span class="p">(</span>
+
+<span class="p">)</span>
+</pre></div>
+
+
+<p>https://export.arxiv.org/oai2?verb=GetRecord&amp;identifier=oai:arXiv.org:1912.04616&amp;metadataPrefix=arXiv</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_get_arxiv_csl_item_oai</span><span class="p">():</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    https://export.arxiv.org/oai2?verb=GetRecord&amp;identifier=oai:arXiv.org:1912.04616&amp;metadataPrefix=arXiv</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_arxiv_csl_item_oai</span><span class="p">(</span><span class="ss">&quot;1912.04616&quot;</span><span class="p">)</span>
+
+    <span class="n">assert</span> <span class="p">(</span>
+
+        <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;title&quot;</span><span class="p">]</span>
+
+        <span class="o">==</span> <span class="ss">&quot;OpenBioLink: A resource and benchmarking framework for large-scale biomedical link prediction&quot;</span>
+
+    <span class="p">)</span>
+
+    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;https://arxiv.org/abs/1912.04616&quot;</span>
+
+    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">.</span><span class="n">note_dict</span><span class="p">[</span><span class="ss">&quot;license&quot;</span><span class="p">]</span>
+
+    <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="ss">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;Breit&quot;</span>
 </pre></div>
 
 
