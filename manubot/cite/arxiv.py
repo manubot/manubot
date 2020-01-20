@@ -30,17 +30,18 @@ class CSL_Item_arXiv(CSL_Item):
         self.set_id(f"arxiv:{arxiv_id}")
         self["URL"] = f"https://arxiv.org/abs/{arxiv_id}"
         self["number"] = arxiv_id
-        version = get_arxiv_id_version(arxiv_id)
+        _, version = split_arxiv_id_version(arxiv_id)
         if version:
             self["version"] = version
 
 
-def get_arxiv_id_version(arxiv_id: str):
+def split_arxiv_id_version(arxiv_id: str):
     """
-    Return version suffix like 'v2' or None.
+    Return (versionless_id, version) tuple.
+    Version refers to the verion suffix like 'v2' or None.
     """
     match = re.match(regexes["arxiv"], arxiv_id)
-    return match.group("version")
+    return match.group("versionless_id"), match.group("version")
 
 
 def get_arxiv_csl_item(arxiv_id: str):
@@ -49,7 +50,8 @@ def get_arxiv_csl_item(arxiv_id: str):
     Chooses which arXiv API to use based on whether arxiv_id
     is versioned, since only one endpoint supports versioning.
     """
-    if get_arxiv_id_version(arxiv_id):
+    _, version = split_arxiv_id_version(arxiv_id)
+    if version:
         return get_arxiv_csl_item_export_api(arxiv_id)
     return get_arxiv_csl_item_oai(arxiv_id)
 
