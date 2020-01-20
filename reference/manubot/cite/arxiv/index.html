@@ -415,13 +415,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#get_arxiv_id_version" class="md-nav__link">
-    get_arxiv_id_version
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#query_arxiv_api" class="md-nav__link">
     query_arxiv_api
   </a>
@@ -431,6 +424,13 @@
           <li class="md-nav__item">
   <a href="#remove_newlines" class="md-nav__link">
     remove_newlines
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#split_arxiv_id_version" class="md-nav__link">
+    split_arxiv_id_version
   </a>
   
 </li>
@@ -788,6 +788,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../unpaywall/" title="Unpaywall" class="md-nav__link">
+      Unpaywall
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../url/" title="Url" class="md-nav__link">
       Url
     </a>
@@ -825,13 +837,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-13" type="checkbox" id="nav-3-1-4-13">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-14" type="checkbox" id="nav-3-1-4-14">
     
-    <label class="md-nav__link" for="nav-3-1-4-13">
+    <label class="md-nav__link" for="nav-3-1-4-14">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-4-13">
+      <label class="md-nav__title" for="nav-3-1-4-14">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -953,6 +965,18 @@
   <li class="md-nav__item">
     <a href="../tests/test_pubmed/" title="Test Pubmed" class="md-nav__link">
       Test Pubmed
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tests/test_unpaywall/" title="Test Unpaywall" class="md-nav__link">
+      Test Unpaywall
     </a>
   </li>
 
@@ -1497,13 +1521,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#get_arxiv_id_version" class="md-nav__link">
-    get_arxiv_id_version
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#query_arxiv_api" class="md-nav__link">
     query_arxiv_api
   </a>
@@ -1513,6 +1530,13 @@
           <li class="md-nav__item">
   <a href="#remove_newlines" class="md-nav__link">
     remove_newlines
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#split_arxiv_id_version" class="md-nav__link">
+    split_arxiv_id_version
   </a>
   
 </li>
@@ -1829,23 +1853,25 @@
 
         <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">arxiv_id</span>
 
-        <span class="n">version</span> <span class="o">=</span> <span class="n">get_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">version</span> <span class="o">=</span> <span class="n">split_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">version</span><span class="p">:</span>
 
             <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">version</span>
 
-<span class="k">def</span> <span class="nf">get_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">split_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Return version suffix like &#39;v2&#39; or None.</span>
+<span class="sd">    Return (versionless_id, version) tuple.</span>
+
+<span class="sd">    Version refers to the verion suffix like &#39;v2&#39; or None.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regexes</span><span class="p">[</span><span class="s2">&quot;arxiv&quot;</span><span class="p">],</span> <span class="n">arxiv_id</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;versionless_id&quot;</span><span class="p">),</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">get_arxiv_csl_item</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
@@ -1859,7 +1885,9 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">get_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">):</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">version</span> <span class="o">=</span> <span class="n">split_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">version</span><span class="p">:</span>
 
         <span class="k">return</span> <span class="n">get_arxiv_csl_item_export_api</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">)</span>
 
@@ -2170,7 +2198,9 @@ is versioned, since only one endpoint supports versioning.</p>
 
 <span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">get_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">):</span>
+    <span class="n">_</span><span class="p">,</span> <span class="k">version</span> <span class="o">=</span> <span class="n">split_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="k">version</span><span class="p">:</span>
 
         <span class="k">return</span> <span class="n">get_arxiv_csl_item_export_api</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">)</span>
 
@@ -2484,29 +2514,6 @@ This endpoint does not support versioned <code>arxiv_id</code>.</p>
 
 
 </details>
-<h3 id="get_arxiv_id_version">get_arxiv_id_version</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_arxiv_id_version</span><span class="p">(</span>
-    <span class="n">arxiv_id</span><span class="p">:</span> <span class="nb">str</span>
-<span class="p">)</span>
-</pre></div>
-
-
-<p>Return version suffix like 'v2' or None.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">get_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">:</span> <span class="n">str</span><span class="p">):</span>
-
-    <span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">    Return version suffix like &#39;v2&#39; or None.</span>
-
-<span class="ss">    &quot;&quot;&quot;</span>
-
-    <span class="k">match</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="k">match</span><span class="p">(</span><span class="n">regexes</span><span class="p">[</span><span class="ss">&quot;arxiv&quot;</span><span class="p">],</span> <span class="n">arxiv_id</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="k">match</span><span class="p">.</span><span class="k">group</span><span class="p">(</span><span class="ss">&quot;version&quot;</span><span class="p">)</span>
-</pre></div>
-
-
-</details>
 <h3 id="query_arxiv_api">query_arxiv_api</h3>
 <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">query_arxiv_api</span><span class="p">(</span>
     <span class="n">url</span><span class="p">,</span>
@@ -2538,6 +2545,32 @@ This endpoint does not support versioned <code>arxiv_id</code>.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">remove_newlines</span><span class="p">(</span><span class="nb">text</span><span class="p">):</span>
 
     <span class="k">return</span> <span class="n">re</span><span class="p">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="n">r</span><span class="ss">&quot;\n(?!\s)&quot;</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="ss">&quot; &quot;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="nb">text</span><span class="p">)</span>
+</pre></div>
+
+
+</details>
+<h3 id="split_arxiv_id_version">split_arxiv_id_version</h3>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">split_arxiv_id_version</span><span class="p">(</span>
+    <span class="n">arxiv_id</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>Return (versionless_id, version) tuple.
+Version refers to the verion suffix like 'v2' or None.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">split_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">:</span> <span class="n">str</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Return (versionless_id, version) tuple.</span>
+
+<span class="ss">    Version refers to the verion suffix like &#39;v2&#39; or None.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="k">match</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="k">match</span><span class="p">(</span><span class="n">regexes</span><span class="p">[</span><span class="ss">&quot;arxiv&quot;</span><span class="p">],</span> <span class="n">arxiv_id</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="k">match</span><span class="p">.</span><span class="k">group</span><span class="p">(</span><span class="ss">&quot;versionless_id&quot;</span><span class="p">),</span> <span class="k">match</span><span class="p">.</span><span class="k">group</span><span class="p">(</span><span class="ss">&quot;version&quot;</span><span class="p">)</span>
 </pre></div>
 
 
@@ -2600,7 +2633,7 @@ that help cleaning and manipulating it.</p>
 
         <span class="k">self</span>[<span class="s">&quot;number&quot;</span>] = <span class="n">arxiv_id</span>
 
-        <span class="n">version</span> = <span class="n">get_arxiv_id_version</span>(<span class="n">arxiv_id</span>)
+        <span class="n">_</span>, <span class="n">version</span> = <span class="n">split_arxiv_id_version</span>(<span class="n">arxiv_id</span>)
 
         <span class="k">if</span> <span class="n">version:</span>
 
@@ -2820,12 +2853,12 @@ fill: if True, set missing months to January
 </pre></div>
 
 
-<p>Detect and set a non-null/empty for "id" or else raise a ValueError.</p>
+<p>Detect and set a non-null/empty value for "id" or else raise a ValueError.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span>    <span class="n">def</span> <span class="n">infer_id</span><span class="p">(</span><span class="k">self</span><span class="p">):</span>
 
         <span class="ss">&quot;&quot;&quot;</span>
 
-<span class="ss">        Detect and set a non-null/empty for &quot;</span><span class="n">id</span><span class="ss">&quot; or else raise a ValueError.</span>
+<span class="ss">        Detect and set a non-null/empty value for &quot;</span><span class="n">id</span><span class="ss">&quot; or else raise a ValueError.</span>
 
 <span class="ss">        &quot;&quot;&quot;</span>
 
@@ -3124,7 +3157,7 @@ variable: which variable to assign the date to.</p>
 
         <span class="k">self</span><span class="p">[</span><span class="ss">&quot;number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">arxiv_id</span>
 
-        <span class="k">version</span> <span class="o">=</span> <span class="n">get_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="k">version</span> <span class="o">=</span> <span class="n">split_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="k">version</span><span class="p">:</span>
 
