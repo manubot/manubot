@@ -84,6 +84,7 @@ setuptools.setup(
         "console_scripts": [
             "manubot = manubot.command:main",
             "pandoc-manubot-cite = manubot.pandoc.cite_filter:main",
+            "pandoc-manubot-html = manubot.pandoc.html_filter:main",
         ],
     },
     # Include package data files

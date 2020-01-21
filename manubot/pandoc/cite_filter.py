@@ -27,7 +27,6 @@ Related resources on pandoc filters:
 - [python panflute package](https://github.com/sergiocorreia/panflute)
 - [panflute Citation class](http://scorreia.com/software/panflute/code.html#panflute.elements.Citation)
 """
-import argparse
 import logging
 import pathlib
 
@@ -46,35 +45,6 @@ from manubot.process.util import (
 global_variables = {
     "manuscript_citekeys": list(),
 }
-
-
-def parse_args():
-    """
-    Read command line arguments
-    """
-    parser = argparse.ArgumentParser(
-        description="Pandoc filter for citation by persistent identifier. "
-        "Filters are command-line programs that read and write a JSON-encoded abstract syntax tree for Pandoc. "
-        "Unless you are debugging, run this filter as part of a pandoc command by specifying --filter=pandoc-manubot-cite."
-    )
-    parser.add_argument(
-        "target_format",
-        help="output format of the pandoc command, as per Pandoc's --to option",
-    )
-    parser.add_argument(
-        "--input",
-        nargs="?",
-        type=argparse.FileType("r", encoding="utf-8"),
-        help="path read JSON input (defaults to stdin)",
-    )
-    parser.add_argument(
-        "--output",
-        nargs="?",
-        type=argparse.FileType("w", encoding="utf-8"),
-        help="path to write JSON output (defaults to stdout)",
-    )
-    args = parser.parse_args()
-    return args
 
 
 def _get_citekeys_action(elem, doc):
@@ -143,7 +113,7 @@ def _get_reference_link_citekey_aliases(elem, doc):
             elem.content.pop(0)
 
 
-def process_citations(doc):
+def process_citations(doc, args):
     """
     Apply citation-by-identifier to a Python object representation of
     Pandoc's Abstract Syntax Tree.
@@ -213,19 +183,10 @@ def process_citations(doc):
 
 
 def main():
-    from manubot.command import setup_logging_and_errors, exit_if_error_handler_fired
+    from .filter import filter_main
 
-    diagnostics = setup_logging_and_errors()
-    args = parse_args()
-    # Let panflute handle io to sys.stdout / sys.stdin to set utf-8 encoding.
-    # args.input=None for stdin, args.output=None for stdout
-    doc = pf.load(input_stream=args.input)
-    log_level = doc.get_metadata("manubot-log-level", "WARNING")
-    diagnostics["logger"].setLevel(getattr(logging, log_level))
-    process_citations(doc)
-    pf.dump(doc, output_stream=args.output)
-    if doc.get_metadata("manubot-fail-on-errors", False):
-        exit_if_error_handler_fired(diagnostics["error_handler"])
+    description = "Pandoc filter for citation by persistent identifier. "
+    filter_main(process_citations, description)
 
 
 if __name__ == "__main__":
