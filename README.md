@@ -317,15 +317,33 @@ manubot process \
 
 This section is only relevant for project maintainers.
 Travis CI deployments are used to upload releases to [PyPI](https://pypi.org/project/manubot).
-To create a new release, bump the `__version__` in [`manubot/__init__.py`](manubot/__init__.py).
-Then run the following commands:
 
-```sh
+To create a new release, create [release notes](release-notes) and bump the `__version__` in [`manubot/__init__.py`](manubot/__init__.py).
+
+The following commands can help draft release notes:
+
+```shell
+# commit list since v0.2.4 tag
+git log --oneline v0.2.4..HEAD
+
+# commit authors since v0.2.4 tag
+git log  v0.2.4..HEAD --format='%aN <%aE>'
+```
+
+After the release notes are complete, run the following commands:
+
+```shell
 TAG=v`python setup.py --version`
 # Commit updated __version__ info
 git add manubot/__init__.py release-notes/$TAG.md
 git commit --message="Prepare $TAG release"
 git push
+```
+
+After the previous commit is part of `master`, for example after a PR is merged,
+create a tag to trigger the version deployment:
+
+```shell
 # Create & push tag (assuming upstream is the manubot organization remote)
 git tag --annotate $TAG --file=release-notes/$TAG.md
 git push upstream $TAG
