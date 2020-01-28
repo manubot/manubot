@@ -203,7 +203,7 @@ def get_rootstock_commit() -> Optional[str]:
     try:
         args = ["git", "fetch", "rootstock", "master"]
         subprocess.check_output(args, stderr=subprocess.PIPE, universal_newlines=True)
-        args = ["git", "merge-base", "master", "rootstock/master"]
+        args = ["git", "merge-base", "HEAD", "rootstock/master"]
         output = subprocess.check_output(
             args, stderr=subprocess.PIPE, universal_newlines=True
         )
