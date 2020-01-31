@@ -1,8 +1,12 @@
 import importlib
 import json
 import logging
+import os
+import pathlib
 import platform
 import shlex
+import shutil
+import subprocess
 import sys
 
 # Email address that forwards to Manubot maintainers
@@ -67,8 +71,6 @@ def read_serialized_data(path: str):
     If a URL does not contain the appropriate suffix, one workaround
     is to hack the fragment like https://example.org#/variables.toml
     """
-    import os
-    import pathlib
     import requests
 
     path_str = os.fspath(path)
@@ -86,7 +88,11 @@ def read_serialized_data(path: str):
     if {".yaml", ".yml"} & suffixes:
         import yaml
 
-        return yaml.safe_load(text)
+        try:
+            return yaml.safe_load(text)
+        except yaml.parser.ParserError as error:
+            _lint_yaml(path)
+            raise error
     if ".toml" in suffixes:
         import toml
 
@@ -98,6 +104,29 @@ def read_serialized_data(path: str):
             "Assuming JSON."
         )
     return json.loads(text)
+
+
+"""
+yamllint configuration as per https://yamllint.readthedocs.io/en/stable/configuration.html
+"""
+_yamllint_config = {
+    "extends": "relaxed",
+    "rules": {"line-length": "disable", "trailing-spaces": {"level": "warning"}},
+}
+
+
+def _lint_yaml(path):
+    if not shutil.which("yamllint"):
+        logging.info(f"yamllint executable not found, skipping linting for {path}")
+        return
+    args = [
+        "yamllint",
+        "--config-data",
+        json.dumps(_yamllint_config, indent=None),
+        os.fspath(path),
+    ]
+    sys.stdout.write(f"yamllint {path}:\n")
+    subprocess.run(args, stdout=sys.stdout)
 
 
 def read_serialized_dict(path: str) -> dict:

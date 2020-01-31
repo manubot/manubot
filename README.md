@@ -308,7 +308,7 @@ portray as_html --overwrite --output_dir=docs
 manubot process \
   --content-directory=manubot/process/tests/manuscripts/example/content \
   --output-directory=manubot/process/tests/manuscripts/example/output \
-  --log-level=DEBUG
+  --log-level=INFO
 ```
 
 ### Release instructions
