@@ -1321,9 +1321,17 @@
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">pathlib</span>
+
 <span class="kn">import</span> <span class="nn">platform</span>
 
 <span class="kn">import</span> <span class="nn">shlex</span>
+
+<span class="kn">import</span> <span class="nn">shutil</span>
+
+<span class="kn">import</span> <span class="nn">subprocess</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
 
@@ -1425,10 +1433,6 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">os</span>
-
-    <span class="kn">import</span> <span class="nn">pathlib</span>
-
     <span class="kn">import</span> <span class="nn">requests</span>
 
     <span class="n">path_str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
@@ -1459,7 +1463,15 @@
 
         <span class="kn">import</span> <span class="nn">yaml</span>
 
-        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">ParserError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+
+            <span class="n">_lint_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">error</span>
 
     <span class="k">if</span> <span class="s2">&quot;.toml&quot;</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
 
@@ -1480,6 +1492,44 @@
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">yamllint configuration as per https://yamllint.readthedocs.io/en/stable/configuration.html</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">_yamllint_config</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="s2">&quot;extends&quot;</span><span class="p">:</span> <span class="s2">&quot;relaxed&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;rules&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;line-length&quot;</span><span class="p">:</span> <span class="s2">&quot;disable&quot;</span><span class="p">,</span> <span class="s2">&quot;trailing-spaces&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;warning&quot;</span><span class="p">}},</span>
+
+<span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">_lint_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;yamllint&quot;</span><span class="p">):</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;yamllint executable not found, skipping linting for {path}&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
+
+        <span class="s2">&quot;yamllint&quot;</span><span class="p">,</span>
+
+        <span class="s2">&quot;--config-data&quot;</span><span class="p">,</span>
+
+        <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">_yamllint_config</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="bp">None</span><span class="p">),</span>
+
+        <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">),</span>
+
+    <span class="p">]</span>
+
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;yamllint {path}:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">read_serialized_dict</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 
@@ -1635,10 +1685,6 @@ is to hack the fragment like https://example.org#/variables.toml</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">os</span>
-
-    <span class="kn">import</span> <span class="nn">pathlib</span>
-
     <span class="kn">import</span> <span class="nn">requests</span>
 
     <span class="n">path_str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
@@ -1669,7 +1715,15 @@ is to hack the fragment like https://example.org#/variables.toml</p>
 
         <span class="kn">import</span> <span class="nn">yaml</span>
 
-        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">ParserError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+
+            <span class="n">_lint_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">error</span>
 
     <span class="k">if</span> <span class="s2">&quot;.toml&quot;</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
 
