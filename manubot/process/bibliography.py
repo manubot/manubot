@@ -4,6 +4,7 @@ import pathlib
 
 from manubot import __version__ as manubot_version
 from manubot.cite.citekey import shorten_citekey
+from manubot.util import read_serialized_data
 
 
 def load_bibliography(path) -> list:
@@ -13,22 +14,13 @@ def load_bibliography(path) -> list:
     parse these files directly. Otherwise, delegate conversion to CSL Items to pandoc-citeproc.
     """
     path = pathlib.Path(path)
-    use_pandoc_citeproc = True
-    try:
-        if path.suffix == ".json":
-            use_pandoc_citeproc = False
-            with path.open(encoding="utf-8-sig") as read_file:
-                csl_items = json.load(read_file)
-        if path.suffix == ".yaml":
-            use_pandoc_citeproc = False
-            import yaml
-
-            with path.open(encoding="utf-8-sig") as read_file:
-                csl_items = yaml.safe_load(read_file)
-    except Exception:
-        logging.exception(f"process.load_bibliography: error parsing {path}.\n")
-        csl_items = []
-    if use_pandoc_citeproc:
+    if path.suffix in {".json", ".yaml"}:
+        try:
+            csl_items = read_serialized_data(path)
+        except Exception:
+            logging.exception(f"process.load_bibliography: error parsing {path}.\n")
+            csl_items = []
+    else:
         from manubot.pandoc.bibliography import (
             load_bibliography as load_bibliography_pandoc,
         )
