@@ -17,6 +17,8 @@ jobs:
     - name: Install Pandoc
       uses: r-lib/actions/setup-pandoc@v1
       with:
+        # pandoc-versions from 2.7.3 to 2.9.1 won't install on Windows
+        # https://github.com/jgm/pandoc/issues/6071
         pandoc-version: ${{ matrix.pandoc-version }}
     - name: Install Python
       uses: actions/setup-python@v1
