@@ -313,6 +313,7 @@ portray as_html --overwrite --output_dir=docs
 
 # process the example testing manuscript
 manubot process \
+  --skip-citations \
   --content-directory=manubot/process/tests/manuscripts/example/content \
   --output-directory=manubot/process/tests/manuscripts/example/output \
   --skip-citations \

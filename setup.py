@@ -89,6 +89,7 @@ setuptools.setup(
     # Include package data files
     package_data={
         "manubot": [
+            "build/pandoc-data",
             "cite/*.lua",
             "process/header-includes-template.html",
             "webpage/redirect-template.html",

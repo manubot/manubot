@@ -28,6 +28,7 @@ def parse_arguments():
     subparsers.required = True  # https://bugs.python.org/issue26510
     subparsers.dest = "subcommand"  # https://bugs.python.org/msg186387
     add_subparser_process(subparsers)
+    add_subparser_build(subparsers)
     add_subparser_cite(subparsers)
     add_subparser_webpage(subparsers)
     for subparser in subparsers.choices.values():
@@ -90,6 +91,27 @@ def add_subparser_process(subparsers):
     )
     parser.add_argument("--clear-requests-cache", action="store_true")
     parser.set_defaults(function="manubot.process.process_command.cli_process")
+
+
+def add_subparser_build(subparsers):
+    parser = subparsers.add_parser(
+        name="build",
+        help="build manuscript using Pandoc",
+        description="Render manuscript to output formats using Pandoc.",
+    )
+    parser.add_argument(
+        "--directory",
+        type=pathlib.Path,
+        required=True,
+        help="Directory where manuscript content files are located.",
+    )
+    parser.add_argument(
+        "--cache-directory",
+        type=pathlib.Path,
+        help="Custom cache directory. If not specified, caches to output-directory.",
+    )
+    parser.add_argument("--clear-requests-cache", action="store_true")
+    parser.set_defaults(function="manubot.build.build_command.cli_build")
 
 
 def add_subparser_cite(subparsers):
