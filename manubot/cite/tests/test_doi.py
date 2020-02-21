@@ -52,3 +52,21 @@ def test_get_doi_csl_item():
     csl_item = get_doi_csl_item(doi)
     assert isinstance(csl_item, dict)
     assert csl_item["URL"] == "https://doi.org/gbpvh5"
+
+
+def test_get_doi_crosscite_with_consortium_author():
+    """
+    Make sure the author "GTEx Consortium" is properly encoded
+    using the `author.literal` CSL JSON field.
+
+    References:
+
+    - <https://github.com/manubot/manubot/issues/158>
+    - <https://github.com/crosscite/content-negotiation/issues/92>
+    """
+    doi = "10.1038/ng.3834"
+    csl_item = get_doi_csl_item_crosscite(doi)
+    assert isinstance(csl_item, dict)
+    assert any(
+        author.get("literal") == "GTEx Consortium" for author in csl_item["author"]
+    )
