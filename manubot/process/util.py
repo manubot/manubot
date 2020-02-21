@@ -1,4 +1,3 @@
-import collections
 import json
 import logging
 import os
@@ -28,7 +27,6 @@ from manubot.process.manuscript import (
     get_citekeys,
     get_manuscript_stats,
     get_text,
-    update_manuscript_citekeys,
 )
 from manubot.cite.citekey import (
     citekey_to_csl_item,
@@ -261,24 +259,22 @@ def load_variables(args) -> dict:
     # Add header-includes metadata with <meta> information for the HTML output's <head>
     variables["pandoc"]["header-includes"] = get_header_includes(variables)
 
-    if args.skip_citations:
-        # Extend Pandoc's metadata.bibliography field with manual references paths
-        bibliographies = variables["pandoc"].get("bibliography", [])
-        if isinstance(bibliographies, str):
-            bibliographies = [bibliographies]
-        assert isinstance(bibliographies, list)
-        bibliographies.extend(args.manual_references_paths)
-        bibliographies = list(map(os.fspath, bibliographies))
-        variables["pandoc"]["bibliography"] = bibliographies
-        # enable pandoc-manubot-cite option to write bibliography to a file
-        variables["pandoc"]["manubot-output-bibliography"] = os.fspath(
-            args.references_path
-        )
-        variables["pandoc"]["manubot-output-citekeys"] = os.fspath(args.citations_path)
-        variables["pandoc"]["manubot-requests-cache-path"] = os.fspath(
-            args.requests_cache_path
-        )
-        variables["pandoc"]["manubot-clear-requests-cache"] = args.clear_requests_cache
+    assert args.skip_citations
+    # Extend Pandoc's metadata.bibliography field with manual references paths
+    bibliographies = variables["pandoc"].get("bibliography", [])
+    if isinstance(bibliographies, str):
+        bibliographies = [bibliographies]
+    assert isinstance(bibliographies, list)
+    bibliographies.extend(args.manual_references_paths)
+    bibliographies = list(map(os.fspath, bibliographies))
+    variables["pandoc"]["bibliography"] = bibliographies
+    # enable pandoc-manubot-cite option to write bibliography to a file
+    variables["pandoc"]["manubot-output-bibliography"] = os.fspath(args.references_path)
+    variables["pandoc"]["manubot-output-citekeys"] = os.fspath(args.citations_path)
+    variables["pandoc"]["manubot-requests-cache-path"] = os.fspath(
+        args.requests_cache_path
+    )
+    variables["pandoc"]["manubot-clear-requests-cache"] = args.clear_requests_cache
 
     return variables
 
@@ -498,19 +494,11 @@ def prepare_manuscript(args):
     for pandoc.
     """
     text = get_text(args.content_directory)
-    if args.skip_citations:
-        citekeys_df = None
-        text += _citation_tags_to_reference_links(args)
-    else:
-        citekeys_df = _get_citekeys_df(args, text)
-        _generate_csl_items(args, citekeys_df)
-        citekey_mapping = collections.OrderedDict(
-            zip(citekeys_df.manuscript_citekey, citekeys_df.short_citekey)
-        )
-        text = update_manuscript_citekeys(text, citekey_mapping)
+    assert args.skip_citations
+    text += _citation_tags_to_reference_links(args)
 
     variables = load_variables(args)
-    variables["manubot"]["manuscript_stats"] = get_manuscript_stats(text, citekeys_df)
+    variables["manubot"]["manuscript_stats"] = get_manuscript_stats(text)
     with args.variables_path.open("w", encoding="utf-8") as write_file:
         json.dump(variables, write_file, ensure_ascii=False, indent=2)
         write_file.write("\n")

@@ -75,11 +75,13 @@ def add_subparser_process(subparsers):
     parser.add_argument(
         "--skip-citations",
         action="store_true",
+        required=True,
         help="Skip citation and reference processing. "
-        "Specify when using the pandoc-manubot-cite filter. "
+        "Support for citation and reference processing has been moved from `manubot process` to the pandoc-manubot-cite filter. "
+        "Therefore this argument is now required. "
         "If citation-tags.tsv is found in content, "
         "these tags will be inserted in the markdown output using the reference-link syntax for citekey aliases. "
-        "Appends content/manual-references*.* paths to Pandoc's metadata.bibliography field.",
+        "Appends content/manual-references*.* paths to Pandoc's metadata.bibliography field. ",
     )
     parser.add_argument(
         "--cache-directory",

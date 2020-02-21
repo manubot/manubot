@@ -1,4 +1,4 @@
-from manubot.process.manuscript import get_citekeys, update_manuscript_citekeys
+from manubot.process.manuscript import get_citekeys
 
 
 def test_get_citekeys_1():
@@ -20,21 +20,3 @@ def test_get_citekeys_1():
         ]
     )
     assert citekeys == expected
-
-
-def test_update_manuscript_citekeys():
-    """
-    Test that text does not get converted to:
-
-    > our new Manubot tool [@cTN2TQIL-rootstock; @cTN2TQIL] for automating
-    manuscript generation.
-
-    See https://github.com/manubot/manubot/issues/9
-    """
-    string_to_id = {
-        "url:https://github.com/manubot/manubot": "mNMayr3f",
-        "url:https://github.com/greenelab/manubot-rootstock": "1B7Y2HVtw",
-    }
-    text = "our new Manubot tool [@url:https://github.com/greenelab/manubot-rootstock; @url:https://github.com/manubot/manubot] for automating manuscript generation."
-    text = update_manuscript_citekeys(text, string_to_id)
-    assert "[@1B7Y2HVtw; @mNMayr3f]" in text

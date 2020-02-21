@@ -37,41 +37,11 @@ def get_text(directory):
     return "\n\n".join(name_to_text.values()) + "\n"
 
 
-def update_manuscript_citekeys(text, old_to_new):
-    """
-    Replace citation keys according to the old_to_new dictionary.
-    Useful for converting citation keys to shortened versions
-    that are appropriate for pandoc.
-
-    `text` is markdown source text
-
-    `old_to_new` is a dictionary like:
-    doi:10.7287/peerj.preprints.3100v1 → 11cb5HXoY
-    """
-    for old, new in old_to_new.items():
-        text = re.sub(
-            pattern=re.escape("@" + old) + r"(?![\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])",
-            repl="@" + new,
-            string=text,
-        )
-    return text
-
-
-def get_manuscript_stats(text, citekeys_df=None):
+def get_manuscript_stats(text):
     """
     Compute manuscript statistics.
     """
     stats = collections.OrderedDict()
-
-    if citekeys_df is not None:
-        # Number of distinct references by type
-        ref_counts = (
-            citekeys_df.standard_citekey.drop_duplicates()
-            .map(lambda x: x.split(":")[0])
-            .pipe(collections.Counter)
-        )
-        ref_counts["total"] = sum(ref_counts.values())
-        stats["reference_counts"] = ref_counts
     stats["word_count"] = len(text.split())
     logging.info(f"Generated manscript stats:\n{json.dumps(stats, indent=2)}")
     return stats
