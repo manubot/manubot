@@ -1321,6 +1321,8 @@
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
+<span class="kn">import</span> <span class="nn">urllib.parse</span>
+
 <span class="kn">import</span> <span class="nn">urllib.request</span>
 
 <span class="kn">import</span> <span class="nn">requests</span>
@@ -1427,17 +1429,31 @@
 
         <span class="k">return</span> <span class="bp">None</span>
 
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">Base URL to use for content negotiation.</span>
+
+<span class="sd">Options include:</span>
+
+<span class="sd">1. &lt;https://data.crosscite.org&gt; documented at &lt;https://support.datacite.org/docs/datacite-content-resolver&gt;</span>
+
+<span class="sd">2. &lt;https://doi.org/&gt; documented at &lt;https://citation.crosscite.org/docs.html&gt;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">content_negotiation_url</span> <span class="o">=</span> <span class="s2">&quot;https://data.crosscite.org&quot;</span>
+
 <span class="k">def</span> <span class="nf">get_doi_csl_item_crosscite</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Use Content Negotioation (https://crosscite.org/docs.html) to</span>
+<span class="sd">    Use Content Negotioation to retrieve the CSL Item</span>
 
-<span class="sd">    retrieve the CSL Item metadata for a DOI.</span>
+<span class="sd">    metadata for a DOI.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://doi.org/&quot;</span> <span class="o">+</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">content_negotiation_url</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">doi</span><span class="p">))</span>
 
     <span class="n">header</span> <span class="o">=</span> <span class="p">{</span>
 
@@ -1563,6 +1579,10 @@
 
 </details>
 <h2 id="variables">Variables</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">content_negotiation_url</span>
+</code></pre></div>
+
+
 <div class="codehilite"><pre><span></span><code><span class="n">doi_retrievers</span>
 </code></pre></div>
 
@@ -1745,19 +1765,19 @@
 </code></pre></div>
 
 
-<p>Use Content Negotioation (https://crosscite.org/docs.html) to
-retrieve the CSL Item metadata for a DOI.</p>
+<p>Use Content Negotioation to retrieve the CSL Item
+metadata for a DOI.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_doi_csl_item_crosscite</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
-<span class="ss">    Use Content Negotioation (https://crosscite.org/docs.html) to</span>
+<span class="ss">    Use Content Negotioation to retrieve the CSL Item</span>
 
-<span class="ss">    retrieve the CSL Item metadata for a DOI.</span>
+<span class="ss">    metadata for a DOI.</span>
 
 <span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="ss">&quot;https://doi.org/&quot;</span> <span class="o">+</span> <span class="n">urllib</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">quote</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">urllib</span><span class="p">.</span><span class="n">parse</span><span class="p">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">content_negotiation_url</span><span class="p">,</span> <span class="n">urllib</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">quote</span><span class="p">(</span><span class="n">doi</span><span class="p">))</span>
 
     <span class="n">header</span> <span class="o">=</span> <span class="err">{</span>
 
