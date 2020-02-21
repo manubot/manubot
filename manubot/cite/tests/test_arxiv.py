@@ -31,7 +31,7 @@ def test_get_arxiv_csl_item_oai():
     csl_item = get_arxiv_csl_item_oai("1912.04616")
     assert (
         csl_item["title"]
-        == "OpenBioLink: A resource and benchmarking framework for large-scale biomedical link prediction"
+        == "OpenBioLink: A benchmarking framework for large-scale biomedical link prediction"
     )
     assert csl_item["URL"] == "https://arxiv.org/abs/1912.04616"
     assert csl_item.note_dict["license"]
