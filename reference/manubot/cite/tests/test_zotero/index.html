@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.3">
     
     
       
@@ -40,7 +40,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../../assets/stylesheets/application.1b62728e.css">
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/application.adb8469c.css">
       
         <link rel="stylesheet" href="../../../../../assets/stylesheets/application-palette.a8b3c06d.css">
       
@@ -51,7 +51,7 @@
       
     
     
-      <script src="../../../../../assets/javascripts/modernizr.268332fc.js"></script>
+      <script src="../../../../../assets/javascripts/modernizr.86422ebf.js"></script>
     
     
       
@@ -85,7 +85,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#module-manubotciteteststest_zotero" tabindex="1" class="md-skip">
+      <a href="#module-manubotciteteststest_zotero" tabindex="0" class="md-skip">
         Skip to content
       </a>
     
@@ -94,7 +94,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="../../../../.." title="manubot" class="md-header-nav__button md-logo">
+        <a href="../../../../.." title="manubot" aria-label="manubot" class="md-header-nav__button md-logo">
           
             <i class="md-icon"></i>
           
@@ -125,7 +125,7 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
       <label class="md-icon md-search__icon" for="__search"></label>
       <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
         &#xE5CD;
@@ -1319,7 +1319,7 @@
                 
                 
                 <h1 id="module-manubotciteteststest_zotero">Module manubot.cite.tests.test_zotero</h1>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">pytest</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pytest</span>
 
 <span class="kn">from</span> <span class="nn">manubot.cite.zotero</span> <span class="kn">import</span> <span class="n">web_query</span><span class="p">,</span> <span class="n">search_query</span><span class="p">,</span> <span class="n">export_as_csl</span>
 
@@ -1604,24 +1604,24 @@
     <span class="p">)</span>
 
     <span class="k">assert</span> <span class="n">zotero_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;creators&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;lastName&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Lee&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 </details>
 <h2 id="functions">Functions</h2>
 <h3 id="test_export_as_csl">test_export_as_csl</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_export_as_csl</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_export_as_csl</span><span class="p">(</span>
 
 <span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>CSL export can be tested via curl:</p>
-<div class="codehilite"><pre><span></span><span class="err">curl       --header &quot;Content-Type: application/json&quot;       --data &#39;[{&quot;key&quot;: &quot;IN22XN53&quot;, &quot;itemType&quot;: &quot;webpage&quot;, &quot;date&quot;: &quot;2016-02-09T20:12:00&quot;}]&#39;       &#39;https://translate.manubot.org/export?format=csljson&#39;</span>
-</pre></div>
+<div class="codehilite"><pre><span></span><code><span class="err">curl       --header &quot;Content-Type: application/json&quot;       --data &#39;[{&quot;key&quot;: &quot;IN22XN53&quot;, &quot;itemType&quot;: &quot;webpage&quot;, &quot;date&quot;: &quot;2016-02-09T20:12:00&quot;}]&#39;       &#39;https://translate.manubot.org/export?format=csljson&#39;</span>
+</code></pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_export_as_csl</span><span class="p">():</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_export_as_csl</span><span class="p">():</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
@@ -1678,25 +1678,25 @@
     <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;Meet the Robin Hood of Science&quot;</span>
 
     <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;container-title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;Big Think&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 </details>
 <h3 id="test_search_query">test_search_query</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_search_query</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_search_query</span><span class="p">(</span>
     <span class="n">identifier</span>
 <span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>The translation-server search endpoint can be tested via curl:</p>
-<div class="codehilite"><pre><span></span><span class="err">curl --verbose       --header &quot;Content-Type: text/plain&quot;       --data &#39;30571677&#39;       &#39;https://translate.manubot.org/search&#39;</span>
-</pre></div>
+<div class="codehilite"><pre><span></span><code><span class="err">curl --verbose       --header &quot;Content-Type: text/plain&quot;       --data &#39;30571677&#39;       &#39;https://translate.manubot.org/search&#39;</span>
+</code></pre></div>
 
 
 <p>translation-server does not support PMIDs with a <code>pmid:</code> prefix.
 https://github.com/zotero/translation-server/issues/71</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
 
 <span class="w">    </span><span class="ss">&quot;identifier&quot;</span><span class="p">,</span><span class="w"></span>
 
@@ -1743,24 +1743,24 @@ https://github.com/zotero/translation-server/issues/71</p>
 <span class="w">    </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">zotero_data</span><span class="o">[</span><span class="n">0</span><span class="o">][</span><span class="n">&quot;creators&quot;</span><span class="o">][</span><span class="n">0</span><span class="o">][</span><span class="n">&quot;lastName&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;Lee&quot;</span><span class="w"></span>
-</pre></div>
+</code></pre></div>
 
 
 </details>
 <h3 id="test_search_query_arxiv">test_search_query_arxiv</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_search_query_arxiv</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_search_query_arxiv</span><span class="p">(</span>
 
 <span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Test citing https://arxiv.org/abs/1604.05363v1
 The translation-server search endpoint can be tested via curl:</p>
-<div class="codehilite"><pre><span></span><span class="err">curl --verbose       --header &quot;Content-Type: text/plain&quot;       --data &#39;arxiv:1604.05363v1&#39;       &#39;https://translate.manubot.org/search&#39;</span>
-</pre></div>
+<div class="codehilite"><pre><span></span><code><span class="err">curl --verbose       --header &quot;Content-Type: text/plain&quot;       --data &#39;arxiv:1604.05363v1&#39;       &#39;https://translate.manubot.org/search&#39;</span>
+</code></pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_search_query_arxiv</span><span class="p">():</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_search_query_arxiv</span><span class="p">():</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
@@ -1797,23 +1797,23 @@ The translation-server search endpoint can be tested via curl:</p>
     <span class="n">assert</span> <span class="n">zotero_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="ss">&quot;creators&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="ss">&quot;firstName&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;Todd&quot;</span>
 
     <span class="n">assert</span> <span class="n">zotero_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="ss">&quot;date&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;2016-04-18&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 </details>
 <h3 id="test_search_query_isbn">test_search_query_isbn</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_search_query_isbn</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_search_query_isbn</span><span class="p">(</span>
 
 <span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>The translation-server search endpoint can be tested via curl:</p>
-<div class="codehilite"><pre><span></span><span class="err">curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;isbn:9781339919881&#39;       &#39;https://translate.manubot.org/search&#39;</span>
-</pre></div>
+<div class="codehilite"><pre><span></span><code><span class="err">curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;isbn:9781339919881&#39;       &#39;https://translate.manubot.org/search&#39;</span>
+</code></pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_search_query_isbn</span><span class="p">():</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_search_query_isbn</span><span class="p">():</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
@@ -1838,26 +1838,26 @@ The translation-server search endpoint can be tested via curl:</p>
     <span class="n">zotero_data</span> <span class="o">=</span> <span class="n">search_query</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
 
     <span class="n">assert</span> <span class="n">zotero_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="ss">&quot;title&quot;</span><span class="p">].</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;The hetnet awakens&quot;</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 </details>
 <h3 id="test_web_query">test_web_query</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_web_query</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_web_query</span><span class="p">(</span>
 
 <span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>The translation-server web endpoint can be tested via curl:</p>
-<div class="codehilite"><pre><span></span><span class="err">curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;https://bigthink.com/neurobonkers/a-pirate-bay-for-science&#39;       &#39;https://translate.manubot.org/web&#39;</span>
-</pre></div>
+<div class="codehilite"><pre><span></span><code><span class="err">curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;https://bigthink.com/neurobonkers/a-pirate-bay-for-science&#39;       &#39;https://translate.manubot.org/web&#39;</span>
+</code></pre></div>
 
 
 <p>An outdated installation of translation-server caused the web query for this
 URL to be extraordinarily slow but has now been fixed. See
 https://github.com/zotero/translation-server/issues/63</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_web_query</span><span class="p">():</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_web_query</span><span class="p">():</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
@@ -1892,26 +1892,26 @@ https://github.com/zotero/translation-server/issues/63</p>
     <span class="n">assert</span> <span class="n">len</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
 
     <span class="n">assert</span> <span class="n">zotero_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="ss">&quot;title&quot;</span><span class="p">].</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;Meet the Robin Hood of Science&quot;</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 </details>
 <h3 id="test_web_query_returns_single_result_legacy_manubot_url">test_web_query_returns_single_result_legacy_manubot_url</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_web_query_returns_single_result_legacy_manubot_url</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_web_query_returns_single_result_legacy_manubot_url</span><span class="p">(</span>
 
 <span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Check that single=1 is specified for web queries. Without this, Zotero
 can prefer translators that return multiple choices. This occurs with legacy
 Manubot mansucripts, which get assigned the DOI translator as top priority.
 https://github.com/zotero/translation-server/issues/65</p>
-<div class="codehilite"><pre><span></span><span class="err">curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;https://greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/&#39;       &#39;https://translate.manubot.org/web?single=1&#39;</span>
-</pre></div>
+<div class="codehilite"><pre><span></span><code><span class="err">curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;https://greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/&#39;       &#39;https://translate.manubot.org/web?single=1&#39;</span>
+</code></pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span> <span class="n">test_web_query_returns_single_result_legacy_manubot_url</span><span class="p">():</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_web_query_returns_single_result_legacy_manubot_url</span><span class="p">():</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
@@ -1954,23 +1954,23 @@ https://github.com/zotero/translation-server/issues/65</p>
         <span class="o">==</span> <span class="ss">&quot;Sci-Hub provides access to nearly all scholarly literature&quot;</span>
 
     <span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 </details>
 <h3 id="test_web_query_returns_single_result_pubmed_url">test_web_query_returns_single_result_pubmed_url</h3>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_web_query_returns_single_result_pubmed_url</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_web_query_returns_single_result_pubmed_url</span><span class="p">(</span>
 
 <span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>See test_web_query_returns_single_result_legacy_manubot_url docstring.</p>
-<div class="codehilite"><pre><span></span><span class="err">curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;https://www.ncbi.nlm.nih.gov/pubmed/?term=sci-hub%5Btitle%5D&#39;       &#39;https://translate.manubot.org/web?single=1&#39;</span>
-</pre></div>
+<div class="codehilite"><pre><span></span><code><span class="err">curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;https://www.ncbi.nlm.nih.gov/pubmed/?term=sci-hub%5Btitle%5D&#39;       &#39;https://translate.manubot.org/web?single=1&#39;</span>
+</code></pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><span class="n">def</span><span class="w"> </span><span class="n">test_web_query_returns_single_result_pubmed_url</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">test_web_query_returns_single_result_pubmed_url</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -2001,7 +2001,7 @@ https://github.com/zotero/translation-server/issues/65</p>
 <span class="w">    </span><span class="p">(</span><span class="n">zotero_metadata</span><span class="p">,)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zotero_metadata</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">zotero_metadata</span><span class="o">[</span><span class="n">&quot;title&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;sci-hub[title] - PubMed - NCBI&quot;</span><span class="w"></span>
-</pre></div>
+</code></pre></div>
 
 
 </details>
@@ -2076,7 +2076,7 @@ https://github.com/zotero/translation-server/issues/65</p>
       
     </div>
     
-      <script src="../../../../../assets/javascripts/application.808e90bb.js"></script>
+      <script src="../../../../../assets/javascripts/application.c33a9706.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../../../../.."}})</script>
       
