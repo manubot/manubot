@@ -3,24 +3,6 @@ import datetime
 import json
 import logging
 import pathlib
-import re
-
-from manubot.cite.citekey import citekey_pattern, is_valid_citekey
-
-
-def get_citekeys(text):
-    """
-    Extract the deduplicated list of citations in a text. Citations that are
-    clearly invalid such as `doi:/453` are not returned.
-    """
-    citekeys = set(citekey_pattern.findall(text))
-    citekeys = filter(
-        lambda x: is_valid_citekey(
-            x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True
-        ),
-        citekeys,
-    )
-    return sorted(citekeys)
 
 
 def get_text(directory):

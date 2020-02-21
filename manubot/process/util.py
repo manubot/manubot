@@ -24,7 +24,6 @@ from manubot.process.metadata import (
 )
 from manubot.process.manuscript import (
     datetime_now,
-    get_citekeys,
     get_manuscript_stats,
     get_text,
 )
@@ -332,17 +331,6 @@ def read_citations_tsv(path) -> dict:
         zip(tag_df["manuscript_citekey"], tag_df["detagged_citekey"])
     )
     return citekey_aliases
-
-
-def _get_citekeys_df(args, text):
-    """
-    Generate citekeys_df from manubot process args and save it to 'citations.tsv'.
-    """
-    manuscript_citekeys = get_citekeys(text)
-    citekey_aliases = read_citations_tsv(args.citation_tags_path)
-    citekeys_df = get_citekeys_df(manuscript_citekeys, citekey_aliases)
-    write_citekeys_tsv(citekeys_df, args.citations_path)
-    return citekeys_df
 
 
 def write_citekeys_tsv(citekeys_df, path):
