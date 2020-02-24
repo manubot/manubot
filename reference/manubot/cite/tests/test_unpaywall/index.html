@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.3">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
     
     
       
@@ -1323,13 +1323,21 @@
 
 <span class="k">def</span> <span class="nf">test_unpaywall_from_citekey</span><span class="p">():</span>
 
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    https://arxiv.org/abs/1906.11964 is now published in https://doi.org/10.1162/qss_a_00023.</span>
+
+<span class="sd">    Therefore, locations are coming from Unpaywall_DOI since defaulting to use_doi=True.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">Unpaywall</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="s2">&quot;arxiv:1906.11964v3&quot;</span><span class="p">)</span>
 
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">unpaywall</span><span class="p">,</span> <span class="n">Unpaywall_arXiv</span><span class="p">)</span>
 
     <span class="n">best_pdf</span> <span class="o">=</span> <span class="n">unpaywall</span><span class="o">.</span><span class="n">best_pdf</span>
 
-    <span class="k">assert</span> <span class="n">best_pdf</span><span class="p">[</span><span class="s2">&quot;url_for_landing_page&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://arxiv.org/abs/1906.11964v3&quot;</span>
+    <span class="k">assert</span> <span class="s2">&quot;arxiv.org/abs/1906.11964&quot;</span> <span class="ow">in</span> <span class="n">best_pdf</span><span class="p">[</span><span class="s2">&quot;url_for_landing_page&quot;</span><span class="p">]</span>
 
 <span class="k">def</span> <span class="nf">test_unpaywall_from_csl_item</span><span class="p">():</span>
 
@@ -1436,7 +1444,17 @@
 </code></pre></div>
 
 
+<p>https://arxiv.org/abs/1906.11964 is now published in https://doi.org/10.1162/qss_a_00023.
+Therefore, locations are coming from Unpaywall_DOI since defaulting to use_doi=True.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_unpaywall_from_citekey</span><span class="p">():</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    https://arxiv.org/abs/1906.11964 is now published in https://doi.org/10.1162/qss_a_00023.</span>
+
+<span class="ss">    Therefore, locations are coming from Unpaywall_DOI since defaulting to use_doi=True.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
 
     <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">Unpaywall</span><span class="p">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="ss">&quot;arxiv:1906.11964v3&quot;</span><span class="p">)</span>
 
@@ -1444,7 +1462,7 @@
 
     <span class="n">best_pdf</span> <span class="o">=</span> <span class="n">unpaywall</span><span class="p">.</span><span class="n">best_pdf</span>
 
-    <span class="n">assert</span> <span class="n">best_pdf</span><span class="p">[</span><span class="ss">&quot;url_for_landing_page&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;https://arxiv.org/abs/1906.11964v3&quot;</span>
+    <span class="n">assert</span> <span class="ss">&quot;arxiv.org/abs/1906.11964&quot;</span> <span class="k">in</span> <span class="n">best_pdf</span><span class="p">[</span><span class="ss">&quot;url_for_landing_page&quot;</span><span class="p">]</span>
 </code></pre></div>
 
 
@@ -1588,7 +1606,7 @@
     
       <script src="../../../../../assets/javascripts/application.c33a9706.js"></script>
       
-      <script>app.initialize({version:"1.0.4",url:{base:"../../../../.."}})</script>
+      <script>app.initialize({version:"1.1",url:{base:"../../../../.."}})</script>
       
     
   </body>
