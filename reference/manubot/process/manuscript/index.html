@@ -852,13 +852,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#functions" class="md-nav__link">
     Functions
   </a>
@@ -874,13 +867,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#get_citekeys" class="md-nav__link">
-    get_citekeys
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#get_manuscript_stats" class="md-nav__link">
     get_manuscript_stats
   </a>
@@ -890,13 +876,6 @@
           <li class="md-nav__item">
   <a href="#get_text" class="md-nav__link">
     get_text
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#update_manuscript_citekeys" class="md-nav__link">
-    update_manuscript_citekeys
   </a>
   
 </li>
@@ -1004,18 +983,6 @@
   <li class="md-nav__item">
     <a href="../tests/test_ci/" title="Test Ci" class="md-nav__link">
       Test Ci
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../tests/test_manuscript/" title="Test Manuscript" class="md-nav__link">
-      Test Manuscript
     </a>
   </li>
 
@@ -1229,13 +1196,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#functions" class="md-nav__link">
     Functions
   </a>
@@ -1251,13 +1211,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#get_citekeys" class="md-nav__link">
-    get_citekeys
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#get_manuscript_stats" class="md-nav__link">
     get_manuscript_stats
   </a>
@@ -1267,13 +1220,6 @@
           <li class="md-nav__item">
   <a href="#get_text" class="md-nav__link">
     get_text
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#update_manuscript_citekeys" class="md-nav__link">
-    update_manuscript_citekeys
   </a>
   
 </li>
@@ -1313,36 +1259,6 @@
 
 <span class="kn">import</span> <span class="nn">pathlib</span>
 
-<span class="kn">import</span> <span class="nn">re</span>
-
-<span class="kn">from</span> <span class="nn">manubot.cite.citekey</span> <span class="kn">import</span> <span class="n">citekey_pattern</span><span class="p">,</span> <span class="n">is_valid_citekey</span>
-
-<span class="k">def</span> <span class="nf">get_citekeys</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-
-    <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">    Extract the deduplicated list of citations in a text. Citations that are</span>
-
-<span class="sd">    clearly invalid such as `doi:/453` are not returned.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">citekeys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">citekey_pattern</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
-
-    <span class="n">citekeys</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
-
-        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">is_valid_citekey</span><span class="p">(</span>
-
-            <span class="n">x</span><span class="p">,</span> <span class="n">allow_tag</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">allow_raw</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">allow_pandoc_xnos</span><span class="o">=</span><span class="bp">True</span>
-
-        <span class="p">),</span>
-
-        <span class="n">citekeys</span><span class="p">,</span>
-
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">citekeys</span><span class="p">)</span>
-
 <span class="k">def</span> <span class="nf">get_text</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1367,39 +1283,7 @@
 
     <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name_to_text</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-<span class="k">def</span> <span class="nf">update_manuscript_citekeys</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">old_to_new</span><span class="p">):</span>
-
-    <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">    Replace citation keys according to the old_to_new dictionary.</span>
-
-<span class="sd">    Useful for converting citation keys to shortened versions</span>
-
-<span class="sd">    that are appropriate for pandoc.</span>
-
-<span class="sd">    `text` is markdown source text</span>
-
-<span class="sd">    `old_to_new` is a dictionary like:</span>
-
-<span class="sd">    doi:10.7287/peerj.preprints.3100v1 → 11cb5HXoY</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">for</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span> <span class="ow">in</span> <span class="n">old_to_new</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-
-        <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
-
-            <span class="n">pattern</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="s2">&quot;@&quot;</span> <span class="o">+</span> <span class="n">old</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;(?![\w:.#$%&amp;\-+?&lt;&gt;~/]*[a-zA-Z0-9/])&quot;</span><span class="p">,</span>
-
-            <span class="n">repl</span><span class="o">=</span><span class="s2">&quot;@&quot;</span> <span class="o">+</span> <span class="n">new</span><span class="p">,</span>
-
-            <span class="n">string</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
-
-        <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">text</span>
-
-<span class="k">def</span> <span class="nf">get_manuscript_stats</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_manuscript_stats</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1408,24 +1292,6 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">stats</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="n">citekeys_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-
-        <span class="c1"># Number of distinct references by type</span>
-
-        <span class="n">ref_counts</span> <span class="o">=</span> <span class="p">(</span>
-
-            <span class="n">citekeys_df</span><span class="o">.</span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
-
-            <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-
-            <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">)</span>
-
-        <span class="p">)</span>
-
-        <span class="n">ref_counts</span><span class="p">[</span><span class="s2">&quot;total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ref_counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-
-        <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;reference_counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ref_counts</span>
 
     <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;word_count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
 
@@ -1450,11 +1316,6 @@
 
 
 </details>
-<h2 id="variables">Variables</h2>
-<div class="codehilite"><pre><span></span><code><span class="n">citekey_pattern</span>
-</code></pre></div>
-
-
 <h2 id="functions">Functions</h2>
 <h3 id="datetime_now">datetime_now</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">datetime_now</span><span class="p">(</span>
@@ -1482,54 +1343,15 @@ https://stackoverflow.com/a/39079819/4651668</p>
 
 
 </details>
-<h3 id="get_citekeys">get_citekeys</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_citekeys</span><span class="p">(</span>
+<h3 id="get_manuscript_stats">get_manuscript_stats</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_manuscript_stats</span><span class="p">(</span>
     <span class="n">text</span>
 <span class="p">)</span>
 </code></pre></div>
 
 
-<p>Extract the deduplicated list of citations in a text. Citations that are
-clearly invalid such as <code>doi:/453</code> are not returned.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_citekeys</span><span class="p">(</span><span class="nb">text</span><span class="p">):</span>
-
-    <span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">    Extract the deduplicated list of citations in a text. Citations that are</span>
-
-<span class="ss">    clearly invalid such as `doi:/453` are not returned.</span>
-
-<span class="ss">    &quot;&quot;&quot;</span>
-
-    <span class="n">citekeys</span> <span class="o">=</span> <span class="k">set</span><span class="p">(</span><span class="n">citekey_pattern</span><span class="p">.</span><span class="n">findall</span><span class="p">(</span><span class="nb">text</span><span class="p">))</span>
-
-    <span class="n">citekeys</span> <span class="o">=</span> <span class="n">filter</span><span class="p">(</span>
-
-        <span class="n">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">is_valid_citekey</span><span class="p">(</span>
-
-            <span class="n">x</span><span class="p">,</span> <span class="n">allow_tag</span><span class="o">=</span><span class="k">True</span><span class="p">,</span> <span class="n">allow_raw</span><span class="o">=</span><span class="k">True</span><span class="p">,</span> <span class="n">allow_pandoc_xnos</span><span class="o">=</span><span class="k">True</span>
-
-        <span class="p">),</span>
-
-        <span class="n">citekeys</span><span class="p">,</span>
-
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">sorted</span><span class="p">(</span><span class="n">citekeys</span><span class="p">)</span>
-</code></pre></div>
-
-
-</details>
-<h3 id="get_manuscript_stats">get_manuscript_stats</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_manuscript_stats</span><span class="p">(</span>
-    <span class="n">text</span><span class="p">,</span>
-    <span class="n">citekeys_df</span><span class="o">=</span><span class="kc">None</span>
-<span class="p">)</span>
-</code></pre></div>
-
-
 <p>Compute manuscript statistics.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_manuscript_stats</span><span class="p">(</span><span class="nb">text</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_manuscript_stats</span><span class="p">(</span><span class="nb">text</span><span class="p">):</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
@@ -1538,24 +1360,6 @@ clearly invalid such as <code>doi:/453</code> are not returned.</p>
 <span class="ss">    &quot;&quot;&quot;</span>
 
     <span class="n">stats</span> <span class="o">=</span> <span class="n">collections</span><span class="p">.</span><span class="n">OrderedDict</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="n">citekeys_df</span> <span class="k">is</span> <span class="k">not</span> <span class="k">None</span><span class="p">:</span>
-
-        <span class="o">#</span> <span class="nb">Number</span> <span class="k">of</span> <span class="k">distinct</span> <span class="k">references</span> <span class="k">by</span> <span class="k">type</span>
-
-        <span class="n">ref_counts</span> <span class="o">=</span> <span class="p">(</span>
-
-            <span class="n">citekeys_df</span><span class="p">.</span><span class="n">standard_citekey</span><span class="p">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
-
-            <span class="p">.</span><span class="k">map</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="ss">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-
-            <span class="p">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">collections</span><span class="p">.</span><span class="n">Counter</span><span class="p">)</span>
-
-        <span class="p">)</span>
-
-        <span class="n">ref_counts</span><span class="p">[</span><span class="ss">&quot;total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="k">sum</span><span class="p">(</span><span class="n">ref_counts</span><span class="p">.</span><span class="k">values</span><span class="p">())</span>
-
-        <span class="n">stats</span><span class="p">[</span><span class="ss">&quot;reference_counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ref_counts</span>
 
     <span class="n">stats</span><span class="p">[</span><span class="ss">&quot;word_count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="nb">text</span><span class="p">.</span><span class="n">split</span><span class="p">())</span>
 
@@ -1598,55 +1402,6 @@ Text files should be UTF-8 encoded.</p>
     <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="ss">&quot;Manuscript content parts:\n&quot;</span> <span class="o">+</span> <span class="ss">&quot;\n&quot;</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="n">name_to_text</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="ss">&quot;\n\n&quot;</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="n">name_to_text</span><span class="p">.</span><span class="k">values</span><span class="p">())</span> <span class="o">+</span> <span class="ss">&quot;\n&quot;</span>
-</code></pre></div>
-
-
-</details>
-<h3 id="update_manuscript_citekeys">update_manuscript_citekeys</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">update_manuscript_citekeys</span><span class="p">(</span>
-    <span class="n">text</span><span class="p">,</span>
-    <span class="n">old_to_new</span>
-<span class="p">)</span>
-</code></pre></div>
-
-
-<p>Replace citation keys according to the old_to_new dictionary.
-Useful for converting citation keys to shortened versions
-that are appropriate for pandoc.</p>
-<p><code>text</code> is markdown source text</p>
-<p><code>old_to_new</code> is a dictionary like:
-doi:10.7287/peerj.preprints.3100v1 → 11cb5HXoY</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">update_manuscript_citekeys</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">old_to_new</span><span class="p">)</span><span class="o">:</span>
-
-    <span class="s">&quot;&quot;&quot;</span>
-
-    <span class="n">Replace</span> <span class="n">citation</span> <span class="n">keys</span> <span class="n">according</span> <span class="n">to</span> <span class="n">the</span> <span class="n">old_to_new</span> <span class="n">dictionary</span><span class="p">.</span>
-
-    <span class="n">Useful</span> <span class="k">for</span> <span class="n">converting</span> <span class="n">citation</span> <span class="n">keys</span> <span class="n">to</span> <span class="n">shortened</span> <span class="n">versions</span>
-
-    <span class="n">that</span> <span class="n">are</span> <span class="n">appropriate</span> <span class="k">for</span> <span class="n">pandoc</span><span class="p">.</span>
-
-    <span class="err">`</span><span class="n">text</span><span class="err">`</span> <span class="n">is</span> <span class="n">markdown</span> <span class="n">source</span> <span class="n">text</span>
-
-    <span class="err">`</span><span class="n">old_to_new</span><span class="err">`</span> <span class="n">is</span> <span class="n">a</span> <span class="n">dictionary</span> <span class="nl">like</span><span class="p">:</span>
-
-    <span class="nl">doi</span><span class="p">:</span><span class="mf">10.7287</span><span class="o">/</span><span class="n">peerj</span><span class="p">.</span><span class="n">preprints</span><span class="mf">.3100</span><span class="n">v1</span> <span class="err">→</span> <span class="mi">11</span><span class="n">cb5HXoY</span>
-
-    <span class="s">&quot;&quot;&quot;</span>
-
-    <span class="k">for</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span> <span class="k">in</span> <span class="n">old_to_new</span><span class="p">.</span><span class="n">items</span><span class="p">()</span><span class="o">:</span>
-
-        <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">sub</span><span class="p">(</span>
-
-            <span class="n">pattern</span><span class="o">=</span><span class="n">re</span><span class="p">.</span><span class="n">escape</span><span class="p">(</span><span class="s">&quot;@&quot;</span> <span class="o">+</span> <span class="n">old</span><span class="p">)</span> <span class="o">+</span> <span class="n">r</span><span class="s">&quot;(?![\w:.#$%&amp;\-+?&lt;&gt;~/]*[a-zA-Z0-9/])&quot;</span><span class="p">,</span>
-
-            <span class="n">repl</span><span class="o">=</span><span class="s">&quot;@&quot;</span> <span class="o">+</span> <span class="n">new</span><span class="p">,</span>
-
-            <span class="n">string</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
-
-        <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">text</span>
 </code></pre></div>
 
 

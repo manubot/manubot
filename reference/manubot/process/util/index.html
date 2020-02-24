@@ -1056,18 +1056,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../tests/test_manuscript/" title="Test Manuscript" class="md-nav__link">
-      Test Manuscript
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../tests/test_metadata/" title="Test Metadata" class="md-nav__link">
       Test Metadata
     </a>
@@ -1387,9 +1375,7 @@
                 
                 
                 <h1 id="module-manubotprocessutil">Module manubot.process.util</h1>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">collections</span>
-
-<span class="kn">import</span> <span class="nn">json</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
@@ -1437,13 +1423,9 @@
 
     <span class="n">datetime_now</span><span class="p">,</span>
 
-    <span class="n">get_citekeys</span><span class="p">,</span>
-
     <span class="n">get_manuscript_stats</span><span class="p">,</span>
 
     <span class="n">get_text</span><span class="p">,</span>
-
-    <span class="n">update_manuscript_citekeys</span><span class="p">,</span>
 
 <span class="p">)</span>
 
@@ -1853,41 +1835,37 @@
 
     <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;header-includes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_header_includes</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">skip_citations</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="n">args</span><span class="o">.</span><span class="n">skip_citations</span>
 
-        <span class="c1"># Extend Pandoc&#39;s metadata.bibliography field with manual references paths</span>
+    <span class="c1"># Extend Pandoc&#39;s metadata.bibliography field with manual references paths</span>
 
-        <span class="n">bibliographies</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bibliography&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">bibliographies</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bibliography&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bibliographies</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bibliographies</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
-            <span class="n">bibliographies</span> <span class="o">=</span> <span class="p">[</span><span class="n">bibliographies</span><span class="p">]</span>
+        <span class="n">bibliographies</span> <span class="o">=</span> <span class="p">[</span><span class="n">bibliographies</span><span class="p">]</span>
 
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bibliographies</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bibliographies</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
 
-        <span class="n">bibliographies</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">manual_references_paths</span><span class="p">)</span>
+    <span class="n">bibliographies</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">manual_references_paths</span><span class="p">)</span>
 
-        <span class="n">bibliographies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">,</span> <span class="n">bibliographies</span><span class="p">))</span>
+    <span class="n">bibliographies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">,</span> <span class="n">bibliographies</span><span class="p">))</span>
 
-        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;bibliography&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bibliographies</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;bibliography&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bibliographies</span>
 
-        <span class="c1"># enable pandoc-manubot-cite option to write bibliography to a file</span>
+    <span class="c1"># enable pandoc-manubot-cite option to write bibliography to a file</span>
 
-        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-output-bibliography&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-output-bibliography&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">references_path</span><span class="p">)</span>
 
-            <span class="n">args</span><span class="o">.</span><span class="n">references_path</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-output-citekeys&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">citations_path</span><span class="p">)</span>
 
-        <span class="p">)</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-requests-cache-path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span>
 
-        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-output-citekeys&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">citations_path</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">requests_cache_path</span>
 
-        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-requests-cache-path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span>
+    <span class="p">)</span>
 
-            <span class="n">args</span><span class="o">.</span><span class="n">requests_cache_path</span>
-
-        <span class="p">)</span>
-
-        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-clear-requests-cache&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">clear_requests_cache</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-clear-requests-cache&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">clear_requests_cache</span>
 
     <span class="k">return</span> <span class="n">variables</span>
 
@@ -1992,24 +1970,6 @@
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">citekey_aliases</span>
-
-<span class="k">def</span> <span class="nf">_get_citekeys_df</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
-
-    <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">    Generate citekeys_df from manubot process args and save it to &#39;citations.tsv&#39;.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">manuscript_citekeys</span> <span class="o">=</span> <span class="n">get_citekeys</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-
-    <span class="n">citekey_aliases</span> <span class="o">=</span> <span class="n">read_citations_tsv</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">citation_tags_path</span><span class="p">)</span>
-
-    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">get_citekeys_df</span><span class="p">(</span><span class="n">manuscript_citekeys</span><span class="p">,</span> <span class="n">citekey_aliases</span><span class="p">)</span>
-
-    <span class="n">write_citekeys_tsv</span><span class="p">(</span><span class="n">citekeys_df</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">citations_path</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">citekeys_df</span>
 
 <span class="k">def</span> <span class="nf">write_citekeys_tsv</span><span class="p">(</span><span class="n">citekeys_df</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
 
@@ -2267,29 +2227,13 @@
 
     <span class="n">text</span> <span class="o">=</span> <span class="n">get_text</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">content_directory</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">skip_citations</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="n">args</span><span class="o">.</span><span class="n">skip_citations</span>
 
-        <span class="n">citekeys_df</span> <span class="o">=</span> <span class="bp">None</span>
-
-        <span class="n">text</span> <span class="o">+=</span> <span class="n">_citation_tags_to_reference_links</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
-
-    <span class="k">else</span><span class="p">:</span>
-
-        <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">_get_citekeys_df</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-
-        <span class="n">_generate_csl_items</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">)</span>
-
-        <span class="n">citekey_mapping</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(</span>
-
-            <span class="nb">zip</span><span class="p">(</span><span class="n">citekeys_df</span><span class="o">.</span><span class="n">manuscript_citekey</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">short_citekey</span><span class="p">)</span>
-
-        <span class="p">)</span>
-
-        <span class="n">text</span> <span class="o">=</span> <span class="n">update_manuscript_citekeys</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citekey_mapping</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">+=</span> <span class="n">_citation_tags_to_reference_links</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
     <span class="n">variables</span> <span class="o">=</span> <span class="n">load_variables</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;manuscript_stats&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_manuscript_stats</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">)</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;manuscript_stats&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_manuscript_stats</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">variables_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
 
@@ -2888,41 +2832,37 @@ manuscript variables available for jinja2 templating.</p>
 
     <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;header-includes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nf">get_header_includes</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">skip_citations</span><span class="p">:</span>
+    <span class="n">assert</span> <span class="n">args</span><span class="p">.</span><span class="n">skip_citations</span>
 
-        <span class="c1"># Extend Pandoc&#39;s metadata.bibliography field with manual references paths</span>
+    <span class="c1"># Extend Pandoc&#39;s metadata.bibliography field with manual references paths</span>
 
-        <span class="n">bibliographies</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">].</span><span class="nf">get</span><span class="p">(</span><span class="s2">&quot;bibliography&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">bibliographies</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">].</span><span class="nf">get</span><span class="p">(</span><span class="s2">&quot;bibliography&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
-        <span class="k">if</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">bibliographies</span><span class="p">,</span> <span class="n">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">bibliographies</span><span class="p">,</span> <span class="n">str</span><span class="p">):</span>
 
-            <span class="n">bibliographies</span> <span class="o">=</span> <span class="p">[</span><span class="n">bibliographies</span><span class="p">]</span>
+        <span class="n">bibliographies</span> <span class="o">=</span> <span class="p">[</span><span class="n">bibliographies</span><span class="p">]</span>
 
-        <span class="n">assert</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">bibliographies</span><span class="p">,</span> <span class="n">list</span><span class="p">)</span>
+    <span class="n">assert</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">bibliographies</span><span class="p">,</span> <span class="n">list</span><span class="p">)</span>
 
-        <span class="n">bibliographies</span><span class="p">.</span><span class="nf">extend</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">manual_references_paths</span><span class="p">)</span>
+    <span class="n">bibliographies</span><span class="p">.</span><span class="nf">extend</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">manual_references_paths</span><span class="p">)</span>
 
-        <span class="n">bibliographies</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="nf">map</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">fspath</span><span class="p">,</span> <span class="n">bibliographies</span><span class="p">))</span>
+    <span class="n">bibliographies</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="nf">map</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">fspath</span><span class="p">,</span> <span class="n">bibliographies</span><span class="p">))</span>
 
-        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;bibliography&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bibliographies</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;bibliography&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bibliographies</span>
 
-        <span class="c1"># enable pandoc-manubot-cite option to write bibliography to a file</span>
+    <span class="c1"># enable pandoc-manubot-cite option to write bibliography to a file</span>
 
-        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-output-bibliography&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">fspath</span><span class="p">(</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-output-bibliography&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">fspath</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">references_path</span><span class="p">)</span>
 
-            <span class="n">args</span><span class="p">.</span><span class="n">references_path</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-output-citekeys&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">fspath</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">citations_path</span><span class="p">)</span>
 
-        <span class="p">)</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-requests-cache-path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">fspath</span><span class="p">(</span>
 
-        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-output-citekeys&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">fspath</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">citations_path</span><span class="p">)</span>
+        <span class="n">args</span><span class="p">.</span><span class="n">requests_cache_path</span>
 
-        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-requests-cache-path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">fspath</span><span class="p">(</span>
+    <span class="p">)</span>
 
-            <span class="n">args</span><span class="p">.</span><span class="n">requests_cache_path</span>
-
-        <span class="p">)</span>
-
-        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-clear-requests-cache&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">clear_requests_cache</span>
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-clear-requests-cache&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">clear_requests_cache</span>
 
     <span class="k">return</span> <span class="n">variables</span>
 </code></pre></div>
@@ -2950,29 +2890,13 @@ for pandoc.</p>
 
     <span class="nb">text</span> <span class="o">=</span> <span class="n">get_text</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">content_directory</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">skip_citations</span><span class="p">:</span>
+    <span class="n">assert</span> <span class="n">args</span><span class="p">.</span><span class="n">skip_citations</span>
 
-        <span class="n">citekeys_df</span> <span class="o">=</span> <span class="k">None</span>
-
-        <span class="nb">text</span> <span class="o">+=</span> <span class="n">_citation_tags_to_reference_links</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
-
-    <span class="k">else</span><span class="p">:</span>
-
-        <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">_get_citekeys_df</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">text</span><span class="p">)</span>
-
-        <span class="n">_generate_csl_items</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">)</span>
-
-        <span class="n">citekey_mapping</span> <span class="o">=</span> <span class="n">collections</span><span class="p">.</span><span class="n">OrderedDict</span><span class="p">(</span>
-
-            <span class="n">zip</span><span class="p">(</span><span class="n">citekeys_df</span><span class="p">.</span><span class="n">manuscript_citekey</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">.</span><span class="n">short_citekey</span><span class="p">)</span>
-
-        <span class="p">)</span>
-
-        <span class="nb">text</span> <span class="o">=</span> <span class="n">update_manuscript_citekeys</span><span class="p">(</span><span class="nb">text</span><span class="p">,</span> <span class="n">citekey_mapping</span><span class="p">)</span>
+    <span class="nb">text</span> <span class="o">+=</span> <span class="n">_citation_tags_to_reference_links</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
     <span class="n">variables</span> <span class="o">=</span> <span class="n">load_variables</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="n">variables</span><span class="p">[</span><span class="ss">&quot;manubot&quot;</span><span class="p">][</span><span class="ss">&quot;manuscript_stats&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_manuscript_stats</span><span class="p">(</span><span class="nb">text</span><span class="p">,</span> <span class="n">citekeys_df</span><span class="p">)</span>
+    <span class="n">variables</span><span class="p">[</span><span class="ss">&quot;manubot&quot;</span><span class="p">][</span><span class="ss">&quot;manuscript_stats&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_manuscript_stats</span><span class="p">(</span><span class="nb">text</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="n">args</span><span class="p">.</span><span class="n">variables_path</span><span class="p">.</span><span class="k">open</span><span class="p">(</span><span class="ss">&quot;w&quot;</span><span class="p">,</span> <span class="k">encoding</span><span class="o">=</span><span class="ss">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
 

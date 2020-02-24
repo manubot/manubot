@@ -930,18 +930,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../test_manuscript/" title="Test Manuscript" class="md-nav__link">
-      Test Manuscript
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../test_metadata/" title="Test Metadata" class="md-nav__link">
       Test Metadata
     </a>
@@ -1269,9 +1257,7 @@
 
 <span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="s2">&quot;manuscript&quot;</span><span class="p">,</span> <span class="n">manuscripts</span><span class="p">)</span>
 
-<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="s2">&quot;skip_citations&quot;</span><span class="p">,</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">])</span>
-
-<span class="k">def</span> <span class="nf">test_example_manuscript</span><span class="p">(</span><span class="n">manuscript</span><span class="p">,</span> <span class="n">skip_citations</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_example_manuscript</span><span class="p">(</span><span class="n">manuscript</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1291,6 +1277,8 @@
 
         <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
 
+        <span class="s2">&quot;--skip-citations&quot;</span><span class="p">,</span>
+
         <span class="s2">&quot;--content-directory&quot;</span><span class="p">,</span>
 
         <span class="nb">str</span><span class="p">(</span><span class="n">manuscript_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">)),</span>
@@ -1300,10 +1288,6 @@
         <span class="nb">str</span><span class="p">(</span><span class="n">manuscript_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)),</span>
 
     <span class="p">]</span>
-
-    <span class="k">if</span> <span class="n">skip_citations</span><span class="p">:</span>
-
-        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--skip-citations&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">manuscript</span> <span class="o">==</span> <span class="s2">&quot;variables&quot;</span><span class="p">:</span>
 
@@ -1346,8 +1330,7 @@
 <h2 id="functions">Functions</h2>
 <h3 id="test_example_manuscript">test_example_manuscript</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_example_manuscript</span><span class="p">(</span>
-    <span class="n">manuscript</span><span class="p">,</span>
-    <span class="n">skip_citations</span>
+    <span class="n">manuscript</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -1355,9 +1338,7 @@
 <p>Test command line execution of manubot to build an example manuscript.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="ss">&quot;manuscript&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">manuscripts</span><span class="p">)</span><span class="w"></span>
 
-<span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="ss">&quot;skip_citations&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">False, True</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
-
-<span class="n">def</span><span class="w"> </span><span class="n">test_example_manuscript</span><span class="p">(</span><span class="n">manuscript</span><span class="p">,</span><span class="w"> </span><span class="n">skip_citations</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="n">def</span><span class="w"> </span><span class="n">test_example_manuscript</span><span class="p">(</span><span class="n">manuscript</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -1377,6 +1358,8 @@
 
 <span class="n">        &quot;INFO&quot;,</span>
 
+<span class="n">        &quot;--skip-citations&quot;,</span>
+
 <span class="n">        &quot;--content-directory&quot;,</span>
 
 <span class="n">        str(manuscript_dir.joinpath(&quot;content&quot;)),</span>
@@ -1386,10 +1369,6 @@
 <span class="n">        str(manuscript_dir.joinpath(&quot;output&quot;)),</span>
 
 <span class="n">    </span><span class="o">]</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">skip_citations</span><span class="p">:</span><span class="w"></span>
-
-<span class="w">        </span><span class="n">args</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="ss">&quot;--skip-citations&quot;</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">manuscript</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;variables&quot;</span><span class="err">:</span><span class="w"></span>
 
