@@ -85,6 +85,7 @@ Under this setup, you can run the Manubot using:
 
 ```sh
 manubot process \
+  --skip-citations \
   --content-directory=content \
   --output-directory=output
 ```
@@ -96,7 +97,7 @@ See `manubot process --help` for documentation of all command line arguments:
 usage: manubot process [-h] --content-directory CONTENT_DIRECTORY
                        --output-directory OUTPUT_DIRECTORY
                        [--template-variables-path TEMPLATE_VARIABLES_PATH]
-                       [--skip-citations] [--cache-directory CACHE_DIRECTORY]
+                       --skip-citations [--cache-directory CACHE_DIRECTORY]
                        [--clear-requests-cache]
                        [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
 
@@ -120,8 +121,10 @@ optional arguments:
                         `--template-variables-path=namespace=path_or_url`.
                         Namespaces must match the regex `[a-zA-
                         Z_][a-zA-Z0-9_]*`.
-  --skip-citations      Skip citation and reference processing. Specify when
-                        using the pandoc-manubot-cite filter. If citation-
+  --skip-citations      Skip citation and reference processing. Support for
+                        citation and reference processing has been moved from
+                        `manubot process` to the pandoc-manubot-cite filter.
+                        Therefore this argument is now required. If citation-
                         tags.tsv is found in content, these tags will be
                         inserted in the markdown output using the reference-
                         link syntax for citekey aliases. Appends
@@ -139,11 +142,7 @@ optional arguments:
 
 Manubot has the ability to rely on user-provided reference metadata rather than generating it.
 `manubot process` searches the content directory for files containing manually-provided reference metadata that match the glob `manual-references*.*`.
-If a manual reference filename ends with `.json` or `.yaml`, it's assumed to contain CSL Data (i.e. Citation Style Language JSON).
-Otherwise, the format is inferred from the extension and converted to CSL JSON using the `pandoc-citeproc --bib2json` [utility](https://github.com/jgm/pandoc-citeproc/blob/master/man/pandoc-citeproc.1.md#convert-mode).
-The standard citation key for manual references is inferred from the CSL JSON `id` or `note` field.
-When no prefix is provided, such as `doi:`, `url:`, or `raw:`, a `raw:` prefix is automatically added.
-If multiple manual reference files load metadata for the same standard citation `id`, precedence is assigned according to descending filename order.
+These files are stored in the Pandoc metadata `bibliography` field, such that they can be loaded by `pandoc-manubot-cite`.
 
 ### Cite
 
@@ -203,7 +202,6 @@ This package creates the `pandoc-manubot-cite` Pandoc filter,
 providing access to Manubot's cite-by-ID functionality from within a Pandoc workflow.
 
 Currently, this filter is experimental and subject to breaking changes at any point.
-At some point in the future, we may migrate entirely from `manubot process` to `pandoc-manubot-cite` for citation processing.
 
 <!-- test codeblock contains output of `pandoc-manubot-cite --help` -->
 ```
@@ -230,6 +228,15 @@ Other Pandoc filters exist that do something similar:
 [`pwcite`](https://github.com/wikicite/wcite#filter-pwcite).
 Currently, `pandoc-manubot-cite` supports the most types of persistent identifiers.
 We're interested in creating as much compatibility as possible between these filters and their syntaxes.
+
+#### Manual references
+
+Manual references are loaded from the `references` and `bibliography` Pandoc metadata fields.
+If a manual reference filename ends with `.json` or `.yaml`, it's assumed to contain CSL Data (i.e. Citation Style Language JSON).
+Otherwise, the format is inferred from the extension and converted to CSL JSON using the `pandoc-citeproc --bib2json` [utility](https://github.com/jgm/pandoc-citeproc/blob/master/man/pandoc-citeproc.1.md#convert-mode).
+The standard citation key for manual references is inferred from the CSL JSON `id` or `note` field.
+When no prefix is provided, such as `doi:`, `url:`, or `raw:`, a `raw:` prefix is automatically added.
+If multiple manual reference files load metadata for the same standard citation `id`, precedence is assigned according to descending filename order.
 
 ### Webpage
 
@@ -308,6 +315,7 @@ portray as_html --overwrite --output_dir=docs
 manubot process \
   --content-directory=manubot/process/tests/manuscripts/example/content \
   --output-directory=manubot/process/tests/manuscripts/example/output \
+  --skip-citations \
   --log-level=INFO
 ```
 

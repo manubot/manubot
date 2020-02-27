@@ -20,10 +20,14 @@ def test_unpaywall_arxiv():
 
 
 def test_unpaywall_from_citekey():
+    """
+    https://arxiv.org/abs/1906.11964 is now published in https://doi.org/10.1162/qss_a_00023.
+    Therefore, locations are coming from Unpaywall_DOI since defaulting to use_doi=True.
+    """
     unpaywall = Unpaywall.from_citekey("arxiv:1906.11964v3")
     assert isinstance(unpaywall, Unpaywall_arXiv)
     best_pdf = unpaywall.best_pdf
-    assert best_pdf["url_for_landing_page"] == "https://arxiv.org/abs/1906.11964v3"
+    assert "arxiv.org/abs/1906.11964" in best_pdf["url_for_landing_page"]
 
 
 def test_unpaywall_from_csl_item():

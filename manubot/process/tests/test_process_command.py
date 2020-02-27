@@ -14,8 +14,7 @@ manuscripts = [
 
 
 @pytest.mark.parametrize("manuscript", manuscripts)
-@pytest.mark.parametrize("skip_citations", [False, True])
-def test_example_manuscript(manuscript, skip_citations):
+def test_example_manuscript(manuscript):
     """
     Test command line execution of manubot to build an example manuscript.
     """
@@ -25,13 +24,12 @@ def test_example_manuscript(manuscript, skip_citations):
         "process",
         "--log-level",
         "INFO",
+        "--skip-citations",
         "--content-directory",
         str(manuscript_dir.joinpath("content")),
         "--output-directory",
         str(manuscript_dir.joinpath("output")),
     ]
-    if skip_citations:
-        args.append("--skip-citations")
     if manuscript == "variables":
         args.extend(
             [

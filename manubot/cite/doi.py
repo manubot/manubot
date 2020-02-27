@@ -1,5 +1,6 @@
 import json
 import logging
+import urllib.parse
 import urllib.request
 
 import requests
@@ -61,12 +62,23 @@ def get_short_doi_url(doi):
         return None
 
 
+"""
+Base URL to use for content negotiation.
+
+Options include:
+
+1. <https://data.crosscite.org> documented at <https://support.datacite.org/docs/datacite-content-resolver>
+2. <https://doi.org/> documented at <https://citation.crosscite.org/docs.html>
+"""
+content_negotiation_url = "https://data.crosscite.org"
+
+
 def get_doi_csl_item_crosscite(doi):
     """
-    Use Content Negotioation (https://crosscite.org/docs.html) to
-    retrieve the CSL Item metadata for a DOI.
+    Use Content Negotioation to retrieve the CSL Item
+    metadata for a DOI.
     """
-    url = "https://doi.org/" + urllib.request.quote(doi)
+    url = urllib.parse.urljoin(content_negotiation_url, urllib.request.quote(doi))
     header = {
         "Accept": "application/vnd.citationstyles.csl+json",
         "User-Agent": get_manubot_user_agent(),
