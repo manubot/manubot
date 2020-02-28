@@ -125,8 +125,8 @@ def _lint_yaml(path):
         json.dumps(_yamllint_config, indent=None),
         os.fspath(path),
     ]
-    sys.stdout.write(f"yamllint {path}:\n")
-    subprocess.run(args, stdout=sys.stdout)
+    sys.stderr.write(f"yamllint {path}:\n")
+    subprocess.run(args, stdout=sys.stderr)
 
 
 def read_serialized_dict(path: str) -> dict:
