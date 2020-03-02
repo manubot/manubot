@@ -129,7 +129,7 @@ def _remove_error(instance, error):
     elif error.validator == "required":
         logging.warning(
             (f"{error.message}\n" if error.message else error.message)
-            + "requried element missing at: "
+            + "required element missing at: "
             + "/".join(map(str, error.absolute_path))
         )
     else:
