@@ -112,14 +112,14 @@ def checkout_existing_versions(args):
     logging.info(
         f"Attempting checkout with the following command:\n{shlex_join(command)}"
     )
-    process = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.run(command, stdout=subprocess.STDERR, stderr=subprocess.PIPE)
     if process.returncode == 0:
         # Addresses an odd behavior where git checkout stages v/* files that don't actually exist
         subprocess.run(["git", "add", "v"], stdout=subprocess.PIPE)
     else:
         stderr = process.stderr.decode()
         message = (
-            f"Checkout returned a nonzero exit status. See stderr:\n{stderr.rstrip()}"
+            f"Checkout returned a nonzero exit status. See output:\n{stderr.rstrip()}"
         )
         if "pathspec" in stderr:
             message += (
@@ -186,7 +186,7 @@ def ots_upgrade(args):
         process_args.extend(["upgrade", str(ots_path)])
         process = subprocess.run(
             process_args,
-            stdout=subprocess.PIPE,
+            stdout=subprocess.STDERR,
             stderr=subprocess.PIPE,
             universal_newlines=True,
         )
@@ -215,7 +215,7 @@ def ots_stamp(path):
     process_args = ["ots", "stamp", str(path)]
     process = subprocess.run(
         process_args,
-        stdout=subprocess.PIPE,
+        stdout=subprocess.STDERR,
         stderr=subprocess.PIPE,
         universal_newlines=True,
     )
