@@ -15,14 +15,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
     - name: Install Pandoc
-      uses: r-lib/actions/setup-pandoc@v1
+      uses: r-lib/actions/setup-pandoc
       with:
         # pandoc-versions from 2.7.3 to 2.9.1 won't install on Windows
         # https://github.com/jgm/pandoc/issues/6071
         pandoc-version: ${{ matrix.pandoc-version }}
     - name: Install Python
       uses: actions/setup-python@v1
-    - run: echo "# Test" | pandoc -t html
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
