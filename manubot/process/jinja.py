@@ -7,6 +7,4 @@ def mb_random(value, seed=None):
     return shuffled
 
 
-MB_FILTERS = {
-    'mb_random': mb_random
-}
+MB_FILTERS = {"mb_random": mb_random}

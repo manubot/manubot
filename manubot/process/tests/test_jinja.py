@@ -1,5 +1,6 @@
 def test_mb_random_order():
     from manubot.process.jinja import mb_random
+
     start = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     shuffled = mb_random(start, seed=5)
 
@@ -9,6 +10,7 @@ def test_mb_random_order():
 
 def test_mb_random_same_seed():
     from manubot.process.jinja import mb_random
+
     start = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     shuffled1 = mb_random(start, seed=5)
     shuffled2 = mb_random(start, seed=5)
@@ -18,6 +20,7 @@ def test_mb_random_same_seed():
 
 def test_mb_random_start_unchanged():
     from manubot.process.jinja import mb_random
+
     start = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     mb_random(start, seed=5)
 
@@ -26,6 +29,7 @@ def test_mb_random_start_unchanged():
 
 def test_mb_random_diff_seeds():
     from manubot.process.jinja import mb_random
+
     start = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     shuffled1 = mb_random(start, seed=5)
     shuffled2 = mb_random(start, seed=6)
@@ -39,6 +43,7 @@ def test_mb_random_no_seeds():
     having the same order. With 10 entries it shouldn't happen too often.
     """
     from manubot.process.jinja import mb_random
+
     start = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     shuffled1 = mb_random(start)
     shuffled2 = mb_random(start)
