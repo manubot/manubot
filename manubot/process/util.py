@@ -33,6 +33,7 @@ from manubot.cite.citekey import (
     is_valid_citekey,
     standardize_citekey,
 )
+from manubot.filters import MB_FILTERS
 
 
 def check_collisions(citekeys_df):
@@ -472,6 +473,7 @@ def template_with_jinja2(text, variables):
         comment_end_string="##}",
         extensions=["jinja2.ext.do", "jinja2.ext.loopcontrols"],
     )
+    jinja_environment.filters.update(MB_FILTERS)
     template = jinja_environment.from_string(text)
     return template.render(**variables)
 
