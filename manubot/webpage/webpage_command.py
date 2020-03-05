@@ -112,16 +112,16 @@ def checkout_existing_versions(args):
     logging.info(
         f"Attempting checkout with the following command:\n{shlex_join(command)}"
     )
-    process = subprocess.run(command, stderr=subprocess.PIPE)
+    process = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     if process.returncode == 0:
         # Addresses an odd behavior where git checkout stages v/* files that don't actually exist
-        subprocess.run(["git", "add", "v"])
+        subprocess.run(["git", "add", "v"], stdout=subprocess.PIPE)
     else:
-        stderr = process.stderr.decode()
+        output = process.stdout.decode()
         message = (
-            f"Checkout returned a nonzero exit status. See stderr:\n{stderr.rstrip()}"
+            f"Checkout returned a nonzero exit status. See output:\n{output.rstrip()}"
         )
-        if "pathspec" in stderr:
+        if "pathspec" in output:
             message += (
                 "\nManubot note: if there are no preexisting webpage versions (like for a newly created manuscript), "
                 "the pathspec error above is expected and can be safely ignored."
@@ -185,9 +185,12 @@ def ots_upgrade(args):
             process_args.extend(["--cache", str(args.ots_cache)])
         process_args.extend(["upgrade", str(ots_path)])
         process = subprocess.run(
-            process_args, stderr=subprocess.PIPE, universal_newlines=True
+            process_args,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
         )
-        message = f">>> {shlex_join(process.args)}\n{process.stderr}"
+        message = f">>> {shlex_join(process.args)}\n{process.stdout}"
         if process.returncode != 0:
             logging.warning(
                 f"OpenTimestamp upgrade failed with exit code {process.returncode}.\n{message}"
@@ -211,11 +214,14 @@ def ots_stamp(path):
     """
     process_args = ["ots", "stamp", str(path)]
     process = subprocess.run(
-        process_args, stderr=subprocess.PIPE, universal_newlines=True
+        process_args,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        universal_newlines=True,
     )
     if process.returncode != 0:
         logging.warning(
             f"OpenTimestamp command returned nonzero code ({process.returncode}).\n"
             f">>> {shlex_join(process.args)}\n"
-            f"{process.stderr}"
+            f"{process.stdout}"
         )
