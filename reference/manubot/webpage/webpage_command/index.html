@@ -1497,25 +1497,25 @@
 
     <span class="p">)</span>
 
-    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 
         <span class="c1"># Addresses an odd behavior where git checkout stages v/* files that don&#39;t actually exist</span>
 
-        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="s2">&quot;v&quot;</span><span class="p">])</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="s2">&quot;v&quot;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
 
-        <span class="n">stderr</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
 
         <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
 
-            <span class="n">f</span><span class="s2">&quot;Checkout returned a nonzero exit status. See stderr:</span><span class="se">\n</span><span class="s2">{stderr.rstrip()}&quot;</span>
+            <span class="n">f</span><span class="s2">&quot;Checkout returned a nonzero exit status. See output:</span><span class="se">\n</span><span class="s2">{output.rstrip()}&quot;</span>
 
         <span class="p">)</span>
 
-        <span class="k">if</span> <span class="s2">&quot;pathspec&quot;</span> <span class="ow">in</span> <span class="n">stderr</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;pathspec&quot;</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
 
             <span class="n">message</span> <span class="o">+=</span> <span class="p">(</span>
 
@@ -1627,11 +1627,17 @@
 
         <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
 
-            <span class="n">process_args</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="bp">True</span>
+            <span class="n">process_args</span><span class="p">,</span>
+
+            <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+
+            <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">,</span>
+
+            <span class="n">universal_newlines</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
 
         <span class="p">)</span>
 
-        <span class="n">message</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&gt;&gt;&gt; {shlex_join(process.args)}</span><span class="se">\n</span><span class="s2">{process.stderr}&quot;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&gt;&gt;&gt; {shlex_join(process.args)}</span><span class="se">\n</span><span class="s2">{process.stdout}&quot;</span>
 
         <span class="k">if</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
 
@@ -1675,7 +1681,13 @@
 
     <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
 
-        <span class="n">process_args</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="bp">True</span>
+        <span class="n">process_args</span><span class="p">,</span>
+
+        <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+
+        <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">,</span>
+
+        <span class="n">universal_newlines</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
 
     <span class="p">)</span>
 
@@ -1687,7 +1699,7 @@
 
             <span class="n">f</span><span class="s2">&quot;&gt;&gt;&gt; {shlex_join(process.args)}</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-            <span class="n">f</span><span class="s2">&quot;{process.stderr}&quot;</span>
+            <span class="n">f</span><span class="s2">&quot;{process.stdout}&quot;</span>
 
         <span class="p">)</span>
 </code></pre></div>
@@ -1755,25 +1767,25 @@ git --work-tree=webpage checkout upstream/gh-pages -- v</p>
 
     <span class="p">)</span>
 
-    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">)</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="k">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="k">STDOUT</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">process</span><span class="p">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 
         <span class="o">#</span> <span class="n">Addresses</span> <span class="n">an</span> <span class="n">odd</span> <span class="n">behavior</span> <span class="k">where</span> <span class="n">git</span> <span class="n">checkout</span> <span class="n">stages</span> <span class="n">v</span><span class="cm">/* files that don&#39;t actually exist</span>
 
-<span class="cm">        subprocess.run([&quot;git&quot;, &quot;add&quot;, &quot;v&quot;])</span>
+<span class="cm">        subprocess.run([&quot;git&quot;, &quot;add&quot;, &quot;v&quot;], stdout=subprocess.PIPE)</span>
 
 <span class="cm">    else:</span>
 
-<span class="cm">        stderr = process.stderr.decode()</span>
+<span class="cm">        output = process.stdout.decode()</span>
 
 <span class="cm">        message = (</span>
 
-<span class="cm">            f&quot;Checkout returned a nonzero exit status. See stderr:\n{stderr.rstrip()}&quot;</span>
+<span class="cm">            f&quot;Checkout returned a nonzero exit status. See output:\n{output.rstrip()}&quot;</span>
 
 <span class="cm">        )</span>
 
-<span class="cm">        if &quot;pathspec&quot; in stderr:</span>
+<span class="cm">        if &quot;pathspec&quot; in output:</span>
 
 <span class="cm">            message += (</span>
 
@@ -2063,7 +2075,13 @@ If <code>path</code> does not exist, this function does nothing.</p>
 
     <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span>
 
-        <span class="n">process_args</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="no">True</span>
+        <span class="n">process_args</span><span class="p">,</span>
+
+        <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span>
+
+        <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">STDOUT</span><span class="p">,</span>
+
+        <span class="n">universal_newlines</span><span class="o">=</span><span class="no">True</span><span class="p">,</span>
 
     <span class="p">)</span>
 
@@ -2075,7 +2093,7 @@ If <code>path</code> does not exist, this function does nothing.</p>
 
             <span class="n">f</span><span class="s2">&quot;&gt;&gt;&gt; {shlex_join(process.args)}\n&quot;</span>
 
-            <span class="n">f</span><span class="s2">&quot;{process.stderr}&quot;</span>
+            <span class="n">f</span><span class="s2">&quot;{process.stdout}&quot;</span>
 
         <span class="p">)</span>
 </code></pre></div>
@@ -2128,11 +2146,17 @@ https://github.com/opentimestamps/opentimestamps-client/issues/71</p>
 
         <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span>
 
-            <span class="n">process_args</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="k">True</span>
+            <span class="n">process_args</span><span class="p">,</span>
+
+            <span class="k">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span>
+
+            <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="k">STDOUT</span><span class="p">,</span>
+
+            <span class="n">universal_newlines</span><span class="o">=</span><span class="k">True</span><span class="p">,</span>
 
         <span class="p">)</span>
 
-        <span class="n">message</span> <span class="o">=</span> <span class="n">f</span><span class="ss">&quot;&gt;&gt;&gt; {shlex_join(process.args)}\n{process.stderr}&quot;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">f</span><span class="ss">&quot;&gt;&gt;&gt; {shlex_join(process.args)}\n{process.stdout}&quot;</span>
 
         <span class="k">if</span> <span class="n">process</span><span class="p">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
 
