@@ -1,9 +1,6 @@
 from random import Random, shuffle
 
 
-MB_FILTERS = {'mb_random': mb_random}
-
-
 def mb_random(value, seed=None):
     shuffled = list(value)
     if seed is not None:
@@ -11,3 +8,8 @@ def mb_random(value, seed=None):
     else:
         shuffle(shuffled)
     return shuffled
+
+
+MB_FILTERS = {
+    'mb_random': mb_random
+}
