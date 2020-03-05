@@ -33,7 +33,7 @@ from manubot.cite.citekey import (
     is_valid_citekey,
     standardize_citekey,
 )
-from manubot.filters import MB_FILTERS
+from manubot.process.jinja import MB_FILTERS
 
 
 def check_collisions(citekeys_df):
