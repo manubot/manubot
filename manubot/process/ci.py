@@ -90,7 +90,7 @@ def get_continuous_integration_parameters():
             "artifact_url": f"{build_url}/artifacts",
         }
 
-    if os.getenv("CI", "false").lower() != "true":
+    if os.getenv("CI", "false").lower() == "true":
         logging.warning(
             "Detected CI environment variable, but get_continuous_integration_parameters "
             "did not detect environment variables for a supported CI provider. "
