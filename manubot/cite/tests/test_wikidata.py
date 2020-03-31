@@ -1,3 +1,5 @@
+import pytest
+
 from manubot.cite.wikidata import get_wikidata_csl_item
 
 
@@ -15,6 +17,10 @@ def test_get_wikidata_csl_item():
     assert csl_item["DOI"] == "10.7554/elife.32822"
 
 
+@pytest.xfail(
+    reason="Wikidata started returning McLaughlin twice. "
+    "Fixed upstream data on 2020-03-31, but has yet to reach the API."
+)
 def test_get_wikidata_csl_item_author_ordering():
     """
     Test extraction of author ordering from https://www.wikidata.org/wiki/Q50051684.
