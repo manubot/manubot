@@ -319,6 +319,11 @@ manubot process \
   --output-directory=manubot/process/tests/manuscripts/example/output \
   --skip-citations \
   --log-level=INFO
+
+# build the manuscript (in development)
+manubot build \
+  --directory=manubot/process/tests/manuscripts/example \
+  --log-level=INFO
 ```
 
 ### Release instructions
