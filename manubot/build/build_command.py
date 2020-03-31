@@ -19,8 +19,8 @@ def cli_build(args):
         "--defaults=common",
     ]
     build_html(args)
-    if os.environ.get("BUILD_PDF") != "false":
-        build_pdf(args)
+    # if os.environ.get("BUILD_PDF") != "false":
+    #     build_pdf(args)
     if os.environ.get("BUILD_DOCX") == "true":
         build_docx(args)
 
