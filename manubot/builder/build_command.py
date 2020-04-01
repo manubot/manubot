@@ -18,6 +18,9 @@ def cli_build(args):
         f"--resource-path={resource_paths}",
         "--defaults=common",
     ]
+    # Show pandoc_data_dir contents for debugging
+    logging.info("showing pandoc_data_dir contents:")
+    subprocess.run(["ls", "--recursive", args.pandoc_data_dir.absolute()])
     build_html(args)
     # if os.environ.get("BUILD_PDF") != "false":
     #     build_pdf(args)
