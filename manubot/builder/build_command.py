@@ -10,6 +10,7 @@ def cli_build(args):
     args_dict = vars(args)
     # args_dict["content_directory"] = args.directory / "content"
     args_dict["output_directory"] = args.directory / "output"
+    args_dict["output_directory"].mkdir(parents=True, exist_ok=True)
     args_dict["pandoc_data_dir"] = pathlib.Path(__file__).parent.joinpath("pandoc-data")
     resource_paths = os.pathsep.join([".", str(args.pandoc_data_dir.absolute()),])
     args_dict["opts_common"] = [
@@ -18,9 +19,6 @@ def cli_build(args):
         f"--resource-path={resource_paths}",
         "--defaults=common",
     ]
-    # Show pandoc_data_dir contents for debugging
-    logging.info("showing pandoc_data_dir contents:")
-    subprocess.run(["ls", "--recursive", args.pandoc_data_dir.absolute()])
     build_html(args)
     # if os.environ.get("BUILD_PDF") != "false":
     #     build_pdf(args)
