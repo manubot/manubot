@@ -111,7 +111,7 @@ def add_subparser_build(subparsers):
         help="Custom cache directory. If not specified, caches to output-directory.",
     )
     parser.add_argument("--clear-requests-cache", action="store_true")
-    parser.set_defaults(function="manubot.build.build_command.cli_build")
+    parser.set_defaults(function="manubot.builder.build_command.cli_build")
 
 
 def add_subparser_cite(subparsers):
