@@ -87,9 +87,15 @@ setuptools.setup(
         ],
     },
     # Include package data files
+    # NOTE: specifying directories and recursive globs are not supported by package_data.
+    # documentation: https://setuptools.readthedocs.io/en/latest/setuptools.html#including-data-files
+    # no recursive globs: https://github.com/pypa/setuptools/issues/1806
+    # no directories: https://github.com/pypa/setuptools/issues/1198
+    # workarounds: https://stackoverflow.com/q/27664504/4651668
     package_data={
         "manubot": [
-            "builder/pandoc-data",
+            "builder/pandoc-data/*",
+            "builder/pandoc-data/*/*",
             "cite/*.lua",
             "process/header-includes-template.html",
             "webpage/redirect-template.html",
