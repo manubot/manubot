@@ -16,7 +16,7 @@ def cli_build(args):
         # "--csl", args.csl_style_path.absolute()
         f"--data-dir={args.pandoc_data_dir.absolute()}",
         f"--resource-path={resource_paths}",
-        "--defaults=defaults/common.yaml",
+        "--defaults=common",
     ]
     build_html(args)
     # if os.environ.get("BUILD_PDF") != "false":
@@ -30,7 +30,7 @@ def build_html(args):
     command = [
         "pandoc",
         *args.opts_common,
-        "--defaults=defaults/html.yaml",
+        "--defaults=html",
     ]
     process = subprocess.run(command, cwd=args.directory)
     logging.info(shlex_join(process.args))
@@ -81,7 +81,7 @@ def build_docx(args):
     command = [
         "pandoc",
         *args.opts_common,
-        "--defaults=defaults/docx.yaml",
+        "--defaults=docx",
         # todo add content to resource-path
     ]
     process = subprocess.run(command, cwd=args.directory)
