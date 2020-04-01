@@ -54,7 +54,7 @@ Here is the usage information as per `manubot --help`:
 
 <!-- test codeblock contains output of `manubot --help` -->
 ```
-usage: manubot [-h] [--version] {process,cite,webpage} ...
+usage: manubot [-h] [--version] {process,build,cite,webpage} ...
 
 Manubot: the manuscript bot for scholarly writing
 
@@ -65,8 +65,9 @@ optional arguments:
 subcommands:
   All operations are done through subcommands:
 
-  {process,cite,webpage}
+  {process,build,cite,webpage}
     process             process manuscript content
+    build               build manuscript using Pandoc
     cite                citation to CSL command line utility
     webpage             deploy Manubot outputs to a webpage directory tree
 ```
@@ -313,9 +314,15 @@ portray as_html --overwrite --output_dir=docs
 
 # process the example testing manuscript
 manubot process \
+  --skip-citations \
   --content-directory=manubot/process/tests/manuscripts/example/content \
   --output-directory=manubot/process/tests/manuscripts/example/output \
   --skip-citations \
+  --log-level=INFO
+
+# build the manuscript (in development)
+manubot build \
+  --directory=manubot/process/tests/manuscripts/example \
   --log-level=INFO
 ```
 
