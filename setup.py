@@ -90,6 +90,7 @@ setuptools.setup(
     package_data={
         "manubot": [
             "cite/*.lua",
+            "cite/curie/*.json",
             "process/header-includes-template.html",
             "webpage/redirect-template.html",
         ]
