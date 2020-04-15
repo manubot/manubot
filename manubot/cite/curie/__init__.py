@@ -19,7 +19,7 @@ import json
 import logging
 import pathlib
 import re
-from typing import List, Tuple
+from typing import List, Set
 
 import requests
 
@@ -72,8 +72,33 @@ def get_namespaces(compile_patterns=False) -> List[dict]:
 
 
 @functools.lru_cache()
-def get_prefixes() -> Tuple[str]:
-    return tuple(namespace["prefix"] for namespace in get_namespaces())
+def get_prefixes() -> Set[str]:
+    return {namespace["prefix"] for namespace in get_namespaces()}
+
+
+def curie_to_url(curie):
+    """
+    `curie` should be in `prefix:accession` format
+    """
+    if not isinstance(curie, str):
+        raise TypeError(
+            f"curie parameter should be string. Received {curie.__class__.__name__} instead for {curie}"
+        )
+    try:
+        prefix, accession = curie.split(":", 1)
+    except ValueError:
+        raise ValueError(
+            f"curie must be splittable by `:` and formatted like `prefix:accession`. Received {curie}"
+        )
+    # do not yet understand capitlaization
+    # https://github.com/identifiers-org/identifiers-org.github.io/issues/100
+    prefix_lower = prefix.lower()
+    if prefix_lower not in get_prefixes():
+        raise ValueError(
+            f"prefix {prefix_lower} for {curie} is not a recognized prefix"
+        )
+    resolver_url = "https://identifiers.org"
+    return f"{resolver_url}/curie"
 
 
 if __name__ == "__main__":

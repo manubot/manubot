@@ -27,5 +27,5 @@ def test_get_namespaces():
 
 def test_get_prefixes():
     prefixes = get_prefixes()
-    assert isinstance(prefixes, tuple)
+    assert isinstance(prefixes, set)
     assert "doid" in prefixes
