@@ -14,10 +14,12 @@ References:
 - [On the road to robust data citation](https://doi.org/10.1038/sdata.2018.95)
 
 """
+import functools
 import json
 import logging
 import pathlib
 import re
+from typing import List, Tuple
 
 import requests
 
@@ -27,7 +29,6 @@ _keep_namespace_fields = {
     "name",
     "pattern",  # regex pattern
     "description",
-    "deprecated",
     "sampleId",  # example identifier
 }
 
@@ -61,13 +62,18 @@ def _download_namespaces():
     namespace_path.write_text(json_text + "\n", encoding="utf-8")
 
 
-def get_namespaces(compile_patterns=False):
+def get_namespaces(compile_patterns=False) -> List[dict]:
     with namespace_path.open(encoding="utf-8-sig") as read_file:
         namespaces = json.load(read_file)
     if compile_patterns:
         for namespace in namespaces:
             namespace["pattern"] = re.compile(namespace["pattern"])
     return namespaces
+
+
+@functools.lru_cache()
+def get_prefixes() -> Tuple[str]:
+    return tuple(namespace["prefix"] for namespace in get_namespaces())
 
 
 if __name__ == "__main__":

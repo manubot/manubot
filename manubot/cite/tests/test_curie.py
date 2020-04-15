@@ -1,6 +1,4 @@
-import logging
-
-from ..curie import get_namespaces
+from ..curie import get_namespaces, get_prefixes
 
 
 def test_get_namespaces():
@@ -17,6 +15,7 @@ def test_get_namespaces():
         namespace["prefix"]
         # check whether compiled pattern matches example identifier
         # do not fail when no match, since this is an upstream issue
+        # https://github.com/identifiers-org/identifiers-org.github.io/issues/99
         match = namespace["pattern"].fullmatch(namespace["sampleId"])
         if not match:
             print(
@@ -24,3 +23,9 @@ def test_get_namespaces():
                 f"{namespace['pattern'].pattern} "
                 f"does not match {namespace['sampleId']}"
             )
+
+
+def test_get_prefixes():
+    prefixes = get_prefixes()
+    assert isinstance(prefixes, tuple)
+    assert "doid" in prefixes
