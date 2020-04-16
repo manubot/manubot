@@ -1,6 +1,11 @@
 """
 Compact Uniform Resource Identifiers
 
+```shell
+# regenerate manubot/cite/curie/namespaces.json
+python manubot/cite/curie/__init__.py
+```
+
 References:
 
 - https://en.wikipedia.org/wiki/CURIE
@@ -12,7 +17,7 @@ References:
 - https://en.wikipedia.org/wiki/MIRIAM_Registry
 - [Identifiers.org and MIRIAM Registry: community resources to provide persistent identification](https://doi.org/10.1093/nar/gkr1097)
 - [On the road to robust data citation](https://doi.org/10.1038/sdata.2018.95)
-
+- [Uniform Resolution of Compact Identifiers for Biomedical Data](https://doi.org/10.1038/sdata.2018.29)
 """
 import functools
 import json
@@ -30,6 +35,7 @@ _keep_namespace_fields = {
     "pattern",  # regex pattern
     "description",
     "sampleId",  # example identifier
+    "namespaceEmbeddedInLui",  # whether prefix is included in the local unique identifier
 }
 
 
@@ -98,7 +104,7 @@ def curie_to_url(curie):
             f"prefix {prefix_lower} for {curie} is not a recognized prefix"
         )
     resolver_url = "https://identifiers.org"
-    return f"{resolver_url}/curie"
+    return f"{resolver_url}/{curie}"
 
 
 if __name__ == "__main__":
