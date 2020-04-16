@@ -82,6 +82,11 @@ def get_prefixes() -> Set[str]:
     return {namespace["prefix"] for namespace in get_namespaces()}
 
 
+@functools.lru_cache()
+def get_prefix_to_namespace() -> Set[str]:
+    return {n["prefix"]: n for n in get_namespaces()}
+
+
 def curie_to_url(curie):
     """
     `curie` should be in `prefix:accession` format
@@ -96,13 +101,18 @@ def curie_to_url(curie):
         raise ValueError(
             f"curie must be splittable by `:` and formatted like `prefix:accession`. Received {curie}"
         )
-    # do not yet understand capitlaization
+    # do not yet understand capitalization
     # https://github.com/identifiers-org/identifiers-org.github.io/issues/100
     prefix_lower = prefix.lower()
-    if prefix_lower not in get_prefixes():
+    prefix_to_namespaces = get_prefix_to_namespace()
+    try:
+        namespace = prefix_to_namespaces[prefix_lower]
+    except KeyError:
         raise ValueError(
             f"prefix {prefix_lower} for {curie} is not a recognized prefix"
         )
+    if not namespace["namespaceEmbeddedInLui"]:
+        curie = f"{prefix_lower}:{accession}"
     resolver_url = "https://identifiers.org"
     return f"{resolver_url}/{curie}"
 
