@@ -144,9 +144,12 @@ def _convert_field_to_list(
         if deprecation_warning_key:
             warnings.warn(
                 f"Expected list for {dictionary.get(deprecation_warning_key)}'s {field}. "
-                + (f"Assuming multiple {field} are `{separator}` separated. "
-                if separator
-                else "") + f"Please switch {field} to a list.",
+                + (
+                    f"Assuming multiple {field} are `{separator}` separated. "
+                    if separator
+                    else ""
+                )
+                + f"Please switch {field} to a list.",
                 category=DeprecationWarning,
             )
         return dictionary
