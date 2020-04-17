@@ -123,6 +123,39 @@ def read_variable_files(paths: List[str], variables: Optional[dict] = None) -> d
     return variables
 
 
+def _convert_field_to_list(
+    dictionary, field, separator=False, deprecation_warning_key=None
+):
+    """
+    Convert `dictionary[field]` to a list. If value is a string and
+    `separator` is specified, split by `separator`. If `deprecation_warning_key`
+    is provided, warn when `dictionary[field]` is a string.
+    """
+    if field not in dictionary:
+        return dictionary
+    value = dictionary[field]
+    if isinstance(value, list):
+        return dictionary
+    if isinstance(value, str):
+        if separator is False:
+            dictionary[field] = [value]
+        else:
+            dictionary[field] = value.split(separator)
+        if deprecation_warning_key:
+            warnings.warn(
+                f"Expected list for {dictionary.get(deprecation_warning_key)}'s {field}. "
+                + (
+                    f"Assuming multiple {field} are `{separator}` separated. "
+                    if separator
+                    else ""
+                )
+                + f"Please switch {field} to a list.",
+                category=DeprecationWarning,
+            )
+        return dictionary
+    raise ValueError("Unsupported value type {value.__class__.__name__}")
+
+
 def add_author_affiliations(variables: dict) -> dict:
     """
     Edit variables to contain numbered author affiliations. Specifically,
@@ -132,17 +165,16 @@ def add_author_affiliations(variables: dict) -> dict:
     """
     rows = list()
     for author in variables["authors"]:
-        if "affiliations" not in author:
-            continue
-        if not isinstance(author["affiliations"], list):
-            warnings.warn(
-                f"Expected list for {author['name']}'s affiliations. "
-                f"Assuming multiple affiliations are `; ` separated. "
-                f"Please switch affiliations to a list.",
-                category=DeprecationWarning,
-            )
-            author["affiliations"] = author["affiliations"].split("; ")
-        for affiliation in author["affiliations"]:
+        _convert_field_to_list(
+            dictionary=author,
+            field="affiliations",
+            separator="; ",
+            deprecation_warning_key="name",
+        )
+        _convert_field_to_list(
+            dictionary=author, field="funders",
+        )
+        for affiliation in author.get("affiliations", []):
             rows.append((author["name"], affiliation))
     if not rows:
         return variables
