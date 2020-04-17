@@ -2585,47 +2585,47 @@ that help cleaning and manipulating it.</p>
 - https://github.com/citation-style-language/schema/blob/master/csl-data.json</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="n">CSL_Item_arXiv</span>(<span class="n">CSL_Item</span>):
 
-    <span class="n">def</span> <span class="n">_set_invariant_fields</span>(<span class="k">self</span>):
+    <span class="n">def</span> <span class="n">_set_invariant_fields</span>(<span class="nb">self</span>):
 
         <span class="c1"># Set journal/publisher to arXiv</span>
 
-        <span class="k">self</span>[<span class="s">&quot;container-title&quot;</span>] = <span class="s">&quot;arXiv&quot;</span>
+        <span class="nb">self</span>[<span class="s">&quot;container-title&quot;</span>] = <span class="s">&quot;arXiv&quot;</span>
 
-        <span class="k">self</span>[<span class="s">&quot;publisher&quot;</span>] = <span class="s">&quot;arXiv&quot;</span>
+        <span class="nb">self</span>[<span class="s">&quot;publisher&quot;</span>] = <span class="s">&quot;arXiv&quot;</span>
 
         <span class="c1"># Set CSL type to report for preprint</span>
 
-        <span class="k">self</span>[<span class="s">&quot;type&quot;</span>] = <span class="s">&quot;report&quot;</span>
+        <span class="nb">self</span>[<span class="s">&quot;type&quot;</span>] = <span class="s">&quot;report&quot;</span>
 
-        <span class="k">return</span> <span class="k">self</span>
+        <span class="k">return</span> <span class="nb">self</span>
 
-    <span class="n">def</span> <span class="n">log_journal_doi</span>(<span class="k">self</span>, <span class="n">arxiv_id</span>, <span class="n">journal_ref</span>=<span class="n">None</span>):
+    <span class="n">def</span> <span class="n">log_journal_doi</span>(<span class="nb">self</span>, <span class="n">arxiv_id</span>, <span class="n">journal_ref</span>=<span class="n">None</span>):
 
-        <span class="k">if</span> <span class="s">&quot;DOI&quot;</span> <span class="nb">not</span> <span class="n">in</span> <span class="n">self:</span>
+        <span class="k">if</span> <span class="s">&quot;DOI&quot;</span> <span class="nb">not</span> <span class="nb">in</span> <span class="n">self:</span>
 
             <span class="k">return</span>
 
-        <span class="n">msg</span> = <span class="n">f</span><span class="s">&quot;arXiv article {arxiv_id} published at https://doi.org/{self[&#39;DOI&#39;]}&quot;</span>
+        <span class="n">msg</span> = <span class="nb">f</span><span class="s">&quot;arXiv article {arxiv_id} published at https://doi.org/{self[&#39;DOI&#39;]}&quot;</span>
 
         <span class="k">if</span> <span class="n">journal_ref:</span>
 
-            <span class="n">msg</span> += <span class="n">f</span><span class="s">&quot; — {journal_ref}&quot;</span>
+            <span class="n">msg</span> += <span class="nb">f</span><span class="s">&quot; — {journal_ref}&quot;</span>
 
         <span class="n">logging</span>.<span class="n">info</span>(<span class="n">msg</span>)
 
-    <span class="n">def</span> <span class="n">set_identifier_fields</span>(<span class="k">self</span>, <span class="n">arxiv_id</span>):
+    <span class="n">def</span> <span class="n">set_identifier_fields</span>(<span class="nb">self</span>, <span class="n">arxiv_id</span>):
 
-        <span class="k">self</span>.<span class="n">set_id</span>(<span class="n">f</span><span class="s">&quot;arxiv:{arxiv_id}&quot;</span>)
+        <span class="nb">self</span>.<span class="n">set_id</span>(<span class="nb">f</span><span class="s">&quot;arxiv:{arxiv_id}&quot;</span>)
 
-        <span class="k">self</span>[<span class="s">&quot;URL&quot;</span>] = <span class="n">f</span><span class="s">&quot;https://arxiv.org/abs/{arxiv_id}&quot;</span>
+        <span class="nb">self</span>[<span class="s">&quot;URL&quot;</span>] = <span class="nb">f</span><span class="s">&quot;https://arxiv.org/abs/{arxiv_id}&quot;</span>
 
-        <span class="k">self</span>[<span class="s">&quot;number&quot;</span>] = <span class="n">arxiv_id</span>
+        <span class="nb">self</span>[<span class="s">&quot;number&quot;</span>] = <span class="n">arxiv_id</span>
 
-        <span class="n">_</span>, <span class="n">version</span> = <span class="n">split_arxiv_id_version</span>(<span class="n">arxiv_id</span>)
+        <span class="n">_</span>, <span class="nb">version</span> = <span class="n">split_arxiv_id_version</span>(<span class="n">arxiv_id</span>)
 
         <span class="k">if</span> <span class="n">version:</span>
 
-            <span class="k">self</span>[<span class="s">&quot;version&quot;</span>] = <span class="n">version</span>
+            <span class="nb">self</span>[<span class="s">&quot;version&quot;</span>] = <span class="nb">version</span>
 </code></pre></div>
 
 

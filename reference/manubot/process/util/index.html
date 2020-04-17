@@ -1599,6 +1599,68 @@
 
     <span class="k">return</span> <span class="n">variables</span>
 
+<span class="k">def</span> <span class="nf">_convert_field_to_list</span><span class="p">(</span>
+
+    <span class="n">dictionary</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">deprecation_warning_key</span><span class="o">=</span><span class="bp">None</span>
+
+<span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Convert `dictionary[field]` to a list. If value is a string and</span>
+
+<span class="sd">    `separator` is specified, split by `separator`. If `deprecation_warning_key`</span>
+
+<span class="sd">    is provided, warn when `dictionary[field]` is a string.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="n">dictionary</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">dictionary</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">dictionary</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">separator</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+
+            <span class="n">dictionary</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">dictionary</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">deprecation_warning_key</span><span class="p">:</span>
+
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+
+                <span class="n">f</span><span class="s2">&quot;Expected list for {dictionary.get(deprecation_warning_key)}&#39;s {field}. &quot;</span>
+
+                <span class="o">+</span> <span class="p">(</span>
+
+                    <span class="n">f</span><span class="s2">&quot;Assuming multiple {field} are `{separator}` separated. &quot;</span>
+
+                    <span class="k">if</span> <span class="n">separator</span>
+
+                    <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+                <span class="p">)</span>
+
+                <span class="o">+</span> <span class="n">f</span><span class="s2">&quot;Please switch {field} to a list.&quot;</span><span class="p">,</span>
+
+                <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">,</span>
+
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dictionary</span>
+
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported value type {value.__class__.__name__}&quot;</span><span class="p">)</span>
+
 <span class="k">def</span> <span class="nf">add_author_affiliations</span><span class="p">(</span><span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1617,27 +1679,25 @@
 
     <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]:</span>
 
-        <span class="k">if</span> <span class="s2">&quot;affiliations&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">author</span><span class="p">:</span>
+        <span class="n">_convert_field_to_list</span><span class="p">(</span>
 
-            <span class="k">continue</span>
+            <span class="n">dictionary</span><span class="o">=</span><span class="n">author</span><span class="p">,</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">author</span><span class="p">[</span><span class="s2">&quot;affiliations&quot;</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">field</span><span class="o">=</span><span class="s2">&quot;affiliations&quot;</span><span class="p">,</span>
 
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="n">separator</span><span class="o">=</span><span class="s2">&quot;; &quot;</span><span class="p">,</span>
 
-                <span class="n">f</span><span class="s2">&quot;Expected list for {author[&#39;name&#39;]}&#39;s affiliations. &quot;</span>
+            <span class="n">deprecation_warning_key</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
 
-                <span class="n">f</span><span class="s2">&quot;Assuming multiple affiliations are `; ` separated. &quot;</span>
+        <span class="p">)</span>
 
-                <span class="n">f</span><span class="s2">&quot;Please switch affiliations to a list.&quot;</span><span class="p">,</span>
+        <span class="n">_convert_field_to_list</span><span class="p">(</span>
 
-                <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">,</span>
+            <span class="n">dictionary</span><span class="o">=</span><span class="n">author</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">&quot;funders&quot;</span><span class="p">,</span>
 
-            <span class="p">)</span>
+        <span class="p">)</span>
 
-            <span class="n">author</span><span class="p">[</span><span class="s2">&quot;affiliations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">author</span><span class="p">[</span><span class="s2">&quot;affiliations&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;; &quot;</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">affiliation</span> <span class="ow">in</span> <span class="n">author</span><span class="p">[</span><span class="s2">&quot;affiliations&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">affiliation</span> <span class="ow">in</span> <span class="n">author</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;affiliations&quot;</span><span class="p">,</span> <span class="p">[]):</span>
 
             <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">author</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">affiliation</span><span class="p">))</span>
 
@@ -2300,27 +2360,25 @@ affiliations, variables is left unmodified.</p>
 
     <span class="k">for</span> <span class="n">author</span> <span class="k">in</span> <span class="n">variables</span><span class="p">[</span><span class="ss">&quot;authors&quot;</span><span class="p">]:</span>
 
-        <span class="k">if</span> <span class="ss">&quot;affiliations&quot;</span> <span class="k">not</span> <span class="k">in</span> <span class="n">author</span><span class="p">:</span>
+        <span class="n">_convert_field_to_list</span><span class="p">(</span>
 
-            <span class="k">continue</span>
+            <span class="k">dictionary</span><span class="o">=</span><span class="n">author</span><span class="p">,</span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">author</span><span class="p">[</span><span class="ss">&quot;affiliations&quot;</span><span class="p">],</span> <span class="n">list</span><span class="p">):</span>
+            <span class="n">field</span><span class="o">=</span><span class="ss">&quot;affiliations&quot;</span><span class="p">,</span>
 
-            <span class="n">warnings</span><span class="p">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="n">separator</span><span class="o">=</span><span class="ss">&quot;; &quot;</span><span class="p">,</span>
 
-                <span class="n">f</span><span class="ss">&quot;Expected list for {author[&#39;name&#39;]}&#39;s affiliations. &quot;</span>
+            <span class="n">deprecation_warning_key</span><span class="o">=</span><span class="ss">&quot;name&quot;</span><span class="p">,</span>
 
-                <span class="n">f</span><span class="ss">&quot;Assuming multiple affiliations are `; ` separated. &quot;</span>
+        <span class="p">)</span>
 
-                <span class="n">f</span><span class="ss">&quot;Please switch affiliations to a list.&quot;</span><span class="p">,</span>
+        <span class="n">_convert_field_to_list</span><span class="p">(</span>
 
-                <span class="n">category</span><span class="o">=</span><span class="n">DeprecationWarning</span><span class="p">,</span>
+            <span class="k">dictionary</span><span class="o">=</span><span class="n">author</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="ss">&quot;funders&quot;</span><span class="p">,</span>
 
-            <span class="p">)</span>
+        <span class="p">)</span>
 
-            <span class="n">author</span><span class="p">[</span><span class="ss">&quot;affiliations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">author</span><span class="p">[</span><span class="ss">&quot;affiliations&quot;</span><span class="p">].</span><span class="n">split</span><span class="p">(</span><span class="ss">&quot;; &quot;</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">affiliation</span> <span class="k">in</span> <span class="n">author</span><span class="p">[</span><span class="ss">&quot;affiliations&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">affiliation</span> <span class="k">in</span> <span class="n">author</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="ss">&quot;affiliations&quot;</span><span class="p">,</span> <span class="p">[]):</span>
 
             <span class="k">rows</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="n">author</span><span class="p">[</span><span class="ss">&quot;name&quot;</span><span class="p">],</span> <span class="n">affiliation</span><span class="p">))</span>
 

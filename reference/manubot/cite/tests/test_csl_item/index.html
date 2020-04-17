@@ -2403,23 +2403,23 @@ note fields.</p>
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="n">Test_CSL_Item:</span>
 
-    <span class="n">def</span> <span class="n">test_constuctor_empty</span>(<span class="k">self</span>):
+    <span class="n">def</span> <span class="n">test_constuctor_empty</span>(<span class="nb">self</span>):
 
         <span class="n">assert</span> <span class="n">CSL_Item</span>() == {}
 
-    <span class="n">def</span> <span class="n">test_constuctor_by_dict</span>(<span class="k">self</span>):
+    <span class="n">def</span> <span class="n">test_constuctor_by_dict</span>(<span class="nb">self</span>):
 
-        <span class="n">d</span> = {<span class="s">&quot;title&quot;</span>: <span class="s">&quot;My book&quot;</span>}
+        <span class="nb">d</span> = {<span class="s">&quot;title&quot;</span>: <span class="s">&quot;My book&quot;</span>}
 
-        <span class="n">assert</span> <span class="n">CSL_Item</span>(<span class="n">d</span>) == <span class="n">d</span>
+        <span class="n">assert</span> <span class="n">CSL_Item</span>(<span class="nb">d</span>) == <span class="nb">d</span>
 
-    <span class="n">def</span> <span class="n">test_constuctor_by_keyword</span>(<span class="k">self</span>):
+    <span class="n">def</span> <span class="n">test_constuctor_by_keyword</span>(<span class="nb">self</span>):
 
-        <span class="n">assert</span> <span class="n">CSL_Item</span>(<span class="n">type</span>=<span class="s">&quot;journal-article&quot;</span>) == {<span class="s">&quot;type&quot;</span>: <span class="s">&quot;journal-article&quot;</span>}
+        <span class="n">assert</span> <span class="n">CSL_Item</span>(<span class="nb">type</span>=<span class="s">&quot;journal-article&quot;</span>) == {<span class="s">&quot;type&quot;</span>: <span class="s">&quot;journal-article&quot;</span>}
 
-    <span class="n">def</span> <span class="n">test_constuctor_by_dict_keyword_combination</span>(<span class="k">self</span>):
+    <span class="n">def</span> <span class="n">test_constuctor_by_dict_keyword_combination</span>(<span class="nb">self</span>):
 
-        <span class="n">assert</span> <span class="n">CSL_Item</span>({<span class="s">&quot;title&quot;</span>: <span class="s">&quot;My journal article&quot;</span>}, <span class="n">type</span>=<span class="s">&quot;journal-article&quot;</span>) == {
+        <span class="n">assert</span> <span class="n">CSL_Item</span>({<span class="s">&quot;title&quot;</span>: <span class="s">&quot;My journal article&quot;</span>}, <span class="nb">type</span>=<span class="s">&quot;journal-article&quot;</span>) == {
 
             <span class="s">&quot;title&quot;</span>: <span class="s">&quot;My journal article&quot;</span>,
 
@@ -2427,13 +2427,13 @@ note fields.</p>
 
         }
 
-    <span class="n">def</span> <span class="n">test_recursive_constructor</span>(<span class="k">self</span>):
+    <span class="n">def</span> <span class="n">test_recursive_constructor</span>(<span class="nb">self</span>):
 
         <span class="n">assert</span> <span class="n">CSL_Item</span>(<span class="n">CSL_Item</span>()) == {}
 
         <span class="n">assert</span> <span class="n">CSL_Item</span>(<span class="n">CSL_Item</span>(<span class="n">abc</span>=<span class="mi">1</span>)) == {<span class="s">&quot;abc&quot;</span>: <span class="mi">1</span>}
 
-    <span class="n">def</span> <span class="n">test_constructor_leaves_no_inplace_effects</span>(<span class="k">self</span>):
+    <span class="n">def</span> <span class="n">test_constructor_leaves_no_inplace_effects</span>(<span class="nb">self</span>):
 
         <span class="n">dict1</span> = {<span class="s">&quot;a&quot;</span>: <span class="mi">1</span>}
 
@@ -2443,35 +2443,35 @@ note fields.</p>
 
         <span class="n">assert</span> <span class="n">dict1</span> == {<span class="s">&quot;a&quot;</span>: <span class="mi">1</span>}
 
-    <span class="n">def</span> <span class="n">test_correct_invalid_type</span>(<span class="k">self</span>):
+    <span class="n">def</span> <span class="n">test_correct_invalid_type</span>(<span class="nb">self</span>):
 
-        <span class="n">assert</span> <span class="n">CSL_Item</span>(<span class="n">type</span>=<span class="s">&quot;journal-article&quot;</span>).<span class="n">correct_invalid_type</span>() == {
+        <span class="n">assert</span> <span class="n">CSL_Item</span>(<span class="nb">type</span>=<span class="s">&quot;journal-article&quot;</span>).<span class="n">correct_invalid_type</span>() == {
 
             <span class="s">&quot;type&quot;</span>: <span class="s">&quot;article-journal&quot;</span>
 
         }
 
-    <span class="n">def</span> <span class="n">test_set_default_type</span>(<span class="k">self</span>):
+    <span class="n">def</span> <span class="n">test_set_default_type</span>(<span class="nb">self</span>):
 
         <span class="n">assert</span> <span class="n">CSL_Item</span>().<span class="n">set_default_type</span>() == {<span class="s">&quot;type&quot;</span>: <span class="s">&quot;entry&quot;</span>}
 
-    <span class="n">def</span> <span class="n">test_no_change_of_type</span>(<span class="k">self</span>):
+    <span class="n">def</span> <span class="n">test_no_change_of_type</span>(<span class="nb">self</span>):
 
-        <span class="n">assert</span> <span class="n">CSL_Item</span>(<span class="n">type</span>=<span class="s">&quot;book&quot;</span>).<span class="n">correct_invalid_type</span>() == {<span class="s">&quot;type&quot;</span>: <span class="s">&quot;book&quot;</span>}
+        <span class="n">assert</span> <span class="n">CSL_Item</span>(<span class="nb">type</span>=<span class="s">&quot;book&quot;</span>).<span class="n">correct_invalid_type</span>() == {<span class="s">&quot;type&quot;</span>: <span class="s">&quot;book&quot;</span>}
 
-        <span class="n">assert</span> <span class="n">CSL_Item</span>(<span class="n">type</span>=<span class="s">&quot;book&quot;</span>).<span class="n">set_default_type</span>() == {<span class="s">&quot;type&quot;</span>: <span class="s">&quot;book&quot;</span>}
+        <span class="n">assert</span> <span class="n">CSL_Item</span>(<span class="nb">type</span>=<span class="s">&quot;book&quot;</span>).<span class="n">set_default_type</span>() == {<span class="s">&quot;type&quot;</span>: <span class="s">&quot;book&quot;</span>}
 
-    <span class="n">def</span> <span class="n">test_clean</span>(<span class="k">self</span>):
+    <span class="n">def</span> <span class="n">test_clean</span>(<span class="nb">self</span>):
 
-        <span class="n">csl_item</span> = <span class="n">CSL_Item</span>(<span class="n">type</span>=<span class="s">&quot;chapter&quot;</span>, <span class="n">id</span>=<span class="s">&quot;abc&quot;</span>)
+        <span class="n">csl_item</span> = <span class="n">CSL_Item</span>(<span class="nb">type</span>=<span class="s">&quot;chapter&quot;</span>, <span class="nb">id</span>=<span class="s">&quot;abc&quot;</span>)
 
         <span class="n">csl_item</span>.<span class="n">clean</span>(<span class="n">prune</span>=<span class="nb">True</span>)
 
         <span class="n">assert</span> <span class="n">csl_item</span> == {<span class="s">&quot;type&quot;</span>: <span class="s">&quot;chapter&quot;</span>, <span class="s">&quot;id&quot;</span>: <span class="s">&quot;abc&quot;</span>}
 
-    <span class="n">def</span> <span class="n">test_clean_set_id</span>(<span class="k">self</span>):
+    <span class="n">def</span> <span class="n">test_clean_set_id</span>(<span class="nb">self</span>):
 
-        <span class="n">csl_item</span> = <span class="n">CSL_Item</span>(<span class="n">type</span>=<span class="s">&quot;chapter&quot;</span>)
+        <span class="n">csl_item</span> = <span class="n">CSL_Item</span>(<span class="nb">type</span>=<span class="s">&quot;chapter&quot;</span>)
 
         <span class="n">csl_item</span>.<span class="n">set_id</span>(<span class="s">&quot;abc&quot;</span>)
 
