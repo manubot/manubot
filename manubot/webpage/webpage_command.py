@@ -195,7 +195,7 @@ def ots_upgrade(args):
             logging.warning(
                 f"OpenTimestamp upgrade failed with exit code {process.returncode}.\n{message}"
             )
-        elif not process.stderr.strip() == "Success! Timestamp complete":
+        elif not process.stdout.strip() == "Success! Timestamp complete":
             logging.info(message)
         backup_path = ots_path.with_suffix(".ots.bak")
         if backup_path.exists():
