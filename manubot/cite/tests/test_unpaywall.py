@@ -54,4 +54,4 @@ def test_unpaywall_from_csl_item_with_doi():
     unpaywall = Unpaywall.from_csl_item(csl_item)
     # Unpaywall.from_csl_item uses DOI lookup when available
     assert isinstance(unpaywall, Unpaywall_DOI)
-    assert unpaywall.best_pdf["pmh_id"] == "oai:arXiv.org:1908.11459"
+    assert unpaywall.best_pdf["url_for_pdf"]
