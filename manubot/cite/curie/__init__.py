@@ -36,6 +36,7 @@ _keep_namespace_fields = {
     "description",
     "sampleId",  # example identifier
     "namespaceEmbeddedInLui",  # whether prefix is included in the local unique identifier
+    "curiePrefix",  # a computed field for the actual prefix used by CURIEs including required capitalization
 }
 
 
@@ -62,10 +63,31 @@ def _download_namespaces():
     namespaces = results["_embedded"]["namespaces"]
     # filter namespace fields to reduce diskspace
     for namespace in namespaces:
+        namespace["curiePrefix"] = get_curie_prefix(namespace)
         for field in set(namespace) - _keep_namespace_fields:
             del namespace[field]
     json_text = json.dumps(namespaces, indent=2, ensure_ascii=False)
     namespace_path.write_text(json_text + "\n", encoding="utf-8")
+
+
+def get_curie_prefix(namespace):
+    """
+    The prefix portion of a CURIE is not always the same as the identifiers.org namespace prefix.
+    This occurs when namespaceEmbeddedInLui is true.
+    When namespaceEmbeddedInLui, CURIEs require a specific prefix capitalization.
+    The actual prefix and capitalization is reverse engineered from the regex pattern.
+
+    References:
+    https://github.com/identifiers-org/identifiers-org.github.io/issues/100#issuecomment-614679142
+
+    """
+    if not namespace["namespaceEmbeddedInLui"]:
+        return namespace["prefix"]
+    import exrex
+
+    example_curie = exrex.getone(namespace["pattern"])
+    curie_prefix, _ = example_curie.split(":", 1)
+    return curie_prefix
 
 
 def get_namespaces(compile_patterns=False) -> List[dict]:
@@ -73,23 +95,20 @@ def get_namespaces(compile_patterns=False) -> List[dict]:
         namespaces = json.load(read_file)
     if compile_patterns:
         for namespace in namespaces:
-            namespace["pattern"] = re.compile(namespace["pattern"])
+            namespace["compiled_pattern"] = re.compile(namespace["pattern"])
     return namespaces
 
 
 @functools.lru_cache()
-def get_prefixes() -> Set[str]:
-    return {namespace["prefix"] for namespace in get_namespaces()}
-
-
-@functools.lru_cache()
 def get_prefix_to_namespace() -> Set[str]:
-    return {n["prefix"]: n for n in get_namespaces()}
+    return {n["curiePrefix"].lower(): n for n in get_namespaces()}
 
 
-def curie_to_url(curie):
+def standardize_curie(curie):
     """
-    `curie` should be in `prefix:accession` format
+    Return CURIE with identifiers.org expected capitalization.
+    `curie` should be in `prefix:accession` format.
+    If `curie` is malformed or uses an unrecognized prefix, raise ValueError.
     """
     if not isinstance(curie, str):
         raise TypeError(
@@ -111,8 +130,14 @@ def curie_to_url(curie):
         raise ValueError(
             f"prefix {prefix_lower} for {curie} is not a recognized prefix"
         )
-    if not namespace["namespaceEmbeddedInLui"]:
-        curie = f"{prefix_lower}:{accession}"
+    return f"{namespace['curiePrefix']}:{accession}"
+
+
+def curie_to_url(curie):
+    """
+    `curie` should be in `prefix:accession` format
+    """
+    curie = standardize_curie(curie)
     resolver_url = "https://identifiers.org"
     return f"{resolver_url}/{curie}"
 
