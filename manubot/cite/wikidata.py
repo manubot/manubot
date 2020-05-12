@@ -1,5 +1,3 @@
-import re
-
 from .citekey import Handler
 
 

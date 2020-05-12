@@ -238,6 +238,8 @@ def is_valid_citekey(
     to those for which manubot can retrieve metadata based only on the
     standalone citekey.
     """
+    from .handlers import prefix_to_handler
+
     if not isinstance(citekey, str):
         logging.error(
             f"citekey should be type 'str' not "
@@ -275,7 +277,7 @@ def is_valid_citekey(
             return False
 
     # Check supported source type
-    sources = set(citeproc_retrievers)
+    sources = set(prefix_to_handler)
     if allow_raw:
         sources.add("raw")
     if allow_tag:

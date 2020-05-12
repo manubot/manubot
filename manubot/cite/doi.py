@@ -38,7 +38,6 @@ class Handler_DOI(Handler):
                 )
         else:
             return "DOIs must start with '10.' (or '10/' for shortDOIs)."
-    
 
     def standardize_prefix_accession(self, accession):
         if accession.startswith("10/"):

@@ -25,7 +25,7 @@ import json
 import logging
 import pathlib
 import re
-from typing import List, Set, Dict
+import typing
 
 from ..citekey import Handler
 
@@ -112,7 +112,7 @@ def get_curie_prefix(namespace):
     return curie_prefix
 
 
-def get_namespaces(compile_patterns=False) -> List[dict]:
+def get_namespaces(compile_patterns=False) -> typing.List[dict]:
     with namespace_path.open(encoding="utf-8-sig") as read_file:
         namespaces = json.load(read_file)
     if compile_patterns:
@@ -122,7 +122,7 @@ def get_namespaces(compile_patterns=False) -> List[dict]:
 
 
 @functools.lru_cache()
-def get_prefix_to_namespace() -> Dict[str, Dict]:
+def get_prefix_to_namespace() -> typing.Dict[str, typing.Dict]:
     prefix_to_namespace = dict()
     for ns in get_namespaces():
         for key in "prefix", "curiePrefix":
