@@ -285,7 +285,7 @@ Create a development environment using:
 
 ```shell
 conda create --name manubot-dev --channel conda-forge \
-  python=3.7 pandoc=2.8
+  python=3.8 pandoc=2.8
 conda activate manubot-dev  # assumes conda >= 4.4
 pip install --editable ".[all]"
 ```

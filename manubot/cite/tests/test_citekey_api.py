@@ -16,7 +16,7 @@ from manubot.cite import citekey_to_csl_item, standardize_citekey
             "doi:10/xxxxxxxxxxxxxYY",
             "doi:10/xxxxxxxxxxxxxyy",
         ),  # passthrough non-existent shortDOI
-        ("pmid:24159271", "pmid:24159271"),
+        ("pmid:24159271", "pubmed:24159271"),
         ("isbn:1339919885", "isbn:9781339919881"),
         ("isbn:1-339-91988-5", "isbn:9781339919881"),
         ("isbn:978-0-387-95069-3", "isbn:9780387950693"),

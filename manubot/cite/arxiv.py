@@ -5,8 +5,25 @@ import xml.etree.ElementTree
 import requests
 
 from .csl_item import CSL_Item
-from .citekey import regexes
+from .citekey import Handler
 from manubot.util import get_manubot_user_agent
+
+
+class Handler_arXiv(Handler):
+
+    standard_prefix = "arxiv"
+
+    prefixes = [
+        "arxiv",
+    ]
+    accession_pattern = re.compile(
+        r"(?P<versionless_id>[0-9]{4}\.[0-9]{4,5}|[a-z\-]+(\.[A-Z]{2})?/[0-9]{7})(?P<version>v[0-9]+)?"
+    )
+
+    def inspect(self, citekey):
+        # https://arxiv.org/help/arxiv_identifier
+        if not self._get_pattern().fullmatch(citekey.accession):
+            return "arXiv identifiers must conform to syntax described at https://arxiv.org/help/arxiv_identifier."
 
 
 class CSL_Item_arXiv(CSL_Item):
@@ -40,7 +57,7 @@ def split_arxiv_id_version(arxiv_id: str):
     Return (versionless_id, version) tuple.
     Version refers to the verion suffix like 'v2' or None.
     """
-    match = re.match(regexes["arxiv"], arxiv_id)
+    match = re.match(Handler_arXiv.accession_pattern, arxiv_id)
     return match.group("versionless_id"), match.group("version")
 
 

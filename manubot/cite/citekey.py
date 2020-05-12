@@ -14,8 +14,11 @@ Helpers:
 import functools
 import logging
 import re
+import typing
+import dataclasses
 
 from manubot.util import import_function
+
 
 citeproc_retrievers = {
     "doi": "manubot.cite.doi.get_doi_csl_item",
@@ -47,36 +50,153 @@ Prototyped at https://regex101.com/r/s3Asz3/4
 citekey_pattern = re.compile(r"(?<!\w)@([a-zA-Z0-9][\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])")
 
 
+@dataclasses.dataclass
+class Handler:
+
+    prefix_lower: str
+    prefixes = []
+
+    def _get_pattern(self, attribute="accession_pattern") -> typing.Pattern:
+        # todo: cache compilation
+        pattern = getattr(self, attribute, None)
+        if not pattern:
+            return None
+        if not isinstance(pattern, typing.Pattern):
+            pattern = re.compile(pattern)
+        return pattern
+
+    def inspect(self, citekey):
+        pattern = self._get_pattern("accession_pattern")
+        if not pattern:
+            return
+        if not pattern.fullmatch(citekey.accession):
+            return f"{citekey.accession} does not match regex {pattern.pattern}"
+
+    def standardize_prefix_accession(self, accession):
+        standard_prefix = getattr(self, "standard_prefix", self.prefix_lower)
+        standard_accession = accession
+        return standard_prefix, standard_accession
+
+    @staticmethod
+    def get_csl_item(citekey):
+        return {}
+
+
+@dataclasses.dataclass
+class CiteKey:
+    input_id: str
+    aliases: dict = dataclasses.field(default_factory=dict)
+    # csl_item_id: str = None
+    # manual_reference: bool = False
+    # manual_reference_id: str = None
+
+    @classmethod
+    @functools.lru_cache(maxsize=None)
+    def from_input_id(cls, input_id, aliases={}):
+        return cls(input_id, aliases)
+
+    @functools.cached_property
+    def dealiased_id(self):
+        return self.aliases.get(self.input_id, self.input_id)
+
+    def _set_prefix_accession(self):
+        try:
+            prefix, accession = self.dealiased_id.split(":", 1)
+            prefix = prefix.lower()
+        except ValueError:
+            prefix, accession = None, None
+        self._prefix_lower = prefix
+        self._accession = accession
+
+    @property
+    def prefix_lower(self):
+        if not hasattr(self, "_prefix_lower"):
+            self._set_prefix_accession()
+        return self._prefix_lower
+
+    def inspect(self):
+        return self.handler.inspect(self)
+
+    @property
+    def accession(self):
+        if not hasattr(self, "_accession"):
+            self._set_prefix_accession()
+        return self._accession
+
+    @property
+    def standard_prefix(self):
+        if not hasattr(self, "_standard_prefix"):
+            self._standardize()
+        return self._standard_prefix
+
+    @property
+    def standard_accession(self):
+        if not hasattr(self, "_standard_accession"):
+            self._standardize()
+        return self._standard_accession
+
+    @functools.cached_property
+    def handler(self):
+        from .handlers import get_handler
+
+        try:
+            return get_handler(self.prefix_lower)
+        except KeyError:
+            return Handler(self.prefix_lower)
+
+    def _standardize(self):
+        if self.prefix_lower is None:
+            self._standard_prefix = None
+            self._standard_accession = None
+            self._standard_id = self.dealiased_id
+            return
+        (
+            self._standard_prefix,
+            self._standard_accession,
+        ) = self.handler.standardize_prefix_accession(self.accession)
+        self._standard_id = f"{self._standard_prefix}:{self._standard_accession}"
+
+    @property
+    def standard_id(self):
+        if not hasattr(self, "_standard_id"):
+            self._standardize()
+        return self._standard_id
+
+    @functools.cached_property
+    def short_id(self):
+        return shorten_citekey(self.standard_id)
+
+    def __hash__(self):
+        return hash((self.input_id, self.dealiased_id))
+
+    def __repr__(self):
+        return " --> ".join(
+            f"{getattr(self, key)} ({key})"
+            for key in (
+                "input_id",
+                "dealiased_id",
+                "prefix_lower",
+                "accession",
+                "standard_id",
+                "short_id",
+            )
+        )
+
+    # @classmethod
+    # def from_citekey(input_id):
+    #     pass
+
+    @functools.cached_property
+    def csl_item(self):
+        self.handler.get_csl_item(self)
+
+
 @functools.lru_cache(maxsize=5_000)
 def standardize_citekey(citekey, warn_if_changed=False):
     """
     Standardize citation keys based on their source
     """
-    source, identifier = citekey.split(":", 1)
-
-    if source == "doi":
-        if identifier.startswith("10/"):
-            from manubot.cite.doi import expand_short_doi
-
-            try:
-                identifier = expand_short_doi(identifier)
-            except Exception as error:
-                # If DOI shortening fails, return the unshortened DOI.
-                # DOI metadata lookup will eventually fail somewhere with
-                # appropriate error handling, as opposed to here.
-                logging.error(
-                    f"Error in expand_short_doi for {identifier} "
-                    f"due to a {error.__class__.__name__}:\n{error}"
-                )
-                logging.info(error, exc_info=True)
-        identifier = identifier.lower()
-
-    if source == "isbn":
-        from isbnlib import to_isbn13
-
-        identifier = to_isbn13(identifier)
-
-    standard_citekey = f"{source}:{identifier}"
+    standard_citekey = CiteKey(citekey).standard_id
     if warn_if_changed and citekey != standard_citekey:
         logging.warning(
             f"standardize_citekey expected citekey to already be standardized.\n"
@@ -85,86 +205,13 @@ def standardize_citekey(citekey, warn_if_changed=False):
     return standard_citekey
 
 
-regexes = {
-    "arxiv": re.compile(
-        r"(?P<versionless_id>[0-9]{4}\.[0-9]{4,5}|[a-z\-]+(\.[A-Z]{2})?/[0-9]{7})(?P<version>v[0-9]+)?"
-    ),
-    "pmid": re.compile(r"[1-9][0-9]{0,7}"),
-    "pmcid": re.compile(r"PMC[0-9]+"),
-    "doi": re.compile(r"10\.[0-9]{4,9}/\S+"),
-    "shortdoi": re.compile(r"10/[a-zA-Z0-9]+"),
-    "wikidata": re.compile(r"Q[0-9]+"),
-}
-
-
 def inspect_citekey(citekey):
     """
     Check citekeys adhere to expected formats. If an issue is detected a
     string describing the issue is returned. Otherwise returns None.
     """
-    source, identifier = citekey.split(":", 1)
-
-    if source == "arxiv":
-        # https://arxiv.org/help/arxiv_identifier
-        if not regexes["arxiv"].fullmatch(identifier):
-            return "arXiv identifiers must conform to syntax described at https://arxiv.org/help/arxiv_identifier."
-
-    if source == "pmid":
-        # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmid
-        if identifier.startswith("PMC"):
-            return (
-                "PubMed Identifiers should start with digits rather than PMC. "
-                f"Should {citekey!r} switch the citation source to 'pmcid'?"
-            )
-        elif not regexes["pmid"].fullmatch(identifier):
-            return "PubMed Identifiers should be 1-8 digits with no leading zeros."
-
-    if source == "pmcid":
-        # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc
-        if not identifier.startswith("PMC"):
-            return "PubMed Central Identifiers must start with 'PMC'."
-        elif not regexes["pmcid"].fullmatch(identifier):
-            return (
-                "Identifier does not conform to the PMCID regex. "
-                "Double check the PMCID."
-            )
-
-    if source == "doi":
-        if identifier.startswith("10."):
-            # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
-            if not regexes["doi"].fullmatch(identifier):
-                return (
-                    "Identifier does not conform to the DOI regex. "
-                    "Double check the DOI."
-                )
-        elif identifier.startswith("10/"):
-            # shortDOI, see http://shortdoi.org
-            if not regexes["shortdoi"].fullmatch(identifier):
-                return (
-                    "Identifier does not conform to the shortDOI regex. "
-                    "Double check the shortDOI."
-                )
-        else:
-            return "DOIs must start with '10.' (or '10/' for shortDOIs)."
-
-    if source == "isbn":
-        import isbnlib
-
-        fail = isbnlib.notisbn(identifier, level="strict")
-        if fail:
-            return f"identifier violates the ISBN syntax according to isbnlib v{isbnlib.__version__}"
-
-    if source == "wikidata":
-        # https://www.wikidata.org/wiki/Wikidata:Identifiers
-        if not identifier.startswith("Q"):
-            return "Wikidata item IDs must start with 'Q'."
-        elif not regexes["wikidata"].fullmatch(identifier):
-            return (
-                "Identifier does not conform to the Wikidata regex. "
-                "Double check the entity ID."
-            )
-
-    return None
+    citekey = CiteKey(citekey)
+    return citekey.inspect()
 
 
 def is_valid_citekey(

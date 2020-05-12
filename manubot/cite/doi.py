@@ -5,8 +5,58 @@ import urllib.request
 
 import requests
 
-from manubot.cite.pubmed import get_pubmed_ids_for_doi
 from manubot.util import get_manubot_user_agent
+from .citekey import Handler
+from .pubmed import get_pubmed_ids_for_doi
+
+
+class Handler_DOI(Handler):
+
+    standard_prefix = "doi"
+    prefixes = [
+        "doi",
+        "shortdoi",
+    ]
+    accession_pattern = r"10\.[0-9]{4,9}/\S+"
+    shortdoi_pattern = r"10/[a-zA-Z0-9]+"
+
+    def inspect(self, citekey):
+        identifier = citekey.accession
+        if identifier.startswith("10."):
+            # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
+            if not self._get_pattern().fullmatch(identifier):
+                return (
+                    "Identifier does not conform to the DOI regex. "
+                    "Double check the DOI."
+                )
+        elif identifier.startswith("10/"):
+            # shortDOI, see http://shortdoi.org
+            if not self._get_pattern("shortdoi_pattern").fullmatch(identifier):
+                return (
+                    "Identifier does not conform to the shortDOI regex. "
+                    "Double check the shortDOI."
+                )
+        else:
+            return "DOIs must start with '10.' (or '10/' for shortDOIs)."
+    
+
+    def standardize_prefix_accession(self, accession):
+        if accession.startswith("10/"):
+            from manubot.cite.doi import expand_short_doi
+
+            try:
+                accession = expand_short_doi(accession)
+            except Exception as error:
+                # If DOI shortening fails, return the unshortened DOI.
+                # DOI metadata lookup will eventually fail somewhere with
+                # appropriate error handling, as opposed to here.
+                logging.error(
+                    f"Error in expand_short_doi for {accession} "
+                    f"due to a {error.__class__.__name__}:\n{error}"
+                )
+                logging.info(error, exc_info=True)
+        accession = accession.lower()
+        return self.standard_prefix, accession
 
 
 def expand_short_doi(short_doi):

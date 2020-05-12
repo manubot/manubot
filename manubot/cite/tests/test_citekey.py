@@ -1,14 +1,53 @@
 """Tests rest of functions in manubot.cite, not covered by test_citekey_api.py."""
-
 import pytest
 
 from manubot.cite.citekey import (
+    CiteKey,
     citekey_pattern,
     shorten_citekey,
     infer_citekey_prefix,
     inspect_citekey,
     url_to_citekey,
 )
+
+
+@pytest.mark.parametrize(
+    ["input_id", "citekey_attrs"],
+    [
+        (
+            "DOI:10.5061/DRYad.q447c/1",
+            dict(
+                prefix_lower="doi",
+                standard_accession="10.5061/dryad.q447c/1",
+                standard_id="doi:10.5061/dryad.q447c/1",
+            ),
+        ),
+        (
+            "arXiv:1407.3561v1",
+            dict(prefix_lower="arxiv", standard_id="arxiv:1407.3561v1",),
+        ),
+        ("pmid:24159271", dict(standard_id="pubmed:24159271",),),
+        ("pmcid:PMC4304851", dict(standard_id="pmc:PMC4304851",),),
+        (
+            "https://greenelab.github.io/manubot-rootstock/",
+            dict(standard_id="url:https://greenelab.github.io/manubot-rootstock/",),
+        ),
+        ("isbn:1-339-91988-5", dict(standard_id="isbn:9781339919881",),),
+        ("DOID:14330", dict(standard_id="doid:14330",),),
+        ("PubChem.substance:100101", dict(standard_id="pubchem.substance:100101",),),
+        ("Wikidata:Q50051684", dict(standard_id="wikidata:Q50051684",),),
+        # ("tag:tag_with_underscores"),
+        # ("tag:tag-with-hyphens"),
+        # ("tag:abc123"),
+        # ("tag:123abc"),
+    ],
+)
+def test_citekey_class(input_id, citekey_attrs):
+    citekey = CiteKey(input_id)
+    print(citekey)
+    for key, value in citekey_attrs.items():
+        assert getattr(citekey, key) == value
+    assert citekey.short_id
 
 
 @pytest.mark.parametrize(
@@ -95,7 +134,7 @@ def test_inspect_citekey_passes(citekey):
         ("pmcid:25648772", "must start with 'PMC'"),
         (
             "pmid:PMC4304851",
-            "Should 'pmid:PMC4304851' switch the citation source to 'pmcid'?",
+            "Should 'pmid:PMC4304851' switch the citation source to 'pmc'?",
         ),
         ("isbn:1-339-91988-X", "identifier violates the ISBN syntax"),
         ("wikidata:P212", "item IDs must start with 'Q'"),

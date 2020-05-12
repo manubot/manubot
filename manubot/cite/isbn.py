@@ -3,6 +3,31 @@ import json
 import logging
 import re
 
+from .citekey import Handler
+
+
+class Handler_ISBN(Handler):
+
+    standard_prefix = "isbn"
+
+    prefixes = [
+        "isbn",
+    ]
+
+    @classmethod
+    def inspect(cls, citekey):
+        import isbnlib
+
+        fail = isbnlib.notisbn(citekey.accession, level="strict")
+        if fail:
+            return f"identifier violates the ISBN syntax according to isbnlib v{isbnlib.__version__}"
+
+    def standardize_prefix_accession(self, accession):
+        from isbnlib import to_isbn13
+
+        accession = to_isbn13(accession)
+        return self.standard_prefix, accession
+
 
 def get_isbn_csl_item(isbn):
     """

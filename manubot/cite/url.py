@@ -2,6 +2,24 @@ import json
 import logging
 import re
 
+from .citekey import Handler
+
+
+class Handler_URL(Handler):
+
+    standard_prefix = "url"
+
+    prefixes = [
+        "url",
+        "http",
+        "https",
+    ]
+
+    def standardize_prefix_accession(self, accession):
+        if self.prefix_lower != "url":
+            accession = f"{self.prefix_lower}:{accession}"
+        return self.standard_prefix, accession
+
 
 def get_url_csl_item(url):
     """
