@@ -1,11 +1,9 @@
 """
 Utilities for representing and processing citation keys.
 """
-import abc
 import functools
 import logging
 import re
-import typing
 import dataclasses
 
 try:

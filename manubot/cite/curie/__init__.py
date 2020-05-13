@@ -27,7 +27,7 @@ import pathlib
 import re
 import typing
 
-from ..citekey import Handler
+from ..handlers import Handler
 
 _keep_namespace_fields = {
     "prefix",

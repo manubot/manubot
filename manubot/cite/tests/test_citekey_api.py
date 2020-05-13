@@ -162,3 +162,14 @@ def test_citekey_to_csl_item_isbn():
     csl_item = citekey_to_csl_item("isbn:9780387950693")
     assert csl_item["type"] == "book"
     assert csl_item["title"] == "Complex analysis"
+
+
+def test_citekey_to_csl_item_clinical_trial():
+    """
+    Test clinicaltrials.gov citation support using CURIEs.
+    https://github.com/manubot/manubot/issues/216
+    """
+    csl_item = citekey_to_csl_item("clinicaltrials:NCT04292899")
+    assert csl_item["title"].startswith("A Phase 3 Randomized Study")
+    assert csl_item["source"].startswith("clinicaltrials.gov")
+    assert csl_item["URL"] == "https://clinicaltrials.gov/ct2/show/NCT04292899"
