@@ -31,7 +31,7 @@ def test_get_namespaces_with_compile_patterns():
                 f"{namespace['compiled_pattern'].pattern} "
                 f"does not match {compact_id}"
             )
-        if namespace['prefix'] != namespace['curiePrefix'].lower():
+        if namespace["prefix"] != namespace["curiePrefix"].lower():
             print(
                 f"{namespace['prefix']} identifiers use "
                 f"curiePrefix {namespace['curiePrefix']}"
