@@ -17,7 +17,10 @@ import logging
 import re
 import typing
 import dataclasses
-
+try:
+    from functools import cached_property
+except ImportError:
+    from backports.cached_property import cached_property
 
 @dataclasses.dataclass
 class Handler:
@@ -64,7 +67,7 @@ class CiteKey:
     def from_input_id(cls, input_id, aliases={}):
         return cls(input_id, aliases)
 
-    @functools.cached_property
+    @cached_property
     def dealiased_id(self):
         return self.aliases.get(self.input_id, self.input_id)
 
@@ -104,7 +107,7 @@ class CiteKey:
             self._standardize()
         return self._standard_accession
 
-    @functools.cached_property
+    @cached_property
     def handler(self):
         from .handlers import get_handler
 
@@ -131,7 +134,7 @@ class CiteKey:
             self._standardize()
         return self._standard_id
 
-    @functools.cached_property
+    @cached_property
     def short_id(self):
         return shorten_citekey(self.standard_id)
 
@@ -155,7 +158,7 @@ class CiteKey:
     # def from_citekey(input_id):
     #     pass
 
-    @functools.cached_property
+    @cached_property
     def csl_item(self):
         from .csl_item import CSL_Item
 

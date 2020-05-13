@@ -62,6 +62,7 @@ setuptools.setup(
     python_requires=">=3.6",
     # Run-time dependencies
     install_requires=[
+        'backports.cached-property;python_version<"3.8"',
         'dataclasses;python_version<"3.7"',
         "errorhandler",
         "isbnlib",
