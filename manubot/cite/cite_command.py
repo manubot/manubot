@@ -75,7 +75,7 @@ def cli_cite(args):
     Main function for the manubot cite command-line interface.
 
     Does not allow user to directly specify Pandoc's --to argument, due to
-    inconsistent citaiton rendering by output format. See
+    inconsistent citation rendering by output format. See
     https://github.com/jgm/pandoc/issues/4834
     """
     # generate CSL JSON data

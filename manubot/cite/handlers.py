@@ -3,6 +3,13 @@ import functools
 
 from manubot.util import import_function
 
+"""
+Non-citation prefixes used by the pandoc-xnos suite of Pandoc filters,
+including pandoc-fignos, pandoc-tablenos, and pandoc-eqnos.
+"""
+_pandoc_xnos_prefixes = {"fig", "tbl", "eq"}
+
+
 _local_handlers = [
     "manubot.cite.arxiv.Handler_arXiv",
     "manubot.cite.doi.Handler_DOI",
@@ -16,8 +23,10 @@ _local_handlers = [
 
 @functools.lru_cache(maxsize=10_000)
 def get_handler(prefix_lower):
-    if prefix_lower is None:
-        return import_function("manubot.cite.citekey.Handler")(prefix_lower)
+    if not isinstance(prefix_lower, str):
+        raise TypeError(
+            f"prefix_lower should be a str, instead received {prefix_lower.__class__.__name__}"
+        )
     assert prefix_lower == prefix_lower.lower()
     handler = prefix_to_handler[prefix_lower]
     handler = import_function(handler)(prefix_lower)

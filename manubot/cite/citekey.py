@@ -127,10 +127,15 @@ class CiteKey:
     def handler(self):
         from .handlers import get_handler
 
-        try:
+        if self.is_handled_prefix:
             return get_handler(self.prefix_lower)
-        except KeyError:
-            return Handler(self.prefix_lower)
+        return Handler(self.prefix_lower)
+
+    @cached_property
+    def is_handled_prefix(self):
+        from .handlers import prefix_to_handler
+
+        return self.prefix_lower in prefix_to_handler
 
     def inspect(self):
         return self.handler.inspect(self)
@@ -181,6 +186,18 @@ class CiteKey:
         if not isinstance(csl_item, CSL_Item):
             csl_item = CSL_Item(csl_item)
         return csl_item
+
+    def is_pandoc_xnos_prefix(self, log_case_warning=False):
+        from .handlers import _pandoc_xnos_prefixes
+
+        if self.prefix in _pandoc_xnos_prefixes:
+            return True
+        if log_case_warning and self.prefix_lower in _pandoc_xnos_prefixes:
+            logging.warning(
+                "pandoc-xnos prefixes should be all lowercase.\n"
+                f'Should {self.input_id!r} use {self.prefix_lower!r} rather than "{self.prefix!r}"?'
+            )
+        return False
 
 
 @functools.lru_cache(maxsize=5_000)
@@ -242,14 +259,8 @@ def is_valid_citekey(
     if allow_pandoc_xnos:
         # Exempted non-citation sources used for pandoc-fignos,
         # pandoc-tablenos, and pandoc-eqnos
-        pandoc_xnos_keys = {"fig", "tbl", "eq"}
-        if citekey_obj.prefix in pandoc_xnos_keys:
-            return False
-        if citekey_obj.prefix_lower in pandoc_xnos_keys:
-            logging.error(
-                "pandoc-xnos reference types should be all lowercase.\n"
-                f'Should {citekey!r} use {citekey_obj.prefix_lower!r} rather than "{citekey_obj.prefix!r}"?'
-            )
+        is_pandoc_xnos_prefix = citekey_obj.is_pandoc_xnos_prefix(log_case_warning=True)
+        if is_pandoc_xnos_prefix:
             return False
 
     # Check supported source type
