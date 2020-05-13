@@ -17,10 +17,12 @@ import logging
 import re
 import typing
 import dataclasses
+
 try:
     from functools import cached_property
 except ImportError:
     from backports.cached_property import cached_property
+
 
 @dataclasses.dataclass
 class Handler:
