@@ -16,6 +16,8 @@ _local_handlers = [
 
 @functools.lru_cache(maxsize=10_000)
 def get_handler(prefix_lower):
+    if prefix_lower is None:
+        return import_function("manubot.cite.citekey.Handler")(prefix_lower)
     assert prefix_lower == prefix_lower.lower()
     handler = prefix_to_handler[prefix_lower]
     handler = import_function(handler)(prefix_lower)

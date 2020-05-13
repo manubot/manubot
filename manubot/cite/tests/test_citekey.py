@@ -5,7 +5,6 @@ from manubot.cite.citekey import (
     CiteKey,
     shorten_citekey,
     infer_citekey_prefix,
-    inspect_citekey,
     url_to_citekey,
 )
 
@@ -87,7 +86,8 @@ def test_inspect_citekey_passes(citekey):
     """
     These citekeys should pass inspection by inspect_citekey.
     """
-    assert inspect_citekey(citekey) is None
+    report = CiteKey(citekey).inspect()
+    assert report is None
 
 
 @pytest.mark.parametrize(
@@ -112,7 +112,7 @@ def test_inspect_citekey_fails(citekey, contains):
     """
     These citekeys should fail inspection by inspect_citekey.
     """
-    report = inspect_citekey(citekey)
+    report = CiteKey(citekey).inspect()
     assert report is not None
     assert isinstance(report, str)
     assert contains in report

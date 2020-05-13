@@ -5,7 +5,6 @@
 
 Helpers:
 
-  inspect_citekey()
   is_valid_citekey() - also used in manubot.process
   shorten_citekey() - used solely in manubot.process
   infer_citekey_prefix()
@@ -40,6 +39,10 @@ class Handler:
         return pattern
 
     def inspect(self, citekey):
+        """
+        Check citekeys adhere to expected formats. If an issue is detected a
+        string describing the issue is returned. Otherwise returns None.
+        """
         pattern = self._get_pattern("accession_pattern")
         if not pattern:
             return
@@ -60,14 +63,25 @@ class Handler:
 class CiteKey:
     input_id: str
     aliases: dict = dataclasses.field(default_factory=dict)
-    # csl_item_id: str = None
-    # manual_reference: bool = False
-    # manual_reference_id: str = None
+
+    def __post_init__(self):
+        self.check_input_id(self.input_id)
+
+    @staticmethod
+    def check_input_id(input_id):
+        if not isinstance(input_id, str):
+            raise TypeError(
+                "input_id should be type 'str' not "
+                f"{type(input_id).__name__!r}: {input_id!r}"
+            )
+        if input_id.startswith("@"):
+            f"invalid citekey input_id: {input_id!r}\nstarts with '@'"
 
     @classmethod
     @functools.lru_cache(maxsize=None)
-    def from_input_id(cls, input_id, aliases={}):
-        return cls(input_id, aliases)
+    def from_input_id(cls, *args, **kwargs):
+        """Cached constructor"""
+        return cls(*args, **kwargs)
 
     @cached_property
     def dealiased_id(self):
@@ -76,20 +90,20 @@ class CiteKey:
     def _set_prefix_accession(self):
         try:
             prefix, accession = self.dealiased_id.split(":", 1)
-            prefix = prefix.lower()
         except ValueError:
             prefix, accession = None, None
-        self._prefix_lower = prefix
+        self._prefix = prefix
         self._accession = accession
 
     @property
-    def prefix_lower(self):
-        if not hasattr(self, "_prefix_lower"):
+    def prefix(self):
+        if not hasattr(self, "_prefix"):
             self._set_prefix_accession()
-        return self._prefix_lower
+        return self._prefix
 
-    def inspect(self):
-        return self.handler.inspect(self)
+    @property
+    def prefix_lower(self):
+        return self.prefix.lower()
 
     @property
     def accession(self):
@@ -117,6 +131,9 @@ class CiteKey:
             return get_handler(self.prefix_lower)
         except KeyError:
             return Handler(self.prefix_lower)
+
+    def inspect(self):
+        return self.handler.inspect(self)
 
     def _standardize(self):
         if self.prefix_lower is None:
@@ -156,10 +173,6 @@ class CiteKey:
             )
         )
 
-    # @classmethod
-    # def from_citekey(input_id):
-    #     pass
-
     @cached_property
     def csl_item(self):
         from .csl_item import CSL_Item
@@ -182,15 +195,6 @@ def standardize_citekey(citekey, warn_if_changed=False):
             f"Instead citekey was changed from {citekey!r} to {standard_citekey!r}"
         )
     return standard_citekey
-
-
-def inspect_citekey(citekey):
-    """
-    Check citekeys adhere to expected formats. If an issue is detected a
-    string describing the issue is returned. Otherwise returns None.
-    """
-    citekey = CiteKey(citekey)
-    return citekey.inspect()
 
 
 def is_valid_citekey(
@@ -219,25 +223,18 @@ def is_valid_citekey(
     """
     from .handlers import prefix_to_handler
 
-    if not isinstance(citekey, str):
-        logging.error(
-            f"citekey should be type 'str' not "
-            f"{type(citekey).__name__!r}: {citekey!r}"
-        )
-        return False
-    if citekey.startswith("@"):
-        logging.error(f"invalid citekey: {citekey!r}\nstarts with '@'")
-        return False
     try:
-        source, identifier = citekey.split(":", 1)
-    except ValueError:
+        citekey_obj = CiteKey(citekey)
+    except (ValueError, TypeError) as error:
+        logging.error(error)
+        return False
+    if citekey_obj.prefix_lower is None:
         logging.error(
             f"citekey not splittable via a single colon: {citekey}. "
             "Citekeys must be in the format of `source:identifier`."
         )
         return False
-
-    if not source or not identifier:
+    if not citekey_obj.prefix or not citekey_obj.accession:
         msg = f"invalid citekey: {citekey!r}\nblank source or identifier"
         logging.error(msg)
         return False
@@ -246,12 +243,12 @@ def is_valid_citekey(
         # Exempted non-citation sources used for pandoc-fignos,
         # pandoc-tablenos, and pandoc-eqnos
         pandoc_xnos_keys = {"fig", "tbl", "eq"}
-        if source in pandoc_xnos_keys:
+        if citekey_obj.prefix in pandoc_xnos_keys:
             return False
-        if source.lower() in pandoc_xnos_keys:
+        if citekey_obj.prefix_lower in pandoc_xnos_keys:
             logging.error(
-                f"pandoc-xnos reference types should be all lowercase.\n"
-                f'Should {citekey!r} use {source.lower()!r} rather than "{source!r}"?'
+                "pandoc-xnos reference types should be all lowercase.\n"
+                f'Should {citekey!r} use {citekey_obj.prefix_lower!r} rather than "{citekey_obj.prefix!r}"?'
             )
             return False
 
@@ -261,23 +258,25 @@ def is_valid_citekey(
         sources.add("raw")
     if allow_tag:
         sources.add("tag")
-    if source not in sources:
-        if source.lower() in sources:
+    if citekey_obj.prefix not in sources:
+        if citekey_obj.prefix_lower in sources:
             logging.error(
-                f"citekey sources should be all lowercase.\n"
-                f'Should {citekey} use "{source.lower()}" rather than "{source}"?'
+                "citekey sources should be all lowercase.\n"
+                f'Should {citekey} use "{citekey_obj.prefix_lower}" rather than "{citekey_obj.prefix}"?'
             )
         else:
             logging.error(
                 f"invalid citekey: {citekey!r}\n"
-                f"Source {source!r} is not valid.\n"
+                f"Source {citekey_obj.prefix!r} is not valid.\n"
                 f'Valid citation sources are {{{", ".join(sorted(sources))}}}'
             )
         return False
 
-    inspection = inspect_citekey(citekey)
+    inspection = citekey_obj.inspect()
     if inspection:
-        logging.error(f"invalid {source} citekey: {citekey}\n{inspection}")
+        logging.error(
+            f"invalid {citekey_obj.prefix_lower} citekey: {citekey}\n{inspection}"
+        )
         return False
 
     return True
@@ -407,6 +406,6 @@ def url_to_citekey(url):
             citekey = f"arxiv:{arxiv_id}"
         except IndexError:
             pass
-    if citekey is None or inspect_citekey(citekey) is not None:
+    if citekey is None or CiteKey(citekey).inspect() is not None:
         citekey = f"url:{url}"
     return citekey
