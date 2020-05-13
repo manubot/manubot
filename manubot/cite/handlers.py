@@ -1,5 +1,8 @@
-import typing
+import abc
+import dataclasses
 import functools
+import re
+import typing
 
 from manubot.util import import_function
 
@@ -52,6 +55,42 @@ def _generate_prefix_to_handler() -> typing.Dict[str, str]:
             ] = f"{inspect.getmodule(handler).__name__}.{handler.__class__.__name__}"
     pth = dict(sorted(pth.items()))  # sort
     return pth
+
+
+@dataclasses.dataclass
+class Handler:
+
+    prefix_lower: str
+    prefixes = []
+
+    def _get_pattern(self, attribute="accession_pattern") -> typing.Pattern:
+        # todo: cache compilation
+        pattern = getattr(self, attribute, None)
+        if not pattern:
+            return None
+        if not isinstance(pattern, typing.Pattern):
+            pattern = re.compile(pattern)
+        return pattern
+
+    def inspect(self, citekey):
+        """
+        Check citekeys adhere to expected formats. If an issue is detected a
+        string describing the issue is returned. Otherwise returns None.
+        """
+        pattern = self._get_pattern("accession_pattern")
+        if not pattern:
+            return
+        if not pattern.fullmatch(citekey.accession):
+            return f"{citekey.accession} does not match regex {pattern.pattern}"
+
+    def standardize_prefix_accession(self, accession):
+        standard_prefix = getattr(self, "standard_prefix", self.prefix_lower)
+        standard_accession = accession
+        return standard_prefix, standard_accession
+
+    @abc.abstractmethod
+    def get_csl_item(self, citekey):
+        ...
 
 
 """

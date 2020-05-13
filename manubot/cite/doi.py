@@ -6,7 +6,7 @@ import urllib.request
 import requests
 
 from manubot.util import get_manubot_user_agent
-from .citekey import Handler
+from .handlers import Handler
 from .pubmed import get_pubmed_ids_for_doi
 
 

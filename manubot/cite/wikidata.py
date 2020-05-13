@@ -1,4 +1,4 @@
-from .citekey import Handler
+from .handlers import Handler
 
 
 class Handler_Wikidata(Handler):

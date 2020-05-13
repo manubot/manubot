@@ -1,14 +1,5 @@
-"""Functions importable from manubot.cite submodule (submodule API):
-
-  standardize_citekey()
-  citekey_to_csl_item()
-
-Helpers:
-
-  is_valid_citekey() - also used in manubot.process
-  shorten_citekey() - used solely in manubot.process
-  infer_citekey_prefix()
-
+"""
+Utilities for representing and processing citation keys.
 """
 import abc
 import functools
@@ -21,42 +12,6 @@ try:
     from functools import cached_property
 except ImportError:
     from backports.cached_property import cached_property
-
-
-@dataclasses.dataclass
-class Handler:
-
-    prefix_lower: str
-    prefixes = []
-
-    def _get_pattern(self, attribute="accession_pattern") -> typing.Pattern:
-        # todo: cache compilation
-        pattern = getattr(self, attribute, None)
-        if not pattern:
-            return None
-        if not isinstance(pattern, typing.Pattern):
-            pattern = re.compile(pattern)
-        return pattern
-
-    def inspect(self, citekey):
-        """
-        Check citekeys adhere to expected formats. If an issue is detected a
-        string describing the issue is returned. Otherwise returns None.
-        """
-        pattern = self._get_pattern("accession_pattern")
-        if not pattern:
-            return
-        if not pattern.fullmatch(citekey.accession):
-            return f"{citekey.accession} does not match regex {pattern.pattern}"
-
-    def standardize_prefix_accession(self, accession):
-        standard_prefix = getattr(self, "standard_prefix", self.prefix_lower)
-        standard_accession = accession
-        return standard_prefix, standard_accession
-
-    @abc.abstractmethod
-    def get_csl_item(self, citekey):
-        ...
 
 
 @dataclasses.dataclass
@@ -125,7 +80,7 @@ class CiteKey:
 
     @cached_property
     def handler(self):
-        from .handlers import get_handler
+        from .handlers import Handler, get_handler
 
         if self.is_handled_prefix:
             return get_handler(self.prefix_lower)

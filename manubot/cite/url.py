@@ -2,7 +2,7 @@ import json
 import logging
 import re
 
-from .citekey import Handler
+from .handlers import Handler
 
 
 class Handler_URL(Handler):

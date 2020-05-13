@@ -5,7 +5,7 @@ import xml.etree.ElementTree
 import requests
 
 from .csl_item import CSL_Item
-from .citekey import Handler
+from .handlers import Handler
 from manubot.util import get_manubot_user_agent
 
 
