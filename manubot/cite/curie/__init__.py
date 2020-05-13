@@ -55,6 +55,12 @@ class Handler_CURIE(Handler):
         )
         self.accession_pattern = self.namespace["pattern"]
 
+    def get_csl_item(self, citekey):
+        from ..url import get_url_csl_item
+
+        url = curie_to_url(citekey.standard_id)
+        return get_url_csl_item(url)
+
 
 def get_curie_handlers():
     """Get all possible CURIE handlers"""

@@ -31,6 +31,9 @@ class Handler_PubMed(Handler):
         elif not self._get_pattern().fullmatch(identifier):
             return "PubMed Identifiers should be 1-8 digits with no leading zeros."
 
+    def get_csl_item(self, citekey):
+        return get_pubmed_csl_item(citekey.standard_accession)
+
 
 class Handler_PMC(Handler):
 
@@ -51,6 +54,9 @@ class Handler_PMC(Handler):
                 "Identifier does not conform to the PMCID regex. "
                 "Double check the PMCID."
             )
+
+    def get_csl_item(self, citekey):
+        return get_pmc_csl_item(citekey.standard_accession)
 
 
 def get_pmc_csl_item(pmcid):

@@ -25,6 +25,9 @@ class Handler_arXiv(Handler):
         if not self._get_pattern().fullmatch(citekey.accession):
             return "arXiv identifiers must conform to syntax described at https://arxiv.org/help/arxiv_identifier."
 
+    def get_csl_item(self, citekey):
+        return get_arxiv_csl_item(citekey.standard_accession)
+
 
 class CSL_Item_arXiv(CSL_Item):
     def _set_invariant_fields(self):

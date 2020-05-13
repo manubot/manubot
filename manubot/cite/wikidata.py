@@ -19,6 +19,9 @@ class Handler_Wikidata(Handler):
                 "Double check the entity ID."
             )
 
+    def get_csl_item(self, citekey):
+        return get_wikidata_csl_item(citekey.standard_accession)
+
 
 def get_wikidata_csl_item(identifier):
     """

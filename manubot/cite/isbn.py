@@ -28,6 +28,9 @@ class Handler_ISBN(Handler):
         accession = to_isbn13(accession)
         return self.standard_prefix, accession
 
+    def get_csl_item(self, citekey):
+        return get_isbn_csl_item(citekey.standard_accession)
+
 
 def get_isbn_csl_item(isbn):
     """
@@ -129,7 +132,7 @@ def get_isbn_csl_item_isbnlib(isbn):
     """
     import isbnlib
 
-    metadata = isbnlib.meta(isbn, cache=None)
+    metadata = isbnlib.meta(isbn)
     csl_json = isbnlib.registry.bibformatters["csl"](metadata)
     csl_data = json.loads(csl_json)
     return csl_data

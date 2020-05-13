@@ -57,6 +57,9 @@ class Handler_DOI(Handler):
         accession = accession.lower()
         return self.standard_prefix, accession
 
+    def get_csl_item(self, citekey):
+        return get_doi_csl_item(citekey.standard_accession)
+
 
 def expand_short_doi(short_doi):
     """

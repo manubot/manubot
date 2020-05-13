@@ -20,6 +20,9 @@ class Handler_URL(Handler):
             accession = f"{self.prefix_lower}:{accession}"
         return self.standard_prefix, accession
 
+    def get_csl_item(self, citekey):
+        return get_url_csl_item(citekey.standard_accession)
+
 
 def get_url_csl_item(url):
     """
