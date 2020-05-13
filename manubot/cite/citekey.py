@@ -18,38 +18,6 @@ import re
 import typing
 import dataclasses
 
-from manubot.util import import_function
-
-
-citeproc_retrievers = {
-    "doi": "manubot.cite.doi.get_doi_csl_item",
-    "pmid": "manubot.cite.pubmed.get_pubmed_csl_item",
-    "pmcid": "manubot.cite.pubmed.get_pmc_csl_item",
-    "arxiv": "manubot.cite.arxiv.get_arxiv_csl_item",
-    "isbn": "manubot.cite.isbn.get_isbn_csl_item",
-    "wikidata": "manubot.cite.wikidata.get_wikidata_csl_item",
-    "url": "manubot.cite.url.get_url_csl_item",
-}
-
-"""
-Regex to extract citation keys.
-The leading '@' is omitted from the single match group.
-
-Same rules as pandoc, except more permissive in the following ways:
-
-1. the final character can be a slash because many URLs end in a slash.
-2. underscores are allowed in internal characters because URLs, DOIs, and
-   citation tags often contain underscores.
-
-If a citekey does not match this regex, it can be substituted for a
-tag that does, as defined in citation-tags.tsv.
-
-https://github.com/greenelab/manubot-rootstock/issues/2#issuecomment-312153192
-
-Prototyped at https://regex101.com/r/s3Asz3/4
-"""
-citekey_pattern = re.compile(r"(?<!\w)@([a-zA-Z0-9][\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])")
-
 
 @dataclasses.dataclass
 class Handler:
@@ -190,6 +158,7 @@ class CiteKey:
     @functools.cached_property
     def csl_item(self):
         from .csl_item import CSL_Item
+
         csl_item = self.handler.get_csl_item(self)
         if not isinstance(csl_item, CSL_Item):
             csl_item = CSL_Item(csl_item)
@@ -335,7 +304,6 @@ def citekey_to_csl_item(citekey, prune=True):
     """
     from manubot import __version__ as manubot_version
     from .handlers import prefix_to_handler
-    from .csl_item import CSL_Item
 
     citekey == standardize_citekey(citekey, warn_if_changed=True)
     citekey_obj = CiteKey(citekey)
@@ -364,7 +332,9 @@ def infer_citekey_prefix(citekey):
     if the lowercase citekey prefix is valid, convert the prefix to lowercase.
     Otherwise, assume citekey is raw and prepend "raw:".
     """
-    prefixes = [f"{x}:" for x in list(citeproc_retrievers) + ["raw"]]
+    from .handlers import prefix_to_handler
+
+    prefixes = [f"{x}:" for x in list(prefix_to_handler) + ["raw"]]
     for prefix in prefixes:
         if citekey.startswith(prefix):
             return citekey

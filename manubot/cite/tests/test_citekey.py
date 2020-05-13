@@ -3,7 +3,6 @@ import pytest
 
 from manubot.cite.citekey import (
     CiteKey,
-    citekey_pattern,
     shorten_citekey,
     infer_citekey_prefix,
     inspect_citekey,
@@ -48,39 +47,6 @@ def test_citekey_class(input_id, citekey_attrs):
     for key, value in citekey_attrs.items():
         assert getattr(citekey, key) == value
     assert citekey.short_id
-
-
-@pytest.mark.parametrize(
-    "citation_string",
-    [
-        ("@doi:10.5061/dryad.q447c/1"),
-        ("@arxiv:1407.3561v1"),
-        ("@doi:10.1007/978-94-015-6859-3_4"),
-        ("@tag:tag_with_underscores"),
-        ("@tag:tag-with-hyphens"),
-        ("@url:https://greenelab.github.io/manubot-rootstock/"),
-        ("@tag:abc123"),
-        ("@tag:123abc"),
-    ],
-)
-def test_citekey_pattern_match(citation_string):
-    match = citekey_pattern.fullmatch(citation_string)
-    assert match
-
-
-@pytest.mark.parametrize(
-    "citation_string",
-    [
-        ("doi:10.5061/dryad.q447c/1"),
-        ("@tag:abc123-"),
-        ("@tag:abc123_"),
-        ("@-tag:abc123"),
-        ("@_tag:abc123"),
-    ],
-)
-def test_citekey_pattern_no_match(citation_string):
-    match = citekey_pattern.fullmatch(citation_string)
-    assert match is None
 
 
 @pytest.mark.parametrize(
