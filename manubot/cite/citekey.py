@@ -115,6 +115,13 @@ class CiteKey:
     def short_id(self):
         return shorten_citekey(self.standard_id)
 
+    @cached_property
+    def all_ids(self):
+        ids = [self.input_id, self.dealiased_id, self.standard_id, self.short_id]
+        ids = [x for x in ids if x]  # remove None
+        ids = list(dict.fromkeys(ids))  # deduplicate
+        return ids
+
     def __hash__(self):
         return hash((self.input_id, self.dealiased_id))
 
