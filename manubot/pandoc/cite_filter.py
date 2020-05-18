@@ -33,7 +33,7 @@ import pathlib
 
 import panflute as pf
 
-from manubot.cite.citekey import is_valid_citekey
+from manubot.cite.citekey import CiteKey
 from manubot.process.util import (
     get_citekeys_df,
     generate_csl_items,
@@ -171,9 +171,7 @@ def process_citations(doc):
     manuscript_citekeys = global_variables["manuscript_citekeys"]
     manuscript_citekeys = sorted(
         filter(
-            lambda x: is_valid_citekey(
-                x, allow_tag=True, allow_raw=True, allow_pandoc_xnos=True
-            ),
+            lambda x: not CiteKey(x).is_pandoc_xnos_prefix(log_case_warning=True),
             set(manuscript_citekeys),
         )
     )

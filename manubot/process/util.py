@@ -30,40 +30,9 @@ from manubot.process.manuscript import (
 from manubot.cite.citekey import (
     citekey_to_csl_item,
     shorten_citekey,
-    is_valid_citekey,
     standardize_citekey,
+    CiteKey,
 )
-
-
-def check_collisions(citekeys_df):
-    """
-    Check for short_citekey hash collisions
-    """
-    collision_df = citekeys_df[["standard_citekey", "short_citekey"]].drop_duplicates()
-    collision_df = collision_df[collision_df.short_citekey.duplicated(keep=False)]
-    if not collision_df.empty:
-        logging.error(f"OMF! Hash collision. Congratulations.\n{collision_df}")
-    return collision_df
-
-
-def check_multiple_citation_strings(citekeys_df):
-    """
-    Identify different citation strings referring the the same reference.
-    """
-    message = textwrap.dedent(
-        f"""\
-    {len(citekeys_df)} unique citations strings extracted from text
-    {citekeys_df.standard_citekey.nunique()} unique standard citations\
-    """
-    )
-    logging.info(message)
-    multi_df = citekeys_df[citekeys_df.standard_citekey.duplicated(keep=False)]
-    if not multi_df.empty:
-        table = multi_df.to_string(
-            index=False, columns=["standard_citekey", "manuscript_citekey"]
-        )
-        logging.warning(f"Multiple citekeys detected for the same reference:\n{table}")
-    return multi_df
 
 
 def read_variable_files(paths: List[str], variables: Optional[dict] = None) -> dict:
@@ -310,6 +279,17 @@ def load_variables(args) -> dict:
     return variables
 
 
+def get_citekeys(citekey_ids: list, citekey_aliases: dict = {}):
+    """todo"""
+    citekey_ids = list(dict.fromkeys(citekey_ids))  # deduplicate
+    citekeys = list()
+    for citekey_id in citekey_ids:
+        citekey = CiteKey(citekey_id, aliases=citekey_aliases)
+        if citekey.is_pandoc_xnos_prefix(log_case_warning=True):
+            continue
+        citekeys.append(citekey)
+
+
 def get_citekeys_df(citekeys: list, citekey_aliases: dict = {}):
     """
     Generate and return citekeys_df.
@@ -325,15 +305,13 @@ def get_citekeys_df(citekeys: list, citekey_aliases: dict = {}):
     citekeys_df["detagged_citekey"] = citekeys_df.manuscript_citekey.map(
         lambda citekey: citekey_aliases.get(citekey, citekey)
     )
-    for citation in citekeys_df.detagged_citekey:
-        is_valid_citekey(citation, allow_raw=True)
     citekeys_df["standard_citekey"] = citekeys_df.detagged_citekey.map(
         standardize_citekey
     )
     citekeys_df["short_citekey"] = citekeys_df.standard_citekey.map(shorten_citekey)
     citekeys_df = citekeys_df.sort_values(["standard_citekey", "detagged_citekey"])
-    check_collisions(citekeys_df)
-    check_multiple_citation_strings(citekeys_df)
+    # check_collisions(citekeys_df)
+    # check_multiple_citation_strings(citekeys_df)
     return citekeys_df
 
 

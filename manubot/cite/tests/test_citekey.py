@@ -115,21 +115,6 @@ def test_inspect_citekey_fails(citekey, contains):
 
 
 @pytest.mark.parametrize(
-    ["citation", "expect"],
-    [
-        ("doi:not-a-real-doi", "doi:not-a-real-doi"),
-        ("DOI:not-a-real-doi", "doi:not-a-real-doi"),
-        ("uRl:mixed-case-prefix", "url:mixed-case-prefix"),
-        ("raw:raw-citation", "raw:raw-citation"),
-        ("no-prefix", "raw:no-prefix"),
-        ("no-prefix:but-colon", "raw:no-prefix:but-colon"),
-    ],
-)
-def test_infer_citekey_prefix(citation, expect):
-    assert infer_citekey_prefix(citation) == expect
-
-
-@pytest.mark.parametrize(
     ["url", "citekey"],
     [
         ("https://www.doi.org/", "url:https://www.doi.org/",),
