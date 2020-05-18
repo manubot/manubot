@@ -6,8 +6,8 @@ import sys
 
 from manubot.cite.citekey import (
     citekey_to_csl_item,
-    standardize_citekey,
     is_valid_citekey,
+    CiteKey,
 )
 from manubot.pandoc.util import get_pandoc_info
 from manubot.util import shlex_join
@@ -75,21 +75,21 @@ def cli_cite(args):
     Main function for the manubot cite command-line interface.
 
     Does not allow user to directly specify Pandoc's --to argument, due to
-    inconsistent citaiton rendering by output format. See
+    inconsistent citation rendering by output format. See
     https://github.com/jgm/pandoc/issues/4834
     """
     # generate CSL JSON data
     csl_list = list()
     for citekey in args.citekeys:
+        citekey = CiteKey(citekey)
         try:
-            if not is_valid_citekey(citekey):
+            if not is_valid_citekey(citekey.input_id):
                 continue
-            citekey = standardize_citekey(citekey)
-            csl_item = citekey_to_csl_item(citekey, prune=args.prune_csl)
+            csl_item = citekey_to_csl_item(citekey.standard_id, prune=args.prune_csl)
             csl_list.append(csl_item)
         except Exception as error:
             logging.error(
-                f"citekey_to_csl_item for {citekey!r} failed "
+                f"citekey_to_csl_item for {citekey.input_id!r} failed "
                 f"due to a {error.__class__.__name__}:\n{error}"
             )
             logging.info(error, exc_info=True)

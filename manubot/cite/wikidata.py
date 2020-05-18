@@ -1,3 +1,28 @@
+from .handlers import Handler
+
+
+class Handler_Wikidata(Handler):
+    prefixes = ["wikidata"]
+    standard_prefix = "wikidata"
+    accession_pattern = r"Q[0-9]+"
+
+    def inspect(self, citekey):
+        """
+        https://www.wikidata.org/wiki/Wikidata:Identifiers
+        """
+        accession = citekey.accession
+        if not accession.startswith("Q"):
+            return "Wikidata item IDs must start with 'Q'."
+        elif not self._get_pattern().fullmatch(accession):
+            return (
+                "Accession does not conform to the Wikidata regex. "
+                "Double check the entity ID."
+            )
+
+    def get_csl_item(self, citekey):
+        return get_wikidata_csl_item(citekey.standard_accession)
+
+
 def get_wikidata_csl_item(identifier):
     """
     Get a CSL JSON item with the citation metadata for a Wikidata item.

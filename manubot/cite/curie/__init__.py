@@ -1,9 +1,17 @@
 """
 Compact Uniform Resource Identifiers
 
+Manubot keeps a local versions of the identifier.org registry.
+Repository developers can run the following commands to update the Manubot version.
+
 ```shell
 # regenerate manubot/cite/curie/namespaces.json
 python manubot/cite/curie/__init__.py
+# if namespaces.json has changed, the following test will likely fail:
+pytest manubot/cite/tests/test_handlers.py::test_prefix_to_handler
+# copy captured stdout from failed test_prefix_to_handler to
+# manubot.cite.handlers.prefix_to_handler. Then reformat file:
+black manubot/cite/handlers.py
 ```
 
 References:
@@ -19,14 +27,15 @@ References:
 - [On the road to robust data citation](https://doi.org/10.1038/sdata.2018.95)
 - [Uniform Resolution of Compact Identifiers for Biomedical Data](https://doi.org/10.1038/sdata.2018.29)
 """
+import dataclasses
 import functools
 import json
 import logging
 import pathlib
 import re
-from typing import List, Set
+import typing
 
-import requests
+from manubot.cite.handlers import Handler
 
 _keep_namespace_fields = {
     "prefix",
@@ -43,6 +52,31 @@ _keep_namespace_fields = {
 namespace_path = pathlib.Path(__file__).parent.joinpath("namespaces.json")
 
 
+@dataclasses.dataclass
+class Handler_CURIE(Handler):
+    def __post_init__(self):
+        prefix_to_namespace = get_prefix_to_namespace()
+        self.namespace = prefix_to_namespace[self.prefix_lower]
+        self.standard_prefix = self.namespace["prefix"]
+        self.prefixes = sorted(
+            {self.namespace["prefix"], self.namespace["curiePrefix"].lower()}
+        )
+        self.accession_pattern = self.namespace["pattern"]
+
+    def get_csl_item(self, citekey):
+        from ..url import get_url_csl_item
+
+        url = curie_to_url(citekey.standard_id)
+        return get_url_csl_item(url)
+
+
+def get_curie_handlers():
+    """Get all possible CURIE handlers"""
+    namespaces = get_namespaces(compile_patterns=True)
+    handlers = [Handler_CURIE(ns["prefix"]) for ns in namespaces]
+    return handlers
+
+
 def _download_namespaces():
     """
     Download all namespaces from the Identifiers.org Central Registry.
@@ -50,6 +84,8 @@ def _download_namespaces():
     Example of a single namespace JSON data at
     <https://registry.api.identifiers.org/restApi/namespaces/230>
     """
+    import requests
+
     params = dict(size=5000, sort="prefix")
     url = "https://registry.api.identifiers.org/restApi/namespaces"
     response = requests.get(url, params)
@@ -90,7 +126,7 @@ def get_curie_prefix(namespace):
     return curie_prefix
 
 
-def get_namespaces(compile_patterns=False) -> List[dict]:
+def get_namespaces(compile_patterns=False) -> typing.List[dict]:
     with namespace_path.open(encoding="utf-8-sig") as read_file:
         namespaces = json.load(read_file)
     if compile_patterns:
@@ -100,8 +136,12 @@ def get_namespaces(compile_patterns=False) -> List[dict]:
 
 
 @functools.lru_cache()
-def get_prefix_to_namespace() -> Set[str]:
-    return {n["curiePrefix"].lower(): n for n in get_namespaces()}
+def get_prefix_to_namespace() -> typing.Dict[str, typing.Dict]:
+    prefix_to_namespace = dict()
+    for ns in get_namespaces():
+        for key in "prefix", "curiePrefix":
+            prefix_to_namespace[ns[key].lower()] = ns
+    return prefix_to_namespace
 
 
 def standardize_curie(curie):

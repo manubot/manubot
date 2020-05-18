@@ -6,7 +6,57 @@ import xml.etree.ElementTree
 
 import requests
 
+from .handlers import Handler
 from manubot.util import get_manubot_user_agent
+
+
+class Handler_PubMed(Handler):
+
+    standard_prefix = "pubmed"
+
+    prefixes = [
+        "pubmed",
+        "pmid",
+    ]
+    accession_pattern = r"[1-9][0-9]{0,7}"
+
+    def inspect(self, citekey):
+        identifier = citekey.accession
+        # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmid
+        if identifier.startswith("PMC"):
+            return (
+                "PubMed Identifiers should start with digits rather than PMC. "
+                f"Should {citekey.dealiased_id!r} switch the citation source to 'pmc'?"
+            )
+        elif not self._get_pattern().fullmatch(identifier):
+            return "PubMed Identifiers should be 1-8 digits with no leading zeros."
+
+    def get_csl_item(self, citekey):
+        return get_pubmed_csl_item(citekey.standard_accession)
+
+
+class Handler_PMC(Handler):
+
+    standard_prefix = "pmc"
+    prefixes = [
+        "pmc",
+        "pmcid",
+    ]
+    accession_pattern = r"PMC[0-9]+"
+
+    def inspect(self, citekey):
+        identifier = citekey.accession
+        # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc
+        if not identifier.startswith("PMC"):
+            return "PubMed Central Identifiers must start with 'PMC'."
+        elif not self._get_pattern().fullmatch(identifier):
+            return (
+                "Identifier does not conform to the PMCID regex. "
+                "Double check the PMCID."
+            )
+
+    def get_csl_item(self, citekey):
+        return get_pmc_csl_item(citekey.standard_accession)
 
 
 def get_pmc_csl_item(pmcid):

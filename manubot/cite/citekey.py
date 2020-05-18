@@ -1,50 +1,163 @@
-"""Functions importable from manubot.cite submodule (submodule API):
-
-  standardize_citekey()
-  citekey_to_csl_item()
-
-Helpers:
-
-  inspect_citekey()
-  is_valid_citekey() - also used in manubot.process
-  shorten_citekey() - used solely in manubot.process
-  infer_citekey_prefix()
-
+"""
+Utilities for representing and processing citation keys.
 """
 import functools
 import logging
 import re
+import dataclasses
 
-from manubot.util import import_function
+try:
+    from functools import cached_property
+except ImportError:
+    from backports.cached_property import cached_property
 
-citeproc_retrievers = {
-    "doi": "manubot.cite.doi.get_doi_csl_item",
-    "pmid": "manubot.cite.pubmed.get_pubmed_csl_item",
-    "pmcid": "manubot.cite.pubmed.get_pmc_csl_item",
-    "arxiv": "manubot.cite.arxiv.get_arxiv_csl_item",
-    "isbn": "manubot.cite.isbn.get_isbn_csl_item",
-    "wikidata": "manubot.cite.wikidata.get_wikidata_csl_item",
-    "url": "manubot.cite.url.get_url_csl_item",
-}
 
-"""
-Regex to extract citation keys.
-The leading '@' is omitted from the single match group.
+@dataclasses.dataclass
+class CiteKey:
+    input_id: str
+    aliases: dict = dataclasses.field(default_factory=dict)
 
-Same rules as pandoc, except more permissive in the following ways:
+    def __post_init__(self):
+        self.check_input_id(self.input_id)
 
-1. the final character can be a slash because many URLs end in a slash.
-2. underscores are allowed in internal characters because URLs, DOIs, and
-   citation tags often contain underscores.
+    @staticmethod
+    def check_input_id(input_id):
+        if not isinstance(input_id, str):
+            raise TypeError(
+                "input_id should be type 'str' not "
+                f"{type(input_id).__name__!r}: {input_id!r}"
+            )
+        if input_id.startswith("@"):
+            f"invalid citekey input_id: {input_id!r}\nstarts with '@'"
 
-If a citekey does not match this regex, it can be substituted for a
-tag that does, as defined in citation-tags.tsv.
+    @classmethod
+    @functools.lru_cache(maxsize=None)
+    def from_input_id(cls, *args, **kwargs):
+        """Cached constructor"""
+        return cls(*args, **kwargs)
 
-https://github.com/greenelab/manubot-rootstock/issues/2#issuecomment-312153192
+    @cached_property
+    def dealiased_id(self):
+        return self.aliases.get(self.input_id, self.input_id)
 
-Prototyped at https://regex101.com/r/s3Asz3/4
-"""
-citekey_pattern = re.compile(r"(?<!\w)@([a-zA-Z0-9][\w:.#$%&\-+?<>~/]*[a-zA-Z0-9/])")
+    def _set_prefix_accession(self):
+        try:
+            prefix, accession = self.dealiased_id.split(":", 1)
+        except ValueError:
+            prefix, accession = None, None
+        self._prefix = prefix
+        self._accession = accession
+
+    @property
+    def prefix(self):
+        if not hasattr(self, "_prefix"):
+            self._set_prefix_accession()
+        return self._prefix
+
+    @property
+    def prefix_lower(self):
+        return self.prefix.lower()
+
+    @property
+    def accession(self):
+        if not hasattr(self, "_accession"):
+            self._set_prefix_accession()
+        return self._accession
+
+    @property
+    def standard_prefix(self):
+        if not hasattr(self, "_standard_prefix"):
+            self._standardize()
+        return self._standard_prefix
+
+    @property
+    def standard_accession(self):
+        if not hasattr(self, "_standard_accession"):
+            self._standardize()
+        return self._standard_accession
+
+    @cached_property
+    def handler(self):
+        from .handlers import Handler, get_handler
+
+        if self.is_handled_prefix:
+            return get_handler(self.prefix_lower)
+        return Handler(self.prefix_lower)
+
+    @cached_property
+    def is_handled_prefix(self):
+        from .handlers import prefix_to_handler
+
+        return self.prefix_lower in prefix_to_handler
+
+    def inspect(self):
+        return self.handler.inspect(self)
+
+    def _standardize(self):
+        if self.prefix_lower is None:
+            self._standard_prefix = None
+            self._standard_accession = None
+            self._standard_id = self.dealiased_id
+            return
+        (
+            self._standard_prefix,
+            self._standard_accession,
+        ) = self.handler.standardize_prefix_accession(self.accession)
+        self._standard_id = f"{self._standard_prefix}:{self._standard_accession}"
+
+    @property
+    def standard_id(self):
+        if not hasattr(self, "_standard_id"):
+            self._standardize()
+        return self._standard_id
+
+    @cached_property
+    def short_id(self):
+        return shorten_citekey(self.standard_id)
+
+    @cached_property
+    def all_ids(self):
+        ids = [self.input_id, self.dealiased_id, self.standard_id, self.short_id]
+        ids = [x for x in ids if x]  # remove None
+        ids = list(dict.fromkeys(ids))  # deduplicate
+        return ids
+
+    def __hash__(self):
+        return hash((self.input_id, self.dealiased_id))
+
+    def __repr__(self):
+        return " --> ".join(
+            f"{getattr(self, key)} ({key})"
+            for key in (
+                "input_id",
+                "dealiased_id",
+                "prefix_lower",
+                "accession",
+                "standard_id",
+                "short_id",
+            )
+        )
+
+    @cached_property
+    def csl_item(self):
+        from .csl_item import CSL_Item
+
+        csl_item = self.handler.get_csl_item(self)
+        if not isinstance(csl_item, CSL_Item):
+            csl_item = CSL_Item(csl_item)
+        return csl_item
+
+    def is_pandoc_xnos_prefix(self, log_case_warning=False):
+        from .handlers import _pandoc_xnos_prefixes
+
+        if self.prefix in _pandoc_xnos_prefixes:
+            return True
+        if log_case_warning and self.prefix_lower in _pandoc_xnos_prefixes:
+            logging.warning(
+                "pandoc-xnos prefixes should be all lowercase.\n"
+                f'Should {self.input_id!r} use {self.prefix_lower!r} rather than "{self.prefix!r}"?'
+            )
+        return False
 
 
 @functools.lru_cache(maxsize=5_000)
@@ -52,119 +165,13 @@ def standardize_citekey(citekey, warn_if_changed=False):
     """
     Standardize citation keys based on their source
     """
-    source, identifier = citekey.split(":", 1)
-
-    if source == "doi":
-        if identifier.startswith("10/"):
-            from manubot.cite.doi import expand_short_doi
-
-            try:
-                identifier = expand_short_doi(identifier)
-            except Exception as error:
-                # If DOI shortening fails, return the unshortened DOI.
-                # DOI metadata lookup will eventually fail somewhere with
-                # appropriate error handling, as opposed to here.
-                logging.error(
-                    f"Error in expand_short_doi for {identifier} "
-                    f"due to a {error.__class__.__name__}:\n{error}"
-                )
-                logging.info(error, exc_info=True)
-        identifier = identifier.lower()
-
-    if source == "isbn":
-        from isbnlib import to_isbn13
-
-        identifier = to_isbn13(identifier)
-
-    standard_citekey = f"{source}:{identifier}"
+    standard_citekey = CiteKey(citekey).standard_id
     if warn_if_changed and citekey != standard_citekey:
         logging.warning(
             f"standardize_citekey expected citekey to already be standardized.\n"
             f"Instead citekey was changed from {citekey!r} to {standard_citekey!r}"
         )
     return standard_citekey
-
-
-regexes = {
-    "arxiv": re.compile(
-        r"(?P<versionless_id>[0-9]{4}\.[0-9]{4,5}|[a-z\-]+(\.[A-Z]{2})?/[0-9]{7})(?P<version>v[0-9]+)?"
-    ),
-    "pmid": re.compile(r"[1-9][0-9]{0,7}"),
-    "pmcid": re.compile(r"PMC[0-9]+"),
-    "doi": re.compile(r"10\.[0-9]{4,9}/\S+"),
-    "shortdoi": re.compile(r"10/[a-zA-Z0-9]+"),
-    "wikidata": re.compile(r"Q[0-9]+"),
-}
-
-
-def inspect_citekey(citekey):
-    """
-    Check citekeys adhere to expected formats. If an issue is detected a
-    string describing the issue is returned. Otherwise returns None.
-    """
-    source, identifier = citekey.split(":", 1)
-
-    if source == "arxiv":
-        # https://arxiv.org/help/arxiv_identifier
-        if not regexes["arxiv"].fullmatch(identifier):
-            return "arXiv identifiers must conform to syntax described at https://arxiv.org/help/arxiv_identifier."
-
-    if source == "pmid":
-        # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmid
-        if identifier.startswith("PMC"):
-            return (
-                "PubMed Identifiers should start with digits rather than PMC. "
-                f"Should {citekey!r} switch the citation source to 'pmcid'?"
-            )
-        elif not regexes["pmid"].fullmatch(identifier):
-            return "PubMed Identifiers should be 1-8 digits with no leading zeros."
-
-    if source == "pmcid":
-        # https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc
-        if not identifier.startswith("PMC"):
-            return "PubMed Central Identifiers must start with 'PMC'."
-        elif not regexes["pmcid"].fullmatch(identifier):
-            return (
-                "Identifier does not conform to the PMCID regex. "
-                "Double check the PMCID."
-            )
-
-    if source == "doi":
-        if identifier.startswith("10."):
-            # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
-            if not regexes["doi"].fullmatch(identifier):
-                return (
-                    "Identifier does not conform to the DOI regex. "
-                    "Double check the DOI."
-                )
-        elif identifier.startswith("10/"):
-            # shortDOI, see http://shortdoi.org
-            if not regexes["shortdoi"].fullmatch(identifier):
-                return (
-                    "Identifier does not conform to the shortDOI regex. "
-                    "Double check the shortDOI."
-                )
-        else:
-            return "DOIs must start with '10.' (or '10/' for shortDOIs)."
-
-    if source == "isbn":
-        import isbnlib
-
-        fail = isbnlib.notisbn(identifier, level="strict")
-        if fail:
-            return f"identifier violates the ISBN syntax according to isbnlib v{isbnlib.__version__}"
-
-    if source == "wikidata":
-        # https://www.wikidata.org/wiki/Wikidata:Identifiers
-        if not identifier.startswith("Q"):
-            return "Wikidata item IDs must start with 'Q'."
-        elif not regexes["wikidata"].fullmatch(identifier):
-            return (
-                "Identifier does not conform to the Wikidata regex. "
-                "Double check the entity ID."
-            )
-
-    return None
 
 
 def is_valid_citekey(
@@ -191,25 +198,20 @@ def is_valid_citekey(
     to those for which manubot can retrieve metadata based only on the
     standalone citekey.
     """
-    if not isinstance(citekey, str):
-        logging.error(
-            f"citekey should be type 'str' not "
-            f"{type(citekey).__name__!r}: {citekey!r}"
-        )
-        return False
-    if citekey.startswith("@"):
-        logging.error(f"invalid citekey: {citekey!r}\nstarts with '@'")
-        return False
+    from .handlers import prefix_to_handler
+
     try:
-        source, identifier = citekey.split(":", 1)
-    except ValueError:
+        citekey_obj = CiteKey(citekey)
+    except (ValueError, TypeError) as error:
+        logging.error(error)
+        return False
+    if citekey_obj.prefix_lower is None:
         logging.error(
             f"citekey not splittable via a single colon: {citekey}. "
             "Citekeys must be in the format of `source:identifier`."
         )
         return False
-
-    if not source or not identifier:
+    if not citekey_obj.prefix or not citekey_obj.accession:
         msg = f"invalid citekey: {citekey!r}\nblank source or identifier"
         logging.error(msg)
         return False
@@ -217,39 +219,35 @@ def is_valid_citekey(
     if allow_pandoc_xnos:
         # Exempted non-citation sources used for pandoc-fignos,
         # pandoc-tablenos, and pandoc-eqnos
-        pandoc_xnos_keys = {"fig", "tbl", "eq"}
-        if source in pandoc_xnos_keys:
-            return False
-        if source.lower() in pandoc_xnos_keys:
-            logging.error(
-                f"pandoc-xnos reference types should be all lowercase.\n"
-                f'Should {citekey!r} use {source.lower()!r} rather than "{source!r}"?'
-            )
+        is_pandoc_xnos_prefix = citekey_obj.is_pandoc_xnos_prefix(log_case_warning=True)
+        if is_pandoc_xnos_prefix:
             return False
 
     # Check supported source type
-    sources = set(citeproc_retrievers)
+    sources = set(prefix_to_handler)
     if allow_raw:
         sources.add("raw")
     if allow_tag:
         sources.add("tag")
-    if source not in sources:
-        if source.lower() in sources:
+    if citekey_obj.prefix not in sources:
+        if citekey_obj.prefix_lower in sources:
             logging.error(
-                f"citekey sources should be all lowercase.\n"
-                f'Should {citekey} use "{source.lower()}" rather than "{source}"?'
+                "citekey sources should be all lowercase.\n"
+                f'Should {citekey} use "{citekey_obj.prefix_lower}" rather than "{citekey_obj.prefix}"?'
             )
         else:
             logging.error(
                 f"invalid citekey: {citekey!r}\n"
-                f"Source {source!r} is not valid.\n"
+                f"Source {citekey_obj.prefix!r} is not valid.\n"
                 f'Valid citation sources are {{{", ".join(sorted(sources))}}}'
             )
         return False
 
-    inspection = inspect_citekey(citekey)
+    inspection = citekey_obj.inspect()
     if inspection:
-        logging.error(f"invalid {source} citekey: {citekey}\n{inspection}")
+        logging.error(
+            f"invalid {citekey_obj.prefix_lower} citekey: {citekey}\n{inspection}"
+        )
         return False
 
     return True
@@ -279,26 +277,24 @@ def citekey_to_csl_item(citekey, prune=True):
     """
     Generate a CSL Item (Python dictionary) for the input citekey.
     """
-    from manubot.cite.csl_item import CSL_Item
     from manubot import __version__ as manubot_version
+    from .handlers import prefix_to_handler
 
     citekey == standardize_citekey(citekey, warn_if_changed=True)
-    source, identifier = citekey.split(":", 1)
+    citekey_obj = CiteKey(citekey)
+    citekey_obj.csl_item
 
-    if source not in citeproc_retrievers:
-        msg = f"Unsupported citation source {source!r} in {citekey!r}"
+    if citekey_obj.prefix_lower not in prefix_to_handler:
+        msg = f"Unsupported citation source {citekey_obj.prefix_lower!r} in {citekey!r}"
         raise ValueError(msg)
-    citeproc_retriever = import_function(citeproc_retrievers[source])
-    csl_item = citeproc_retriever(identifier)
-    csl_item = CSL_Item(csl_item)
+    csl_item = citekey_obj.csl_item
 
     note_text = f"This CSL JSON Item was automatically generated by Manubot v{manubot_version} using citation-by-identifier."
     note_dict = {"standard_id": citekey}
     csl_item.note_append_text(note_text)
     csl_item.note_append_dict(note_dict)
 
-    short_citekey = shorten_citekey(citekey)
-    csl_item.set_id(short_citekey)
+    csl_item.set_id(citekey_obj.short_id)
     csl_item.clean(prune=prune)
 
     return csl_item
@@ -310,7 +306,9 @@ def infer_citekey_prefix(citekey):
     if the lowercase citekey prefix is valid, convert the prefix to lowercase.
     Otherwise, assume citekey is raw and prepend "raw:".
     """
-    prefixes = [f"{x}:" for x in list(citeproc_retrievers) + ["raw"]]
+    from .handlers import prefix_to_handler
+
+    prefixes = [f"{x}:" for x in list(prefix_to_handler) + ["raw"]]
     for prefix in prefixes:
         if citekey.startswith(prefix):
             return citekey
@@ -379,6 +377,6 @@ def url_to_citekey(url):
             citekey = f"arxiv:{arxiv_id}"
         except IndexError:
             pass
-    if citekey is None or inspect_citekey(citekey) is not None:
+    if citekey is None or CiteKey(citekey).inspect() is not None:
         citekey = f"url:{url}"
     return citekey
