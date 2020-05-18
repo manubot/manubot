@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.1, mkdocs-material-4.6.3">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-4.6.3">
     
     
       
@@ -494,6 +494,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../handlers/" title="Handlers" class="md-nav__link">
+      Handlers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../" title="Index" class="md-nav__link">
       Index
     </a>
@@ -579,13 +591,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-15" type="checkbox" id="nav-3-1-4-15">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-16" type="checkbox" id="nav-3-1-4-16">
     
-    <label class="md-nav__link" for="nav-3-1-4-15">
+    <label class="md-nav__link" for="nav-3-1-4-16">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-4-15">
+      <label class="md-nav__title" for="nav-3-1-4-16">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -695,6 +707,18 @@
   <li class="md-nav__item">
     <a href="../tests/test_doi/" title="Test Doi" class="md-nav__link">
       Test Doi
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tests/test_handlers/" title="Test Handlers" class="md-nav__link">
+      Test Handlers
     </a>
   </li>
 
@@ -1287,9 +1311,9 @@
 
     <span class="n">citekey_to_csl_item</span><span class="p">,</span>
 
-    <span class="n">standardize_citekey</span><span class="p">,</span>
-
     <span class="n">is_valid_citekey</span><span class="p">,</span>
+
+    <span class="n">CiteKey</span><span class="p">,</span>
 
 <span class="p">)</span>
 
@@ -1411,7 +1435,7 @@
 
 <span class="sd">    Does not allow user to directly specify Pandoc&#39;s --to argument, due to</span>
 
-<span class="sd">    inconsistent citaiton rendering by output format. See</span>
+<span class="sd">    inconsistent citation rendering by output format. See</span>
 
 <span class="sd">    https://github.com/jgm/pandoc/issues/4834</span>
 
@@ -1423,15 +1447,15 @@
 
     <span class="k">for</span> <span class="n">citekey</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">citekeys</span><span class="p">:</span>
 
+        <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+
         <span class="k">try</span><span class="p">:</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">input_id</span><span class="p">):</span>
 
                 <span class="k">continue</span>
 
-            <span class="n">citekey</span> <span class="o">=</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
-
-            <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">prune_csl</span><span class="p">)</span>
+            <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">prune_csl</span><span class="p">)</span>
 
             <span class="n">csl_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
@@ -1439,7 +1463,7 @@
 
             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s2">&quot;citekey_to_csl_item for {citekey!r} failed &quot;</span>
+                <span class="n">f</span><span class="s2">&quot;citekey_to_csl_item for {citekey.input_id!r} failed &quot;</span>
 
                 <span class="n">f</span><span class="s2">&quot;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s2">{error}&quot;</span>
 
@@ -1656,7 +1680,7 @@
 
 <p>Main function for the manubot cite command-line interface.</p>
 <p>Does not allow user to directly specify Pandoc's --to argument, due to
-inconsistent citaiton rendering by output format. See
+inconsistent citation rendering by output format. See
 https://github.com/jgm/pandoc/issues/4834</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">cli_cite</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
@@ -1666,7 +1690,7 @@ https://github.com/jgm/pandoc/issues/4834</p>
 
 <span class="ss">    Does not allow user to directly specify Pandoc&#39;s --to argument, due to</span>
 
-<span class="ss">    inconsistent citaiton rendering by output format. See</span>
+<span class="ss">    inconsistent citation rendering by output format. See</span>
 
 <span class="ss">    https://github.com/jgm/pandoc/issues/4834</span>
 
@@ -1678,15 +1702,15 @@ https://github.com/jgm/pandoc/issues/4834</p>
 
     <span class="k">for</span> <span class="n">citekey</span> <span class="k">in</span> <span class="n">args</span><span class="p">.</span><span class="n">citekeys</span><span class="p">:</span>
 
+        <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+
         <span class="n">try</span><span class="p">:</span>
 
-            <span class="k">if</span> <span class="k">not</span> <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">):</span>
+            <span class="k">if</span> <span class="k">not</span> <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">input_id</span><span class="p">):</span>
 
                 <span class="k">continue</span>
 
-            <span class="n">citekey</span> <span class="o">=</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
-
-            <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">prune_csl</span><span class="p">)</span>
+            <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_id</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">prune_csl</span><span class="p">)</span>
 
             <span class="n">csl_list</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
@@ -1694,7 +1718,7 @@ https://github.com/jgm/pandoc/issues/4834</p>
 
             <span class="n">logging</span><span class="p">.</span><span class="n">error</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="ss">&quot;citekey_to_csl_item for {citekey!r} failed &quot;</span>
+                <span class="n">f</span><span class="ss">&quot;citekey_to_csl_item for {citekey.input_id!r} failed &quot;</span>
 
                 <span class="n">f</span><span class="ss">&quot;due to a {error.__class__.__name__}:\n{error}&quot;</span>
 
@@ -1810,7 +1834,7 @@ https://github.com/jgm/pandoc/issues/4834</p>
     
       <script src="../../../../assets/javascripts/application.c33a9706.js"></script>
       
-      <script>app.initialize({version:"1.1.1",url:{base:"../../../.."}})</script>
+      <script>app.initialize({version:"1.1.2",url:{base:"../../../.."}})</script>
       
     
   </body>

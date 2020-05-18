@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.1, mkdocs-material-4.6.3">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-4.6.3">
     
     
       
@@ -429,6 +429,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../handlers/" title="Handlers" class="md-nav__link">
+      Handlers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../" title="Index" class="md-nav__link">
       Index
     </a>
@@ -516,13 +528,13 @@
 
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-15" type="checkbox" id="nav-3-1-4-15" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-16" type="checkbox" id="nav-3-1-4-16" checked>
     
-    <label class="md-nav__link" for="nav-3-1-4-15">
+    <label class="md-nav__link" for="nav-3-1-4-16">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-4-15">
+      <label class="md-nav__title" for="nav-3-1-4-16">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -597,13 +609,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#functions" class="md-nav__link">
     Functions
   </a>
@@ -612,15 +617,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#test_citekey_pattern_match" class="md-nav__link">
-    test_citekey_pattern_match
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test_citekey_pattern_no_match" class="md-nav__link">
-    test_citekey_pattern_no_match
+  <a href="#test_citekey_class" class="md-nav__link">
+    test_citekey_class
   </a>
   
 </li>
@@ -732,6 +730,18 @@
   <li class="md-nav__item">
     <a href="../test_doi/" title="Test Doi" class="md-nav__link">
       Test Doi
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../test_handlers/" title="Test Handlers" class="md-nav__link">
+      Test Handlers
     </a>
   </li>
 
@@ -1257,13 +1267,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#functions" class="md-nav__link">
     Functions
   </a>
@@ -1272,15 +1275,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#test_citekey_pattern_match" class="md-nav__link">
-    test_citekey_pattern_match
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test_citekey_pattern_no_match" class="md-nav__link">
-    test_citekey_pattern_no_match
+  <a href="#test_citekey_class" class="md-nav__link">
+    test_citekey_class
   </a>
   
 </li>
@@ -1352,13 +1348,11 @@
 
 <span class="kn">from</span> <span class="nn">manubot.cite.citekey</span> <span class="kn">import</span> <span class="p">(</span>
 
-    <span class="n">citekey_pattern</span><span class="p">,</span>
+    <span class="n">CiteKey</span><span class="p">,</span>
 
     <span class="n">shorten_citekey</span><span class="p">,</span>
 
     <span class="n">infer_citekey_prefix</span><span class="p">,</span>
-
-    <span class="n">inspect_citekey</span><span class="p">,</span>
 
     <span class="n">url_to_citekey</span><span class="p">,</span>
 
@@ -1366,61 +1360,69 @@
 
 <span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
 
-    <span class="s2">&quot;citation_string&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;input_id&quot;</span><span class="p">,</span> <span class="s2">&quot;citekey_attrs&quot;</span><span class="p">],</span>
 
     <span class="p">[</span>
 
-        <span class="p">(</span><span class="s2">&quot;@doi:10.5061/dryad.q447c/1&quot;</span><span class="p">),</span>
+        <span class="p">(</span>
 
-        <span class="p">(</span><span class="s2">&quot;@arxiv:1407.3561v1&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;DOI:10.5061/DRYad.q447c/1&quot;</span><span class="p">,</span>
 
-        <span class="p">(</span><span class="s2">&quot;@doi:10.1007/978-94-015-6859-3_4&quot;</span><span class="p">),</span>
+            <span class="nb">dict</span><span class="p">(</span>
 
-        <span class="p">(</span><span class="s2">&quot;@tag:tag_with_underscores&quot;</span><span class="p">),</span>
+                <span class="n">prefix_lower</span><span class="o">=</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span>
 
-        <span class="p">(</span><span class="s2">&quot;@tag:tag-with-hyphens&quot;</span><span class="p">),</span>
+                <span class="n">standard_accession</span><span class="o">=</span><span class="s2">&quot;10.5061/dryad.q447c/1&quot;</span><span class="p">,</span>
 
-        <span class="p">(</span><span class="s2">&quot;@url:https://greenelab.github.io/manubot-rootstock/&quot;</span><span class="p">),</span>
+                <span class="n">standard_id</span><span class="o">=</span><span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">,</span>
 
-        <span class="p">(</span><span class="s2">&quot;@tag:abc123&quot;</span><span class="p">),</span>
+            <span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;@tag:123abc&quot;</span><span class="p">),</span>
+        <span class="p">),</span>
+
+        <span class="p">(</span>
+
+            <span class="s2">&quot;arXiv:1407.3561v1&quot;</span><span class="p">,</span>
+
+            <span class="nb">dict</span><span class="p">(</span><span class="n">prefix_lower</span><span class="o">=</span><span class="s2">&quot;arxiv&quot;</span><span class="p">,</span> <span class="n">standard_id</span><span class="o">=</span><span class="s2">&quot;arxiv:1407.3561v1&quot;</span><span class="p">,),</span>
+
+        <span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;pmid:24159271&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">standard_id</span><span class="o">=</span><span class="s2">&quot;pubmed:24159271&quot;</span><span class="p">,),),</span>
+
+        <span class="p">(</span><span class="s2">&quot;pmcid:PMC4304851&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">standard_id</span><span class="o">=</span><span class="s2">&quot;pmc:PMC4304851&quot;</span><span class="p">,),),</span>
+
+        <span class="p">(</span>
+
+            <span class="s2">&quot;https://greenelab.github.io/manubot-rootstock/&quot;</span><span class="p">,</span>
+
+            <span class="nb">dict</span><span class="p">(</span><span class="n">standard_id</span><span class="o">=</span><span class="s2">&quot;url:https://greenelab.github.io/manubot-rootstock/&quot;</span><span class="p">,),</span>
+
+        <span class="p">),</span>
+
+        <span class="p">(</span><span class="s2">&quot;isbn:1-339-91988-5&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">standard_id</span><span class="o">=</span><span class="s2">&quot;isbn:9781339919881&quot;</span><span class="p">,),),</span>
+
+        <span class="p">(</span><span class="s2">&quot;DOID:14330&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">standard_id</span><span class="o">=</span><span class="s2">&quot;doid:14330&quot;</span><span class="p">,),),</span>
+
+        <span class="p">(</span><span class="s2">&quot;PubChem.substance:100101&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">standard_id</span><span class="o">=</span><span class="s2">&quot;pubchem.substance:100101&quot;</span><span class="p">,),),</span>
+
+        <span class="p">(</span><span class="s2">&quot;Wikidata:Q50051684&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">standard_id</span><span class="o">=</span><span class="s2">&quot;wikidata:Q50051684&quot;</span><span class="p">,),),</span>
 
     <span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_citekey_pattern_match</span><span class="p">(</span><span class="n">citation_string</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_citekey_class</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="n">citekey_attrs</span><span class="p">):</span>
 
-    <span class="n">match</span> <span class="o">=</span> <span class="n">citekey_pattern</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">citation_string</span><span class="p">)</span>
+    <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">match</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">citekey_attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
-    <span class="s2">&quot;citation_string&quot;</span><span class="p">,</span>
+        <span class="k">assert</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="n">value</span>
 
-    <span class="p">[</span>
-
-        <span class="p">(</span><span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">),</span>
-
-        <span class="p">(</span><span class="s2">&quot;@tag:abc123-&quot;</span><span class="p">),</span>
-
-        <span class="p">(</span><span class="s2">&quot;@tag:abc123_&quot;</span><span class="p">),</span>
-
-        <span class="p">(</span><span class="s2">&quot;@-tag:abc123&quot;</span><span class="p">),</span>
-
-        <span class="p">(</span><span class="s2">&quot;@_tag:abc123&quot;</span><span class="p">),</span>
-
-    <span class="p">],</span>
-
-<span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">test_citekey_pattern_no_match</span><span class="p">(</span><span class="n">citation_string</span><span class="p">):</span>
-
-    <span class="n">match</span> <span class="o">=</span> <span class="n">citekey_pattern</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">citation_string</span><span class="p">)</span>
-
-    <span class="k">assert</span> <span class="n">match</span> <span class="ow">is</span> <span class="bp">None</span>
+    <span class="k">assert</span> <span class="n">citekey</span><span class="o">.</span><span class="n">short_id</span>
 
 <span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
 
@@ -1494,7 +1496,9 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">assert</span> <span class="n">inspect_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span>
+
+    <span class="k">assert</span> <span class="n">report</span> <span class="ow">is</span> <span class="bp">None</span>
 
 <span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
 
@@ -1516,7 +1520,7 @@
 
             <span class="s2">&quot;pmid:PMC4304851&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;Should &#39;pmid:PMC4304851&#39; switch the citation source to &#39;pmcid&#39;?&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Should &#39;pmid:PMC4304851&#39; switch the citation source to &#39;pmc&#39;?&quot;</span><span class="p">,</span>
 
         <span class="p">),</span>
 
@@ -1540,7 +1544,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">report</span> <span class="o">=</span> <span class="n">inspect_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span>
 
     <span class="k">assert</span> <span class="n">report</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
 
@@ -1719,86 +1723,80 @@
 
 
 </details>
-<h2 id="variables">Variables</h2>
-<div class="codehilite"><pre><span></span><code><span class="n">citekey_pattern</span>
-</code></pre></div>
-
-
 <h2 id="functions">Functions</h2>
-<h3 id="test_citekey_pattern_match">test_citekey_pattern_match</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_citekey_pattern_match</span><span class="p">(</span>
-    <span class="n">citation_string</span>
+<h3 id="test_citekey_class">test_citekey_class</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_citekey_class</span><span class="p">(</span>
+    <span class="n">input_id</span><span class="p">,</span>
+    <span class="n">citekey_attrs</span>
 <span class="p">)</span>
 </code></pre></div>
 
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">    </span><span class="ss">&quot;citation_string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="o">[</span><span class="n">&quot;input_id&quot;, &quot;citekey_attrs&quot;</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
 <span class="w">    </span><span class="o">[</span><span class="n"></span>
 
-<span class="n">        (&quot;@doi:10.5061/dryad.q447c/1&quot;),</span>
+<span class="n">        (</span>
 
-<span class="n">        (&quot;@arxiv:1407.3561v1&quot;),</span>
+<span class="n">            &quot;DOI:10.5061/DRYad.q447c/1&quot;,</span>
 
-<span class="n">        (&quot;@doi:10.1007/978-94-015-6859-3_4&quot;),</span>
+<span class="n">            dict(</span>
 
-<span class="n">        (&quot;@tag:tag_with_underscores&quot;),</span>
+<span class="n">                prefix_lower=&quot;doi&quot;,</span>
 
-<span class="n">        (&quot;@tag:tag-with-hyphens&quot;),</span>
+<span class="n">                standard_accession=&quot;10.5061/dryad.q447c/1&quot;,</span>
 
-<span class="n">        (&quot;@url:https://greenelab.github.io/manubot-rootstock/&quot;),</span>
+<span class="n">                standard_id=&quot;doi:10.5061/dryad.q447c/1&quot;,</span>
 
-<span class="n">        (&quot;@tag:abc123&quot;),</span>
+<span class="n">            ),</span>
 
-<span class="n">        (&quot;@tag:123abc&quot;),</span>
+<span class="n">        ),</span>
+
+<span class="n">        (</span>
+
+<span class="n">            &quot;arXiv:1407.3561v1&quot;,</span>
+
+<span class="n">            dict(prefix_lower=&quot;arxiv&quot;, standard_id=&quot;arxiv:1407.3561v1&quot;,),</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        (&quot;pmid:24159271&quot;, dict(standard_id=&quot;pubmed:24159271&quot;,),),</span>
+
+<span class="n">        (&quot;pmcid:PMC4304851&quot;, dict(standard_id=&quot;pmc:PMC4304851&quot;,),),</span>
+
+<span class="n">        (</span>
+
+<span class="n">            &quot;https://greenelab.github.io/manubot-rootstock/&quot;,</span>
+
+<span class="n">            dict(standard_id=&quot;url:https://greenelab.github.io/manubot-rootstock/&quot;,),</span>
+
+<span class="n">        ),</span>
+
+<span class="n">        (&quot;isbn:1-339-91988-5&quot;, dict(standard_id=&quot;isbn:9781339919881&quot;,),),</span>
+
+<span class="n">        (&quot;DOID:14330&quot;, dict(standard_id=&quot;doid:14330&quot;,),),</span>
+
+<span class="n">        (&quot;PubChem.substance:100101&quot;, dict(standard_id=&quot;pubchem.substance:100101&quot;,),),</span>
+
+<span class="n">        (&quot;Wikidata:Q50051684&quot;, dict(standard_id=&quot;wikidata:Q50051684&quot;,),),</span>
 
 <span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
 <span class="p">)</span><span class="w"></span>
 
-<span class="n">def</span><span class="w"> </span><span class="n">test_citekey_pattern_match</span><span class="p">(</span><span class="n">citation_string</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="n">def</span><span class="w"> </span><span class="n">test_citekey_class</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="n">citekey_attrs</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">    </span><span class="k">match</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey_pattern</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">citation_string</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="k">match</span><span class="w"></span>
-</code></pre></div>
+<span class="w">    </span><span class="k">print</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="w"></span>
 
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="k">key</span><span class="p">,</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">citekey_attrs</span><span class="p">.</span><span class="n">items</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
 
-</details>
-<h3 id="test_citekey_pattern_no_match">test_citekey_pattern_no_match</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_citekey_pattern_no_match</span><span class="p">(</span>
-    <span class="n">citation_string</span>
-<span class="p">)</span>
-</code></pre></div>
+<span class="w">        </span><span class="n">assert</span><span class="w"> </span><span class="n">getattr</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="k">key</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">value</span><span class="w"></span>
 
-
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
-
-<span class="w">    </span><span class="ss">&quot;citation_string&quot;</span><span class="p">,</span><span class="w"></span>
-
-<span class="w">    </span><span class="o">[</span><span class="n"></span>
-
-<span class="n">        (&quot;doi:10.5061/dryad.q447c/1&quot;),</span>
-
-<span class="n">        (&quot;@tag:abc123-&quot;),</span>
-
-<span class="n">        (&quot;@tag:abc123_&quot;),</span>
-
-<span class="n">        (&quot;@-tag:abc123&quot;),</span>
-
-<span class="n">        (&quot;@_tag:abc123&quot;),</span>
-
-<span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
-
-<span class="p">)</span><span class="w"></span>
-
-<span class="n">def</span><span class="w"> </span><span class="n">test_citekey_pattern_no_match</span><span class="p">(</span><span class="n">citation_string</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">match</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey_pattern</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">citation_string</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="k">match</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">citekey</span><span class="p">.</span><span class="n">short_id</span><span class="w"></span>
 </code></pre></div>
 
 
@@ -1869,7 +1867,7 @@
 
 <span class="n">            &quot;pmid:PMC4304851&quot;,</span>
 
-<span class="n">            &quot;Should &#39;pmid:PMC4304851&#39; switch the citation source to &#39;pmcid&#39;?&quot;,</span>
+<span class="n">            &quot;Should &#39;pmid:PMC4304851&#39; switch the citation source to &#39;pmc&#39;?&quot;,</span>
 
 <span class="n">        ),</span>
 
@@ -1893,7 +1891,7 @@
 
 <span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">report</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inspect_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">report</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">).</span><span class="n">inspect</span><span class="p">()</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">report</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 
@@ -1960,7 +1958,9 @@
 
 <span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">inspect_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
+<span class="w">    </span><span class="n">report</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">).</span><span class="n">inspect</span><span class="p">()</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">report</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 </code></pre></div>
 
 
@@ -2226,7 +2226,7 @@
     
       <script src="../../../../../assets/javascripts/application.c33a9706.js"></script>
       
-      <script>app.initialize({version:"1.1.1",url:{base:"../../../../.."}})</script>
+      <script>app.initialize({version:"1.1.2",url:{base:"../../../../.."}})</script>
       
     
   </body>
