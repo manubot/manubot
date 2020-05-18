@@ -79,7 +79,7 @@ class Handler:
         """
         pattern = self._get_pattern("accession_pattern")
         if not pattern:
-            return
+            return None
         if not pattern.fullmatch(citekey.accession):
             return f"{citekey.accession} does not match regex {pattern.pattern}"
 
@@ -608,7 +608,6 @@ prefix_to_handler: typing.Dict[str, str] = {
     "pdb": "manubot.cite.curie.Handler_CURIE",
     "pdb-ccd": "manubot.cite.curie.Handler_CURIE",
     "pdb.ligand": "manubot.cite.curie.Handler_CURIE",
-    "peo": "manubot.cite.curie.Handler_CURIE",
     "peptideatlas": "manubot.cite.curie.Handler_CURIE",
     "peptideatlas.dataset": "manubot.cite.curie.Handler_CURIE",
     "peroxibase": "manubot.cite.curie.Handler_CURIE",
@@ -785,6 +784,7 @@ prefix_to_handler: typing.Dict[str, str] = {
     "vfb": "manubot.cite.curie.Handler_CURIE",
     "vfdb.gene": "manubot.cite.curie.Handler_CURIE",
     "vfdb.genus": "manubot.cite.curie.Handler_CURIE",
+    "vgnc": "manubot.cite.curie.Handler_CURIE",
     "viaf": "manubot.cite.curie.Handler_CURIE",
     "vipr": "manubot.cite.curie.Handler_CURIE",
     "viralzone": "manubot.cite.curie.Handler_CURIE",

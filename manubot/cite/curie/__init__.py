@@ -1,9 +1,17 @@
 """
 Compact Uniform Resource Identifiers
 
+Manubot keeps a local versions of the identifier.org registry.
+Repository developers can run the following commands to update the Manubot version.
+
 ```shell
 # regenerate manubot/cite/curie/namespaces.json
 python manubot/cite/curie/__init__.py
+# if namespaces.json has changed, the following test will likely fail:
+pytest manubot/cite/tests/test_handlers.py::test_prefix_to_handler
+# copy captured stdout from failed test_prefix_to_handler to
+# manubot.cite.handlers.prefix_to_handler. Then reformat file:
+black manubot/cite/handlers.py
 ```
 
 References:
@@ -27,7 +35,7 @@ import pathlib
 import re
 import typing
 
-from ..handlers import Handler
+from manubot.cite.handlers import Handler
 
 _keep_namespace_fields = {
     "prefix",
