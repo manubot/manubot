@@ -34,10 +34,6 @@ from manubot.cite.citekey import (
         ("DOID:14330", dict(standard_id="doid:14330",),),
         ("PubChem.substance:100101", dict(standard_id="pubchem.substance:100101",),),
         ("Wikidata:Q50051684", dict(standard_id="wikidata:Q50051684",),),
-        # ("tag:tag_with_underscores"),
-        # ("tag:tag-with-hyphens"),
-        # ("tag:abc123"),
-        # ("tag:123abc"),
     ],
 )
 def test_citekey_class(input_id, citekey_attrs):

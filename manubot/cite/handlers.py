@@ -53,18 +53,29 @@ def _generate_prefix_to_handler() -> typing.Dict[str, str]:
             pth[
                 prefix
             ] = f"{inspect.getmodule(handler).__name__}.{handler.__class__.__name__}"
-    pth = dict(sorted(pth.items()))  # sort
+    pth = dict(sorted(pth.items()))  # sort for clean diffs of serialized dict
     return pth
 
 
 @dataclasses.dataclass
 class Handler:
+    """
+    A Handler is a class that provides support for a certain type of citekey.
+    For example, a Handler subclass could provide support for DOI citekeys.
+    Subclasses enable custom logic for different citekey prefixes,
+    including how to standardize the citekey and how to retrieve CSL Item metadata.
+    """
 
     prefix_lower: str
     prefixes = []
 
     def _get_pattern(self, attribute="accession_pattern") -> typing.Pattern:
-        # todo: cache compilation
+        """
+        Return a compiled regex pattern stored by `attribute`.
+        By default, return `self.accession_pattern`, which Handler subclasses
+        can set to provide the expected pattern for `self.accession`.
+        """
+        # todo: consider caching compilation
         pattern = getattr(self, attribute, None)
         if not pattern:
             return None
@@ -84,12 +95,21 @@ class Handler:
             return f"{citekey.accession} does not match regex {pattern.pattern}"
 
     def standardize_prefix_accession(self, accession):
+        """
+        Return (prefix, accession) in standardized form.
+        This method defaults to returning `self.standard_prefix`
+        (or `self.prefix_lower` if standard_prefix is not defined).
+        Subclasses can override this method with more specific standardization logic.
+        """
         standard_prefix = getattr(self, "standard_prefix", self.prefix_lower)
         standard_accession = accession
         return standard_prefix, standard_accession
 
     @abc.abstractmethod
     def get_csl_item(self, citekey):
+        """
+        Return a CSL_Item with bibliographic details for citekey.
+        """
         ...
 
 

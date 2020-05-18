@@ -41,8 +41,6 @@ class Handler_DOI(Handler):
 
     def standardize_prefix_accession(self, accession):
         if accession.startswith("10/"):
-            from manubot.cite.doi import expand_short_doi
-
             try:
                 accession = expand_short_doi(accession)
             except Exception as error:

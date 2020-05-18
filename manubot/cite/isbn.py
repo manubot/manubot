@@ -14,8 +14,7 @@ class Handler_ISBN(Handler):
         "isbn",
     ]
 
-    @classmethod
-    def inspect(cls, citekey):
+    def inspect(self, citekey):
         import isbnlib
 
         fail = isbnlib.notisbn(citekey.accession, level="strict")
