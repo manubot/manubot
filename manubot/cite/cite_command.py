@@ -6,12 +6,11 @@ import sys
 
 from manubot.cite.citekey import (
     citekey_to_csl_item,
-    is_valid_citekey,
     CiteKey,
 )
 from manubot.pandoc.util import get_pandoc_info
 from manubot.util import shlex_join
-
+from manubot.process.citations import Citations
 
 # For manubot cite, infer --format from --output filename extensions
 extension_to_format = {
@@ -78,21 +77,14 @@ def cli_cite(args):
     inconsistent citation rendering by output format. See
     https://github.com/jgm/pandoc/issues/4834
     """
-    # generate CSL JSON data
-    csl_list = list()
-    for citekey in args.citekeys:
-        citekey = CiteKey(citekey)
-        try:
-            if not is_valid_citekey(citekey.input_id):
-                continue
-            csl_item = citekey_to_csl_item(citekey.standard_id, prune=args.prune_csl)
-            csl_list.append(csl_item)
-        except Exception as error:
-            logging.error(
-                f"citekey_to_csl_item for {citekey.input_id!r} failed "
-                f"due to a {error.__class__.__name__}:\n{error}"
-            )
-            logging.info(error, exc_info=True)
+    citations = Citations(args.citekeys)
+    unhandled = citations.filter_unhandled()
+    if unhandled:
+        logging.warning(
+            "Removing the following unhandled citekeys:\n"
+            + '\n'.join(x.input_id for x in unhandled)
+        )
+    csl_items = citations.get_csl_items()
 
     # output CSL JSON data, if --render is False
     if not args.render:
@@ -100,7 +92,7 @@ def cli_cite(args):
             args.output.open("w", encoding="utf-8") if args.output else sys.stdout
         )
         with write_file:
-            json.dump(csl_list, write_file, ensure_ascii=False, indent=2)
+            json.dump(csl_items, write_file, ensure_ascii=False, indent=2)
             write_file.write("\n")
         return
 
@@ -109,7 +101,7 @@ def cli_cite(args):
         vars(args)["format"] = extension_to_format.get(args.output.suffix)
     if not args.format:
         vars(args)["format"] = "plain"
-    pandoc_metadata = {"nocite": "@*", "csl": args.csl, "references": csl_list}
+    pandoc_metadata = {"nocite": "@*", "csl": args.csl, "references": csl_items}
     call_pandoc(metadata=pandoc_metadata, path=args.output, format=args.format)
 
 
