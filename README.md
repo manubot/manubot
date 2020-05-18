@@ -151,7 +151,7 @@ Citation keys should be in the format `source:identifier`.
 For example, the following example generates CSL JSON for four references:
 
 ```sh
-manubot cite doi:10.1098/rsif.2017.0387 pmid:29424689 pmcid:PMC5640425 arxiv:1806.05726
+manubot cite doi:10.1098/rsif.2017.0387 pubmed:29424689 pmc:PMC5640425 arxiv:1806.05726
 ```
 
 The following [terminal recording](https://asciinema.org/a/205085?speed=2) demonstrates the main features of `manubot cite`:
@@ -224,7 +224,7 @@ optional arguments:
 ```
 
 Other Pandoc filters exist that do something similar:
-[`pandoc-url2cite`](https://github.com/phiresky/pandoc-url2cite) &
+[`pandoc-url2cite`](https://github.com/phiresky/pandoc-url2cite), [pandoc-url2cite-hs](https://github.com/Aver1y/pandoc-url2cite-hs), &
 [`pwcite`](https://github.com/wikicite/wcite#filter-pwcite).
 Currently, `pandoc-manubot-cite` supports the most types of persistent identifiers.
 We're interested in creating as much compatibility as possible between these filters and their syntaxes.
