@@ -35,7 +35,6 @@ import panflute as pf
 
 from manubot.cite.citekey import CiteKey
 from manubot.process.util import (
-    generate_csl_items,
     load_manual_references,
     write_citekeys_tsv,
     write_csl_json,

@@ -1,6 +1,8 @@
 import dataclasses
 import itertools
+import json
 import logging
+import pathlib
 import typing as tp
 
 from manubot.cite.citekey import CiteKey, citekey_to_csl_item
@@ -118,3 +120,33 @@ class Citations:
                 self.standard_to_csl_id[citekey.standard_id] = csl_item["id"]
                 self.csl_items.append(csl_item)
         return self.csl_items
+
+    @property
+    def citekeys_tsv(self) -> str:
+        import io, csv
+
+        fields = ["input_id", "dealiased_id", "standard_id", "short_id"]
+        output = io.StringIO()
+        writer = csv.DictWriter(output, fieldnames=fields, delimiter="\t")
+        writer.writeheader()
+        for citekey in self.citekeys:
+            row = {x: getattr(citekey, x) for x in fields}
+            writer.writerow(row)
+        return output.getvalue()
+
+    @property
+    def csl_json(self) -> str:
+        assert hasattr(self, "csl_items")
+        json_str = json.dumps(self.csl_items, indent=2, ensure_ascii=False)
+        json_str += "\n"
+        return json_str
+
+    def write_csl_json(self, path):
+        """
+        Write CSL Items to a JSON file at `path`.
+        If `path` evaluates as False, do nothing.
+        """
+        if not path:
+            return
+        path = pathlib.Path(path)
+        path.write_text(self.csl_json, encoding="utf-8")
