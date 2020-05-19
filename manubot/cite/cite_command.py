@@ -82,7 +82,7 @@ def cli_cite(args):
     if unhandled:
         logging.warning(
             "Removing the following unhandled citekeys:\n"
-            + '\n'.join(x.input_id for x in unhandled)
+            + "\n".join(x.input_id for x in unhandled)
         )
     csl_items = citations.get_csl_items()
 

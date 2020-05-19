@@ -1,17 +1,28 @@
 import dataclasses
 import itertools
 import logging
+import typing as tp
 
-from manubot.cite.citekey import CiteKey
+from manubot.cite.citekey import CiteKey, citekey_to_csl_item
 
 
 @dataclasses.dataclass
 class Citations:
-    """Input citekey IDs as strings"""
+    """
+    Class for operating on a set of citations provided by
+    their citekey input_ids.
+    """
 
+    # Input citekey IDs as strings
     input_ids: list
-    """Citation key aliases"""
+    # Citation key aliases
     aliases: dict = dataclasses.field(default_factory=dict)
+    # manual references dictionary of standard_id to CSL_Item.
+    manual_refs: dict = dataclasses.field(default_factory=dict)
+    # level to log failures related to CSL Item generation
+    csl_item_failure_log_level: tp.Union[str, int] = "WARNING"
+    # level to log failures related to CSL Item generation
+    prune_csl_items: bool = True
 
     def __post_init__(self):
         input_ids = list(dict.fromkeys(self.input_ids))  # deduplicate
@@ -29,7 +40,7 @@ class Citations:
         self.citekeys = keep
         return remove
 
-    def filter_unhandled(self):
+    def filter_unhandled(self) -> list:
         """
         Filter self.citekeys to remove unhandled citekeys.
         Return removed citekeys.
@@ -40,13 +51,18 @@ class Citations:
         self.citekeys = keep
         return remove
 
-    def group_citekeys_by(self, attribute="standard_id") -> list:
+    def group_citekeys_by(
+        self, attribute: str = "standard_id"
+    ) -> tp.List[tp.Tuple[str, list]]:
+        """
+        Group `self.citekeys` by `attribute`.
+        """
         get_key = lambda x: getattr(x, attribute)
         citekeys = sorted(self.citekeys, key=get_key)
         groups = itertools.groupby(citekeys, get_key)
         return [(key, list(group)) for key, group in groups]
 
-    def unique_citekeys_by(self, attribute="standard_id") -> list:
+    def unique_citekeys_by(self, attribute: str = "standard_id") -> list:
         return [citekeys[0] for key, citekeys in self.group_citekeys_by(attribute)]
 
     def check_collisions(self):
@@ -58,7 +74,7 @@ class Citations:
             if len(standard_ids) == 1:
                 continue
             logging.error(
-                "Congratulations! Hash collision.\n"
+                "Congratulations! Hash collision. Please report to https://git.io/JfuhH.\n"
                 f"Multiple standard_ids hashed to {short_id}: {standard_ids}"
             )
 
@@ -72,23 +88,29 @@ class Citations:
                 f"Multiple citekey input_ids refer to the same standard_id {standard_id}:\n{input_ids}"
             )
 
-    def get_csl_items(self, log_level="WARNING"):
+    def load_manual_references(self, *args, **kwargs):
+        """
+        Load manual references
+        """
+        from manubot.process.bibliography import load_manual_references
+
+        manual_refs = load_manual_references(*args, **kwargs)
+        self.manual_refs.update(manual_refs)
+
+    def get_csl_items(self) -> tp.List:
         """
         Produce a list of CSL_Items. I.e. a references list / bibliography
         for `self.citekeys`.
         """
-        # https://stackoverflow.com/a/35704430/4651668
-        log_level = logging._checkLevel(log_level)
         csl_items = list()
         citekeys = self.unique_citekeys_by("standard_id")
         for citekey in citekeys:
-            try:
-                csl_items.append(citekey.csl_item)
-            except Exception as error:
-                logging.log(
-                    log_level,
-                    f"Generating csl_item for {citekey.standard_id!r} failed "
-                    f"due to a {error.__class__.__name__}:\n{error}",
-                )
-                logging.info(error, exc_info=True)
+            csl_item = citekey_to_csl_item(
+                citekey=citekey,
+                prune=self.prune_csl_items,
+                log_level=self.csl_item_failure_log_level,
+                manual_refs=self.manual_refs,
+            )
+            if csl_item:
+                csl_items.append(csl_item)
         return csl_items

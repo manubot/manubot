@@ -28,7 +28,7 @@ import logging
 import re
 from typing import List, Optional
 
-from manubot.cite.citekey import standardize_citekey
+from manubot.cite.citekey import CiteKey
 
 
 class CSL_Item(dict):
@@ -277,7 +277,8 @@ class CSL_Item(dict):
         original_id = self.get("id")
         self.infer_id()
         original_standard_id = self["id"]
-        standard_id = standardize_citekey(original_standard_id, warn_if_changed=False)
+        citekey = CiteKey(original_standard_id)
+        standard_id = citekey.standard_id
         add_to_note = {}
         note_dict = self.note_dict
         if original_id and original_id != standard_id:

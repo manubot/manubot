@@ -30,7 +30,6 @@ from manubot.process.manuscript import (
 from manubot.cite.citekey import (
     citekey_to_csl_item,
     shorten_citekey,
-    standardize_citekey,
     CiteKey,
 )
 
@@ -281,89 +280,17 @@ def load_variables(args) -> dict:
 
 def get_citekeys(citekey_ids: list, citekey_aliases: dict = {}):
     """todo"""
-    citekey_ids = list(dict.fromkeys(citekey_ids))  # deduplicate
-    citekeys = list()
-    for citekey_id in citekey_ids:
-        citekey = CiteKey(citekey_id, aliases=citekey_aliases)
-        if citekey.is_pandoc_xnos_prefix(log_case_warning=True):
-            continue
-        citekeys.append(citekey)
+    from manubot.process.citations import Citations
 
-
-def get_citekeys_df(citekeys: list, citekey_aliases: dict = {}):
-    """
-    Generate and return citekeys_df.
-    citekeys_df is a pandas.DataFrame with the following columns:
-    - manuscript_citekey: citation keys extracted from the manuscript content files.
-    - detagged_citekey: manuscript_citekey but with tag citekeys dereferenced
-    - standard_citekey: detagged_citekey standardized
-    - short_citekey: standard_citekey hashed to create a shortened citekey
-    """
-    citekeys_df = pandas.DataFrame(
-        {"manuscript_citekey": list(citekeys)}
-    ).drop_duplicates()
-    citekeys_df["detagged_citekey"] = citekeys_df.manuscript_citekey.map(
-        lambda citekey: citekey_aliases.get(citekey, citekey)
-    )
-    citekeys_df["standard_citekey"] = citekeys_df.detagged_citekey.map(
-        standardize_citekey
-    )
-    citekeys_df["short_citekey"] = citekeys_df.standard_citekey.map(shorten_citekey)
-    citekeys_df = citekeys_df.sort_values(["standard_citekey", "detagged_citekey"])
-    # check_collisions(citekeys_df)
-    # check_multiple_citation_strings(citekeys_df)
-    return citekeys_df
-
-
-def read_citations_tsv(path) -> dict:
-    """
-    Read citekey aliases from a citation-tags.tsv file.
-    """
-    if not path.is_file():
-        logging.info(
-            f"no citation tags file at {path} "
-            "Not reading citekey_aliases from citation-tags.tsv."
-        )
-        return {}
-    tag_df = pandas.read_csv(path, sep="\t")
-    na_rows_df = tag_df[tag_df.isnull().any(axis="columns")]
-    if not na_rows_df.empty:
-        logging.error(
-            f"{path} contains rows with missing values:\n"
-            f"{na_rows_df}\n"
-            "This error can be caused by using spaces rather than tabs to delimit fields.\n"
-            "Proceeding to reread TSV with delim_whitespace=True."
-        )
-        tag_df = pandas.read_csv(path, delim_whitespace=True)
-    tag_df["manuscript_citekey"] = "tag:" + tag_df.tag
-    tag_df = tag_df.rename(columns={"citation": "detagged_citekey"})
-    citekey_aliases = dict(
-        zip(tag_df["manuscript_citekey"], tag_df["detagged_citekey"])
-    )
-    return citekey_aliases
+    citations = Citations(citekey_ids, aliases=citekey_aliases)
+    citations.filter_pandoc_xnos()
+    citations.filter_unhandled()
 
 
 def write_citekeys_tsv(citekeys_df, path):
     if not path:
         return
     citekeys_df.to_csv(path, sep="\t", index=False)
-
-
-def _citation_tags_to_reference_links(args) -> str:
-    """
-    Convert citation-tags.tsv to markdown reference link syntax
-    """
-    citekey_aliases = read_citations_tsv(args.citation_tags_path)
-    if not citekey_aliases:
-        return ""
-    text = "\n\n"
-    for key, value in citekey_aliases.items():
-        text += f"[@{key}]: {value}\n"
-    logging.warning(
-        "citation-tags.tsv is deprecated. "
-        f"Consider deleting citation-tags.tsv and inserting the following paragraph into your Markdown content:{text}"
-    )
-    return text
 
 
 def generate_csl_items(
@@ -435,27 +362,6 @@ def generate_csl_items(
     return csl_items
 
 
-def _generate_csl_items(args, citekeys_df):
-    """
-    General CSL (citeproc) items for standard_citekeys in citekeys_df.
-    Writes references.json to disk and logs warnings for potential problems.
-    """
-    # Read manual references (overrides) in JSON CSL
-    manual_refs = load_manual_references(args.manual_references_paths)
-
-    # Retrieve CSL Items
-    csl_items = generate_csl_items(
-        citekeys=citekeys_df.standard_citekey.unique(),
-        manual_refs=manual_refs,
-        requests_cache_path=args.requests_cache_path,
-        clear_requests_cache=args.clear_requests_cache,
-    )
-
-    # Write CSL JSON bibliography for Pandoc.
-    write_csl_json(csl_items, args.references_path)
-    return csl_items
-
-
 def write_csl_json(csl_items, path):
     """
     Write CSL Items to a JSON file at `path`.
@@ -493,7 +399,6 @@ def prepare_manuscript(args):
     """
     text = get_text(args.content_directory)
     assert args.skip_citations
-    text += _citation_tags_to_reference_links(args)
 
     variables = load_variables(args)
     variables["manubot"]["manuscript_stats"] = get_manuscript_stats(text)

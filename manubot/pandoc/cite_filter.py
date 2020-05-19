@@ -35,7 +35,6 @@ import panflute as pf
 
 from manubot.cite.citekey import CiteKey
 from manubot.process.util import (
-    get_citekeys_df,
     generate_csl_items,
     load_manual_references,
     write_citekeys_tsv,
@@ -169,20 +168,14 @@ def process_citations(doc):
     doc.walk(_get_reference_link_citekey_aliases)
     doc.walk(_get_citekeys_action)
     manuscript_citekeys = global_variables["manuscript_citekeys"]
-    manuscript_citekeys = sorted(
-        filter(
-            lambda x: not CiteKey(x).is_pandoc_xnos_prefix(log_case_warning=True),
-            set(manuscript_citekeys),
-        )
-    )
-    global_variables["manuscript_citekeys"] = manuscript_citekeys
-    citekeys_df = get_citekeys_df(
-        manuscript_citekeys, global_variables["citekey_aliases"],
-    )
-    global_variables["citekeys_df"] = citekeys_df
-    global_variables["citekey_shortener"] = dict(
-        zip((citekeys_df["manuscript_citekey"]), citekeys_df["short_citekey"])
-    )
+    # global_variables["manuscript_citekeys"] = manuscript_citekeys
+    # citekeys_df = get_citekeys_df(
+    #     manuscript_citekeys, global_variables["citekey_aliases"],
+    # )
+    # global_variables["citekeys_df"] = citekeys_df
+    # global_variables["citekey_shortener"] = dict(
+    #     zip((citekeys_df["manuscript_citekey"]), citekeys_df["short_citekey"])
+    # )
     doc.walk(_citation_to_id_action)
     manual_refs = doc.get_metadata("references", default=[])
     bibliography_paths = doc.get_metadata("bibliography", default=[])

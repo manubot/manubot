@@ -4,7 +4,6 @@ import pytest
 from manubot.cite.citekey import (
     CiteKey,
     shorten_citekey,
-    infer_citekey_prefix,
     url_to_citekey,
 )
 
