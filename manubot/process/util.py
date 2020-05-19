@@ -278,15 +278,6 @@ def load_variables(args) -> dict:
     return variables
 
 
-def get_citekeys(citekey_ids: list, citekey_aliases: dict = {}):
-    """todo"""
-    from manubot.process.citations import Citations
-
-    citations = Citations(citekey_ids, aliases=citekey_aliases)
-    citations.filter_pandoc_xnos()
-    citations.filter_unhandled()
-
-
 def write_citekeys_tsv(citekeys_df, path):
     if not path:
         return
@@ -312,8 +303,7 @@ def generate_csl_items(
       path to the cache. If None, do not use requests_cache.
     - clear_requests_cache: If True, clear the requests cache before generating citekey metadata.
     """
-    # Deduplicate citations
-    citekeys = list(dict.fromkeys(citekeys))
+    from manubot.process.citations import Citations
 
     # Install cache
     if requests_cache_path is not None:
@@ -329,22 +319,25 @@ def generate_csl_items(
 
     csl_items = list()
     failures = list()
-    for standard_citekey in citekeys:
-        if standard_citekey in manual_refs:
-            csl_items.append(manual_refs[standard_citekey])
-            continue
-        elif standard_citekey.startswith("raw:"):
-            logging.error(
-                f"CSL JSON Data with a standard_citekey of {standard_citekey!r} not found in manual-references.json. "
-                "Metadata must be provided for raw citekeys."
-            )
-            failures.append(standard_citekey)
-        try:
-            csl_item = citekey_to_csl_item(standard_citekey)
-            csl_items.append(csl_item)
-        except Exception:
-            logging.exception(f"Citeproc retrieval failure for {standard_citekey!r}")
-            failures.append(standard_citekey)
+    # for standard_citekey in citekeys:
+    #     if standard_citekey in manual_refs:
+    #         csl_items.append(manual_refs[standard_citekey])
+    #         continue
+    #     elif standard_citekey.startswith("raw:"):
+    #         logging.error(
+    #             f"CSL JSON Data with a standard_citekey of {standard_citekey!r} not found in manual-references.json. "
+    #             "Metadata must be provided for raw citekeys."
+    #         )
+    #         failures.append(standard_citekey)
+    #     try:
+    #         csl_item = citekey_to_csl_item(standard_citekey)
+    #         csl_items.append(csl_item)
+    #     except Exception:
+    #         logging.exception(f"Citeproc retrieval failure for {standard_citekey!r}")
+    #         failures.append(standard_citekey)
+    citations = Citations(citekey_ids, aliases=citekey_aliases)
+    citations.filter_pandoc_xnos()
+    citations.filter_unhandled()
 
     # Uninstall cache
     if requests_cache_path is not None:

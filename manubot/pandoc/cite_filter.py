@@ -40,6 +40,7 @@ from manubot.process.util import (
     write_citekeys_tsv,
     write_csl_json,
 )
+from manubot.process.citations import Citations
 
 
 global_variables = {
@@ -142,6 +143,17 @@ def _get_reference_link_citekey_aliases(elem, doc):
             elem.content.pop(0)
 
 
+def _get_load_manual_references_kwargs(doc) -> dict:
+    """
+    Return keyword arguments for Citations.load_manual_references.
+    """
+    manual_refs = doc.get_metadata("references", default=[])
+    bibliography_paths = doc.get_metadata("bibliography", default=[])
+    if not isinstance(bibliography_paths, list):
+        bibliography_paths = [bibliography_paths]
+    return dict(paths=bibliography_paths, extra_csl_items=manual_refs,)
+
+
 def process_citations(doc):
     """
     Apply citation-by-identifier to a Python object representation of
@@ -168,38 +180,36 @@ def process_citations(doc):
     doc.walk(_get_reference_link_citekey_aliases)
     doc.walk(_get_citekeys_action)
     manuscript_citekeys = global_variables["manuscript_citekeys"]
-    # global_variables["manuscript_citekeys"] = manuscript_citekeys
-    # citekeys_df = get_citekeys_df(
-    #     manuscript_citekeys, global_variables["citekey_aliases"],
-    # )
-    # global_variables["citekeys_df"] = citekeys_df
-    # global_variables["citekey_shortener"] = dict(
-    #     zip((citekeys_df["manuscript_citekey"]), citekeys_df["short_citekey"])
-    # )
-    doc.walk(_citation_to_id_action)
-    manual_refs = doc.get_metadata("references", default=[])
-    bibliography_paths = doc.get_metadata("bibliography", default=[])
-    if not isinstance(bibliography_paths, list):
-        bibliography_paths = [bibliography_paths]
-    manual_refs = load_manual_references(
-        bibliography_paths, extra_csl_items=manual_refs
-    )
-    standard_citekeys = citekeys_df.standard_citekey.unique()
+    citations = Citations(input_ids=manuscript_citekeys, aliases=citekey_aliases)
+    citations.csl_item_failure_log_level = "ERROR"
+
     requests_cache_path = doc.get_metadata("manubot-requests-cache-path")
     if requests_cache_path:
-        pathlib.Path(requests_cache_path).parent.mkdir(parents=True, exist_ok=True)
-    csl_items = generate_csl_items(
-        citekeys=standard_citekeys,
-        manual_refs=manual_refs,
-        requests_cache_path=doc.get_metadata("manubot-requests-cache-path"),
-        clear_requests_cache=doc.get_metadata("manubot-clear-requests-cache", False),
+        from manubot.process.requests_cache import RequestsCache
+
+        req_cache = RequestsCache(requests_cache_path)
+        req_cache.mkdir()
+        req_cache.install()
+        if doc.get_metadata("manubot-clear-requests-cache", default=False):
+            req_cache.clear()
+
+    citations.filter_pandoc_xnos()
+    citations.load_manual_references(**_get_load_manual_references_kwargs(doc))
+    citations.get_csl_items()
+    global_variables["citekey_shortener"] = citations.standard_to_csl_id
+    doc.walk(_citation_to_id_action)
+
+    if requests_cache_path:
+        req_cache.close()
+
+    # write_citekeys_tsv(citekeys_df, path=doc.get_metadata("manubot-output-citekeys"))
+    write_csl_json(
+        citations.csl_items, path=doc.get_metadata("manubot-output-bibliography")
     )
-    write_citekeys_tsv(citekeys_df, path=doc.get_metadata("manubot-output-citekeys"))
-    write_csl_json(csl_items, path=doc.get_metadata("manubot-output-bibliography"))
     # Update pandoc metadata with fields that this filter
     # has either consumed, created, or modified.
     doc.metadata["bibliography"] = []
-    doc.metadata["references"] = csl_items
+    doc.metadata["references"] = citations.csl_items
     doc.metadata["citekey_aliases"] = citekey_aliases
 
 

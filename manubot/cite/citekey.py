@@ -164,20 +164,6 @@ class CiteKey:
         return False
 
 
-@functools.lru_cache(maxsize=5_000)
-def standardize_citekey(citekey, warn_if_changed=False) -> str:
-    """
-    Standardize citation keys based on their prefix.
-    """
-    standard_citekey = CiteKey(citekey).standard_id
-    if warn_if_changed and citekey != standard_citekey:
-        logging.warning(
-            f"standardize_citekey expected citekey to already be standardized.\n"
-            f"Instead citekey was changed from {citekey!r} to {standard_citekey!r}"
-        )
-    return standard_citekey
-
-
 def shorten_citekey(standard_citekey: str) -> str:
     """
     Return a shortened citekey derived from the input citekey.

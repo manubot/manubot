@@ -21,7 +21,7 @@ class Citations:
     manual_refs: dict = dataclasses.field(default_factory=dict)
     # level to log failures related to CSL Item generation
     csl_item_failure_log_level: tp.Union[str, int] = "WARNING"
-    # level to log failures related to CSL Item generation
+    # whether to prune csl items according to the JSON Schema
     prune_csl_items: bool = True
 
     def __post_init__(self):
@@ -102,7 +102,10 @@ class Citations:
         Produce a list of CSL_Items. I.e. a references list / bibliography
         for `self.citekeys`.
         """
-        csl_items = list()
+        # dictionary of standard_id to CSL_Item ID (i.e. short_id),
+        # excludes standard_ids for which CSL Items could not be generated.
+        self.standard_to_csl_id = {}
+        self.csl_items = []
         citekeys = self.unique_citekeys_by("standard_id")
         for citekey in citekeys:
             csl_item = citekey_to_csl_item(
@@ -112,5 +115,6 @@ class Citations:
                 manual_refs=self.manual_refs,
             )
             if csl_item:
-                csl_items.append(csl_item)
-        return csl_items
+                self.standard_to_csl_id[citekey.standard_id] = csl_item["id"]
+                self.csl_items.append(csl_item)
+        return self.csl_items
