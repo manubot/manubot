@@ -9,7 +9,6 @@ import requests_cache
 class RequestsCache:
     def __init__(self, path):
         self.path = os.fspath(path)
-        return self
 
     def mkdir(self):
         """make directory containing cache file if it doesn't exist"""

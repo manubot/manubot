@@ -93,7 +93,7 @@ def test_web_query_returns_single_result_pubmed_url():
     assert isinstance(zotero_metadata, list)
     assert len(zotero_metadata) == 1
     (zotero_metadata,) = zotero_metadata
-    assert zotero_metadata["title"] == "sci-hub[title] - PubMed - NCBI"
+    assert zotero_metadata["title"].startswith("sci-hub[title]")
 
 
 def test_search_query_isbn():

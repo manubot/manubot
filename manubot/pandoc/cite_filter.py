@@ -34,11 +34,7 @@ import pathlib
 import panflute as pf
 
 from manubot.cite.citekey import CiteKey
-from manubot.process.util import (
-    load_manual_references,
-    write_citekeys_tsv,
-    write_csl_json,
-)
+from manubot.process.util import load_manual_references
 from manubot.process.citations import Citations
 
 
@@ -201,10 +197,8 @@ def process_citations(doc):
     if requests_cache_path:
         req_cache.close()
 
-    # write_citekeys_tsv(citekeys_df, path=doc.get_metadata("manubot-output-citekeys"))
-    write_csl_json(
-        citations.csl_items, path=doc.get_metadata("manubot-output-bibliography")
-    )
+    citations.write_citekeys_tsv(path=doc.get_metadata("manubot-output-citekeys"))
+    citations.write_csl_json(path=doc.get_metadata("manubot-output-bibliography"))
     # Update pandoc metadata with fields that this filter
     # has either consumed, created, or modified.
     doc.metadata["bibliography"] = []

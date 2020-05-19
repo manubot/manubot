@@ -150,3 +150,12 @@ class Citations:
             return
         path = pathlib.Path(path)
         path.write_text(self.csl_json, encoding="utf-8")
+
+    def write_citekeys_tsv(self, path):
+        """
+        Write citekeys_tsv to a file
+        """
+        if not path:
+            return
+        path = pathlib.Path(path)
+        path.write_text(self.citekeys_tsv, encoding="utf-8")

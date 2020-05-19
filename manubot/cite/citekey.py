@@ -102,6 +102,7 @@ class CiteKey:
             self._standard_accession = None
             self._standard_id = self.dealiased_id
             return None
+        # currently this will lowercase unhandled prefixes, do we want this?
         (
             self._standard_prefix,
             self._standard_accession,
