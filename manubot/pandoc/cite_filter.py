@@ -29,12 +29,9 @@ Related resources on pandoc filters:
 """
 import argparse
 import logging
-import pathlib
 
 import panflute as pf
 
-from manubot.cite.citekey import CiteKey
-from manubot.process.util import load_manual_references
 from manubot.process.citations import Citations
 
 
@@ -191,7 +188,7 @@ def process_citations(doc):
     citations.filter_pandoc_xnos()
     citations.load_manual_references(**_get_load_manual_references_kwargs(doc))
     citations.get_csl_items()
-    global_variables["citekey_shortener"] = citations.standard_to_csl_id
+    global_variables["citekey_shortener"] = citations.input_to_csl_id
     doc.walk(_citation_to_id_action)
 
     if requests_cache_path:

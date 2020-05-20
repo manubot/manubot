@@ -1,20 +1,15 @@
 import json
 import logging
 import os
-import pathlib
 import re
-import textwrap
 import warnings
 from typing import List, Optional
 
 import jinja2
 import pandas
-import requests
-import requests_cache
 import yaml
 
 from manubot.util import read_serialized_data, read_serialized_dict
-from manubot.process.bibliography import load_manual_references
 from manubot.process.ci import get_continuous_integration_parameters
 from manubot.process.metadata import (
     get_header_includes,
@@ -26,11 +21,6 @@ from manubot.process.manuscript import (
     datetime_now,
     get_manuscript_stats,
     get_text,
-)
-from manubot.cite.citekey import (
-    citekey_to_csl_item,
-    shorten_citekey,
-    CiteKey,
 )
 
 

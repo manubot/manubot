@@ -59,7 +59,10 @@ class Citations:
         """
         Group `self.citekeys` by `attribute`.
         """
-        get_key = lambda x: getattr(x, attribute)
+
+        def get_key(x):
+            return getattr(x, attribute)
+
         citekeys = sorted(self.citekeys, key=get_key)
         groups = itertools.groupby(citekeys, get_key)
         return [(key, list(group)) for key, group in groups]
@@ -104,26 +107,28 @@ class Citations:
         Produce a list of CSL_Items. I.e. a references list / bibliography
         for `self.citekeys`.
         """
-        # dictionary of standard_id to CSL_Item ID (i.e. short_id),
+        # dictionary of input_id to CSL_Item ID (i.e. short_id),
         # excludes standard_ids for which CSL Items could not be generated.
-        self.standard_to_csl_id = {}
+        self.input_to_csl_id = {}
         self.csl_items = []
-        citekeys = self.unique_citekeys_by("standard_id")
-        for citekey in citekeys:
+        groups = self.group_citekeys_by("standard_id")
+        for _standard_id, citekeys in groups:
             csl_item = citekey_to_csl_item(
-                citekey=citekey,
+                citekey=citekeys[0],
                 prune=self.prune_csl_items,
                 log_level=self.csl_item_failure_log_level,
                 manual_refs=self.manual_refs,
             )
             if csl_item:
-                self.standard_to_csl_id[citekey.standard_id] = csl_item["id"]
+                for ck in citekeys:
+                    self.input_to_csl_id[ck.input_id] = csl_item["id"]
                 self.csl_items.append(csl_item)
         return self.csl_items
 
     @property
     def citekeys_tsv(self) -> str:
-        import io, csv
+        import io
+        import csv
 
         fields = ["input_id", "dealiased_id", "standard_id", "short_id"]
         output = io.StringIO()

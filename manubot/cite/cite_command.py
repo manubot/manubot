@@ -4,10 +4,6 @@ import pathlib
 import subprocess
 import sys
 
-from manubot.cite.citekey import (
-    citekey_to_csl_item,
-    CiteKey,
-)
 from manubot.pandoc.util import get_pandoc_info
 from manubot.util import shlex_join
 from manubot.process.citations import Citations
