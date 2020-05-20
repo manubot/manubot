@@ -32,7 +32,7 @@ import logging
 
 import panflute as pf
 
-from manubot.process.citations import Citations
+from manubot.cite.citations import Citations
 
 
 global_variables = {

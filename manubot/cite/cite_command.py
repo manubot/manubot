@@ -6,7 +6,7 @@ import sys
 
 from manubot.pandoc.util import get_pandoc_info
 from manubot.util import shlex_join
-from manubot.process.citations import Citations
+from manubot.cite.citations import Citations
 
 # For manubot cite, infer --format from --output filename extensions
 extension_to_format = {
