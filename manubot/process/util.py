@@ -6,7 +6,6 @@ import warnings
 from typing import List, Optional
 
 import jinja2
-import pandas
 import yaml
 
 from manubot.util import read_serialized_data, read_serialized_dict
@@ -121,7 +120,7 @@ def add_author_affiliations(variables: dict) -> dict:
     affiliations to the top-level of variables. If no authors have any
     affiliations, variables is left unmodified.
     """
-    rows = list()
+    affiliations = list()
     for author in variables["authors"]:
         _convert_field_to_list(
             dictionary=author,
@@ -132,20 +131,18 @@ def add_author_affiliations(variables: dict) -> dict:
         _convert_field_to_list(
             dictionary=author, field="funders",
         )
-        for affiliation in author.get("affiliations", []):
-            rows.append((author["name"], affiliation))
-    if not rows:
+        affiliations.extend(author.get("affiliations", []))
+    if not affiliations:
         return variables
-    affil_map_df = pandas.DataFrame(rows, columns=["name", "affiliation"])
-    affiliation_df = affil_map_df[["affiliation"]].drop_duplicates()
-    affiliation_df["affiliation_number"] = range(1, 1 + len(affiliation_df))
-    affil_map_df = affil_map_df.merge(affiliation_df)
-    name_to_numbers = {
-        name: sorted(df.affiliation_number) for name, df in affil_map_df.groupby("name")
-    }
+    affiliations = list(dict.fromkeys(affiliations))  # deduplicate
+    affil_to_number = {affil: i for i, affil in enumerate(affiliations, start=1)}
     for author in variables["authors"]:
-        author["affiliation_numbers"] = name_to_numbers.get(author["name"], [])
-    variables["affiliations"] = affiliation_df.to_dict(orient="records")
+        numbers = [affil_to_number[affil] for affil in author.get("affiliations", [])]
+        author["affiliation_numbers"] = sorted(numbers)
+    variables["affiliations"] = [
+        dict(affiliation=affil, affiliation_number=i)
+        for affil, i in affil_to_number.items()
+    ]
     return variables
 
 

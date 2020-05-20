@@ -70,7 +70,6 @@ setuptools.setup(
         "jsonref",
         "jsonschema",
         "packaging",
-        "pandas",
         "panflute",
         "pybase62",
         "pyyaml",
