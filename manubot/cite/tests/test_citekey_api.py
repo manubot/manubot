@@ -149,14 +149,15 @@ def test_citekey_to_csl_item_pubmed_with_numeric_month():
     assert csl_item["issued"]["date-parts"] == [[2018, 3, 15]]
 
 
-def test_citekey_to_csl_item_pubmed_book():
+def test_citekey_to_csl_item_pubmed_book(caplog):
     """
     Extracting CSL metadata from books in PubMed is not supported.
     Logic not implemented to parse XML returned by
     https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29227604&rettype=full
     """
-    with pytest.raises(NotImplementedError):
-        citekey_to_csl_item("pmid:29227604")
+    csl_item = citekey_to_csl_item("pmid:29227604", log_level="ERROR")
+    assert csl_item is None
+    assert "Unsupported PubMed record: no <Article> element" in caplog.text
 
 
 def test_citekey_to_csl_item_isbn():
