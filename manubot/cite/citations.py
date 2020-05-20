@@ -89,6 +89,8 @@ class Citations:
         """
         for standard_id, citekeys in self.group_citekeys_by("standard_id"):
             input_ids = [x.input_id for x in citekeys]
+            if len(input_ids) < 2:
+                continue
             logging.warning(
                 f"Multiple citekey input_ids refer to the same standard_id {standard_id}:\n{input_ids}"
             )
