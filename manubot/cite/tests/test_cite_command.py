@@ -48,9 +48,26 @@ def test_cite_command_file(tmpdir):
     assert csl["URL"] == "https://arxiv.org/abs/1806.05726v1"
 
 
-pandoc_version = get_pandoc_version()
-
-
+@pytest.mark.parametrize(
+    ["args", "filename"],
+    [
+        pytest.param([], "references-plain-{}.txt", id="no-args"),
+        pytest.param(
+            ["--format", "plain"], "references-plain-{}.txt", id="--format=plain"
+        ),
+        pytest.param(
+            ["--format", "markdown"],
+            "references-markdown-{}.md",
+            id="--format=markdown",
+        ),
+        pytest.param(
+            ["--format", "html"], "references-html-{}.html", id="--format=html"
+        ),
+        pytest.param(
+            ["--format", "jats"], "references-jats-{}.xml", id="--format=jats"
+        ),
+    ],
+)
 @pytest.mark.skipif(
     not shutil.which("pandoc"), reason="pandoc installation not found on system"
 )
@@ -58,101 +75,71 @@ pandoc_version = get_pandoc_version()
     not shutil.which("pandoc-citeproc"),
     reason="pandoc-citeproc installation not found on system",
 )
-class Base_cite_command_render_stdout:
+@pytest.mark.pandoc_version_sensitive
+def test_cite_command_render_stdout(args, filename):
     """
-    Expecting reference values for test to be at files on path:
-    cite-command-rendered/references-{format}-{pandoc_stamp}.{extension}
+    Test the stdout output of `manubot cite --render` with various formats.
+    The output is sensitive to the version of Pandoc used, so expected output
+    files include the pandoc version stamp in their filename.
+    When the expected version is missing, the test fails but writes the
+    command output to that file. Therefore, subsequent runs of the same test
+    will pass. Before committing the auto-generated output, do look to ensure
+    its integrity.
 
-    Examples:
-    - references-html-2.7.2.html
-    - references-plain-2.7.2.txt
-    - references-jats-2.7.2.xml
-    - references-jats-2.7.3.xml
-    - references-markdown-2.7.2.md
+    This test uses --bibliography to avoid slow network calls.
+    Regenerate the CSL JSON using:
 
-    2.7.2 was the current pandoc version on CI builds for these builds,
-    but a newer version 2.7.3 was available too and giving a different output
-    for xml (jats) output.
-
-    Filenames must be adjusted accodingly when current pandoc version changes.
-
-    Run tests locally skipping this test suit (makes sense if your local pandoc
-    version is different from pandoc version used by Travis and Appveyor):
-
-        pytest -v -m "not pandoc_version_sensitive"
-
-    See .travis.yml and .appveyor.yml to find out current pandoc version used
-    for testing.
+    ```shell
+    manubot cite \
+      --output=manubot/cite/tests/cite-command-rendered/input-references.json \
+      arxiv:1806.05726v1 doi:10.7717/peerj.338 pmid:29618526
+    ```
     """
-
+    # get pandoc version info
+    pandoc_version = get_pandoc_version()
     pandoc_stamp = ".".join(map(str, pandoc_version))
+    data_dir = pathlib.Path(__file__).parent.joinpath("cite-command-rendered")
+    path = data_dir.joinpath(filename.format(pandoc_stamp))
 
-    @classmethod
-    def expected_output(cls, format, extension):
-        return (
-            pathlib.Path(__file__)
-            .parent.joinpath("cite-command-rendered")
-            .joinpath(f"references-{format}-{cls.pandoc_stamp}.{extension}")
-            .read_text()
+    # skip test on old pandoc versions
+    for output in "markdown", "html", "jats":
+        if output in args and pandoc_version < (2, 5):
+            pytest.skip(f"Test {output} output assumes pandoc >= 2.5")
+    if pandoc_version < (2, 0):
+        pytest.skip("Test requires pandoc >= 2.0 to support --lua-filter and --csl=URL")
+
+    args = [
+        "manubot",
+        "cite",
+        # "--bibliography=input-references.json",  # uncomment line once --bibliography is supported
+        "--render",
+        "--csl=https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl",
+        "arxiv:1806.05726v1",
+        "doi:10.7717/peerj.338",
+        "pmid:29618526",
+    ] + args
+    process = subprocess.run(
+        args,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+        cwd=data_dir,
+    )
+    print(shlex_join(process.args))
+    if not path.exists():
+        # https://github.com/manubot/manubot/pull/146#discussion_r333132261
+        print(
+            f"Missing expected output at {path}\n"
+            "Writing output to file such that future tests will pass."
         )
+        path.write_text(process.stdout, encoding="utf-8")
+        assert False
 
-    @staticmethod
-    def render(format_args):
-        args = [
-            "manubot",
-            "cite",
-            "--render",
-            "--csl",
-            "https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl",
-            "arxiv:1806.05726v1",
-            "doi:10.7717/peerj.338",
-            "pmid:29618526",
-        ] + format_args
-        process = subprocess.run(
-            args,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            universal_newlines=True,
-        )
-        print(shlex_join(process.args))
-        print(process.stdout)
-        print(process.stderr)
-        return process.stdout
-
-
-@pytest.mark.pandoc_version_sensitive
-@pytest.mark.skipif(
-    pandoc_version < (2, 0),
-    reason="Test requires pandoc >= 2.0 to support --lua-filter and --csl=URL",
-)
-class Test_cite_command_render_stdout_above_pandoc_v2(Base_cite_command_render_stdout):
-    def test_no_arg(self):
-        assert self.render([]) == self.expected_output("plain", "txt")
-
-    def test_plain(self):
-        assert self.render(["--format", "plain"]) == self.expected_output(
-            "plain", "txt"
-        )
-
-
-@pytest.mark.pandoc_version_sensitive
-@pytest.mark.skipif(
-    pandoc_version < (2, 5),
-    reason=("Testing markdown, html or jats formats assumes pandoc >= 2.5"),
-)
-class Test_cite_command_render_stdout_above_pandoc_v2_5(
-    Base_cite_command_render_stdout
-):
-    def test_markdown(self):
-        assert self.render(["--format", "markdown"]) == self.expected_output(
-            "markdown", "md"
-        )
-
-    def test_html(self):
-        assert self.render(["--format", "html"]) == self.expected_output("html", "html")
-
-    def test_jats(self):
-        assert self.render(["--format", "jats"]) == self.expected_output("jats", "xml")
+    print(process.stdout)
+    print(process.stderr)
+    # set encoding="utf-8-sig" once manubot cite also adopts utf-8 stdout on windows
+    expected = path.read_text()
+    assert process.stdout == expected
 
 
 def test_cite_command_bibliography():
