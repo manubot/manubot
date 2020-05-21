@@ -38,7 +38,7 @@ def test_example_manuscript(manuscript):
             ]
         )
     process = subprocess.run(
-        args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True
+        args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8"
     )
     print(shlex_join(process.args))
     print(process.stderr)

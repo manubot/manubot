@@ -14,7 +14,7 @@ def test_cite_command_empty():
         ["manubot", "cite"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        universal_newlines=True,
+        encoding="utf-8",
     )
     print(process.stderr)
     assert process.returncode == 2
@@ -26,7 +26,7 @@ def test_cite_command_stdout():
         ["manubot", "cite", "arxiv:1806.05726v1"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        universal_newlines=True,
+        encoding="utf-8",
     )
     print(process.stderr)
     assert process.returncode == 0
@@ -151,7 +151,7 @@ def test_cite_command_bibliography():
         "--bibliography=bibliography.json",
         "DOI:10.7554/elife.32822",
     ]
-    csl_json = subprocess.check_output(args, universal_newlines=True, cwd=bib_dir,)
+    csl_json = subprocess.check_output(args, encoding="utf-8", cwd=bib_dir)
     csl_items = json.loads(csl_json)
     assert len(csl_items) == 1
     csl_item = csl_items[0]

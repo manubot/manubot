@@ -39,7 +39,7 @@ def test_readme_codeblock_contains_output_from(command, expected):
 
 
 def _get_output_from(command):
-    return subprocess.check_output(shlex.split(command), universal_newlines=True)
+    return subprocess.check_output(shlex.split(command), encoding="utf-8")
 
 
 def _match_to_repl(match):

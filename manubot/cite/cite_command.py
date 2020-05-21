@@ -56,10 +56,7 @@ def call_pandoc(metadata, path, format="plain"):
             assert filter_path.exists()
             args.extend(["--lua-filter", str(filter_path)])
     logging.info("call_pandoc subprocess args:\n" + shlex_join(args))
-    process = subprocess.run(
-        args=args,
-        input=metadata_block.encode(),
-    )
+    process = subprocess.run(args=args, input=metadata_block.encode(),)
     process.check_returncode()
 
 
