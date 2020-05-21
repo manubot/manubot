@@ -3,7 +3,8 @@ name: Python Package Tests
 on: [push, pull_request]
 
 jobs:
-  build:
+  test:
+    name: Test Python Code
     runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
@@ -34,3 +35,21 @@ jobs:
         GITHUB_PULL_REQUEST_SHA: ${{ github.event.pull_request.head.sha }}
       run: |
         pytest -rs --color=yes
+  lint:
+    name: Lint Python Code
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Install Python
+      uses: actions/setup-python@v2
+    - name: Install dependencies
+      run: pip install black flake8
+    - name: Check formatting
+      run: |
+        # if the following command fails, run `black .` locally to reformat the code.
+        # ensure your local version of black matches the version installed on CI,
+        # which will usually be the latest version from https://pypi.org/project/black/
+        black --check --diff .
+    - name: Check style
+      run: flake8
