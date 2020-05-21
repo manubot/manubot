@@ -122,7 +122,7 @@ def test_cite_command_render_stdout(args, filename):
         args,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        universal_newlines=True,
+        encoding="utf-8",
         cwd=data_dir,
     )
     print(shlex_join(process.args))
