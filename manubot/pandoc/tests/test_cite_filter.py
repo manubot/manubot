@@ -66,4 +66,4 @@ def test_cite_pandoc_filter():
     print(shlex_join(process.args))
     print(process.stdout)
     print(process.stderr)
-    assert process.stdout == expected
+    assert process.stdout.lower() == expected.lower()
