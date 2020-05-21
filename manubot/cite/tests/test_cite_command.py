@@ -1,5 +1,4 @@
 import json
-import os
 import pathlib
 import shutil
 import subprocess
@@ -138,7 +137,8 @@ def test_cite_command_render_stdout(args, filename):
 
     print(process.stdout)
     print(process.stderr)
-    expected = path.read_text(encoding="utf-8-sig")
+    # set encoding="utf-8-sig" once manubot cite also adopts utf-8 stdout on windows
+    expected = path.read_text()
     assert process.stdout == expected
 
 
