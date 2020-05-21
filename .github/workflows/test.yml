@@ -7,6 +7,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
+      fail-fast: false
       matrix:
         python-version: [3.6, 3.7, 3.8]
         os: [ubuntu-latest, windows-latest, macOS-latest]
@@ -32,4 +33,4 @@ jobs:
       env:
         GITHUB_PULL_REQUEST_SHA: ${{ github.event.pull_request.head.sha }}
       run: |
-        pytest -rs --color=yes -m "not pandoc_version_sensitive"
+        pytest -rs --color=yes
