@@ -1,4 +1,5 @@
 import json
+import os
 import pathlib
 import shutil
 import subprocess
@@ -124,6 +125,8 @@ def test_cite_command_render_stdout(args, filename):
         stderr=subprocess.PIPE,
         universal_newlines=True,
         cwd=data_dir,
+        # workaround until manubot cite always encodes stdout as utf-8
+        env=dict(os.environ, PYTHONIOENCODING="UTF-8"),
     )
     print(shlex_join(process.args))
     if not path.exists():
