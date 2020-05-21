@@ -29,7 +29,7 @@ def test_cite_pandoc_filter():
     pandoc \
       --to=plain \
       --wrap=preserve \
-      --csl=https://github.com/manubot/rootstock/raw/af1d47a0ec5f33d8fc99deab2ac23b697983b673/build/assets/style.csl \
+      --csl=https://github.com/manubot/rootstock/raw/8b9b5ced2c7c963bf3ea5afb8f31f9a4a54ab697/build/assets/style.csl \
       --output=manubot/pandoc/tests/test_cite_filter/output.txt \
       --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.json \
       --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.bib \
@@ -47,7 +47,7 @@ def test_cite_pandoc_filter():
     args = [
         "pandoc",
         "--wrap=preserve",
-        "--csl=https://github.com/manubot/rootstock/raw/af1d47a0ec5f33d8fc99deab2ac23b697983b673/build/assets/style.csl",
+        "--csl=https://github.com/manubot/rootstock/raw/8b9b5ced2c7c963bf3ea5afb8f31f9a4a54ab697/build/assets/style.csl",
         "--bibliography",
         str(directory.joinpath("test_cite_filter", "bibliography.json")),
         "--bibliography",
