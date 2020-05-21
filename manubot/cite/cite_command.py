@@ -79,12 +79,9 @@ def cli_cite(args):
 
     # output CSL JSON data, if --render is False
     if not args.render:
-        write_file = (
-            args.output.open("w", encoding="utf-8") if args.output else sys.stdout
-        )
+        write_file = args.output.open("wb") if args.output else sys.stdout.buffer
         with write_file:
-            json.dump(csl_items, write_file, ensure_ascii=False, indent=2)
-            write_file.write("\n")
+            write_file.write(citations.csl_json.encode())
         return
 
     # use Pandoc to render references

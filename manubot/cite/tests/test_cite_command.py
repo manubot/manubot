@@ -111,7 +111,7 @@ def test_cite_command_render_stdout(args, filename):
     args = [
         "manubot",
         "cite",
-        # "--bibliography=input-references.json",  # uncomment line once --bibliography is supported
+        "--bibliography=input-references.json",
         "--render",
         "--csl=https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl",
         "arxiv:1806.05726v1",
@@ -137,8 +137,7 @@ def test_cite_command_render_stdout(args, filename):
 
     print(process.stdout)
     print(process.stderr)
-    # set encoding="utf-8-sig" once manubot cite also adopts utf-8 stdout on windows
-    expected = path.read_text()
+    expected = path.read_text(encoding="utf-8-sig")
     assert process.stdout == expected
 
 
