@@ -119,7 +119,11 @@ def test_cite_command_render_stdout(args, filename):
         "pmid:29618526",
     ] + args
     process = subprocess.run(
-        args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, cwd=data_dir,
+        args,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+        cwd=data_dir,
     )
     print(shlex_join(process.args))
     if not path.exists():
