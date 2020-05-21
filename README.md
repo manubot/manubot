@@ -162,7 +162,7 @@ Additional usage information is available from `manubot cite --help`:
 
 <!-- test codeblock contains output of `manubot cite --help` -->
 ```
-usage: manubot cite [-h] [--render] [--csl CSL]
+usage: manubot cite [-h] [--render] [--csl CSL] [--bibliography BIBLIOGRAPHY]
                     [--format {plain,markdown,docx,html,jats}]
                     [--output OUTPUT] [--allow-invalid-csl-data]
                     [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
@@ -183,6 +183,10 @@ optional arguments:
   --csl CSL             When --render, specify an XML CSL definition to style
                         references (i.e. Pandoc's --csl option). Defaults to
                         Manubot's style.
+  --bibliography BIBLIOGRAPHY
+                        File to read manual reference metadata. Specify
+                        multiple times to load multiple files. Similar to
+                        pandoc --bibliography.
   --format {plain,markdown,docx,html,jats}
                         When --render, format to use for output file. If not
                         specified, attempt to infer this from filename

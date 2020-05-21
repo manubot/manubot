@@ -155,6 +155,23 @@ class Test_cite_command_render_stdout_above_pandoc_v2_5(
         assert self.render(["--format", "jats"]) == self.expected_output("jats", "xml")
 
 
+def test_cite_command_bibliography():
+    bib_dir = pathlib.Path(__file__).parent.parent.parent.joinpath(
+        "pandoc/tests/bibliographies"
+    )
+    args = [
+        "manubot",
+        "cite",
+        "--bibliography=bibliography.json",
+        "DOI:10.7554/elife.32822",
+    ]
+    csl_json = subprocess.check_output(args, universal_newlines=True, cwd=bib_dir,)
+    csl_items = json.loads(csl_json)
+    assert len(csl_items) == 1
+    csl_item = csl_items[0]
+    assert "manual_reference_filename: bibliography.json" in csl_item["note"]
+
+
 def teardown_module(module):
     """
     Avoid too many requests to NCBI E-Utils in the test_pubmed.py,

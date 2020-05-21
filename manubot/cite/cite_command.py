@@ -74,12 +74,7 @@ def cli_cite(args):
     https://github.com/jgm/pandoc/issues/4834
     """
     citations = Citations(args.citekeys)
-    unhandled = citations.filter_unhandled()
-    if unhandled:
-        logging.warning(
-            "Removing the following unhandled citekeys:\n"
-            + "\n".join(x.input_id for x in unhandled)
-        )
+    citations.load_manual_references(paths=args.bibliography)
     csl_items = citations.get_csl_items()
 
     # output CSL JSON data, if --render is False
