@@ -59,8 +59,6 @@ def call_pandoc(metadata, path, format="plain"):
     process = subprocess.run(
         args=args,
         input=metadata_block.encode(),
-        stdout=subprocess.PIPE if path else sys.stdout,
-        stderr=sys.stderr,
     )
     process.check_returncode()
 
