@@ -15,12 +15,3 @@ install:
   - python setup.py sdist bdist_wheel
 script:
   - pytest -rs --color=yes
-deploy:
-  - provider: pypi
-    user: __token__
-    password: $PYPI_PASSWORD
-    on:
-      python: '3.6'
-      repo: manubot/manubot
-      tags: true
-    distributions: sdist bdist_wheel
