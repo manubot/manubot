@@ -35,6 +35,7 @@ jobs:
         GITHUB_PULL_REQUEST_SHA: ${{ github.event.pull_request.head.sha }}
       run: |
         pytest -rs --color=yes
+
   lint:
     name: Lint Python Code
     runs-on: ubuntu-latest
@@ -53,3 +54,26 @@ jobs:
         black --check --diff .
     - name: Check style
       run: flake8
+
+  docs:
+    name: Build docs
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Install Python
+      uses: actions/setup-python@v2
+    - name: Install dependencies
+      run: pip install portray
+    - name: Build docs
+      run: |
+        # temporary workaround for portray "Module not found" error https://git.io/JeR9C
+        export PYTHONPATH=.
+        portray as_html --overwrite --output_dir=docs
+    - name: Deploy docs
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push' && !github.event.repository.fork
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: docs
+        publish_branch: gh-pages
