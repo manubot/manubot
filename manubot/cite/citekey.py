@@ -39,6 +39,10 @@ class CiteKey:
 
     @cached_property
     def dealiased_id(self):
+        """
+        If `self.input_id` is in `self.aliases`, the value specified by
+        `self.aliases`. Otherwise, `self.input_id`.
+        """
         return self.aliases.get(self.input_id, self.input_id)
 
     def _set_prefix_accession(self):
@@ -51,30 +55,48 @@ class CiteKey:
 
     @property
     def prefix(self):
+        """
+        If `self.input_id` contains a colon, the substring up to the first colon.
+        Otherwise, None.
+        """
         if not hasattr(self, "_prefix"):
             self._set_prefix_accession()
         return self._prefix
 
     @property
     def prefix_lower(self):
+        """
+        A lowercase version of `self.prefix` or None.
+        """
         if self.prefix is None:
             return None
         return self.prefix.lower()
 
     @property
     def accession(self):
+        """
+        If `self.prefix`, the remainder of `self.input_id` following the first colon.
+        """
         if not hasattr(self, "_accession"):
             self._set_prefix_accession()
         return self._accession
 
     @property
     def standard_prefix(self):
+        """
+        If the citekey is handled, the standard prefix specified by the handler.
+        Otherwise, None.
+        """
         if not hasattr(self, "_standard_prefix"):
             self._standardize()
         return self._standard_prefix
 
     @property
     def standard_accession(self):
+        """
+        If the citekey is handled, the standard accession specified by the handler.
+        Otherwise, None.
+        """
         if not hasattr(self, "_standard_accession"):
             self._standardize()
         return self._standard_accession
@@ -88,7 +110,7 @@ class CiteKey:
         return Handler(self.prefix_lower)
 
     @cached_property
-    def is_handled_prefix(self):
+    def is_handled_prefix(self) -> bool:
         from .handlers import prefix_to_handler
 
         return self.prefix_lower in prefix_to_handler
@@ -97,26 +119,36 @@ class CiteKey:
         return self.handler.inspect(self)
 
     def _standardize(self):
-        if self.prefix_lower is None:
+        """
+        Set `self._standard_prefix`, `self._standard_accession`, and `self._standard_id`.
+        For citekeys without a prefix or with an unhandled prefix, _standard_prefix
+        and _standard_accession are set to None.
+        """
+        if not self.is_handled_prefix:
             self._standard_prefix = None
             self._standard_accession = None
             self._standard_id = self.dealiased_id
-            return None
-        # currently this will lowercase unhandled prefixes, do we want this?
-        (
-            self._standard_prefix,
-            self._standard_accession,
-        ) = self.handler.standardize_prefix_accession(self.accession)
+            return
+        fxn = self.handler.standardize_prefix_accession
+        self._standard_prefix, self._standard_accession = fxn(self.accession)
         self._standard_id = f"{self._standard_prefix}:{self._standard_accession}"
 
     @property
     def standard_id(self):
+        """
+        If the citekey is handled, the standard_id specified by the handler.
+        Otherwise, `self.dealised_id`.
+        """
         if not hasattr(self, "_standard_id"):
             self._standardize()
         return self._standard_id
 
     @cached_property
     def short_id(self):
+        """
+        A hashed version of standard_id whose characters are
+        within the ranges 0-9, a-z and A-Z.
+        """
         return shorten_citekey(self.standard_id)
 
     @cached_property
