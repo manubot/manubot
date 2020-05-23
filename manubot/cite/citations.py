@@ -85,7 +85,7 @@ class Citations:
 
     def check_multiple_input_ids(self):
         """
-        Identify different input_ids referring the the same reference.
+        Identify different input_ids referring to the same reference.
         """
         for standard_id, citekeys in self.group_citekeys_by("standard_id"):
             input_ids = [x.input_id for x in citekeys]
