@@ -160,7 +160,8 @@ class Citations:
 
     def write_citekeys_tsv(self, path):
         """
-        Write citekeys_tsv to a file
+        Write `self.citekeys_tsv` to a file.
+        If `path` evaluates as False, do nothing.
         """
         if not path:
             return

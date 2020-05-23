@@ -264,8 +264,6 @@ class CSL_Item(dict):
         """
         Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.
         The standard_id is extracted from a "standard_citation" field, the "note" field, or the "id" field.
-        For example, if the extracted standard_id does not begin with a supported prefix (e.g. "doi:", "pmid:" or "raw:"),
-        the citation is assumed to be raw and given a "raw:" prefix.
         The extracted citation is checked for validity and standardized, after which it is the final "standard_id".
 
         Regarding csl_item modification, the csl_item "id" field is set to the standard_citation and the note field
