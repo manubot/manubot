@@ -95,6 +95,24 @@ class Citations:
                 f"Multiple citekey input_ids refer to the same standard_id {standard_id}:\n{input_ids}"
             )
 
+    def inspect(self, log_level=None):
+        """
+        If log_level is not None, log combined inspection report at this level.
+        """
+        citekeys = self.unique_citekeys_by("dealiased_id")
+        reports = []
+        for citekey in citekeys:
+            report = citekey.inspect()
+            if not report:
+                continue
+            reports.append(f"{citekey.dealiased_id} -- {report}")
+        report = "\n".join(reports)
+        if reports and log_level is not None:
+            log_level = logging._checkLevel(log_level)
+            msg = f"Inspection of dealiased citekeys revealed potential problems:\n{report}"
+            logging.log(log_level, msg)
+        return report
+
     def load_manual_references(self, *args, **kwargs):
         """
         Load manual references

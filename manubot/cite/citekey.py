@@ -38,7 +38,7 @@ class CiteKey:
         return cls(*args, **kwargs)
 
     @cached_property
-    def dealiased_id(self):
+    def dealiased_id(self) -> str:
         """
         If `self.input_id` is in `self.aliases`, the value specified by
         `self.aliases`. Otherwise, `self.input_id`.
@@ -54,7 +54,7 @@ class CiteKey:
         self._accession = accession
 
     @property
-    def prefix(self):
+    def prefix(self) -> tp.Optional[str]:
         """
         If `self.input_id` contains a colon, the substring up to the first colon.
         Otherwise, None.
@@ -64,7 +64,7 @@ class CiteKey:
         return self._prefix
 
     @property
-    def prefix_lower(self):
+    def prefix_lower(self) -> tp.Optional[str]:
         """
         A lowercase version of `self.prefix` or None.
         """
@@ -73,7 +73,7 @@ class CiteKey:
         return self.prefix.lower()
 
     @property
-    def accession(self):
+    def accession(self) -> tp.Optional[str]:
         """
         If `self.prefix`, the remainder of `self.input_id` following the first colon.
         """
@@ -82,7 +82,7 @@ class CiteKey:
         return self._accession
 
     @property
-    def standard_prefix(self):
+    def standard_prefix(self) -> tp.Optional[str]:
         """
         If the citekey is handled, the standard prefix specified by the handler.
         Otherwise, None.
@@ -92,7 +92,7 @@ class CiteKey:
         return self._standard_prefix
 
     @property
-    def standard_accession(self):
+    def standard_accession(self) -> tp.Optional[str]:
         """
         If the citekey is handled, the standard accession specified by the handler.
         Otherwise, None.
@@ -115,7 +115,12 @@ class CiteKey:
 
         return self.prefix_lower in prefix_to_handler
 
-    def inspect(self):
+    def inspect(self) -> tp.Optional[str]:
+        """
+        Inspect citekey for potential problems.
+        If no problems are found, return None.
+        Otherwise, returns a string describing the problem.
+        """
         return self.handler.inspect(self)
 
     def _standardize(self):
@@ -134,17 +139,17 @@ class CiteKey:
         self._standard_id = f"{self._standard_prefix}:{self._standard_accession}"
 
     @property
-    def standard_id(self):
+    def standard_id(self) -> str:
         """
         If the citekey is handled, the standard_id specified by the handler.
-        Otherwise, `self.dealised_id`.
+        Otherwise, `self.dealiased_id`.
         """
         if not hasattr(self, "_standard_id"):
             self._standardize()
         return self._standard_id
 
     @cached_property
-    def short_id(self):
+    def short_id(self) -> str:
         """
         A hashed version of standard_id whose characters are
         within the ranges 0-9, a-z and A-Z.

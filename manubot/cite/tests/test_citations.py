@@ -66,3 +66,19 @@ def test_citations_citekeys_tsv():
     citekeys_tsv = citations.citekeys_tsv
     assert isinstance(citekeys_tsv, str)
     assert "arxiv:1806.05726v1" in citekeys_tsv.splitlines()[2].split("\t")
+
+
+def test_citations_inspect():
+    input_ids = [
+        "citekey-1",  # passes inspection
+        "arXiv:1806.05726v1",  # passes inspection
+        "arXiv:bad-id",
+        "DOI:bad-id",
+        "pmid:bad-id",
+        "DOID:not-disease-ontology-id",
+    ]
+    citations = Citations(input_ids)
+    report = citations.inspect(log_level="INFO")
+    print(report)
+    assert len(report.splitlines()) == 4
+    assert "pmid:bad-id -- PubMed Identifiers should be 1-8 digits" in report

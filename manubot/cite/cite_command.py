@@ -70,6 +70,7 @@ def cli_cite(args):
     """
     citations = Citations(args.citekeys)
     citations.load_manual_references(paths=args.bibliography)
+    citations.inspect(log_level="WARNING")
     csl_items = citations.get_csl_items()
 
     # output CSL JSON data, if --render is False
