@@ -1355,15 +1355,13 @@ Citation Style Language (CSL) styles.
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">jsonref</span>
-
     <span class="kn">import</span> <span class="nn">jsonschema</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/dhimmel/schema/raw/manubot/csl-data.json&quot;</span>
+    <span class="kn">import</span> <span class="nn">requests</span>
 
-    <span class="c1"># Use jsonref to workaround https://github.com/Julian/jsonschema/issues/447</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/dhimmel/csl-schema/raw/manubot/csl-data.json&quot;</span>
 
-    <span class="n">schema</span> <span class="o">=</span> <span class="n">jsonref</span><span class="o">.</span><span class="n">load_uri</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">jsonschema</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">schema</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
     <span class="n">Validator</span> <span class="o">=</span> <span class="n">jsonschema</span><span class="o">.</span><span class="n">validators</span><span class="o">.</span><span class="n">validator_for</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
 
@@ -1587,15 +1585,13 @@ Citation Style Language (CSL) styles.
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">jsonref</span>
-
     <span class="kn">import</span> <span class="nn">jsonschema</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/dhimmel/schema/raw/manubot/csl-data.json&quot;</span>
+    <span class="kn">import</span> <span class="nn">requests</span>
 
-    <span class="c1"># Use jsonref to workaround https://github.com/Julian/jsonschema/issues/447</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/dhimmel/csl-schema/raw/manubot/csl-data.json&quot;</span>
 
-    <span class="n">schema</span> <span class="o">=</span> <span class="n">jsonref</span><span class="o">.</span><span class="n">load_uri</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">jsonschema</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">schema</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
     <span class="n">Validator</span> <span class="o">=</span> <span class="n">jsonschema</span><span class="o">.</span><span class="n">validators</span><span class="o">.</span><span class="n">validator_for</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
 
