@@ -357,6 +357,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../citations/" title="Citations" class="md-nav__link">
+      Citations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../cite_command/" title="Cite Command" class="md-nav__link">
       Cite Command
     </a>
@@ -819,13 +831,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-16" type="checkbox" id="nav-3-1-4-16">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-17" type="checkbox" id="nav-3-1-4-17">
     
-    <label class="md-nav__link" for="nav-3-1-4-16">
+    <label class="md-nav__link" for="nav-3-1-4-17">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-4-16">
+      <label class="md-nav__title" for="nav-3-1-4-17">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -851,6 +863,18 @@
   <li class="md-nav__item">
     <a href="../tests/test_arxiv/" title="Test Arxiv" class="md-nav__link">
       Test Arxiv
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tests/test_citations/" title="Test Citations" class="md-nav__link">
+      Test Citations
     </a>
   </li>
 
@@ -1202,6 +1226,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../process/requests_cache/" title="Requests Cache" class="md-nav__link">
+      Requests Cache
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../process/util/" title="Util" class="md-nav__link">
       Util
     </a>
@@ -1215,13 +1251,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-8" type="checkbox" id="nav-3-1-6-8">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-9" type="checkbox" id="nav-3-1-6-9">
     
-    <label class="md-nav__link" for="nav-3-1-6-8">
+    <label class="md-nav__link" for="nav-3-1-6-9">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-6-8">
+      <label class="md-nav__title" for="nav-3-1-6-9">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -1819,15 +1855,7 @@ for csl_data that is JSON-serialized.</p>
 
 <span class="k">from</span><span class="w"> </span><span class="n">typing</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">List</span><span class="p">,</span><span class="w"> </span><span class="n">Optional</span><span class="w"></span>
 
-<span class="k">from</span><span class="w"> </span><span class="n">manubot</span><span class="p">.</span><span class="n">cite</span><span class="p">.</span><span class="n">citekey</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">standardize_citekey</span><span class="p">,</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">infer_citekey_prefix</span><span class="p">,</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">is_valid_citekey</span><span class="p">,</span><span class="w"></span>
-
-<span class="p">)</span><span class="w"></span>
+<span class="k">from</span><span class="w"> </span><span class="n">manubot</span><span class="p">.</span><span class="n">cite</span><span class="p">.</span><span class="n">citekey</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">CiteKey</span><span class="w"></span>
 
 <span class="k">class</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">dict</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
@@ -2221,7 +2249,7 @@ for csl_data that is JSON-serialized.</p>
 
 <span class="w">            </span><span class="err">#</span><span class="w"> </span><span class="ss">&quot;id&quot;</span><span class="w"> </span><span class="n">field</span><span class="w"> </span><span class="ow">exists</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">non</span><span class="o">-</span><span class="k">null</span><span class="o">/</span><span class="n">empty</span><span class="w"> </span><span class="k">value</span><span class="w"></span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">infer_citekey_prefix</span><span class="p">(</span><span class="n">self</span><span class="o">[</span><span class="n">&quot;id&quot;</span><span class="o">]</span><span class="p">))</span><span class="w"></span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">self</span><span class="o">[</span><span class="n">&quot;id&quot;</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="w"></span>
 
@@ -2238,12 +2266,6 @@ for csl_data that is JSON-serialized.</p>
 <span class="ss">        Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its &quot;</span><span class="n">id</span><span class="ss">&quot; field.</span>
 
 <span class="ss">        The standard_id is extracted from a &quot;</span><span class="n">standard_citation</span><span class="ss">&quot; field, the &quot;</span><span class="n">note</span><span class="ss">&quot; field, or the &quot;</span><span class="n">id</span><span class="ss">&quot; field.</span>
-
-<span class="ss">        If extracting the citation from the &quot;</span><span class="n">id</span><span class="ss">&quot; field, uses the infer_citekey_prefix function to set the prefix.</span>
-
-<span class="ss">        For example, if the extracted standard_id does not begin with a supported prefix (e.g. &quot;</span><span class="nl">doi</span><span class="p">:</span><span class="ss">&quot;, &quot;</span><span class="nl">pmid</span><span class="p">:</span><span class="ss">&quot; or &quot;</span><span class="nl">raw</span><span class="p">:</span><span class="ss">&quot;),</span>
-
-<span class="ss">        the citation is assumed to be raw and given a &quot;</span><span class="nl">raw</span><span class="p">:</span><span class="ss">&quot; prefix.</span>
 
 <span class="ss">        The extracted citation is checked for validity and standardized, after which it is the final &quot;</span><span class="n">standard_id</span><span class="ss">&quot;.</span>
 
@@ -2263,9 +2285,9 @@ for csl_data that is JSON-serialized.</p>
 
 <span class="w">        </span><span class="n">original_standard_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="o">[</span><span class="n">&quot;id&quot;</span><span class="o">]</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">assert</span><span class="w"> </span><span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">original_standard_id</span><span class="p">,</span><span class="w"> </span><span class="n">allow_raw</span><span class="o">=</span><span class="k">True</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">original_standard_id</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">standard_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">standardize_citekey</span><span class="p">(</span><span class="n">original_standard_id</span><span class="p">,</span><span class="w"> </span><span class="n">warn_if_changed</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">standard_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_id</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">add_to_note</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{}</span><span class="w"></span>
 
@@ -3037,7 +3059,7 @@ that help cleaning and manipulating it.</p>
 
 <span class="w">            </span><span class="err">#</span><span class="w"> </span><span class="ss">&quot;id&quot;</span><span class="w"> </span><span class="n">field</span><span class="w"> </span><span class="ow">exists</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">non</span><span class="o">-</span><span class="k">null</span><span class="o">/</span><span class="n">empty</span><span class="w"> </span><span class="k">value</span><span class="w"></span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">infer_citekey_prefix</span><span class="p">(</span><span class="n">self</span><span class="o">[</span><span class="n">&quot;id&quot;</span><span class="o">]</span><span class="p">))</span><span class="w"></span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">self</span><span class="o">[</span><span class="n">&quot;id&quot;</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="w"></span>
 
@@ -3054,12 +3076,6 @@ that help cleaning and manipulating it.</p>
 <span class="ss">        Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its &quot;</span><span class="n">id</span><span class="ss">&quot; field.</span>
 
 <span class="ss">        The standard_id is extracted from a &quot;</span><span class="n">standard_citation</span><span class="ss">&quot; field, the &quot;</span><span class="n">note</span><span class="ss">&quot; field, or the &quot;</span><span class="n">id</span><span class="ss">&quot; field.</span>
-
-<span class="ss">        If extracting the citation from the &quot;</span><span class="n">id</span><span class="ss">&quot; field, uses the infer_citekey_prefix function to set the prefix.</span>
-
-<span class="ss">        For example, if the extracted standard_id does not begin with a supported prefix (e.g. &quot;</span><span class="nl">doi</span><span class="p">:</span><span class="ss">&quot;, &quot;</span><span class="nl">pmid</span><span class="p">:</span><span class="ss">&quot; or &quot;</span><span class="nl">raw</span><span class="p">:</span><span class="ss">&quot;),</span>
-
-<span class="ss">        the citation is assumed to be raw and given a &quot;</span><span class="nl">raw</span><span class="p">:</span><span class="ss">&quot; prefix.</span>
 
 <span class="ss">        The extracted citation is checked for validity and standardized, after which it is the final &quot;</span><span class="n">standard_id</span><span class="ss">&quot;.</span>
 
@@ -3079,9 +3095,9 @@ that help cleaning and manipulating it.</p>
 
 <span class="w">        </span><span class="n">original_standard_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="o">[</span><span class="n">&quot;id&quot;</span><span class="o">]</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">assert</span><span class="w"> </span><span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">original_standard_id</span><span class="p">,</span><span class="w"> </span><span class="n">allow_raw</span><span class="o">=</span><span class="k">True</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">original_standard_id</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">standard_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">standardize_citekey</span><span class="p">(</span><span class="n">original_standard_id</span><span class="p">,</span><span class="w"> </span><span class="n">warn_if_changed</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">standard_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_id</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">add_to_note</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{}</span><span class="w"></span>
 
@@ -3351,7 +3367,7 @@ fill: if True, set missing months to January
 
             <span class="o">#</span> <span class="ss">&quot;id&quot;</span> <span class="n">field</span> <span class="k">exists</span> <span class="k">and</span> <span class="k">is</span> <span class="k">set</span> <span class="k">with</span> <span class="n">a</span> <span class="n">non</span><span class="o">-</span><span class="k">null</span><span class="o">/</span><span class="n">empty</span> <span class="n">value</span>
 
-            <span class="k">return</span> <span class="k">self</span><span class="p">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">infer_citekey_prefix</span><span class="p">(</span><span class="k">self</span><span class="p">[</span><span class="ss">&quot;id&quot;</span><span class="p">]))</span>
+            <span class="k">return</span> <span class="k">self</span><span class="p">.</span><span class="n">set_id</span><span class="p">(</span><span class="k">self</span><span class="p">[</span><span class="ss">&quot;id&quot;</span><span class="p">])</span>
 
         <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span>
 
@@ -3611,9 +3627,6 @@ variable: which variable to assign the date to.</p>
 
 <p>Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.
 The standard_id is extracted from a "standard_citation" field, the "note" field, or the "id" field.
-If extracting the citation from the "id" field, uses the infer_citekey_prefix function to set the prefix.
-For example, if the extracted standard_id does not begin with a supported prefix (e.g. "doi:", "pmid:" or "raw:"),
-the citation is assumed to be raw and given a "raw:" prefix.
 The extracted citation is checked for validity and standardized, after which it is the final "standard_id".</p>
 <p>Regarding csl_item modification, the csl_item "id" field is set to the standard_citation and the note field
 is created or updated with key-value pairs for standard_id and original_id.</p>
@@ -3626,12 +3639,6 @@ However, in this context, we use "id" rather than "citekey" for consistency with
 <span class="ss">        Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its &quot;</span><span class="n">id</span><span class="ss">&quot; field.</span>
 
 <span class="ss">        The standard_id is extracted from a &quot;</span><span class="n">standard_citation</span><span class="ss">&quot; field, the &quot;</span><span class="n">note</span><span class="ss">&quot; field, or the &quot;</span><span class="n">id</span><span class="ss">&quot; field.</span>
-
-<span class="ss">        If extracting the citation from the &quot;</span><span class="n">id</span><span class="ss">&quot; field, uses the infer_citekey_prefix function to set the prefix.</span>
-
-<span class="ss">        For example, if the extracted standard_id does not begin with a supported prefix (e.g. &quot;</span><span class="n">doi</span><span class="p">:</span><span class="ss">&quot;, &quot;</span><span class="n">pmid</span><span class="p">:</span><span class="ss">&quot; or &quot;</span><span class="n">raw</span><span class="p">:</span><span class="ss">&quot;),</span>
-
-<span class="ss">        the citation is assumed to be raw and given a &quot;</span><span class="n">raw</span><span class="p">:</span><span class="ss">&quot; prefix.</span>
 
 <span class="ss">        The extracted citation is checked for validity and standardized, after which it is the final &quot;</span><span class="n">standard_id</span><span class="ss">&quot;.</span>
 
@@ -3651,9 +3658,9 @@ However, in this context, we use "id" rather than "citekey" for consistency with
 
         <span class="n">original_standard_id</span> <span class="o">=</span> <span class="k">self</span><span class="p">[</span><span class="ss">&quot;id&quot;</span><span class="p">]</span>
 
-        <span class="n">assert</span> <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">original_standard_id</span><span class="p">,</span> <span class="n">allow_raw</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+        <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">original_standard_id</span><span class="p">)</span>
 
-        <span class="n">standard_id</span> <span class="o">=</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="n">original_standard_id</span><span class="p">,</span> <span class="n">warn_if_changed</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
+        <span class="n">standard_id</span> <span class="o">=</span> <span class="n">citekey</span><span class="p">.</span><span class="n">standard_id</span>
 
         <span class="n">add_to_note</span> <span class="o">=</span> <span class="err">{}</span>
 

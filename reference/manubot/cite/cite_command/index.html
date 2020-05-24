@@ -355,6 +355,18 @@
           
           
 
+
+  <li class="md-nav__item">
+    <a href="../citations/" title="Citations" class="md-nav__link">
+      Citations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
   
 
 
@@ -591,13 +603,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-16" type="checkbox" id="nav-3-1-4-16">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-17" type="checkbox" id="nav-3-1-4-17">
     
-    <label class="md-nav__link" for="nav-3-1-4-16">
+    <label class="md-nav__link" for="nav-3-1-4-17">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-4-16">
+      <label class="md-nav__title" for="nav-3-1-4-17">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -623,6 +635,18 @@
   <li class="md-nav__item">
     <a href="../tests/test_arxiv/" title="Test Arxiv" class="md-nav__link">
       Test Arxiv
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tests/test_citations/" title="Test Citations" class="md-nav__link">
+      Test Citations
     </a>
   </li>
 
@@ -974,6 +998,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../process/requests_cache/" title="Requests Cache" class="md-nav__link">
+      Requests Cache
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../process/util/" title="Util" class="md-nav__link">
       Util
     </a>
@@ -987,13 +1023,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-8" type="checkbox" id="nav-3-1-6-8">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-9" type="checkbox" id="nav-3-1-6-9">
     
-    <label class="md-nav__link" for="nav-3-1-6-8">
+    <label class="md-nav__link" for="nav-3-1-6-9">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-6-8">
+      <label class="md-nav__title" for="nav-3-1-6-9">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -1307,19 +1343,11 @@
 
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="kn">from</span> <span class="nn">manubot.cite.citekey</span> <span class="kn">import</span> <span class="p">(</span>
-
-    <span class="n">citekey_to_csl_item</span><span class="p">,</span>
-
-    <span class="n">is_valid_citekey</span><span class="p">,</span>
-
-    <span class="n">CiteKey</span><span class="p">,</span>
-
-<span class="p">)</span>
-
 <span class="kn">from</span> <span class="nn">manubot.pandoc.util</span> <span class="kn">import</span> <span class="n">get_pandoc_info</span>
 
 <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">shlex_join</span>
+
+<span class="kn">from</span> <span class="nn">manubot.cite.citations</span> <span class="kn">import</span> <span class="n">Citations</span>
 
 <span class="c1"># For manubot cite, infer --format from --output filename extensions</span>
 
@@ -1413,17 +1441,7 @@
 
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;call_pandoc subprocess args:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">shlex_join</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
 
-    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-
-        <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
-
-        <span class="nb">input</span><span class="o">=</span><span class="n">metadata_block</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span>
-
-        <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span> <span class="k">if</span> <span class="n">path</span> <span class="k">else</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
-
-        <span class="n">stderr</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
-
-    <span class="p">)</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="nb">input</span><span class="o">=</span><span class="n">metadata_block</span><span class="o">.</span><span class="n">encode</span><span class="p">(),)</span>
 
     <span class="n">process</span><span class="o">.</span><span class="n">check_returncode</span><span class="p">()</span>
 
@@ -1441,51 +1459,23 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># generate CSL JSON data</span>
+    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">citekeys</span><span class="p">)</span>
 
-    <span class="n">csl_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">citations</span><span class="o">.</span><span class="n">load_manual_references</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">bibliography</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">citekey</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">citekeys</span><span class="p">:</span>
+    <span class="n">citations</span><span class="o">.</span><span class="n">inspect</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
 
-        <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
-
-        <span class="k">try</span><span class="p">:</span>
-
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">input_id</span><span class="p">):</span>
-
-                <span class="k">continue</span>
-
-            <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">prune_csl</span><span class="p">)</span>
-
-            <span class="n">csl_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
-
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-
-                <span class="n">f</span><span class="s2">&quot;citekey_to_csl_item for {citekey.input_id!r} failed &quot;</span>
-
-                <span class="n">f</span><span class="s2">&quot;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s2">{error}&quot;</span>
-
-            <span class="p">)</span>
-
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">csl_items</span> <span class="o">=</span> <span class="n">citations</span><span class="o">.</span><span class="n">get_csl_items</span><span class="p">()</span>
 
     <span class="c1"># output CSL JSON data, if --render is False</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">render</span><span class="p">:</span>
 
-        <span class="n">write_file</span> <span class="o">=</span> <span class="p">(</span>
-
-            <span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span> <span class="k">else</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
-
-        <span class="p">)</span>
+        <span class="n">write_file</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span> <span class="k">else</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span>
 
         <span class="k">with</span> <span class="n">write_file</span><span class="p">:</span>
 
-            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">csl_list</span><span class="p">,</span> <span class="n">write_file</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-            <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">citations</span><span class="o">.</span><span class="n">csl_json</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
 
         <span class="k">return</span>
 
@@ -1499,7 +1489,7 @@
 
         <span class="nb">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;plain&quot;</span>
 
-    <span class="n">pandoc_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nocite&quot;</span><span class="p">:</span> <span class="s2">&quot;@*&quot;</span><span class="p">,</span> <span class="s2">&quot;csl&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">csl</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">:</span> <span class="n">csl_list</span><span class="p">}</span>
+    <span class="n">pandoc_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nocite&quot;</span><span class="p">:</span> <span class="s2">&quot;@*&quot;</span><span class="p">,</span> <span class="s2">&quot;csl&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">csl</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">:</span> <span class="n">csl_items</span><span class="p">}</span>
 
     <span class="n">call_pandoc</span><span class="p">(</span><span class="n">metadata</span><span class="o">=</span><span class="n">pandoc_metadata</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">format</span><span class="p">)</span>
 
@@ -1654,17 +1644,7 @@
 
     <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="ss">&quot;call_pandoc subprocess args:\n&quot;</span> <span class="o">+</span> <span class="n">shlex_join</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
 
-    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span>
-
-        <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
-
-        <span class="k">input</span><span class="o">=</span><span class="n">metadata_block</span><span class="p">.</span><span class="n">encode</span><span class="p">(),</span>
-
-        <span class="k">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span> <span class="k">if</span> <span class="n">path</span> <span class="k">else</span> <span class="n">sys</span><span class="p">.</span><span class="k">stdout</span><span class="p">,</span>
-
-        <span class="n">stderr</span><span class="o">=</span><span class="n">sys</span><span class="p">.</span><span class="n">stderr</span><span class="p">,</span>
-
-    <span class="p">)</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="k">input</span><span class="o">=</span><span class="n">metadata_block</span><span class="p">.</span><span class="n">encode</span><span class="p">(),)</span>
 
     <span class="n">process</span><span class="p">.</span><span class="n">check_returncode</span><span class="p">()</span>
 </code></pre></div>
@@ -1696,51 +1676,23 @@ https://github.com/jgm/pandoc/issues/4834</p>
 
 <span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="o">#</span> <span class="n">generate</span> <span class="n">CSL</span> <span class="n">JSON</span> <span class="k">data</span>
+    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">citekeys</span><span class="p">)</span>
 
-    <span class="n">csl_list</span> <span class="o">=</span> <span class="n">list</span><span class="p">()</span>
+    <span class="n">citations</span><span class="p">.</span><span class="n">load_manual_references</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">bibliography</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">citekey</span> <span class="k">in</span> <span class="n">args</span><span class="p">.</span><span class="n">citekeys</span><span class="p">:</span>
+    <span class="n">citations</span><span class="p">.</span><span class="n">inspect</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="ss">&quot;WARNING&quot;</span><span class="p">)</span>
 
-        <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
-
-        <span class="n">try</span><span class="p">:</span>
-
-            <span class="k">if</span> <span class="k">not</span> <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">input_id</span><span class="p">):</span>
-
-                <span class="k">continue</span>
-
-            <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_id</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">prune_csl</span><span class="p">)</span>
-
-            <span class="n">csl_list</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
-
-        <span class="k">except</span> <span class="k">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-
-            <span class="n">logging</span><span class="p">.</span><span class="n">error</span><span class="p">(</span>
-
-                <span class="n">f</span><span class="ss">&quot;citekey_to_csl_item for {citekey.input_id!r} failed &quot;</span>
-
-                <span class="n">f</span><span class="ss">&quot;due to a {error.__class__.__name__}:\n{error}&quot;</span>
-
-            <span class="p">)</span>
-
-            <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+    <span class="n">csl_items</span> <span class="o">=</span> <span class="n">citations</span><span class="p">.</span><span class="n">get_csl_items</span><span class="p">()</span>
 
     <span class="o">#</span> <span class="k">output</span> <span class="n">CSL</span> <span class="n">JSON</span> <span class="k">data</span><span class="p">,</span> <span class="k">if</span> <span class="c1">--render is False</span>
 
     <span class="k">if</span> <span class="k">not</span> <span class="n">args</span><span class="p">.</span><span class="n">render</span><span class="p">:</span>
 
-        <span class="n">write_file</span> <span class="o">=</span> <span class="p">(</span>
-
-            <span class="n">args</span><span class="p">.</span><span class="k">output</span><span class="p">.</span><span class="k">open</span><span class="p">(</span><span class="ss">&quot;w&quot;</span><span class="p">,</span> <span class="k">encoding</span><span class="o">=</span><span class="ss">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="k">output</span> <span class="k">else</span> <span class="n">sys</span><span class="p">.</span><span class="k">stdout</span>
-
-        <span class="p">)</span>
+        <span class="n">write_file</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="k">output</span><span class="p">.</span><span class="k">open</span><span class="p">(</span><span class="ss">&quot;wb&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="k">output</span> <span class="k">else</span> <span class="n">sys</span><span class="p">.</span><span class="k">stdout</span><span class="p">.</span><span class="n">buffer</span>
 
         <span class="k">with</span> <span class="n">write_file</span><span class="p">:</span>
 
-            <span class="n">json</span><span class="p">.</span><span class="n">dump</span><span class="p">(</span><span class="n">csl_list</span><span class="p">,</span> <span class="n">write_file</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-            <span class="n">write_file</span><span class="p">.</span><span class="k">write</span><span class="p">(</span><span class="ss">&quot;\n&quot;</span><span class="p">)</span>
+            <span class="n">write_file</span><span class="p">.</span><span class="k">write</span><span class="p">(</span><span class="n">citations</span><span class="p">.</span><span class="n">csl_json</span><span class="p">.</span><span class="n">encode</span><span class="p">())</span>
 
         <span class="k">return</span>
 
@@ -1754,7 +1706,7 @@ https://github.com/jgm/pandoc/issues/4834</p>
 
         <span class="n">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)[</span><span class="ss">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="ss">&quot;plain&quot;</span>
 
-    <span class="n">pandoc_metadata</span> <span class="o">=</span> <span class="err">{</span><span class="ss">&quot;nocite&quot;</span><span class="p">:</span> <span class="ss">&quot;@*&quot;</span><span class="p">,</span> <span class="ss">&quot;csl&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">.</span><span class="n">csl</span><span class="p">,</span> <span class="ss">&quot;references&quot;</span><span class="p">:</span> <span class="n">csl_list</span><span class="err">}</span>
+    <span class="n">pandoc_metadata</span> <span class="o">=</span> <span class="err">{</span><span class="ss">&quot;nocite&quot;</span><span class="p">:</span> <span class="ss">&quot;@*&quot;</span><span class="p">,</span> <span class="ss">&quot;csl&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">.</span><span class="n">csl</span><span class="p">,</span> <span class="ss">&quot;references&quot;</span><span class="p">:</span> <span class="n">csl_items</span><span class="err">}</span>
 
     <span class="n">call_pandoc</span><span class="p">(</span><span class="n">metadata</span><span class="o">=</span><span class="n">pandoc_metadata</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="k">output</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">format</span><span class="p">)</span>
 </code></pre></div>
@@ -1782,7 +1734,7 @@ https://github.com/jgm/pandoc/issues/4834</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../arxiv/" title="Arxiv" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../citations/" title="Citations" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -1791,7 +1743,7 @@ https://github.com/jgm/pandoc/issues/4834</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Arxiv
+                Citations
               </span>
             </div>
           </a>

@@ -357,6 +357,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../citations/" title="Citations" class="md-nav__link">
+      Citations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../cite_command/" title="Cite Command" class="md-nav__link">
       Cite Command
     </a>
@@ -411,29 +423,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#infer_citekey_prefix" class="md-nav__link">
-    infer_citekey_prefix
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#is_valid_citekey" class="md-nav__link">
-    is_valid_citekey
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#shorten_citekey" class="md-nav__link">
     shorten_citekey
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#standardize_citekey" class="md-nav__link">
-    standardize_citekey
   </a>
   
 </li>
@@ -741,13 +732,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-16" type="checkbox" id="nav-3-1-4-16">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-17" type="checkbox" id="nav-3-1-4-17">
     
-    <label class="md-nav__link" for="nav-3-1-4-16">
+    <label class="md-nav__link" for="nav-3-1-4-17">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-4-16">
+      <label class="md-nav__title" for="nav-3-1-4-17">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -773,6 +764,18 @@
   <li class="md-nav__item">
     <a href="../tests/test_arxiv/" title="Test Arxiv" class="md-nav__link">
       Test Arxiv
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tests/test_citations/" title="Test Citations" class="md-nav__link">
+      Test Citations
     </a>
   </li>
 
@@ -1124,6 +1127,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../process/requests_cache/" title="Requests Cache" class="md-nav__link">
+      Requests Cache
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../process/util/" title="Util" class="md-nav__link">
       Util
     </a>
@@ -1137,13 +1152,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-8" type="checkbox" id="nav-3-1-6-8">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-9" type="checkbox" id="nav-3-1-6-9">
     
-    <label class="md-nav__link" for="nav-3-1-6-8">
+    <label class="md-nav__link" for="nav-3-1-6-9">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-6-8">
+      <label class="md-nav__title" for="nav-3-1-6-9">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -1409,29 +1424,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#infer_citekey_prefix" class="md-nav__link">
-    infer_citekey_prefix
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#is_valid_citekey" class="md-nav__link">
-    is_valid_citekey
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#shorten_citekey" class="md-nav__link">
     shorten_citekey
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#standardize_citekey" class="md-nav__link">
-    standardize_citekey
   </a>
   
 </li>
@@ -1604,13 +1598,15 @@
 
 <span class="s2">&quot;&quot;&quot;</span>
 
+<span class="s s-Atom">import</span> <span class="s s-Atom">dataclasses</span>
+
 <span class="s s-Atom">import</span> <span class="s s-Atom">functools</span>
 
 <span class="s s-Atom">import</span> <span class="s s-Atom">logging</span>
 
 <span class="s s-Atom">import</span> <span class="s s-Atom">re</span>
 
-<span class="s s-Atom">import</span> <span class="s s-Atom">dataclasses</span>
+<span class="s s-Atom">import</span> <span class="s s-Atom">typing</span> <span class="s s-Atom">as</span> <span class="s s-Atom">tp</span>
 
 <span class="nn">try</span><span class="p">:</span>
 
@@ -1662,7 +1658,15 @@
 
     <span class="s s-Atom">@cached_property</span>
 
-    <span class="s s-Atom">def</span> <span class="nf">dealiased_id</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="nf">dealiased_id</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="nn">str</span><span class="p">:</span>
+
+        <span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">        If `self.input_id` is in `self.aliases`, the value specified by</span>
+
+<span class="s2">        `self.aliases`. Otherwise, `self.input_id`.</span>
+
+<span class="s2">        &quot;&quot;&quot;</span>
 
         <span class="s s-Atom">return</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">aliases</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">input_id</span><span class="p">,</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">input_id</span><span class="p">)</span>
 
@@ -1682,7 +1686,15 @@
 
     <span class="s s-Atom">@property</span>
 
-    <span class="s s-Atom">def</span> <span class="nf">prefix</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="nf">prefix</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="s s-Atom">tp</span><span class="p">.</span><span class="nv">Optional</span><span class="p">[</span><span class="s s-Atom">str</span><span class="p">]</span><span class="s s-Atom">:</span>
+
+        <span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">        If `self.input_id` contains a colon, the substring up to the first colon.</span>
+
+<span class="s2">        Otherwise, None.</span>
+
+<span class="s2">        &quot;&quot;&quot;</span>
 
         <span class="s s-Atom">if</span> <span class="o">not</span> <span class="nf">hasattr</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">,</span> <span class="s2">&quot;_prefix&quot;</span><span class="p">)</span><span class="s s-Atom">:</span>
 
@@ -1692,13 +1704,29 @@
 
     <span class="s s-Atom">@property</span>
 
-    <span class="s s-Atom">def</span> <span class="nf">prefix_lower</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="nf">prefix_lower</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="s s-Atom">tp</span><span class="p">.</span><span class="nv">Optional</span><span class="p">[</span><span class="s s-Atom">str</span><span class="p">]</span><span class="s s-Atom">:</span>
+
+        <span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">        A lowercase version of `self.prefix` or None.</span>
+
+<span class="s2">        &quot;&quot;&quot;</span>
+
+        <span class="s s-Atom">if</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">prefix</span> <span class="o">is</span> <span class="nv">None</span><span class="s s-Atom">:</span>
+
+            <span class="s s-Atom">return</span> <span class="nv">None</span>
 
         <span class="s s-Atom">return</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">prefix</span><span class="p">.</span><span class="nf">lower</span><span class="p">()</span>
 
     <span class="s s-Atom">@property</span>
 
-    <span class="s s-Atom">def</span> <span class="nf">accession</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="nf">accession</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="s s-Atom">tp</span><span class="p">.</span><span class="nv">Optional</span><span class="p">[</span><span class="s s-Atom">str</span><span class="p">]</span><span class="s s-Atom">:</span>
+
+        <span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">        If `self.prefix`, the remainder of `self.input_id` following the first colon.</span>
+
+<span class="s2">        &quot;&quot;&quot;</span>
 
         <span class="s s-Atom">if</span> <span class="o">not</span> <span class="nf">hasattr</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">,</span> <span class="s2">&quot;_accession&quot;</span><span class="p">)</span><span class="s s-Atom">:</span>
 
@@ -1708,7 +1736,15 @@
 
     <span class="s s-Atom">@property</span>
 
-    <span class="s s-Atom">def</span> <span class="nf">standard_prefix</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="nf">standard_prefix</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="s s-Atom">tp</span><span class="p">.</span><span class="nv">Optional</span><span class="p">[</span><span class="s s-Atom">str</span><span class="p">]</span><span class="s s-Atom">:</span>
+
+        <span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">        If the citekey is handled, the standard prefix specified by the handler.</span>
+
+<span class="s2">        Otherwise, None.</span>
+
+<span class="s2">        &quot;&quot;&quot;</span>
 
         <span class="s s-Atom">if</span> <span class="o">not</span> <span class="nf">hasattr</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">,</span> <span class="s2">&quot;_standard_prefix&quot;</span><span class="p">)</span><span class="s s-Atom">:</span>
 
@@ -1718,7 +1754,15 @@
 
     <span class="s s-Atom">@property</span>
 
-    <span class="s s-Atom">def</span> <span class="nf">standard_accession</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="nf">standard_accession</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="s s-Atom">tp</span><span class="p">.</span><span class="nv">Optional</span><span class="p">[</span><span class="s s-Atom">str</span><span class="p">]</span><span class="s s-Atom">:</span>
+
+        <span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">        If the citekey is handled, the standard accession specified by the handler.</span>
+
+<span class="s2">        Otherwise, None.</span>
+
+<span class="s2">        &quot;&quot;&quot;</span>
 
         <span class="s s-Atom">if</span> <span class="o">not</span> <span class="nf">hasattr</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">,</span> <span class="s2">&quot;_standard_accession&quot;</span><span class="p">)</span><span class="s s-Atom">:</span>
 
@@ -1740,19 +1784,39 @@
 
     <span class="s s-Atom">@cached_property</span>
 
-    <span class="s s-Atom">def</span> <span class="nf">is_handled_prefix</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="nf">is_handled_prefix</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="nn">bool</span><span class="p">:</span>
 
         <span class="s s-Atom">from</span> <span class="p">.</span><span class="s s-Atom">handlers</span> <span class="s s-Atom">import</span> <span class="s s-Atom">prefix_to_handler</span>
 
         <span class="s s-Atom">return</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">prefix_lower</span> <span class="s s-Atom">in</span> <span class="s s-Atom">prefix_to_handler</span>
 
-    <span class="s s-Atom">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="s s-Atom">tp</span><span class="p">.</span><span class="nv">Optional</span><span class="p">[</span><span class="s s-Atom">str</span><span class="p">]</span><span class="s s-Atom">:</span>
+
+        <span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">        Inspect citekey for potential problems.</span>
+
+<span class="s2">        If no problems are found, return None.</span>
+
+<span class="s2">        Otherwise, returns a string describing the problem.</span>
+
+<span class="s2">        &quot;&quot;&quot;</span>
 
         <span class="s s-Atom">return</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">handler</span><span class="p">.</span><span class="nf">inspect</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span>
 
     <span class="s s-Atom">def</span> <span class="k">_</span><span class="nf">standardize</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span><span class="s s-Atom">:</span>
 
-        <span class="s s-Atom">if</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">prefix_lower</span> <span class="o">is</span> <span class="nv">None</span><span class="s s-Atom">:</span>
+        <span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">        Set `self._standard_prefix`, `self._standard_accession`, and `self._standard_id`.</span>
+
+<span class="s2">        For citekeys without a prefix or with an unhandled prefix, _standard_prefix</span>
+
+<span class="s2">        and _standard_accession are set to None.</span>
+
+<span class="s2">        &quot;&quot;&quot;</span>
+
+        <span class="s s-Atom">if</span> <span class="o">not</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">is_handled_prefix:</span>
 
             <span class="s s-Atom">self</span><span class="p">.</span><span class="k">_</span><span class="s s-Atom">standard_prefix</span> <span class="o">=</span> <span class="nv">None</span>
 
@@ -1760,21 +1824,25 @@
 
             <span class="s s-Atom">self</span><span class="p">.</span><span class="k">_</span><span class="s s-Atom">standard_id</span> <span class="o">=</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">dealiased_id</span>
 
-            <span class="nf">return</span>
+            <span class="s s-Atom">return</span>
 
-        <span class="p">(</span>
+        <span class="s s-Atom">fxn</span> <span class="o">=</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">handler</span><span class="p">.</span><span class="s s-Atom">standardize_prefix_accession</span>
 
-            <span class="s s-Atom">self</span><span class="p">.</span><span class="k">_</span><span class="s s-Atom">standard_prefix</span><span class="p">,</span>
-
-            <span class="s s-Atom">self</span><span class="p">.</span><span class="k">_</span><span class="s s-Atom">standard_accession</span><span class="p">,</span>
-
-        <span class="p">)</span> <span class="o">=</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">handler</span><span class="p">.</span><span class="nf">standardize_prefix_accession</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">accession</span><span class="p">)</span>
+        <span class="s s-Atom">self</span><span class="p">.</span><span class="k">_</span><span class="s s-Atom">standard_prefix</span><span class="p">,</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="k">_</span><span class="s s-Atom">standard_accession</span> <span class="o">=</span> <span class="nf">fxn</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">accession</span><span class="p">)</span>
 
         <span class="s s-Atom">self</span><span class="p">.</span><span class="k">_</span><span class="s s-Atom">standard_id</span> <span class="o">=</span> <span class="s s-Atom">f</span><span class="s2">&quot;{self._standard_prefix}:{self._standard_accession}&quot;</span>
 
     <span class="s s-Atom">@property</span>
 
-    <span class="s s-Atom">def</span> <span class="nf">standard_id</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="nf">standard_id</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="nn">str</span><span class="p">:</span>
+
+        <span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">        If the citekey is handled, the standard_id specified by the handler.</span>
+
+<span class="s2">        Otherwise, `self.dealiased_id`.</span>
+
+<span class="s2">        &quot;&quot;&quot;</span>
 
         <span class="s s-Atom">if</span> <span class="o">not</span> <span class="nf">hasattr</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">,</span> <span class="s2">&quot;_standard_id&quot;</span><span class="p">)</span><span class="s s-Atom">:</span>
 
@@ -1784,7 +1852,15 @@
 
     <span class="s s-Atom">@cached_property</span>
 
-    <span class="s s-Atom">def</span> <span class="nf">short_id</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="nf">short_id</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="nn">str</span><span class="p">:</span>
+
+        <span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">        A hashed version of standard_id whose characters are</span>
+
+<span class="s2">        within the ranges 0-9, a-z and A-Z.</span>
+
+<span class="s2">        &quot;&quot;&quot;</span>
 
         <span class="s s-Atom">return</span> <span class="nf">shorten_citekey</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">standard_id</span><span class="p">)</span>
 
@@ -1840,6 +1916,8 @@
 
             <span class="s s-Atom">csl_item</span> <span class="o">=</span> <span class="nv">CSL_Item</span><span class="p">(</span><span class="s s-Atom">csl_item</span><span class="p">)</span>
 
+        <span class="s s-Atom">csl_item</span><span class="p">.</span><span class="nf">set_id</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">standard_id</span><span class="p">)</span>
+
         <span class="s s-Atom">return</span> <span class="s s-Atom">csl_item</span>
 
     <span class="s s-Atom">def</span> <span class="nf">is_pandoc_xnos_prefix</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">,</span> <span class="s s-Atom">log_case_warning</span><span class="o">=</span><span class="nv">False</span><span class="p">)</span><span class="s s-Atom">:</span>
@@ -1862,171 +1940,7 @@
 
         <span class="s s-Atom">return</span> <span class="nv">False</span>
 
-<span class="s s-Atom">@functools</span><span class="p">.</span><span class="nf">lru_cache</span><span class="p">(</span><span class="s s-Atom">maxsize</span><span class="o">=</span><span class="mi">5</span><span class="k">_</span><span class="mi">000</span><span class="p">)</span>
-
-<span class="s s-Atom">def</span> <span class="nf">standardize_citekey</span><span class="p">(</span><span class="s s-Atom">citekey</span><span class="p">,</span> <span class="s s-Atom">warn_if_changed</span><span class="o">=</span><span class="nv">False</span><span class="p">)</span><span class="s s-Atom">:</span>
-
-    <span class="s2">&quot;&quot;&quot;</span>
-
-<span class="s2">    Standardize citation keys based on their source</span>
-
-<span class="s2">    &quot;&quot;&quot;</span>
-
-    <span class="s s-Atom">standard_citekey</span> <span class="o">=</span> <span class="nv">CiteKey</span><span class="p">(</span><span class="s s-Atom">citekey</span><span class="p">).</span><span class="s s-Atom">standard_id</span>
-
-    <span class="s s-Atom">if</span> <span class="s s-Atom">warn_if_changed</span> <span class="s s-Atom">and</span> <span class="s s-Atom">citekey</span> <span class="p">!</span><span class="o">=</span> <span class="s s-Atom">standard_citekey:</span>
-
-        <span class="s s-Atom">logging</span><span class="p">.</span><span class="nf">warning</span><span class="p">(</span>
-
-            <span class="s s-Atom">f</span><span class="s2">&quot;standardize_citekey expected citekey to already be standardized.\n&quot;</span>
-
-            <span class="s s-Atom">f</span><span class="s2">&quot;Instead citekey was changed from {citekey!r} to {standard_citekey!r}&quot;</span>
-
-        <span class="p">)</span>
-
-    <span class="s s-Atom">return</span> <span class="s s-Atom">standard_citekey</span>
-
-<span class="s s-Atom">def</span> <span class="nf">is_valid_citekey</span><span class="p">(</span>
-
-    <span class="s s-Atom">citekey</span><span class="p">,</span> <span class="s s-Atom">allow_tag</span><span class="o">=</span><span class="nv">False</span><span class="p">,</span> <span class="s s-Atom">allow_raw</span><span class="o">=</span><span class="nv">False</span><span class="p">,</span> <span class="s s-Atom">allow_pandoc_xnos</span><span class="o">=</span><span class="nv">False</span>
-
-<span class="p">)</span><span class="s s-Atom">:</span>
-
-    <span class="s2">&quot;&quot;&quot;</span>
-
-<span class="s2">    Return True if citekey is a properly formatted string. Return False if</span>
-
-<span class="s2">    citekey is not a citation or is an invalid citation.</span>
-
-<span class="s2">    In the case citekey is invalid, an error is logged. This</span>
-
-<span class="s2">    function does not catch all invalid citekeys, but instead performs cursory</span>
-
-<span class="s2">    checks, such as ensuring citekeys adhere to the expected formats. No calls to</span>
-
-<span class="s2">    external resources are used by these checks, so they will not detect</span>
-
-<span class="s2">    citekeys to non-existent identifiers unless those identifiers violate</span>
-
-<span class="s2">    their source&#39;s syntax.</span>
-
-<span class="s2">    allow_tag=False, allow_raw=False, and allow_pandoc_xnos=False enable</span>
-
-<span class="s2">    allowing citekey sources that are valid for Manubot manuscripts, but</span>
-
-<span class="s2">    likely not elsewhere. allow_tag=True enables citekey tags (e.g.</span>
-
-<span class="s2">    tag:citation-tag). allow_raw=True enables raw citekeys (e.g.</span>
-
-<span class="s2">    raw:manual-reference). allow_pandoc_xnos=True still returns False for</span>
-
-<span class="s2">    pandoc-xnos references (e.g. fig:figure-id), but does not log an error.</span>
-
-<span class="s2">    With the default of False for these arguments, valid sources are restricted</span>
-
-<span class="s2">    to those for which manubot can retrieve metadata based only on the</span>
-
-<span class="s2">    standalone citekey.</span>
-
-<span class="s2">    &quot;&quot;&quot;</span>
-
-    <span class="s s-Atom">from</span> <span class="p">.</span><span class="s s-Atom">handlers</span> <span class="s s-Atom">import</span> <span class="s s-Atom">prefix_to_handler</span>
-
-    <span class="nn">try</span><span class="p">:</span>
-
-        <span class="s s-Atom">citekey_obj</span> <span class="o">=</span> <span class="nv">CiteKey</span><span class="p">(</span><span class="s s-Atom">citekey</span><span class="p">)</span>
-
-    <span class="nf">except</span> <span class="p">(</span><span class="nv">ValueError</span><span class="p">,</span> <span class="nv">TypeError</span><span class="p">)</span> <span class="s s-Atom">as</span> <span class="nn">error</span><span class="p">:</span>
-
-        <span class="s s-Atom">logging</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="s s-Atom">error</span><span class="p">)</span>
-
-        <span class="s s-Atom">return</span> <span class="nv">False</span>
-
-    <span class="s s-Atom">if</span> <span class="s s-Atom">citekey_obj</span><span class="p">.</span><span class="s s-Atom">prefix_lower</span> <span class="o">is</span> <span class="nv">None</span><span class="s s-Atom">:</span>
-
-        <span class="s s-Atom">logging</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span>
-
-            <span class="s s-Atom">f</span><span class="s2">&quot;citekey not splittable via a single colon: {citekey}. &quot;</span>
-
-            <span class="s2">&quot;Citekeys must be in the format of `source:identifier`.&quot;</span>
-
-        <span class="p">)</span>
-
-        <span class="s s-Atom">return</span> <span class="nv">False</span>
-
-    <span class="s s-Atom">if</span> <span class="o">not</span> <span class="s s-Atom">citekey_obj</span><span class="p">.</span><span class="s s-Atom">prefix</span> <span class="s s-Atom">or</span> <span class="o">not</span> <span class="s s-Atom">citekey_obj</span><span class="p">.</span><span class="nn">accession</span><span class="p">:</span>
-
-        <span class="s s-Atom">msg</span> <span class="o">=</span> <span class="s s-Atom">f</span><span class="s2">&quot;invalid citekey: {citekey!r}\nblank source or identifier&quot;</span>
-
-        <span class="s s-Atom">logging</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="s s-Atom">msg</span><span class="p">)</span>
-
-        <span class="s s-Atom">return</span> <span class="nv">False</span>
-
-    <span class="s s-Atom">if</span> <span class="s s-Atom">allow_pandoc_xnos:</span>
-
-        <span class="s s-Atom">#</span> <span class="nv">Exempted</span> <span class="s s-Atom">non</span><span class="o">-</span><span class="s s-Atom">citation</span> <span class="s s-Atom">sources</span> <span class="s s-Atom">used</span> <span class="s s-Atom">for</span> <span class="s s-Atom">pandoc</span><span class="o">-</span><span class="s s-Atom">fignos</span><span class="p">,</span>
-
-        <span class="s s-Atom">#</span> <span class="s s-Atom">pandoc</span><span class="o">-</span><span class="s s-Atom">tablenos</span><span class="p">,</span> <span class="s s-Atom">and</span> <span class="s s-Atom">pandoc</span><span class="o">-</span><span class="s s-Atom">eqnos</span>
-
-        <span class="s s-Atom">is_pandoc_xnos_prefix</span> <span class="o">=</span> <span class="s s-Atom">citekey_obj</span><span class="p">.</span><span class="nf">is_pandoc_xnos_prefix</span><span class="p">(</span><span class="s s-Atom">log_case_warning</span><span class="o">=</span><span class="nv">True</span><span class="p">)</span>
-
-        <span class="s s-Atom">if</span> <span class="s s-Atom">is_pandoc_xnos_prefix:</span>
-
-            <span class="s s-Atom">return</span> <span class="nv">False</span>
-
-    <span class="s s-Atom">#</span> <span class="nv">Check</span> <span class="s s-Atom">supported</span> <span class="s s-Atom">source</span> <span class="s s-Atom">type</span>
-
-    <span class="s s-Atom">sources</span> <span class="o">=</span> <span class="nf">set</span><span class="p">(</span><span class="s s-Atom">prefix_to_handler</span><span class="p">)</span>
-
-    <span class="s s-Atom">if</span> <span class="s s-Atom">allow_raw:</span>
-
-        <span class="s s-Atom">sources</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="s2">&quot;raw&quot;</span><span class="p">)</span>
-
-    <span class="s s-Atom">if</span> <span class="s s-Atom">allow_tag:</span>
-
-        <span class="s s-Atom">sources</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="s2">&quot;tag&quot;</span><span class="p">)</span>
-
-    <span class="s s-Atom">if</span> <span class="s s-Atom">citekey_obj</span><span class="p">.</span><span class="s s-Atom">prefix</span> <span class="o">not</span> <span class="s s-Atom">in</span> <span class="nn">sources</span><span class="p">:</span>
-
-        <span class="s s-Atom">if</span> <span class="s s-Atom">citekey_obj</span><span class="p">.</span><span class="s s-Atom">prefix_lower</span> <span class="s s-Atom">in</span> <span class="nn">sources</span><span class="p">:</span>
-
-            <span class="s s-Atom">logging</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span>
-
-                <span class="s2">&quot;citekey sources should be all lowercase.\n&quot;</span>
-
-                <span class="s s-Atom">f&#39;Should {citekey} use &quot;{citekey_obj.prefix_lower}&quot; rather than &quot;{citekey_obj.prefix}&quot;?&#39;</span>
-
-            <span class="p">)</span>
-
-        <span class="nn">else</span><span class="p">:</span>
-
-            <span class="s s-Atom">logging</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span>
-
-                <span class="s s-Atom">f</span><span class="s2">&quot;invalid citekey: {citekey!r}\n&quot;</span>
-
-                <span class="s s-Atom">f</span><span class="s2">&quot;Source {citekey_obj.prefix!r} is not valid.\n&quot;</span>
-
-                <span class="s s-Atom">f&#39;Valid citation sources are {{{&quot;, &quot;.join(sorted(sources))}}}&#39;</span>
-
-            <span class="p">)</span>
-
-        <span class="s s-Atom">return</span> <span class="nv">False</span>
-
-    <span class="s s-Atom">inspection</span> <span class="o">=</span> <span class="s s-Atom">citekey_obj</span><span class="p">.</span><span class="nf">inspect</span><span class="p">()</span>
-
-    <span class="s s-Atom">if</span> <span class="nn">inspection</span><span class="p">:</span>
-
-        <span class="s s-Atom">logging</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span>
-
-            <span class="s s-Atom">f</span><span class="s2">&quot;invalid {citekey_obj.prefix_lower} citekey: {citekey}\n{inspection}&quot;</span>
-
-        <span class="p">)</span>
-
-        <span class="s s-Atom">return</span> <span class="nv">False</span>
-
-    <span class="s s-Atom">return</span> <span class="nv">True</span>
-
-<span class="s s-Atom">def</span> <span class="nf">shorten_citekey</span><span class="p">(</span><span class="s s-Atom">standard_citekey</span><span class="p">)</span><span class="s s-Atom">:</span>
+<span class="s s-Atom">def</span> <span class="nf">shorten_citekey</span><span class="p">(</span><span class="s s-Atom">standard_citekey:</span> <span class="s s-Atom">str</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="nn">str</span><span class="p">:</span>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -2060,73 +1974,67 @@
 
     <span class="s s-Atom">return</span> <span class="s s-Atom">short_citekey</span>
 
-<span class="s s-Atom">def</span> <span class="nf">citekey_to_csl_item</span><span class="p">(</span><span class="s s-Atom">citekey</span><span class="p">,</span> <span class="s s-Atom">prune</span><span class="o">=</span><span class="nv">True</span><span class="p">)</span><span class="s s-Atom">:</span>
+<span class="s s-Atom">def</span> <span class="nf">citekey_to_csl_item</span><span class="p">(</span>
+
+    <span class="s s-Atom">citekey</span><span class="p">,</span> <span class="s s-Atom">prune</span><span class="o">=</span><span class="nv">True</span><span class="p">,</span> <span class="s s-Atom">manual_refs=</span><span class="p">{},</span> <span class="s s-Atom">log_level:</span> <span class="s s-Atom">tp</span><span class="p">.</span><span class="nv">Union</span><span class="p">[</span><span class="s s-Atom">str</span><span class="p">,</span> <span class="s s-Atom">int</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;WARNING&quot;</span>
+
+<span class="p">)</span><span class="s s-Atom">:</span>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-<span class="s2">    Generate a CSL Item (Python dictionary) for the input citekey.</span>
+<span class="s2">    Generate a CSL_Item for the input citekey.</span>
 
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="s s-Atom">from</span> <span class="s s-Atom">manubot</span> <span class="s s-Atom">import</span> <span class="k">__</span><span class="s s-Atom">version__</span> <span class="s s-Atom">as</span> <span class="s s-Atom">manubot_version</span>
 
-    <span class="s s-Atom">from</span> <span class="p">.</span><span class="s s-Atom">handlers</span> <span class="s s-Atom">import</span> <span class="s s-Atom">prefix_to_handler</span>
+    <span class="s s-Atom">#</span> <span class="nn">https</span><span class="p">:</span><span class="o">//</span><span class="s s-Atom">stackoverflow</span><span class="p">.</span><span class="s s-Atom">com</span><span class="o">/</span><span class="s s-Atom">a</span><span class="o">/</span><span class="mi">35704430</span><span class="o">/</span><span class="mi">4651668</span>
 
-    <span class="s s-Atom">citekey</span> <span class="o">==</span> <span class="nf">standardize_citekey</span><span class="p">(</span><span class="s s-Atom">citekey</span><span class="p">,</span> <span class="s s-Atom">warn_if_changed</span><span class="o">=</span><span class="nv">True</span><span class="p">)</span>
+    <span class="s s-Atom">log_level</span> <span class="o">=</span> <span class="s s-Atom">logging</span><span class="p">.</span><span class="k">_</span><span class="nf">checkLevel</span><span class="p">(</span><span class="s s-Atom">log_level</span><span class="p">)</span>
 
-    <span class="s s-Atom">citekey_obj</span> <span class="o">=</span> <span class="nv">CiteKey</span><span class="p">(</span><span class="s s-Atom">citekey</span><span class="p">)</span>
+    <span class="s s-Atom">if</span> <span class="o">not</span> <span class="nf">isinstance</span><span class="p">(</span><span class="s s-Atom">citekey</span><span class="p">,</span> <span class="nv">CiteKey</span><span class="p">)</span><span class="s s-Atom">:</span>
 
-    <span class="s s-Atom">citekey_obj</span><span class="p">.</span><span class="s s-Atom">csl_item</span>
+        <span class="s s-Atom">citekey</span> <span class="o">=</span> <span class="nv">CiteKey</span><span class="p">(</span><span class="s s-Atom">citekey</span><span class="p">)</span>
 
-    <span class="s s-Atom">if</span> <span class="s s-Atom">citekey_obj</span><span class="p">.</span><span class="s s-Atom">prefix_lower</span> <span class="o">not</span> <span class="s s-Atom">in</span> <span class="s s-Atom">prefix_to_handler:</span>
+    <span class="s s-Atom">if</span> <span class="s s-Atom">citekey</span><span class="p">.</span><span class="s s-Atom">standard_id</span> <span class="s s-Atom">in</span> <span class="s s-Atom">manual_refs:</span>
 
-        <span class="s s-Atom">msg</span> <span class="o">=</span> <span class="s s-Atom">f</span><span class="s2">&quot;Unsupported citation source {citekey_obj.prefix_lower!r} in {citekey!r}&quot;</span>
+        <span class="s s-Atom">return</span> <span class="s s-Atom">manual_refs</span><span class="p">[</span><span class="s s-Atom">citekey</span><span class="p">.</span><span class="s s-Atom">standard_id</span><span class="p">]</span>
 
-        <span class="s s-Atom">raise</span> <span class="nv">ValueError</span><span class="p">(</span><span class="s s-Atom">msg</span><span class="p">)</span>
+    <span class="nn">try</span><span class="p">:</span>
 
-    <span class="s s-Atom">csl_item</span> <span class="o">=</span> <span class="s s-Atom">citekey_obj</span><span class="p">.</span><span class="s s-Atom">csl_item</span>
+        <span class="s s-Atom">csl_item</span> <span class="o">=</span> <span class="s s-Atom">citekey</span><span class="p">.</span><span class="s s-Atom">csl_item</span>
+
+    <span class="s s-Atom">except</span> <span class="nv">Exception</span> <span class="s s-Atom">as</span> <span class="nn">error</span><span class="p">:</span>
+
+        <span class="s s-Atom">logging</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span>
+
+            <span class="s s-Atom">log_level</span><span class="p">,</span>
+
+            <span class="s s-Atom">f</span><span class="s2">&quot;Generating csl_item for {citekey.standard_id!r} failed &quot;</span>
+
+            <span class="s s-Atom">f</span><span class="s2">&quot;due to a {error.__class__.__name__}:\n{error}&quot;</span><span class="p">,</span>
+
+        <span class="p">)</span>
+
+        <span class="s s-Atom">logging</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s s-Atom">error</span><span class="p">,</span> <span class="s s-Atom">exc_info</span><span class="o">=</span><span class="nv">True</span><span class="p">)</span>
+
+        <span class="s s-Atom">return</span> <span class="nv">None</span>
+
+    <span class="s s-Atom">#</span> <span class="s s-Atom">update</span> <span class="s s-Atom">csl_item</span> <span class="s s-Atom">with</span> <span class="s s-Atom">manubot</span> <span class="s s-Atom">generated</span> <span class="s s-Atom">metadata</span>
 
     <span class="s s-Atom">note_text</span> <span class="o">=</span> <span class="s s-Atom">f</span><span class="s2">&quot;This CSL JSON Item was automatically generated by Manubot v{manubot_version} using citation-by-identifier.&quot;</span>
 
-    <span class="s s-Atom">note_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;standard_id&quot;</span><span class="s s-Atom">:</span> <span class="s s-Atom">citekey</span><span class="p">}</span>
+    <span class="s s-Atom">note_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;standard_id&quot;</span><span class="s s-Atom">:</span> <span class="s s-Atom">citekey</span><span class="p">.</span><span class="s s-Atom">standard_id</span><span class="p">}</span>
 
     <span class="s s-Atom">csl_item</span><span class="p">.</span><span class="nf">note_append_text</span><span class="p">(</span><span class="s s-Atom">note_text</span><span class="p">)</span>
 
     <span class="s s-Atom">csl_item</span><span class="p">.</span><span class="nf">note_append_dict</span><span class="p">(</span><span class="s s-Atom">note_dict</span><span class="p">)</span>
 
-    <span class="s s-Atom">csl_item</span><span class="p">.</span><span class="nf">set_id</span><span class="p">(</span><span class="s s-Atom">citekey_obj</span><span class="p">.</span><span class="s s-Atom">short_id</span><span class="p">)</span>
+    <span class="s s-Atom">csl_item</span><span class="p">.</span><span class="nf">set_id</span><span class="p">(</span><span class="s s-Atom">citekey</span><span class="p">.</span><span class="s s-Atom">short_id</span><span class="p">)</span>
 
     <span class="s s-Atom">csl_item</span><span class="p">.</span><span class="nf">clean</span><span class="p">(</span><span class="s s-Atom">prune</span><span class="o">=</span><span class="s s-Atom">prune</span><span class="p">)</span>
 
     <span class="s s-Atom">return</span> <span class="s s-Atom">csl_item</span>
-
-<span class="s s-Atom">def</span> <span class="nf">infer_citekey_prefix</span><span class="p">(</span><span class="s s-Atom">citekey</span><span class="p">)</span><span class="s s-Atom">:</span>
-
-    <span class="s2">&quot;&quot;&quot;</span>
-
-<span class="s2">    Passthrough citekey if it has a valid citation key prefix. Otherwise,</span>
-
-<span class="s2">    if the lowercase citekey prefix is valid, convert the prefix to lowercase.</span>
-
-<span class="s2">    Otherwise, assume citekey is raw and prepend &quot;</span><span class="nn">raw</span><span class="p">:</span><span class="s2">&quot;.</span>
-
-<span class="s2">    &quot;&quot;&quot;</span>
-
-    <span class="s s-Atom">from</span> <span class="p">.</span><span class="s s-Atom">handlers</span> <span class="s s-Atom">import</span> <span class="s s-Atom">prefix_to_handler</span>
-
-    <span class="s s-Atom">prefixes</span> <span class="o">=</span> <span class="p">[</span><span class="s s-Atom">f</span><span class="s2">&quot;{x}:&quot;</span> <span class="s s-Atom">for</span> <span class="s s-Atom">x</span> <span class="s s-Atom">in</span> <span class="nf">list</span><span class="p">(</span><span class="s s-Atom">prefix_to_handler</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;raw&quot;</span><span class="p">]]</span>
-
-    <span class="s s-Atom">for</span> <span class="s s-Atom">prefix</span> <span class="s s-Atom">in</span> <span class="nn">prefixes</span><span class="p">:</span>
-
-        <span class="s s-Atom">if</span> <span class="s s-Atom">citekey</span><span class="p">.</span><span class="nf">startswith</span><span class="p">(</span><span class="s s-Atom">prefix</span><span class="p">)</span><span class="s s-Atom">:</span>
-
-            <span class="s s-Atom">return</span> <span class="s s-Atom">citekey</span>
-
-        <span class="s s-Atom">if</span> <span class="s s-Atom">citekey</span><span class="p">.</span><span class="nf">lower</span><span class="p">().</span><span class="nf">startswith</span><span class="p">(</span><span class="s s-Atom">prefix</span><span class="p">)</span><span class="s s-Atom">:</span>
-
-            <span class="s s-Atom">return</span> <span class="s s-Atom">prefix</span> <span class="o">+</span> <span class="s s-Atom">citekey</span><span class="p">[</span><span class="nf">len</span><span class="p">(</span><span class="s s-Atom">prefix</span><span class="p">)</span> <span class="s s-Atom">:</span><span class="p">]</span>
-
-    <span class="s s-Atom">return</span> <span class="s s-Atom">f</span><span class="s2">&quot;raw:{citekey}&quot;</span>
 
 <span class="s s-Atom">def</span> <span class="nf">url_to_citekey</span><span class="p">(</span><span class="s s-Atom">url</span><span class="p">)</span><span class="s s-Atom">:</span>
 
@@ -2259,47 +2167,71 @@
 <h3 id="citekey_to_csl_item">citekey_to_csl_item</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">citekey_to_csl_item</span><span class="p">(</span>
     <span class="n">citekey</span><span class="p">,</span>
-    <span class="n">prune</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">manual_refs</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">log_level</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;WARNING&#39;</span>
 <span class="p">)</span>
 </code></pre></div>
 
 
-<p>Generate a CSL Item (Python dictionary) for the input citekey.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<p>Generate a CSL_Item for the input citekey.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">citekey_to_csl_item</span><span class="p">(</span>
+
+    <span class="n">citekey</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">manual_refs</span><span class="o">=</span><span class="p">{},</span> <span class="n">log_level</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;WARNING&quot;</span>
+
+<span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Generate a CSL Item (Python dictionary) for the input citekey.</span>
+<span class="sd">    Generate a CSL_Item for the input citekey.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="kn">from</span> <span class="nn">manubot</span> <span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">manubot_version</span>
 
-    <span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="n">prefix_to_handler</span>
+    <span class="c1"># https://stackoverflow.com/a/35704430/4651668</span>
 
-    <span class="n">citekey</span> <span class="o">==</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">warn_if_changed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">_checkLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
 
-    <span class="n">citekey_obj</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">CiteKey</span><span class="p">):</span>
 
-    <span class="n">citekey_obj</span><span class="o">.</span><span class="n">csl_item</span>
+        <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">citekey_obj</span><span class="o">.</span><span class="n">prefix_lower</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">prefix_to_handler</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span> <span class="ow">in</span> <span class="n">manual_refs</span><span class="p">:</span>
 
-        <span class="n">msg</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;Unsupported citation source {citekey_obj.prefix_lower!r} in {citekey!r}&quot;</span>
+        <span class="k">return</span> <span class="n">manual_refs</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">]</span>
 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_obj</span><span class="o">.</span><span class="n">csl_item</span>
+        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">csl_item</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+
+            <span class="n">log_level</span><span class="p">,</span>
+
+            <span class="n">f</span><span class="s2">&quot;Generating csl_item for {citekey.standard_id!r} failed &quot;</span>
+
+            <span class="n">f</span><span class="s2">&quot;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s2">{error}&quot;</span><span class="p">,</span>
+
+        <span class="p">)</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="c1"># update csl_item with manubot generated metadata</span>
 
     <span class="n">note_text</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;This CSL JSON Item was automatically generated by Manubot v{manubot_version} using citation-by-identifier.&quot;</span>
 
-    <span class="n">note_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="n">citekey</span><span class="p">}</span>
+    <span class="n">note_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">}</span>
 
     <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">note_text</span><span class="p">)</span>
 
     <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">(</span><span class="n">note_dict</span><span class="p">)</span>
 
-    <span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">citekey_obj</span><span class="o">.</span><span class="n">short_id</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">short_id</span><span class="p">)</span>
 
     <span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">prune</span><span class="o">=</span><span class="n">prune</span><span class="p">)</span>
 
@@ -2308,221 +2240,10 @@
 
 
 </details>
-<h3 id="infer_citekey_prefix">infer_citekey_prefix</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">infer_citekey_prefix</span><span class="p">(</span>
-    <span class="n">citekey</span>
-<span class="p">)</span>
-</code></pre></div>
-
-
-<p>Passthrough citekey if it has a valid citation key prefix. Otherwise,
-if the lowercase citekey prefix is valid, convert the prefix to lowercase.
-Otherwise, assume citekey is raw and prepend "raw:".</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">infer_citekey_prefix</span><span class="p">(</span><span class="n">citekey</span><span class="p">):</span>
-
-    <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">    Passthrough citekey if it has a valid citation key prefix. Otherwise,</span>
-
-<span class="sd">    if the lowercase citekey prefix is valid, convert the prefix to lowercase.</span>
-
-<span class="sd">    Otherwise, assume citekey is raw and prepend &quot;raw:&quot;.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="n">prefix_to_handler</span>
-
-    <span class="n">prefixes</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="s2">&quot;{x}:&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">prefix_to_handler</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;raw&quot;</span><span class="p">]]</span>
-
-    <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">prefixes</span><span class="p">:</span>
-
-        <span class="k">if</span> <span class="n">citekey</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
-
-            <span class="k">return</span> <span class="n">citekey</span>
-
-        <span class="k">if</span> <span class="n">citekey</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
-
-            <span class="k">return</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">citekey</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="p">:]</span>
-
-    <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;raw:{citekey}&quot;</span>
-</code></pre></div>
-
-
-</details>
-<h3 id="is_valid_citekey">is_valid_citekey</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">is_valid_citekey</span><span class="p">(</span>
-    <span class="n">citekey</span><span class="p">,</span>
-    <span class="n">allow_tag</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">allow_raw</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">allow_pandoc_xnos</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span>
-</code></pre></div>
-
-
-<p>Return True if citekey is a properly formatted string. Return False if
-citekey is not a citation or is an invalid citation.</p>
-<p>In the case citekey is invalid, an error is logged. This
-function does not catch all invalid citekeys, but instead performs cursory
-checks, such as ensuring citekeys adhere to the expected formats. No calls to
-external resources are used by these checks, so they will not detect
-citekeys to non-existent identifiers unless those identifiers violate
-their source's syntax.</p>
-<p>allow_tag=False, allow_raw=False, and allow_pandoc_xnos=False enable
-allowing citekey sources that are valid for Manubot manuscripts, but
-likely not elsewhere. allow_tag=True enables citekey tags (e.g.
-tag:citation-tag). allow_raw=True enables raw citekeys (e.g.
-raw:manual-reference). allow_pandoc_xnos=True still returns False for
-pandoc-xnos references (e.g. fig:figure-id), but does not log an error.
-With the default of False for these arguments, valid sources are restricted
-to those for which manubot can retrieve metadata based only on the
-standalone citekey.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="x">def is_valid_citekey(</span>
-
-<span class="x">    citekey, allow_tag=False, allow_raw=False, allow_pandoc_xnos=False</span>
-
-<span class="x">):</span>
-
-<span class="x">    &quot;&quot;&quot;</span>
-
-<span class="x">    Return True if citekey is a properly formatted string. Return False if</span>
-
-<span class="x">    citekey is not a citation or is an invalid citation.</span>
-
-<span class="x">    In the case citekey is invalid, an error is logged. This</span>
-
-<span class="x">    function does not catch all invalid citekeys, but instead performs cursory</span>
-
-<span class="x">    checks, such as ensuring citekeys adhere to the expected formats. No calls to</span>
-
-<span class="x">    external resources are used by these checks, so they will not detect</span>
-
-<span class="x">    citekeys to non-existent identifiers unless those identifiers violate</span>
-
-<span class="x">    their source&#39;s syntax.</span>
-
-<span class="x">    allow_tag=False, allow_raw=False, and allow_pandoc_xnos=False enable</span>
-
-<span class="x">    allowing citekey sources that are valid for Manubot manuscripts, but</span>
-
-<span class="x">    likely not elsewhere. allow_tag=True enables citekey tags (e.g.</span>
-
-<span class="x">    tag:citation-tag). allow_raw=True enables raw citekeys (e.g.</span>
-
-<span class="x">    raw:manual-reference). allow_pandoc_xnos=True still returns False for</span>
-
-<span class="x">    pandoc-xnos references (e.g. fig:figure-id), but does not log an error.</span>
-
-<span class="x">    With the default of False for these arguments, valid sources are restricted</span>
-
-<span class="x">    to those for which manubot can retrieve metadata based only on the</span>
-
-<span class="x">    standalone citekey.</span>
-
-<span class="x">    &quot;&quot;&quot;</span>
-
-<span class="x">    from .handlers import prefix_to_handler</span>
-
-<span class="x">    try:</span>
-
-<span class="x">        citekey_obj = CiteKey(citekey)</span>
-
-<span class="x">    except (ValueError, TypeError) as error:</span>
-
-<span class="x">        logging.error(error)</span>
-
-<span class="x">        return False</span>
-
-<span class="x">    if citekey_obj.prefix_lower is None:</span>
-
-<span class="x">        logging.error(</span>
-
-<span class="x">            f&quot;citekey not splittable via a single colon: {citekey}. &quot;</span>
-
-<span class="x">            &quot;Citekeys must be in the format of `source:identifier`.&quot;</span>
-
-<span class="x">        )</span>
-
-<span class="x">        return False</span>
-
-<span class="x">    if not citekey_obj.prefix or not citekey_obj.accession:</span>
-
-<span class="x">        msg = f&quot;invalid citekey: {citekey!r}\nblank source or identifier&quot;</span>
-
-<span class="x">        logging.error(msg)</span>
-
-<span class="x">        return False</span>
-
-<span class="x">    if allow_pandoc_xnos:</span>
-
-<span class="x">        # Exempted non-citation sources used for pandoc-fignos,</span>
-
-<span class="x">        # pandoc-tablenos, and pandoc-eqnos</span>
-
-<span class="x">        is_pandoc_xnos_prefix = citekey_obj.is_pandoc_xnos_prefix(log_case_warning=True)</span>
-
-<span class="x">        if is_pandoc_xnos_prefix:</span>
-
-<span class="x">            return False</span>
-
-<span class="x">    # Check supported source type</span>
-
-<span class="x">    sources = set(prefix_to_handler)</span>
-
-<span class="x">    if allow_raw:</span>
-
-<span class="x">        sources.add(&quot;raw&quot;)</span>
-
-<span class="x">    if allow_tag:</span>
-
-<span class="x">        sources.add(&quot;tag&quot;)</span>
-
-<span class="x">    if citekey_obj.prefix not in sources:</span>
-
-<span class="x">        if citekey_obj.prefix_lower in sources:</span>
-
-<span class="x">            logging.error(</span>
-
-<span class="x">                &quot;citekey sources should be all lowercase.\n&quot;</span>
-
-<span class="x">                f&#39;Should {citekey} use &quot;{citekey_obj.prefix_lower}&quot; rather than &quot;{citekey_obj.prefix}&quot;?&#39;</span>
-
-<span class="x">            )</span>
-
-<span class="x">        else:</span>
-
-<span class="x">            logging.error(</span>
-
-<span class="x">                f&quot;invalid citekey: {citekey!r}\n&quot;</span>
-
-<span class="x">                f&quot;Source {citekey_obj.prefix!r} is not valid.\n&quot;</span>
-
-<span class="x">                f&#39;Valid citation sources are </span><span class="cp">{{</span><span class="o">{</span><span class="s2">&quot;, &quot;</span><span class="nv">.join</span><span class="o">(</span><span class="nv">sorted</span><span class="o">(</span><span class="nv">sources</span><span class="o">))</span><span class="cp">}}</span><span class="x">}&#39;</span>
-
-<span class="x">            )</span>
-
-<span class="x">        return False</span>
-
-<span class="x">    inspection = citekey_obj.inspect()</span>
-
-<span class="x">    if inspection:</span>
-
-<span class="x">        logging.error(</span>
-
-<span class="x">            f&quot;invalid {citekey_obj.prefix_lower} citekey: {citekey}\n{inspection}&quot;</span>
-
-<span class="x">        )</span>
-
-<span class="x">        return False</span>
-
-<span class="x">    return True</span>
-</code></pre></div>
-
-
-</details>
 <h3 id="shorten_citekey">shorten_citekey</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">shorten_citekey</span><span class="p">(</span>
-    <span class="n">standard_citekey</span>
-<span class="p">)</span>
+    <span class="n">standard_citekey</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
 </code></pre></div>
 
 
@@ -2532,7 +2253,7 @@ since differences in the input citekey will result in different shortened citeke
 Short citekeys are generated by converting the input citekey to a 6 byte hash,
 and then converting this digest to a base62 ASCII str. Shortened
 citekeys consist of characters in the following ranges: 0-9, a-z and A-Z.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">shorten_citekey</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">shorten_citekey</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2565,42 +2286,6 @@ citekeys consist of characters in the following ranges: 0-9, a-z and A-Z.</p>
     <span class="n">short_citekey</span> <span class="o">=</span> <span class="n">base62</span><span class="o">.</span><span class="n">encodebytes</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">short_citekey</span>
-</code></pre></div>
-
-
-</details>
-<h3 id="standardize_citekey">standardize_citekey</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">standardize_citekey</span><span class="p">(</span>
-    <span class="n">citekey</span><span class="p">,</span>
-    <span class="n">warn_if_changed</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span>
-</code></pre></div>
-
-
-<p>Standardize citation keys based on their source</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@functools</span><span class="p">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">5</span><span class="n">_000</span><span class="p">)</span><span class="w"></span>
-
-<span class="n">def</span><span class="w"> </span><span class="n">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">warn_if_changed</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">    Standardize citation keys based on their source</span>
-
-<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">standard_citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">).</span><span class="n">standard_id</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">warn_if_changed</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">citekey</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nl">standard_citekey</span><span class="p">:</span><span class="w"></span>
-
-<span class="w">        </span><span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="w"></span>
-
-<span class="w">            </span><span class="n">f</span><span class="ss">&quot;standardize_citekey expected citekey to already be standardized.\n&quot;</span><span class="w"></span>
-
-<span class="w">            </span><span class="n">f</span><span class="ss">&quot;Instead citekey was changed from {citekey!r} to {standard_citekey!r}&quot;</span><span class="w"></span>
-
-<span class="w">        </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">standard_citekey</span><span class="w"></span>
 </code></pre></div>
 
 
@@ -2792,7 +2477,15 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
     <span class="p">@</span><span class="n">cached_property</span>
 
-    <span class="n">def</span> <span class="n">dealiased_id</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">dealiased_id</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nl">str</span><span class="p">:</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
+
+        <span class="n">If</span> <span class="err">`</span><span class="nb">self</span><span class="p">.</span><span class="n">input_id</span><span class="err">`</span> <span class="n">is</span> <span class="k">in</span> <span class="err">`</span><span class="nb">self</span><span class="p">.</span><span class="n">aliases</span><span class="err">`</span><span class="p">,</span> <span class="n">the</span> <span class="n">value</span> <span class="n">specified</span> <span class="n">by</span>
+
+        <span class="err">`</span><span class="nb">self</span><span class="p">.</span><span class="n">aliases</span><span class="err">`</span><span class="p">.</span> <span class="n">Otherwise</span><span class="p">,</span> <span class="err">`</span><span class="nb">self</span><span class="p">.</span><span class="n">input_id</span><span class="err">`</span><span class="p">.</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="nb">self</span><span class="p">.</span><span class="n">aliases</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">input_id</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">input_id</span><span class="p">)</span>
 
@@ -2812,9 +2505,17 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
     <span class="k">@property</span>
 
-    <span class="n">def</span> <span class="n">prefix</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">prefix</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="p">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">str</span><span class="p">]</span><span class="o">:</span>
 
-        <span class="k">if</span> <span class="n">not</span> <span class="n">hasattr</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="s">&quot;_prefix&quot;</span><span class="p">)</span><span class="o">:</span>
+        <span class="s">&quot;&quot;&quot;</span>
+
+        <span class="n">If</span> <span class="err">`</span><span class="nb">self</span><span class="p">.</span><span class="n">input_id</span><span class="err">`</span> <span class="n">contains</span> <span class="n">a</span> <span class="n">colon</span><span class="p">,</span> <span class="n">the</span> <span class="n">substring</span> <span class="n">up</span> <span class="n">to</span> <span class="n">the</span> <span class="n">first</span> <span class="n">colon</span><span class="p">.</span>
+
+        <span class="n">Otherwise</span><span class="p">,</span> <span class="n">None</span><span class="p">.</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">not</span> <span class="nf">hasattr</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="s">&quot;_prefix&quot;</span><span class="p">)</span><span class="o">:</span>
 
             <span class="nb">self</span><span class="p">.</span><span class="n">_set_prefix_accession</span><span class="p">()</span>
 
@@ -2822,13 +2523,29 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
     <span class="k">@property</span>
 
-    <span class="n">def</span> <span class="n">prefix_lower</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">prefix_lower</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="p">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">str</span><span class="p">]</span><span class="o">:</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
+
+        <span class="n">A</span> <span class="n">lowercase</span> <span class="n">version</span> <span class="n">of</span> <span class="err">`</span><span class="nb">self</span><span class="p">.</span><span class="n">prefix</span><span class="err">`</span> <span class="n">or</span> <span class="n">None</span><span class="p">.</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">self</span><span class="p">.</span><span class="n">prefix</span> <span class="n">is</span> <span class="nl">None</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="n">None</span>
 
         <span class="k">return</span> <span class="nb">self</span><span class="p">.</span><span class="n">prefix</span><span class="p">.</span><span class="n">lower</span><span class="p">()</span>
 
     <span class="k">@property</span>
 
-    <span class="n">def</span> <span class="n">accession</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">accession</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="p">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">str</span><span class="p">]</span><span class="o">:</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
+
+        <span class="n">If</span> <span class="err">`</span><span class="nb">self</span><span class="p">.</span><span class="n">prefix</span><span class="err">`</span><span class="p">,</span> <span class="n">the</span> <span class="n">remainder</span> <span class="n">of</span> <span class="err">`</span><span class="nb">self</span><span class="p">.</span><span class="n">input_id</span><span class="err">`</span> <span class="n">following</span> <span class="n">the</span> <span class="n">first</span> <span class="n">colon</span><span class="p">.</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">not</span> <span class="n">hasattr</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="s">&quot;_accession&quot;</span><span class="p">)</span><span class="o">:</span>
 
@@ -2838,7 +2555,15 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
     <span class="k">@property</span>
 
-    <span class="n">def</span> <span class="n">standard_prefix</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">standard_prefix</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="p">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">str</span><span class="p">]</span><span class="o">:</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
+
+        <span class="n">If</span> <span class="n">the</span> <span class="n">citekey</span> <span class="n">is</span> <span class="n">handled</span><span class="p">,</span> <span class="n">the</span> <span class="n">standard</span> <span class="n">prefix</span> <span class="n">specified</span> <span class="n">by</span> <span class="n">the</span> <span class="n">handler</span><span class="p">.</span>
+
+        <span class="n">Otherwise</span><span class="p">,</span> <span class="n">None</span><span class="p">.</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">not</span> <span class="n">hasattr</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="s">&quot;_standard_prefix&quot;</span><span class="p">)</span><span class="o">:</span>
 
@@ -2848,7 +2573,15 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
     <span class="k">@property</span>
 
-    <span class="n">def</span> <span class="n">standard_accession</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">standard_accession</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="p">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">str</span><span class="p">]</span><span class="o">:</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
+
+        <span class="n">If</span> <span class="n">the</span> <span class="n">citekey</span> <span class="n">is</span> <span class="n">handled</span><span class="p">,</span> <span class="n">the</span> <span class="n">standard</span> <span class="n">accession</span> <span class="n">specified</span> <span class="n">by</span> <span class="n">the</span> <span class="n">handler</span><span class="p">.</span>
+
+        <span class="n">Otherwise</span><span class="p">,</span> <span class="n">None</span><span class="p">.</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">not</span> <span class="n">hasattr</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="s">&quot;_standard_accession&quot;</span><span class="p">)</span><span class="o">:</span>
 
@@ -2870,19 +2603,39 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
     <span class="p">@</span><span class="n">cached_property</span>
 
-    <span class="n">def</span> <span class="n">is_handled_prefix</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">is_handled_prefix</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">bool</span><span class="o">:</span>
 
         <span class="n">from</span> <span class="p">.</span><span class="n">handlers</span> <span class="n">import</span> <span class="n">prefix_to_handler</span>
 
         <span class="k">return</span> <span class="nb">self</span><span class="p">.</span><span class="n">prefix_lower</span> <span class="k">in</span> <span class="n">prefix_to_handler</span>
 
-    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="p">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">str</span><span class="p">]</span><span class="o">:</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
+
+        <span class="n">Inspect</span> <span class="n">citekey</span> <span class="k">for</span> <span class="n">potential</span> <span class="n">problems</span><span class="p">.</span>
+
+        <span class="n">If</span> <span class="n">no</span> <span class="n">problems</span> <span class="n">are</span> <span class="n">found</span><span class="p">,</span> <span class="k">return</span> <span class="n">None</span><span class="p">.</span>
+
+        <span class="n">Otherwise</span><span class="p">,</span> <span class="n">returns</span> <span class="n">a</span> <span class="n">string</span> <span class="n">describing</span> <span class="n">the</span> <span class="n">problem</span><span class="p">.</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="nb">self</span><span class="p">.</span><span class="n">handler</span><span class="p">.</span><span class="n">inspect</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
 
     <span class="n">def</span> <span class="n">_standardize</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="o">:</span>
 
-        <span class="k">if</span> <span class="nb">self</span><span class="p">.</span><span class="n">prefix_lower</span> <span class="n">is</span> <span class="nl">None</span><span class="p">:</span>
+        <span class="s">&quot;&quot;&quot;</span>
+
+        <span class="n">Set</span> <span class="err">`</span><span class="nb">self</span><span class="p">.</span><span class="n">_standard_prefix</span><span class="err">`</span><span class="p">,</span> <span class="err">`</span><span class="nb">self</span><span class="p">.</span><span class="n">_standard_accession</span><span class="err">`</span><span class="p">,</span> <span class="n">and</span> <span class="err">`</span><span class="nb">self</span><span class="p">.</span><span class="n">_standard_id</span><span class="err">`</span><span class="p">.</span>
+
+        <span class="n">For</span> <span class="n">citekeys</span> <span class="n">without</span> <span class="n">a</span> <span class="n">prefix</span> <span class="n">or</span> <span class="n">with</span> <span class="n">an</span> <span class="n">unhandled</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">_standard_prefix</span>
+
+        <span class="n">and</span> <span class="n">_standard_accession</span> <span class="n">are</span> <span class="n">set</span> <span class="n">to</span> <span class="n">None</span><span class="p">.</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">not</span> <span class="nb">self</span><span class="p">.</span><span class="nl">is_handled_prefix</span><span class="p">:</span>
 
             <span class="nb">self</span><span class="p">.</span><span class="n">_standard_prefix</span> <span class="o">=</span> <span class="n">None</span>
 
@@ -2892,21 +2645,25 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
             <span class="k">return</span>
 
-        <span class="p">(</span>
+        <span class="n">fxn</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">handler</span><span class="p">.</span><span class="n">standardize_prefix_accession</span>
 
-            <span class="nb">self</span><span class="p">.</span><span class="n">_standard_prefix</span><span class="p">,</span>
+        <span class="nb">self</span><span class="p">.</span><span class="n">_standard_prefix</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">_standard_accession</span> <span class="o">=</span> <span class="n">fxn</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">accession</span><span class="p">)</span>
 
-            <span class="nb">self</span><span class="p">.</span><span class="n">_standard_accession</span><span class="p">,</span>
-
-        <span class="p">)</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">handler</span><span class="p">.</span><span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">accession</span><span class="p">)</span>
-
-        <span class="nb">self</span><span class="p">.</span><span class="n">_standard_id</span> <span class="o">=</span> <span class="n">f</span><span class="s">&quot;{self._standard_prefix}:{self._standard_accession}&quot;</span>
+        <span class="nb">self</span><span class="p">.</span><span class="n">_standard_id</span> <span class="o">=</span> <span class="n">f</span><span class="s">&quot;</span><span class="p">{</span><span class="nb">self</span><span class="p">.</span><span class="n">_standard_prefix</span><span class="p">}</span><span class="o">:</span><span class="p">{</span><span class="nb">self</span><span class="p">.</span><span class="n">_standard_accession</span><span class="p">}</span><span class="s">&quot;</span>
 
     <span class="k">@property</span>
 
-    <span class="n">def</span> <span class="n">standard_id</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">standard_id</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nl">str</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="n">not</span> <span class="n">hasattr</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="s">&quot;_standard_id&quot;</span><span class="p">)</span><span class="o">:</span>
+        <span class="s">&quot;&quot;&quot;</span>
+
+        <span class="n">If</span> <span class="n">the</span> <span class="n">citekey</span> <span class="n">is</span> <span class="n">handled</span><span class="p">,</span> <span class="n">the</span> <span class="n">standard_id</span> <span class="n">specified</span> <span class="n">by</span> <span class="n">the</span> <span class="n">handler</span><span class="p">.</span>
+
+        <span class="n">Otherwise</span><span class="p">,</span> <span class="err">`</span><span class="nb">self</span><span class="p">.</span><span class="n">dealiased_id</span><span class="err">`</span><span class="p">.</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">not</span> <span class="nf">hasattr</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="s">&quot;_standard_id&quot;</span><span class="p">)</span><span class="o">:</span>
 
             <span class="nb">self</span><span class="p">.</span><span class="n">_standardize</span><span class="p">()</span>
 
@@ -2914,7 +2671,15 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
     <span class="p">@</span><span class="n">cached_property</span>
 
-    <span class="n">def</span> <span class="n">short_id</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">short_id</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nl">str</span><span class="p">:</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
+
+        <span class="n">A</span> <span class="n">hashed</span> <span class="n">version</span> <span class="n">of</span> <span class="n">standard_id</span> <span class="n">whose</span> <span class="n">characters</span> <span class="n">are</span>
+
+        <span class="n">within</span> <span class="n">the</span> <span class="n">ranges</span> <span class="mi">0</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="n">a</span><span class="o">-</span><span class="n">z</span> <span class="n">and</span> <span class="n">A</span><span class="o">-</span><span class="n">Z</span><span class="p">.</span>
+
+        <span class="s">&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="n">shorten_citekey</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">standard_id</span><span class="p">)</span>
 
@@ -2938,9 +2703,9 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
         <span class="k">return</span> <span class="s">&quot; --&gt; &quot;</span><span class="p">.</span><span class="n">join</span><span class="p">(</span>
 
-            <span class="n">f</span><span class="s">&quot;{getattr(self, key)} ({key})&quot;</span>
+            <span class="n">f</span><span class="s">&quot;</span><span class="p">{</span><span class="n">getattr</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)}</span> <span class="p">({</span><span class="n">key</span><span class="p">})</span><span class="s">&quot;</span>
 
-            <span class="k">for</span> <span class="n">key</span> <span class="k">in</span> <span class="p">(</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="nf">in</span> <span class="p">(</span>
 
                 <span class="s">&quot;input_id&quot;</span><span class="p">,</span>
 
@@ -2969,6 +2734,8 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
         <span class="k">if</span> <span class="n">not</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="n">CSL_Item</span><span class="p">)</span><span class="o">:</span>
 
             <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+
+        <span class="n">csl_item</span><span class="p">.</span><span class="n">set_id</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">standard_id</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">csl_item</span>
 
@@ -3052,26 +2819,36 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 </code></pre></div>
 
 
+<p>If <code>self.prefix</code>, the remainder of <code>self.input_id</code> following the first colon.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">prefix</span>
 </code></pre></div>
 
 
+<p>If <code>self.input_id</code> contains a colon, the substring up to the first colon.
+Otherwise, None.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">prefix_lower</span>
 </code></pre></div>
 
 
+<p>A lowercase version of <code>self.prefix</code> or None.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">standard_accession</span>
 </code></pre></div>
 
 
+<p>If the citekey is handled, the standard accession specified by the handler.
+Otherwise, None.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">standard_id</span>
 </code></pre></div>
 
 
+<p>If the citekey is handled, the standard_id specified by the handler.
+Otherwise, <code>self.dealiased_id</code>.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">standard_prefix</span>
 </code></pre></div>
 
 
+<p>If the citekey is handled, the standard prefix specified by the handler.
+Otherwise, None.</p>
 <h4 id="methods">Methods</h4>
 <h5 id="all_ids">all_ids</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">all_ids</span><span class="p">(</span>
@@ -3094,6 +2871,8 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 </code></pre></div>
 
 
+<p>If <code>self.input_id</code> is in <code>self.aliases</code>, the value specified by
+<code>self.aliases</code>. Otherwise, <code>self.input_id</code>.</p>
 <h5 id="handler">handler</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">handler</span><span class="p">(</span>
     <span class="o">...</span>
@@ -3104,13 +2883,26 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 <h5 id="inspect">inspect</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span>
     <span class="bp">self</span>
-<span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span>
 </code></pre></div>
 
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="k">self</span><span class="p">):</span>
+<p>Inspect citekey for potential problems.
+If no problems are found, return None.
+Otherwise, returns a string describing the problem.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tp</span><span class="p">.</span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="k">self</span><span class="p">.</span><span class="k">handler</span><span class="p">.</span><span class="n">inspect</span><span class="p">(</span><span class="k">self</span><span class="p">)</span>
+<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">        Inspect citekey for potential problems.</span>
+
+<span class="ss">        If no problems are found, return None.</span>
+
+<span class="ss">        Otherwise, returns a string describing the problem.</span>
+
+<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">handler</span><span class="p">.</span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 
@@ -3158,6 +2950,10 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
     <span class="o">...</span>
 <span class="p">)</span>
 </code></pre></div>
+
+
+<p>A hashed version of standard_id whose characters are
+within the ranges 0-9, a-z and A-Z.</p>
                 
                   
                 

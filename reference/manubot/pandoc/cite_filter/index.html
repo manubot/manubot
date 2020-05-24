@@ -355,6 +355,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../cite/citations/" title="Citations" class="md-nav__link">
+      Citations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../cite/cite_command/" title="Cite Command" class="md-nav__link">
       Cite Command
     </a>
@@ -524,13 +536,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-16" type="checkbox" id="nav-3-1-4-16">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-17" type="checkbox" id="nav-3-1-4-17">
     
-    <label class="md-nav__link" for="nav-3-1-4-16">
+    <label class="md-nav__link" for="nav-3-1-4-17">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-4-16">
+      <label class="md-nav__title" for="nav-3-1-4-17">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -556,6 +568,18 @@
   <li class="md-nav__item">
     <a href="../../cite/tests/test_arxiv/" title="Test Arxiv" class="md-nav__link">
       Test Arxiv
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../cite/tests/test_citations/" title="Test Citations" class="md-nav__link">
+      Test Citations
     </a>
   </li>
 
@@ -981,6 +1005,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../process/requests_cache/" title="Requests Cache" class="md-nav__link">
+      Requests Cache
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../process/util/" title="Util" class="md-nav__link">
       Util
     </a>
@@ -994,13 +1030,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-8" type="checkbox" id="nav-3-1-6-8">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-9" type="checkbox" id="nav-3-1-6-9">
     
-    <label class="md-nav__link" for="nav-3-1-6-8">
+    <label class="md-nav__link" for="nav-3-1-6-9">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-6-8">
+      <label class="md-nav__title" for="nav-3-1-6-9">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -1379,25 +1415,9 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">import</span> <span class="nn">pathlib</span>
-
 <span class="kn">import</span> <span class="nn">panflute</span> <span class="kn">as</span> <span class="nn">pf</span>
 
-<span class="kn">from</span> <span class="nn">manubot.cite.citekey</span> <span class="kn">import</span> <span class="n">is_valid_citekey</span>
-
-<span class="kn">from</span> <span class="nn">manubot.process.util</span> <span class="kn">import</span> <span class="p">(</span>
-
-    <span class="n">get_citekeys_df</span><span class="p">,</span>
-
-    <span class="n">generate_csl_items</span><span class="p">,</span>
-
-    <span class="n">load_manual_references</span><span class="p">,</span>
-
-    <span class="n">write_citekeys_tsv</span><span class="p">,</span>
-
-    <span class="n">write_csl_json</span><span class="p">,</span>
-
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">manubot.cite.citations</span> <span class="kn">import</span> <span class="n">Citations</span>
 
 <span class="n">global_variables</span> <span class="o">=</span> <span class="p">{</span>
 
@@ -1577,6 +1597,24 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
             <span class="n">elem</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
+<span class="k">def</span> <span class="nf">_get_load_manual_references_kwargs</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Return keyword arguments for Citations.load_manual_references.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">manual_refs</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[])</span>
+
+    <span class="n">bibliography_paths</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;bibliography&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[])</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bibliography_paths</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+
+        <span class="n">bibliography_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">bibliography_paths</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="n">bibliography_paths</span><span class="p">,</span> <span class="n">extra_csl_items</span><span class="o">=</span><span class="n">manual_refs</span><span class="p">,)</span>
+
 <span class="k">def</span> <span class="nf">process_citations</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1623,77 +1661,45 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
     <span class="n">manuscript_citekeys</span> <span class="o">=</span> <span class="n">global_variables</span><span class="p">[</span><span class="s2">&quot;manuscript_citekeys&quot;</span><span class="p">]</span>
 
-    <span class="n">manuscript_citekeys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="o">=</span><span class="n">manuscript_citekeys</span><span class="p">,</span> <span class="n">aliases</span><span class="o">=</span><span class="n">citekey_aliases</span><span class="p">)</span>
 
-        <span class="nb">filter</span><span class="p">(</span>
-
-            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">is_valid_citekey</span><span class="p">(</span>
-
-                <span class="n">x</span><span class="p">,</span> <span class="n">allow_tag</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">allow_raw</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">allow_pandoc_xnos</span><span class="o">=</span><span class="bp">True</span>
-
-            <span class="p">),</span>
-
-            <span class="nb">set</span><span class="p">(</span><span class="n">manuscript_citekeys</span><span class="p">),</span>
-
-        <span class="p">)</span>
-
-    <span class="p">)</span>
-
-    <span class="n">global_variables</span><span class="p">[</span><span class="s2">&quot;manuscript_citekeys&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manuscript_citekeys</span>
-
-    <span class="n">citekeys_df</span> <span class="o">=</span> <span class="n">get_citekeys_df</span><span class="p">(</span>
-
-        <span class="n">manuscript_citekeys</span><span class="p">,</span> <span class="n">global_variables</span><span class="p">[</span><span class="s2">&quot;citekey_aliases&quot;</span><span class="p">],</span>
-
-    <span class="p">)</span>
-
-    <span class="n">global_variables</span><span class="p">[</span><span class="s2">&quot;citekeys_df&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekeys_df</span>
-
-    <span class="n">global_variables</span><span class="p">[</span><span class="s2">&quot;citekey_shortener&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-
-        <span class="nb">zip</span><span class="p">((</span><span class="n">citekeys_df</span><span class="p">[</span><span class="s2">&quot;manuscript_citekey&quot;</span><span class="p">]),</span> <span class="n">citekeys_df</span><span class="p">[</span><span class="s2">&quot;short_citekey&quot;</span><span class="p">])</span>
-
-    <span class="p">)</span>
-
-    <span class="n">doc</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">_citation_to_id_action</span><span class="p">)</span>
-
-    <span class="n">manual_refs</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[])</span>
-
-    <span class="n">bibliography_paths</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;bibliography&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[])</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bibliography_paths</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-
-        <span class="n">bibliography_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">bibliography_paths</span><span class="p">]</span>
-
-    <span class="n">manual_refs</span> <span class="o">=</span> <span class="n">load_manual_references</span><span class="p">(</span>
-
-        <span class="n">bibliography_paths</span><span class="p">,</span> <span class="n">extra_csl_items</span><span class="o">=</span><span class="n">manual_refs</span>
-
-    <span class="p">)</span>
-
-    <span class="n">standard_citekeys</span> <span class="o">=</span> <span class="n">citekeys_df</span><span class="o">.</span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="n">citations</span><span class="o">.</span><span class="n">csl_item_failure_log_level</span> <span class="o">=</span> <span class="s2">&quot;ERROR&quot;</span>
 
     <span class="n">requests_cache_path</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;manubot-requests-cache-path&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">requests_cache_path</span><span class="p">:</span>
 
-        <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">requests_cache_path</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">manubot.process.requests_cache</span> <span class="kn">import</span> <span class="n">RequestsCache</span>
 
-    <span class="n">csl_items</span> <span class="o">=</span> <span class="n">generate_csl_items</span><span class="p">(</span>
+        <span class="n">req_cache</span> <span class="o">=</span> <span class="n">RequestsCache</span><span class="p">(</span><span class="n">requests_cache_path</span><span class="p">)</span>
 
-        <span class="n">citekeys</span><span class="o">=</span><span class="n">standard_citekeys</span><span class="p">,</span>
+        <span class="n">req_cache</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
 
-        <span class="n">manual_refs</span><span class="o">=</span><span class="n">manual_refs</span><span class="p">,</span>
+        <span class="n">req_cache</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
 
-        <span class="n">requests_cache_path</span><span class="o">=</span><span class="n">doc</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;manubot-requests-cache-path&quot;</span><span class="p">),</span>
+        <span class="k">if</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;manubot-clear-requests-cache&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 
-        <span class="n">clear_requests_cache</span><span class="o">=</span><span class="n">doc</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;manubot-clear-requests-cache&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+            <span class="n">req_cache</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
-    <span class="p">)</span>
+    <span class="n">citations</span><span class="o">.</span><span class="n">filter_pandoc_xnos</span><span class="p">()</span>
 
-    <span class="n">write_citekeys_tsv</span><span class="p">(</span><span class="n">citekeys_df</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">doc</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;manubot-output-citekeys&quot;</span><span class="p">))</span>
+    <span class="n">citations</span><span class="o">.</span><span class="n">load_manual_references</span><span class="p">(</span><span class="o">**</span><span class="n">_get_load_manual_references_kwargs</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span>
 
-    <span class="n">write_csl_json</span><span class="p">(</span><span class="n">csl_items</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">doc</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;manubot-output-bibliography&quot;</span><span class="p">))</span>
+    <span class="n">citations</span><span class="o">.</span><span class="n">inspect</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
+
+    <span class="n">citations</span><span class="o">.</span><span class="n">get_csl_items</span><span class="p">()</span>
+
+    <span class="n">global_variables</span><span class="p">[</span><span class="s2">&quot;citekey_shortener&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citations</span><span class="o">.</span><span class="n">input_to_csl_id</span>
+
+    <span class="n">doc</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">_citation_to_id_action</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">requests_cache_path</span><span class="p">:</span>
+
+        <span class="n">req_cache</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">citations</span><span class="o">.</span><span class="n">write_citekeys_tsv</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">doc</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;manubot-output-citekeys&quot;</span><span class="p">))</span>
+
+    <span class="n">citations</span><span class="o">.</span><span class="n">write_csl_json</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">doc</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;manubot-output-bibliography&quot;</span><span class="p">))</span>
 
     <span class="c1"># Update pandoc metadata with fields that this filter</span>
 
@@ -1701,7 +1707,7 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
     <span class="n">doc</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;bibliography&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="n">doc</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;references&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">csl_items</span>
+    <span class="n">doc</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;references&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citations</span><span class="o">.</span><span class="n">csl_items</span>
 
     <span class="n">doc</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;citekey_aliases&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekey_aliases</span>
 
@@ -1863,9 +1869,9 @@ Pandoc's Abstract Syntax Tree.</p>
 <li>manubot-output-citekeys: path to write TSV table of citekeys</li>
 <li>manubot-output-bibliography: path to write generated CSL JSON bibliography</li>
 </ul>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">process_citations</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">process_citations</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
 
-<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
+    <span class="ss">&quot;&quot;&quot;</span>
 
 <span class="ss">    Apply citation-by-identifier to a Python object representation of</span>
 
@@ -1885,111 +1891,79 @@ Pandoc's Abstract Syntax Tree.</p>
 
 <span class="ss">    - manubot-output-bibliography: path to write generated CSL JSON bibliography</span>
 
-<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="ss">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">citekey_aliases</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="ss">&quot;citekey-aliases&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">default</span><span class="o">=</span><span class="err">{}</span><span class="p">)</span><span class="w"></span>
+    <span class="n">citekey_aliases</span> <span class="o">=</span> <span class="n">doc</span><span class="p">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="ss">&quot;citekey-aliases&quot;</span><span class="p">,</span> <span class="k">default</span><span class="o">=</span><span class="err">{}</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">citekey_aliases</span><span class="p">,</span><span class="w"> </span><span class="n">dict</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+    <span class="k">if</span> <span class="k">not</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">citekey_aliases</span><span class="p">,</span> <span class="n">dict</span><span class="p">):</span>
 
-<span class="w">        </span><span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="w"></span>
+        <span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span>
 
-<span class="w">            </span><span class="n">f</span><span class="ss">&quot;Expected metadata.citekey-aliases to be a dict, &quot;</span><span class="w"></span>
+            <span class="n">f</span><span class="ss">&quot;Expected metadata.citekey-aliases to be a dict, &quot;</span>
 
-<span class="w">            </span><span class="n">f</span><span class="ss">&quot;but received a {citekey_aliases.__class__.__name__}. Disregarding.&quot;</span><span class="w"></span>
+            <span class="n">f</span><span class="ss">&quot;but received a {citekey_aliases.__class__.__name__}. Disregarding.&quot;</span>
 
-<span class="w">        </span><span class="p">)</span><span class="w"></span>
+        <span class="p">)</span>
 
-<span class="w">        </span><span class="n">citekey_aliases</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dict</span><span class="p">()</span><span class="w"></span>
+        <span class="n">citekey_aliases</span> <span class="o">=</span> <span class="n">dict</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">global_variables</span><span class="o">[</span><span class="n">&quot;citekey_aliases&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey_aliases</span><span class="w"></span>
+    <span class="n">global_variables</span><span class="p">[</span><span class="ss">&quot;citekey_aliases&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekey_aliases</span>
 
-<span class="w">    </span><span class="n">doc</span><span class="p">.</span><span class="n">walk</span><span class="p">(</span><span class="n">_get_reference_link_citekey_aliases</span><span class="p">)</span><span class="w"></span>
+    <span class="n">doc</span><span class="p">.</span><span class="n">walk</span><span class="p">(</span><span class="n">_get_reference_link_citekey_aliases</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">doc</span><span class="p">.</span><span class="n">walk</span><span class="p">(</span><span class="n">_get_citekeys_action</span><span class="p">)</span><span class="w"></span>
+    <span class="n">doc</span><span class="p">.</span><span class="n">walk</span><span class="p">(</span><span class="n">_get_citekeys_action</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">manuscript_citekeys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">global_variables</span><span class="o">[</span><span class="n">&quot;manuscript_citekeys&quot;</span><span class="o">]</span><span class="w"></span>
+    <span class="n">manuscript_citekeys</span> <span class="o">=</span> <span class="n">global_variables</span><span class="p">[</span><span class="ss">&quot;manuscript_citekeys&quot;</span><span class="p">]</span>
 
-<span class="w">    </span><span class="n">manuscript_citekeys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sorted</span><span class="p">(</span><span class="w"></span>
+    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="o">=</span><span class="n">manuscript_citekeys</span><span class="p">,</span> <span class="n">aliases</span><span class="o">=</span><span class="n">citekey_aliases</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">filter</span><span class="p">(</span><span class="w"></span>
+    <span class="n">citations</span><span class="p">.</span><span class="n">csl_item_failure_log_level</span> <span class="o">=</span> <span class="ss">&quot;ERROR&quot;</span>
 
-<span class="w">            </span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="n">is_valid_citekey</span><span class="p">(</span><span class="w"></span>
+    <span class="n">requests_cache_path</span> <span class="o">=</span> <span class="n">doc</span><span class="p">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="ss">&quot;manubot-requests-cache-path&quot;</span><span class="p">)</span>
 
-<span class="w">                </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">allow_tag</span><span class="o">=</span><span class="k">True</span><span class="p">,</span><span class="w"> </span><span class="n">allow_raw</span><span class="o">=</span><span class="k">True</span><span class="p">,</span><span class="w"> </span><span class="n">allow_pandoc_xnos</span><span class="o">=</span><span class="k">True</span><span class="w"></span>
+    <span class="k">if</span> <span class="n">requests_cache_path</span><span class="p">:</span>
 
-<span class="w">            </span><span class="p">),</span><span class="w"></span>
+        <span class="k">from</span> <span class="n">manubot</span><span class="p">.</span><span class="n">process</span><span class="p">.</span><span class="n">requests_cache</span> <span class="n">import</span> <span class="n">RequestsCache</span>
 
-<span class="w">            </span><span class="k">set</span><span class="p">(</span><span class="n">manuscript_citekeys</span><span class="p">),</span><span class="w"></span>
+        <span class="n">req_cache</span> <span class="o">=</span> <span class="n">RequestsCache</span><span class="p">(</span><span class="n">requests_cache_path</span><span class="p">)</span>
 
-<span class="w">        </span><span class="p">)</span><span class="w"></span>
+        <span class="n">req_cache</span><span class="p">.</span><span class="n">mkdir</span><span class="p">()</span>
 
-<span class="w">    </span><span class="p">)</span><span class="w"></span>
+        <span class="n">req_cache</span><span class="p">.</span><span class="n">install</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">global_variables</span><span class="o">[</span><span class="n">&quot;manuscript_citekeys&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">manuscript_citekeys</span><span class="w"></span>
+        <span class="k">if</span> <span class="n">doc</span><span class="p">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="ss">&quot;manubot-clear-requests-cache&quot;</span><span class="p">,</span> <span class="k">default</span><span class="o">=</span><span class="k">False</span><span class="p">):</span>
 
-<span class="w">    </span><span class="n">citekeys_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_citekeys_df</span><span class="p">(</span><span class="w"></span>
+            <span class="n">req_cache</span><span class="p">.</span><span class="n">clear</span><span class="p">()</span>
 
-<span class="w">        </span><span class="n">manuscript_citekeys</span><span class="p">,</span><span class="w"> </span><span class="n">global_variables</span><span class="o">[</span><span class="n">&quot;citekey_aliases&quot;</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+    <span class="n">citations</span><span class="p">.</span><span class="n">filter_pandoc_xnos</span><span class="p">()</span>
 
-<span class="w">    </span><span class="p">)</span><span class="w"></span>
+    <span class="n">citations</span><span class="p">.</span><span class="n">load_manual_references</span><span class="p">(</span><span class="o">**</span><span class="n">_get_load_manual_references_kwargs</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span>
 
-<span class="w">    </span><span class="n">global_variables</span><span class="o">[</span><span class="n">&quot;citekeys_df&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekeys_df</span><span class="w"></span>
+    <span class="n">citations</span><span class="p">.</span><span class="n">inspect</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="ss">&quot;WARNING&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">global_variables</span><span class="o">[</span><span class="n">&quot;citekey_shortener&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dict</span><span class="p">(</span><span class="w"></span>
+    <span class="n">citations</span><span class="p">.</span><span class="n">get_csl_items</span><span class="p">()</span>
 
-<span class="w">        </span><span class="n">zip</span><span class="p">((</span><span class="n">citekeys_df</span><span class="o">[</span><span class="n">&quot;manuscript_citekey&quot;</span><span class="o">]</span><span class="p">),</span><span class="w"> </span><span class="n">citekeys_df</span><span class="o">[</span><span class="n">&quot;short_citekey&quot;</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
+    <span class="n">global_variables</span><span class="p">[</span><span class="ss">&quot;citekey_shortener&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citations</span><span class="p">.</span><span class="n">input_to_csl_id</span>
 
-<span class="w">    </span><span class="p">)</span><span class="w"></span>
+    <span class="n">doc</span><span class="p">.</span><span class="n">walk</span><span class="p">(</span><span class="n">_citation_to_id_action</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">doc</span><span class="p">.</span><span class="n">walk</span><span class="p">(</span><span class="n">_citation_to_id_action</span><span class="p">)</span><span class="w"></span>
+    <span class="k">if</span> <span class="n">requests_cache_path</span><span class="p">:</span>
 
-<span class="w">    </span><span class="n">manual_refs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="ss">&quot;references&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">default</span><span class="o">=</span><span class="err">[]</span><span class="p">)</span><span class="w"></span>
+        <span class="n">req_cache</span><span class="p">.</span><span class="k">close</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">bibliography_paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="ss">&quot;bibliography&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">default</span><span class="o">=</span><span class="err">[]</span><span class="p">)</span><span class="w"></span>
+    <span class="n">citations</span><span class="p">.</span><span class="n">write_citekeys_tsv</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">doc</span><span class="p">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="ss">&quot;manubot-output-citekeys&quot;</span><span class="p">))</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">bibliography_paths</span><span class="p">,</span><span class="w"> </span><span class="n">list</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+    <span class="n">citations</span><span class="p">.</span><span class="n">write_csl_json</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">doc</span><span class="p">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="ss">&quot;manubot-output-bibliography&quot;</span><span class="p">))</span>
 
-<span class="w">        </span><span class="n">bibliography_paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">bibliography_paths</span><span class="o">]</span><span class="w"></span>
+    <span class="o">#</span> <span class="k">Update</span> <span class="n">pandoc</span> <span class="n">metadata</span> <span class="k">with</span> <span class="n">fields</span> <span class="n">that</span> <span class="n">this</span> <span class="n">filter</span>
 
-<span class="w">    </span><span class="n">manual_refs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_manual_references</span><span class="p">(</span><span class="w"></span>
+    <span class="o">#</span> <span class="n">has</span> <span class="n">either</span> <span class="n">consumed</span><span class="p">,</span> <span class="n">created</span><span class="p">,</span> <span class="k">or</span> <span class="n">modified</span><span class="p">.</span>
 
-<span class="w">        </span><span class="n">bibliography_paths</span><span class="p">,</span><span class="w"> </span><span class="n">extra_csl_items</span><span class="o">=</span><span class="n">manual_refs</span><span class="w"></span>
+    <span class="n">doc</span><span class="p">.</span><span class="n">metadata</span><span class="p">[</span><span class="ss">&quot;bibliography&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="w">    </span><span class="p">)</span><span class="w"></span>
+    <span class="n">doc</span><span class="p">.</span><span class="n">metadata</span><span class="p">[</span><span class="ss">&quot;references&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citations</span><span class="p">.</span><span class="n">csl_items</span>
 
-<span class="w">    </span><span class="n">standard_citekeys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekeys_df</span><span class="p">.</span><span class="n">standard_citekey</span><span class="p">.</span><span class="k">unique</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">requests_cache_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="ss">&quot;manubot-requests-cache-path&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">requests_cache_path</span><span class="p">:</span><span class="w"></span>
-
-<span class="w">        </span><span class="n">pathlib</span><span class="p">.</span><span class="k">Path</span><span class="p">(</span><span class="n">requests_cache_path</span><span class="p">).</span><span class="n">parent</span><span class="p">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="k">True</span><span class="p">,</span><span class="w"> </span><span class="n">exist_ok</span><span class="o">=</span><span class="k">True</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">generate_csl_items</span><span class="p">(</span><span class="w"></span>
-
-<span class="w">        </span><span class="n">citekeys</span><span class="o">=</span><span class="n">standard_citekeys</span><span class="p">,</span><span class="w"></span>
-
-<span class="w">        </span><span class="n">manual_refs</span><span class="o">=</span><span class="n">manual_refs</span><span class="p">,</span><span class="w"></span>
-
-<span class="w">        </span><span class="n">requests_cache_path</span><span class="o">=</span><span class="n">doc</span><span class="p">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="ss">&quot;manubot-requests-cache-path&quot;</span><span class="p">),</span><span class="w"></span>
-
-<span class="w">        </span><span class="n">clear_requests_cache</span><span class="o">=</span><span class="n">doc</span><span class="p">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="ss">&quot;manubot-clear-requests-cache&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"></span>
-
-<span class="w">    </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">write_citekeys_tsv</span><span class="p">(</span><span class="n">citekeys_df</span><span class="p">,</span><span class="w"> </span><span class="k">path</span><span class="o">=</span><span class="n">doc</span><span class="p">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="ss">&quot;manubot-output-citekeys&quot;</span><span class="p">))</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">write_csl_json</span><span class="p">(</span><span class="n">csl_items</span><span class="p">,</span><span class="w"> </span><span class="k">path</span><span class="o">=</span><span class="n">doc</span><span class="p">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="ss">&quot;manubot-output-bibliography&quot;</span><span class="p">))</span><span class="w"></span>
-
-<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="k">Update</span><span class="w"> </span><span class="n">pandoc</span><span class="w"> </span><span class="n">metadata</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">fields</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="k">filter</span><span class="w"></span>
-
-<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">either</span><span class="w"> </span><span class="n">consumed</span><span class="p">,</span><span class="w"> </span><span class="n">created</span><span class="p">,</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">modified</span><span class="p">.</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">doc</span><span class="p">.</span><span class="n">metadata</span><span class="o">[</span><span class="n">&quot;bibliography&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">[]</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">doc</span><span class="p">.</span><span class="n">metadata</span><span class="o">[</span><span class="n">&quot;references&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_items</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">doc</span><span class="p">.</span><span class="n">metadata</span><span class="o">[</span><span class="n">&quot;citekey_aliases&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey_aliases</span><span class="w"></span>
+    <span class="n">doc</span><span class="p">.</span><span class="n">metadata</span><span class="p">[</span><span class="ss">&quot;citekey_aliases&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekey_aliases</span>
 </code></pre></div>
 
 

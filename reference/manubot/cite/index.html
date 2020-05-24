@@ -357,6 +357,18 @@
 
 
   <li class="md-nav__item">
+    <a href="citations/" title="Citations" class="md-nav__link">
+      Citations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="cite_command/" title="Cite Command" class="md-nav__link">
       Cite Command
     </a>
@@ -483,29 +495,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#citation_to_citeproc" class="md-nav__link">
-    citation_to_citeproc
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#citekey_to_csl_item" class="md-nav__link">
     citekey_to_csl_item
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#standardize_citation" class="md-nav__link">
-    standardize_citation
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#standardize_citekey" class="md-nav__link">
-    standardize_citekey
   </a>
   
 </li>
@@ -605,13 +596,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-16" type="checkbox" id="nav-3-1-4-16">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-17" type="checkbox" id="nav-3-1-4-17">
     
-    <label class="md-nav__link" for="nav-3-1-4-16">
+    <label class="md-nav__link" for="nav-3-1-4-17">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-4-16">
+      <label class="md-nav__title" for="nav-3-1-4-17">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -637,6 +628,18 @@
   <li class="md-nav__item">
     <a href="tests/test_arxiv/" title="Test Arxiv" class="md-nav__link">
       Test Arxiv
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="tests/test_citations/" title="Test Citations" class="md-nav__link">
+      Test Citations
     </a>
   </li>
 
@@ -988,6 +991,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../process/requests_cache/" title="Requests Cache" class="md-nav__link">
+      Requests Cache
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../process/util/" title="Util" class="md-nav__link">
       Util
     </a>
@@ -1001,13 +1016,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-8" type="checkbox" id="nav-3-1-6-8">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-9" type="checkbox" id="nav-3-1-6-9">
     
-    <label class="md-nav__link" for="nav-3-1-6-8">
+    <label class="md-nav__link" for="nav-3-1-6-9">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-6-8">
+      <label class="md-nav__title" for="nav-3-1-6-9">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -1273,29 +1288,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#citation_to_citeproc" class="md-nav__link">
-    citation_to_citeproc
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#citekey_to_csl_item" class="md-nav__link">
     citekey_to_csl_item
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#standardize_citation" class="md-nav__link">
-    standardize_citation
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#standardize_citekey" class="md-nav__link">
-    standardize_citekey
   </a>
   
 </li>
@@ -1327,49 +1321,11 @@
                 <h1 id="module-manubotcite">Module manubot.cite</h1>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
 
-    <span class="s2">&quot;citation_to_citeproc&quot;</span><span class="p">,</span>
-
     <span class="s2">&quot;citekey_to_csl_item&quot;</span><span class="p">,</span>
-
-    <span class="s2">&quot;standardize_citation&quot;</span><span class="p">,</span>
-
-    <span class="s2">&quot;standardize_citekey&quot;</span><span class="p">,</span>
 
 <span class="p">]</span>
 
-<span class="kn">from</span> <span class="nn">manubot.cite.citekey</span> <span class="kn">import</span> <span class="n">citekey_to_csl_item</span><span class="p">,</span> <span class="n">standardize_citekey</span>
-
-<span class="k">def</span> <span class="nf">citation_to_citeproc</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-
-    <span class="kn">import</span> <span class="nn">warnings</span>
-
-    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-
-        <span class="s2">&quot;&#39;citation_to_citeproc&#39; has been renamed to &#39;citekey_to_csl_item&#39;&quot;</span>
-
-        <span class="s2">&quot; and will be removed in a future release.&quot;</span><span class="p">,</span>
-
-        <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">,</span>
-
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">standardize_citation</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-
-    <span class="kn">import</span> <span class="nn">warnings</span>
-
-    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-
-        <span class="s2">&quot;&#39;standardize_citation&#39; has been renamed to &#39;standardize_citekey&#39;&quot;</span>
-
-        <span class="s2">&quot; and will be removed in a future release.&quot;</span><span class="p">,</span>
-
-        <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">,</span>
-
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">manubot.cite.citekey</span> <span class="kn">import</span> <span class="n">citekey_to_csl_item</span>
 </code></pre></div>
 
 
@@ -1377,6 +1333,7 @@
 <h2 id="sub-modules">Sub-modules</h2>
 <ul>
 <li><a href="arxiv/">manubot.cite.arxiv</a></li>
+<li><a href="citations/">manubot.cite.citations</a></li>
 <li><a href="cite_command/">manubot.cite.cite_command</a></li>
 <li><a href="citekey/">manubot.cite.citekey</a></li>
 <li><a href="citeproc/">manubot.cite.citeproc</a></li>
@@ -1393,144 +1350,78 @@
 <li><a href="zotero/">manubot.cite.zotero</a></li>
 </ul>
 <h2 id="functions">Functions</h2>
-<h3 id="citation_to_citeproc">citation_to_citeproc</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">citation_to_citeproc</span><span class="p">(</span>
-    <span class="o">*</span><span class="n">args</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span>
-<span class="p">)</span>
-</code></pre></div>
-
-
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">citation_to_citeproc</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-
-    <span class="kn">import</span> <span class="nn">warnings</span>
-
-    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-
-        <span class="s2">&quot;&#39;citation_to_citeproc&#39; has been renamed to &#39;citekey_to_csl_item&#39;&quot;</span>
-
-        <span class="s2">&quot; and will be removed in a future release.&quot;</span><span class="p">,</span>
-
-        <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">,</span>
-
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</code></pre></div>
-
-
-</details>
 <h3 id="citekey_to_csl_item">citekey_to_csl_item</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">citekey_to_csl_item</span><span class="p">(</span>
     <span class="n">citekey</span><span class="p">,</span>
-    <span class="n">prune</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">manual_refs</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">log_level</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;WARNING&#39;</span>
 <span class="p">)</span>
 </code></pre></div>
 
 
-<p>Generate a CSL Item (Python dictionary) for the input citekey.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<p>Generate a CSL_Item for the input citekey.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">citekey_to_csl_item</span><span class="p">(</span>
+
+    <span class="n">citekey</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">manual_refs</span><span class="o">=</span><span class="p">{},</span> <span class="n">log_level</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;WARNING&quot;</span>
+
+<span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Generate a CSL Item (Python dictionary) for the input citekey.</span>
+<span class="sd">    Generate a CSL_Item for the input citekey.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="kn">from</span> <span class="nn">manubot</span> <span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">manubot_version</span>
 
-    <span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="n">prefix_to_handler</span>
+    <span class="c1"># https://stackoverflow.com/a/35704430/4651668</span>
 
-    <span class="n">citekey</span> <span class="o">==</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">warn_if_changed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">_checkLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
 
-    <span class="n">citekey_obj</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">CiteKey</span><span class="p">):</span>
 
-    <span class="n">citekey_obj</span><span class="o">.</span><span class="n">csl_item</span>
+        <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">citekey_obj</span><span class="o">.</span><span class="n">prefix_lower</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">prefix_to_handler</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span> <span class="ow">in</span> <span class="n">manual_refs</span><span class="p">:</span>
 
-        <span class="n">msg</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;Unsupported citation source {citekey_obj.prefix_lower!r} in {citekey!r}&quot;</span>
+        <span class="k">return</span> <span class="n">manual_refs</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">]</span>
 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_obj</span><span class="o">.</span><span class="n">csl_item</span>
+        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">csl_item</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+
+            <span class="n">log_level</span><span class="p">,</span>
+
+            <span class="n">f</span><span class="s2">&quot;Generating csl_item for {citekey.standard_id!r} failed &quot;</span>
+
+            <span class="n">f</span><span class="s2">&quot;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s2">{error}&quot;</span><span class="p">,</span>
+
+        <span class="p">)</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="c1"># update csl_item with manubot generated metadata</span>
 
     <span class="n">note_text</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;This CSL JSON Item was automatically generated by Manubot v{manubot_version} using citation-by-identifier.&quot;</span>
 
-    <span class="n">note_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="n">citekey</span><span class="p">}</span>
+    <span class="n">note_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">}</span>
 
     <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">note_text</span><span class="p">)</span>
 
     <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">(</span><span class="n">note_dict</span><span class="p">)</span>
 
-    <span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">citekey_obj</span><span class="o">.</span><span class="n">short_id</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">short_id</span><span class="p">)</span>
 
     <span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">prune</span><span class="o">=</span><span class="n">prune</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">csl_item</span>
-</code></pre></div>
-
-
-</details>
-<h3 id="standardize_citation">standardize_citation</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">standardize_citation</span><span class="p">(</span>
-    <span class="o">*</span><span class="n">args</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span>
-<span class="p">)</span>
-</code></pre></div>
-
-
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">standardize_citation</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-
-    <span class="kn">import</span> <span class="nn">warnings</span>
-
-    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-
-        <span class="s2">&quot;&#39;standardize_citation&#39; has been renamed to &#39;standardize_citekey&#39;&quot;</span>
-
-        <span class="s2">&quot; and will be removed in a future release.&quot;</span><span class="p">,</span>
-
-        <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">,</span>
-
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</code></pre></div>
-
-
-</details>
-<h3 id="standardize_citekey">standardize_citekey</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">standardize_citekey</span><span class="p">(</span>
-    <span class="n">citekey</span><span class="p">,</span>
-    <span class="n">warn_if_changed</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span>
-</code></pre></div>
-
-
-<p>Standardize citation keys based on their source</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@functools</span><span class="p">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">5</span><span class="n">_000</span><span class="p">)</span><span class="w"></span>
-
-<span class="n">def</span><span class="w"> </span><span class="n">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">warn_if_changed</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">    Standardize citation keys based on their source</span>
-
-<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">standard_citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">).</span><span class="n">standard_id</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">warn_if_changed</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">citekey</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nl">standard_citekey</span><span class="p">:</span><span class="w"></span>
-
-<span class="w">        </span><span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="w"></span>
-
-<span class="w">            </span><span class="n">f</span><span class="ss">&quot;standardize_citekey expected citekey to already be standardized.\n&quot;</span><span class="w"></span>
-
-<span class="w">            </span><span class="n">f</span><span class="ss">&quot;Instead citekey was changed from {citekey!r} to {standard_citekey!r}&quot;</span><span class="w"></span>
-
-<span class="w">        </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">standard_citekey</span><span class="w"></span>
 </code></pre></div>
 
 

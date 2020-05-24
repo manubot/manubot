@@ -357,6 +357,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../citations/" title="Citations" class="md-nav__link">
+      Citations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../cite_command/" title="Cite Command" class="md-nav__link">
       Cite Command
     </a>
@@ -951,13 +963,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-16" type="checkbox" id="nav-3-1-4-16">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-17" type="checkbox" id="nav-3-1-4-17">
     
-    <label class="md-nav__link" for="nav-3-1-4-16">
+    <label class="md-nav__link" for="nav-3-1-4-17">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-4-16">
+      <label class="md-nav__title" for="nav-3-1-4-17">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -983,6 +995,18 @@
   <li class="md-nav__item">
     <a href="../tests/test_arxiv/" title="Test Arxiv" class="md-nav__link">
       Test Arxiv
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tests/test_citations/" title="Test Citations" class="md-nav__link">
+      Test Citations
     </a>
   </li>
 
@@ -1334,6 +1358,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../process/requests_cache/" title="Requests Cache" class="md-nav__link">
+      Requests Cache
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../process/util/" title="Util" class="md-nav__link">
       Util
     </a>
@@ -1347,13 +1383,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-8" type="checkbox" id="nav-3-1-6-8">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-9" type="checkbox" id="nav-3-1-6-9">
     
-    <label class="md-nav__link" for="nav-3-1-6-8">
+    <label class="md-nav__link" for="nav-3-1-6-9">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-6-8">
+      <label class="md-nav__title" for="nav-3-1-6-9">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -2104,31 +2140,31 @@ supported by Unpaywall, such as arXiv IDs.</p>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">from</span> <span class="nn">.citekey</span> <span class="kn">import</span> <span class="n">standardize_citekey</span><span class="p">,</span> <span class="n">is_valid_citekey</span>
+        <span class="kn">from</span> <span class="nn">.citekey</span> <span class="kn">import</span> <span class="n">CiteKey</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Invalid citekey {citekey}&quot;</span><span class="p">)</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-        <span class="n">citekey</span> <span class="o">=</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">CiteKey</span><span class="p">):</span>
 
-        <span class="n">source</span><span class="p">,</span> <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;citekey must be a str or CiteKey&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">source_to_unpaywaller</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span> <span class="ow">in</span> <span class="n">source_to_unpaywaller</span><span class="p">:</span>
 
-            <span class="n">unpaywaller</span> <span class="o">=</span> <span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">source</span><span class="p">]</span>
+            <span class="n">unpaywaller</span> <span class="o">=</span> <span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="p">]</span>
 
-            <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">unpaywaller</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+            <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">unpaywaller</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
 
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s2">&quot;Cannot Unpaywall {citekey}. &quot;</span>
+                <span class="n">f</span><span class="s2">&quot;Cannot Unpaywall {citekey.input_id}. &quot;</span>
 
                 <span class="n">f</span><span class="s2">&quot;Supported citations sources are {&#39;, &#39;.join(source_to_unpaywaller)}. &quot;</span>
 
-                <span class="s2">&quot;Received {source!r}.&quot;</span>
+                <span class="s2">&quot;Received {citekey.standard_prefix!r}.&quot;</span>
 
             <span class="p">)</span>
 
@@ -2547,31 +2583,31 @@ or by using <strong>init</strong> of a subclass like <code>Unpaywall_DOI</code>.
 
 <span class="s2">        &quot;&quot;&quot;</span>
 
-        <span class="k">from</span> <span class="p">.</span><span class="n">citekey</span> <span class="n">import</span> <span class="n">standardize_citekey</span><span class="p">,</span> <span class="n">is_valid_citekey</span>
+        <span class="k">from</span> <span class="p">.</span><span class="n">citekey</span> <span class="n">import</span> <span class="n">CiteKey</span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="nf">is_valid_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">str</span><span class="p">):</span>
 
-            <span class="n">raise</span> <span class="nf">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Invalid citekey {citekey}&quot;</span><span class="p">)</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="nf">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-        <span class="n">citekey</span> <span class="o">=</span> <span class="nf">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+        <span class="k">if</span> <span class="k">not</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">CiteKey</span><span class="p">):</span>
 
-        <span class="n">source</span><span class="p">,</span> <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">raise</span> <span class="nf">ValueError</span><span class="p">(</span><span class="s2">&quot;citekey must be a str or CiteKey&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">source</span> <span class="k">in</span> <span class="n">source_to_unpaywaller</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">citekey</span><span class="p">.</span><span class="n">standard_prefix</span> <span class="k">in</span> <span class="n">source_to_unpaywaller</span><span class="p">:</span>
 
-            <span class="n">unpaywaller</span> <span class="o">=</span> <span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">source</span><span class="p">]</span>
+            <span class="n">unpaywaller</span> <span class="o">=</span> <span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_prefix</span><span class="p">]</span>
 
-            <span class="n">unpaywall</span> <span class="o">=</span> <span class="nf">unpaywaller</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="no">False</span><span class="p">)</span>
+            <span class="n">unpaywall</span> <span class="o">=</span> <span class="nf">unpaywaller</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_accession</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="no">False</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
 
             <span class="n">raise</span> <span class="nf">ValueError</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s2">&quot;Cannot Unpaywall {citekey}. &quot;</span>
+                <span class="n">f</span><span class="s2">&quot;Cannot Unpaywall {citekey.input_id}. &quot;</span>
 
                 <span class="n">f</span><span class="s2">&quot;Supported citations sources are {&#39;, &#39;.join(source_to_unpaywaller)}. &quot;</span>
 
-                <span class="s2">&quot;Received {source!r}.&quot;</span>
+                <span class="s2">&quot;Received {citekey.standard_prefix!r}.&quot;</span>
 
             <span class="p">)</span>
 
@@ -2645,31 +2681,31 @@ external web request to generate to a new CSL Item.</p>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">from</span> <span class="nn">.citekey</span> <span class="kn">import</span> <span class="n">standardize_citekey</span><span class="p">,</span> <span class="n">is_valid_citekey</span>
+        <span class="kn">from</span> <span class="nn">.citekey</span> <span class="kn">import</span> <span class="n">CiteKey</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Invalid citekey {citekey}&quot;</span><span class="p">)</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-        <span class="n">citekey</span> <span class="o">=</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">CiteKey</span><span class="p">):</span>
 
-        <span class="n">source</span><span class="p">,</span> <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;citekey must be a str or CiteKey&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">source_to_unpaywaller</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span> <span class="ow">in</span> <span class="n">source_to_unpaywaller</span><span class="p">:</span>
 
-            <span class="n">unpaywaller</span> <span class="o">=</span> <span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">source</span><span class="p">]</span>
+            <span class="n">unpaywaller</span> <span class="o">=</span> <span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="p">]</span>
 
-            <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">unpaywaller</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+            <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">unpaywaller</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
 
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s2">&quot;Cannot Unpaywall {citekey}. &quot;</span>
+                <span class="n">f</span><span class="s2">&quot;Cannot Unpaywall {citekey.input_id}. &quot;</span>
 
                 <span class="n">f</span><span class="s2">&quot;Supported citations sources are {&#39;, &#39;.join(source_to_unpaywaller)}. &quot;</span>
 
-                <span class="s2">&quot;Received {source!r}.&quot;</span>
+                <span class="s2">&quot;Received {citekey.standard_prefix!r}.&quot;</span>
 
             <span class="p">)</span>
 
@@ -2854,31 +2890,31 @@ external web request to generate to a new CSL Item.</p>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">from</span> <span class="nn">.citekey</span> <span class="kn">import</span> <span class="n">standardize_citekey</span><span class="p">,</span> <span class="n">is_valid_citekey</span>
+        <span class="kn">from</span> <span class="nn">.citekey</span> <span class="kn">import</span> <span class="n">CiteKey</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Invalid citekey {citekey}&quot;</span><span class="p">)</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-        <span class="n">citekey</span> <span class="o">=</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">CiteKey</span><span class="p">):</span>
 
-        <span class="n">source</span><span class="p">,</span> <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;citekey must be a str or CiteKey&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">source_to_unpaywaller</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span> <span class="ow">in</span> <span class="n">source_to_unpaywaller</span><span class="p">:</span>
 
-            <span class="n">unpaywaller</span> <span class="o">=</span> <span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">source</span><span class="p">]</span>
+            <span class="n">unpaywaller</span> <span class="o">=</span> <span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="p">]</span>
 
-            <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">unpaywaller</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+            <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">unpaywaller</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
 
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s2">&quot;Cannot Unpaywall {citekey}. &quot;</span>
+                <span class="n">f</span><span class="s2">&quot;Cannot Unpaywall {citekey.input_id}. &quot;</span>
 
                 <span class="n">f</span><span class="s2">&quot;Supported citations sources are {&#39;, &#39;.join(source_to_unpaywaller)}. &quot;</span>
 
-                <span class="s2">&quot;Received {source!r}.&quot;</span>
+                <span class="s2">&quot;Received {citekey.standard_prefix!r}.&quot;</span>
 
             <span class="p">)</span>
 
@@ -3441,31 +3477,31 @@ external web request to generate to a new CSL Item.</p>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">from</span> <span class="nn">.citekey</span> <span class="kn">import</span> <span class="n">standardize_citekey</span><span class="p">,</span> <span class="n">is_valid_citekey</span>
+        <span class="kn">from</span> <span class="nn">.citekey</span> <span class="kn">import</span> <span class="n">CiteKey</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Invalid citekey {citekey}&quot;</span><span class="p">)</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-        <span class="n">citekey</span> <span class="o">=</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">CiteKey</span><span class="p">):</span>
 
-        <span class="n">source</span><span class="p">,</span> <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;citekey must be a str or CiteKey&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">source_to_unpaywaller</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span> <span class="ow">in</span> <span class="n">source_to_unpaywaller</span><span class="p">:</span>
 
-            <span class="n">unpaywaller</span> <span class="o">=</span> <span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">source</span><span class="p">]</span>
+            <span class="n">unpaywaller</span> <span class="o">=</span> <span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="p">]</span>
 
-            <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">unpaywaller</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+            <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">unpaywaller</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
 
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s2">&quot;Cannot Unpaywall {citekey}. &quot;</span>
+                <span class="n">f</span><span class="s2">&quot;Cannot Unpaywall {citekey.input_id}. &quot;</span>
 
                 <span class="n">f</span><span class="s2">&quot;Supported citations sources are {&#39;, &#39;.join(source_to_unpaywaller)}. &quot;</span>
 
-                <span class="s2">&quot;Received {source!r}.&quot;</span>
+                <span class="s2">&quot;Received {citekey.standard_prefix!r}.&quot;</span>
 
             <span class="p">)</span>
 

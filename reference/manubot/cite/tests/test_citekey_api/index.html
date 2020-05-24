@@ -357,6 +357,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../citations/" title="Citations" class="md-nav__link">
+      Citations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../cite_command/" title="Cite Command" class="md-nav__link">
       Cite Command
     </a>
@@ -528,13 +540,13 @@
 
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-16" type="checkbox" id="nav-3-1-4-16" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-4-17" type="checkbox" id="nav-3-1-4-17" checked>
     
-    <label class="md-nav__link" for="nav-3-1-4-16">
+    <label class="md-nav__link" for="nav-3-1-4-17">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-4-16">
+      <label class="md-nav__title" for="nav-3-1-4-17">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -560,6 +572,18 @@
   <li class="md-nav__item">
     <a href="../test_arxiv/" title="Test Arxiv" class="md-nav__link">
       Test Arxiv
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../test_citations/" title="Test Citations" class="md-nav__link">
+      Test Citations
     </a>
   </li>
 
@@ -629,6 +653,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#test_citekey_standard_id" class="md-nav__link">
+    test_citekey_standard_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#test_citekey_to_csl_item_arxiv" class="md-nav__link">
     test_citekey_to_csl_item_arxiv
   </a>
@@ -687,13 +718,6 @@
           <li class="md-nav__item">
   <a href="#test_citekey_to_csl_item_pubmed_with_numeric_month" class="md-nav__link">
     test_citekey_to_csl_item_pubmed_with_numeric_month
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test_standardize_citekey" class="md-nav__link">
-    test_standardize_citekey
   </a>
   
 </li>
@@ -1025,6 +1049,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../process/requests_cache/" title="Requests Cache" class="md-nav__link">
+      Requests Cache
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../process/util/" title="Util" class="md-nav__link">
       Util
     </a>
@@ -1038,13 +1074,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-8" type="checkbox" id="nav-3-1-6-8">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-6-9" type="checkbox" id="nav-3-1-6-9">
     
-    <label class="md-nav__link" for="nav-3-1-6-8">
+    <label class="md-nav__link" for="nav-3-1-6-9">
       Tests
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="4">
-      <label class="md-nav__title" for="nav-3-1-6-8">
+      <label class="md-nav__title" for="nav-3-1-6-9">
         Tests
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -1303,6 +1339,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#test_citekey_standard_id" class="md-nav__link">
+    test_citekey_standard_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#test_citekey_to_csl_item_arxiv" class="md-nav__link">
     test_citekey_to_csl_item_arxiv
   </a>
@@ -1365,13 +1408,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#test_standardize_citekey" class="md-nav__link">
-    test_standardize_citekey
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -1402,11 +1438,13 @@
 
 <span class="kn">import</span> <span class="nn">pytest</span>
 
-<span class="kn">from</span> <span class="nn">manubot.cite</span> <span class="kn">import</span> <span class="n">citekey_to_csl_item</span><span class="p">,</span> <span class="n">standardize_citekey</span>
+<span class="kn">from</span> <span class="nn">manubot.cite</span> <span class="kn">import</span> <span class="n">citekey_to_csl_item</span>
+
+<span class="kn">from</span> <span class="nn">manubot.cite.citekey</span> <span class="kn">import</span> <span class="n">CiteKey</span>
 
 <span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
 
-    <span class="s2">&quot;citekey,expected&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;input_id,expected&quot;</span><span class="p">,</span>
 
     <span class="p">[</span>
 
@@ -1444,17 +1482,17 @@
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_citekey_standard_id</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Standardize identifiers based on their source</span>
+<span class="sd">    Test CiteKey.standard_id property for common prefixes.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">output</span> <span class="o">=</span> <span class="n">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+    <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">output</span> <span class="o">==</span> <span class="n">expected</span>
+    <span class="k">assert</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span> <span class="o">==</span> <span class="n">expected</span>
 
 <span class="nd">@pytest.mark.xfail</span><span class="p">(</span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;https://twitter.com/dhimmel/status/950443969313419264&quot;</span><span class="p">)</span>
 
@@ -1660,7 +1698,7 @@
 
     <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">][</span><span class="s2">&quot;date-parts&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[[</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">15</span><span class="p">]]</span>
 
-<span class="k">def</span> <span class="nf">test_citekey_to_csl_item_pubmed_book</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_citekey_to_csl_item_pubmed_book</span><span class="p">(</span><span class="n">caplog</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1672,9 +1710,11 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">):</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="s2">&quot;pmid:29227604&quot;</span><span class="p">,</span> <span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;ERROR&quot;</span><span class="p">)</span>
 
-        <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="s2">&quot;pmid:29227604&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">csl_item</span> <span class="ow">is</span> <span class="bp">None</span>
+
+    <span class="k">assert</span> <span class="s2">&quot;Unsupported PubMed record: no &lt;Article&gt; element&quot;</span> <span class="ow">in</span> <span class="n">caplog</span><span class="o">.</span><span class="n">text</span>
 
 <span class="k">def</span> <span class="nf">test_citekey_to_csl_item_isbn</span><span class="p">():</span>
 
@@ -1706,6 +1746,70 @@
 
 </details>
 <h2 id="functions">Functions</h2>
+<h3 id="test_citekey_standard_id">test_citekey_standard_id</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_citekey_standard_id</span><span class="p">(</span>
+    <span class="n">input_id</span><span class="p">,</span>
+    <span class="n">expected</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Test CiteKey.standard_id property for common prefixes.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">    </span><span class="ss">&quot;input_id,expected&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">[</span><span class="n"></span>
+
+<span class="n">        (&quot;doi:10.5061/DRYAD.q447c/1&quot;, &quot;doi:10.5061/dryad.q447c/1&quot;),</span>
+
+<span class="n">        (&quot;doi:10.5061/dryad.q447c/1&quot;, &quot;doi:10.5061/dryad.q447c/1&quot;),</span>
+
+<span class="n">        (&quot;doi:10/b6vnmd&quot;, &quot;doi:10.1016/s0933-3657(96)00367-3&quot;),</span>
+
+<span class="n">        (&quot;doi:10/B6VNMD&quot;, &quot;doi:10.1016/s0933-3657(96)00367-3&quot;),</span>
+
+<span class="n">        (</span>
+
+<span class="n">            &quot;doi:10/xxxxxxxxxxxxxYY&quot;,</span>
+
+<span class="n">            &quot;doi:10/xxxxxxxxxxxxxyy&quot;,</span>
+
+<span class="n">        ),  # passthrough non-existent shortDOI</span>
+
+<span class="n">        (&quot;pmid:24159271&quot;, &quot;pubmed:24159271&quot;),</span>
+
+<span class="n">        (&quot;isbn:1339919885&quot;, &quot;isbn:9781339919881&quot;),</span>
+
+<span class="n">        (&quot;isbn:1-339-91988-5&quot;, &quot;isbn:9781339919881&quot;),</span>
+
+<span class="n">        (&quot;isbn:978-0-387-95069-3&quot;, &quot;isbn:9780387950693&quot;),</span>
+
+<span class="n">        (&quot;isbn:9780387950938&quot;, &quot;isbn:9780387950938&quot;),</span>
+
+<span class="n">        (&quot;isbn:1-55860-510-X&quot;, &quot;isbn:9781558605107&quot;),</span>
+
+<span class="n">        (&quot;isbn:1-55860-510-x&quot;, &quot;isbn:9781558605107&quot;),</span>
+
+<span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
+
+<span class="n">def</span><span class="w"> </span><span class="n">test_citekey_standard_id</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Test CiteKey.standard_id property for common prefixes.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span><span class="w"></span>
+</code></pre></div>
+
+
+</details>
 <h3 id="test_citekey_to_csl_item_arxiv">test_citekey_to_csl_item_arxiv</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_citekey_to_csl_item_arxiv</span><span class="p">(</span>
 
@@ -1995,7 +2099,7 @@ https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&amp;id=27094
 </details>
 <h3 id="test_citekey_to_csl_item_pubmed_book">test_citekey_to_csl_item_pubmed_book</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_citekey_to_csl_item_pubmed_book</span><span class="p">(</span>
-
+    <span class="n">caplog</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -2003,7 +2107,7 @@ https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&amp;id=27094
 <p>Extracting CSL metadata from books in PubMed is not supported.
 Logic not implemented to parse XML returned by
 https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&amp;id=29227604&amp;rettype=full</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_citekey_to_csl_item_pubmed_book</span><span class="p">():</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_citekey_to_csl_item_pubmed_book</span><span class="p">(</span><span class="n">caplog</span><span class="p">):</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
@@ -2015,9 +2119,11 @@ https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&amp;id=29227
 
 <span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="k">with</span> <span class="n">pytest</span><span class="p">.</span><span class="n">raises</span><span class="p">(</span><span class="n">NotImplementedError</span><span class="p">):</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="ss">&quot;pmid:29227604&quot;</span><span class="p">,</span> <span class="n">log_level</span><span class="o">=</span><span class="ss">&quot;ERROR&quot;</span><span class="p">)</span>
 
-        <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="ss">&quot;pmid:29227604&quot;</span><span class="p">)</span>
+    <span class="n">assert</span> <span class="n">csl_item</span> <span class="k">is</span> <span class="k">None</span>
+
+    <span class="n">assert</span> <span class="ss">&quot;Unsupported PubMed record: no &lt;Article&gt; element&quot;</span> <span class="k">in</span> <span class="n">caplog</span><span class="p">.</span><span class="nb">text</span>
 </code></pre></div>
 
 
@@ -2051,70 +2157,6 @@ https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&amp;id=29028
     <span class="n">print</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
     <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;issued&quot;</span><span class="p">][</span><span class="ss">&quot;date-parts&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[[</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">15</span><span class="p">]]</span>
-</code></pre></div>
-
-
-</details>
-<h3 id="test_standardize_citekey">test_standardize_citekey</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_standardize_citekey</span><span class="p">(</span>
-    <span class="n">citekey</span><span class="p">,</span>
-    <span class="n">expected</span>
-<span class="p">)</span>
-</code></pre></div>
-
-
-<p>Standardize identifiers based on their source</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
-
-<span class="w">    </span><span class="ss">&quot;citekey,expected&quot;</span><span class="p">,</span><span class="w"></span>
-
-<span class="w">    </span><span class="o">[</span><span class="n"></span>
-
-<span class="n">        (&quot;doi:10.5061/DRYAD.q447c/1&quot;, &quot;doi:10.5061/dryad.q447c/1&quot;),</span>
-
-<span class="n">        (&quot;doi:10.5061/dryad.q447c/1&quot;, &quot;doi:10.5061/dryad.q447c/1&quot;),</span>
-
-<span class="n">        (&quot;doi:10/b6vnmd&quot;, &quot;doi:10.1016/s0933-3657(96)00367-3&quot;),</span>
-
-<span class="n">        (&quot;doi:10/B6VNMD&quot;, &quot;doi:10.1016/s0933-3657(96)00367-3&quot;),</span>
-
-<span class="n">        (</span>
-
-<span class="n">            &quot;doi:10/xxxxxxxxxxxxxYY&quot;,</span>
-
-<span class="n">            &quot;doi:10/xxxxxxxxxxxxxyy&quot;,</span>
-
-<span class="n">        ),  # passthrough non-existent shortDOI</span>
-
-<span class="n">        (&quot;pmid:24159271&quot;, &quot;pubmed:24159271&quot;),</span>
-
-<span class="n">        (&quot;isbn:1339919885&quot;, &quot;isbn:9781339919881&quot;),</span>
-
-<span class="n">        (&quot;isbn:1-339-91988-5&quot;, &quot;isbn:9781339919881&quot;),</span>
-
-<span class="n">        (&quot;isbn:978-0-387-95069-3&quot;, &quot;isbn:9780387950693&quot;),</span>
-
-<span class="n">        (&quot;isbn:9780387950938&quot;, &quot;isbn:9780387950938&quot;),</span>
-
-<span class="n">        (&quot;isbn:1-55860-510-X&quot;, &quot;isbn:9781558605107&quot;),</span>
-
-<span class="n">        (&quot;isbn:1-55860-510-x&quot;, &quot;isbn:9781558605107&quot;),</span>
-
-<span class="n">    </span><span class="o">]</span><span class="p">,</span><span class="w"></span>
-
-<span class="p">)</span><span class="w"></span>
-
-<span class="n">def</span><span class="w"> </span><span class="n">test_standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">    Standardize identifiers based on their source</span>
-
-<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">standardize_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="k">output</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span><span class="w"></span>
 </code></pre></div>
 
 
