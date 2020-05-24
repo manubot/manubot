@@ -1,4 +1,3 @@
-import collections
 import json
 import logging
 import re
@@ -85,7 +84,7 @@ def get_isbn_csl_item_citoid(isbn):
                 f"{json.dumps(result.text)}"
             )
     (mediawiki,) = result
-    csl_item = collections.OrderedDict()
+    csl_item = dict()
     csl_item["type"] = mediawiki.get("itemType", "book")
     if "title" in mediawiki:
         csl_item["title"] = mediawiki["title"]
