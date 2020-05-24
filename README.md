@@ -334,36 +334,41 @@ manubot process \
 This section is only relevant for project maintainers.
 Travis CI deployments are used to upload releases to [PyPI](https://pypi.org/project/manubot).
 
-To create a new release, create [release notes](release-notes) and bump the `__version__` in [`manubot/__init__.py`](manubot/__init__.py).
+To create a new release, bump the `__version__` in [`manubot/__init__.py`](manubot/__init__.py).
+Then, set the `TAG` and `OLD_TAG` environment variables:
+
+```shell
+TAG=v$(python setup.py --version)
+
+# fetch tags from the upstream remote
+# (assumes upstream is the manubot organization remote)
+git fetch --tags upstream master
+# get previous release tag, can hardcode like OLD_TAG=v0.3.1
+OLD_TAG=$(git describe --tags --abbrev=0)
+```
 
 The following commands can help draft release notes:
 
 ```shell
-# commit list since v0.2.4 tag
-git log --oneline v0.2.4..HEAD
+# check out a branch for a pull request as needed
+git checkout -b "release-$TAG"
 
-# commit authors since v0.2.4 tag
-git log  v0.2.4..HEAD --format='%aN <%aE>'
+# create release notes file if it doesn't exist
+touch "release-notes/$TAG.md"
+
+# commit list since previous tag
+echo "\n\nCommits\n-------\n" >> "release-notes/$TAG.md"
+git log --oneline --decorate=no $OLD_TAG..HEAD >> "release-notes/$TAG.md"
+
+# commit authors since previous tag
+echo "\n\nCode authors\n----------\n" >> "release-notes/$TAG.md"
+git log $OLD_TAG..HEAD --format='%aN <%aE>' | sort --unique >> "release-notes/$TAG.md"
 ```
 
-After the release notes are complete, run the following commands:
-
-```shell
-TAG=v`python setup.py --version`
-# Commit updated __version__ info
-git add manubot/__init__.py release-notes/$TAG.md
-git commit --message="Prepare $TAG release"
-git push
-```
-
-After the previous commit is part of `master`, for example after a PR is merged,
-create a tag to trigger the version deployment:
-
-```shell
-# Create & push tag (assuming upstream is the manubot organization remote)
-git tag --annotate $TAG --file=release-notes/$TAG.md
-git push upstream $TAG
-```
+After a commit with the above updates is part of `upstream:master`,
+for example after a PR is merged,
+use the [GitHub inteferace](https://github.com/manubot/manubot/releases/new) to create a release with the new "Tag version".
+Monitor [GitHub Actions](https://github.com/manubot/manubot/actions?query=workflow%3ARelease) and [PyPI](https://pypi.org/project/manubot/#history) for successful deployment of the release.
 
 ## Goals & Acknowledgments
 
