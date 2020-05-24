@@ -19,7 +19,8 @@ def get_jsonschema_csl_validator():
     import jsonref
     import jsonschema
 
-    url = "https://github.com/dhimmel/schema/raw/manubot/csl-data.json"
+    # todo: revert to manubot branch after testing
+    url = "https://github.com/dhimmel/csl-schema/raw/19596ab022f220de1239559400b31ee1ef9dc2ad/csl-data.json"
     # Use jsonref to workaround https://github.com/Julian/jsonschema/issues/447
     schema = jsonref.load_uri(url, jsonschema=True)
     Validator = jsonschema.validators.validator_for(schema)
