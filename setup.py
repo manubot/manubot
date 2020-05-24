@@ -67,7 +67,6 @@ setuptools.setup(
         "errorhandler",
         "isbnlib",
         "jinja2",
-        "jsonref",
         "jsonschema",
         "packaging",
         "panflute",
