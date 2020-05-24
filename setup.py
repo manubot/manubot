@@ -67,7 +67,7 @@ setuptools.setup(
         "errorhandler",
         "isbnlib",
         "jinja2",
-        "jsonschema",
+        "jsonschema>=3.0.0",
         "packaging",
         "panflute",
         "pybase62",
