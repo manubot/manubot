@@ -19,8 +19,7 @@ def get_jsonschema_csl_validator():
     import jsonschema
     import requests
 
-    # todo: revert to manubot branch after testing
-    url = "https://github.com/dhimmel/csl-schema/raw/19596ab022f220de1239559400b31ee1ef9dc2ad/csl-data.json"
+    url = "https://github.com/dhimmel/csl-schema/raw/manubot/csl-data.json"
     schema = requests.get(url).json()
     Validator = jsonschema.validators.validator_for(schema)
     Validator.check_schema(schema)
