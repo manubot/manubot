@@ -10,6 +10,8 @@ import copy
 import functools
 import logging
 
+from manubot.util import read_serialized_data
+
 
 @functools.lru_cache()
 def get_jsonschema_csl_validator():
@@ -17,10 +19,9 @@ def get_jsonschema_csl_validator():
     Return a jsonschema validator for the CSL Item JSON Schema
     """
     import jsonschema
-    import requests
 
     url = "https://github.com/dhimmel/csl-schema/raw/manubot/csl-data.json"
-    schema = requests.get(url).json()
+    schema = read_serialized_data(url)
     Validator = jsonschema.validators.validator_for(schema)
     Validator.check_schema(schema)
     return Validator(schema)
@@ -97,7 +98,7 @@ def _remove_error(instance, error):
     Remove a jsonschema ValidationError from the JSON-like instance.
 
     See ValidationError documentation at
-    http://python-jsonschema.readthedocs.io/en/latest/errors/#jsonschema.exceptions.ValidationError
+    https://python-jsonschema.readthedocs.io/en/latest/errors/#jsonschema.exceptions.ValidationError
     """
     sub_errors = error.context
     if sub_errors:
