@@ -1517,7 +1517,9 @@
 
     <span class="k">if</span> <span class="n">is_http_url</span><span class="p">(</span><span class="n">path_str</span><span class="p">):</span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path_str</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">()}</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path_str</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">suffixes</span> <span class="o">&amp;</span> <span class="n">supported_suffixes</span><span class="p">:</span>
 
@@ -1769,7 +1771,9 @@ is to hack the fragment like https://example.org#/variables.toml</p>
 
     <span class="k">if</span> <span class="n">is_http_url</span><span class="p">(</span><span class="n">path_str</span><span class="p">):</span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path_str</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">()}</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path_str</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">suffixes</span> <span class="o">&amp;</span> <span class="n">supported_suffixes</span><span class="p">:</span>
 
