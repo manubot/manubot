@@ -1,10 +1,11 @@
 name: Tests
-
-on: [push, pull_request]
-
+on:
+- push
+- pull_request
 jobs:
-  test:
-    name: Test Python Code
+
+  pytest:
+    name: Python Test Suite
     runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
@@ -12,7 +13,6 @@ jobs:
       matrix:
         python-version: [3.6, 3.7, 3.8]
         os: [ubuntu-latest, windows-latest, macOS-latest]
-        pandoc-version: [2.9.2]
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -21,7 +21,7 @@ jobs:
       with:
         # pandoc-versions from 2.7.3 to 2.9.1 won't install on Windows
         # https://github.com/jgm/pandoc/issues/6071
-        pandoc-version: ${{ matrix.pandoc-version }}
+        pandoc-version: 2.9.2
     - name: Install Python
       uses: actions/setup-python@v2
       with:
@@ -56,7 +56,7 @@ jobs:
       run: flake8
 
   docs:
-    name: Build docs
+    name: Build Docs
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
