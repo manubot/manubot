@@ -1,4 +1,3 @@
-import collections
 import functools
 import json
 import logging
@@ -153,7 +152,7 @@ def csl_item_from_pubmed_article(article):
 
     https://github.com/citation-style-language/schema/blob/master/csl-data.json
     """
-    csl_item = collections.OrderedDict()
+    csl_item = dict()
 
     if not article.find("MedlineCitation/Article"):
         raise NotImplementedError("Unsupported PubMed record: no <Article> element")
@@ -193,7 +192,7 @@ def csl_item_from_pubmed_article(article):
     authors_csl = list()
     authors = article.findall("MedlineCitation/Article/AuthorList/Author")
     for author in authors:
-        author_csl = collections.OrderedDict()
+        author_csl = dict()
         given = author.findtext("ForeName")
         if given:
             author_csl["given"] = given

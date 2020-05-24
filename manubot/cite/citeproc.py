@@ -16,12 +16,11 @@ def get_jsonschema_csl_validator():
     """
     Return a jsonschema validator for the CSL Item JSON Schema
     """
-    import jsonref
     import jsonschema
+    import requests
 
-    url = "https://github.com/dhimmel/schema/raw/manubot/csl-data.json"
-    # Use jsonref to workaround https://github.com/Julian/jsonschema/issues/447
-    schema = jsonref.load_uri(url, jsonschema=True)
+    url = "https://github.com/dhimmel/csl-schema/raw/manubot/csl-data.json"
+    schema = requests.get(url).json()
     Validator = jsonschema.validators.validator_for(schema)
     Validator.check_schema(schema)
     return Validator(schema)
