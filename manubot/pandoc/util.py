@@ -37,8 +37,8 @@ def get_pandoc_info():
             continue
         version = subprocess.check_output(args=[command, "--version"], encoding="utf-8")
         logging.debug(version)
-        version, *discard = version.splitlines()
-        discard, version = version.strip().split()
+        version, *_discard = version.splitlines()
+        _discard, version = version.strip().split()
         from packaging.version import parse as parse_version
 
         version = parse_version(version).release

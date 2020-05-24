@@ -1,9 +1,13 @@
 # Python utilities for Manubot: Manuscripts, open and automated
 
-[![documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs)](https://manubot.github.io/manubot/)
-[![Travis Linux Build Status](https://travis-ci.com/manubot/manubot.svg?branch=master)](https://travis-ci.com/manubot/manubot)
-[![AppVeyor Windows Build Status](https://ci.appveyor.com/api/projects/status/f20hvc6si5uiqd7e/branch/master?svg=true)](https://ci.appveyor.com/project/manubot/manubot/branch/master)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs&style=for-the-badge)](https://manubot.github.io/manubot/)
+[![PyPI](https://img.shields.io/pypi/v/manubot.svg?logo=PyPI&style=for-the-badge)](https://pypi.org/project/manubot/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge&logo=Python)](https://github.com/psf/black)
+
+[![GitHub Actions CI Tests Status](https://img.shields.io/github/workflow/status/manubot/manubot/Tests?label=actions&logo=github&style=for-the-badge)](https://github.com/manubot/manubot/actions)
+[![Travis Linux Build Status](https://img.shields.io/travis/com/manubot/manubot/master?style=for-the-badge&logo=travis&label=Travis)](https://travis-ci.com/manubot/manubot)
+[![AppVeyor Windows Build Status](https://img.shields.io/appveyor/build/manubot/manubot/master?style=for-the-badge&logo=appveyor&label=AppVeyor)](https://ci.appveyor.com/project/manubot/manubot/branch/master)
+
 
 [Manubot](https://manubot.org/ "Manubot homepage") is a workflow and set of tools for the next generation of scholarly publishing.
 This repository contains a Python package with several Manubot-related utilities, as described in the [usage section](#usage) below.
@@ -325,7 +329,7 @@ manubot process \
 
 ### Release instructions
 
-[![PyPI](https://img.shields.io/pypi/v/manubot.svg)](https://pypi.org/project/manubot/)
+[![PyPI](https://img.shields.io/pypi/v/manubot.svg?logo=PyPI&style=for-the-badge)](https://pypi.org/project/manubot/)
 
 This section is only relevant for project maintainers.
 Travis CI deployments are used to upload releases to [PyPI](https://pypi.org/project/manubot).
