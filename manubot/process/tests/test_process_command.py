@@ -13,6 +13,7 @@ manuscripts = [
 ]
 
 
+@pytest.mark.integration
 @pytest.mark.parametrize("manuscript", manuscripts)
 def test_example_manuscript(manuscript):
     """

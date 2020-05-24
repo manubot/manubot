@@ -2,9 +2,10 @@ import pytest
 
 
 markers = dict(
-    pandoc_version_sensitive="marks tests that require a specific version of pandoc to pass",
+    integration="marks integration tests that cover large portions of the codebase and their interactions",
     appveyor="marks tests where execution on AppVeyor provides additional coverage beyond GitHub Actions",
     travis="marks tests where execution on Travis CI provides additional coverage beyond GitHub Actions",
+    pandoc_version_sensitive="marks tests that require a specific version of pandoc to pass",
 )
 
 

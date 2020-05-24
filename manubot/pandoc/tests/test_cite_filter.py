@@ -10,6 +10,7 @@ from manubot.util import shlex_join
 directory = pathlib.Path(__file__).parent
 
 
+@pytest.mark.integration
 @pytest.mark.pandoc_version_sensitive
 @pytest.mark.skipif(
     not shutil.which("pandoc"), reason="pandoc installation not found on system"

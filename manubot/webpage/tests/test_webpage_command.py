@@ -5,7 +5,10 @@ import platform
 import shutil
 import subprocess
 
+import pytest
 
+
+@pytest.mark.integration
 def test_webpage_command():
     manuscript_path = pathlib.Path(__file__).parent.joinpath("test-manuscript")
     webpage_path = manuscript_path.joinpath("webpage")

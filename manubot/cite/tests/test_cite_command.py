@@ -48,6 +48,7 @@ def test_cite_command_file(tmpdir):
     assert csl["URL"] == "https://arxiv.org/abs/1806.05726v1"
 
 
+@pytest.mark.integration
 @pytest.mark.parametrize(
     ["args", "filename"],
     [
