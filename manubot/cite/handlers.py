@@ -110,7 +110,9 @@ class Handler:
         """
         Return a CSL_Item with bibliographic details for citekey.
         """
-        ...
+        raise NotImplementedError(
+            f"Manubot does not know how to generate a csl_item for {citekey.standard_id!r}"
+        )
 
 
 """

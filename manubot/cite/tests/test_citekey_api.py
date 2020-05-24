@@ -2,11 +2,12 @@
 
 import pytest
 
-from manubot.cite import citekey_to_csl_item, standardize_citekey
+from manubot.cite import citekey_to_csl_item
+from manubot.cite.citekey import CiteKey
 
 
 @pytest.mark.parametrize(
-    "citekey,expected",
+    "input_id,expected",
     [
         ("doi:10.5061/DRYAD.q447c/1", "doi:10.5061/dryad.q447c/1"),
         ("doi:10.5061/dryad.q447c/1", "doi:10.5061/dryad.q447c/1"),
@@ -25,12 +26,12 @@ from manubot.cite import citekey_to_csl_item, standardize_citekey
         ("isbn:1-55860-510-x", "isbn:9781558605107"),
     ],
 )
-def test_standardize_citekey(citekey, expected):
+def test_citekey_standard_id(input_id, expected):
     """
-    Standardize identifiers based on their source
+    Test CiteKey.standard_id property for common prefixes.
     """
-    output = standardize_citekey(citekey)
-    assert output == expected
+    citekey = CiteKey(input_id)
+    assert citekey.standard_id == expected
 
 
 @pytest.mark.xfail(reason="https://twitter.com/dhimmel/status/950443969313419264")
@@ -148,14 +149,15 @@ def test_citekey_to_csl_item_pubmed_with_numeric_month():
     assert csl_item["issued"]["date-parts"] == [[2018, 3, 15]]
 
 
-def test_citekey_to_csl_item_pubmed_book():
+def test_citekey_to_csl_item_pubmed_book(caplog):
     """
     Extracting CSL metadata from books in PubMed is not supported.
     Logic not implemented to parse XML returned by
     https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29227604&rettype=full
     """
-    with pytest.raises(NotImplementedError):
-        citekey_to_csl_item("pmid:29227604")
+    csl_item = citekey_to_csl_item("pmid:29227604", log_level="ERROR")
+    assert csl_item is None
+    assert "Unsupported PubMed record: no <Article> element" in caplog.text
 
 
 def test_citekey_to_csl_item_isbn():

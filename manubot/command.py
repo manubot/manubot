@@ -111,6 +111,14 @@ def add_subparser_cite(subparsers):
         "Defaults to Manubot's style.",
     )
     parser.add_argument(
+        "--bibliography",
+        default=[],
+        action="append",
+        help="File to read manual reference metadata. "
+        "Specify multiple times to load multiple files. "
+        "Similar to pandoc --bibliography.",
+    )
+    parser.add_argument(
         "--format",
         choices=["plain", "markdown", "docx", "html", "jats"],
         help="When --render, format to use for output file. "

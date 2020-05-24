@@ -14,7 +14,7 @@ def test_cite_command_empty():
         ["manubot", "cite"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        universal_newlines=True,
+        encoding="utf-8",
     )
     print(process.stderr)
     assert process.returncode == 2
@@ -26,7 +26,7 @@ def test_cite_command_stdout():
         ["manubot", "cite", "arxiv:1806.05726v1"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        universal_newlines=True,
+        encoding="utf-8",
     )
     print(process.stderr)
     assert process.returncode == 0
@@ -111,7 +111,7 @@ def test_cite_command_render_stdout(args, filename):
     args = [
         "manubot",
         "cite",
-        # "--bibliography=input-references.json",  # uncomment line once --bibliography is supported
+        "--bibliography=input-references.json",
         "--render",
         "--csl=https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl",
         "arxiv:1806.05726v1",
@@ -122,7 +122,7 @@ def test_cite_command_render_stdout(args, filename):
         args,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        universal_newlines=True,
+        encoding="utf-8",
         cwd=data_dir,
     )
     print(shlex_join(process.args))
@@ -137,9 +137,25 @@ def test_cite_command_render_stdout(args, filename):
 
     print(process.stdout)
     print(process.stderr)
-    # set encoding="utf-8-sig" once manubot cite also adopts utf-8 stdout on windows
-    expected = path.read_text()
+    expected = path.read_text(encoding="utf-8-sig")
     assert process.stdout == expected
+
+
+def test_cite_command_bibliography():
+    bib_dir = pathlib.Path(__file__).parent.parent.parent.joinpath(
+        "pandoc/tests/bibliographies"
+    )
+    args = [
+        "manubot",
+        "cite",
+        "--bibliography=bibliography.json",
+        "DOI:10.7554/elife.32822",
+    ]
+    csl_json = subprocess.check_output(args, encoding="utf-8", cwd=bib_dir)
+    csl_items = json.loads(csl_json)
+    assert len(csl_items) == 1
+    csl_item = csl_items[0]
+    assert "manual_reference_filename: bibliography.json" in csl_item["note"]
 
 
 def teardown_module(module):

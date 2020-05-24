@@ -151,7 +151,7 @@ Citation keys should be in the format `source:identifier`.
 For example, the following example generates CSL JSON for four references:
 
 ```sh
-manubot cite doi:10.1098/rsif.2017.0387 pmid:29424689 pmcid:PMC5640425 arxiv:1806.05726
+manubot cite doi:10.1098/rsif.2017.0387 pubmed:29424689 pmc:PMC5640425 arxiv:1806.05726
 ```
 
 The following [terminal recording](https://asciinema.org/a/205085?speed=2) demonstrates the main features of `manubot cite`:
@@ -162,7 +162,7 @@ Additional usage information is available from `manubot cite --help`:
 
 <!-- test codeblock contains output of `manubot cite --help` -->
 ```
-usage: manubot cite [-h] [--render] [--csl CSL]
+usage: manubot cite [-h] [--render] [--csl CSL] [--bibliography BIBLIOGRAPHY]
                     [--format {plain,markdown,docx,html,jats}]
                     [--output OUTPUT] [--allow-invalid-csl-data]
                     [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
@@ -183,6 +183,10 @@ optional arguments:
   --csl CSL             When --render, specify an XML CSL definition to style
                         references (i.e. Pandoc's --csl option). Defaults to
                         Manubot's style.
+  --bibliography BIBLIOGRAPHY
+                        File to read manual reference metadata. Specify
+                        multiple times to load multiple files. Similar to
+                        pandoc --bibliography.
   --format {plain,markdown,docx,html,jats}
                         When --render, format to use for output file. If not
                         specified, attempt to infer this from filename
@@ -224,7 +228,7 @@ optional arguments:
 ```
 
 Other Pandoc filters exist that do something similar:
-[`pandoc-url2cite`](https://github.com/phiresky/pandoc-url2cite) &
+[`pandoc-url2cite`](https://github.com/phiresky/pandoc-url2cite), [pandoc-url2cite-hs](https://github.com/Aver1y/pandoc-url2cite-hs), &
 [`pwcite`](https://github.com/wikicite/wcite#filter-pwcite).
 Currently, `pandoc-manubot-cite` supports the most types of persistent identifiers.
 We're interested in creating as much compatibility as possible between these filters and their syntaxes.

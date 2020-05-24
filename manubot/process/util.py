@@ -1,20 +1,14 @@
 import json
 import logging
 import os
-import pathlib
 import re
-import textwrap
 import warnings
 from typing import List, Optional
 
 import jinja2
-import pandas
-import requests
-import requests_cache
 import yaml
 
 from manubot.util import read_serialized_data, read_serialized_dict
-from manubot.process.bibliography import load_manual_references
 from manubot.process.ci import get_continuous_integration_parameters
 from manubot.process.metadata import (
     get_header_includes,
@@ -27,43 +21,6 @@ from manubot.process.manuscript import (
     get_manuscript_stats,
     get_text,
 )
-from manubot.cite.citekey import (
-    citekey_to_csl_item,
-    shorten_citekey,
-    is_valid_citekey,
-    standardize_citekey,
-)
-
-
-def check_collisions(citekeys_df):
-    """
-    Check for short_citekey hash collisions
-    """
-    collision_df = citekeys_df[["standard_citekey", "short_citekey"]].drop_duplicates()
-    collision_df = collision_df[collision_df.short_citekey.duplicated(keep=False)]
-    if not collision_df.empty:
-        logging.error(f"OMF! Hash collision. Congratulations.\n{collision_df}")
-    return collision_df
-
-
-def check_multiple_citation_strings(citekeys_df):
-    """
-    Identify different citation strings referring the the same reference.
-    """
-    message = textwrap.dedent(
-        f"""\
-    {len(citekeys_df)} unique citations strings extracted from text
-    {citekeys_df.standard_citekey.nunique()} unique standard citations\
-    """
-    )
-    logging.info(message)
-    multi_df = citekeys_df[citekeys_df.standard_citekey.duplicated(keep=False)]
-    if not multi_df.empty:
-        table = multi_df.to_string(
-            index=False, columns=["standard_citekey", "manuscript_citekey"]
-        )
-        logging.warning(f"Multiple citekeys detected for the same reference:\n{table}")
-    return multi_df
 
 
 def read_variable_files(paths: List[str], variables: Optional[dict] = None) -> dict:
@@ -163,7 +120,7 @@ def add_author_affiliations(variables: dict) -> dict:
     affiliations to the top-level of variables. If no authors have any
     affiliations, variables is left unmodified.
     """
-    rows = list()
+    affiliations = list()
     for author in variables["authors"]:
         _convert_field_to_list(
             dictionary=author,
@@ -174,20 +131,18 @@ def add_author_affiliations(variables: dict) -> dict:
         _convert_field_to_list(
             dictionary=author, field="funders",
         )
-        for affiliation in author.get("affiliations", []):
-            rows.append((author["name"], affiliation))
-    if not rows:
+        affiliations.extend(author.get("affiliations", []))
+    if not affiliations:
         return variables
-    affil_map_df = pandas.DataFrame(rows, columns=["name", "affiliation"])
-    affiliation_df = affil_map_df[["affiliation"]].drop_duplicates()
-    affiliation_df["affiliation_number"] = range(1, 1 + len(affiliation_df))
-    affil_map_df = affil_map_df.merge(affiliation_df)
-    name_to_numbers = {
-        name: sorted(df.affiliation_number) for name, df in affil_map_df.groupby("name")
-    }
+    affiliations = list(dict.fromkeys(affiliations))  # deduplicate
+    affil_to_number = {affil: i for i, affil in enumerate(affiliations, start=1)}
     for author in variables["authors"]:
-        author["affiliation_numbers"] = name_to_numbers.get(author["name"], [])
-    variables["affiliations"] = affiliation_df.to_dict(orient="records")
+        numbers = [affil_to_number[affil] for affil in author.get("affiliations", [])]
+        author["affiliation_numbers"] = sorted(numbers)
+    variables["affiliations"] = [
+        dict(affiliation=affil, affiliation_number=i)
+        for affil, i in affil_to_number.items()
+    ]
     return variables
 
 
@@ -310,187 +265,6 @@ def load_variables(args) -> dict:
     return variables
 
 
-def get_citekeys_df(citekeys: list, citekey_aliases: dict = {}):
-    """
-    Generate and return citekeys_df.
-    citekeys_df is a pandas.DataFrame with the following columns:
-    - manuscript_citekey: citation keys extracted from the manuscript content files.
-    - detagged_citekey: manuscript_citekey but with tag citekeys dereferenced
-    - standard_citekey: detagged_citekey standardized
-    - short_citekey: standard_citekey hashed to create a shortened citekey
-    """
-    citekeys_df = pandas.DataFrame(
-        {"manuscript_citekey": list(citekeys)}
-    ).drop_duplicates()
-    citekeys_df["detagged_citekey"] = citekeys_df.manuscript_citekey.map(
-        lambda citekey: citekey_aliases.get(citekey, citekey)
-    )
-    for citation in citekeys_df.detagged_citekey:
-        is_valid_citekey(citation, allow_raw=True)
-    citekeys_df["standard_citekey"] = citekeys_df.detagged_citekey.map(
-        standardize_citekey
-    )
-    citekeys_df["short_citekey"] = citekeys_df.standard_citekey.map(shorten_citekey)
-    citekeys_df = citekeys_df.sort_values(["standard_citekey", "detagged_citekey"])
-    check_collisions(citekeys_df)
-    check_multiple_citation_strings(citekeys_df)
-    return citekeys_df
-
-
-def read_citations_tsv(path) -> dict:
-    """
-    Read citekey aliases from a citation-tags.tsv file.
-    """
-    if not path.is_file():
-        logging.info(
-            f"no citation tags file at {path} "
-            "Not reading citekey_aliases from citation-tags.tsv."
-        )
-        return {}
-    tag_df = pandas.read_csv(path, sep="\t")
-    na_rows_df = tag_df[tag_df.isnull().any(axis="columns")]
-    if not na_rows_df.empty:
-        logging.error(
-            f"{path} contains rows with missing values:\n"
-            f"{na_rows_df}\n"
-            "This error can be caused by using spaces rather than tabs to delimit fields.\n"
-            "Proceeding to reread TSV with delim_whitespace=True."
-        )
-        tag_df = pandas.read_csv(path, delim_whitespace=True)
-    tag_df["manuscript_citekey"] = "tag:" + tag_df.tag
-    tag_df = tag_df.rename(columns={"citation": "detagged_citekey"})
-    citekey_aliases = dict(
-        zip(tag_df["manuscript_citekey"], tag_df["detagged_citekey"])
-    )
-    return citekey_aliases
-
-
-def write_citekeys_tsv(citekeys_df, path):
-    if not path:
-        return
-    citekeys_df.to_csv(path, sep="\t", index=False)
-
-
-def _citation_tags_to_reference_links(args) -> str:
-    """
-    Convert citation-tags.tsv to markdown reference link syntax
-    """
-    citekey_aliases = read_citations_tsv(args.citation_tags_path)
-    if not citekey_aliases:
-        return ""
-    text = "\n\n"
-    for key, value in citekey_aliases.items():
-        text += f"[@{key}]: {value}\n"
-    logging.warning(
-        "citation-tags.tsv is deprecated. "
-        f"Consider deleting citation-tags.tsv and inserting the following paragraph into your Markdown content:{text}"
-    )
-    return text
-
-
-def generate_csl_items(
-    citekeys: list,
-    manual_refs: dict = {},
-    requests_cache_path: Optional[str] = None,
-    clear_requests_cache: Optional[bool] = False,
-) -> list:
-    """
-    General CSL (citeproc) items for standard_citekeys in citekeys_df.
-
-    Parameters:
-
-    - citekeys: list of standard_citekeys
-    - manual_refs: mapping from standard_citekey to csl_item for manual references
-    - requests_cache_path: path for the requests cache database.
-      Passed as cache_name to `requests_cache.install_cache`.
-      requests_cache may append an extension to this path, so it is not always the exact
-      path to the cache. If None, do not use requests_cache.
-    - clear_requests_cache: If True, clear the requests cache before generating citekey metadata.
-    """
-    # Deduplicate citations
-    citekeys = list(dict.fromkeys(citekeys))
-
-    # Install cache
-    if requests_cache_path is not None:
-        requests  # require `import requests` in case this is essential for monkey patching by requests_cache.
-        requests_cache.install_cache(requests_cache_path, include_get_headers=True)
-        cache = requests_cache.get_cache()
-        if clear_requests_cache:
-            logging.info("Clearing requests-cache")
-            requests_cache.clear()
-        logging.info(
-            f"requests-cache starting with {len(cache.responses)} cached responses"
-        )
-
-    csl_items = list()
-    failures = list()
-    for standard_citekey in citekeys:
-        if standard_citekey in manual_refs:
-            csl_items.append(manual_refs[standard_citekey])
-            continue
-        elif standard_citekey.startswith("raw:"):
-            logging.error(
-                f"CSL JSON Data with a standard_citekey of {standard_citekey!r} not found in manual-references.json. "
-                "Metadata must be provided for raw citekeys."
-            )
-            failures.append(standard_citekey)
-        try:
-            csl_item = citekey_to_csl_item(standard_citekey)
-            csl_items.append(csl_item)
-        except Exception:
-            logging.exception(f"Citeproc retrieval failure for {standard_citekey!r}")
-            failures.append(standard_citekey)
-
-    # Uninstall cache
-    if requests_cache_path is not None:
-        logging.info(
-            f"requests-cache finished with {len(cache.responses)} cached responses"
-        )
-        requests_cache.uninstall_cache()
-
-    if failures:
-        message = "CSL JSON Data retrieval failed for the following standardized citation keys:\n{}".format(
-            "\n".join(failures)
-        )
-        logging.error(message)
-
-    return csl_items
-
-
-def _generate_csl_items(args, citekeys_df):
-    """
-    General CSL (citeproc) items for standard_citekeys in citekeys_df.
-    Writes references.json to disk and logs warnings for potential problems.
-    """
-    # Read manual references (overrides) in JSON CSL
-    manual_refs = load_manual_references(args.manual_references_paths)
-
-    # Retrieve CSL Items
-    csl_items = generate_csl_items(
-        citekeys=citekeys_df.standard_citekey.unique(),
-        manual_refs=manual_refs,
-        requests_cache_path=args.requests_cache_path,
-        clear_requests_cache=args.clear_requests_cache,
-    )
-
-    # Write CSL JSON bibliography for Pandoc.
-    write_csl_json(csl_items, args.references_path)
-    return csl_items
-
-
-def write_csl_json(csl_items, path):
-    """
-    Write CSL Items to a JSON file at `path`.
-    If `path` evaluates as False, do nothing.
-    """
-    if not path:
-        return
-    path = pathlib.Path(path)
-    with path.open("w", encoding="utf-8") as write_file:
-        json.dump(csl_items, write_file, indent=2, ensure_ascii=False)
-        write_file.write("\n")
-
-
 def template_with_jinja2(text, variables):
     """
     Template using jinja2 with the variables dictionary unpacked as keyword
@@ -515,7 +289,6 @@ def prepare_manuscript(args):
     """
     text = get_text(args.content_directory)
     assert args.skip_citations
-    text += _citation_tags_to_reference_links(args)
 
     variables = load_variables(args)
     variables["manubot"]["manuscript_stats"] = get_manuscript_stats(text)

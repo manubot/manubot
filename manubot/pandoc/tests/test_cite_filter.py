@@ -42,8 +42,8 @@ def test_cite_pandoc_filter():
     pandoc_version = get_pandoc_info()["pandoc version"]
     if pandoc_version < (1, 12):
         pytest.skip("Test requires pandoc >= 1.12 to support --filter")
-    input_md = data_dir.joinpath("input.md").read_text()
-    expected = data_dir.joinpath("output.txt").read_text()
+    input_md = data_dir.joinpath("input.md").read_text(encoding="utf-8-sig")
+    expected = data_dir.joinpath("output.txt").read_text(encoding="utf-8-sig")
     args = [
         "pandoc",
         "--wrap=preserve",
@@ -61,7 +61,7 @@ def test_cite_pandoc_filter():
         input=input_md,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        universal_newlines=True,
+        encoding="utf-8",
     )
     print(shlex_join(process.args))
     print(process.stdout)

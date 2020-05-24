@@ -1,10 +1,11 @@
 """
 Utilities for representing and processing citation keys.
 """
+import dataclasses
 import functools
 import logging
 import re
-import dataclasses
+import typing as tp
 
 try:
     from functools import cached_property
@@ -37,7 +38,11 @@ class CiteKey:
         return cls(*args, **kwargs)
 
     @cached_property
-    def dealiased_id(self):
+    def dealiased_id(self) -> str:
+        """
+        If `self.input_id` is in `self.aliases`, the value specified by
+        `self.aliases`. Otherwise, `self.input_id`.
+        """
         return self.aliases.get(self.input_id, self.input_id)
 
     def _set_prefix_accession(self):
@@ -49,29 +54,49 @@ class CiteKey:
         self._accession = accession
 
     @property
-    def prefix(self):
+    def prefix(self) -> tp.Optional[str]:
+        """
+        If `self.input_id` contains a colon, the substring up to the first colon.
+        Otherwise, None.
+        """
         if not hasattr(self, "_prefix"):
             self._set_prefix_accession()
         return self._prefix
 
     @property
-    def prefix_lower(self):
+    def prefix_lower(self) -> tp.Optional[str]:
+        """
+        A lowercase version of `self.prefix` or None.
+        """
+        if self.prefix is None:
+            return None
         return self.prefix.lower()
 
     @property
-    def accession(self):
+    def accession(self) -> tp.Optional[str]:
+        """
+        If `self.prefix`, the remainder of `self.input_id` following the first colon.
+        """
         if not hasattr(self, "_accession"):
             self._set_prefix_accession()
         return self._accession
 
     @property
-    def standard_prefix(self):
+    def standard_prefix(self) -> tp.Optional[str]:
+        """
+        If the citekey is handled, the standard prefix specified by the handler.
+        Otherwise, None.
+        """
         if not hasattr(self, "_standard_prefix"):
             self._standardize()
         return self._standard_prefix
 
     @property
-    def standard_accession(self):
+    def standard_accession(self) -> tp.Optional[str]:
+        """
+        If the citekey is handled, the standard accession specified by the handler.
+        Otherwise, None.
+        """
         if not hasattr(self, "_standard_accession"):
             self._standardize()
         return self._standard_accession
@@ -85,34 +110,50 @@ class CiteKey:
         return Handler(self.prefix_lower)
 
     @cached_property
-    def is_handled_prefix(self):
+    def is_handled_prefix(self) -> bool:
         from .handlers import prefix_to_handler
 
         return self.prefix_lower in prefix_to_handler
 
-    def inspect(self):
+    def inspect(self) -> tp.Optional[str]:
+        """
+        Inspect citekey for potential problems.
+        If no problems are found, return None.
+        Otherwise, returns a string describing the problem.
+        """
         return self.handler.inspect(self)
 
     def _standardize(self):
-        if self.prefix_lower is None:
+        """
+        Set `self._standard_prefix`, `self._standard_accession`, and `self._standard_id`.
+        For citekeys without a prefix or with an unhandled prefix, _standard_prefix
+        and _standard_accession are set to None.
+        """
+        if not self.is_handled_prefix:
             self._standard_prefix = None
             self._standard_accession = None
             self._standard_id = self.dealiased_id
             return
-        (
-            self._standard_prefix,
-            self._standard_accession,
-        ) = self.handler.standardize_prefix_accession(self.accession)
+        fxn = self.handler.standardize_prefix_accession
+        self._standard_prefix, self._standard_accession = fxn(self.accession)
         self._standard_id = f"{self._standard_prefix}:{self._standard_accession}"
 
     @property
-    def standard_id(self):
+    def standard_id(self) -> str:
+        """
+        If the citekey is handled, the standard_id specified by the handler.
+        Otherwise, `self.dealiased_id`.
+        """
         if not hasattr(self, "_standard_id"):
             self._standardize()
         return self._standard_id
 
     @cached_property
-    def short_id(self):
+    def short_id(self) -> str:
+        """
+        A hashed version of standard_id whose characters are
+        within the ranges 0-9, a-z and A-Z.
+        """
         return shorten_citekey(self.standard_id)
 
     @cached_property
@@ -145,6 +186,7 @@ class CiteKey:
         csl_item = self.handler.get_csl_item(self)
         if not isinstance(csl_item, CSL_Item):
             csl_item = CSL_Item(csl_item)
+        csl_item.set_id(self.standard_id)
         return csl_item
 
     def is_pandoc_xnos_prefix(self, log_case_warning=False):
@@ -160,100 +202,7 @@ class CiteKey:
         return False
 
 
-@functools.lru_cache(maxsize=5_000)
-def standardize_citekey(citekey, warn_if_changed=False):
-    """
-    Standardize citation keys based on their source
-    """
-    standard_citekey = CiteKey(citekey).standard_id
-    if warn_if_changed and citekey != standard_citekey:
-        logging.warning(
-            f"standardize_citekey expected citekey to already be standardized.\n"
-            f"Instead citekey was changed from {citekey!r} to {standard_citekey!r}"
-        )
-    return standard_citekey
-
-
-def is_valid_citekey(
-    citekey, allow_tag=False, allow_raw=False, allow_pandoc_xnos=False
-):
-    """
-    Return True if citekey is a properly formatted string. Return False if
-    citekey is not a citation or is an invalid citation.
-
-    In the case citekey is invalid, an error is logged. This
-    function does not catch all invalid citekeys, but instead performs cursory
-    checks, such as ensuring citekeys adhere to the expected formats. No calls to
-    external resources are used by these checks, so they will not detect
-    citekeys to non-existent identifiers unless those identifiers violate
-    their source's syntax.
-
-    allow_tag=False, allow_raw=False, and allow_pandoc_xnos=False enable
-    allowing citekey sources that are valid for Manubot manuscripts, but
-    likely not elsewhere. allow_tag=True enables citekey tags (e.g.
-    tag:citation-tag). allow_raw=True enables raw citekeys (e.g.
-    raw:manual-reference). allow_pandoc_xnos=True still returns False for
-    pandoc-xnos references (e.g. fig:figure-id), but does not log an error.
-    With the default of False for these arguments, valid sources are restricted
-    to those for which manubot can retrieve metadata based only on the
-    standalone citekey.
-    """
-    from .handlers import prefix_to_handler
-
-    try:
-        citekey_obj = CiteKey(citekey)
-    except (ValueError, TypeError) as error:
-        logging.error(error)
-        return False
-    if citekey_obj.prefix_lower is None:
-        logging.error(
-            f"citekey not splittable via a single colon: {citekey}. "
-            "Citekeys must be in the format of `source:identifier`."
-        )
-        return False
-    if not citekey_obj.prefix or not citekey_obj.accession:
-        msg = f"invalid citekey: {citekey!r}\nblank source or identifier"
-        logging.error(msg)
-        return False
-
-    if allow_pandoc_xnos:
-        # Exempted non-citation sources used for pandoc-fignos,
-        # pandoc-tablenos, and pandoc-eqnos
-        is_pandoc_xnos_prefix = citekey_obj.is_pandoc_xnos_prefix(log_case_warning=True)
-        if is_pandoc_xnos_prefix:
-            return False
-
-    # Check supported source type
-    sources = set(prefix_to_handler)
-    if allow_raw:
-        sources.add("raw")
-    if allow_tag:
-        sources.add("tag")
-    if citekey_obj.prefix not in sources:
-        if citekey_obj.prefix_lower in sources:
-            logging.error(
-                "citekey sources should be all lowercase.\n"
-                f'Should {citekey} use "{citekey_obj.prefix_lower}" rather than "{citekey_obj.prefix}"?'
-            )
-        else:
-            logging.error(
-                f"invalid citekey: {citekey!r}\n"
-                f"Source {citekey_obj.prefix!r} is not valid.\n"
-                f'Valid citation sources are {{{", ".join(sorted(sources))}}}'
-            )
-        return False
-
-    inspection = citekey_obj.inspect()
-    if inspection:
-        logging.error(
-            f"invalid {citekey_obj.prefix_lower} citekey: {citekey}\n{inspection}"
-        )
-        return False
-
-    return True
-
-
-def shorten_citekey(standard_citekey):
+def shorten_citekey(standard_citekey: str) -> str:
     """
     Return a shortened citekey derived from the input citekey.
     The input citekey should be standardized prior to this function,
@@ -273,48 +222,40 @@ def shorten_citekey(standard_citekey):
     return short_citekey
 
 
-def citekey_to_csl_item(citekey, prune=True):
+def citekey_to_csl_item(
+    citekey, prune=True, manual_refs={}, log_level: tp.Union[str, int] = "WARNING"
+):
     """
-    Generate a CSL Item (Python dictionary) for the input citekey.
+    Generate a CSL_Item for the input citekey.
     """
     from manubot import __version__ as manubot_version
-    from .handlers import prefix_to_handler
 
-    citekey == standardize_citekey(citekey, warn_if_changed=True)
-    citekey_obj = CiteKey(citekey)
-    citekey_obj.csl_item
+    # https://stackoverflow.com/a/35704430/4651668
+    log_level = logging._checkLevel(log_level)
+    if not isinstance(citekey, CiteKey):
+        citekey = CiteKey(citekey)
 
-    if citekey_obj.prefix_lower not in prefix_to_handler:
-        msg = f"Unsupported citation source {citekey_obj.prefix_lower!r} in {citekey!r}"
-        raise ValueError(msg)
-    csl_item = citekey_obj.csl_item
+    if citekey.standard_id in manual_refs:
+        return manual_refs[citekey.standard_id]
 
+    try:
+        csl_item = citekey.csl_item
+    except Exception as error:
+        logging.log(
+            log_level,
+            f"Generating csl_item for {citekey.standard_id!r} failed "
+            f"due to a {error.__class__.__name__}:\n{error}",
+        )
+        logging.info(error, exc_info=True)
+        return None
+    # update csl_item with manubot generated metadata
     note_text = f"This CSL JSON Item was automatically generated by Manubot v{manubot_version} using citation-by-identifier."
-    note_dict = {"standard_id": citekey}
+    note_dict = {"standard_id": citekey.standard_id}
     csl_item.note_append_text(note_text)
     csl_item.note_append_dict(note_dict)
-
-    csl_item.set_id(citekey_obj.short_id)
+    csl_item.set_id(citekey.short_id)
     csl_item.clean(prune=prune)
-
     return csl_item
-
-
-def infer_citekey_prefix(citekey):
-    """
-    Passthrough citekey if it has a valid citation key prefix. Otherwise,
-    if the lowercase citekey prefix is valid, convert the prefix to lowercase.
-    Otherwise, assume citekey is raw and prepend "raw:".
-    """
-    from .handlers import prefix_to_handler
-
-    prefixes = [f"{x}:" for x in list(prefix_to_handler) + ["raw"]]
-    for prefix in prefixes:
-        if citekey.startswith(prefix):
-            return citekey
-        if citekey.lower().startswith(prefix):
-            return prefix + citekey[len(prefix) :]
-    return f"raw:{citekey}"
 
 
 def url_to_citekey(url):

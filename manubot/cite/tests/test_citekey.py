@@ -4,7 +4,6 @@ import pytest
 from manubot.cite.citekey import (
     CiteKey,
     shorten_citekey,
-    infer_citekey_prefix,
     url_to_citekey,
 )
 
@@ -112,21 +111,6 @@ def test_inspect_citekey_fails(citekey, contains):
     assert report is not None
     assert isinstance(report, str)
     assert contains in report
-
-
-@pytest.mark.parametrize(
-    ["citation", "expect"],
-    [
-        ("doi:not-a-real-doi", "doi:not-a-real-doi"),
-        ("DOI:not-a-real-doi", "doi:not-a-real-doi"),
-        ("uRl:mixed-case-prefix", "url:mixed-case-prefix"),
-        ("raw:raw-citation", "raw:raw-citation"),
-        ("no-prefix", "raw:no-prefix"),
-        ("no-prefix:but-colon", "raw:no-prefix:but-colon"),
-    ],
-)
-def test_infer_citekey_prefix(citation, expect):
-    assert infer_citekey_prefix(citation) == expect
 
 
 @pytest.mark.parametrize(

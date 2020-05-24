@@ -74,19 +74,22 @@ def test_assert_csl_item_type_raises_error_on_dict():
 @pytest.mark.parametrize(
     ["csl_item", "standard_citation"],
     [
-        (
+        pytest.param(
             {"id": "my-id", "standard_citation": "doi:10.7554/elife.32822"},
             "doi:10.7554/elife.32822",
+            id="from_standard_citation",
         ),
-        ({"id": "doi:10.7554/elife.32822"}, "doi:10.7554/elife.32822"),
-        ({"id": "doi:10.7554/ELIFE.32822"}, "doi:10.7554/elife.32822"),
-        ({"id": "my-id"}, "raw:my-id"),
-    ],
-    ids=[
-        "from_standard_citation",
-        "from_doi_id",
-        "from_doi_id_standardize",
-        "from_raw_id",
+        pytest.param(
+            {"id": "doi:10.7554/elife.32822"},
+            "doi:10.7554/elife.32822",
+            id="from_doi_id",
+        ),
+        pytest.param(
+            {"id": "DOI:10.7554/ELIFE.32822"},
+            "doi:10.7554/elife.32822",
+            id="from_doi_id_standardize",
+        ),
+        pytest.param({"id": "my-id"}, "my-id", id="from_raw_id"),
     ],
 )
 def test_csl_item_standardize_id(csl_item, standard_citation):

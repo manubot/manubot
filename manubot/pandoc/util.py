@@ -35,9 +35,7 @@ def get_pandoc_info():
         stats[command] = bool(path)
         if not path:
             continue
-        version = subprocess.check_output(
-            args=[command, "--version"], universal_newlines=True
-        )
+        version = subprocess.check_output(args=[command, "--version"], encoding="utf-8")
         logging.debug(version)
         version, *discard = version.splitlines()
         discard, version = version.strip().split()

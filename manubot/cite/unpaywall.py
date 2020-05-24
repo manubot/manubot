@@ -49,20 +49,20 @@ class Unpaywall:
         `csl_item` is an optional field that can avoid an
         external web request to generate to a new CSL Item.
         """
-        from .citekey import standardize_citekey, is_valid_citekey
+        from .citekey import CiteKey
 
-        if not is_valid_citekey(citekey):
-            raise ValueError(f"Invalid citekey {citekey}")
-        citekey = standardize_citekey(citekey)
-        source, identifier = citekey.split(":", 1)
-        if source in source_to_unpaywaller:
-            unpaywaller = source_to_unpaywaller[source]
-            unpaywall = unpaywaller(identifier, set_oa_locations=False)
+        if isinstance(citekey, str):
+            citekey = CiteKey(citekey)
+        if not isinstance(citekey, CiteKey):
+            raise ValueError("citekey must be a str or CiteKey")
+        if citekey.standard_prefix in source_to_unpaywaller:
+            unpaywaller = source_to_unpaywaller[citekey.standard_prefix]
+            unpaywall = unpaywaller(citekey.standard_accession, set_oa_locations=False)
         else:
             raise ValueError(
-                f"Cannot Unpaywall {citekey}. "
+                f"Cannot Unpaywall {citekey.input_id}. "
                 f"Supported citations sources are {', '.join(source_to_unpaywaller)}. "
-                "Received {source!r}."
+                "Received {citekey.standard_prefix!r}."
             )
         unpaywall.csl_item = csl_item
         unpaywall.set_oa_locations()

@@ -4,14 +4,9 @@ import pathlib
 import subprocess
 import sys
 
-from manubot.cite.citekey import (
-    citekey_to_csl_item,
-    is_valid_citekey,
-    CiteKey,
-)
 from manubot.pandoc.util import get_pandoc_info
 from manubot.util import shlex_join
-
+from manubot.cite.citations import Citations
 
 # For manubot cite, infer --format from --output filename extensions
 extension_to_format = {
@@ -61,12 +56,7 @@ def call_pandoc(metadata, path, format="plain"):
             assert filter_path.exists()
             args.extend(["--lua-filter", str(filter_path)])
     logging.info("call_pandoc subprocess args:\n" + shlex_join(args))
-    process = subprocess.run(
-        args=args,
-        input=metadata_block.encode(),
-        stdout=subprocess.PIPE if path else sys.stdout,
-        stderr=sys.stderr,
-    )
+    process = subprocess.run(args=args, input=metadata_block.encode(),)
     process.check_returncode()
 
 
@@ -78,30 +68,16 @@ def cli_cite(args):
     inconsistent citation rendering by output format. See
     https://github.com/jgm/pandoc/issues/4834
     """
-    # generate CSL JSON data
-    csl_list = list()
-    for citekey in args.citekeys:
-        citekey = CiteKey(citekey)
-        try:
-            if not is_valid_citekey(citekey.input_id):
-                continue
-            csl_item = citekey_to_csl_item(citekey.standard_id, prune=args.prune_csl)
-            csl_list.append(csl_item)
-        except Exception as error:
-            logging.error(
-                f"citekey_to_csl_item for {citekey.input_id!r} failed "
-                f"due to a {error.__class__.__name__}:\n{error}"
-            )
-            logging.info(error, exc_info=True)
+    citations = Citations(args.citekeys)
+    citations.load_manual_references(paths=args.bibliography)
+    citations.inspect(log_level="WARNING")
+    csl_items = citations.get_csl_items()
 
     # output CSL JSON data, if --render is False
     if not args.render:
-        write_file = (
-            args.output.open("w", encoding="utf-8") if args.output else sys.stdout
-        )
+        write_file = args.output.open("wb") if args.output else sys.stdout.buffer
         with write_file:
-            json.dump(csl_list, write_file, ensure_ascii=False, indent=2)
-            write_file.write("\n")
+            write_file.write(citations.csl_json.encode())
         return
 
     # use Pandoc to render references
@@ -109,7 +85,7 @@ def cli_cite(args):
         vars(args)["format"] = extension_to_format.get(args.output.suffix)
     if not args.format:
         vars(args)["format"] = "plain"
-    pandoc_metadata = {"nocite": "@*", "csl": args.csl, "references": csl_list}
+    pandoc_metadata = {"nocite": "@*", "csl": args.csl, "references": csl_items}
     call_pandoc(metadata=pandoc_metadata, path=args.output, format=args.format)
 
 

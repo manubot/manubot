@@ -28,11 +28,7 @@ import logging
 import re
 from typing import List, Optional
 
-from manubot.cite.citekey import (
-    standardize_citekey,
-    infer_citekey_prefix,
-    is_valid_citekey,
-)
+from manubot.cite.citekey import CiteKey
 
 
 class CSL_Item(dict):
@@ -258,7 +254,7 @@ class CSL_Item(dict):
             return self.set_id(self.note_dict["standard_id"])
         if self.get("id"):
             # "id" field exists and is set with a non-null/empty value
-            return self.set_id(infer_citekey_prefix(self["id"]))
+            return self.set_id(self["id"])
         raise ValueError(
             "infer_id could not detect a field with a citation / standard_citation. "
             'Consider setting the CSL Item "id" field.'
@@ -268,9 +264,6 @@ class CSL_Item(dict):
         """
         Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.
         The standard_id is extracted from a "standard_citation" field, the "note" field, or the "id" field.
-        If extracting the citation from the "id" field, uses the infer_citekey_prefix function to set the prefix.
-        For example, if the extracted standard_id does not begin with a supported prefix (e.g. "doi:", "pmid:" or "raw:"),
-        the citation is assumed to be raw and given a "raw:" prefix.
         The extracted citation is checked for validity and standardized, after which it is the final "standard_id".
 
         Regarding csl_item modification, the csl_item "id" field is set to the standard_citation and the note field
@@ -282,8 +275,8 @@ class CSL_Item(dict):
         original_id = self.get("id")
         self.infer_id()
         original_standard_id = self["id"]
-        assert is_valid_citekey(original_standard_id, allow_raw=True)
-        standard_id = standardize_citekey(original_standard_id, warn_if_changed=False)
+        citekey = CiteKey(original_standard_id)
+        standard_id = citekey.standard_id
         add_to_note = {}
         note_dict = self.note_dict
         if original_id and original_id != standard_id:
