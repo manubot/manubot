@@ -33,5 +33,6 @@ def test_webpage_command():
         # Do not require OTS to succeed on GitHub Actions Windows to do libeay32 issue.
         # FIXME: Could not find module 'libeay32' (or one of its dependencies).
         # https://github.com/manubot/manubot/runs/488343989#step:6:123
+        # https://github.com/petertodd/python-bitcoinlib/issues/238
         return
     assert index_html_version_path.with_name("index.html.ots").exists()
