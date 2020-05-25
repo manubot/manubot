@@ -33,6 +33,7 @@ def test_get_continuous_integration_parameters_github():
 @pytest.mark.skipif(
     os.getenv("TRAVIS_REPO_SLUG") != "manubot/manubot", reason="test fails on forks"
 )
+@pytest.mark.travis
 def test_get_continuous_integration_parameters_travis():
     info = get_continuous_integration_parameters()
     assert info is not None
@@ -53,6 +54,7 @@ def test_get_continuous_integration_parameters_travis():
 @pytest.mark.skipif(
     os.getenv("APPVEYOR_REPO_NAME") != "manubot/manubot", reason="test fails on forks"
 )
+@pytest.mark.appveyor
 def test_get_continuous_integration_parameters_appveyor():
     info = get_continuous_integration_parameters()
     assert info is not None

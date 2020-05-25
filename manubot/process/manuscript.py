@@ -1,4 +1,3 @@
-import collections
 import datetime
 import json
 import logging
@@ -12,7 +11,7 @@ def get_text(directory):
     """
     section_dir = pathlib.Path(directory)
     paths = sorted(section_dir.glob("[0-9]*.md"))
-    name_to_text = collections.OrderedDict()
+    name_to_text = dict()
     for path in paths:
         name_to_text[path.stem] = path.read_text(encoding="utf-8-sig")
     logging.info("Manuscript content parts:\n" + "\n".join(name_to_text))
@@ -23,7 +22,7 @@ def get_manuscript_stats(text):
     """
     Compute manuscript statistics.
     """
-    stats = collections.OrderedDict()
+    stats = dict()
     stats["word_count"] = len(text.split())
     logging.info(f"Generated manscript stats:\n{json.dumps(stats, indent=2)}")
     return stats

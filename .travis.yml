@@ -3,15 +3,17 @@ sudo: true
 language: python
 python:
   - "3.6"
-  - "3.7"
+  # - "3.7"  # test only the extremes
   - "3.8"
 cache:
   - pip
 before_install:
-  - wget --quiet https://github.com/jgm/pandoc/releases/download/2.9.2/pandoc-2.9.2-1-amd64.deb
-  - sudo dpkg --install pandoc-2.9.2-1-amd64.deb
+  - wget --quiet
+    --output-document=pandoc.deb
+    https://github.com/jgm/pandoc/releases/download/2.9.2/pandoc-2.9.2-1-amd64.deb
+  - sudo dpkg --install pandoc.deb
 install:
   - pip install ".[all]"
   - python setup.py sdist bdist_wheel
 script:
-  - pytest -rs --color=yes
+  - pytest --color=yes -rs -m='integration or travis'
