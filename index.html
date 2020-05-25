@@ -1786,33 +1786,39 @@ manubot process <span class="se">\</span>
 <p><a href="https://pypi.org/project/manubot/"><img alt="PyPI" src="https://img.shields.io/pypi/v/manubot.svg?logo=PyPI&amp;style=for-the-badge" /></a></p>
 <p>This section is only relevant for project maintainers.
 Travis CI deployments are used to upload releases to <a href="https://pypi.org/project/manubot">PyPI</a>.</p>
-<p>To create a new release, create <a href="release-notes">release notes</a> and bump the <code>__version__</code> in <a href="manubot/__init__.py"><code>manubot/__init__.py</code></a>.</p>
+<p>To create a new release, bump the <code>__version__</code> in <a href="manubot/__init__.py"><code>manubot/__init__.py</code></a>.
+Then, set the <code>TAG</code> and <code>OLD_TAG</code> environment variables:</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">TAG</span><span class="o">=</span>v<span class="k">$(</span>python setup.py --version<span class="k">)</span>
+
+<span class="c1"># fetch tags from the upstream remote</span>
+<span class="c1"># (assumes upstream is the manubot organization remote)</span>
+git fetch --tags upstream master
+<span class="c1"># get previous release tag, can hardcode like OLD_TAG=v0.3.1</span>
+<span class="nv">OLD_TAG</span><span class="o">=</span><span class="k">$(</span>git describe --tags --abbrev<span class="o">=</span><span class="m">0</span><span class="k">)</span>
+</code></pre></div>
+
+
 <p>The following commands can help draft release notes:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># commit list since v0.2.4 tag</span>
-git log --oneline v0.2.4..HEAD
+<div class="codehilite"><pre><span></span><code><span class="c1"># check out a branch for a pull request as needed</span>
+git checkout -b <span class="s2">&quot;release-</span><span class="nv">$TAG</span><span class="s2">&quot;</span>
 
-<span class="c1"># commit authors since v0.2.4 tag</span>
-git log  v0.2.4..HEAD --format<span class="o">=</span><span class="s1">&#39;%aN &lt;%aE&gt;&#39;</span>
+<span class="c1"># create release notes file if it doesn&#39;t exist</span>
+touch <span class="s2">&quot;release-notes/</span><span class="nv">$TAG</span><span class="s2">.md&quot;</span>
+
+<span class="c1"># commit list since previous tag</span>
+<span class="nb">echo</span> <span class="s2">&quot;\n\nCommits\n-------\n&quot;</span> &gt;&gt; <span class="s2">&quot;release-notes/</span><span class="nv">$TAG</span><span class="s2">.md&quot;</span>
+git log --oneline --decorate<span class="o">=</span>no <span class="nv">$OLD_TAG</span>..HEAD &gt;&gt; <span class="s2">&quot;release-notes/</span><span class="nv">$TAG</span><span class="s2">.md&quot;</span>
+
+<span class="c1"># commit authors since previous tag</span>
+<span class="nb">echo</span> <span class="s2">&quot;\n\nCode authors\n------------\n&quot;</span> &gt;&gt; <span class="s2">&quot;release-notes/</span><span class="nv">$TAG</span><span class="s2">.md&quot;</span>
+git log <span class="nv">$OLD_TAG</span>..HEAD --format<span class="o">=</span><span class="s1">&#39;%aN &lt;%aE&gt;&#39;</span> <span class="p">|</span> sort --unique &gt;&gt; <span class="s2">&quot;release-notes/</span><span class="nv">$TAG</span><span class="s2">.md&quot;</span>
 </code></pre></div>
 
 
-<p>After the release notes are complete, run the following commands:</p>
-<div class="codehilite"><pre><span></span><code><span class="nv">TAG</span><span class="o">=</span>v<span class="sb">`</span>python setup.py --version<span class="sb">`</span>
-<span class="c1"># Commit updated __version__ info</span>
-git add manubot/__init__.py release-notes/<span class="nv">$TAG</span>.md
-git commit --message<span class="o">=</span><span class="s2">&quot;Prepare </span><span class="nv">$TAG</span><span class="s2"> release&quot;</span>
-git push
-</code></pre></div>
-
-
-<p>After the previous commit is part of <code>master</code>, for example after a PR is merged,
-create a tag to trigger the version deployment:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># Create &amp; push tag (assuming upstream is the manubot organization remote)</span>
-git tag --annotate <span class="nv">$TAG</span> --file<span class="o">=</span>release-notes/<span class="nv">$TAG</span>.md
-git push upstream <span class="nv">$TAG</span>
-</code></pre></div>
-
-
+<p>After a commit with the above updates is part of <code>upstream:master</code>,
+for example after a PR is merged,
+use the <a href="https://github.com/manubot/manubot/releases/new">GitHub inteferace</a> to create a release with the new "Tag version".
+Monitor <a href="https://github.com/manubot/manubot/actions?query=workflow%3ARelease">GitHub Actions</a> and <a href="https://pypi.org/project/manubot/#history">PyPI</a> for successful deployment of the release.</p>
 <h2 id="goals-acknowledgments">Goals &amp; Acknowledgments</h2>
 <p>Our goal is to create scholarly infrastructure that encourages open science and assists reproducibility.
 Accordingly, we hope for the Manubot software and philosophy to be adopted widely, by both academic and commercial entities.
