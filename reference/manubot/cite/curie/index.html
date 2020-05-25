@@ -1679,6 +1679,38 @@ black manubot/cite/handlers.py
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="w"></span>
 
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">_get_lui</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nf">str</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">        When namespaceEmbeddedInLui is true, some identifiers.org namespace</span>
+
+<span class="ss">        metadata, such as pattern, include curiePrefix. This function</span>
+
+<span class="ss">        returns the local unique identifier (lui / accession) based on this</span>
+
+<span class="ss">        caveat.</span>
+
+<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">lui</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey</span><span class="p">.</span><span class="n">accession</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">namespace</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="ss">&quot;namespaceEmbeddedInLui&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">lui</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="ss">&quot;{self.namespace[&#39;curiePrefix&#39;]}:{lui}&quot;</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">lui</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="ss">&quot;accession_pattern&quot;</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">lui</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">_get_lui</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">pattern</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">lui</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="ss">&quot;{lui} does not match regex {pattern.pattern}&quot;</span><span class="w"></span>
+
 <span class="n">def</span><span class="w"> </span><span class="n">get_curie_handlers</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="ss">&quot;&quot;&quot;Get all possible CURIE handlers&quot;&quot;&quot;</span><span class="w"></span>
@@ -2121,6 +2153,38 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
         <span class="n">url</span> <span class="o">=</span> <span class="n">curie_to_url</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_lui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        When namespaceEmbeddedInLui is true, some identifiers.org namespace</span>
+
+<span class="sd">        metadata, such as pattern, include curiePrefix. This function</span>
+
+<span class="sd">        returns the local unique identifier (lui / accession) based on this</span>
+
+<span class="sd">        caveat.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">lui</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">accession</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;namespaceEmbeddedInLui&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+
+            <span class="n">lui</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{self.namespace[&#39;curiePrefix&#39;]}:{lui}&quot;</span>
+
+        <span class="k">return</span> <span class="n">lui</span>
+
+    <span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+
+        <span class="n">pattern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="s2">&quot;accession_pattern&quot;</span><span class="p">)</span>
+
+        <span class="n">lui</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_lui</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pattern</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">lui</span><span class="p">):</span>
+
+            <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;{lui} does not match regex {pattern.pattern}&quot;</span>
 </code></pre></div>
 
 
@@ -2168,23 +2232,13 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
 string describing the issue is returned. Otherwise returns None.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
 
-        <span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">        Check citekeys adhere to expected formats. If an issue is detected a</span>
-
-<span class="ss">        string describing the issue is returned. Otherwise returns None.</span>
-
-<span class="ss">        &quot;&quot;&quot;</span>
-
         <span class="n">pattern</span> <span class="o">=</span> <span class="k">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="ss">&quot;accession_pattern&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">pattern</span><span class="p">:</span>
+        <span class="n">lui</span> <span class="o">=</span> <span class="k">self</span><span class="p">.</span><span class="n">_get_lui</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="k">None</span>
+        <span class="k">if</span> <span class="k">not</span> <span class="n">pattern</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">lui</span><span class="p">):</span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">pattern</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">accession</span><span class="p">):</span>
-
-            <span class="k">return</span> <span class="n">f</span><span class="ss">&quot;{citekey.accession} does not match regex {pattern.pattern}&quot;</span>
+            <span class="k">return</span> <span class="n">f</span><span class="ss">&quot;{lui} does not match regex {pattern.pattern}&quot;</span>
 </code></pre></div>
 
 
