@@ -69,6 +69,24 @@ class Handler_CURIE(Handler):
         url = curie_to_url(citekey.standard_id)
         return get_url_csl_item(url)
 
+    def _get_lui(self, citekey) -> str:
+        """
+        When namespaceEmbeddedInLui is true, some identifiers.org namespace
+        metadata, such as pattern, include curiePrefix. This function
+        returns the local unique identifier (lui / accession) based on this
+        caveat.
+        """
+        lui = citekey.accession
+        if self.namespace.get("namespaceEmbeddedInLui", False):
+            lui = f"{self.namespace['curiePrefix']}:{lui}"
+        return lui
+
+    def inspect(self, citekey):
+        pattern = self._get_pattern("accession_pattern")
+        lui = self._get_lui(citekey)
+        if not pattern.fullmatch(lui):
+            return f"{lui} does not match regex {pattern.pattern}"
+
 
 def get_curie_handlers():
     """Get all possible CURIE handlers"""
