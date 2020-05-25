@@ -62,8 +62,8 @@ def test_shorten_citekey(standard_citekey, expected):
     [
         "doi:10.7717/peerj.705",
         "doi:10/b6vnmd",
-        "pmcid:PMC4304851",
-        "pmid:25648772",
+        "pmc:PMC4304851",
+        "pubmed:25648772",
         "arxiv:1407.3561",
         "arxiv:1407.3561v1",
         "arxiv:math.GT/0309136",
@@ -75,6 +75,10 @@ def test_shorten_citekey(standard_citekey, expected):
         "wikidata:Q1",
         "wikidata:Q50051684",
         "url:https://peerj.com/articles/705/",
+        "https://peerj.com/articles/705/",
+        "GO:0006915",  # namespaceEmbeddedInLui=true
+        "go:0006915",  # namespaceEmbeddedInLui=true
+        "clinicaltrials:NCT04372602",  # namespaceEmbeddedInLui=false
     ],
 )
 def test_inspect_citekey_passes(citekey):
@@ -101,6 +105,7 @@ def test_inspect_citekey_passes(citekey):
         ("wikidata:P212", "item IDs must start with 'Q'"),
         ("wikidata:QABCD", "does not conform to the Wikidata regex"),
         ("arxiv:YYMM.number", "must conform to syntax"),
+        ("GO:GO:0006915", "GO:GO:0006915 does not match regex"),
     ],
 )
 def test_inspect_citekey_fails(citekey, contains):
