@@ -68,7 +68,7 @@ def cli_cite(args):
     inconsistent citation rendering by output format. See
     https://github.com/jgm/pandoc/issues/4834
     """
-    citations = Citations(args.citekeys)
+    citations = Citations(input_ids=args.citekeys, prune_csl_items=args.prune_csl,)
     citations.load_manual_references(paths=args.bibliography)
     citations.inspect(log_level="WARNING")
     csl_items = citations.get_csl_items()
@@ -97,7 +97,7 @@ def _exit_without_pandoc():
     for command in "pandoc", "pandoc-citeproc":
         if not info[command]:
             logging.critical(
-                f'"{command}" not found on system. ' f"Check that Pandoc is installed."
+                f"{command!r} not found on system. Check that Pandoc is installed."
             )
             raise SystemExit(1)
 
