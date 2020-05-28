@@ -99,15 +99,28 @@ def add_subparser_cite(subparsers):
         description="Retrieve bibliographic metadata for one or more citation keys.",
     )
     parser.add_argument(
+        "--output",
+        type=pathlib.Path,
+        help="Specify a file to write output, otherwise default to stdout.",
+    )
+    parser.add_argument(
         "--render",
         action="store_true",
         help="Whether to render CSL Data into a formatted reference list using Pandoc. "
         "Pandoc version 2.0 or higher is required for complete support of available output formats.",
     )
     parser.add_argument(
+        "--format",
+        choices=["plain", "markdown", "docx", "html", "jats"],
+        help="Format to use for output file. "
+        "Implies --render. "
+        "If not specified, attempt to infer this from the --output filename extension. "
+        "Otherwise, default to plain.",
+    )
+    parser.add_argument(
         "--csl",
-        default="https://github.com/greenelab/manubot-rootstock/raw/master/build/assets/style.csl",
-        help="When --render, specify an XML CSL definition to style references (i.e. Pandoc's --csl option). "
+        help="Specify an XML CSL definition to style references (i.e. Pandoc's --csl option). "
+        "Implies --render. "
         "Defaults to Manubot's style.",
     )
     parser.add_argument(
@@ -117,18 +130,6 @@ def add_subparser_cite(subparsers):
         help="File to read manual reference metadata. "
         "Specify multiple times to load multiple files. "
         "Similar to pandoc --bibliography.",
-    )
-    parser.add_argument(
-        "--format",
-        choices=["plain", "markdown", "docx", "html", "jats"],
-        help="When --render, format to use for output file. "
-        "If not specified, attempt to infer this from filename extension. "
-        "Otherwise, default to plain.",
-    )
-    parser.add_argument(
-        "--output",
-        type=pathlib.Path,
-        help="Specify a file to write output, otherwise default to stdout.",
     )
     parser.add_argument(
         "--allow-invalid-csl-data",
