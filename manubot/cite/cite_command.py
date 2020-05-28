@@ -17,9 +17,12 @@ extension_to_format = {
     ".xml": "jats",
 }
 
-default_csl_style_path = (
-    "https://github.com/manubot/rootstock/raw/master/build/assets/style.csl"
-)
+"""
+URL or path with default CSL XML style.
+<https://citation-style.manubot.org> redirects to the latest Manubot CSL Style.
+"""
+# todo add HTTPS in 48 hours
+default_csl_style_path = "http://citation-style.manubot.org/"
 
 
 def call_pandoc(metadata, path, format="plain"):
