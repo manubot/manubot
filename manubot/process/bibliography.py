@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 import pathlib
 
 from manubot import __version__ as manubot_version
@@ -7,18 +8,19 @@ from manubot.cite.citekey import shorten_citekey
 from manubot.util import read_serialized_data
 
 
-def load_bibliography(path) -> list:
+def load_bibliography(path: str) -> list:
     """
     Load a bibliography as CSL Items (a CSL JSON Python object).
     For paths that already contain CSL Items (inferred from a .json or .yaml extension),
     parse these files directly. Otherwise, delegate conversion to CSL Items to pandoc-citeproc.
     """
-    path = pathlib.Path(path)
-    if path.suffix in {".json", ".yaml"}:
+    path_obj = pathlib.Path(path)
+    if path_obj.suffix in {".json", ".yaml"}:
         try:
             csl_items = read_serialized_data(path)
-        except Exception:
-            logging.exception(f"process.load_bibliography: error parsing {path}.\n")
+        except Exception as error:
+            logging.error(f"load_bibliography: error reading {path!r}.\n{error}")
+            logging.info("load_bibliography exception info", exc_info=True)
             csl_items = []
     else:
         from manubot.pandoc.bibliography import (
@@ -50,17 +52,14 @@ def load_manual_references(paths=[], extra_csl_items=[]) -> dict:
     csl_items = []
     paths = list(dict.fromkeys(paths))  # remove duplicates
     for path in paths:
-        path = pathlib.Path(path)
-        if not path.is_file():
-            logging.warning(
-                f"process.load_bibliographies is skipping a non-existent path: {path}"
-            )
-            continue
-        for csl_item in load_bibliography(path):
+        path = os.fspath(path)
+        path_obj = pathlib.Path(path)
+        bibliography = load_bibliography(path)
+        for csl_item in bibliography:
             csl_item.note_append_text(
                 f"This CSL JSON Item was loaded by Manubot v{manubot_version} from a manual reference file."
             )
-            csl_item.note_append_dict({"manual_reference_filename": path.name})
+            csl_item.note_append_dict({"manual_reference_filename": path_obj.name})
             csl_items.append(csl_item)
     csl_items.extend(map(CSL_Item, extra_csl_items))
     manual_refs = dict()

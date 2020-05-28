@@ -74,9 +74,9 @@ def read_serialized_data(path: str):
     import requests
 
     path_str = os.fspath(path)
-    path_lib = pathlib.Path(path)
+    path_obj = pathlib.Path(path)
     supported_suffixes = {".json", ".yaml", ".yml", ".toml"}
-    suffixes = set(path_lib.suffixes)
+    suffixes = set(path_obj.suffixes)
     if is_http_url(path_str):
         headers = {"User-Agent": get_manubot_user_agent()}
         response = requests.get(path_str, headers=headers)
@@ -85,7 +85,7 @@ def read_serialized_data(path: str):
             suffixes = set(pathlib.Path(response.url).suffixes)
         text = response.text
     else:
-        text = path_lib.read_text(encoding="utf-8-sig")
+        text = path_obj.read_text(encoding="utf-8-sig")
     if {".yaml", ".yml"} & suffixes:
         import yaml
 

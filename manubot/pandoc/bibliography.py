@@ -56,10 +56,15 @@ def load_bibliography(path=None, text=None, input_format=None):
         **run_kwargs,
     )
     logging.info(f"captured stderr:\n{process.stderr}")
-    process.check_returncode()
+    if process.returncode:
+        logging.error(
+            f"Pandoc call returned nonzero exit code.\n"
+            f"{shlex_join(process.args)}\n{process.stderr}"
+        )
+        return []
     try:
         csl_json = json.loads(process.stdout)
     except Exception:
-        logging.exception(f"Error parsing bib2json output as JSON:\n{process.stdout}")
+        logging.error(f"Error parsing bib2json output as JSON:\n{process.stdout}")
         csl_json = []
     return csl_json
