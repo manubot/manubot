@@ -6,12 +6,13 @@ from manubot.pandoc.util import get_pandoc_info
 from manubot.util import shlex_join
 
 
-def load_bibliography(path=None, text=None, input_format=None):
+def load_bibliography(path=None, text=None, input_format=None) -> list:
     """
     Convert a bibliography to CSL JSON using `pandoc-citeproc --bib2json`.
     Accepts either a bibliography path or text (string). If supplying text,
     pandoc-citeproc will likely require input_format be specified.
     The CSL JSON is returned as Python objects.
+    If loading fails, log an error and return an empty list.
 
     Parameters
     ----------

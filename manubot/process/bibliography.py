@@ -12,7 +12,9 @@ def load_bibliography(path: str) -> list:
     """
     Load a bibliography as CSL Items (a CSL JSON Python object).
     For paths that already contain CSL Items (inferred from a .json or .yaml extension),
-    parse these files directly. Otherwise, delegate conversion to CSL Items to pandoc-citeproc.
+    parse these files directly (URLs supported).
+    Otherwise, delegate conversion to CSL Items to pandoc-citeproc (URLs not supported).
+    If loading fails, log an error and return an empty list.
     """
     path_obj = pathlib.Path(path)
     if path_obj.suffix in {".json", ".yaml"}:
