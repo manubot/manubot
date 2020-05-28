@@ -95,8 +95,9 @@ def add_subparser_process(subparsers):
 def add_subparser_cite(subparsers):
     parser = subparsers.add_parser(
         name="cite",
-        help="citation to CSL command line utility",
-        description="Retrieve bibliographic metadata for one or more citation keys. "
+        help="citekey to CSL JSON command line utility",
+        description="Generate bibliographic metadata in CSL JSON format for one or more citation keys. "
+        "Optionally, render metadata into formatted references using Pandoc. "
         "Text outputs are UTF-8 encoded.",
     )
     parser.add_argument(
@@ -141,7 +142,7 @@ def add_subparser_cite(subparsers):
     parser.add_argument(
         "citekeys",
         nargs="+",
-        help="One or more (space separated) citation keys to produce CSL for.",
+        help="One or more (space separated) citation keys to generate bibliographic metadata for.",
     )
     parser.set_defaults(function="manubot.cite.cite_command.cli_cite")
 

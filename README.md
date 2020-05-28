@@ -71,7 +71,7 @@ subcommands:
 
   {process,cite,webpage}
     process             process manuscript content
-    cite                citation to CSL command line utility
+    cite                citekey to CSL JSON command line utility
     webpage             deploy Manubot outputs to a webpage directory tree
 ```
 
@@ -150,15 +150,18 @@ These files are stored in the Pandoc metadata `bibliography` field, such that th
 
 ### Cite
 
-`manubot cite` is a command line utility to create [CSL JSON items](http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html#items) for one or more citation keys.
-Citation keys should be in the format `source:identifier`.
-For example, the following example generates CSL JSON for four references:
+`manubot cite` is a command line utility to produce bibliographic metadata for citation keys.
+The utility either outputs metadata as [CSL JSON items](http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html#items) or produces formatted references if `--render`.
 
-```sh
-manubot cite doi:10.1098/rsif.2017.0387 pubmed:29424689 pmc:PMC5640425 arxiv:1806.05726
+Citation keys should be in the format `prefix:accession`.
+For example, the following example generates Markdown-formatted references for four persistent identifiers:
+
+```shell
+manubot cite --format=markdown \
+  doi:10.1098/rsif.2017.0387 pubmed:29424689 pmc:PMC5640425 arxiv:1806.05726
 ```
 
-The following [terminal recording](https://asciinema.org/a/205085?speed=2) demonstrates the main features of `manubot cite`:
+The following [terminal recording](https://asciinema.org/a/205085?speed=2) demonstrates the main features of `manubot cite` (for a slightly outdated version):
 
 ![manubot cite demonstration](media/terminal-recordings/manubot-cite-cast.gif)
 
@@ -172,12 +175,13 @@ usage: manubot cite [-h] [--output OUTPUT] [--render]
                     [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
                     citekeys [citekeys ...]
 
-Retrieve bibliographic metadata for one or more citation keys. Text outputs
-are UTF-8 encoded.
+Generate bibliographic metadata in CSL JSON format for one or more citation
+keys. Optionally, render metadata into formatted references using Pandoc. Text
+outputs are UTF-8 encoded.
 
 positional arguments:
-  citekeys              One or more (space separated) citation keys to produce
-                        CSL for.
+  citekeys              One or more (space separated) citation keys to
+                        generate bibliographic metadata for.
 
 optional arguments:
   -h, --help            show this help message and exit
