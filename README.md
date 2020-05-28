@@ -172,7 +172,8 @@ usage: manubot cite [-h] [--output OUTPUT] [--render]
                     [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
                     citekeys [citekeys ...]
 
-Retrieve bibliographic metadata for one or more citation keys.
+Retrieve bibliographic metadata for one or more citation keys. Text outputs
+are UTF-8 encoded.
 
 positional arguments:
   citekeys              One or more (space separated) citation keys to produce
