@@ -6,12 +6,13 @@ from manubot.pandoc.util import get_pandoc_info
 from manubot.util import shlex_join
 
 
-def load_bibliography(path=None, text=None, input_format=None):
+def load_bibliography(path=None, text=None, input_format=None) -> list:
     """
     Convert a bibliography to CSL JSON using `pandoc-citeproc --bib2json`.
     Accepts either a bibliography path or text (string). If supplying text,
     pandoc-citeproc will likely require input_format be specified.
     The CSL JSON is returned as Python objects.
+    If loading fails, log an error and return an empty list.
 
     Parameters
     ----------
@@ -56,10 +57,15 @@ def load_bibliography(path=None, text=None, input_format=None):
         **run_kwargs,
     )
     logging.info(f"captured stderr:\n{process.stderr}")
-    process.check_returncode()
+    if process.returncode:
+        logging.error(
+            f"Pandoc call returned nonzero exit code.\n"
+            f"{shlex_join(process.args)}\n{process.stderr}"
+        )
+        return []
     try:
         csl_json = json.loads(process.stdout)
     except Exception:
-        logging.exception(f"Error parsing bib2json output as JSON:\n{process.stdout}")
+        logging.error(f"Error parsing bib2json output as JSON:\n{process.stdout}")
         csl_json = []
     return csl_json

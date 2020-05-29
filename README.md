@@ -71,7 +71,7 @@ subcommands:
 
   {process,cite,webpage}
     process             process manuscript content
-    cite                citation to CSL command line utility
+    cite                citekey to CSL JSON command line utility
     webpage             deploy Manubot outputs to a webpage directory tree
 ```
 
@@ -150,15 +150,18 @@ These files are stored in the Pandoc metadata `bibliography` field, such that th
 
 ### Cite
 
-`manubot cite` is a command line utility to create [CSL JSON items](http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html#items) for one or more citation keys.
-Citation keys should be in the format `source:identifier`.
-For example, the following example generates CSL JSON for four references:
+`manubot cite` is a command line utility to produce bibliographic metadata for citation keys.
+The utility either outputs metadata as [CSL JSON items](http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html#items) or produces formatted references if `--render`.
 
-```sh
-manubot cite doi:10.1098/rsif.2017.0387 pubmed:29424689 pmc:PMC5640425 arxiv:1806.05726
+Citation keys should be in the format `prefix:accession`.
+For example, the following example generates Markdown-formatted references for four persistent identifiers:
+
+```shell
+manubot cite --format=markdown \
+  doi:10.1098/rsif.2017.0387 pubmed:29424689 pmc:PMC5640425 arxiv:1806.05726
 ```
 
-The following [terminal recording](https://asciinema.org/a/205085?speed=2) demonstrates the main features of `manubot cite`:
+The following [terminal recording](https://asciinema.org/a/205085?speed=2) demonstrates the main features of `manubot cite` (for a slightly outdated version):
 
 ![manubot cite demonstration](media/terminal-recordings/manubot-cite-cast.gif)
 
@@ -166,37 +169,39 @@ Additional usage information is available from `manubot cite --help`:
 
 <!-- test codeblock contains output of `manubot cite --help` -->
 ```
-usage: manubot cite [-h] [--render] [--csl CSL] [--bibliography BIBLIOGRAPHY]
-                    [--format {plain,markdown,docx,html,jats}]
-                    [--output OUTPUT] [--allow-invalid-csl-data]
+usage: manubot cite [-h] [--output OUTPUT] [--render]
+                    [--format {plain,markdown,docx,html,jats}] [--csl CSL]
+                    [--bibliography BIBLIOGRAPHY] [--allow-invalid-csl-data]
                     [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
                     citekeys [citekeys ...]
 
-Retrieve bibliographic metadata for one or more citation keys.
+Generate bibliographic metadata in CSL JSON format for one or more citation
+keys. Optionally, render metadata into formatted references using Pandoc. Text
+outputs are UTF-8 encoded.
 
 positional arguments:
-  citekeys              One or more (space separated) citation keys to produce
-                        CSL for.
+  citekeys              One or more (space separated) citation keys to
+                        generate bibliographic metadata for.
 
 optional arguments:
   -h, --help            show this help message and exit
+  --output OUTPUT       Specify a file to write output, otherwise default to
+                        stdout.
   --render              Whether to render CSL Data into a formatted reference
                         list using Pandoc. Pandoc version 2.0 or higher is
                         required for complete support of available output
                         formats.
-  --csl CSL             When --render, specify an XML CSL definition to style
-                        references (i.e. Pandoc's --csl option). Defaults to
-                        Manubot's style.
+  --format {plain,markdown,docx,html,jats}
+                        Format to use for output file. Implies --render. If
+                        not specified, attempt to infer this from the --output
+                        filename extension. Otherwise, default to plain.
+  --csl CSL             Specify an XML CSL definition to style references
+                        (i.e. Pandoc's --csl option). Implies --render.
+                        Defaults to Manubot's style.
   --bibliography BIBLIOGRAPHY
                         File to read manual reference metadata. Specify
                         multiple times to load multiple files. Similar to
                         pandoc --bibliography.
-  --format {plain,markdown,docx,html,jats}
-                        When --render, format to use for output file. If not
-                        specified, attempt to infer this from filename
-                        extension. Otherwise, default to plain.
-  --output OUTPUT       Specify a file to write output, otherwise default to
-                        stdout.
   --allow-invalid-csl-data
                         Allow CSL Items that do not conform to the JSON
                         Schema. Skips CSL pruning.

@@ -17,6 +17,12 @@ extension_to_format = {
     ".xml": "jats",
 }
 
+"""
+URL or path with default CSL XML style.
+<https://citation-style.manubot.org> redirects to the latest Manubot CSL Style.
+"""
+default_csl_style_path = "https://citation-style.manubot.org/"
+
 
 def call_pandoc(metadata, path, format="plain"):
     """
@@ -60,6 +66,23 @@ def call_pandoc(metadata, path, format="plain"):
     process.check_returncode()
 
 
+def _parse_cli_cite_args(args):
+    arg_dict = vars(args)
+    # check for implied --render
+    if args.csl or args.format:
+        arg_dict["render"] = True
+    if not args.render:
+        return
+    # set --csl default
+    arg_dict["csl"] = args.csl or default_csl_style_path
+    # infer format from output extension
+    if not args.format and args.output:
+        arg_dict["format"] = extension_to_format.get(args.output.suffix)
+    # default format to plain
+    if not args.format:
+        arg_dict["format"] = "plain"
+
+
 def cli_cite(args):
     """
     Main function for the manubot cite command-line interface.
@@ -68,7 +91,8 @@ def cli_cite(args):
     inconsistent citation rendering by output format. See
     https://github.com/jgm/pandoc/issues/4834
     """
-    citations = Citations(args.citekeys)
+    _parse_cli_cite_args(args)
+    citations = Citations(input_ids=args.citekeys, prune_csl_items=args.prune_csl,)
     citations.load_manual_references(paths=args.bibliography)
     citations.inspect(log_level="WARNING")
     csl_items = citations.get_csl_items()
@@ -81,10 +105,6 @@ def cli_cite(args):
         return
 
     # use Pandoc to render references
-    if not args.format and args.output:
-        vars(args)["format"] = extension_to_format.get(args.output.suffix)
-    if not args.format:
-        vars(args)["format"] = "plain"
     pandoc_metadata = {"nocite": "@*", "csl": args.csl, "references": csl_items}
     call_pandoc(metadata=pandoc_metadata, path=args.output, format=args.format)
 
@@ -97,7 +117,7 @@ def _exit_without_pandoc():
     for command in "pandoc", "pandoc-citeproc":
         if not info[command]:
             logging.critical(
-                f'"{command}" not found on system. ' f"Check that Pandoc is installed."
+                f"{command!r} not found on system. Check that Pandoc is installed."
             )
             raise SystemExit(1)
 

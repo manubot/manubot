@@ -95,8 +95,15 @@ def add_subparser_process(subparsers):
 def add_subparser_cite(subparsers):
     parser = subparsers.add_parser(
         name="cite",
-        help="citation to CSL command line utility",
-        description="Retrieve bibliographic metadata for one or more citation keys.",
+        help="citekey to CSL JSON command line utility",
+        description="Generate bibliographic metadata in CSL JSON format for one or more citation keys. "
+        "Optionally, render metadata into formatted references using Pandoc. "
+        "Text outputs are UTF-8 encoded.",
+    )
+    parser.add_argument(
+        "--output",
+        type=pathlib.Path,
+        help="Specify a file to write output, otherwise default to stdout.",
     )
     parser.add_argument(
         "--render",
@@ -105,9 +112,17 @@ def add_subparser_cite(subparsers):
         "Pandoc version 2.0 or higher is required for complete support of available output formats.",
     )
     parser.add_argument(
+        "--format",
+        choices=["plain", "markdown", "docx", "html", "jats"],
+        help="Format to use for output file. "
+        "Implies --render. "
+        "If not specified, attempt to infer this from the --output filename extension. "
+        "Otherwise, default to plain.",
+    )
+    parser.add_argument(
         "--csl",
-        default="https://github.com/greenelab/manubot-rootstock/raw/master/build/assets/style.csl",
-        help="When --render, specify an XML CSL definition to style references (i.e. Pandoc's --csl option). "
+        help="Specify an XML CSL definition to style references (i.e. Pandoc's --csl option). "
+        "Implies --render. "
         "Defaults to Manubot's style.",
     )
     parser.add_argument(
@@ -119,18 +134,6 @@ def add_subparser_cite(subparsers):
         "Similar to pandoc --bibliography.",
     )
     parser.add_argument(
-        "--format",
-        choices=["plain", "markdown", "docx", "html", "jats"],
-        help="When --render, format to use for output file. "
-        "If not specified, attempt to infer this from filename extension. "
-        "Otherwise, default to plain.",
-    )
-    parser.add_argument(
-        "--output",
-        type=pathlib.Path,
-        help="Specify a file to write output, otherwise default to stdout.",
-    )
-    parser.add_argument(
         "--allow-invalid-csl-data",
         dest="prune_csl",
         action="store_false",
@@ -139,7 +142,7 @@ def add_subparser_cite(subparsers):
     parser.add_argument(
         "citekeys",
         nargs="+",
-        help="One or more (space separated) citation keys to produce CSL for.",
+        help="One or more (space separated) citation keys to generate bibliographic metadata for.",
     )
     parser.set_defaults(function="manubot.cite.cite_command.cli_cite")
 
