@@ -1568,9 +1568,23 @@
 
         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cite&quot;</span><span class="p">,</span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;citation to CSL command line utility&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;citekey to CSL JSON command line utility&quot;</span><span class="p">,</span>
 
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Retrieve bibliographic metadata for one or more citation keys.&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Generate bibliographic metadata in CSL JSON format for one or more citation keys. &quot;</span>
+
+        <span class="s2">&quot;Optionally, render metadata into formatted references using Pandoc. &quot;</span>
+
+        <span class="s2">&quot;Text outputs are UTF-8 encoded.&quot;</span><span class="p">,</span>
+
+    <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+
+        <span class="s2">&quot;--output&quot;</span><span class="p">,</span>
+
+        <span class="nb">type</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Specify a file to write output, otherwise default to stdout.&quot;</span><span class="p">,</span>
 
     <span class="p">)</span>
 
@@ -1588,11 +1602,27 @@
 
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
 
+        <span class="s2">&quot;--format&quot;</span><span class="p">,</span>
+
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;plain&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span> <span class="s2">&quot;docx&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">,</span> <span class="s2">&quot;jats&quot;</span><span class="p">],</span>
+
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Format to use for output file. &quot;</span>
+
+        <span class="s2">&quot;Implies --render. &quot;</span>
+
+        <span class="s2">&quot;If not specified, attempt to infer this from the --output filename extension. &quot;</span>
+
+        <span class="s2">&quot;Otherwise, default to plain.&quot;</span><span class="p">,</span>
+
+    <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+
         <span class="s2">&quot;--csl&quot;</span><span class="p">,</span>
 
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;https://github.com/greenelab/manubot-rootstock/raw/master/build/assets/style.csl&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Specify an XML CSL definition to style references (i.e. Pandoc&#39;s --csl option). &quot;</span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;When --render, specify an XML CSL definition to style references (i.e. Pandoc&#39;s --csl option). &quot;</span>
+        <span class="s2">&quot;Implies --render. &quot;</span>
 
         <span class="s2">&quot;Defaults to Manubot&#39;s style.&quot;</span><span class="p">,</span>
 
@@ -1616,30 +1646,6 @@
 
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
 
-        <span class="s2">&quot;--format&quot;</span><span class="p">,</span>
-
-        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;plain&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span> <span class="s2">&quot;docx&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">,</span> <span class="s2">&quot;jats&quot;</span><span class="p">],</span>
-
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;When --render, format to use for output file. &quot;</span>
-
-        <span class="s2">&quot;If not specified, attempt to infer this from filename extension. &quot;</span>
-
-        <span class="s2">&quot;Otherwise, default to plain.&quot;</span><span class="p">,</span>
-
-    <span class="p">)</span>
-
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-
-        <span class="s2">&quot;--output&quot;</span><span class="p">,</span>
-
-        <span class="nb">type</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
-
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Specify a file to write output, otherwise default to stdout.&quot;</span><span class="p">,</span>
-
-    <span class="p">)</span>
-
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-
         <span class="s2">&quot;--allow-invalid-csl-data&quot;</span><span class="p">,</span>
 
         <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;prune_csl&quot;</span><span class="p">,</span>
@@ -1656,7 +1662,7 @@
 
         <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;One or more (space separated) citation keys to produce CSL for.&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;One or more (space separated) citation keys to generate bibliographic metadata for.&quot;</span><span class="p">,</span>
 
     <span class="p">)</span>
 
@@ -1847,9 +1853,23 @@
 
         <span class="n">name</span><span class="o">=</span><span class="ss">&quot;cite&quot;</span><span class="p">,</span>
 
-        <span class="n">help</span><span class="o">=</span><span class="ss">&quot;citation to CSL command line utility&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="ss">&quot;citekey to CSL JSON command line utility&quot;</span><span class="p">,</span>
 
-        <span class="n">description</span><span class="o">=</span><span class="ss">&quot;Retrieve bibliographic metadata for one or more citation keys.&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="ss">&quot;Generate bibliographic metadata in CSL JSON format for one or more citation keys. &quot;</span>
+
+        <span class="ss">&quot;Optionally, render metadata into formatted references using Pandoc. &quot;</span>
+
+        <span class="ss">&quot;Text outputs are UTF-8 encoded.&quot;</span><span class="p">,</span>
+
+    <span class="p">)</span>
+
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span>
+
+        <span class="ss">&quot;--output&quot;</span><span class="p">,</span>
+
+        <span class="k">type</span><span class="o">=</span><span class="n">pathlib</span><span class="p">.</span><span class="n">Path</span><span class="p">,</span>
+
+        <span class="n">help</span><span class="o">=</span><span class="ss">&quot;Specify a file to write output, otherwise default to stdout.&quot;</span><span class="p">,</span>
 
     <span class="p">)</span>
 
@@ -1867,11 +1887,27 @@
 
     <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span>
 
+        <span class="ss">&quot;--format&quot;</span><span class="p">,</span>
+
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="ss">&quot;plain&quot;</span><span class="p">,</span> <span class="ss">&quot;markdown&quot;</span><span class="p">,</span> <span class="ss">&quot;docx&quot;</span><span class="p">,</span> <span class="ss">&quot;html&quot;</span><span class="p">,</span> <span class="ss">&quot;jats&quot;</span><span class="p">],</span>
+
+        <span class="n">help</span><span class="o">=</span><span class="ss">&quot;Format to use for output file. &quot;</span>
+
+        <span class="ss">&quot;Implies --render. &quot;</span>
+
+        <span class="ss">&quot;If not specified, attempt to infer this from the --output filename extension. &quot;</span>
+
+        <span class="ss">&quot;Otherwise, default to plain.&quot;</span><span class="p">,</span>
+
+    <span class="p">)</span>
+
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span>
+
         <span class="ss">&quot;--csl&quot;</span><span class="p">,</span>
 
-        <span class="k">default</span><span class="o">=</span><span class="ss">&quot;https://github.com/greenelab/manubot-rootstock/raw/master/build/assets/style.csl&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="ss">&quot;Specify an XML CSL definition to style references (i.e. Pandoc&#39;s --csl option). &quot;</span>
 
-        <span class="n">help</span><span class="o">=</span><span class="ss">&quot;When --render, specify an XML CSL definition to style references (i.e. Pandoc&#39;s --csl option). &quot;</span>
+        <span class="ss">&quot;Implies --render. &quot;</span>
 
         <span class="ss">&quot;Defaults to Manubot&#39;s style.&quot;</span><span class="p">,</span>
 
@@ -1895,30 +1931,6 @@
 
     <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span>
 
-        <span class="ss">&quot;--format&quot;</span><span class="p">,</span>
-
-        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="ss">&quot;plain&quot;</span><span class="p">,</span> <span class="ss">&quot;markdown&quot;</span><span class="p">,</span> <span class="ss">&quot;docx&quot;</span><span class="p">,</span> <span class="ss">&quot;html&quot;</span><span class="p">,</span> <span class="ss">&quot;jats&quot;</span><span class="p">],</span>
-
-        <span class="n">help</span><span class="o">=</span><span class="ss">&quot;When --render, format to use for output file. &quot;</span>
-
-        <span class="ss">&quot;If not specified, attempt to infer this from filename extension. &quot;</span>
-
-        <span class="ss">&quot;Otherwise, default to plain.&quot;</span><span class="p">,</span>
-
-    <span class="p">)</span>
-
-    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span>
-
-        <span class="ss">&quot;--output&quot;</span><span class="p">,</span>
-
-        <span class="k">type</span><span class="o">=</span><span class="n">pathlib</span><span class="p">.</span><span class="n">Path</span><span class="p">,</span>
-
-        <span class="n">help</span><span class="o">=</span><span class="ss">&quot;Specify a file to write output, otherwise default to stdout.&quot;</span><span class="p">,</span>
-
-    <span class="p">)</span>
-
-    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span>
-
         <span class="ss">&quot;--allow-invalid-csl-data&quot;</span><span class="p">,</span>
 
         <span class="n">dest</span><span class="o">=</span><span class="ss">&quot;prune_csl&quot;</span><span class="p">,</span>
@@ -1935,7 +1947,7 @@
 
         <span class="n">nargs</span><span class="o">=</span><span class="ss">&quot;+&quot;</span><span class="p">,</span>
 
-        <span class="n">help</span><span class="o">=</span><span class="ss">&quot;One or more (space separated) citation keys to produce CSL for.&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="ss">&quot;One or more (space separated) citation keys to generate bibliographic metadata for.&quot;</span><span class="p">,</span>
 
     <span class="p">)</span>
 

@@ -1365,6 +1365,16 @@
 
 <span class="p">}</span>
 
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">URL or path with default CSL XML style.</span>
+
+<span class="sd">&lt;https://citation-style.manubot.org&gt; redirects to the latest Manubot CSL Style.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">default_csl_style_path</span> <span class="o">=</span> <span class="s2">&quot;https://citation-style.manubot.org/&quot;</span>
+
 <span class="k">def</span> <span class="nf">call_pandoc</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s2">&quot;plain&quot;</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1445,6 +1455,36 @@
 
     <span class="n">process</span><span class="o">.</span><span class="n">check_returncode</span><span class="p">()</span>
 
+<span class="k">def</span> <span class="nf">_parse_cli_cite_args</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+
+    <span class="n">arg_dict</span> <span class="o">=</span> <span class="nb">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="c1"># check for implied --render</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">csl</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">format</span><span class="p">:</span>
+
+        <span class="n">arg_dict</span><span class="p">[</span><span class="s2">&quot;render&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">render</span><span class="p">:</span>
+
+        <span class="k">return</span>
+
+    <span class="c1"># set --csl default</span>
+
+    <span class="n">arg_dict</span><span class="p">[</span><span class="s2">&quot;csl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">csl</span> <span class="ow">or</span> <span class="n">default_csl_style_path</span>
+
+    <span class="c1"># infer format from output extension</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">format</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+
+        <span class="n">arg_dict</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extension_to_format</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">suffix</span><span class="p">)</span>
+
+    <span class="c1"># default format to plain</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">format</span><span class="p">:</span>
+
+        <span class="n">arg_dict</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;plain&quot;</span>
+
 <span class="k">def</span> <span class="nf">cli_cite</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1459,7 +1499,9 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">citekeys</span><span class="p">)</span>
+    <span class="n">_parse_cli_cite_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">citekeys</span><span class="p">,</span> <span class="n">prune_csl_items</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">prune_csl</span><span class="p">,)</span>
 
     <span class="n">citations</span><span class="o">.</span><span class="n">load_manual_references</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">bibliography</span><span class="p">)</span>
 
@@ -1481,14 +1523,6 @@
 
     <span class="c1"># use Pandoc to render references</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">format</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
-
-        <span class="nb">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extension_to_format</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">suffix</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">format</span><span class="p">:</span>
-
-        <span class="nb">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;plain&quot;</span>
-
     <span class="n">pandoc_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nocite&quot;</span><span class="p">:</span> <span class="s2">&quot;@*&quot;</span><span class="p">,</span> <span class="s2">&quot;csl&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">csl</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">:</span> <span class="n">csl_items</span><span class="p">}</span>
 
     <span class="n">call_pandoc</span><span class="p">(</span><span class="n">metadata</span><span class="o">=</span><span class="n">pandoc_metadata</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">format</span><span class="p">)</span>
@@ -1509,7 +1543,7 @@
 
             <span class="n">logging</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span>
 
-                <span class="n">f</span><span class="s1">&#39;&quot;{command}&quot; not found on system. &#39;</span> <span class="n">f</span><span class="s2">&quot;Check that Pandoc is installed.&quot;</span>
+                <span class="n">f</span><span class="s2">&quot;{command!r} not found on system. Check that Pandoc is installed.&quot;</span>
 
             <span class="p">)</span>
 
@@ -1553,10 +1587,16 @@
 
 </details>
 <h2 id="variables">Variables</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">default_csl_style_path</span>
+</code></pre></div>
+
+
 <div class="codehilite"><pre><span></span><code><span class="n">extension_to_format</span>
 </code></pre></div>
 
 
+<p>URL or path with default CSL XML style.
+<a href="https://citation-style.manubot.org">https://citation-style.manubot.org</a> redirects to the latest Manubot CSL Style.</p>
 <h2 id="functions">Functions</h2>
 <h3 id="call_pandoc">call_pandoc</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">call_pandoc</span><span class="p">(</span>
@@ -1676,7 +1716,9 @@ https://github.com/jgm/pandoc/issues/4834</p>
 
 <span class="ss">    &quot;&quot;&quot;</span>
 
-    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">citekeys</span><span class="p">)</span>
+    <span class="n">_parse_cli_cite_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">citekeys</span><span class="p">,</span> <span class="n">prune_csl_items</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">prune_csl</span><span class="p">,)</span>
 
     <span class="n">citations</span><span class="p">.</span><span class="n">load_manual_references</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">bibliography</span><span class="p">)</span>
 
@@ -1697,14 +1739,6 @@ https://github.com/jgm/pandoc/issues/4834</p>
         <span class="k">return</span>
 
     <span class="o">#</span> <span class="n">use</span> <span class="n">Pandoc</span> <span class="k">to</span> <span class="n">render</span> <span class="k">references</span>
-
-    <span class="k">if</span> <span class="k">not</span> <span class="n">args</span><span class="p">.</span><span class="n">format</span> <span class="k">and</span> <span class="n">args</span><span class="p">.</span><span class="k">output</span><span class="p">:</span>
-
-        <span class="n">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)[</span><span class="ss">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extension_to_format</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="k">output</span><span class="p">.</span><span class="n">suffix</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="k">not</span> <span class="n">args</span><span class="p">.</span><span class="n">format</span><span class="p">:</span>
-
-        <span class="n">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)[</span><span class="ss">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="ss">&quot;plain&quot;</span>
 
     <span class="n">pandoc_metadata</span> <span class="o">=</span> <span class="err">{</span><span class="ss">&quot;nocite&quot;</span><span class="p">:</span> <span class="ss">&quot;@*&quot;</span><span class="p">,</span> <span class="ss">&quot;csl&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">.</span><span class="n">csl</span><span class="p">,</span> <span class="ss">&quot;references&quot;</span><span class="p">:</span> <span class="n">csl_items</span><span class="err">}</span>
 

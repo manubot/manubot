@@ -1343,7 +1343,7 @@
 
 <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">shlex_join</span>
 
-<span class="k">def</span> <span class="nf">load_bibliography</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">input_format</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">load_bibliography</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">input_format</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1354,6 +1354,8 @@
 <span class="sd">    pandoc-citeproc will likely require input_format be specified.</span>
 
 <span class="sd">    The CSL JSON is returned as Python objects.</span>
+
+<span class="sd">    If loading fails, log an error and return an empty list.</span>
 
 <span class="sd">    Parameters</span>
 
@@ -1439,7 +1441,17 @@
 
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;captured stderr:</span><span class="se">\n</span><span class="s2">{process.stderr}&quot;</span><span class="p">)</span>
 
-    <span class="n">process</span><span class="o">.</span><span class="n">check_returncode</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+
+            <span class="n">f</span><span class="s2">&quot;Pandoc call returned nonzero exit code.</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+            <span class="n">f</span><span class="s2">&quot;{shlex_join(process.args)}</span><span class="se">\n</span><span class="s2">{process.stderr}&quot;</span>
+
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">[]</span>
 
     <span class="k">try</span><span class="p">:</span>
 
@@ -1447,7 +1459,7 @@
 
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Error parsing bib2json output as JSON:</span><span class="se">\n</span><span class="s2">{process.stdout}&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Error parsing bib2json output as JSON:</span><span class="se">\n</span><span class="s2">{process.stdout}&quot;</span><span class="p">)</span>
 
         <span class="n">csl_json</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -1462,14 +1474,15 @@
     <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">input_format</span><span class="o">=</span><span class="kc">None</span>
-<span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span>
 </code></pre></div>
 
 
 <p>Convert a bibliography to CSL JSON using <code>pandoc-citeproc --bib2json</code>.
 Accepts either a bibliography path or text (string). If supplying text,
 pandoc-citeproc will likely require input_format be specified.
-The CSL JSON is returned as Python objects.</p>
+The CSL JSON is returned as Python objects.
+If loading fails, log an error and return an empty list.</p>
 <h2 id="parameters">Parameters</h2>
 <p>path : str, pathlike, or None
     Path to a bibliography file. Extension is used by pandoc-citeproc to infer the
@@ -1483,7 +1496,7 @@ input_format : str or None
 <h2 id="returns">Returns</h2>
 <p>csl_json : JSON-like object
     CSL JSON Data for the references encoded by the input bibliography.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="nf">load_bibliography</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="kt">text</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">input_format</span><span class="o">=</span><span class="n">None</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="nf">load_bibliography</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="kt">text</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">input_format</span><span class="o">=</span><span class="n">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">list</span><span class="p">:</span>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -1494,6 +1507,8 @@ input_format : str or None
 <span class="s2">    pandoc-citeproc will likely require input_format be specified.</span>
 
 <span class="s2">    The CSL JSON is returned as Python objects.</span>
+
+<span class="s2">    If loading fails, log an error and return an empty list.</span>
 
 <span class="s2">    Parameters</span>
 
@@ -1579,7 +1594,17 @@ input_format : str or None
 
     <span class="n">logging</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;captured stderr:\n{process.stderr}&quot;</span><span class="p">)</span>
 
-    <span class="n">process</span><span class="p">.</span><span class="nf">check_returncode</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">process</span><span class="p">.</span><span class="n">returncode</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span>
+
+            <span class="n">f</span><span class="s2">&quot;Pandoc call returned nonzero exit code.\n&quot;</span>
+
+            <span class="n">f</span><span class="s2">&quot;{shlex_join(process.args)}\n{process.stderr}&quot;</span>
+
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">[]</span>
 
     <span class="n">try</span><span class="p">:</span>
 
@@ -1587,7 +1612,7 @@ input_format : str or None
 
     <span class="n">except</span> <span class="n">Exception</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="p">.</span><span class="nf">exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Error parsing bib2json output as JSON:\n{process.stdout}&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Error parsing bib2json output as JSON:\n{process.stdout}&quot;</span><span class="p">)</span>
 
         <span class="n">csl_json</span> <span class="o">=</span> <span class="p">[]</span>
 

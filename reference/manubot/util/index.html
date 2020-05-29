@@ -1509,11 +1509,11 @@
 
     <span class="n">path_str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-    <span class="n">path_lib</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">path_obj</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
     <span class="n">supported_suffixes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;.toml&quot;</span><span class="p">}</span>
 
-    <span class="n">suffixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">path_lib</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
+    <span class="n">suffixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">path_obj</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">is_http_url</span><span class="p">(</span><span class="n">path_str</span><span class="p">):</span>
 
@@ -1531,7 +1531,7 @@
 
     <span class="k">else</span><span class="p">:</span>
 
-        <span class="n">text</span> <span class="o">=</span> <span class="n">path_lib</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">path_obj</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="p">{</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">}</span> <span class="o">&amp;</span> <span class="n">suffixes</span><span class="p">:</span>
 
@@ -1763,11 +1763,11 @@ is to hack the fragment like https://example.org#/variables.toml</p>
 
     <span class="n">path_str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-    <span class="n">path_lib</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">path_obj</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
     <span class="n">supported_suffixes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;.toml&quot;</span><span class="p">}</span>
 
-    <span class="n">suffixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">path_lib</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
+    <span class="n">suffixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">path_obj</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">is_http_url</span><span class="p">(</span><span class="n">path_str</span><span class="p">):</span>
 
@@ -1785,7 +1785,7 @@ is to hack the fragment like https://example.org#/variables.toml</p>
 
     <span class="k">else</span><span class="p">:</span>
 
-        <span class="n">text</span> <span class="o">=</span> <span class="n">path_lib</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">path_obj</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="p">{</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">}</span> <span class="o">&amp;</span> <span class="n">suffixes</span><span class="p">:</span>
 
