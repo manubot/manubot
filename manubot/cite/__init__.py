@@ -1,9 +1,5 @@
 __all__ = [
-    'citation_to_citeproc',
-    'standardize_citation',
+    "citekey_to_csl_item",
 ]
 
-from manubot.cite.util import (
-    citation_to_citeproc,
-    standardize_citation,
-)
+from manubot.cite.citekey import citekey_to_csl_item

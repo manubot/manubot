@@ -1,0 +1,75 @@
+<!--
+Manubot generated metadata rendered from header-includes-template.html.
+Suggest improvements at https://github.com/manubot/manubot/blob/master/manubot/process/header-includes-template.html
+-->
+<meta name="dc.format" content="text/html" />
+{% if pandoc.title is defined -%}
+<meta name="dc.title" content="{{ pandoc.title|escape }}" />
+<meta name="citation_title" content="{{ pandoc.title|escape }}" />
+<meta property="og:title" content="{{ pandoc.title|escape }}" />
+<meta property="twitter:title" content="{{ pandoc.title|escape }}" />
+{% endif -%}
+{% if pandoc['date-meta'] is defined -%}
+<meta name="dc.date" content="{{ pandoc['date-meta'] }}" />
+<meta name="citation_publication_date" content="{{ pandoc['date-meta'] }}" />
+{% endif -%}
+{% if pandoc.lang is defined -%}
+<meta name="dc.language" content="{{ pandoc.lang }}" />
+<meta name="citation_language" content="{{ pandoc.lang }}" />
+{% endif -%}
+<meta name="dc.relation.ispartof" content="Manubot" />
+<meta name="dc.publisher" content="Manubot" />
+<meta name="citation_journal_title" content="Manubot" />
+<meta name="citation_technical_report_institution" content="Manubot" />
+{% for author in manubot.authors|default([]) if author.name is defined -%}
+<meta name="citation_author" content="{{ author.name|escape }}" />
+{% if author.affiliations is defined -%}
+{% for affiliation in author.affiliations -%}
+<meta name="citation_author_institution" content="{{ affiliation|escape }}" />
+{% endfor -%}
+{% endif -%}
+{% if author.orcid is defined -%}
+<meta name="citation_author_orcid" content="{{ author.orcid }}" />
+{% endif -%}
+{% if author.twitter is defined -%}
+<meta name="twitter:creator" content="@{{ author.twitter }}" />
+{% endif -%}
+{% endfor -%}
+{% if manubot.html_url is defined -%}
+<link rel="canonical" href="{{ manubot.html_url }}" />
+<meta property="og:url" content="{{ manubot.html_url }}" />
+<meta property="twitter:url" content="{{ manubot.html_url }}" />
+<meta name="citation_fulltext_html_url" content="{{ manubot.html_url }}" />
+{% endif -%}
+{% if manubot.pdf_url is defined -%}
+<meta name="citation_pdf_url" content="{{ manubot.pdf_url }}" />
+<link rel="alternate" type="application/pdf" href="{{ manubot.pdf_url }}" />
+{% endif -%}
+{% if manubot.html_url_versioned is defined -%}
+<link rel="alternate" type="text/html" href="{{ manubot.html_url_versioned }}" />
+<meta name="manubot_html_url_versioned" content="{{ manubot.html_url_versioned }}" />
+{% endif -%}
+{% if manubot.pdf_url_versioned is defined -%}
+<meta name="manubot_pdf_url_versioned" content="{{ manubot.pdf_url_versioned }}" />
+{% endif -%}
+{% if pandoc.abstract is defined -%}
+<meta name="dc.abstract" content="{{ pandoc.abstract|escape }}" />
+<meta name="citation_abstract" content="{{ pandoc.abstract|escape }}" />
+{% if manubot.description is not defined -%}{% do manubot.update({"description": pandoc.abstract}) -%}{% endif -%}
+{% endif -%}
+{% if manubot.description is defined -%}
+<meta name="description" content="{{ manubot.description|escape }}" />
+<meta name="dc.description" content="{{ manubot.description|escape }}"/>
+<meta property="og:description" content="{{ manubot.description|escape }}" />
+<meta property="twitter:description" content="{{ manubot.description|escape }}" />
+{% endif -%}
+<meta property="og:type" content="article" />
+<meta property="twitter:card" content="summary_large_image" />
+{% if manubot.thumbnail_url is defined -%}
+<meta property="og:image" content="{{ manubot.thumbnail_url }}" />
+<meta property="twitter:image" content="{{ manubot.thumbnail_url }}" />
+{% endif -%}
+<link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
+<link rel="mask-icon" href="https://manubot.org/safari-pinned-tab.svg" color="#ad1457" />
+<meta name="theme-color" content="#ad1457" />
+<!-- end Manubot generated metadata -->

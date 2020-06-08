@@ -2,10 +2,31 @@ import json
 import logging
 import re
 
+from .handlers import Handler
 
-def get_url_citeproc(url):
+
+class Handler_URL(Handler):
+
+    standard_prefix = "url"
+
+    prefixes = [
+        "url",
+        "http",
+        "https",
+    ]
+
+    def standardize_prefix_accession(self, accession):
+        if self.prefix_lower != "url":
+            accession = f"{self.prefix_lower}:{accession}"
+        return self.standard_prefix, accession
+
+    def get_csl_item(self, citekey):
+        return get_url_csl_item(citekey.standard_accession)
+
+
+def get_url_csl_item(url):
     """
-    Get citeproc for a URL trying a sequence of strategies.
+    Get csl_item for a URL trying a sequence of strategies.
 
     This function uses a list of CSL JSON Item metadata retrievers, specified
     by the module-level variable `url_retrievers`. The methods are attempted
@@ -17,28 +38,26 @@ def get_url_citeproc(url):
             return retriever(url)
         except Exception as error:
             logging.warning(
-                f'Error in {retriever.__name__} for {url} '
-                f'due to a {error.__class__.__name__}:\n{error}'
+                f"Error in {retriever.__name__} for {url} "
+                f"due to a {error.__class__.__name__}:\n{error}"
             )
             logging.info(error, exc_info=True)
-    raise Exception(f'all get_url_citeproc methods failed for {url}')
+    raise Exception(f"all get_url_csl_item methods failed for {url}")
 
 
-def get_url_citeproc_zotero(url):
+def get_url_csl_item_zotero(url):
     """
     Use Zotero's translation-server to generate a CSL Item for the specified URL.
     """
-    from manubot.cite.zotero import (
-        export_as_csl,
-        web_query,
-    )
+    from manubot.cite.zotero import export_as_csl, web_query
+
     zotero_data = web_query(url)
     csl_data = export_as_csl(zotero_data)
-    csl_item, = csl_data
+    (csl_item,) = csl_data
     return csl_item
 
 
-def get_url_citeproc_greycite(url):
+def get_url_csl_item_greycite(url):
     """
     Uses Greycite which has experiened uptime problems in the past.
     API calls seem to take at least 15 seconds. Browser requests are much
@@ -53,36 +72,32 @@ def get_url_citeproc_greycite(url):
     """
     import requests
     from manubot.util import get_manubot_user_agent
+
     headers = {
-        'Connection': 'close',  # https://github.com/kennethreitz/requests/issues/4023
-        'User-Agent': get_manubot_user_agent(),
+        "Connection": "close",  # https://github.com/kennethreitz/requests/issues/4023
+        "User-Agent": get_manubot_user_agent(),
     }
     response = requests.get(
-        'http://greycite.knowledgeblog.org/json',
-        params={'uri': url},
-        headers=headers,
+        "http://greycite.knowledgeblog.org/json", params={"uri": url}, headers=headers
     )
     # Some Greycite responses were valid JSON besides for an error appended
     # like "<p>*** Date set from uri<p>" or "<p>*** fetch error : 404<p>".
     pattern = re.compile(r"<p>\*\*\*.*<p>")
-    text = pattern.sub('', response.text)
+    text = pattern.sub("", response.text)
     csl_item = json.loads(text)
-    csl_item['type'] = 'webpage'
+    csl_item["type"] = "webpage"
     return csl_item
 
 
-def get_url_citeproc_manual(url):
+def get_url_csl_item_manual(url):
     """
-    Manually create citeproc for a URL.
+    Manually create csl_item for a URL.
     """
-    return {
-        'URL': url,
-        'type': 'webpage',
-    }
+    return {"URL": url, "type": "webpage"}
 
 
 url_retrievers = [
-    get_url_citeproc_zotero,
-    get_url_citeproc_greycite,
-    get_url_citeproc_manual,
+    get_url_csl_item_zotero,
+    get_url_csl_item_greycite,
+    get_url_csl_item_manual,
 ]

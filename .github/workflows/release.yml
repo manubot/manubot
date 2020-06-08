@@ -1,0 +1,28 @@
+name: Release
+on:
+  release:
+    types:
+      - published
+jobs:
+  release:
+    name: Create release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Install Python
+      uses: actions/setup-python@v2
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install wheel
+        pip install ".[all]"
+    - name: Build package
+      run: python setup.py sdist bdist_wheel
+    - name: Deploy package
+      if: '!github.event.repository.fork'
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: __token__
+        password: ${{ secrets.pypi_password }}
+        packages_dir: dist

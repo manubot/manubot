@@ -9,8 +9,8 @@ environment:
     - PYTHON: "C:\\Python36-x64"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "64"
-    - PYTHON: "C:\\Python37-x64"
-      PYTHON_VERSION: "3.7.x"
+    - PYTHON: "C:\\Python38-x64"
+      PYTHON_VERSION: "3.8.x"
       PYTHON_ARCH: "64"
 
 build: off
@@ -18,12 +18,11 @@ build: off
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - "python -m pip install --upgrade pip"
-  - "%CMD_IN_ENV% pip install ."
+  - "%CMD_IN_ENV% pip install .[all]"
 
 before_test:
-  - "%CMD_IN_ENV% pip install pytest"
-  - choco install pandoc --version 2.7.2
+  - choco install pandoc --version 2.9.2
   - ps: $env:Path += ";C:\Program Files\Pandoc\"
 
 test_script:
-  - "%CMD_IN_ENV% pytest -rs"
+  - '%CMD_IN_ENV% pytest --color=yes -rs -m="integration or appveyor"'
