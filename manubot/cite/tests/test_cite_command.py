@@ -5,8 +5,33 @@ import subprocess
 
 import pytest
 
+from manubot.cite.csl_item import CSL_Item
 from manubot.util import shlex_join
 from manubot.pandoc.util import get_pandoc_version
+
+data_dir = pathlib.Path(__file__).parent.joinpath("cite-command-rendered")
+
+
+def test_cite_command_preserves_order():
+    """
+    https://github.com/manubot/manubot/issues/240
+    """
+    citekeys = [
+        "pmid:29618526",
+        "doi:10.7717/peerj.338",
+        "arxiv:1806.05726v1",
+    ]
+    args = [
+        "manubot",
+        "cite",
+        "--bibliography=input-references.json",
+        *citekeys,
+    ]
+    output = subprocess.check_output(args, encoding="utf-8", cwd=data_dir,)
+    csl_items = json.loads(output)
+    csl_items = [CSL_Item(x) for x in csl_items]
+    standard_ids = [csl_item.note_dict.get("standard_id") for csl_item in csl_items]
+    assert standard_ids == citekeys
 
 
 def test_cite_command_empty():
@@ -99,7 +124,6 @@ def test_cite_command_render_stdout(args, filename):
     # get pandoc version info
     pandoc_version = get_pandoc_version()
     pandoc_stamp = ".".join(map(str, pandoc_version))
-    data_dir = pathlib.Path(__file__).parent.joinpath("cite-command-rendered")
     path = data_dir.joinpath(filename.format(pandoc_stamp))
 
     # skip test on old pandoc versions
