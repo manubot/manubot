@@ -27,7 +27,7 @@ def test_unpaywall_from_citekey():
     unpaywall = Unpaywall.from_citekey("arxiv:1906.11964v3")
     assert isinstance(unpaywall, Unpaywall_arXiv)
     best_pdf = unpaywall.best_pdf
-    assert "arxiv.org/abs/1906.11964" in best_pdf["url_for_landing_page"]
+    assert best_pdf["url_for_landing_page"] == "https://doi.org/10.1162/qss_a_00023"
 
 
 def test_unpaywall_from_csl_item():
