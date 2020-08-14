@@ -20,6 +20,8 @@ def test_cite_command_preserves_order():
         "pmid:29618526",
         "doi:10.7717/peerj.338",
         "arxiv:1806.05726v1",
+        "pubmed:29618526",
+        "DOI:10.7717/PEERJ.338",
     ]
     args = [
         "manubot",
@@ -31,7 +33,11 @@ def test_cite_command_preserves_order():
     csl_items = json.loads(output)
     csl_items = [CSL_Item(x) for x in csl_items]
     standard_ids = [csl_item.note_dict.get("standard_id") for csl_item in csl_items]
-    assert standard_ids == citekeys
+    assert standard_ids == [
+        "pubmed:29618526",
+        "doi:10.7717/peerj.338",
+        "arxiv:1806.05726v1",
+    ]
 
 
 def test_cite_command_empty():

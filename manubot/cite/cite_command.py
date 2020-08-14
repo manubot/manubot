@@ -92,7 +92,9 @@ def cli_cite(args):
     https://github.com/jgm/pandoc/issues/4834
     """
     _parse_cli_cite_args(args)
-    citations = Citations(input_ids=args.citekeys, prune_csl_items=args.prune_csl,)
+    citations = Citations(
+        input_ids=args.citekeys, prune_csl_items=args.prune_csl, sort_csl_items=False
+    )
     citations.load_manual_references(paths=args.bibliography)
     citations.inspect(log_level="WARNING")
     csl_items = citations.get_csl_items()

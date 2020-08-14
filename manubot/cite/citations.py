@@ -25,6 +25,10 @@ class Citations:
     csl_item_failure_log_level: tp.Union[str, int] = "WARNING"
     # whether to prune csl items according to the JSON Schema
     prune_csl_items: bool = True
+    # whether to sort csl items by standard_id
+    # `sort_csl_items=False` retains order of input_ids in get_csl_items.
+    # (input_ids with the same standard_id will still be deduplicated).
+    sort_csl_items: bool = True
 
     def __post_init__(self):
         input_ids = list(dict.fromkeys(self.input_ids))  # deduplicate
@@ -54,7 +58,7 @@ class Citations:
         return remove
 
     def group_citekeys_by(
-        self, attribute: str = "standard_id"
+        self, attribute: str = "standard_id", sort: bool = True,
     ) -> tp.List[tp.Tuple[str, list]]:
         """
         Group `self.citekeys` by `attribute`.
@@ -63,9 +67,14 @@ class Citations:
         def get_key(x):
             return getattr(x, attribute)
 
-        citekeys = sorted(self.citekeys, key=get_key)
-        groups = itertools.groupby(citekeys, get_key)
-        return [(key, list(group)) for key, group in groups]
+        key_to_indices = dict()
+        for i, citekey in enumerate(self.citekeys):
+            key = get_key(citekey)
+            key_to_indices.setdefault(key, list()).append(i)
+        items = list(key_to_indices.items())
+        if sort:
+            items.sort(key=lambda item: item[0])
+        return [(key, [self.citekeys[i] for i in indices]) for key, indices in items]
 
     def unique_citekeys_by(self, attribute: str = "standard_id") -> list:
         return [citekeys[0] for key, citekeys in self.group_citekeys_by(attribute)]
@@ -131,8 +140,9 @@ class Citations:
         # excludes standard_ids for which CSL Items could not be generated.
         self.input_to_csl_id = {}
         self.csl_items = []
-        groups = self.group_citekeys_by("standard_id")
-        for _standard_id, citekeys in groups:
+        for _standard_id, citekeys in self.group_citekeys_by(
+            "standard_id", sort=self.sort_csl_items
+        ):
             csl_item = citekey_to_csl_item(
                 citekey=citekeys[0],
                 prune=self.prune_csl_items,
