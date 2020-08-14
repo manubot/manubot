@@ -1,5 +1,4 @@
 import dataclasses
-import itertools
 import json
 import logging
 import pathlib
