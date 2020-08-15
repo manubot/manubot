@@ -362,11 +362,11 @@ git checkout -b "release-$TAG"
 touch "release-notes/$TAG.md"
 
 # commit list since previous tag
-echo "\n\nCommits\n-------\n" >> "release-notes/$TAG.md"
+echo $'\n\nCommits\n-------\n' >> "release-notes/$TAG.md"
 git log --oneline --decorate=no $OLD_TAG..HEAD >> "release-notes/$TAG.md"
 
 # commit authors since previous tag
-echo "\n\nCode authors\n------------\n" >> "release-notes/$TAG.md"
+echo $'\n\nCode authors\n------------\n' >> "release-notes/$TAG.md"
 git log $OLD_TAG..HEAD --format='%aN <%aE>' | sort --unique >> "release-notes/$TAG.md"
 ```
 
