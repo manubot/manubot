@@ -1838,11 +1838,11 @@ git checkout -b <span class="s2">&quot;release-</span><span class="nv">$TAG</spa
 touch <span class="s2">&quot;release-notes/</span><span class="nv">$TAG</span><span class="s2">.md&quot;</span>
 
 <span class="c1"># commit list since previous tag</span>
-<span class="nb">echo</span> <span class="s2">&quot;\n\nCommits\n-------\n&quot;</span> &gt;&gt; <span class="s2">&quot;release-notes/</span><span class="nv">$TAG</span><span class="s2">.md&quot;</span>
+<span class="nb">echo</span> <span class="s1">$&#39;\n\nCommits\n-------\n&#39;</span> &gt;&gt; <span class="s2">&quot;release-notes/</span><span class="nv">$TAG</span><span class="s2">.md&quot;</span>
 git log --oneline --decorate<span class="o">=</span>no <span class="nv">$OLD_TAG</span>..HEAD &gt;&gt; <span class="s2">&quot;release-notes/</span><span class="nv">$TAG</span><span class="s2">.md&quot;</span>
 
 <span class="c1"># commit authors since previous tag</span>
-<span class="nb">echo</span> <span class="s2">&quot;\n\nCode authors\n------------\n&quot;</span> &gt;&gt; <span class="s2">&quot;release-notes/</span><span class="nv">$TAG</span><span class="s2">.md&quot;</span>
+<span class="nb">echo</span> <span class="s1">$&#39;\n\nCode authors\n------------\n&#39;</span> &gt;&gt; <span class="s2">&quot;release-notes/</span><span class="nv">$TAG</span><span class="s2">.md&quot;</span>
 git log <span class="nv">$OLD_TAG</span>..HEAD --format<span class="o">=</span><span class="s1">&#39;%aN &lt;%aE&gt;&#39;</span> <span class="p">|</span> sort --unique &gt;&gt; <span class="s2">&quot;release-notes/</span><span class="nv">$TAG</span><span class="s2">.md&quot;</span>
 </code></pre></div>
 
