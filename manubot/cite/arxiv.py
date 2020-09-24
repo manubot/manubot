@@ -188,8 +188,8 @@ def get_arxiv_csl_item_oai(arxiv_id):
     response_arxiv_id = arxiv_elem.findtext(f"{ns_arxiv}id")
     if arxiv_id != response_arxiv_id:
         logging.warning(
-            f"arXiv oai2 query returned a different arxiv_id:"
-            " {arxiv_id} became {response_arxiv_id}"
+            "arXiv oai2 query returned a different arxiv_id:"
+            f" {arxiv_id} became {response_arxiv_id}"
         )
     csl_item.set_identifier_fields(response_arxiv_id)
     # Set title and date
