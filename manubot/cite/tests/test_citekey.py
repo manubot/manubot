@@ -21,18 +21,53 @@ from manubot.cite.citekey import (
         ),
         (
             "arXiv:1407.3561v1",
-            dict(prefix_lower="arxiv", standard_id="arxiv:1407.3561v1",),
+            dict(
+                prefix_lower="arxiv",
+                standard_id="arxiv:1407.3561v1",
+            ),
         ),
-        ("pmid:24159271", dict(standard_id="pubmed:24159271",),),
-        ("pmcid:PMC4304851", dict(standard_id="pmc:PMC4304851",),),
+        (
+            "pmid:24159271",
+            dict(
+                standard_id="pubmed:24159271",
+            ),
+        ),
+        (
+            "pmcid:PMC4304851",
+            dict(
+                standard_id="pmc:PMC4304851",
+            ),
+        ),
         (
             "https://greenelab.github.io/manubot-rootstock/",
-            dict(standard_id="url:https://greenelab.github.io/manubot-rootstock/",),
+            dict(
+                standard_id="url:https://greenelab.github.io/manubot-rootstock/",
+            ),
         ),
-        ("isbn:1-339-91988-5", dict(standard_id="isbn:9781339919881",),),
-        ("DOID:14330", dict(standard_id="doid:14330",),),
-        ("PubChem.substance:100101", dict(standard_id="pubchem.substance:100101",),),
-        ("Wikidata:Q50051684", dict(standard_id="wikidata:Q50051684",),),
+        (
+            "isbn:1-339-91988-5",
+            dict(
+                standard_id="isbn:9781339919881",
+            ),
+        ),
+        (
+            "DOID:14330",
+            dict(
+                standard_id="doid:14330",
+            ),
+        ),
+        (
+            "PubChem.substance:100101",
+            dict(
+                standard_id="pubchem.substance:100101",
+            ),
+        ),
+        (
+            "Wikidata:Q50051684",
+            dict(
+                standard_id="wikidata:Q50051684",
+            ),
+        ),
     ],
 )
 def test_citekey_class(input_id, citekey_attrs):
@@ -121,7 +156,10 @@ def test_inspect_citekey_fails(citekey, contains):
 @pytest.mark.parametrize(
     ["url", "citekey"],
     [
-        ("https://www.doi.org/", "url:https://www.doi.org/",),
+        (
+            "https://www.doi.org/",
+            "url:https://www.doi.org/",
+        ),
         (
             "https://www.doi.org/factsheets/Identifier_Interoper.html",
             "url:https://www.doi.org/factsheets/Identifier_Interoper.html",

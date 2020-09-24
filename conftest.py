@@ -32,18 +32,18 @@ def pytest_addoption(parser):
 @pytest.fixture(scope="session", autouse=True)
 def use_requests_cache(request):
     """Use requests_cache for caching web API calls.
-       Enabled with --use-requests-cache flag:
+    Enabled with --use-requests-cache flag:
 
-          pytest --use-requests-cache
-          pytest --use-requests-cache --requests-cache-hours=3
-          pytest --use-requests-cache --requests-cache-hours=8760
+       pytest --use-requests-cache
+       pytest --use-requests-cache --requests-cache-hours=3
+       pytest --use-requests-cache --requests-cache-hours=8760
 
-       Notes:
-       - By default the cache persists for 12 hours. Default can be overrriden
-         with --requests-cache-hours option.
-       - Cache does not work for invocations of manubot commands as subprocess.
+    Notes:
+    - By default the cache persists for 12 hours. Default can be overrriden
+      with --requests-cache-hours option.
+    - Cache does not work for invocations of manubot commands as subprocess.
 
-       Cache file location: ./.cache/requests-cache.sqlite
+    Cache file location: ./.cache/requests-cache.sqlite
     """
 
     if request.config.getoption("--use-requests-cache"):

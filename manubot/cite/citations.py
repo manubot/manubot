@@ -57,7 +57,9 @@ class Citations:
         return remove
 
     def group_citekeys_by(
-        self, attribute: str = "standard_id", sort: bool = True,
+        self,
+        attribute: str = "standard_id",
+        sort: bool = True,
     ) -> tp.List[tp.Tuple[str, list]]:
         """
         Group `self.citekeys` by `attribute`.

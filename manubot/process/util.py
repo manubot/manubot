@@ -129,7 +129,8 @@ def add_author_affiliations(variables: dict) -> dict:
             deprecation_warning_key="name",
         )
         _convert_field_to_list(
-            dictionary=author, field="funders",
+            dictionary=author,
+            field="funders",
         )
         affiliations.extend(author.get("affiliations", []))
     if not affiliations:
