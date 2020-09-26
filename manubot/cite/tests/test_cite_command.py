@@ -29,7 +29,11 @@ def test_cite_command_preserves_order():
         "--bibliography=input-references.json",
         *citekeys,
     ]
-    output = subprocess.check_output(args, encoding="utf-8", cwd=data_dir,)
+    output = subprocess.check_output(
+        args,
+        encoding="utf-8",
+        cwd=data_dir,
+    )
     csl_items = json.loads(output)
     csl_items = [CSL_Item(x) for x in csl_items]
     standard_ids = [csl_item.note_dict.get("standard_id") for csl_item in csl_items]

@@ -143,7 +143,10 @@ def _get_load_manual_references_kwargs(doc) -> dict:
     bibliography_paths = doc.get_metadata("bibliography", default=[])
     if not isinstance(bibliography_paths, list):
         bibliography_paths = [bibliography_paths]
-    return dict(paths=bibliography_paths, extra_csl_items=manual_refs,)
+    return dict(
+        paths=bibliography_paths,
+        extra_csl_items=manual_refs,
+    )
 
 
 def process_citations(doc):
