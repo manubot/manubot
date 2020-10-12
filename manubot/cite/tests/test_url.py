@@ -16,8 +16,8 @@ def test_get_url_csl_item_zotero_nyt():
     """
     url = "https://nyti.ms/1NuB0WJ"
     csl_item = get_url_csl_item_zotero(url)
-    assert (
-        csl_item["title"] == "Unraveling the Ties of Altitude, Oxygen and Lung Cancer"
+    assert csl_item["title"].startswith(
+        "Unraveling the Ties of Altitude, Oxygen and Lung Cancer"
     )
     assert csl_item["author"][0]["family"] == "Johnson"
 
@@ -68,6 +68,52 @@ def test_get_url_csl_item_zotero_github():
     """
     url = "https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927"
     csl_item = get_url_csl_item_zotero(url)
-    # FIXME: arbitraryly, csl_item['abstract'], and not csl_item['title'] contains the title.
+    # FIXME: arbitrarily, csl_item['abstract'], and not csl_item['title'] contains the title.
     assert csl_item["title"].startswith("Flexible and powerful data analysis")
     assert csl_item["source"] == "GitHub"
+
+
+def test_get_url_csl_item_zotero_no_url(monkeypatch):
+    """
+    Ensure get_url_csl_item_zotero sets URL to the query URL,
+    when the Zotero translator does not return it.
+    https://github.com/manubot/manubot/issues/244
+    """
+    query_url = "http://icbo2016.cgrb.oregonstate.edu/node/251"
+
+    def mock_web_query(url: str):
+        assert url == query_url
+        return [
+            {
+                "key": "J86G3MS7",
+                "version": 0,
+                "itemType": "webpage",
+                "creators": [
+                    {
+                        "firstName": "Senay",
+                        "lastName": "Kafkas",
+                        "creatorType": "author",
+                    },
+                    {"firstName": "Ian", "lastName": "Dunham", "creatorType": "author"},
+                    {
+                        "firstName": "Helen",
+                        "lastName": "Parkinson",
+                        "creatorType": "author",
+                    },
+                    {
+                        "firstName": "Johanna",
+                        "lastName": "Mcentyre",
+                        "creatorType": "author",
+                    },
+                ],
+                "tags": [],
+                "title": "BIT106: Use of text mining for Experimental Factor Ontology coverage expansion in the scope of target validation",
+                "date": "2016",
+                "shortTitle": "BIT106",
+            }
+        ]
+
+    monkeypatch.setattr("manubot.cite.zotero.web_query", mock_web_query)
+    csl_item = get_url_csl_item_zotero(query_url)
+    assert "URL" in csl_item
+    assert csl_item["URL"] == query_url

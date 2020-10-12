@@ -54,6 +54,9 @@ def get_url_csl_item_zotero(url):
     zotero_data = web_query(url)
     csl_data = export_as_csl(zotero_data)
     (csl_item,) = csl_data
+    if not csl_item.get("URL"):
+        # some Zotero translators don't set URL. https://github.com/manubot/manubot/issues/244
+        csl_item["URL"] = url
     return csl_item
 
 

@@ -17,7 +17,7 @@ from manubot.util import get_manubot_user_agent, is_http_url
 base_url = "https://translate.manubot.org"
 
 
-def web_query(url):
+def web_query(url: str):
     """
     Return Zotero citation metadata for a URL as a list containing a single element that
     is a dictionary with the URL's metadata.
