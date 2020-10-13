@@ -1407,7 +1407,6 @@
     <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Suber&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h2 id="functions">Functions</h2>
 <h3 id="test_citekey_to_csl_item_isbnlib_title_with_quotation_mark">test_citekey_to_csl_item_isbnlib_title_with_quotation_mark</h3>
@@ -1415,7 +1414,6 @@
 
 <span class="p">)</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">reason</span><span class="o">=</span><span class="ss">&quot;Quotation in title removed at some upstream point&quot;</span><span class="p">)</span><span class="w"></span>
 
@@ -1428,14 +1426,12 @@
 <span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;title&quot;</span><span class="o">]</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&quot;F&quot; is for Fugitive&#39;</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_get_isbn_csl_item_citoid_not_found">test_get_isbn_csl_item_citoid_not_found</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_get_isbn_csl_item_citoid_not_found</span><span class="p">(</span>
 
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>isbn:9781439566039 is not found by Citoid:
 https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9781439566039</p>
@@ -1454,14 +1450,12 @@ https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9781439566039</p>
         <span class="n">get_isbn_csl_item_citoid</span><span class="p">(</span><span class="ss">&quot;9781439566039&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_get_isbn_csl_item_citoid_weird_date">test_get_isbn_csl_item_citoid_weird_date</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_get_isbn_csl_item_citoid_weird_date</span><span class="p">(</span>
 
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>isbn:9780719561023 has a date value of "(2004 printing)"
 https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9780719561023</p>
@@ -1482,14 +1476,12 @@ https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9780719561023</p>
     <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;ISBN&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;9780719561023&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_get_isbn_csl_item_zotero_with_note_issue">test_get_isbn_csl_item_zotero_with_note_issue</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_get_isbn_csl_item_zotero_with_note_issue</span><span class="p">(</span>
 
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>translation-server returns two metadata records for this ISBN.
 The second has itemType=note and previously caused CSL export to fail.
@@ -1512,7 +1504,6 @@ https://github.com/zotero/translation-server/issues/67</p>
 
     <span class="nb">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Suber&quot;</span>
 </code></pre></div>
-
 
 </details>
                 

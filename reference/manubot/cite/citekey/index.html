@@ -2148,7 +2148,6 @@
     <span class="s s-Atom">return</span> <span class="s s-Atom">citekey</span>
 </code></pre></div>
 
-
 </details>
 <h2 id="functions">Functions</h2>
 <h3 id="citekey_to_csl_item">citekey_to_csl_item</h3>
@@ -2159,7 +2158,6 @@
     <span class="n">log_level</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;WARNING&#39;</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Generate a CSL_Item for the input citekey.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">citekey_to_csl_item</span><span class="p">(</span>
@@ -2225,14 +2223,12 @@
     <span class="k">return</span> <span class="n">csl_item</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="shorten_citekey">shorten_citekey</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">shorten_citekey</span><span class="p">(</span>
     <span class="n">standard_citekey</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
 </code></pre></div>
-
 
 <p>Return a shortened citekey derived from the input citekey.
 The input citekey should be standardized prior to this function,
@@ -2275,14 +2271,12 @@ citekeys consist of characters in the following ranges: 0-9, a-z and A-Z.</p>
     <span class="k">return</span> <span class="n">short_citekey</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="url_to_citekey">url_to_citekey</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">url_to_citekey</span><span class="p">(</span>
     <span class="n">url</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Convert a HTTP(s) URL into a citekey.
 For supported sources, convert from url citekey to an alternative source like doi.
@@ -2412,7 +2406,6 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
     <span class="s s-Atom">return</span> <span class="s s-Atom">citekey</span>
 </code></pre></div>
 
-
 </details>
 <h2 id="classes">Classes</h2>
 <h3 id="citekey">CiteKey</h3>
@@ -2421,7 +2414,6 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
     <span class="n">aliases</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">factory</span><span class="o">&gt;</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>CiteKey(input_id: str, aliases: dict = <factory>)</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nl">CiteKey</span><span class="p">:</span>
@@ -2747,7 +2739,6 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
         <span class="k">return</span> <span class="n">False</span>
 </code></pre></div>
 
-
 </details>
 <hr />
 <h4 id="static-methods">Static methods</h4>
@@ -2756,7 +2747,6 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
     <span class="n">input_id</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="p">@</span><span class="n">staticmethod</span>
 
@@ -2777,7 +2767,6 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
             <span class="n">f</span><span class="s">&quot;invalid citekey input_id: {input_id!r}</span><span class="se">\n</span><span class="s">starts with &#39;@&#39;&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="from_input_id">from_input_id</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">from_input_id</span><span class="p">(</span>
@@ -2785,7 +2774,6 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Cached constructor</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="err">@</span><span class="n">classmethod</span>
@@ -2799,40 +2787,33 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h4 id="instance-variables">Instance variables</h4>
 <div class="codehilite"><pre><span></span><code><span class="n">accession</span>
 </code></pre></div>
 
-
 <p>If <code>self.prefix</code>, the remainder of <code>self.input_id</code> following the first colon.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">prefix</span>
 </code></pre></div>
-
 
 <p>If <code>self.input_id</code> contains a colon, the substring up to the first colon.
 Otherwise, None.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">prefix_lower</span>
 </code></pre></div>
 
-
 <p>A lowercase version of <code>self.prefix</code> or None.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">standard_accession</span>
 </code></pre></div>
-
 
 <p>If the citekey is handled, the standard accession specified by the handler.
 Otherwise, None.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">standard_id</span>
 </code></pre></div>
 
-
 <p>If the citekey is handled, the standard_id specified by the handler.
 Otherwise, <code>self.dealiased_id</code>.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">standard_prefix</span>
 </code></pre></div>
-
 
 <p>If the citekey is handled, the standard prefix specified by the handler.
 Otherwise, None.</p>
@@ -2843,20 +2824,17 @@ Otherwise, None.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <h5 id="csl_item">csl_item</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">csl_item</span><span class="p">(</span>
     <span class="o">...</span>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <h5 id="dealiased_id">dealiased_id</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">dealiased_id</span><span class="p">(</span>
     <span class="o">...</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>If <code>self.input_id</code> is in <code>self.aliases</code>, the value specified by
 <code>self.aliases</code>. Otherwise, <code>self.input_id</code>.</p>
@@ -2866,13 +2844,11 @@ Otherwise, None.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <h5 id="inspect">inspect</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span>
 </code></pre></div>
-
 
 <p>Inspect citekey for potential problems.
 If no problems are found, return None.
@@ -2892,7 +2868,6 @@ Otherwise, returns a string describing the problem.</p>
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">handler</span><span class="p">.</span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
-
 </details>
 <h5 id="is_handled_prefix">is_handled_prefix</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">is_handled_prefix</span><span class="p">(</span>
@@ -2900,14 +2875,12 @@ Otherwise, returns a string describing the problem.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <h5 id="is_pandoc_xnos_prefix">is_pandoc_xnos_prefix</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">is_pandoc_xnos_prefix</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">log_case_warning</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">is_pandoc_xnos_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_case_warning</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 
@@ -2930,14 +2903,12 @@ Otherwise, returns a string describing the problem.</p>
         <span class="k">return</span> <span class="bp">False</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="short_id">short_id</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">short_id</span><span class="p">(</span>
     <span class="o">...</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>A hashed version of standard_id whose characters are
 within the ranges 0-9, a-z and A-Z.</p>

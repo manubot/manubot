@@ -1757,12 +1757,10 @@
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h2 id="variables">Variables</h2>
 <div class="codehilite"><pre><span></span><code><span class="n">data_dir</span>
 </code></pre></div>
-
 
 <h2 id="functions">Functions</h2>
 <h3 id="teardown_module">teardown_module</h3>
@@ -1770,7 +1768,6 @@
     <span class="n">module</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Avoid too many requests to NCBI E-Utils in the test_pubmed.py,
 which is executed following this module. E-Utility requests are
@@ -1795,14 +1792,12 @@ but this does not seem to work across test modules.</p>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_cite_command_bibliography">test_cite_command_bibliography</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_cite_command_bibliography</span><span class="p">(</span>
 
 <span class="p">)</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_cite_command_bibliography</span><span class="p">():</span>
 
@@ -1835,14 +1830,12 @@ but this does not seem to work across test modules.</p>
     <span class="nb">assert</span> <span class="s2">&quot;manual_reference_filename: bibliography.json&quot;</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_cite_command_empty">test_cite_command_empty</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_cite_command_empty</span><span class="p">(</span>
 
 <span class="p">)</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_cite_command_empty</span><span class="p">():</span>
 
@@ -1865,14 +1858,12 @@ but this does not seem to work across test modules.</p>
     <span class="n">assert</span> <span class="ss">&quot;the following arguments are required: citekeys&quot;</span> <span class="k">in</span> <span class="n">process</span><span class="p">.</span><span class="n">stderr</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_cite_command_file">test_cite_command_file</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_cite_command_file</span><span class="p">(</span>
     <span class="n">tmpdir</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_cite_command_file</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">):</span>
 
@@ -1899,14 +1890,12 @@ but this does not seem to work across test modules.</p>
     <span class="nb">assert</span> <span class="n">csl</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://arxiv.org/abs/1806.05726v1&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_cite_command_preserves_order">test_cite_command_preserves_order</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_cite_command_preserves_order</span><span class="p">(</span>
 
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>https://github.com/manubot/manubot/issues/240</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_cite_command_preserves_order</span><span class="p">():</span>
@@ -1970,7 +1959,6 @@ but this does not seem to work across test modules.</p>
     <span class="p">]</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_cite_command_render_stdout">test_cite_command_render_stdout</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_cite_command_render_stdout</span><span class="p">(</span>
@@ -1978,7 +1966,6 @@ but this does not seem to work across test modules.</p>
     <span class="n">filename</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Test the stdout output of <code>manubot cite --render</code> with various formats.
 The output is sensitive to the version of Pandoc used, so expected output
@@ -1991,7 +1978,6 @@ its integrity.</p>
 Regenerate the CSL JSON using:</p>
 <div class="codehilite"><pre><span></span><code>manubot cite       --output<span class="o">=</span>manubot/cite/tests/cite-command-rendered/input-references.json       arxiv:1806.05726v1 doi:10.7717/peerj.338 pmid:29618526
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="err">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">integration</span>
 
@@ -2166,14 +2152,12 @@ Regenerate the CSL JSON using:</p>
     <span class="nb">assert</span> <span class="n">process</span><span class="o">.</span><span class="n">stdout</span> <span class="o">==</span> <span class="n">expected</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_cite_command_stdout">test_cite_command_stdout</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_cite_command_stdout</span><span class="p">(</span>
 
 <span class="p">)</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_cite_command_stdout</span><span class="p">():</span>
 
@@ -2197,7 +2181,6 @@ Regenerate the CSL JSON using:</p>
 
     <span class="nb">assert</span> <span class="n">csl</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://arxiv.org/abs/1806.05726v1&quot;</span>
 </code></pre></div>
-
 
 </details>
                 

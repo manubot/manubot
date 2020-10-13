@@ -1582,6 +1582,12 @@
 
     <span class="p">(</span><span class="n">csl_item</span><span class="p">,)</span> <span class="o">=</span> <span class="n">csl_data</span>
 
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;URL&quot;</span><span class="p">):</span>
+
+        <span class="c1"># some Zotero translators don&#39;t set URL. https://github.com/manubot/manubot/issues/244</span>
+
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+
     <span class="k">return</span> <span class="n">csl_item</span>
 
 <span class="k">def</span> <span class="nf">get_url_csl_item_greycite</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
@@ -1661,12 +1667,10 @@
 <span class="p">]</span>
 </code></pre></div>
 
-
 </details>
 <h2 id="variables">Variables</h2>
 <div class="codehilite"><pre><span></span><code><span class="n">url_retrievers</span>
 </code></pre></div>
-
 
 <h2 id="functions">Functions</h2>
 <h3 id="get_url_csl_item">get_url_csl_item</h3>
@@ -1674,7 +1678,6 @@
     <span class="n">url</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Get csl_item for a URL trying a sequence of strategies.</p>
 <p>This function uses a list of CSL JSON Item metadata retrievers, specified
@@ -1718,14 +1721,12 @@ non-failing method.</p>
     <span class="n">raise</span> <span class="n">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;all get_url_csl_item methods failed for {url}&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="get_url_csl_item_greycite">get_url_csl_item_greycite</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_greycite</span><span class="p">(</span>
     <span class="n">url</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Uses Greycite which has experiened uptime problems in the past.
 API calls seem to take at least 15 seconds. Browser requests are much
@@ -1793,14 +1794,12 @@ https://git.io/v9N2C</p>
     <span class="k">return</span> <span class="n">csl_item</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="get_url_csl_item_manual">get_url_csl_item_manual</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_manual</span><span class="p">(</span>
     <span class="n">url</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Manually create csl_item for a URL.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_url_csl_item_manual</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
@@ -1814,14 +1813,12 @@ https://git.io/v9N2C</p>
     <span class="k">return</span> <span class="err">{</span><span class="ss">&quot;URL&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="ss">&quot;type&quot;</span><span class="p">:</span> <span class="ss">&quot;webpage&quot;</span><span class="err">}</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="get_url_csl_item_zotero">get_url_csl_item_zotero</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_zotero</span><span class="p">(</span>
     <span class="n">url</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Use Zotero's translation-server to generate a CSL Item for the specified URL.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
@@ -1840,9 +1837,14 @@ https://git.io/v9N2C</p>
 
     <span class="p">(</span><span class="n">csl_item</span><span class="p">,)</span> <span class="o">=</span> <span class="n">csl_data</span>
 
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;URL&quot;</span><span class="p">):</span>
+
+        <span class="c1"># some Zotero translators don&#39;t set URL. https://github.com/manubot/manubot/issues/244</span>
+
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+
     <span class="k">return</span> <span class="n">csl_item</span>
 </code></pre></div>
-
 
 </details>
 <h2 id="classes">Classes</h2>
@@ -1851,7 +1853,6 @@ https://git.io/v9N2C</p>
     <span class="n">prefix_lower</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>A Handler is a class that provides support for a certain type of citekey.
 For example, a Handler subclass could provide support for DOI citekeys.
@@ -1884,7 +1885,6 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
         <span class="k">return</span> <span class="n">get_url_csl_item</span>(<span class="n">citekey</span>.<span class="n">standard_accession</span>)
 </code></pre></div>
 
-
 </details>
 <hr />
 <h4 id="ancestors-in-mro">Ancestors (in MRO)</h4>
@@ -1895,10 +1895,8 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <div class="codehilite"><pre><span></span><code><span class="n">prefixes</span>
 </code></pre></div>
 
-
 <div class="codehilite"><pre><span></span><code><span class="n">standard_prefix</span>
 </code></pre></div>
-
 
 <h4 id="methods">Methods</h4>
 <h5 id="get_csl_item">get_csl_item</h5>
@@ -1908,13 +1906,11 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_accession</span><span class="p">)</span>
 </code></pre></div>
-
 
 </details>
 <h5 id="inspect">inspect</h5>
@@ -1923,7 +1919,6 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
     <span class="n">citekey</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a
 string describing the issue is returned. Otherwise returns None.</p>
@@ -1948,7 +1943,6 @@ string describing the issue is returned. Otherwise returns None.</p>
             <span class="k">return</span> <span class="n">f</span><span class="ss">&quot;{citekey.accession} does not match regex {pattern.pattern}&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="standardize_prefix_accession">standardize_prefix_accession</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">standardize_prefix_accession</span><span class="p">(</span>
@@ -1956,7 +1950,6 @@ string describing the issue is returned. Otherwise returns None.</p>
     <span class="n">accession</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Return (prefix, accession) in standardized form.
 This method defaults to returning <code>self.standard_prefix</code>
@@ -1970,7 +1963,6 @@ Subclasses can override this method with more specific standardization logic.</p
 
         <span class="k">return</span> <span class="k">self</span><span class="p">.</span><span class="n">standard_prefix</span><span class="p">,</span> <span class="n">accession</span>
 </code></pre></div>
-
 
 </details>
                 

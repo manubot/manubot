@@ -1746,7 +1746,6 @@
     <span class="k">return</span> <span class="n">rootstock_commit</span>
 </code></pre></div>
 
-
 </details>
 <h2 id="functions">Functions</h2>
 <h3 id="get_header_includes">get_header_includes</h3>
@@ -1754,7 +1753,6 @@
     <span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
 </code></pre></div>
-
 
 <p>Render <code>header-includes-template.html</code> using information from <code>variables</code>.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_header_includes</span><span class="p">(</span><span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -1782,14 +1780,12 @@
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="get_manuscript_urls">get_manuscript_urls</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_manuscript_urls</span><span class="p">(</span>
     <span class="n">html_url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
 </code></pre></div>
-
 
 <p>Return a dictionary with URLs for a manuscript.
 An example for a manuscript where all URLs get set, inferred from continuous integration environment variables, is:</p>
@@ -1801,7 +1797,6 @@ An example for a manuscript where all URLs get set, inferred from continuous int
 <span class="p">}</span>
 </code></pre></div>
 
-
 <p>Provide <code>html_url</code> to set a custom domain.
 If <code>html_url="https://git.dhimmel.com/bitcoin-whitepaper/"</code>,
 the return dictionary will be like:</p>
@@ -1812,7 +1807,6 @@ the return dictionary will be like:</p>
     <span class="s2">&quot;pdf_url_versioned&quot;</span><span class="p">:</span> <span class="s2">&quot;https://git.dhimmel.com/bitcoin-whitepaper/v/cb1f2c12eec8b56db9ef5f641ec805e2d449d319/manuscript.pdf&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 </code></pre></div>
-
 
 <p>Note the trailing <code>/</code> in <code>html_url</code>, which is required for proper functioning.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_manuscript_urls</span><span class="p">(</span><span class="n">html_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dict</span><span class="p">:</span>
@@ -1920,14 +1914,12 @@ the return dictionary will be like:</p>
     <span class="k">return</span> <span class="n">urls</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="get_rootstock_commit">get_rootstock_commit</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_rootstock_commit</span><span class="p">(</span>
 
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span>
 </code></pre></div>
-
 
 <p>Return the most recent commit in common between the git repository
 this function is run within (usually a Manubot manuscript repository)
@@ -2011,14 +2003,12 @@ and the <code>master</code> branch of the <code>rootstock</code> remote.</p>
     <span class="k">return</span> <span class="n">rootstock_commit</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="get_software_versions">get_software_versions</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_software_versions</span><span class="p">(</span>
 
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
 </code></pre></div>
-
 
 <p>Return a dictionary of software versions for softwares components:</p>
 <ul>
@@ -2054,14 +2044,12 @@ and the <code>master</code> branch of the <code>rootstock</code> remote.</p>
     <span class="p">}</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="get_thumbnail_url">get_thumbnail_url</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_thumbnail_url</span><span class="p">(</span>
     <span class="n">thumbnail</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Starting with a user-specified <code>thumbnail</code> as either a path, URL, or None,
 return an absolute URL pointing to the thumbnail image. If the provided <code>thumbnail</code>
@@ -2119,14 +2107,12 @@ it is converted to a GitHub raw URL.</p>
     <span class="k">return</span> <span class="n">_thumbnail_path_to_url</span><span class="p">(</span><span class="n">thumbnail</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="git_repository_root">git_repository_root</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">git_repository_root</span><span class="p">(</span>
 
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Return the path to repository root directory or <code>None</code> if indeterminate.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@functools.lru_cache</span><span class="p">()</span>
@@ -2161,7 +2147,6 @@ it is converted to a GitHub raw URL.</p>
 
     <span class="k">return</span> <span class="k">None</span>
 </code></pre></div>
-
 
 </details>
                 

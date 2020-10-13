@@ -2486,16 +2486,13 @@ supported by Unpaywall, such as arXiv IDs.</p>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_pdf</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_open_license</span>
 </code></pre></div>
 
-
 </details>
 <h2 id="variables">Variables</h2>
 <div class="codehilite"><pre><span></span><code><span class="n">open_licenses</span>
 </code></pre></div>
 
-
 <div class="codehilite"><pre><span></span><code><span class="n">source_to_unpaywaller</span>
 </code></pre></div>
-
 
 <h2 id="classes">Classes</h2>
 <h3 id="unpaywall">Unpaywall</h3>
@@ -2505,7 +2502,6 @@ supported by Unpaywall, such as arXiv IDs.</p>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>A class to handle open access locations in the Unpaywall data format.
 Create new Unpaywall objects using the <code>from_csl_item</code> and <code>from_citekey</code> methods,
@@ -2629,7 +2625,6 @@ or by using <strong>init</strong> of a subclass like <code>Unpaywall_DOI</code>.
         <span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="n">csl_item</span><span class="err">[</span><span class="s2">&quot;id&quot;</span><span class="err">]</span><span class="p">,</span> <span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <hr />
 <h4 id="descendants">Descendants</h4>
@@ -2641,7 +2636,6 @@ or by using <strong>init</strong> of a subclass like <code>Unpaywall_DOI</code>.
 <div class="codehilite"><pre><span></span><code><span class="n">csl_item</span>
 </code></pre></div>
 
-
 <h4 id="static-methods">Static methods</h4>
 <h5 id="from_citekey">from_citekey</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">from_citekey</span><span class="p">(</span>
@@ -2649,7 +2643,6 @@ or by using <strong>init</strong> of a subclass like <code>Unpaywall_DOI</code>.
     <span class="n">csl_item</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Create an Unpaywall object for <code>citekey</code>.
 <code>csl_item</code> is an optional field that can avoid an
@@ -2703,14 +2696,12 @@ external web request to generate to a new CSL Item.</p>
         <span class="k">return</span> <span class="n">unpaywall</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="from_csl_item">from_csl_item</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">from_csl_item</span><span class="p">(</span>
     <span class="n">csl_item</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Create an Unpaywall object for <code>csl_item</code>.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="nd">@classmethod</span>
@@ -2738,16 +2729,13 @@ external web request to generate to a new CSL Item.</p>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h4 id="instance-variables">Instance variables</h4>
 <div class="codehilite"><pre><span></span><code><span class="n">best_openly_licensed_pdf</span>
 </code></pre></div>
 
-
 <div class="codehilite"><pre><span></span><code><span class="n">best_pdf</span>
 </code></pre></div>
-
 
 <h4 id="methods">Methods</h4>
 <h5 id="set_oa_locations">set_oa_locations</h5>
@@ -2755,7 +2743,6 @@ external web request to generate to a new CSL Item.</p>
     <span class="bp">self</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Set <code>self.oa_locations</code>, which is a list of <code>Unpaywall_Location</code> objects.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="nv">@abc.abstractmethod</span>
@@ -2771,7 +2758,6 @@ external web request to generate to a new CSL Item.</p>
         <span class="n">self</span><span class="p">.</span><span class="n">oa_locations</span> <span class="o">=</span> <span class="err">[]</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="unpaywall_doi">Unpaywall_DOI</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">Unpaywall_DOI</span><span class="p">(</span>
@@ -2779,7 +2765,6 @@ external web request to generate to a new CSL Item.</p>
     <span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>From https://unpaywall.org/data-format:</p>
 <blockquote>
@@ -2839,7 +2824,6 @@ as well as a <code>best_oa_location</code> property that's probably the OA Locat
         <span class="p">]</span>
 </code></pre></div>
 
-
 </details>
 <hr />
 <h4 id="ancestors-in-mro">Ancestors (in MRO)</h4>
@@ -2850,7 +2834,6 @@ as well as a <code>best_oa_location</code> property that's probably the OA Locat
 <div class="codehilite"><pre><span></span><code><span class="n">csl_item</span>
 </code></pre></div>
 
-
 <h4 id="static-methods_1">Static methods</h4>
 <h5 id="from_citekey_1">from_citekey</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">from_citekey</span><span class="p">(</span>
@@ -2858,7 +2841,6 @@ as well as a <code>best_oa_location</code> property that's probably the OA Locat
     <span class="n">csl_item</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Create an Unpaywall object for <code>citekey</code>.
 <code>csl_item</code> is an optional field that can avoid an
@@ -2912,14 +2894,12 @@ external web request to generate to a new CSL Item.</p>
         <span class="k">return</span> <span class="n">unpaywall</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="from_csl_item_1">from_csl_item</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">from_csl_item</span><span class="p">(</span>
     <span class="n">csl_item</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Create an Unpaywall object for <code>csl_item</code>.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="nd">@classmethod</span>
@@ -2947,16 +2927,13 @@ external web request to generate to a new CSL Item.</p>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h4 id="instance-variables_1">Instance variables</h4>
 <div class="codehilite"><pre><span></span><code><span class="n">best_openly_licensed_pdf</span>
 </code></pre></div>
 
-
 <div class="codehilite"><pre><span></span><code><span class="n">best_pdf</span>
 </code></pre></div>
-
 
 <h4 id="methods_1">Methods</h4>
 <h5 id="set_oa_locations_1">set_oa_locations</h5>
@@ -2964,7 +2941,6 @@ external web request to generate to a new CSL Item.</p>
     <span class="bp">self</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Set <code>self.oa_locations</code>, which is a list of <code>Unpaywall_Location</code> objects.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2988,7 +2964,6 @@ external web request to generate to a new CSL Item.</p>
         <span class="p">]</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="unpaywall_location">Unpaywall_Location</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">Unpaywall_Location</span><span class="p">(</span>
@@ -2997,7 +2972,6 @@ external web request to generate to a new CSL Item.</p>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>From https://unpaywall.org/data-format</p>
 <blockquote>
@@ -3037,7 +3011,6 @@ An OA Location Object is always a Child of a DOI Object.</p>
     <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;submittedVersion&quot;</span>
 <span class="p">}</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="n">Unpaywall_Location</span><span class="p">(</span><span class="n">dict</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
@@ -3152,7 +3125,6 @@ An OA Location Object is always a Child of a DOI Object.</p>
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">has_pdf</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">has_open_license</span><span class="w"></span>
 </code></pre></div>
 
-
 </details>
 <hr />
 <h4 id="ancestors-in-mro_1">Ancestors (in MRO)</h4>
@@ -3163,18 +3135,14 @@ An OA Location Object is always a Child of a DOI Object.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">has_creative_commons_license</span>
 </code></pre></div>
 
-
 <div class="codehilite"><pre><span></span><code><span class="n">has_open_license</span>
 </code></pre></div>
-
 
 <div class="codehilite"><pre><span></span><code><span class="n">has_openly_licensed_pdf</span>
 </code></pre></div>
 
-
 <div class="codehilite"><pre><span></span><code><span class="n">has_pdf</span>
 </code></pre></div>
-
 
 <h4 id="methods_2">Methods</h4>
 <h5 id="clear">clear</h5>
@@ -3183,14 +3151,12 @@ An OA Location Object is always a Child of a DOI Object.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>D.clear() -&gt; None.  Remove all items from D.</p>
 <h5 id="copy">copy</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">copy</span><span class="p">(</span>
     <span class="o">...</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>D.copy() -&gt; a shallow copy of D</p>
 <h5 id="fromkeys">fromkeys</h5>
@@ -3200,7 +3166,6 @@ An OA Location Object is always a Child of a DOI Object.</p>
     <span class="o">/</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Create a new dictionary with keys from iterable and values set to value.</p>
 <h5 id="get">get</h5>
@@ -3212,14 +3177,12 @@ An OA Location Object is always a Child of a DOI Object.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>Return the value for key if key is in the dictionary, else default.</p>
 <h5 id="items">items</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">items</span><span class="p">(</span>
     <span class="o">...</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>D.items() -&gt; a set-like object providing a view on D's items</p>
 <h5 id="keys">keys</h5>
@@ -3228,14 +3191,12 @@ An OA Location Object is always a Child of a DOI Object.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>D.keys() -&gt; a set-like object providing a view on D's keys</p>
 <h5 id="pop">pop</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">pop</span><span class="p">(</span>
     <span class="o">...</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>D.pop(k[,d]) -&gt; v, remove specified key and return the corresponding value.
 If key is not found, d is returned if given, otherwise KeyError is raised</p>
@@ -3245,7 +3206,6 @@ If key is not found, d is returned if given, otherwise KeyError is raised</p>
     <span class="o">/</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Remove and return a (key, value) pair as a 2-tuple.</p>
 <p>Pairs are returned in LIFO (last-in, first-out) order.
@@ -3259,7 +3219,6 @@ Raises KeyError if the dict is empty.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>Insert key with a value of default if key is not in the dictionary.</p>
 <p>Return the value for key if key is in the dictionary, else default.</p>
 <h5 id="update">update</h5>
@@ -3267,7 +3226,6 @@ Raises KeyError if the dict is empty.</p>
     <span class="o">...</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>D.update([E, ]**F) -&gt; None.  Update D from dict/iterable E and F.
 If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
@@ -3279,7 +3237,6 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>D.values() -&gt; an object providing a view on D's values</p>
 <h3 id="unpaywall_arxiv">Unpaywall_arXiv</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">Unpaywall_arXiv</span><span class="p">(</span>
@@ -3288,7 +3245,6 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
     <span class="n">use_doi</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>A class to handle open access locations in the Unpaywall data format.
 Create new Unpaywall objects using the <code>from_csl_item</code> and <code>from_citekey</code> methods,
@@ -3426,7 +3382,6 @@ or by using <strong>init</strong> of a subclass like <code>Unpaywall_DOI</code>.
             <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;cc-{abbrev}&quot;</span>
 </code></pre></div>
 
-
 </details>
 <hr />
 <h4 id="ancestors-in-mro_2">Ancestors (in MRO)</h4>
@@ -3437,7 +3392,6 @@ or by using <strong>init</strong> of a subclass like <code>Unpaywall_DOI</code>.
 <div class="codehilite"><pre><span></span><code><span class="n">csl_item</span>
 </code></pre></div>
 
-
 <h4 id="static-methods_2">Static methods</h4>
 <h5 id="from_citekey_2">from_citekey</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">from_citekey</span><span class="p">(</span>
@@ -3445,7 +3399,6 @@ or by using <strong>init</strong> of a subclass like <code>Unpaywall_DOI</code>.
     <span class="n">csl_item</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Create an Unpaywall object for <code>citekey</code>.
 <code>csl_item</code> is an optional field that can avoid an
@@ -3499,14 +3452,12 @@ external web request to generate to a new CSL Item.</p>
         <span class="k">return</span> <span class="n">unpaywall</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="from_csl_item_2">from_csl_item</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">from_csl_item</span><span class="p">(</span>
     <span class="n">csl_item</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Create an Unpaywall object for <code>csl_item</code>.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="nd">@classmethod</span>
@@ -3534,16 +3485,13 @@ external web request to generate to a new CSL Item.</p>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h4 id="instance-variables_3">Instance variables</h4>
 <div class="codehilite"><pre><span></span><code><span class="n">best_openly_licensed_pdf</span>
 </code></pre></div>
 
-
 <div class="codehilite"><pre><span></span><code><span class="n">best_pdf</span>
 </code></pre></div>
-
 
 <h4 id="methods_3">Methods</h4>
 <h5 id="get_license">get_license</h5>
@@ -3551,7 +3499,6 @@ external web request to generate to a new CSL Item.</p>
     <span class="bp">self</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Return license using choices from the Unpaywall data format.
 Looks for license metadata in the CSL Item.</p>
@@ -3608,14 +3555,12 @@ Looks for license metadata in the CSL Item.</p>
             <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;cc-{abbrev}&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="location_from_arvix_id">location_from_arvix_id</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">location_from_arvix_id</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">location_from_arvix_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -3658,14 +3603,12 @@ Looks for license metadata in the CSL Item.</p>
         <span class="k">return</span> <span class="n">location</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="set_oa_locations_2">set_oa_locations</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">set_oa_locations</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Set <code>self.oa_locations</code>, which is a list of <code>Unpaywall_Location</code> objects.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -3692,7 +3635,6 @@ Looks for license metadata in the CSL Item.</p>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span> <span class="o">=</span> <span class="p">[</span><span class="n">location</span><span class="p">]</span>
 </code></pre></div>
-
 
 </details>
                 

@@ -1507,7 +1507,6 @@
     <span class="k">return</span> <span class="n">csl_item</span>
 </code></pre></div>
 
-
 </details>
 <h2 id="functions">Functions</h2>
 <h3 id="get_wikidata_csl_item">get_wikidata_csl_item</h3>
@@ -1515,7 +1514,6 @@
     <span class="n">identifier</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Get a CSL JSON item with the citation metadata for a Wikidata item.
 identifier should be a Wikidata item ID corresponding to a citeable
@@ -1549,7 +1547,6 @@ work, such as Q50051684.</p>
     <span class="k">return</span> <span class="n">csl_item</span>
 </code></pre></div>
 
-
 </details>
 <h2 id="classes">Classes</h2>
 <h3 id="handler_wikidata">Handler_Wikidata</h3>
@@ -1557,7 +1554,6 @@ work, such as Q50051684.</p>
     <span class="n">prefix_lower</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>A Handler is a class that provides support for a certain type of citekey.
 For example, a Handler subclass could provide support for DOI citekeys.
@@ -1600,7 +1596,6 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
         <span class="k">return</span> <span class="n">get_wikidata_csl_item</span>(<span class="n">citekey</span>.<span class="n">standard_accession</span>)
 </code></pre></div>
 
-
 </details>
 <hr />
 <h4 id="ancestors-in-mro">Ancestors (in MRO)</h4>
@@ -1611,14 +1606,11 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <div class="codehilite"><pre><span></span><code><span class="n">accession_pattern</span>
 </code></pre></div>
 
-
 <div class="codehilite"><pre><span></span><code><span class="n">prefixes</span>
 </code></pre></div>
 
-
 <div class="codehilite"><pre><span></span><code><span class="n">standard_prefix</span>
 </code></pre></div>
-
 
 <h4 id="methods">Methods</h4>
 <h5 id="get_csl_item">get_csl_item</h5>
@@ -1628,13 +1620,11 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="n">get_wikidata_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_accession</span><span class="p">)</span>
 </code></pre></div>
-
 
 </details>
 <h5 id="inspect">inspect</h5>
@@ -1643,7 +1633,6 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
     <span class="n">citekey</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>https://www.wikidata.org/wiki/Wikidata:Identifiers</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
@@ -1671,7 +1660,6 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
             <span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="standardize_prefix_accession">standardize_prefix_accession</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">standardize_prefix_accession</span><span class="p">(</span>
@@ -1679,7 +1667,6 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
     <span class="n">accession</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Return (prefix, accession) in standardized form.
 This method defaults to returning <code>self.standard_prefix</code>
@@ -1705,7 +1692,6 @@ Subclasses can override this method with more specific standardization logic.</p
 
         <span class="k">return</span> <span class="n">standard_prefix</span><span class="p">,</span> <span class="n">standard_accession</span>
 </code></pre></div>
-
 
 </details>
                 

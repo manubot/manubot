@@ -1507,12 +1507,10 @@ For other use cases, this package can be installed via <code>pip</code>.</p>
 <div class="codehilite"><pre><span></span><code>pip install --upgrade manubot
 </code></pre></div>
 
-
 <p>Or install from the source code on <a href="https://github.com/manubot/manubot">GitHub</a>, using the version specified by a commit hash:</p>
 <div class="codehilite"><pre><span></span><code><span class="nv">COMMIT</span><span class="o">=</span>d2160151e52750895571079a6e257beb6e0b1278
 pip install --upgrade git+https://github.com/manubot/manubot@<span class="nv">$COMMIT</span>
 </code></pre></div>
-
 
 <p>The <code>--upgrade</code> argument ensures <code>pip</code> updates an existing <code>manubot</code> installation if present.</p>
 <h2 id="usage">Usage</h2>
@@ -1537,7 +1535,6 @@ Here is the usage information as per <code>manubot --help</code>:</p>
     <span class="n">webpage</span>             <span class="n">deploy</span> <span class="n">Manubot</span> <span class="n">outputs</span> <span class="n">to</span> <span class="n">a</span> <span class="n">webpage</span> <span class="n">directory</span> <span class="n">tree</span>
 </code></pre></div>
 
-
 <p>Note that all operations are done through the following sub-commands.</p>
 <h3 id="process">Process</h3>
 <p>The <code>manubot process</code> program is the primary interface to using Manubot.
@@ -1551,7 +1548,6 @@ Under this setup, you can run the Manubot using:</p>
   --content-directory<span class="o">=</span>content <span class="se">\</span>
   --output-directory<span class="o">=</span>output
 </code></pre></div>
-
 
 <p>See <code>manubot process --help</code> for documentation of all command line arguments:</p>
 <!-- test codeblock contains output of `manubot process --help` -->
@@ -1600,7 +1596,6 @@ Under this setup, you can run the Manubot using:</p>
                         <span class="k">Set</span> <span class="n">the</span> <span class="n">logging</span> <span class="n">level</span> <span class="k">for</span> <span class="n">stderr</span> <span class="n">logging</span>
 </code></pre></div>
 
-
 <h4 id="manual-references">Manual references</h4>
 <p>Manubot has the ability to rely on user-provided reference metadata rather than generating it.
 <code>manubot process</code> searches the content directory for files containing manually-provided reference metadata that match the glob <code>manual-references*.*</code>.
@@ -1613,7 +1608,6 @@ For example, the following example generates Markdown-formatted references for f
 <div class="codehilite"><pre><span></span><code>manubot cite --format<span class="o">=</span>markdown <span class="se">\</span>
   doi:10.1098/rsif.2017.0387 pubmed:29424689 pmc:PMC5640425 arxiv:1806.05726
 </code></pre></div>
-
 
 <p>The following <a href="https://asciinema.org/a/205085?speed=2">terminal recording</a> demonstrates the main features of <code>manubot cite</code> (for a slightly outdated version):</p>
 <p><img alt="manubot cite demonstration" src="media/terminal-recordings/manubot-cite-cast.gif" /></p>
@@ -1660,7 +1654,6 @@ For example, the following example generates Markdown-formatted references for f
                         <span class="n">Set</span> <span class="n">the</span> <span class="n">logging</span> <span class="n">level</span> <span class="k">for</span> <span class="n">stderr</span> <span class="n">logging</span>
 </code></pre></div>
 
-
 <h3 id="pandoc-filter">Pandoc filter</h3>
 <p>This package creates the <code>pandoc-manubot-cite</code> Pandoc filter,
 providing access to Manubot's cite-by-ID functionality from within a Pandoc workflow.</p>
@@ -1684,7 +1677,6 @@ providing access to Manubot's cite-by-ID functionality from within a Pandoc work
 <span class="w">  </span><span class="o">--</span><span class="k">input</span><span class="w"> </span><span class="o">[</span><span class="n">INPUT</span><span class="o">]</span><span class="w">    </span><span class="k">path</span><span class="w"> </span><span class="k">read</span><span class="w"> </span><span class="n">JSON</span><span class="w"> </span><span class="k">input</span><span class="w"> </span><span class="p">(</span><span class="n">defaults</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">stdin</span><span class="p">)</span><span class="w"></span>
 <span class="w">  </span><span class="c1">--output [OUTPUT]  path to write JSON output (defaults to stdout)</span>
 </code></pre></div>
-
 
 <p>Other Pandoc filters exist that do something similar:
 <a href="https://github.com/phiresky/pandoc-url2cite"><code>pandoc-url2cite</code></a>, <a href="https://github.com/Aver1y/pandoc-url2cite-hs">pandoc-url2cite-hs</a>, &amp;
@@ -1735,7 +1727,6 @@ If multiple manual reference files load metadata for the same standard citation 
                         <span class="n">Set</span> <span class="n">the</span> <span class="n">logging</span> <span class="n">level</span> <span class="k">for</span> <span class="n">stderr</span> <span class="n">logging</span>
 </code></pre></div>
 
-
 <h2 id="development">Development</h2>
 <h3 id="environment">Environment</h3>
 <p>Create a development environment using:</p>
@@ -1744,7 +1735,6 @@ If multiple manual reference files load metadata for the same standard citation 
 conda activate manubot-dev  <span class="c1"># assumes conda &gt;= 4.4</span>
 pip install --editable <span class="s2">&quot;.[all]&quot;</span>
 </code></pre></div>
-
 
 <h3 id="commands">Commands</h3>
 <p>Below are some common commands used for development.
@@ -1772,7 +1762,6 @@ manubot process <span class="se">\</span>
   --log-level<span class="o">=</span>INFO
 </code></pre></div>
 
-
 <h3 id="release-instructions">Release instructions</h3>
 <p><a href="https://pypi.org/project/manubot/"><img alt="PyPI" src="https://img.shields.io/pypi/v/manubot.svg?logo=PyPI&amp;style=for-the-badge" /></a></p>
 <p>This section is only relevant for project maintainers.
@@ -1787,7 +1776,6 @@ git fetch --tags upstream master
 <span class="c1"># get previous release tag, can hardcode like OLD_TAG=v0.3.1</span>
 <span class="nv">OLD_TAG</span><span class="o">=</span><span class="k">$(</span>git describe --tags --abbrev<span class="o">=</span><span class="m">0</span><span class="k">)</span>
 </code></pre></div>
-
 
 <p>The following commands can help draft release notes:</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># check out a branch for a pull request as needed</span>
@@ -1804,7 +1792,6 @@ git log --oneline --decorate<span class="o">=</span>no <span class="nv">$OLD_TAG
 <span class="nb">echo</span> <span class="s1">$&#39;\n\nCode authors\n------------\n&#39;</span> &gt;&gt; <span class="s2">&quot;release-notes/</span><span class="nv">$TAG</span><span class="s2">.md&quot;</span>
 git log <span class="nv">$OLD_TAG</span>..HEAD --format<span class="o">=</span><span class="s1">&#39;%aN &lt;%aE&gt;&#39;</span> <span class="p">|</span> sort --unique &gt;&gt; <span class="s2">&quot;release-notes/</span><span class="nv">$TAG</span><span class="s2">.md&quot;</span>
 </code></pre></div>
-
 
 <p>After a commit with the above updates is part of <code>upstream:master</code>,
 for example after a PR is merged,

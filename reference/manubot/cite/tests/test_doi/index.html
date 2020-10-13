@@ -1489,7 +1489,6 @@
     <span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h2 id="functions">Functions</h2>
 <h3 id="test_expand_short_doi">test_expand_short_doi</h3>
@@ -1498,14 +1497,12 @@
 <span class="p">)</span>
 </code></pre></div>
 
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_expand_short_doi</span><span class="p">():</span>
 
     <span class="n">doi</span> <span class="o">=</span> <span class="n">expand_short_doi</span><span class="p">(</span><span class="ss">&quot;10/b6vnmd&quot;</span><span class="p">)</span>
 
     <span class="n">assert</span> <span class="n">doi</span> <span class="o">==</span> <span class="ss">&quot;10.1016/s0933-3657(96)00367-3&quot;</span>
 </code></pre></div>
-
 
 </details>
 <h3 id="test_expand_short_doi_invalid">test_expand_short_doi_invalid</h3>
@@ -1514,14 +1511,12 @@
 <span class="p">)</span>
 </code></pre></div>
 
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_expand_short_doi_invalid</span><span class="p">():</span>
 
     <span class="k">with</span> <span class="n">pytest</span><span class="p">.</span><span class="n">raises</span><span class="p">(</span><span class="n">ValueError</span><span class="p">,</span> <span class="k">match</span><span class="o">=</span><span class="ss">&quot;Handle not found. Double check short_doi&quot;</span><span class="p">):</span>
 
         <span class="n">expand_short_doi</span><span class="p">(</span><span class="ss">&quot;10/b6vnmdxxxxxx&quot;</span><span class="p">)</span>
 </code></pre></div>
-
 
 </details>
 <h3 id="test_expand_short_doi_not_short">test_expand_short_doi_not_short</h3>
@@ -1530,7 +1525,6 @@
 <span class="p">)</span>
 </code></pre></div>
 
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_expand_short_doi_not_short</span><span class="p">():</span>
 
     <span class="k">with</span> <span class="n">pytest</span><span class="p">.</span><span class="n">raises</span><span class="p">(</span><span class="n">ValueError</span><span class="p">,</span> <span class="k">match</span><span class="o">=</span><span class="ss">&quot;shortDOIs start with `10/`&quot;</span><span class="p">):</span>
@@ -1538,14 +1532,12 @@
         <span class="n">expand_short_doi</span><span class="p">(</span><span class="ss">&quot;10.1016/S0933-3657(96)00367-3&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_get_doi_crosscite_with_consortium_author">test_get_doi_crosscite_with_consortium_author</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_get_doi_crosscite_with_consortium_author</span><span class="p">(</span>
 
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Make sure the author "GTEx Consortium" is properly encoded
 using the <code>author.literal</code> CSL JSON field.</p>
@@ -1583,14 +1575,12 @@ using the <code>author.literal</code> CSL JSON field.</p>
     <span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_get_doi_csl_item">test_get_doi_csl_item</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_get_doi_csl_item</span><span class="p">(</span>
 
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Test URL is set with shortDOI when calling get_doi_csl_item.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_get_doi_csl_item</span><span class="p">():</span>
@@ -1610,14 +1600,12 @@ using the <code>author.literal</code> CSL JSON field.</p>
     <span class="n">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;https://doi.org/gbpvh5&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_get_doi_csl_item_crosscite">test_get_doi_csl_item_crosscite</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_get_doi_csl_item_crosscite</span><span class="p">(</span>
 
 <span class="p">)</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_get_doi_csl_item_crosscite</span><span class="p">():</span>
 
@@ -1630,14 +1618,12 @@ using the <code>author.literal</code> CSL JSON field.</p>
     <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;publisher&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;Cold Spring Harbor Laboratory&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_get_doi_csl_item_zotero">test_get_doi_csl_item_zotero</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_get_doi_csl_item_zotero</span><span class="p">(</span>
 
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>As of 2019-10-25, DOI Content Negotiation (i.e. crosscite) encodes the consortium
 in author.name rather than author.literal. Zotero translation-server encodes
@@ -1668,7 +1654,6 @@ https://github.com/manubot/manubot/issues/158</p>
 
     <span class="n">csl_item</span><span class="p">[</span><span class="ss">&quot;author&quot;</span><span class="p">][</span><span class="mi">9</span><span class="p">][</span><span class="ss">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;GTEx Consortium&quot;</span>
 </code></pre></div>
-
 
 </details>
                 

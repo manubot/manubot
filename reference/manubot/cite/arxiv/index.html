@@ -2363,7 +2363,6 @@
     <span class="k">return</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;arxiv:{arxiv_id}&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h2 id="functions">Functions</h2>
 <h3 id="get_arxiv_csl_item">get_arxiv_csl_item</h3>
@@ -2371,7 +2370,6 @@
     <span class="n">arxiv_id</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Return csl_item item for an arXiv identifier.
 Chooses which arXiv API to use based on whether arxiv_id
@@ -2397,14 +2395,12 @@ is versioned, since only one endpoint supports versioning.</p>
     <span class="k">return</span> <span class="n">get_arxiv_csl_item_oai</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="get_arxiv_csl_item_export_api">get_arxiv_csl_item_export_api</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_arxiv_csl_item_export_api</span><span class="p">(</span>
     <span class="n">arxiv_id</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Return csl_item item for an arXiv record.</p>
 <p>arxiv_id can be versioned, like <code>1512.00567v2</code>, or versionless, like
@@ -2532,14 +2528,12 @@ alert the user that an alternative version of record exists.</p>
     <span class="k">return</span> <span class="n">csl_item</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="get_arxiv_csl_item_oai">get_arxiv_csl_item_oai</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_arxiv_csl_item_oai</span><span class="p">(</span>
     <span class="n">arxiv_id</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Generate a CSL Item for an unversioned arXiv identifier
 using arXiv's OAI_PMH v2.0 API <a href="https://arxiv.org/help/oa">https://arxiv.org/help/oa</a>.
@@ -2679,14 +2673,12 @@ This endpoint does not support versioned <code>arxiv_id</code>.</p>
     <span class="k">return</span> <span class="n">csl_item</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="get_arxiv_csl_item_zotero">get_arxiv_csl_item_zotero</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_arxiv_csl_item_zotero</span><span class="p">(</span>
     <span class="n">arxiv_id</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Generate CSL JSON Data for an arXiv ID using Zotero's translation-server.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_arxiv_csl_item_zotero</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">):</span>
@@ -2702,7 +2694,6 @@ This endpoint does not support versioned <code>arxiv_id</code>.</p>
     <span class="k">return</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;arxiv:{arxiv_id}&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="query_arxiv_api">query_arxiv_api</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">query_arxiv_api</span><span class="p">(</span>
@@ -2710,7 +2701,6 @@ This endpoint does not support versioned <code>arxiv_id</code>.</p>
     <span class="n">params</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">query_arxiv_api</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
 
@@ -2723,7 +2713,6 @@ This endpoint does not support versioned <code>arxiv_id</code>.</p>
     <span class="k">return</span> <span class="n">xml_tree</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="remove_newlines">remove_newlines</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">remove_newlines</span><span class="p">(</span>
@@ -2731,12 +2720,10 @@ This endpoint does not support versioned <code>arxiv_id</code>.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">remove_newlines</span><span class="p">(</span><span class="nb">text</span><span class="p">):</span>
 
     <span class="k">return</span> <span class="n">re</span><span class="p">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="n">r</span><span class="ss">&quot;\n(?!\s)&quot;</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="ss">&quot; &quot;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="nb">text</span><span class="p">)</span>
 </code></pre></div>
-
 
 </details>
 <h3 id="split_arxiv_id_version">split_arxiv_id_version</h3>
@@ -2744,7 +2731,6 @@ This endpoint does not support versioned <code>arxiv_id</code>.</p>
     <span class="n">arxiv_id</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Return (versionless_id, version) tuple.
 Version refers to the verion suffix like 'v2' or None.</p>
@@ -2763,7 +2749,6 @@ Version refers to the verion suffix like 'v2' or None.</p>
     <span class="k">return</span> <span class="k">match</span><span class="p">.</span><span class="k">group</span><span class="p">(</span><span class="ss">&quot;versionless_id&quot;</span><span class="p">),</span> <span class="k">match</span><span class="p">.</span><span class="k">group</span><span class="p">(</span><span class="ss">&quot;version&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h2 id="classes">Classes</h2>
 <h3 id="csl_item_arxiv">CSL_Item_arXiv</h3>
@@ -2772,7 +2757,6 @@ Version refers to the verion suffix like 'v2' or None.</p>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>CSL_Item represents bibliographic information for a single citeable work.</p>
 <p>On a technical side CSL_Item is a Python dictionary with extra methods
@@ -2830,7 +2814,6 @@ that help cleaning and manipulating it.</p>
             <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">version</span>
 </code></pre></div>
 
-
 </details>
 <hr />
 <h4 id="ancestors-in-mro">Ancestors (in MRO)</h4>
@@ -2842,17 +2825,14 @@ that help cleaning and manipulating it.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">type_mapping</span>
 </code></pre></div>
 
-
 <h4 id="instance-variables">Instance variables</h4>
 <div class="codehilite"><pre><span></span><code><span class="n">note</span>
 </code></pre></div>
-
 
 <p>Return the value of the "note" field as a string.
 If "note" key is not set, return empty string.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">note_dict</span>
 </code></pre></div>
-
 
 <p>Return a dictionary with key-value pairs encoded by this CSL Item's note.
 Extracts both forms (line-entry and braced-entry) of key-value pairs from the CSL JSON "cheater syntax"
@@ -2865,7 +2845,6 @@ https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e
     <span class="n">prune</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Sanitize and touch-up a potentially dirty CSL_Item.
 The following steps are performed:
@@ -2917,14 +2896,12 @@ The following steps are performed:
         <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="clear">clear</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">clear</span><span class="p">(</span>
     <span class="o">...</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>D.clear() -&gt; None.  Remove all items from D.</p>
 <h5 id="copy">copy</h5>
@@ -2933,14 +2910,12 @@ The following steps are performed:
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>D.copy() -&gt; a shallow copy of D</p>
 <h5 id="correct_invalid_type">correct_invalid_type</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">correct_invalid_type</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Correct invalid CSL item type.
 Does nothing if <code>type</code> not present.</p>
@@ -2970,7 +2945,6 @@ Does nothing if <code>type</code> not present.</p>
         <span class="k">return</span> <span class="n">self</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="fromkeys">fromkeys</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">fromkeys</span><span class="p">(</span>
@@ -2979,7 +2953,6 @@ Does nothing if <code>type</code> not present.</p>
     <span class="o">/</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Create a new dictionary with keys from iterable and values set to value.</p>
 <h5 id="get">get</h5>
@@ -2991,7 +2964,6 @@ Does nothing if <code>type</code> not present.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>Return the value for key if key is in the dictionary, else default.</p>
 <h5 id="get_date">get_date</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_date</span><span class="p">(</span>
@@ -3000,7 +2972,6 @@ Does nothing if <code>type</code> not present.</p>
     <span class="n">fill</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Return a CSL date-variable as ISO formatted string:
 ('YYYY', 'YYYY-MM', 'YYYY-MM-DD', or None).</p>
@@ -3034,14 +3005,12 @@ fill: if True, set missing months to January
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">date_parts_to_string</span><span class="p">(</span><span class="n">date_parts</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">fill</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
-
 </details>
 <h5 id="infer_id">infer_id</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">infer_id</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Detect and set a non-null/empty value for "id" or else raise a ValueError.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">infer_id</span><span class="p">(</span><span class="k">self</span><span class="p">):</span>
@@ -3079,7 +3048,6 @@ fill: if True, set missing months to January
         <span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="items">items</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">items</span><span class="p">(</span>
@@ -3087,14 +3055,12 @@ fill: if True, set missing months to January
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>D.items() -&gt; a set-like object providing a view on D's items</p>
 <h5 id="keys">keys</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">keys</span><span class="p">(</span>
     <span class="o">...</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>D.keys() -&gt; a set-like object providing a view on D's keys</p>
 <h5 id="log_journal_doi">log_journal_doi</h5>
@@ -3104,7 +3070,6 @@ fill: if True, set missing months to January
     <span class="n">journal_ref</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">log_journal_doi</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">arxiv_id</span><span class="p">,</span> <span class="n">journal_ref</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
 
@@ -3121,7 +3086,6 @@ fill: if True, set missing months to January
         <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="note_append_dict">note_append_dict</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">note_append_dict</span><span class="p">(</span>
@@ -3129,7 +3093,6 @@ fill: if True, set missing months to January
     <span class="n">dictionary</span><span class="p">:</span> <span class="nb">dict</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Append key-value pairs specified by <code>dictionary</code> to the note field of a CSL Item.
 Uses the the <a href="https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields">CSL JSON "cheater syntax"</a>
@@ -3175,7 +3138,6 @@ to encode additional values not defined by the CSL JSON schema.</p>
             <span class="n">self</span><span class="p">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{key}: {value}&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="note_append_text">note_append_text</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">note_append_text</span><span class="p">(</span>
@@ -3183,7 +3145,6 @@ to encode additional values not defined by the CSL JSON schema.</p>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Append text to the note field of a CSL Item.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">note_append_text</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="nb">text</span><span class="p">:</span> <span class="n">str</span><span class="p">):</span>
@@ -3209,14 +3170,12 @@ to encode additional values not defined by the CSL JSON schema.</p>
         <span class="k">self</span><span class="p">.</span><span class="n">note</span> <span class="o">=</span> <span class="n">note</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="pop">pop</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">pop</span><span class="p">(</span>
     <span class="o">...</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>D.pop(k[,d]) -&gt; v, remove specified key and return the corresponding value.
 If key is not found, d is returned if given, otherwise KeyError is raised</p>
@@ -3227,7 +3186,6 @@ If key is not found, d is returned if given, otherwise KeyError is raised</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>Remove and return a (key, value) pair as a 2-tuple.</p>
 <p>Pairs are returned in LIFO (last-in, first-out) order.
 Raises KeyError if the dict is empty.</p>
@@ -3236,7 +3194,6 @@ Raises KeyError if the dict is empty.</p>
     <span class="bp">self</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Remove fields that violate the CSL Item JSON Schema.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">prune_against_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -3256,7 +3213,6 @@ Raises KeyError if the dict is empty.</p>
         <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="set_date">set_date</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">set_date</span><span class="p">(</span>
@@ -3265,7 +3221,6 @@ Raises KeyError if the dict is empty.</p>
     <span class="n">variable</span><span class="o">=</span><span class="s1">&#39;issued&#39;</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
     or as a Python date object (datetime.date or datetime.datetime).
@@ -3291,14 +3246,12 @@ variable: which variable to assign the date to.</p>
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="w"></span>
 </code></pre></div>
 
-
 </details>
 <h5 id="set_default_type">set_default_type</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">set_default_type</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Set type to 'entry', if type not specified.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">set_default_type</span><span class="p">(</span><span class="k">self</span><span class="p">):</span>
@@ -3314,7 +3267,6 @@ variable: which variable to assign the date to.</p>
         <span class="k">return</span> <span class="k">self</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="set_id">set_id</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">set_id</span><span class="p">(</span>
@@ -3323,14 +3275,12 @@ variable: which variable to assign the date to.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">set_id</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">id_</span><span class="p">):</span>
 
         <span class="k">self</span><span class="p">[</span><span class="ss">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_</span>
 
         <span class="k">return</span> <span class="k">self</span>
 </code></pre></div>
-
 
 </details>
 <h5 id="set_identifier_fields">set_identifier_fields</h5>
@@ -3339,7 +3289,6 @@ variable: which variable to assign the date to.</p>
     <span class="n">arxiv_id</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">set_identifier_fields</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">arxiv_id</span><span class="p">):</span>
 
@@ -3356,7 +3305,6 @@ variable: which variable to assign the date to.</p>
             <span class="k">self</span><span class="p">[</span><span class="ss">&quot;version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="k">version</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="setdefault">setdefault</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">setdefault</span><span class="p">(</span>
@@ -3367,7 +3315,6 @@ variable: which variable to assign the date to.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>Insert key with a value of default if key is not in the dictionary.</p>
 <p>Return the value for key if key is in the dictionary, else default.</p>
 <h5 id="standardize_id">standardize_id</h5>
@@ -3375,7 +3322,6 @@ variable: which variable to assign the date to.</p>
     <span class="bp">self</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.
 The standard_id is extracted from a "standard_citation" field, the "note" field, or the "id" field.
@@ -3441,14 +3387,12 @@ However, in this context, we use "id" rather than "citekey" for consistency with
         <span class="k">return</span> <span class="k">self</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="update">update</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
     <span class="o">...</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>D.update([E, ]**F) -&gt; None.  Update D from dict/iterable E and F.
 If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
@@ -3459,7 +3403,6 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
     <span class="bp">self</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Confirm that the CSL_Item validates. If not, raises a
 jsonschema.exceptions.ValidationError.</p>
@@ -3482,7 +3425,6 @@ jsonschema.exceptions.ValidationError.</p>
         <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="values">values</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">values</span><span class="p">(</span>
@@ -3490,14 +3432,12 @@ jsonschema.exceptions.ValidationError.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>D.values() -&gt; an object providing a view on D's values</p>
 <h3 id="handler_arxiv">Handler_arXiv</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">Handler_arXiv</span><span class="p">(</span>
     <span class="n">prefix_lower</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>A Handler is a class that provides support for a certain type of citekey.
 For example, a Handler subclass could provide support for DOI citekeys.
@@ -3532,7 +3472,6 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
         <span class="k">return</span> <span class="n">get_arxiv_csl_item</span>(<span class="n">citekey</span>.<span class="n">standard_accession</span>)
 </code></pre></div>
 
-
 </details>
 <hr />
 <h4 id="ancestors-in-mro_1">Ancestors (in MRO)</h4>
@@ -3543,14 +3482,11 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <div class="codehilite"><pre><span></span><code><span class="n">accession_pattern</span>
 </code></pre></div>
 
-
 <div class="codehilite"><pre><span></span><code><span class="n">prefixes</span>
 </code></pre></div>
 
-
 <div class="codehilite"><pre><span></span><code><span class="n">standard_prefix</span>
 </code></pre></div>
-
 
 <h4 id="methods_1">Methods</h4>
 <h5 id="get_csl_item">get_csl_item</h5>
@@ -3560,13 +3496,11 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="n">get_arxiv_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_accession</span><span class="p">)</span>
 </code></pre></div>
-
 
 </details>
 <h5 id="inspect">inspect</h5>
@@ -3575,7 +3509,6 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
     <span class="n">citekey</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a
 string describing the issue is returned. Otherwise returns None.</p>
@@ -3588,7 +3521,6 @@ string describing the issue is returned. Otherwise returns None.</p>
             <span class="k">return</span> <span class="ss">&quot;arXiv identifiers must conform to syntax described at https://arxiv.org/help/arxiv_identifier.&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="standardize_prefix_accession">standardize_prefix_accession</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">standardize_prefix_accession</span><span class="p">(</span>
@@ -3596,7 +3528,6 @@ string describing the issue is returned. Otherwise returns None.</p>
     <span class="n">accession</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Return (prefix, accession) in standardized form.
 This method defaults to returning <code>self.standard_prefix</code>
@@ -3622,7 +3553,6 @@ Subclasses can override this method with more specific standardization logic.</p
 
         <span class="k">return</span> <span class="n">standard_prefix</span><span class="p">,</span> <span class="n">standard_accession</span>
 </code></pre></div>
-
 
 </details>
                 

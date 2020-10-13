@@ -1536,7 +1536,6 @@ pytest manubot/cite/tests/test_handlers.py::test_prefix_to_handler
 black manubot/cite/handlers.py
 </code></pre></div>
 
-
 <p>References:</p>
 <ul>
 <li>https://en.wikipedia.org/wiki/CURIE</li>
@@ -1891,12 +1890,10 @@ black manubot/cite/handlers.py
     <span class="n">namespaces</span> <span class="o">=</span> <span class="n">get_namespaces</span><span class="p">()</span>
 </code></pre></div>
 
-
 </details>
 <h2 id="variables">Variables</h2>
 <div class="codehilite"><pre><span></span><code><span class="n">namespace_path</span>
 </code></pre></div>
-
 
 <h2 id="functions">Functions</h2>
 <h3 id="curie_to_url">curie_to_url</h3>
@@ -1904,7 +1901,6 @@ black manubot/cite/handlers.py
     <span class="n">curie</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p><code>curie</code> should be in <code>prefix:accession</code> format</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">curie_to_url</span><span class="p">(</span><span class="n">curie</span><span class="p">)</span><span class="o">:</span>
@@ -1922,14 +1918,12 @@ black manubot/cite/handlers.py
     <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;{resolver_url}/{curie}&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="get_curie_handlers">get_curie_handlers</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_curie_handlers</span><span class="p">(</span>
 
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Get all possible CURIE handlers</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_curie_handlers</span><span class="p">():</span>
@@ -1943,14 +1937,12 @@ black manubot/cite/handlers.py
     <span class="k">return</span> <span class="n">handlers</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="get_curie_prefix">get_curie_prefix</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_curie_prefix</span><span class="p">(</span>
     <span class="n">namespace</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>The prefix portion of a CURIE is not always the same as the identifiers.org namespace prefix.
 This occurs when namespaceEmbeddedInLui is true.
@@ -1989,14 +1981,12 @@ https://github.com/identifiers-org/identifiers-org.github.io/issues/100#issuecom
     <span class="k">return</span> <span class="n">curie_prefix</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="get_namespaces">get_namespaces</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_namespaces</span><span class="p">(</span>
     <span class="n">compile_patterns</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">get_namespaces</span><span class="p">(</span><span class="n">compile_patterns</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">typing</span><span class="p">.</span><span class="n">List</span><span class="o">[</span><span class="n">dict</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
@@ -2013,14 +2003,12 @@ https://github.com/identifiers-org/identifiers-org.github.io/issues/100#issuecom
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">namespaces</span><span class="w"></span>
 </code></pre></div>
 
-
 </details>
 <h3 id="get_prefix_to_namespace">get_prefix_to_namespace</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_prefix_to_namespace</span><span class="p">(</span>
 
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@functools</span><span class="p">.</span><span class="n">lru_cache</span><span class="p">()</span><span class="w"></span>
 
@@ -2037,14 +2025,12 @@ https://github.com/identifiers-org/identifiers-org.github.io/issues/100#issuecom
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">prefix_to_namespace</span><span class="w"></span>
 </code></pre></div>
 
-
 </details>
 <h3 id="standardize_curie">standardize_curie</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">standardize_curie</span><span class="p">(</span>
     <span class="n">curie</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Return CURIE with identifiers.org expected capitalization.
 <code>curie</code> should be in <code>prefix:accession</code> format.
@@ -2104,7 +2090,6 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
     <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;{namespace[&#39;curiePrefix&#39;]}:{accession}&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h2 id="classes">Classes</h2>
 <h3 id="handler_curie">Handler_CURIE</h3>
@@ -2112,7 +2097,6 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
     <span class="n">prefix_lower</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Handler_CURIE(prefix_lower: str)</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">Handler_CURIE</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
@@ -2174,7 +2158,6 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
             <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;{lui} does not match regex {pattern.pattern}&quot;</span>
 </code></pre></div>
 
-
 </details>
 <hr />
 <h4 id="ancestors-in-mro">Ancestors (in MRO)</h4>
@@ -2185,7 +2168,6 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
 <div class="codehilite"><pre><span></span><code><span class="n">prefixes</span>
 </code></pre></div>
 
-
 <h4 id="methods">Methods</h4>
 <h5 id="get_csl_item">get_csl_item</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span>
@@ -2193,7 +2175,6 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
     <span class="n">citekey</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
@@ -2205,7 +2186,6 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
         <span class="k">return</span> <span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="inspect">inspect</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span>
@@ -2213,7 +2193,6 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
     <span class="n">citekey</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a
 string describing the issue is returned. Otherwise returns None.</p>
@@ -2228,7 +2207,6 @@ string describing the issue is returned. Otherwise returns None.</p>
             <span class="k">return</span> <span class="n">f</span><span class="ss">&quot;{lui} does not match regex {pattern.pattern}&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h5 id="standardize_prefix_accession">standardize_prefix_accession</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">standardize_prefix_accession</span><span class="p">(</span>
@@ -2236,7 +2214,6 @@ string describing the issue is returned. Otherwise returns None.</p>
     <span class="n">accession</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>Return (prefix, accession) in standardized form.
 This method defaults to returning <code>self.standard_prefix</code>
@@ -2262,7 +2239,6 @@ Subclasses can override this method with more specific standardization logic.</p
 
         <span class="k">return</span> <span class="n">standard_prefix</span><span class="p">,</span> <span class="n">standard_accession</span>
 </code></pre></div>
-
 
 </details>
                 

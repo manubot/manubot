@@ -1665,7 +1665,6 @@
     <span class="k">assert</span> <span class="n">zotero_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;creators&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;lastName&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Lee&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h2 id="functions">Functions</h2>
 <h3 id="test_export_as_csl">test_export_as_csl</h3>
@@ -1674,11 +1673,9 @@
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>CSL export can be tested via curl:</p>
 <div class="codehilite"><pre><span></span><code><span class="n">curl</span>       <span class="o">--</span><span class="n">header</span> <span class="s2">&quot;Content-Type: application/json&quot;</span>       <span class="o">--</span><span class="n">data</span> <span class="s1">&#39;[{&quot;key&quot;: &quot;IN22XN53&quot;, &quot;itemType&quot;: &quot;webpage&quot;, &quot;date&quot;: &quot;2016-02-09T20:12:00&quot;}]&#39;</span>       <span class="s1">&#39;https://translate.manubot.org/export?format=csljson&#39;</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_export_as_csl</span><span class="p">():</span>
 
@@ -1739,7 +1736,6 @@
     <span class="nb">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;container-title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Big Think&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_search_query">test_search_query</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_search_query</span><span class="p">(</span>
@@ -1747,11 +1743,9 @@
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>The translation-server search endpoint can be tested via curl:</p>
 <div class="codehilite"><pre><span></span><code><span class="err">curl --verbose       --header &quot;Content-Type: text/plain&quot;       --data &#39;30571677&#39;       &#39;https://translate.manubot.org/search&#39;</span>
 </code></pre></div>
-
 
 <p>translation-server does not support PMIDs with a <code>pmid:</code> prefix.
 https://github.com/zotero/translation-server/issues/71</p>
@@ -1804,7 +1798,6 @@ https://github.com/zotero/translation-server/issues/71</p>
 <span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">zotero_data</span><span class="o">[</span><span class="n">0</span><span class="o">][</span><span class="n">&quot;creators&quot;</span><span class="o">][</span><span class="n">0</span><span class="o">][</span><span class="n">&quot;lastName&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;Lee&quot;</span><span class="w"></span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_search_query_arxiv">test_search_query_arxiv</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_search_query_arxiv</span><span class="p">(</span>
@@ -1812,12 +1805,10 @@ https://github.com/zotero/translation-server/issues/71</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>Test citing https://arxiv.org/abs/1604.05363v1
 The translation-server search endpoint can be tested via curl:</p>
 <div class="codehilite"><pre><span></span><code><span class="err">curl --verbose       --header &quot;Content-Type: text/plain&quot;       --data &#39;arxiv:1604.05363v1&#39;       &#39;https://translate.manubot.org/search&#39;</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_search_query_arxiv</span><span class="p">():</span>
 
@@ -1858,7 +1849,6 @@ The translation-server search endpoint can be tested via curl:</p>
     <span class="n">assert</span> <span class="n">zotero_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="ss">&quot;date&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;2016-04-18&quot;</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_search_query_isbn">test_search_query_isbn</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_search_query_isbn</span><span class="p">(</span>
@@ -1866,11 +1856,9 @@ The translation-server search endpoint can be tested via curl:</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>The translation-server search endpoint can be tested via curl:</p>
 <div class="codehilite"><pre><span></span><code><span class="err">curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;isbn:9781339919881&#39;       &#39;https://translate.manubot.org/search&#39;</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_search_query_isbn</span><span class="p">():</span>
 
@@ -1899,7 +1887,6 @@ The translation-server search endpoint can be tested via curl:</p>
     <span class="n">assert</span> <span class="n">zotero_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="ss">&quot;title&quot;</span><span class="p">].</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;The hetnet awakens&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_web_query">test_web_query</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_web_query</span><span class="p">(</span>
@@ -1907,11 +1894,9 @@ The translation-server search endpoint can be tested via curl:</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>The translation-server web endpoint can be tested via curl:</p>
 <div class="codehilite"><pre><span></span><code><span class="err">curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;https://bigthink.com/neurobonkers/a-pirate-bay-for-science&#39;       &#39;https://translate.manubot.org/web&#39;</span>
 </code></pre></div>
-
 
 <p>An outdated installation of translation-server caused the web query for this
 URL to be extraordinarily slow but has now been fixed. See
@@ -1953,7 +1938,6 @@ https://github.com/zotero/translation-server/issues/63</p>
     <span class="n">assert</span> <span class="n">zotero_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="ss">&quot;title&quot;</span><span class="p">].</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;Meet the Robin Hood of Science&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_web_query_returns_single_result_legacy_manubot_url">test_web_query_returns_single_result_legacy_manubot_url</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_web_query_returns_single_result_legacy_manubot_url</span><span class="p">(</span>
@@ -1961,14 +1945,12 @@ https://github.com/zotero/translation-server/issues/63</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>Check that single=1 is specified for web queries. Without this, Zotero
 can prefer translators that return multiple choices. This occurs with legacy
 Manubot mansucripts, which get assigned the DOI translator as top priority.
 https://github.com/zotero/translation-server/issues/65</p>
 <div class="codehilite"><pre><span></span><code><span class="err">curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;https://greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/&#39;       &#39;https://translate.manubot.org/web?single=1&#39;</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_web_query_returns_single_result_legacy_manubot_url</span><span class="p">():</span>
 
@@ -2015,7 +1997,6 @@ https://github.com/zotero/translation-server/issues/65</p>
     <span class="p">)</span>
 </code></pre></div>
 
-
 </details>
 <h3 id="test_web_query_returns_single_result_pubmed_url">test_web_query_returns_single_result_pubmed_url</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_web_query_returns_single_result_pubmed_url</span><span class="p">(</span>
@@ -2023,11 +2004,9 @@ https://github.com/zotero/translation-server/issues/65</p>
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>See test_web_query_returns_single_result_legacy_manubot_url docstring.</p>
 <div class="codehilite"><pre><span></span><code><span class="err">curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;https://www.ncbi.nlm.nih.gov/pubmed/?term=sci-hub%5Btitle%5D&#39;       &#39;https://translate.manubot.org/web?single=1&#39;</span>
 </code></pre></div>
-
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">test_web_query_returns_single_result_pubmed_url</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
 
@@ -2061,7 +2040,6 @@ https://github.com/zotero/translation-server/issues/65</p>
 
 <span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">zotero_metadata</span><span class="o">[</span><span class="n">&quot;title&quot;</span><span class="o">]</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;sci-hub[title]&quot;</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
-
 
 </details>
                 
