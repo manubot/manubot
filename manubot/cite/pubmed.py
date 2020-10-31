@@ -2,13 +2,14 @@ import functools
 import json
 import logging
 from xml.etree import ElementTree
-from typing import List, Optional, Dict, Any, Union
+from typing import List, Optional, Dict, Any, Union, TYPE_CHECKING
 
 import requests
 
 from .citekey import CiteKey
 from .handlers import Handler
 from manubot.util import get_manubot_user_agent
+
 
 class Handler_PubMed(Handler):
 
@@ -31,7 +32,7 @@ class Handler_PubMed(Handler):
         elif not self._get_pattern().fullmatch(identifier):
             return "PubMed Identifiers should be 1-8 digits with no leading zeros."
 
-    def get_csl_item(self, citekey: CiteKey):
+    def get_csl_item(self, citekey: CiteKey) -> Dict[str, Any]:
         return get_pubmed_csl_item(citekey.standard_accession)
 
 
@@ -77,7 +78,9 @@ def get_pmc_csl_item(pmcid: str) -> Dict[str, Any]:
     return csl_item
 
 
-def _get_literature_citation_exporter_csl_item(database, identifier):
+def _get_literature_citation_exporter_csl_item(
+    database: str, identifier: str
+) -> Dict[str, Any]:
     """
     https://api.ncbi.nlm.nih.gov/lit/ctxp
     """
@@ -116,7 +119,7 @@ def _get_literature_citation_exporter_csl_item(database, identifier):
     return csl_item
 
 
-def get_pubmed_csl_item(pmid: Union[str, int]):
+def get_pubmed_csl_item(pmid: Union[str, int]) -> Dict[str, Any]:
     """
     Query NCBI E-Utilities to create CSL Items for PubMed IDs.
 
@@ -156,7 +159,9 @@ def csl_item_from_pubmed_article(article: ElementTree.Element) -> Dict[str, Any]
     https://github.com/citation-style-language/schema/blob/master/csl-data.json
     """
     if not article.tag == "PubmedArticle":
-        raise ValueError(f"Expected article to be an XML element with tag PubmedArticle, received tag {article.tag!r}")
+        raise ValueError(
+            f"Expected article to be an XML element with tag PubmedArticle, received tag {article.tag!r}"
+        )
 
     csl_item = dict()
 
@@ -241,9 +246,9 @@ month_abbrev_to_int: Dict[str, int] = {
 }
 
 
-def extract_publication_date_parts(article) -> List[int]:
+def extract_publication_date_parts(article: ElementTree.Element) -> List[int]:
     """
-    Extract date published from a PubmedArticle xml element tree.
+    Extract date published from a PubmedArticle XML element.
     """
     date_parts = []
 
@@ -274,7 +279,7 @@ def extract_publication_date_parts(article) -> List[int]:
     return date_parts
 
 
-def get_pmcid_and_pmid_for_doi(doi):
+def get_pmcid_and_pmid_for_doi(doi: str) -> Dict[str, str]:
     """
     Query PMC's ID Converter API to retrieve the PMCID and PMID for a DOI.
     Does not work for DOIs that are in Pubmed but not PubMed Central.
@@ -289,7 +294,8 @@ def get_pmcid_and_pmid_for_doi(doi):
         logging.warning(f"Status code {response.status_code} querying {response.url}\n")
         return {}
     try:
-        element_tree = ElementTree.Element.fromstring(response.text)
+        element_tree = ElementTree.fromstring(response.text)
+        assert element_tree.tag == "pmcids"
     except Exception:
         logging.warning(
             f"Error fetching PMC ID conversion for {doi}.\n"
@@ -314,7 +320,7 @@ def get_pmcid_and_pmid_for_doi(doi):
     return id_dict
 
 
-def get_pmid_for_doi(doi):
+def get_pmid_for_doi(doi: str) -> Optional[str]:
     """
     Query NCBI's E-utilities to retrieve the PMID for a DOI.
     """
@@ -329,7 +335,9 @@ def get_pmid_for_doi(doi):
         logging.warning(f"Status code {response.status_code} querying {response.url}\n")
         return None
     try:
-        element_tree = ElementTree.Element.fromstring(response.text)
+        element_tree = ElementTree.fromstring(response.text)
+        assert isinstance(element_tree, ElementTree.Element)
+        assert element_tree.tag == "eSearchResult"
     except Exception:
         logging.warning(
             f"Error in ESearch XML for DOI: {doi}.\n"
@@ -347,7 +355,7 @@ def get_pmid_for_doi(doi):
     return id_elem.text
 
 
-def get_pubmed_ids_for_doi(doi):
+def get_pubmed_ids_for_doi(doi: str) -> Dict[str, str]:
     """
     Return a dictionary with PMCID and PMID, if they exist, for the specified
     DOI. See https://github.com/manubot/manubot/issues/45.
@@ -360,8 +368,14 @@ def get_pubmed_ids_for_doi(doi):
     return pubmed_ids
 
 
+if TYPE_CHECKING:
+    # support RateLimiter return type while avoiding unused runtime import
+    # https://stackoverflow.com/a/39757388/4651668
+    from ratelimiter import RateLimiter
+
+
 @functools.lru_cache()
-def _get_eutils_rate_limiter():
+def _get_eutils_rate_limiter() -> "RateLimiter":
     """
     Rate limiter to cap NCBI E-utilities queries to 3 per second as per
     https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/

@@ -2,9 +2,10 @@ import abc
 import dataclasses
 import functools
 import re
-import typing
+from typing import Optional, Dict, Pattern, Tuple, Any
 
 from manubot.util import import_function
+from .citekey import CiteKey
 
 """
 Non-citation prefixes used by the pandoc-xnos suite of Pandoc filters,
@@ -25,7 +26,7 @@ _local_handlers = [
 
 
 @functools.lru_cache(maxsize=10_000)
-def get_handler(prefix_lower):
+def get_handler(prefix_lower: str) -> "Handler":
     if not isinstance(prefix_lower, str):
         raise TypeError(
             f"prefix_lower should be a str, instead received {prefix_lower.__class__.__name__}"
@@ -36,7 +37,7 @@ def get_handler(prefix_lower):
     return handler
 
 
-def _generate_prefix_to_handler() -> typing.Dict[str, str]:
+def _generate_prefix_to_handler() -> Dict[str, str]:
     """
     Generate complete dictionary for prefix_to_handler.
     """
@@ -69,7 +70,7 @@ class Handler:
     prefix_lower: str
     prefixes = []
 
-    def _get_pattern(self, attribute="accession_pattern") -> typing.Pattern:
+    def _get_pattern(self, attribute="accession_pattern") -> Pattern:
         """
         Return a compiled regex pattern stored by `attribute`.
         By default, return `self.accession_pattern`, which Handler subclasses
@@ -79,11 +80,11 @@ class Handler:
         pattern = getattr(self, attribute, None)
         if not pattern:
             return None
-        if not isinstance(pattern, typing.Pattern):
+        if not isinstance(pattern, Pattern):
             pattern = re.compile(pattern)
         return pattern
 
-    def inspect(self, citekey):
+    def inspect(self, citekey: CiteKey) -> Optional[str]:
         """
         Check citekeys adhere to expected formats. If an issue is detected a
         string describing the issue is returned. Otherwise returns None.
@@ -94,7 +95,7 @@ class Handler:
         if not pattern.fullmatch(citekey.accession):
             return f"{citekey.accession} does not match regex {pattern.pattern}"
 
-    def standardize_prefix_accession(self, accession):
+    def standardize_prefix_accession(self, accession: str) -> Tuple[str, str]:
         """
         Return (prefix, accession) in standardized form.
         This method defaults to returning `self.standard_prefix`
@@ -106,7 +107,7 @@ class Handler:
         return standard_prefix, standard_accession
 
     @abc.abstractmethod
-    def get_csl_item(self, citekey):
+    def get_csl_item(self, citekey) -> Dict[str, Any]:
         """
         Return a CSL_Item with bibliographic details for citekey.
         """
@@ -121,7 +122,7 @@ This output is automatically generated using `_generate_prefix_to_handler`.
 Hardcoding this mapping reduces startup time and helps keep imports to a minimum,
 allowing installations without the full dependencies to function.
 """
-prefix_to_handler: typing.Dict[str, str] = {
+prefix_to_handler: Dict[str, str] = {
     "3dmet": "manubot.cite.curie.Handler_CURIE",
     "abs": "manubot.cite.curie.Handler_CURIE",
     "aceview.worm": "manubot.cite.curie.Handler_CURIE",
