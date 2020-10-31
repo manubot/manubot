@@ -157,7 +157,10 @@ def test_citekey_to_csl_item_pubmed_book(caplog):
     """
     csl_item = citekey_to_csl_item("pmid:29227604", log_level="ERROR")
     assert csl_item is None
-    assert "Unsupported PubMed record: no <Article> element" in caplog.text
+    assert (
+        "Expected article to be an XML element with tag PubmedArticle, received tag 'PubmedBookArticle'"
+        in caplog.text
+    )
 
 
 def test_citekey_to_csl_item_isbn():

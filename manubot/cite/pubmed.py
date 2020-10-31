@@ -137,7 +137,7 @@ def get_pubmed_csl_item(pmid: Union[str, int]) -> Dict[str, Any]:
         assert isinstance(xml_article_set, ElementTree.Element)
         assert xml_article_set.tag == "PubmedArticleSet"
         (xml_article,) = list(xml_article_set)
-        assert xml_article.tag == "PubmedArticle"
+        assert xml_article.tag in ["PubmedArticle", "PubmedBookArticle"]
     except Exception as error:
         logging.error(
             f"Error fetching PubMed metadata for {pmid}.\n"
