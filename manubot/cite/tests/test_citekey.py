@@ -78,6 +78,20 @@ def test_citekey_class(input_id, citekey_attrs):
     assert citekey.short_id
 
 
+def test_citekey_check_input_id_type():
+    with pytest.raises(TypeError) as excinfo:
+        CiteKey(None)
+    assert "input_id should be type 'str' not 'NoneType': None" == str(excinfo.value)
+    with pytest.raises(TypeError):
+        CiteKey(0)
+
+
+def test_citekey_check_input_id_at_prefix():
+    with pytest.raises(ValueError) as excinfo:
+        CiteKey("@my-citekey")
+    assert "input_id: '@my-citekey'\nstarts with '@'" in str(excinfo.value)
+
+
 @pytest.mark.parametrize(
     "standard_citekey,expected",
     [
