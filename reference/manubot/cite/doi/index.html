@@ -1936,71 +1936,71 @@
 </code></pre></div>
 
 <p>Convert a shortDOI to a regular DOI.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">expand_short_doi</span><span class="p">(</span><span class="n">short_doi</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">expand_short_doi</span><span class="p">(</span><span class="n">short_doi</span><span class="p">)</span><span class="o">:</span>
 
-    <span class="ss">&quot;&quot;&quot;</span>
+    <span class="s">&quot;&quot;&quot;</span>
 
-<span class="ss">    Convert a shortDOI to a regular DOI.</span>
+    <span class="n">Convert</span> <span class="n">a</span> <span class="n">shortDOI</span> <span class="n">to</span> <span class="n">a</span> <span class="n">regular</span> <span class="n">DOI</span><span class="p">.</span>
 
-<span class="ss">    &quot;&quot;&quot;</span>
+    <span class="s">&quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="k">not</span> <span class="n">short_doi</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;10/&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="k">not</span> <span class="n">short_doi</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;10/&quot;</span><span class="p">)</span><span class="o">:</span>
 
         <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span>
 
-            <span class="n">f</span><span class="ss">&quot;shortDOIs start with `10/`, but expand_short_doi received: {short_doi}&quot;</span>
+            <span class="n">f</span><span class="s">&quot;shortDOIs start with `10/`, but expand_short_doi received: {short_doi}&quot;</span>
 
         <span class="p">)</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="n">f</span><span class="ss">&quot;https://doi.org/api/handles/{short_doi.lower()}&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">f</span><span class="s">&quot;https://doi.org/api/handles/{short_doi.lower()}&quot;</span>
 
-    <span class="n">params</span> <span class="o">=</span> <span class="err">{</span><span class="ss">&quot;type&quot;</span><span class="p">:</span> <span class="ss">&quot;HS_ALIAS&quot;</span><span class="err">}</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;type&quot;</span><span class="o">:</span> <span class="s">&quot;HS_ALIAS&quot;</span><span class="p">}</span>
 
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
-    <span class="o">#</span> <span class="n">response</span> <span class="n">documentation</span> <span class="k">at</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">handle</span><span class="p">.</span><span class="n">net</span><span class="o">/</span><span class="n">proxy_servlet</span><span class="p">.</span><span class="n">html</span>
+    <span class="p">#</span> <span class="n">response</span> <span class="n">documentation</span> <span class="n">at</span> <span class="nl">https:</span><span class="c1">//www.handle.net/proxy_servlet.html</span>
 
     <span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
 
-    <span class="n">response_code</span> <span class="o">=</span> <span class="n">results</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="ss">&quot;responseCode&quot;</span><span class="p">)</span>  <span class="o">#</span> <span class="n">Handle</span> <span class="n">protocol</span> <span class="n">response</span> <span class="n">code</span>
+    <span class="n">response_code</span> <span class="o">=</span> <span class="n">results</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;responseCode&quot;</span><span class="p">)</span>  <span class="p">#</span> <span class="n">Handle</span> <span class="n">protocol</span> <span class="n">response</span> <span class="n">code</span>
 
-    <span class="k">if</span> <span class="n">response_code</span> <span class="o">==</span> <span class="mi">100</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">response_code</span> <span class="o">==</span> <span class="mh">100</span><span class="o">:</span>
 
-        <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;Handle not found. Double check short_doi: {short_doi}&quot;</span><span class="p">)</span>
+        <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s">&quot;Handle not found. Double check short_doi: {short_doi}&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">response_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
-
-        <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span>
-
-            <span class="n">f</span><span class="ss">&quot;HS_ALIAS values not found. Double check short_doi: {short_doi}&quot;</span>
-
-        <span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">response_code</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">response_code</span> <span class="o">==</span> <span class="mh">200</span><span class="o">:</span>
 
         <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span>
 
-            <span class="n">f</span><span class="ss">&quot;Error response code of {response_code} returned by {response.url}&quot;</span>
+            <span class="n">f</span><span class="s">&quot;HS_ALIAS values not found. Double check short_doi: {short_doi}&quot;</span>
 
         <span class="p">)</span>
 
-    <span class="k">values</span> <span class="o">=</span> <span class="n">results</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="ss">&quot;values&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="k">if</span> <span class="n">response_code</span> <span class="o">!=</span> <span class="mh">1</span><span class="o">:</span>
 
-    <span class="k">for</span> <span class="n">value</span> <span class="k">in</span> <span class="k">values</span><span class="p">:</span>
+        <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span>
 
-        <span class="k">if</span> <span class="n">value</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="ss">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="ss">&quot;HS_ALIAS&quot;</span><span class="p">:</span>
+            <span class="n">f</span><span class="s">&quot;Error response code of {response_code} returned by {response.url}&quot;</span>
 
-            <span class="n">doi</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="ss">&quot;data&quot;</span><span class="p">][</span><span class="ss">&quot;value&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
 
-            <span class="k">return</span> <span class="n">doi</span><span class="p">.</span><span class="k">lower</span><span class="p">()</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">results</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;values&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+    <span class="k">for</span> <span class="n">value</span> <span class="n">in</span> <span class="nl">values:</span>
+
+        <span class="k">if</span> <span class="n">value</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;HS_ALIAS&quot;</span><span class="o">:</span>
+
+            <span class="n">doi</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&quot;data&quot;</span><span class="p">][</span><span class="s">&quot;value&quot;</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="n">doi</span><span class="p">.</span><span class="n">lower</span><span class="p">()</span>
 
     <span class="n">raise</span> <span class="n">RuntimeError</span><span class="p">(</span>
 
-        <span class="n">f</span><span class="s1">&#39;HS_ALIAS value not found by expand_short_doi(&quot;{short_doi}&quot;)\n&#39;</span>
+        <span class="n">f</span><span class="p">&#39;</span><span class="n">HS_ALIAS</span> <span class="n">value</span> <span class="k">not</span> <span class="n">found</span> <span class="n">by</span> <span class="n">expand_short_doi</span><span class="p">(</span><span class="s">&quot;{short_doi}&quot;</span><span class="p">)</span><span class="n">\n&#39;</span>
 
-        <span class="n">f</span><span class="ss">&quot;The following JSON was retrieved from {response.url}:\n&quot;</span>
+        <span class="n">f</span><span class="s">&quot;The following JSON was retrieved from {response.url}:</span><span class="se">\n</span><span class="s">&quot;</span>
 
-        <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mh">2</span><span class="p">)</span>
 
     <span class="p">)</span>
 </code></pre></div>
@@ -2163,91 +2163,91 @@ metadata for a DOI.</p>
 For example, a Handler subclass could provide support for DOI citekeys.
 Subclasses enable custom logic for different citekey prefixes,
 including how to standardize the citekey and how to retrieve CSL Item metadata.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="n">Handler_DOI</span>(<span class="n">Handler</span>):
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">class</span> <span class="n">Handler_DOI</span><span class="p">(</span><span class="n">Handler</span><span class="p">)</span><span class="o">:</span>
 
-    <span class="n">standard_prefix</span> = <span class="s">&quot;doi&quot;</span>
+    <span class="n">standard_prefix</span> <span class="o">=</span> <span class="s">&quot;doi&quot;</span>
 
-    <span class="n">prefixes</span> = [
+    <span class="n">prefixes</span> <span class="o">=</span> <span class="p">[</span>
 
-        <span class="s">&quot;doi&quot;</span>,
+        <span class="s">&quot;doi&quot;</span><span class="p">,</span>
 
-        <span class="s">&quot;shortdoi&quot;</span>,
+        <span class="s">&quot;shortdoi&quot;</span><span class="p">,</span>
 
-    ]
+    <span class="p">]</span>
 
-    <span class="n">accession_pattern</span> = <span class="nb">r</span><span class="s">&quot;10\.[0-9]{4,9}/\S+&quot;</span>
+    <span class="n">accession_pattern</span> <span class="o">=</span> <span class="n">r</span><span class="s">&quot;10\.[0-9]{4,9}/\S+&quot;</span>
 
-    <span class="n">shortdoi_pattern</span> = <span class="nb">r</span><span class="s">&quot;10/[a-zA-Z0-9]+&quot;</span>
+    <span class="n">shortdoi_pattern</span> <span class="o">=</span> <span class="n">r</span><span class="s">&quot;10/[a-zA-Z0-9]+&quot;</span>
 
-    <span class="n">def</span> <span class="n">inspect</span>(<span class="nb">self</span>, <span class="n">citekey</span>):
+    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
 
-        <span class="n">identifier</span> = <span class="n">citekey</span>.<span class="n">accession</span>
+        <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="p">.</span><span class="n">accession</span>
 
-        <span class="k">if</span> <span class="n">identifier</span>.<span class="n">startswith</span>(<span class="s">&quot;10.&quot;</span>):
+        <span class="k">if</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;10.&quot;</span><span class="p">)</span><span class="o">:</span>
 
-            <span class="c1"># https://www.crossref.org/blog/dois-and-matching-regular-expressions/</span>
+            <span class="p">#</span> <span class="nl">https:</span><span class="c1">//www.crossref.org/blog/dois-and-matching-regular-expressions/</span>
 
-            <span class="k">if</span> <span class="nb">not</span> <span class="nb">self</span>.<span class="n">_get_pattern</span>().<span class="n">fullmatch</span>(<span class="n">identifier</span>):
+            <span class="k">if</span> <span class="k">not</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span><span class="o">:</span>
 
-                <span class="k">return</span> (
+                <span class="k">return</span> <span class="p">(</span>
 
                     <span class="s">&quot;Identifier does not conform to the DOI regex. &quot;</span>
 
                     <span class="s">&quot;Double check the DOI.&quot;</span>
 
-                )
+                <span class="p">)</span>
 
-        <span class="n">elif</span> <span class="n">identifier</span>.<span class="n">startswith</span>(<span class="s">&quot;10/&quot;</span>):
+        <span class="n">elif</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;10/&quot;</span><span class="p">)</span><span class="o">:</span>
 
-            <span class="c1"># shortDOI, see http://shortdoi.org</span>
+            <span class="p">#</span> <span class="n">shortDOI</span><span class="p">,</span> <span class="n">see</span> <span class="nl">http:</span><span class="c1">//shortdoi.org</span>
 
-            <span class="k">if</span> <span class="nb">not</span> <span class="nb">self</span>.<span class="n">_get_pattern</span>(<span class="s">&quot;shortdoi_pattern&quot;</span>).<span class="n">fullmatch</span>(<span class="n">identifier</span>):
+            <span class="k">if</span> <span class="k">not</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="s">&quot;shortdoi_pattern&quot;</span><span class="p">).</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span><span class="o">:</span>
 
-                <span class="k">return</span> (
+                <span class="k">return</span> <span class="p">(</span>
 
                     <span class="s">&quot;Identifier does not conform to the shortDOI regex. &quot;</span>
 
                     <span class="s">&quot;Double check the shortDOI.&quot;</span>
 
-                )
+                <span class="p">)</span>
 
-        <span class="n">else:</span>
+        <span class="k">else</span><span class="o">:</span>
 
             <span class="k">return</span> <span class="s">&quot;DOIs must start with &#39;10.&#39; (or &#39;10/&#39; for shortDOIs).&quot;</span>
 
-    <span class="n">def</span> <span class="n">standardize_prefix_accession</span>(<span class="nb">self</span>, <span class="n">accession</span>):
+    <span class="n">def</span> <span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">)</span><span class="o">:</span>
 
-        <span class="k">if</span> <span class="n">accession</span>.<span class="n">startswith</span>(<span class="s">&quot;10/&quot;</span>):
+        <span class="k">if</span> <span class="n">accession</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;10/&quot;</span><span class="p">)</span><span class="o">:</span>
 
-            <span class="n">try:</span>
+            <span class="nl">try:</span>
 
-                <span class="n">accession</span> = <span class="n">expand_short_doi</span>(<span class="n">accession</span>)
+                <span class="n">accession</span> <span class="o">=</span> <span class="n">expand_short_doi</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span>
 
-            <span class="n">except</span> <span class="nb">Exception</span> <span class="n">as</span> <span class="n">error:</span>
+            <span class="n">except</span> <span class="n">Exception</span> <span class="n">as</span> <span class="nl">error:</span>
 
-                <span class="c1"># If DOI shortening fails, return the unshortened DOI.</span>
+                <span class="p">#</span> <span class="n">If</span> <span class="n">DOI</span> <span class="n">shortening</span> <span class="n">fails</span><span class="p">,</span> <span class="k">return</span> <span class="n">the</span> <span class="n">unshortened</span> <span class="n">DOI</span><span class="p">.</span>
 
-                <span class="c1"># DOI metadata lookup will eventually fail somewhere with</span>
+                <span class="p">#</span> <span class="n">DOI</span> <span class="n">metadata</span> <span class="n">lookup</span> <span class="n">will</span> <span class="n">eventually</span> <span class="n">fail</span> <span class="n">somewhere</span> <span class="n">with</span>
 
-                <span class="c1"># appropriate error handling, as opposed to here.</span>
+                <span class="p">#</span> <span class="n">appropriate</span> <span class="n">error</span> <span class="n">handling</span><span class="p">,</span> <span class="n">as</span> <span class="n">opposed</span> <span class="n">to</span> <span class="n">here</span><span class="p">.</span>
 
-                <span class="n">logging</span>.<span class="n">error</span>(
+                <span class="n">logging</span><span class="p">.</span><span class="n">error</span><span class="p">(</span>
 
-                    <span class="nb">f</span><span class="s">&quot;Error in expand_short_doi for {accession} &quot;</span>
+                    <span class="n">f</span><span class="s">&quot;Error in expand_short_doi for {accession} &quot;</span>
 
-                    <span class="nb">f</span><span class="s">&quot;due to a {error.__class__.__name__}:\n{error}&quot;</span>
+                    <span class="n">f</span><span class="s">&quot;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s">{error}&quot;</span>
 
-                )
+                <span class="p">)</span>
 
-                <span class="n">logging</span>.<span class="n">info</span>(<span class="n">error</span>, <span class="n">exc_info</span>=<span class="nb">True</span>)
+                <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
 
-        <span class="n">accession</span> = <span class="n">accession</span>.<span class="n">lower</span>()
+        <span class="n">accession</span> <span class="o">=</span> <span class="n">accession</span><span class="p">.</span><span class="n">lower</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="nb">self</span>.<span class="n">standard_prefix</span>, <span class="n">accession</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">standard_prefix</span><span class="p">,</span> <span class="n">accession</span>
 
-    <span class="n">def</span> <span class="n">get_csl_item</span>(<span class="nb">self</span>, <span class="n">citekey</span>):
+    <span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
 
-        <span class="k">return</span> <span class="n">get_doi_csl_item</span>(<span class="n">citekey</span>.<span class="n">standard_accession</span>)
+        <span class="k">return</span> <span class="n">get_doi_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_accession</span><span class="p">)</span>
 </code></pre></div>
 
 </details>
@@ -2293,41 +2293,41 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a
 string describing the issue is returned. Otherwise returns None.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
 
         <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="p">.</span><span class="n">accession</span>
 
-        <span class="k">if</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;10.&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;10.&quot;</span><span class="p">)</span><span class="o">:</span>
 
-            <span class="o">#</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">crossref</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">blog</span><span class="o">/</span><span class="n">dois</span><span class="o">-</span><span class="k">and</span><span class="o">-</span><span class="n">matching</span><span class="o">-</span><span class="n">regular</span><span class="o">-</span><span class="n">expressions</span><span class="o">/</span>
+            <span class="p">#</span> <span class="nl">https:</span><span class="c1">//www.crossref.org/blog/dois-and-matching-regular-expressions/</span>
 
-            <span class="k">if</span> <span class="k">not</span> <span class="k">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">):</span>
-
-                <span class="k">return</span> <span class="p">(</span>
-
-                    <span class="ss">&quot;Identifier does not conform to the DOI regex. &quot;</span>
-
-                    <span class="ss">&quot;Double check the DOI.&quot;</span>
-
-                <span class="p">)</span>
-
-        <span class="n">elif</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;10/&quot;</span><span class="p">):</span>
-
-            <span class="o">#</span> <span class="n">shortDOI</span><span class="p">,</span> <span class="n">see</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">shortdoi</span><span class="p">.</span><span class="n">org</span>
-
-            <span class="k">if</span> <span class="k">not</span> <span class="k">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="ss">&quot;shortdoi_pattern&quot;</span><span class="p">).</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">):</span>
+            <span class="k">if</span> <span class="k">not</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span><span class="o">:</span>
 
                 <span class="k">return</span> <span class="p">(</span>
 
-                    <span class="ss">&quot;Identifier does not conform to the shortDOI regex. &quot;</span>
+                    <span class="s">&quot;Identifier does not conform to the DOI regex. &quot;</span>
 
-                    <span class="ss">&quot;Double check the shortDOI.&quot;</span>
+                    <span class="s">&quot;Double check the DOI.&quot;</span>
 
                 <span class="p">)</span>
 
-        <span class="k">else</span><span class="p">:</span>
+        <span class="n">elif</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;10/&quot;</span><span class="p">)</span><span class="o">:</span>
 
-            <span class="k">return</span> <span class="ss">&quot;DOIs must start with &#39;10.&#39; (or &#39;10/&#39; for shortDOIs).&quot;</span>
+            <span class="p">#</span> <span class="n">shortDOI</span><span class="p">,</span> <span class="n">see</span> <span class="nl">http:</span><span class="c1">//shortdoi.org</span>
+
+            <span class="k">if</span> <span class="k">not</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="s">&quot;shortdoi_pattern&quot;</span><span class="p">).</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span><span class="o">:</span>
+
+                <span class="k">return</span> <span class="p">(</span>
+
+                    <span class="s">&quot;Identifier does not conform to the shortDOI regex. &quot;</span>
+
+                    <span class="s">&quot;Double check the shortDOI.&quot;</span>
+
+                <span class="p">)</span>
+
+        <span class="k">else</span><span class="o">:</span>
+
+            <span class="k">return</span> <span class="s">&quot;DOIs must start with &#39;10.&#39; (or &#39;10/&#39; for shortDOIs).&quot;</span>
 </code></pre></div>
 
 </details>

@@ -1502,7 +1502,15 @@
 </code></pre></div>
 
 <p>Tests loading multiple bibliography paths</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="n">Test_load_manual_references</span><span class="p">:</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="err">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skipif</span><span class="p">(</span>
+
+    <span class="ow">not</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;pandoc-citeproc&quot;</span><span class="p">),</span>
+
+    <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;pandoc-citeproc installation not found on system&quot;</span><span class="p">,</span>
+
+<span class="p">)</span>
+
+<span class="k">class</span> <span class="n">Test_load_manual_references</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 

@@ -1559,41 +1559,41 @@ work, such as Q50051684.</p>
 For example, a Handler subclass could provide support for DOI citekeys.
 Subclasses enable custom logic for different citekey prefixes,
 including how to standardize the citekey and how to retrieve CSL Item metadata.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="n">Handler_Wikidata</span>(<span class="n">Handler</span>):
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">class</span> <span class="n">Handler_Wikidata</span><span class="p">(</span><span class="n">Handler</span><span class="p">)</span><span class="o">:</span>
 
-    <span class="n">prefixes</span> = [<span class="s">&quot;wikidata&quot;</span>]
+    <span class="n">prefixes</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;wikidata&quot;</span><span class="p">]</span>
 
-    <span class="n">standard_prefix</span> = <span class="s">&quot;wikidata&quot;</span>
+    <span class="n">standard_prefix</span> <span class="o">=</span> <span class="s">&quot;wikidata&quot;</span>
 
-    <span class="n">accession_pattern</span> = <span class="nb">r</span><span class="s">&quot;Q[0-9]+&quot;</span>
+    <span class="n">accession_pattern</span> <span class="o">=</span> <span class="n">r</span><span class="s">&quot;Q[0-9]+&quot;</span>
 
-    <span class="n">def</span> <span class="n">inspect</span>(<span class="nb">self</span>, <span class="n">citekey</span>):
+    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
 
         <span class="s">&quot;&quot;&quot;</span>
 
-<span class="s">        https://www.wikidata.org/wiki/Wikidata:Identifiers</span>
+        <span class="nl">https:</span><span class="c1">//www.wikidata.org/wiki/Wikidata:Identifiers</span>
 
-<span class="s">        &quot;&quot;&quot;</span>
+        <span class="s">&quot;&quot;&quot;</span>
 
-        <span class="n">accession</span> = <span class="n">citekey</span>.<span class="n">accession</span>
+        <span class="n">accession</span> <span class="o">=</span> <span class="n">citekey</span><span class="p">.</span><span class="n">accession</span>
 
-        <span class="k">if</span> <span class="nb">not</span> <span class="n">accession</span>.<span class="n">startswith</span>(<span class="s">&quot;Q&quot;</span>):
+        <span class="k">if</span> <span class="k">not</span> <span class="n">accession</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;Q&quot;</span><span class="p">)</span><span class="o">:</span>
 
             <span class="k">return</span> <span class="s">&quot;Wikidata item IDs must start with &#39;Q&#39;.&quot;</span>
 
-        <span class="n">elif</span> <span class="nb">not</span> <span class="nb">self</span>.<span class="n">_get_pattern</span>().<span class="n">fullmatch</span>(<span class="n">accession</span>):
+        <span class="n">elif</span> <span class="k">not</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span><span class="o">:</span>
 
-            <span class="k">return</span> (
+            <span class="k">return</span> <span class="p">(</span>
 
                 <span class="s">&quot;Accession does not conform to the Wikidata regex. &quot;</span>
 
                 <span class="s">&quot;Double check the entity ID.&quot;</span>
 
-            )
+            <span class="p">)</span>
 
-    <span class="n">def</span> <span class="n">get_csl_item</span>(<span class="nb">self</span>, <span class="n">citekey</span>):
+    <span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
 
-        <span class="k">return</span> <span class="n">get_wikidata_csl_item</span>(<span class="n">citekey</span>.<span class="n">standard_accession</span>)
+        <span class="k">return</span> <span class="n">get_wikidata_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_accession</span><span class="p">)</span>
 </code></pre></div>
 
 </details>
@@ -1635,27 +1635,27 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 </code></pre></div>
 
 <p>https://www.wikidata.org/wiki/Wikidata:Identifiers</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
 
-        <span class="ss">&quot;&quot;&quot;</span>
+        <span class="s">&quot;&quot;&quot;</span>
 
-<span class="ss">        https://www.wikidata.org/wiki/Wikidata:Identifiers</span>
+        <span class="nl">https:</span><span class="c1">//www.wikidata.org/wiki/Wikidata:Identifiers</span>
 
-<span class="ss">        &quot;&quot;&quot;</span>
+        <span class="s">&quot;&quot;&quot;</span>
 
         <span class="n">accession</span> <span class="o">=</span> <span class="n">citekey</span><span class="p">.</span><span class="n">accession</span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">accession</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;Q&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="k">not</span> <span class="n">accession</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;Q&quot;</span><span class="p">)</span><span class="o">:</span>
 
-            <span class="k">return</span> <span class="ss">&quot;Wikidata item IDs must start with &#39;Q&#39;.&quot;</span>
+            <span class="k">return</span> <span class="s">&quot;Wikidata item IDs must start with &#39;Q&#39;.&quot;</span>
 
-        <span class="n">elif</span> <span class="k">not</span> <span class="k">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">accession</span><span class="p">):</span>
+        <span class="n">elif</span> <span class="k">not</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span><span class="o">:</span>
 
             <span class="k">return</span> <span class="p">(</span>
 
-                <span class="ss">&quot;Accession does not conform to the Wikidata regex. &quot;</span>
+                <span class="s">&quot;Accession does not conform to the Wikidata regex. &quot;</span>
 
-                <span class="ss">&quot;Double check the entity ID.&quot;</span>
+                <span class="s">&quot;Double check the entity ID.&quot;</span>
 
             <span class="p">)</span>
 </code></pre></div>

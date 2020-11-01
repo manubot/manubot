@@ -2099,7 +2099,9 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
 </code></pre></div>
 
 <p>Handler_CURIE(prefix_lower: str)</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">Handler_CURIE</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nd">@dataclasses.dataclass</span>
+
+<span class="k">class</span> <span class="nc">Handler_CURIE</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -2196,15 +2198,15 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a
 string describing the issue is returned. Otherwise returns None.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
 
-        <span class="n">pattern</span> <span class="o">=</span> <span class="k">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="ss">&quot;accession_pattern&quot;</span><span class="p">)</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="s">&quot;accession_pattern&quot;</span><span class="p">)</span>
 
-        <span class="n">lui</span> <span class="o">=</span> <span class="k">self</span><span class="p">.</span><span class="n">_get_lui</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+        <span class="n">lui</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_lui</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">pattern</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">lui</span><span class="p">):</span>
+        <span class="k">if</span> <span class="k">not</span> <span class="n">pattern</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">lui</span><span class="p">)</span><span class="o">:</span>
 
-            <span class="k">return</span> <span class="n">f</span><span class="ss">&quot;{lui} does not match regex {pattern.pattern}&quot;</span>
+            <span class="k">return</span> <span class="n">f</span><span class="s">&quot;{lui} does not match regex {pattern.pattern}&quot;</span>
 </code></pre></div>
 
 </details>

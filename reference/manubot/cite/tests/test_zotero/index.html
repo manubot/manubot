@@ -1952,47 +1952,47 @@ https://github.com/zotero/translation-server/issues/65</p>
 <div class="codehilite"><pre><span></span><code><span class="err">curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;https://greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/&#39;       &#39;https://translate.manubot.org/web?single=1&#39;</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_web_query_returns_single_result_legacy_manubot_url</span><span class="p">():</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_web_query_returns_single_result_legacy_manubot_url</span><span class="p">()</span><span class="o">:</span>
 
-    <span class="ss">&quot;&quot;&quot;</span>
+    <span class="s">&quot;&quot;&quot;</span>
 
-<span class="ss">    Check that single=1 is specified for web queries. Without this, Zotero</span>
+    <span class="n">Check</span> <span class="n">that</span> <span class="n">single</span><span class="o">=</span><span class="mh">1</span> <span class="n">is</span> <span class="n">specified</span> <span class="k">for</span> <span class="n">web</span> <span class="n">queries</span><span class="p">.</span> <span class="n">Without</span> <span class="n">this</span><span class="p">,</span> <span class="n">Zotero</span>
 
-<span class="ss">    can prefer translators that return multiple choices. This occurs with legacy</span>
+    <span class="n">can</span> <span class="n">prefer</span> <span class="n">translators</span> <span class="n">that</span> <span class="k">return</span> <span class="n">multiple</span> <span class="n">choices</span><span class="p">.</span> <span class="n">This</span> <span class="n">occurs</span> <span class="n">with</span> <span class="n">legacy</span>
 
-<span class="ss">    Manubot mansucripts, which get assigned the DOI translator as top priority.</span>
+    <span class="n">Manubot</span> <span class="n">mansucripts</span><span class="p">,</span> <span class="n">which</span> <span class="n">get</span> <span class="n">assigned</span> <span class="n">the</span> <span class="n">DOI</span> <span class="n">translator</span> <span class="n">as</span> <span class="n">top</span> <span class="n">priority</span><span class="p">.</span>
 
-<span class="ss">    https://github.com/zotero/translation-server/issues/65</span>
+    <span class="nl">https:</span><span class="c1">//github.com/zotero/translation-server/issues/65</span>
 
-<span class="ss">    ```</span>
+    <span class="err">```</span>
 
-<span class="ss">    curl \</span>
+    <span class="n">curl</span> \
 
-<span class="ss">      --header &quot;</span><span class="n">Content</span><span class="o">-</span><span class="k">Type</span><span class="p">:</span> <span class="nb">text</span><span class="o">/</span><span class="n">plain</span><span class="ss">&quot; \</span>
+      <span class="o">--</span><span class="n">header</span> <span class="s">&quot;Content-Type: text/plain&quot;</span> \
 
-<span class="ss">      --data &#39;https://greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/&#39; \</span>
+      <span class="o">--</span><span class="n">data</span> <span class="p">&#39;</span><span class="nl">https:</span><span class="c1">//greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/&#39; \</span>
 
-<span class="ss">      &#39;https://translate.manubot.org/web?single=1&#39;</span>
+      <span class="p">&#39;</span><span class="nl">https:</span><span class="c1">//translate.manubot.org/web?single=1&#39;</span>
 
-<span class="ss">    ```</span>
+    <span class="err">```</span>
 
-<span class="ss">    &quot;&quot;&quot;</span>
+    <span class="s">&quot;&quot;&quot;</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="ss">&quot;https://greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s">&quot;https://greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/&quot;</span>
 
     <span class="n">zotero_metadata</span> <span class="o">=</span> <span class="n">web_query</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
     <span class="n">assert</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">zotero_metadata</span><span class="p">,</span> <span class="n">list</span><span class="p">)</span>
 
-    <span class="n">assert</span> <span class="n">len</span><span class="p">(</span><span class="n">zotero_metadata</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">assert</span> <span class="n">len</span><span class="p">(</span><span class="n">zotero_metadata</span><span class="p">)</span> <span class="o">==</span> <span class="mh">1</span>
 
     <span class="p">(</span><span class="n">zotero_metadata</span><span class="p">,)</span> <span class="o">=</span> <span class="n">zotero_metadata</span>
 
     <span class="n">assert</span> <span class="p">(</span>
 
-        <span class="n">zotero_metadata</span><span class="p">[</span><span class="ss">&quot;title&quot;</span><span class="p">]</span>
+        <span class="n">zotero_metadata</span><span class="p">[</span><span class="s">&quot;title&quot;</span><span class="p">]</span>
 
-        <span class="o">==</span> <span class="ss">&quot;Sci-Hub provides access to nearly all scholarly literature&quot;</span>
+        <span class="o">==</span> <span class="s">&quot;Sci-Hub provides access to nearly all scholarly literature&quot;</span>
 
     <span class="p">)</span>
 </code></pre></div>

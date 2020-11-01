@@ -1666,6 +1666,8 @@
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
+<span class="kn">import</span> <span class="nn">os</span>
+
 <span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span>
 
 <span class="kn">import</span> <span class="nn">requests</span>
@@ -2274,13 +2276,19 @@
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Rate limiter to cap NCBI E-utilities queries to 3 per second as per</span>
+<span class="sd">    Rate limiter to cap NCBI E-utilities queries to &lt;= 3 per second as per</span>
 
 <span class="sd">    https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="kn">from</span> <span class="nn">ratelimiter</span> <span class="kn">import</span> <span class="n">RateLimiter</span>
+
+    <span class="k">if</span> <span class="s2">&quot;CI&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+
+        <span class="c1"># multiple CI jobs might be running concurrently</span>
+
+        <span class="k">return</span> <span class="n">RateLimiter</span><span class="p">(</span><span class="n">max_calls</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">RateLimiter</span><span class="p">(</span><span class="n">max_calls</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
@@ -2791,43 +2799,43 @@ DOI. See https://github.com/manubot/manubot/issues/45.</p>
 For example, a Handler subclass could provide support for DOI citekeys.
 Subclasses enable custom logic for different citekey prefixes,
 including how to standardize the citekey and how to retrieve CSL Item metadata.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="n">Handler_PMC</span>(<span class="n">Handler</span>):
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">class</span> <span class="n">Handler_PMC</span><span class="p">(</span><span class="n">Handler</span><span class="p">)</span><span class="o">:</span>
 
-    <span class="n">standard_prefix</span> = <span class="s">&quot;pmc&quot;</span>
+    <span class="n">standard_prefix</span> <span class="o">=</span> <span class="s">&quot;pmc&quot;</span>
 
-    <span class="n">prefixes</span> = [
+    <span class="n">prefixes</span> <span class="o">=</span> <span class="p">[</span>
 
-        <span class="s">&quot;pmc&quot;</span>,
+        <span class="s">&quot;pmc&quot;</span><span class="p">,</span>
 
-        <span class="s">&quot;pmcid&quot;</span>,
+        <span class="s">&quot;pmcid&quot;</span><span class="p">,</span>
 
-    ]
+    <span class="p">]</span>
 
-    <span class="n">accession_pattern</span> = <span class="nb">r</span><span class="s">&quot;PMC[0-9]+&quot;</span>
+    <span class="n">accession_pattern</span> <span class="o">=</span> <span class="n">r</span><span class="s">&quot;PMC[0-9]+&quot;</span>
 
-    <span class="n">def</span> <span class="n">inspect</span>(<span class="nb">self</span>, <span class="n">citekey</span>):
+    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
 
-        <span class="n">identifier</span> = <span class="n">citekey</span>.<span class="n">accession</span>
+        <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="p">.</span><span class="n">accession</span>
 
-        <span class="c1"># https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc</span>
+        <span class="p">#</span> <span class="nl">https:</span><span class="c1">//www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc</span>
 
-        <span class="k">if</span> <span class="nb">not</span> <span class="n">identifier</span>.<span class="n">startswith</span>(<span class="s">&quot;PMC&quot;</span>):
+        <span class="k">if</span> <span class="k">not</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;PMC&quot;</span><span class="p">)</span><span class="o">:</span>
 
             <span class="k">return</span> <span class="s">&quot;PubMed Central Identifiers must start with &#39;PMC&#39;.&quot;</span>
 
-        <span class="n">elif</span> <span class="nb">not</span> <span class="nb">self</span>.<span class="n">_get_pattern</span>().<span class="n">fullmatch</span>(<span class="n">identifier</span>):
+        <span class="n">elif</span> <span class="k">not</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span><span class="o">:</span>
 
-            <span class="k">return</span> (
+            <span class="k">return</span> <span class="p">(</span>
 
                 <span class="s">&quot;Identifier does not conform to the PMCID regex. &quot;</span>
 
                 <span class="s">&quot;Double check the PMCID.&quot;</span>
 
-            )
+            <span class="p">)</span>
 
-    <span class="n">def</span> <span class="n">get_csl_item</span>(<span class="nb">self</span>, <span class="n">citekey</span>):
+    <span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
 
-        <span class="k">return</span> <span class="n">get_pmc_csl_item</span>(<span class="n">citekey</span>.<span class="n">standard_accession</span>)
+        <span class="k">return</span> <span class="n">get_pmc_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_accession</span><span class="p">)</span>
 </code></pre></div>
 
 </details>
@@ -2870,23 +2878,23 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a
 string describing the issue is returned. Otherwise returns None.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
 
         <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="p">.</span><span class="n">accession</span>
 
-        <span class="o">#</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">nlm</span><span class="p">.</span><span class="n">nih</span><span class="p">.</span><span class="n">gov</span><span class="o">/</span><span class="n">bsd</span><span class="o">/</span><span class="n">mms</span><span class="o">/</span><span class="n">medlineelements</span><span class="p">.</span><span class="n">html</span><span class="o">#</span><span class="n">pmc</span>
+        <span class="p">#</span> <span class="nl">https:</span><span class="c1">//www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc</span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;PMC&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="k">not</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;PMC&quot;</span><span class="p">)</span><span class="o">:</span>
 
-            <span class="k">return</span> <span class="ss">&quot;PubMed Central Identifiers must start with &#39;PMC&#39;.&quot;</span>
+            <span class="k">return</span> <span class="s">&quot;PubMed Central Identifiers must start with &#39;PMC&#39;.&quot;</span>
 
-        <span class="n">elif</span> <span class="k">not</span> <span class="k">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">):</span>
+        <span class="n">elif</span> <span class="k">not</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span><span class="o">:</span>
 
             <span class="k">return</span> <span class="p">(</span>
 
-                <span class="ss">&quot;Identifier does not conform to the PMCID regex. &quot;</span>
+                <span class="s">&quot;Identifier does not conform to the PMCID regex. &quot;</span>
 
-                <span class="ss">&quot;Double check the PMCID.&quot;</span>
+                <span class="s">&quot;Double check the PMCID.&quot;</span>
 
             <span class="p">)</span>
 </code></pre></div>

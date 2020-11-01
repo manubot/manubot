@@ -1922,25 +1922,25 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a
 string describing the issue is returned. Otherwise returns None.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
 
-        <span class="ss">&quot;&quot;&quot;</span>
+        <span class="s">&quot;&quot;&quot;</span>
 
-<span class="ss">        Check citekeys adhere to expected formats. If an issue is detected a</span>
+        <span class="n">Check</span> <span class="n">citekeys</span> <span class="n">adhere</span> <span class="n">to</span> <span class="n">expected</span> <span class="n">formats</span><span class="p">.</span> <span class="n">If</span> <span class="n">an</span> <span class="n">issue</span> <span class="n">is</span> <span class="n">detected</span> <span class="n">a</span>
 
-<span class="ss">        string describing the issue is returned. Otherwise returns None.</span>
+        <span class="k">string</span> <span class="n">describing</span> <span class="n">the</span> <span class="n">issue</span> <span class="n">is</span> <span class="n">returned</span><span class="p">.</span> <span class="n">Otherwise</span> <span class="n">returns</span> <span class="n">None</span><span class="p">.</span>
 
-<span class="ss">        &quot;&quot;&quot;</span>
+        <span class="s">&quot;&quot;&quot;</span>
 
-        <span class="n">pattern</span> <span class="o">=</span> <span class="k">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="ss">&quot;accession_pattern&quot;</span><span class="p">)</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="s">&quot;accession_pattern&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">pattern</span><span class="p">:</span>
+        <span class="k">if</span> <span class="k">not</span> <span class="nl">pattern:</span>
 
-            <span class="k">return</span> <span class="k">None</span>
+            <span class="k">return</span> <span class="n">None</span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">pattern</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">accession</span><span class="p">):</span>
+        <span class="k">if</span> <span class="k">not</span> <span class="n">pattern</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">accession</span><span class="p">)</span><span class="o">:</span>
 
-            <span class="k">return</span> <span class="n">f</span><span class="ss">&quot;{citekey.accession} does not match regex {pattern.pattern}&quot;</span>
+            <span class="k">return</span> <span class="n">f</span><span class="s">&quot;{citekey.accession} does not match regex {pattern.pattern}&quot;</span>
 </code></pre></div>
 
 </details>

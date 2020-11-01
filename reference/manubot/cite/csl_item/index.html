@@ -2466,7 +2466,7 @@ for csl_data that is JSON-serialized.</p>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">date_parts_to_string</span><span class="p">(</span>
     <span class="n">date_parts</span><span class="p">,</span>
     <span class="n">fill</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Return a CSL date-parts list as ISO formatted string:
@@ -2542,7 +2542,7 @@ fill: if True, set missing months to January
 <h3 id="date_to_date_parts">date_to_date_parts</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">date_to_date_parts</span><span class="p">(</span>
     <span class="n">date</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">NoneType</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
 </code></pre></div>
 
 <p>Convert a date string or object to a date parts list.</p>
@@ -3446,8 +3446,8 @@ to encode additional values not defined by the CSL JSON schema.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-<p>D.pop(k[,d]) -&gt; v, remove specified key and return the corresponding value.
-If key is not found, d is returned if given, otherwise KeyError is raised</p>
+<p>D.pop(k[,d]) -&gt; v, remove specified key and return the corresponding value.</p>
+<p>If key is not found, default is returned if given, otherwise KeyError is raised</p>
 <h5 id="popitem">popitem</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">popitem</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
