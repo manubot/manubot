@@ -1,6 +1,7 @@
 import functools
 import json
 import logging
+import os
 from xml.etree import ElementTree
 from typing import List, Optional, Dict, Any, Union, TYPE_CHECKING
 
@@ -377,9 +378,12 @@ if TYPE_CHECKING:
 @functools.lru_cache()
 def _get_eutils_rate_limiter() -> "RateLimiter":
     """
-    Rate limiter to cap NCBI E-utilities queries to 3 per second as per
+    Rate limiter to cap NCBI E-utilities queries to <= 3 per second as per
     https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/
     """
     from ratelimiter import RateLimiter
 
+    if "CI" in os.environ:
+        # multiple CI jobs might be running concurrently
+        return RateLimiter(max_calls=1, period=1.5)
     return RateLimiter(max_calls=2, period=1)
