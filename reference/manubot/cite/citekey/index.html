@@ -1617,7 +1617,7 @@
 
     <span class="s s-Atom">@staticmethod</span>
 
-    <span class="s s-Atom">def</span> <span class="nf">check_input_id</span><span class="p">(</span><span class="s s-Atom">input_id</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="nf">check_input_id</span><span class="p">(</span><span class="s s-Atom">input_id</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="nv">None</span><span class="s s-Atom">:</span>
 
         <span class="s s-Atom">if</span> <span class="o">not</span> <span class="nf">isinstance</span><span class="p">(</span><span class="s s-Atom">input_id</span><span class="p">,</span> <span class="s s-Atom">str</span><span class="p">)</span><span class="s s-Atom">:</span>
 
@@ -1631,13 +1631,13 @@
 
         <span class="s s-Atom">if</span> <span class="s s-Atom">input_id</span><span class="p">.</span><span class="nf">startswith</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)</span><span class="s s-Atom">:</span>
 
-            <span class="s s-Atom">f</span><span class="s2">&quot;invalid citekey input_id: {input_id!r}\nstarts with &#39;@&#39;&quot;</span>
+            <span class="s s-Atom">raise</span> <span class="nv">ValueError</span><span class="p">(</span><span class="s s-Atom">f</span><span class="s2">&quot;invalid citekey input_id: {input_id!r}\nstarts with &#39;@&#39;&quot;</span><span class="p">)</span>
 
     <span class="s s-Atom">@classmethod</span>
 
     <span class="s s-Atom">@functools</span><span class="p">.</span><span class="nf">lru_cache</span><span class="p">(</span><span class="s s-Atom">maxsize</span><span class="o">=</span><span class="nv">None</span><span class="p">)</span>
 
-    <span class="s s-Atom">def</span> <span class="nf">from_input_id</span><span class="p">(</span><span class="s s-Atom">cls</span><span class="p">,</span> <span class="o">*</span><span class="s s-Atom">args</span><span class="p">,</span> <span class="s s-Atom">**kwargs</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="nf">from_input_id</span><span class="p">(</span><span class="s s-Atom">cls</span><span class="p">,</span> <span class="o">*</span><span class="s s-Atom">args</span><span class="p">,</span> <span class="s s-Atom">**kwargs</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="s2">&quot;CiteKey&quot;</span><span class="s s-Atom">:</span>
 
         <span class="s2">&quot;&quot;&quot;Cached constructor&quot;&quot;&quot;</span>
 
@@ -1657,7 +1657,7 @@
 
         <span class="s s-Atom">return</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">aliases</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">input_id</span><span class="p">,</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">input_id</span><span class="p">)</span>
 
-    <span class="s s-Atom">def</span> <span class="k">_</span><span class="nf">set_prefix_accession</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="k">_</span><span class="nf">set_prefix_accession</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="nv">None</span><span class="s s-Atom">:</span>
 
         <span class="nn">try</span><span class="p">:</span>
 
@@ -1791,7 +1791,7 @@
 
         <span class="s s-Atom">return</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">handler</span><span class="p">.</span><span class="nf">inspect</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span>
 
-    <span class="s s-Atom">def</span> <span class="k">_</span><span class="nf">standardize</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="k">_</span><span class="nf">standardize</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="nv">None</span><span class="s s-Atom">:</span>
 
         <span class="s2">&quot;&quot;&quot;</span>
 
@@ -1853,7 +1853,7 @@
 
     <span class="s s-Atom">@cached_property</span>
 
-    <span class="s s-Atom">def</span> <span class="nf">all_ids</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="nf">all_ids</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="s s-Atom">tp</span><span class="p">.</span><span class="nv">List</span><span class="p">[</span><span class="s s-Atom">str</span><span class="p">]</span><span class="s s-Atom">:</span>
 
         <span class="s s-Atom">ids</span> <span class="o">=</span> <span class="p">[</span><span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">input_id</span><span class="p">,</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">dealiased_id</span><span class="p">,</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">standard_id</span><span class="p">,</span> <span class="s s-Atom">self</span><span class="p">.</span><span class="s s-Atom">short_id</span><span class="p">]</span>
 
@@ -1907,7 +1907,7 @@
 
         <span class="s s-Atom">return</span> <span class="s s-Atom">csl_item</span>
 
-    <span class="s s-Atom">def</span> <span class="nf">is_pandoc_xnos_prefix</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">,</span> <span class="s s-Atom">log_case_warning</span><span class="o">=</span><span class="nv">False</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">def</span> <span class="nf">is_pandoc_xnos_prefix</span><span class="p">(</span><span class="s s-Atom">self</span><span class="p">,</span> <span class="s s-Atom">log_case_warning:</span> <span class="s s-Atom">bool</span> <span class="o">=</span> <span class="nv">False</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="nn">bool</span><span class="p">:</span>
 
         <span class="s s-Atom">from</span> <span class="p">.</span><span class="s s-Atom">handlers</span> <span class="s s-Atom">import</span> <span class="k">_</span><span class="s s-Atom">pandoc_xnos_prefixes</span>
 
@@ -2023,7 +2023,7 @@
 
     <span class="s s-Atom">return</span> <span class="s s-Atom">csl_item</span>
 
-<span class="s s-Atom">def</span> <span class="nf">url_to_citekey</span><span class="p">(</span><span class="s s-Atom">url</span><span class="p">)</span><span class="s s-Atom">:</span>
+<span class="s s-Atom">def</span> <span class="nf">url_to_citekey</span><span class="p">(</span><span class="nn">url</span><span class="p">:</span> <span class="s s-Atom">str</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="nn">str</span><span class="p">:</span>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -2274,14 +2274,14 @@ citekeys consist of characters in the following ranges: 0-9, a-z and A-Z.</p>
 </details>
 <h3 id="url_to_citekey">url_to_citekey</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">url_to_citekey</span><span class="p">(</span>
-    <span class="n">url</span>
-<span class="p">)</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
 </code></pre></div>
 
 <p>Convert a HTTP(s) URL into a citekey.
 For supported sources, convert from url citekey to an alternative source like doi.
 If citekeys fail inspection, revert alternative sources to URLs.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="s s-Atom">def</span> <span class="nf">url_to_citekey</span><span class="p">(</span><span class="s s-Atom">url</span><span class="p">)</span><span class="s s-Atom">:</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="s s-Atom">def</span> <span class="nf">url_to_citekey</span><span class="p">(</span><span class="nn">url</span><span class="p">:</span> <span class="s s-Atom">str</span><span class="p">)</span> <span class="s s-Atom">-&gt;</span> <span class="nn">str</span><span class="p">:</span>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -2430,7 +2430,7 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
     <span class="p">@</span><span class="n">staticmethod</span>
 
-    <span class="n">def</span> <span class="n">check_input_id</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">check_input_id</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nl">None</span><span class="p">:</span>
 
         <span class="k">if</span> <span class="n">not</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="n">str</span><span class="p">)</span><span class="o">:</span>
 
@@ -2444,13 +2444,13 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
         <span class="k">if</span> <span class="n">input_id</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;@&quot;</span><span class="p">)</span><span class="o">:</span>
 
-            <span class="n">f</span><span class="s">&quot;invalid citekey input_id: {input_id!r}</span><span class="se">\n</span><span class="s">starts with &#39;@&#39;&quot;</span>
+            <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s">&quot;invalid citekey input_id: {input_id!r}</span><span class="se">\n</span><span class="s">starts with &#39;@&#39;&quot;</span><span class="p">)</span>
 
     <span class="p">@</span><span class="n">classmethod</span>
 
     <span class="p">@</span><span class="n">functools</span><span class="p">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">None</span><span class="p">)</span>
 
-    <span class="n">def</span> <span class="n">from_input_id</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">from_input_id</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s">&quot;CiteKey&quot;</span><span class="o">:</span>
 
         <span class="s">&quot;&quot;&quot;Cached constructor&quot;&quot;&quot;</span>
 
@@ -2470,7 +2470,7 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
         <span class="k">return</span> <span class="nb">self</span><span class="p">.</span><span class="n">aliases</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">input_id</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">input_id</span><span class="p">)</span>
 
-    <span class="n">def</span> <span class="n">_set_prefix_accession</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">_set_prefix_accession</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nl">None</span><span class="p">:</span>
 
         <span class="nl">try</span><span class="p">:</span>
 
@@ -2604,7 +2604,7 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
         <span class="k">return</span> <span class="nb">self</span><span class="p">.</span><span class="n">handler</span><span class="p">.</span><span class="n">inspect</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
 
-    <span class="n">def</span> <span class="n">_standardize</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">_standardize</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nl">None</span><span class="p">:</span>
 
         <span class="s">&quot;&quot;&quot;</span>
 
@@ -2666,7 +2666,7 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
     <span class="p">@</span><span class="n">cached_property</span>
 
-    <span class="n">def</span> <span class="n">all_ids</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">all_ids</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="p">.</span><span class="n">List</span><span class="p">[</span><span class="n">str</span><span class="p">]</span><span class="o">:</span>
 
         <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">input_id</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">dealiased_id</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">standard_id</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">short_id</span><span class="p">]</span>
 
@@ -2720,7 +2720,7 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
         <span class="k">return</span> <span class="n">csl_item</span>
 
-    <span class="n">def</span> <span class="n">is_pandoc_xnos_prefix</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">log_case_warning</span><span class="o">=</span><span class="n">False</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">is_pandoc_xnos_prefix</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="nl">log_case_warning</span><span class="p">:</span> <span class="kt">bool</span> <span class="o">=</span> <span class="n">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">bool</span><span class="o">:</span>
 
         <span class="n">from</span> <span class="p">.</span><span class="n">handlers</span> <span class="n">import</span> <span class="n">_pandoc_xnos_prefixes</span>
 
@@ -2747,12 +2747,12 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 <h5 id="check_input_id">check_input_id</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">check_input_id</span><span class="p">(</span>
     <span class="n">input_id</span>
-<span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="p">@</span><span class="n">staticmethod</span>
 
-    <span class="n">def</span> <span class="n">check_input_id</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">check_input_id</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nl">None</span><span class="p">:</span>
 
         <span class="k">if</span> <span class="n">not</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="n">str</span><span class="p">)</span><span class="o">:</span>
 
@@ -2766,7 +2766,7 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
         <span class="k">if</span> <span class="n">input_id</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;@&quot;</span><span class="p">)</span><span class="o">:</span>
 
-            <span class="n">f</span><span class="s">&quot;invalid citekey input_id: {input_id!r}</span><span class="se">\n</span><span class="s">starts with &#39;@&#39;&quot;</span>
+            <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s">&quot;invalid citekey input_id: {input_id!r}</span><span class="se">\n</span><span class="s">starts with &#39;@&#39;&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 </details>
@@ -2774,7 +2774,7 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">from_input_id</span><span class="p">(</span>
     <span class="o">*</span><span class="n">args</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
-<span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;CiteKey&#39;</span>
 </code></pre></div>
 
 <p>Cached constructor</p>
@@ -2782,7 +2782,7 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
     <span class="err">@</span><span class="n">functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">None</span><span class="p">)</span>
 
-    <span class="n">def</span> <span class="n">from_input_id</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">from_input_id</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CiteKey&quot;</span><span class="p">:</span>
 
         <span class="sd">&quot;&quot;&quot;Cached constructor&quot;&quot;&quot;</span>
 
@@ -2880,11 +2880,11 @@ Otherwise, returns a string describing the problem.</p>
 <h5 id="is_pandoc_xnos_prefix">is_pandoc_xnos_prefix</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">is_pandoc_xnos_prefix</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">log_case_warning</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span>
+    <span class="n">log_case_warning</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">is_pandoc_xnos_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_case_warning</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">is_pandoc_xnos_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_case_warning</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 
         <span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="n">_pandoc_xnos_prefixes</span>
 

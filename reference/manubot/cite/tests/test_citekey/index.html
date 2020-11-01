@@ -618,6 +618,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#test_citekey_check_input_id_at_prefix" class="md-nav__link">
+    test_citekey_check_input_id_at_prefix
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_citekey_check_input_id_type" class="md-nav__link">
+    test_citekey_check_input_id_type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#test_citekey_class" class="md-nav__link">
     test_citekey_class
   </a>
@@ -1290,6 +1304,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#test_citekey_check_input_id_at_prefix" class="md-nav__link">
+    test_citekey_check_input_id_at_prefix
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_citekey_check_input_id_type" class="md-nav__link">
+    test_citekey_check_input_id_type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#test_citekey_class" class="md-nav__link">
     test_citekey_class
   </a>
@@ -1500,6 +1528,26 @@
         <span class="k">assert</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="n">value</span>
 
     <span class="k">assert</span> <span class="n">citekey</span><span class="o">.</span><span class="n">short_id</span>
+
+<span class="k">def</span> <span class="nf">test_citekey_check_input_id_type</span><span class="p">():</span>
+
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">excinfo</span><span class="p">:</span>
+
+        <span class="n">CiteKey</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="s2">&quot;input_id should be type &#39;str&#39; not &#39;NoneType&#39;: None&quot;</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">excinfo</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span>
+
+        <span class="n">CiteKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_citekey_check_input_id_at_prefix</span><span class="p">():</span>
+
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">excinfo</span><span class="p">:</span>
+
+        <span class="n">CiteKey</span><span class="p">(</span><span class="s2">&quot;@my-citekey&quot;</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="s2">&quot;input_id: &#39;@my-citekey&#39;</span><span class="se">\n</span><span class="s2">starts with &#39;@&#39;&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">excinfo</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
 <span class="nd">@pytest.mark.parametrize</span><span class="p">(</span>
 
@@ -1790,6 +1838,42 @@
 
 </details>
 <h2 id="functions">Functions</h2>
+<h3 id="test_citekey_check_input_id_at_prefix">test_citekey_check_input_id_at_prefix</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_citekey_check_input_id_at_prefix</span><span class="p">(</span>
+
+<span class="p">)</span>
+</code></pre></div>
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">test_citekey_check_input_id_at_prefix</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">with</span><span class="w"> </span><span class="n">pytest</span><span class="p">.</span><span class="n">raises</span><span class="p">(</span><span class="n">ValueError</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nl">excinfo</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">CiteKey</span><span class="p">(</span><span class="ss">&quot;@my-citekey&quot;</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="ss">&quot;input_id: &#39;@my-citekey&#39;\nstarts with &#39;@&#39;&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nf">str</span><span class="p">(</span><span class="n">excinfo</span><span class="p">.</span><span class="k">value</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+
+</details>
+<h3 id="test_citekey_check_input_id_type">test_citekey_check_input_id_type</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_citekey_check_input_id_type</span><span class="p">(</span>
+
+<span class="p">)</span>
+</code></pre></div>
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_citekey_check_input_id_type</span><span class="p">():</span>
+
+    <span class="k">with</span> <span class="n">pytest</span><span class="p">.</span><span class="n">raises</span><span class="p">(</span><span class="n">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">excinfo</span><span class="p">:</span>
+
+        <span class="n">CiteKey</span><span class="p">(</span><span class="k">None</span><span class="p">)</span>
+
+    <span class="n">assert</span> <span class="ss">&quot;input_id should be type &#39;str&#39; not &#39;NoneType&#39;: None&quot;</span> <span class="o">==</span> <span class="n">str</span><span class="p">(</span><span class="n">excinfo</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">pytest</span><span class="p">.</span><span class="n">raises</span><span class="p">(</span><span class="n">TypeError</span><span class="p">):</span>
+
+        <span class="n">CiteKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+
+</details>
 <h3 id="test_citekey_class">test_citekey_class</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_citekey_class</span><span class="p">(</span>
     <span class="n">input_id</span><span class="p">,</span>

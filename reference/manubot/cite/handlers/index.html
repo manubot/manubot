@@ -1462,9 +1462,11 @@
 
 <span class="kn">import</span> <span class="nn">re</span>
 
-<span class="kn">import</span> <span class="nn">typing</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Pattern</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span>
 
 <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">import_function</span>
+
+<span class="kn">from</span> <span class="nn">.citekey</span> <span class="kn">import</span> <span class="n">CiteKey</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1496,7 +1498,7 @@
 
 <span class="nd">@functools.lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">10</span><span class="n">_000</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">get_handler</span><span class="p">(</span><span class="n">prefix_lower</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_handler</span><span class="p">(</span><span class="n">prefix_lower</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Handler&quot;</span><span class="p">:</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prefix_lower</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
@@ -1514,7 +1516,7 @@
 
     <span class="k">return</span> <span class="n">handler</span>
 
-<span class="k">def</span> <span class="nf">_generate_prefix_to_handler</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">_generate_prefix_to_handler</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1568,7 +1570,7 @@
 
     <span class="n">prefixes</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">_get_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="s2">&quot;accession_pattern&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Pattern</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_get_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="s2">&quot;accession_pattern&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Pattern</span><span class="p">:</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1588,13 +1590,13 @@
 
             <span class="k">return</span> <span class="bp">None</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Pattern</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">Pattern</span><span class="p">):</span>
 
             <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">pattern</span>
 
-    <span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">CiteKey</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1614,7 +1616,7 @@
 
             <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;{citekey.accession} does not match regex {pattern.pattern}&quot;</span>
 
-    <span class="k">def</span> <span class="nf">standardize_prefix_accession</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">standardize_prefix_accession</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1636,7 +1638,7 @@
 
     <span class="nd">@abc.abstractmethod</span>
 
-    <span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1662,7 +1664,7 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">prefix_to_handler</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">prefix_to_handler</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
 
     <span class="s2">&quot;3dmet&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3091,13 +3093,13 @@
 <h2 id="functions">Functions</h2>
 <h3 id="get_handler">get_handler</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_handler</span><span class="p">(</span>
-    <span class="n">prefix_lower</span>
-<span class="p">)</span>
+    <span class="n">prefix_lower</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Handler&#39;</span>
 </code></pre></div>
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@functools</span><span class="p">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">10</span><span class="n">_000</span><span class="p">)</span><span class="w"></span>
 
-<span class="n">def</span><span class="w"> </span><span class="n">get_handler</span><span class="p">(</span><span class="n">prefix_lower</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="n">def</span><span class="w"> </span><span class="n">get_handler</span><span class="p">(</span><span class="nl">prefix_lower</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="ss">&quot;Handler&quot;</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">prefix_lower</span><span class="p">,</span><span class="w"> </span><span class="nf">str</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
@@ -3128,107 +3130,107 @@
 For example, a Handler subclass could provide support for DOI citekeys.
 Subclasses enable custom logic for different citekey prefixes,
 including how to standardize the citekey and how to retrieve CSL Item metadata.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@dataclasses.dataclass</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@dataclasses</span><span class="p">.</span><span class="n">dataclass</span><span class="w"></span>
 
-<span class="n">class</span> <span class="k">Handler</span><span class="o">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nl">Handler</span><span class="p">:</span><span class="w"></span>
 
-    <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
-<span class="s2">    A Handler is a class that provides support for a certain type of citekey.</span>
+<span class="ss">    A Handler is a class that provides support for a certain type of citekey.</span>
 
-<span class="s2">    For example, a Handler subclass could provide support for DOI citekeys.</span>
+<span class="ss">    For example, a Handler subclass could provide support for DOI citekeys.</span>
 
-<span class="s2">    Subclasses enable custom logic for different citekey prefixes,</span>
+<span class="ss">    Subclasses enable custom logic for different citekey prefixes,</span>
 
-<span class="s2">    including how to standardize the citekey and how to retrieve CSL Item metadata.</span>
+<span class="ss">    including how to standardize the citekey and how to retrieve CSL Item metadata.</span>
 
-<span class="s2">    </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="n">prefix_lower</span><span class="o">:</span> <span class="n">str</span>
+<span class="w">    </span><span class="nl">prefix_lower</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="w"></span>
 
-    <span class="n">prefixes</span> <span class="o">=</span> <span class="err">[]</span>
+<span class="w">    </span><span class="n">prefixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">[]</span><span class="w"></span>
 
-    <span class="n">def</span> <span class="n">_get_pattern</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="k">attribute</span><span class="o">=</span><span class="s2">&quot;accession_pattern&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="p">.</span><span class="n">Pattern</span><span class="o">:</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">_get_pattern</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">attribute</span><span class="o">=</span><span class="ss">&quot;accession_pattern&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nl">Pattern</span><span class="p">:</span><span class="w"></span>
 
-        <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
+<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
-<span class="s2">        Return a compiled regex pattern stored by `attribute`.</span>
+<span class="ss">        Return a compiled regex pattern stored by `attribute`.</span>
 
-<span class="s2">        By default, return `self.accession_pattern`, which Handler subclasses</span>
+<span class="ss">        By default, return `self.accession_pattern`, which Handler subclasses</span>
 
-<span class="s2">        can set to provide the expected pattern for `self.accession`.</span>
+<span class="ss">        can set to provide the expected pattern for `self.accession`.</span>
 
-<span class="s2">        </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span>
+<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
 
-        <span class="c1"># todo: consider caching compilation</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="nl">todo</span><span class="p">:</span><span class="w"> </span><span class="n">consider</span><span class="w"> </span><span class="n">caching</span><span class="w"> </span><span class="n">compilation</span><span class="w"></span>
 
-        <span class="n">pattern</span> <span class="o">=</span> <span class="n">getattr</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="k">attribute</span><span class="p">,</span> <span class="k">None</span><span class="p">)</span>
+<span class="w">        </span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getattr</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">attribute</span><span class="p">,</span><span class="w"> </span><span class="k">None</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">pattern</span><span class="o">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nl">pattern</span><span class="p">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="k">None</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">typing</span><span class="p">.</span><span class="n">Pattern</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span><span class="w"> </span><span class="n">Pattern</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-            <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+<span class="w">            </span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">re</span><span class="p">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="n">pattern</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">pattern</span><span class="w"></span>
 
-    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
-        <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
+<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
-<span class="s2">        Check citekeys adhere to expected formats. If an issue is detected a</span>
+<span class="ss">        Check citekeys adhere to expected formats. If an issue is detected a</span>
 
-<span class="s2">        string describing the issue is returned. Otherwise returns None.</span>
+<span class="ss">        string describing the issue is returned. Otherwise returns None.</span>
 
-<span class="s2">        </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span>
+<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
 
-        <span class="n">pattern</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="s2">&quot;accession_pattern&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="ss">&quot;accession_pattern&quot;</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">pattern</span><span class="o">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nl">pattern</span><span class="p">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="k">None</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">pattern</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">accession</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">pattern</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">accession</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;{citekey.accession} does not match regex {pattern.pattern}&quot;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="ss">&quot;{citekey.accession} does not match regex {pattern.pattern}&quot;</span><span class="w"></span>
 
-    <span class="n">def</span> <span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">)</span><span class="o">:</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">accession</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Tuple</span><span class="o">[</span><span class="n">str, str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
-        <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
+<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
-<span class="s2">        Return (prefix, accession) in standardized form.</span>
+<span class="ss">        Return (prefix, accession) in standardized form.</span>
 
-<span class="s2">        This method defaults to returning `self.standard_prefix`</span>
+<span class="ss">        This method defaults to returning `self.standard_prefix`</span>
 
-<span class="s2">        (or `self.prefix_lower` if standard_prefix is not defined).</span>
+<span class="ss">        (or `self.prefix_lower` if standard_prefix is not defined).</span>
 
-<span class="s2">        Subclasses can override this method with more specific standardization logic.</span>
+<span class="ss">        Subclasses can override this method with more specific standardization logic.</span>
 
-<span class="s2">        </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span>
+<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
 
-        <span class="n">standard_prefix</span> <span class="o">=</span> <span class="n">getattr</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="s2">&quot;standard_prefix&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">prefix_lower</span><span class="p">)</span>
+<span class="w">        </span><span class="n">standard_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getattr</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;standard_prefix&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">prefix_lower</span><span class="p">)</span><span class="w"></span>
 
-        <span class="n">standard_accession</span> <span class="o">=</span> <span class="n">accession</span>
+<span class="w">        </span><span class="n">standard_accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accession</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="n">standard_prefix</span><span class="p">,</span> <span class="n">standard_accession</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">standard_prefix</span><span class="p">,</span><span class="w"> </span><span class="n">standard_accession</span><span class="w"></span>
 
-    <span class="nv">@abc.abstractmethod</span>
+<span class="w">    </span><span class="nv">@abc</span><span class="p">.</span><span class="n">abstractmethod</span><span class="w"></span>
 
-    <span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Dict</span><span class="o">[</span><span class="n">str, Any</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
-        <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
+<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
-<span class="s2">        Return a CSL_Item with bibliographic details for citekey.</span>
+<span class="ss">        Return a CSL_Item with bibliographic details for citekey.</span>
 
-<span class="s2">        </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span>
+<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
 
-        <span class="n">raise</span> <span class="n">NotImplementedError</span><span class="p">(</span>
+<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">NotImplementedError</span><span class="p">(</span><span class="w"></span>
 
-            <span class="n">f</span><span class="s2">&quot;Manubot does not know how to generate a csl_item for {citekey.standard_id!r}&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="ss">&quot;Manubot does not know how to generate a csl_item for {citekey.standard_id!r}&quot;</span><span class="w"></span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -3253,13 +3255,13 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">citekey</span>
-<span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">@abc</span><span class="p">.</span><span class="n">abstractmethod</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Dict</span><span class="o">[</span><span class="n">str, Any</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -3278,46 +3280,46 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <h5 id="inspect">inspect</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">citekey</span>
-<span class="p">)</span>
+    <span class="n">citekey</span><span class="p">:</span> <span class="n">manubot</span><span class="o">.</span><span class="n">cite</span><span class="o">.</span><span class="n">citekey</span><span class="o">.</span><span class="n">CiteKey</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a
 string describing the issue is returned. Otherwise returns None.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
-        <span class="s">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
-        <span class="n">Check</span> <span class="n">citekeys</span> <span class="n">adhere</span> <span class="n">to</span> <span class="n">expected</span> <span class="n">formats</span><span class="p">.</span> <span class="n">If</span> <span class="n">an</span> <span class="n">issue</span> <span class="n">is</span> <span class="n">detected</span> <span class="n">a</span>
+<span class="ss">        Check citekeys adhere to expected formats. If an issue is detected a</span>
 
-        <span class="k">string</span> <span class="n">describing</span> <span class="n">the</span> <span class="n">issue</span> <span class="n">is</span> <span class="n">returned</span><span class="p">.</span> <span class="n">Otherwise</span> <span class="n">returns</span> <span class="n">None</span><span class="p">.</span>
+<span class="ss">        string describing the issue is returned. Otherwise returns None.</span>
 
-        <span class="s">&quot;&quot;&quot;</span>
+<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
 
-        <span class="n">pattern</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="s">&quot;accession_pattern&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="ss">&quot;accession_pattern&quot;</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="nl">pattern:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nl">pattern</span><span class="p">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="n">None</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">pattern</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">accession</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">pattern</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">accession</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="n">f</span><span class="s">&quot;{citekey.accession} does not match regex {pattern.pattern}&quot;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="ss">&quot;{citekey.accession} does not match regex {pattern.pattern}&quot;</span><span class="w"></span>
 </code></pre></div>
 
 </details>
 <h5 id="standardize_prefix_accession">standardize_prefix_accession</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">standardize_prefix_accession</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">accession</span>
-<span class="p">)</span>
+    <span class="n">accession</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Return (prefix, accession) in standardized form.
 This method defaults to returning <code>self.standard_prefix</code>
 (or <code>self.prefix_lower</code> if standard_prefix is not defined).
 Subclasses can override this method with more specific standardization logic.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">str</span><span class="p">,</span> <span class="n">str</span><span class="p">]:</span>
 
         <span class="ss">&quot;&quot;&quot;</span>
 

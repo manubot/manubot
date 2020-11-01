@@ -1396,9 +1396,9 @@
 
 <span class="c1"># Email address that forwards to Manubot maintainers</span>
 
-<span class="n">contact_email</span> <span class="o">=</span> <span class="s2">&quot;contact@manubot.org&quot;</span>
+<span class="n">contact_email</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;contact@manubot.org&quot;</span>
 
-<span class="k">def</span> <span class="nf">import_function</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">import_function</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1416,7 +1416,7 @@
 
     <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">function_name</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">get_manubot_user_agent</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">get_manubot_user_agent</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1444,7 +1444,7 @@
 
     <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">shlex_join</span><span class="p">(</span><span class="n">split_command</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">shlex_join</span><span class="p">(</span><span class="n">split_command</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1462,7 +1462,7 @@
 
 <span class="sd">&quot;&quot;&quot;Valid schemes for HTTP URL detection&quot;&quot;&quot;</span>
 
-<span class="n">_http_url_schemes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="s2">&quot;https&quot;</span><span class="p">}</span>
+<span class="n">_http_url_schemes</span><span class="p">:</span> <span class="nb">set</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="s2">&quot;https&quot;</span><span class="p">}</span>
 
 <span class="k">def</span> <span class="nf">is_http_url</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 
@@ -1626,12 +1626,12 @@
 <h3 id="get_manubot_user_agent">get_manubot_user_agent</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_manubot_user_agent</span><span class="p">(</span>
 
-<span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
 </code></pre></div>
 
 <p>Return a User-Agent string for web request headers to help services
 identify requests as coming from Manubot.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_manubot_user_agent</span><span class="p">():</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_manubot_user_agent</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1663,14 +1663,14 @@ identify requests as coming from Manubot.</p>
 </details>
 <h3 id="import_function">import_function</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">import_function</span><span class="p">(</span>
-    <span class="n">name</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span>
 </code></pre></div>
 
 <p>Import a function in a module specified by name. For example, if name were
 'manubot.cite.cite_command.cli_cite', the cli_cite function would be
 returned as an object. See https://stackoverflow.com/a/8790232/4651668.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">import_function</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">import_function</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="n">str</span><span class="p">):</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
@@ -1838,14 +1838,14 @@ Delegates to <code>read_serialized_data</code>.</p>
 <h3 id="shlex_join">shlex_join</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">shlex_join</span><span class="p">(</span>
     <span class="n">split_command</span>
-<span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
 </code></pre></div>
 
 <p>Backport shlex.join for Python &lt; 3.8.
 Also cast all args to str to increase versatility.
 https://github.com/python/cpython/pull/7605
 https://bugs.python.org/issue22454</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">shlex_join</span><span class="p">(</span><span class="n">split_command</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">shlex_join</span><span class="p">(</span><span class="n">split_command</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">str</span><span class="p">:</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 

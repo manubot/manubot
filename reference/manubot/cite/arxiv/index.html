@@ -2968,8 +2968,8 @@ Does nothing if <code>type</code> not present.</p>
 <h5 id="get_date">get_date</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_date</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">variable</span><span class="o">=</span><span class="s1">&#39;issued&#39;</span><span class="p">,</span>
-    <span class="n">fill</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;issued&#39;</span><span class="p">,</span>
+    <span class="n">fill</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -2978,7 +2978,7 @@ Does nothing if <code>type</code> not present.</p>
 <p>variable: which CSL JSON date variable to retrieve
 fill: if True, set missing months to January
     and missing days to the first day of the month.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_date</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="k">variable</span><span class="o">=</span><span class="ss">&quot;issued&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_date</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="k">variable</span><span class="err">:</span><span class="w"> </span><span class="nf">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;issued&quot;</span><span class="p">,</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="w"> </span><span class="n">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">False</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -3217,7 +3217,7 @@ Raises KeyError if the dict is empty.</p>
 <h5 id="set_date">set_date</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">set_date</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">date</span><span class="p">,</span>
+    <span class="n">date</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">NoneType</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">],</span>
     <span class="n">variable</span><span class="o">=</span><span class="s1">&#39;issued&#39;</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -3225,7 +3225,15 @@ Raises KeyError if the dict is empty.</p>
 <p>date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
     or as a Python date object (datetime.date or datetime.datetime).
 variable: which variable to assign the date to.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">set_date</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nc">date</span><span class="p">,</span><span class="w"> </span><span class="k">variable</span><span class="o">=</span><span class="ss">&quot;issued&quot;</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">set_date</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">self</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="nc">date</span><span class="err">:</span><span class="w"> </span><span class="ow">Union</span><span class="o">[</span><span class="n">None, str, datetime.date, datetime.datetime</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">variable</span><span class="o">=</span><span class="ss">&quot;issued&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -3525,15 +3533,15 @@ string describing the issue is returned. Otherwise returns None.</p>
 <h5 id="standardize_prefix_accession">standardize_prefix_accession</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">standardize_prefix_accession</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">accession</span>
-<span class="p">)</span>
+    <span class="n">accession</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Return (prefix, accession) in standardized form.
 This method defaults to returning <code>self.standard_prefix</code>
 (or <code>self.prefix_lower</code> if standard_prefix is not defined).
 Subclasses can override this method with more specific standardization logic.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">str</span><span class="p">,</span> <span class="n">str</span><span class="p">]:</span>
 
         <span class="ss">&quot;&quot;&quot;</span>
 

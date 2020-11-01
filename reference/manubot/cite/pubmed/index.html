@@ -1668,9 +1668,13 @@
 
 <span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span>
+<span class="kn">from</span> <span class="nn">xml.etree</span> <span class="kn">import</span> <span class="n">ElementTree</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="kn">from</span> <span class="nn">.citekey</span> <span class="kn">import</span> <span class="n">CiteKey</span>
 
 <span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="n">Handler</span>
 
@@ -1690,7 +1694,7 @@
 
     <span class="n">accession_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;[1-9][0-9]{0,7}&quot;</span>
 
-    <span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">CiteKey</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 
         <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">accession</span>
 
@@ -1710,7 +1714,7 @@
 
             <span class="k">return</span> <span class="s2">&quot;PubMed Identifiers should be 1-8 digits with no leading zeros.&quot;</span>
 
-    <span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">CiteKey</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 
         <span class="k">return</span> <span class="n">get_pubmed_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">)</span>
 
@@ -1728,7 +1732,7 @@
 
     <span class="n">accession_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;PMC[0-9]+&quot;</span>
 
-    <span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">CiteKey</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 
         <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">accession</span>
 
@@ -1748,11 +1752,11 @@
 
             <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">CiteKey</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="n">get_pmc_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">get_pmc_csl_item</span><span class="p">(</span><span class="n">pmcid</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_pmc_csl_item</span><span class="p">(</span><span class="n">pmcid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1782,7 +1786,11 @@
 
     <span class="k">return</span> <span class="n">csl_item</span>
 
-<span class="k">def</span> <span class="nf">_get_literature_citation_exporter_csl_item</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_literature_citation_exporter_csl_item</span><span class="p">(</span>
+
+    <span class="n">database</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1856,7 +1864,7 @@
 
     <span class="k">return</span> <span class="n">csl_item</span>
 
-<span class="k">def</span> <span class="nf">get_pubmed_csl_item</span><span class="p">(</span><span class="n">pmid</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_pubmed_csl_item</span><span class="p">(</span><span class="n">pmid</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1882,9 +1890,15 @@
 
     <span class="k">try</span><span class="p">:</span>
 
-        <span class="n">element_tree</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">xml_article_set</span> <span class="o">=</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 
-        <span class="p">(</span><span class="n">element_tree</span><span class="p">,)</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">element_tree</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xml_article_set</span><span class="p">,</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">xml_article_set</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;PubmedArticleSet&quot;</span>
+
+        <span class="p">(</span><span class="n">xml_article</span><span class="p">,)</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">xml_article_set</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">xml_article</span><span class="o">.</span><span class="n">tag</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;PubmedArticle&quot;</span><span class="p">,</span> <span class="s2">&quot;PubmedBookArticle&quot;</span><span class="p">]</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
@@ -1892,7 +1906,7 @@
 
             <span class="n">f</span><span class="s2">&quot;Error fetching PubMed metadata for {pmid}.</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-            <span class="n">f</span><span class="s2">&quot;Invalid XML response from {response.url}:</span><span class="se">\n</span><span class="s2">{response.text}&quot;</span>
+            <span class="n">f</span><span class="s2">&quot;Unsupported XML response from {response.url}:</span><span class="se">\n</span><span class="s2">{response.text}&quot;</span>
 
         <span class="p">)</span>
 
@@ -1900,7 +1914,7 @@
 
     <span class="k">try</span><span class="p">:</span>
 
-        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">csl_item_from_pubmed_article</span><span class="p">(</span><span class="n">element_tree</span><span class="p">)</span>
+        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">csl_item_from_pubmed_article</span><span class="p">(</span><span class="n">xml_article</span><span class="p">)</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
@@ -1912,15 +1926,23 @@
 
     <span class="k">return</span> <span class="n">csl_item</span>
 
-<span class="k">def</span> <span class="nf">csl_item_from_pubmed_article</span><span class="p">(</span><span class="n">article</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">csl_item_from_pubmed_article</span><span class="p">(</span><span class="n">article</span><span class="p">:</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    article is a PubmedArticle xml element tree</span>
+<span class="sd">    Extract a CSL Item dictionary from a PubmedArticle XML element.</span>
 
 <span class="sd">    https://github.com/citation-style-language/schema/blob/master/csl-data.json</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">article</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;PubmedArticle&quot;</span><span class="p">:</span>
+
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+
+            <span class="n">f</span><span class="s2">&quot;Expected article to be an XML element with tag PubmedArticle, received tag {article.tag!r}&quot;</span>
+
+        <span class="p">)</span>
 
     <span class="n">csl_item</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
@@ -2024,7 +2046,7 @@
 
     <span class="k">return</span> <span class="n">csl_item</span>
 
-<span class="n">month_abbrev_to_int</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">month_abbrev_to_int</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
 
     <span class="s2">&quot;Jan&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
 
@@ -2052,11 +2074,11 @@
 
 <span class="p">}</span>
 
-<span class="k">def</span> <span class="nf">extract_publication_date_parts</span><span class="p">(</span><span class="n">article</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">extract_publication_date_parts</span><span class="p">(</span><span class="n">article</span><span class="p">:</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Extract date published from a PubmedArticle xml element tree.</span>
+<span class="sd">    Extract date published from a PubmedArticle XML element.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -2110,7 +2132,7 @@
 
     <span class="k">return</span> <span class="n">date_parts</span>
 
-<span class="k">def</span> <span class="nf">get_pmcid_and_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_pmcid_and_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2140,7 +2162,9 @@
 
     <span class="k">try</span><span class="p">:</span>
 
-        <span class="n">element_tree</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">element_tree</span> <span class="o">=</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">element_tree</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;pmcids&quot;</span>
 
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
@@ -2186,7 +2210,7 @@
 
     <span class="k">return</span> <span class="n">id_dict</span>
 
-<span class="k">def</span> <span class="nf">get_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2216,7 +2240,11 @@
 
     <span class="k">try</span><span class="p">:</span>
 
-        <span class="n">element_tree</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">element_tree</span> <span class="o">=</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element_tree</span><span class="p">,</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">element_tree</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;eSearchResult&quot;</span>
 
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
@@ -2248,7 +2276,7 @@
 
     <span class="k">return</span> <span class="n">id_elem</span><span class="o">.</span><span class="n">text</span>
 
-<span class="k">def</span> <span class="nf">get_pubmed_ids_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_pubmed_ids_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2270,9 +2298,17 @@
 
     <span class="k">return</span> <span class="n">pubmed_ids</span>
 
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+
+    <span class="c1"># support RateLimiter return type while avoiding unused runtime import</span>
+
+    <span class="c1"># https://stackoverflow.com/a/39757388/4651668</span>
+
+    <span class="kn">from</span> <span class="nn">ratelimiter</span> <span class="kn">import</span> <span class="n">RateLimiter</span>
+
 <span class="nd">@functools.lru_cache</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">_get_eutils_rate_limiter</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">_get_eutils_rate_limiter</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s2">&quot;RateLimiter&quot;</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2295,27 +2331,38 @@
 
 </details>
 <h2 id="variables">Variables</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">TYPE_CHECKING</span>
+</code></pre></div>
+
 <div class="codehilite"><pre><span></span><code><span class="n">month_abbrev_to_int</span>
 </code></pre></div>
 
 <h2 id="functions">Functions</h2>
 <h3 id="csl_item_from_pubmed_article">csl_item_from_pubmed_article</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">csl_item_from_pubmed_article</span><span class="p">(</span>
-    <span class="n">article</span>
-<span class="p">)</span>
+    <span class="n">article</span><span class="p">:</span> <span class="n">xml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="o">.</span><span class="n">Element</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 </code></pre></div>
 
-<p>article is a PubmedArticle xml element tree</p>
-<p>https://github.com/citation-style-language/schema/blob/master/csl-data.json</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">csl_item_from_pubmed_article</span><span class="p">(</span><span class="n">article</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<p>Extract a CSL Item dictionary from a PubmedArticle XML element.
+https://github.com/citation-style-language/schema/blob/master/csl-data.json</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">csl_item_from_pubmed_article</span><span class="p">(</span><span class="nl">article</span><span class="p">:</span><span class="w"> </span><span class="n">ElementTree</span><span class="p">.</span><span class="k">Element</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Dict</span><span class="o">[</span><span class="n">str, Any</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
-<span class="ss">    article is a PubmedArticle xml element tree</span>
+<span class="ss">    Extract a CSL Item dictionary from a PubmedArticle XML element.</span>
 
 <span class="ss">    https://github.com/citation-style-language/schema/blob/master/csl-data.json</span>
 
 <span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">article</span><span class="p">.</span><span class="n">tag</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;PubmedArticle&quot;</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">f</span><span class="ss">&quot;Expected article to be an XML element with tag PubmedArticle, received tag {article.tag!r}&quot;</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dict</span><span class="p">()</span><span class="w"></span>
 
@@ -2423,16 +2470,16 @@
 </details>
 <h3 id="extract_publication_date_parts">extract_publication_date_parts</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">extract_publication_date_parts</span><span class="p">(</span>
-    <span class="n">article</span>
-<span class="p">)</span>
+    <span class="n">article</span><span class="p">:</span> <span class="n">xml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="o">.</span><span class="n">Element</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
 </code></pre></div>
 
-<p>Extract date published from a PubmedArticle xml element tree.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">extract_publication_date_parts</span><span class="p">(</span><span class="n">article</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<p>Extract date published from a PubmedArticle XML element.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">extract_publication_date_parts</span><span class="p">(</span><span class="nl">article</span><span class="p">:</span><span class="w"> </span><span class="n">ElementTree</span><span class="p">.</span><span class="k">Element</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">List</span><span class="o">[</span><span class="n">int</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
-<span class="ss">    Extract date published from a PubmedArticle xml element tree.</span>
+<span class="ss">    Extract date published from a PubmedArticle XML element.</span>
 
 <span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
@@ -2490,8 +2537,8 @@
 </details>
 <h3 id="get_pmc_csl_item">get_pmc_csl_item</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_pmc_csl_item</span><span class="p">(</span>
-    <span class="n">pmcid</span>
-<span class="p">)</span>
+    <span class="n">pmcid</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Get the CSL Item for a PubMed Central record by its PMID, PMCID, or
@@ -2499,7 +2546,7 @@ DOI, using the NCBI Citation Exporter API.</p>
 <p>https://api.ncbi.nlm.nih.gov/lit/ctxp
 https://github.com/manubot/manubot/issues/21
 https://twitter.com/dhimmel/status/1061787168820092929</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_pmc_csl_item</span><span class="p">(</span><span class="n">pmcid</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_pmc_csl_item</span><span class="p">(</span><span class="n">pmcid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2533,14 +2580,14 @@ https://twitter.com/dhimmel/status/1061787168820092929</p>
 </details>
 <h3 id="get_pmcid_and_pmid_for_doi">get_pmcid_and_pmid_for_doi</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_pmcid_and_pmid_for_doi</span><span class="p">(</span>
-    <span class="n">doi</span>
-<span class="p">)</span>
+    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Query PMC's ID Converter API to retrieve the PMCID and PMID for a DOI.
 Does not work for DOIs that are in Pubmed but not PubMed Central.
 https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_pmcid_and_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_pmcid_and_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2570,7 +2617,9 @@ https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/</p>
 
     <span class="n">try</span><span class="p">:</span>
 
-        <span class="n">element_tree</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">element_tree</span> <span class="o">=</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="nb">assert</span> <span class="n">element_tree</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;pmcids&quot;</span>
 
     <span class="n">except</span> <span class="n">Exception</span><span class="p">:</span>
 
@@ -2620,12 +2669,12 @@ https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/</p>
 </details>
 <h3 id="get_pmid_for_doi">get_pmid_for_doi</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_pmid_for_doi</span><span class="p">(</span>
-    <span class="n">doi</span>
-<span class="p">)</span>
+    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Query NCBI's E-utilities to retrieve the PMID for a DOI.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">get_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">get_pmid_for_doi</span><span class="p">(</span><span class="nl">doi</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -2655,7 +2704,11 @@ https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/</p>
 
 <span class="w">    </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">element_tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">xml</span><span class="p">.</span><span class="n">etree</span><span class="p">.</span><span class="n">ElementTree</span><span class="p">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nc">text</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">element_tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ElementTree</span><span class="p">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nc">text</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">assert</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">element_tree</span><span class="p">,</span><span class="w"> </span><span class="n">ElementTree</span><span class="p">.</span><span class="k">Element</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">assert</span><span class="w"> </span><span class="n">element_tree</span><span class="p">.</span><span class="n">tag</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;eSearchResult&quot;</span><span class="w"></span>
 
 <span class="w">    </span><span class="ow">except</span><span class="w"> </span><span class="k">Exception</span><span class="err">:</span><span class="w"></span>
 
@@ -2691,14 +2744,14 @@ https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/</p>
 </details>
 <h3 id="get_pubmed_csl_item">get_pubmed_csl_item</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_pubmed_csl_item</span><span class="p">(</span>
-    <span class="n">pmid</span>
-<span class="p">)</span>
+    <span class="n">pmid</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Query NCBI E-Utilities to create CSL Items for PubMed IDs.</p>
 <p>https://github.com/manubot/manubot/issues/21
 https://github.com/ncbi/citation-exporter/issues/3#issuecomment-355313143</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_pubmed_csl_item</span><span class="p">(</span><span class="n">pmid</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_pubmed_csl_item</span><span class="p">(</span><span class="n">pmid</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb nb-Type">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2724,9 +2777,15 @@ https://github.com/ncbi/citation-exporter/issues/3#issuecomment-355313143</p>
 
     <span class="n">try</span><span class="p">:</span>
 
-        <span class="n">element_tree</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">xml_article_set</span> <span class="o">=</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 
-        <span class="p">(</span><span class="n">element_tree</span><span class="p">,)</span> <span class="o">=</span> <span class="n">list</span><span class="p">(</span><span class="n">element_tree</span><span class="p">)</span>
+        <span class="nb">assert</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">xml_article_set</span><span class="p">,</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span>
+
+        <span class="nb">assert</span> <span class="n">xml_article_set</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;PubmedArticleSet&quot;</span>
+
+        <span class="p">(</span><span class="n">xml_article</span><span class="p">,)</span> <span class="o">=</span> <span class="n">list</span><span class="p">(</span><span class="n">xml_article_set</span><span class="p">)</span>
+
+        <span class="nb">assert</span> <span class="n">xml_article</span><span class="o">.</span><span class="n">tag</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;PubmedArticle&quot;</span><span class="p">,</span> <span class="s2">&quot;PubmedBookArticle&quot;</span><span class="p">]</span>
 
     <span class="n">except</span> <span class="n">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
@@ -2734,7 +2793,7 @@ https://github.com/ncbi/citation-exporter/issues/3#issuecomment-355313143</p>
 
             <span class="n">f</span><span class="s2">&quot;Error fetching PubMed metadata for {pmid}.</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-            <span class="n">f</span><span class="s2">&quot;Invalid XML response from {response.url}:</span><span class="se">\n</span><span class="s2">{response.text}&quot;</span>
+            <span class="n">f</span><span class="s2">&quot;Unsupported XML response from {response.url}:</span><span class="se">\n</span><span class="s2">{response.text}&quot;</span>
 
         <span class="p">)</span>
 
@@ -2742,7 +2801,7 @@ https://github.com/ncbi/citation-exporter/issues/3#issuecomment-355313143</p>
 
     <span class="n">try</span><span class="p">:</span>
 
-        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">csl_item_from_pubmed_article</span><span class="p">(</span><span class="n">element_tree</span><span class="p">)</span>
+        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">csl_item_from_pubmed_article</span><span class="p">(</span><span class="n">xml_article</span><span class="p">)</span>
 
     <span class="n">except</span> <span class="n">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
@@ -2758,13 +2817,13 @@ https://github.com/ncbi/citation-exporter/issues/3#issuecomment-355313143</p>
 </details>
 <h3 id="get_pubmed_ids_for_doi">get_pubmed_ids_for_doi</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_pubmed_ids_for_doi</span><span class="p">(</span>
-    <span class="n">doi</span>
-<span class="p">)</span>
+    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Return a dictionary with PMCID and PMID, if they exist, for the specified
 DOI. See https://github.com/manubot/manubot/issues/45.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_pubmed_ids_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_pubmed_ids_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">str</span><span class="p">,</span> <span class="n">str</span><span class="p">]:</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
@@ -2799,43 +2858,43 @@ DOI. See https://github.com/manubot/manubot/issues/45.</p>
 For example, a Handler subclass could provide support for DOI citekeys.
 Subclasses enable custom logic for different citekey prefixes,
 including how to standardize the citekey and how to retrieve CSL Item metadata.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">class</span> <span class="n">Handler_PMC</span><span class="p">(</span><span class="n">Handler</span><span class="p">)</span><span class="o">:</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="n">Handler_PMC</span><span class="p">(</span><span class="n">Handler</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-    <span class="n">standard_prefix</span> <span class="o">=</span> <span class="s">&quot;pmc&quot;</span>
+<span class="w">    </span><span class="n">standard_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;pmc&quot;</span><span class="w"></span>
 
-    <span class="n">prefixes</span> <span class="o">=</span> <span class="p">[</span>
+<span class="w">    </span><span class="n">prefixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
 
-        <span class="s">&quot;pmc&quot;</span><span class="p">,</span>
+<span class="n">        &quot;pmc&quot;,</span>
 
-        <span class="s">&quot;pmcid&quot;</span><span class="p">,</span>
+<span class="n">        &quot;pmcid&quot;,</span>
 
-    <span class="p">]</span>
+<span class="n">    </span><span class="o">]</span><span class="w"></span>
 
-    <span class="n">accession_pattern</span> <span class="o">=</span> <span class="n">r</span><span class="s">&quot;PMC[0-9]+&quot;</span>
+<span class="w">    </span><span class="n">accession_pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="ss">&quot;PMC[0-9]+&quot;</span><span class="w"></span>
 
-    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
-        <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="p">.</span><span class="n">accession</span>
+<span class="w">        </span><span class="n">identifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey</span><span class="p">.</span><span class="n">accession</span><span class="w"></span>
 
-        <span class="p">#</span> <span class="nl">https:</span><span class="c1">//www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">nlm</span><span class="p">.</span><span class="n">nih</span><span class="p">.</span><span class="n">gov</span><span class="o">/</span><span class="n">bsd</span><span class="o">/</span><span class="n">mms</span><span class="o">/</span><span class="n">medlineelements</span><span class="p">.</span><span class="n">html#pmc</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;PMC&quot;</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;PMC&quot;</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="s">&quot;PubMed Central Identifiers must start with &#39;PMC&#39;.&quot;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="ss">&quot;PubMed Central Identifiers must start with &#39;PMC&#39;.&quot;</span><span class="w"></span>
 
-        <span class="n">elif</span> <span class="k">not</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="n">elif</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="p">(</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 
-                <span class="s">&quot;Identifier does not conform to the PMCID regex. &quot;</span>
+<span class="w">                </span><span class="ss">&quot;Identifier does not conform to the PMCID regex. &quot;</span><span class="w"></span>
 
-                <span class="s">&quot;Double check the PMCID.&quot;</span>
+<span class="w">                </span><span class="ss">&quot;Double check the PMCID.&quot;</span><span class="w"></span>
 
-            <span class="p">)</span>
+<span class="w">            </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="n">get_pmc_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_accession</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">get_pmc_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_accession</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2858,12 +2917,12 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <h5 id="get_csl_item">get_csl_item</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">citekey</span>
+    <span class="n">citekey</span><span class="p">:</span> <span class="n">manubot</span><span class="o">.</span><span class="n">cite</span><span class="o">.</span><span class="n">citekey</span><span class="o">.</span><span class="n">CiteKey</span>
 <span class="p">)</span>
 </code></pre></div>
 
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">CiteKey</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="n">get_pmc_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_accession</span><span class="p">)</span>
 </code></pre></div>
@@ -2872,46 +2931,46 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <h5 id="inspect">inspect</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">citekey</span>
-<span class="p">)</span>
+    <span class="n">citekey</span><span class="p">:</span> <span class="n">manubot</span><span class="o">.</span><span class="n">cite</span><span class="o">.</span><span class="n">citekey</span><span class="o">.</span><span class="n">CiteKey</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a
 string describing the issue is returned. Otherwise returns None.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
-        <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="p">.</span><span class="n">accession</span>
+<span class="w">        </span><span class="n">identifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey</span><span class="p">.</span><span class="n">accession</span><span class="w"></span>
 
-        <span class="p">#</span> <span class="nl">https:</span><span class="c1">//www.nlm.nih.gov/bsd/mms/medlineelements.html#pmc</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">nlm</span><span class="p">.</span><span class="n">nih</span><span class="p">.</span><span class="n">gov</span><span class="o">/</span><span class="n">bsd</span><span class="o">/</span><span class="n">mms</span><span class="o">/</span><span class="n">medlineelements</span><span class="p">.</span><span class="n">html#pmc</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;PMC&quot;</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;PMC&quot;</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="s">&quot;PubMed Central Identifiers must start with &#39;PMC&#39;.&quot;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="ss">&quot;PubMed Central Identifiers must start with &#39;PMC&#39;.&quot;</span><span class="w"></span>
 
-        <span class="n">elif</span> <span class="k">not</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="n">elif</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="p">(</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 
-                <span class="s">&quot;Identifier does not conform to the PMCID regex. &quot;</span>
+<span class="w">                </span><span class="ss">&quot;Identifier does not conform to the PMCID regex. &quot;</span><span class="w"></span>
 
-                <span class="s">&quot;Double check the PMCID.&quot;</span>
+<span class="w">                </span><span class="ss">&quot;Double check the PMCID.&quot;</span><span class="w"></span>
 
-            <span class="p">)</span>
+<span class="w">            </span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
 <h5 id="standardize_prefix_accession">standardize_prefix_accession</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">standardize_prefix_accession</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">accession</span>
-<span class="p">)</span>
+    <span class="n">accession</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Return (prefix, accession) in standardized form.
 This method defaults to returning <code>self.standard_prefix</code>
 (or <code>self.prefix_lower</code> if standard_prefix is not defined).
 Subclasses can override this method with more specific standardization logic.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">str</span><span class="p">,</span> <span class="n">str</span><span class="p">]:</span>
 
         <span class="ss">&quot;&quot;&quot;</span>
 
@@ -2943,43 +3002,43 @@ Subclasses can override this method with more specific standardization logic.</p
 For example, a Handler subclass could provide support for DOI citekeys.
 Subclasses enable custom logic for different citekey prefixes,
 including how to standardize the citekey and how to retrieve CSL Item metadata.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="n">Handler_PubMed</span>(<span class="n">Handler</span>):
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="n">Handler_PubMed</span><span class="p">(</span><span class="n">Handler</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-    <span class="n">standard_prefix</span> = <span class="s">&quot;pubmed&quot;</span>
+<span class="w">    </span><span class="n">standard_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;pubmed&quot;</span><span class="w"></span>
 
-    <span class="n">prefixes</span> = [
+<span class="w">    </span><span class="n">prefixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
 
-        <span class="s">&quot;pubmed&quot;</span>,
+<span class="n">        &quot;pubmed&quot;,</span>
 
-        <span class="s">&quot;pmid&quot;</span>,
+<span class="n">        &quot;pmid&quot;,</span>
 
-    ]
+<span class="n">    </span><span class="o">]</span><span class="w"></span>
 
-    <span class="n">accession_pattern</span> = <span class="nb">r</span><span class="s">&quot;[1-9][0-9]{0,7}&quot;</span>
+<span class="w">    </span><span class="n">accession_pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="ss">&quot;[1-9][0-9]{0,7}&quot;</span><span class="w"></span>
 
-    <span class="n">def</span> <span class="n">inspect</span>(<span class="nb">self</span>, <span class="n">citekey</span>):
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
-        <span class="n">identifier</span> = <span class="n">citekey</span>.<span class="n">accession</span>
+<span class="w">        </span><span class="n">identifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey</span><span class="p">.</span><span class="n">accession</span><span class="w"></span>
 
-        <span class="c1"># https://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmid</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">nlm</span><span class="p">.</span><span class="n">nih</span><span class="p">.</span><span class="n">gov</span><span class="o">/</span><span class="n">bsd</span><span class="o">/</span><span class="n">mms</span><span class="o">/</span><span class="n">medlineelements</span><span class="p">.</span><span class="n">html#pmid</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="n">identifier</span>.<span class="n">startswith</span>(<span class="s">&quot;PMC&quot;</span>):
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;PMC&quot;</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-            <span class="k">return</span> (
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 
-                <span class="s">&quot;PubMed Identifiers should start with digits rather than PMC. &quot;</span>
+<span class="w">                </span><span class="ss">&quot;PubMed Identifiers should start with digits rather than PMC. &quot;</span><span class="w"></span>
 
-                <span class="nb">f</span><span class="s">&quot;Should {citekey.dealiased_id!r} switch the citation source to &#39;pmc&#39;?&quot;</span>
+<span class="w">                </span><span class="n">f</span><span class="ss">&quot;Should {citekey.dealiased_id!r} switch the citation source to &#39;pmc&#39;?&quot;</span><span class="w"></span>
 
-            )
+<span class="w">            </span><span class="p">)</span><span class="w"></span>
 
-        <span class="n">elif</span> <span class="nb">not</span> <span class="nb">self</span>.<span class="n">_get_pattern</span>().<span class="n">fullmatch</span>(<span class="n">identifier</span>):
+<span class="w">        </span><span class="n">elif</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="s">&quot;PubMed Identifiers should be 1-8 digits with no leading zeros.&quot;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="ss">&quot;PubMed Identifiers should be 1-8 digits with no leading zeros.&quot;</span><span class="w"></span>
 
-    <span class="n">def</span> <span class="n">get_csl_item</span>(<span class="nb">self</span>, <span class="n">citekey</span>):
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Dict</span><span class="o">[</span><span class="n">str, Any</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="n">get_pubmed_csl_item</span>(<span class="n">citekey</span>.<span class="n">standard_accession</span>)
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">get_pubmed_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_accession</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -3002,12 +3061,12 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <h5 id="get_csl_item_1">get_csl_item</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">citekey</span>
-<span class="p">)</span>
+    <span class="n">citekey</span><span class="p">:</span> <span class="n">manubot</span><span class="o">.</span><span class="n">cite</span><span class="o">.</span><span class="n">citekey</span><span class="o">.</span><span class="n">CiteKey</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">CiteKey</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">str</span><span class="p">,</span> <span class="k">Any</span><span class="p">]:</span>
 
         <span class="k">return</span> <span class="n">get_pubmed_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_accession</span><span class="p">)</span>
 </code></pre></div>
@@ -3016,46 +3075,46 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <h5 id="inspect_1">inspect</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">citekey</span>
-<span class="p">)</span>
+    <span class="n">citekey</span><span class="p">:</span> <span class="n">manubot</span><span class="o">.</span><span class="n">cite</span><span class="o">.</span><span class="n">citekey</span><span class="o">.</span><span class="n">CiteKey</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a
 string describing the issue is returned. Otherwise returns None.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
-        <span class="n">identifier</span> <span class="o">=</span> <span class="n">citekey</span><span class="p">.</span><span class="n">accession</span>
+<span class="w">        </span><span class="n">identifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey</span><span class="p">.</span><span class="n">accession</span><span class="w"></span>
 
-        <span class="o">#</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">nlm</span><span class="p">.</span><span class="n">nih</span><span class="p">.</span><span class="n">gov</span><span class="o">/</span><span class="n">bsd</span><span class="o">/</span><span class="n">mms</span><span class="o">/</span><span class="n">medlineelements</span><span class="p">.</span><span class="n">html</span><span class="o">#</span><span class="n">pmid</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">nlm</span><span class="p">.</span><span class="n">nih</span><span class="p">.</span><span class="n">gov</span><span class="o">/</span><span class="n">bsd</span><span class="o">/</span><span class="n">mms</span><span class="o">/</span><span class="n">medlineelements</span><span class="p">.</span><span class="n">html#pmid</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;PMC&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">identifier</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;PMC&quot;</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="p">(</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 
-                <span class="ss">&quot;PubMed Identifiers should start with digits rather than PMC. &quot;</span>
+<span class="w">                </span><span class="ss">&quot;PubMed Identifiers should start with digits rather than PMC. &quot;</span><span class="w"></span>
 
-                <span class="n">f</span><span class="ss">&quot;Should {citekey.dealiased_id!r} switch the citation source to &#39;pmc&#39;?&quot;</span>
+<span class="w">                </span><span class="n">f</span><span class="ss">&quot;Should {citekey.dealiased_id!r} switch the citation source to &#39;pmc&#39;?&quot;</span><span class="w"></span>
 
-            <span class="p">)</span>
+<span class="w">            </span><span class="p">)</span><span class="w"></span>
 
-        <span class="n">elif</span> <span class="k">not</span> <span class="k">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">):</span>
+<span class="w">        </span><span class="n">elif</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="ss">&quot;PubMed Identifiers should be 1-8 digits with no leading zeros.&quot;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="ss">&quot;PubMed Identifiers should be 1-8 digits with no leading zeros.&quot;</span><span class="w"></span>
 </code></pre></div>
 
 </details>
 <h5 id="standardize_prefix_accession_1">standardize_prefix_accession</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">standardize_prefix_accession</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">accession</span>
-<span class="p">)</span>
+    <span class="n">accession</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Return (prefix, accession) in standardized form.
 This method defaults to returning <code>self.standard_prefix</code>
 (or <code>self.prefix_lower</code> if standard_prefix is not defined).
 Subclasses can override this method with more specific standardization logic.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">str</span><span class="p">,</span> <span class="n">str</span><span class="p">]:</span>
 
         <span class="ss">&quot;&quot;&quot;</span>
 

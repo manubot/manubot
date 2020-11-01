@@ -1835,11 +1835,13 @@ for csl_data that is JSON-serialized.</p>
 
 <span class="n">import</span><span class="w"> </span><span class="n">copy</span><span class="w"></span>
 
+<span class="n">import</span><span class="w"> </span><span class="nc">datetime</span><span class="w"></span>
+
 <span class="n">import</span><span class="w"> </span><span class="n">logging</span><span class="w"></span>
 
 <span class="n">import</span><span class="w"> </span><span class="n">re</span><span class="w"></span>
 
-<span class="k">from</span><span class="w"> </span><span class="n">typing</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">List</span><span class="p">,</span><span class="w"> </span><span class="n">Optional</span><span class="w"></span>
+<span class="k">from</span><span class="w"> </span><span class="n">typing</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">List</span><span class="p">,</span><span class="w"> </span><span class="n">Optional</span><span class="p">,</span><span class="w"> </span><span class="ow">Union</span><span class="w"></span>
 
 <span class="k">from</span><span class="w"> </span><span class="n">manubot</span><span class="p">.</span><span class="n">cite</span><span class="p">.</span><span class="n">citekey</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">CiteKey</span><span class="w"></span>
 
@@ -2043,7 +2045,15 @@ for csl_data that is JSON-serialized.</p>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">set_date</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nc">date</span><span class="p">,</span><span class="w"> </span><span class="k">variable</span><span class="o">=</span><span class="ss">&quot;issued&quot;</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">set_date</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">self</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="nc">date</span><span class="err">:</span><span class="w"> </span><span class="ow">Union</span><span class="o">[</span><span class="n">None, str, datetime.date, datetime.datetime</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">variable</span><span class="o">=</span><span class="ss">&quot;issued&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -2063,7 +2073,7 @@ for csl_data that is JSON-serialized.</p>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_date</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="k">variable</span><span class="o">=</span><span class="ss">&quot;issued&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_date</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="k">variable</span><span class="err">:</span><span class="w"> </span><span class="nf">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;issued&quot;</span><span class="p">,</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="w"> </span><span class="n">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">False</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -2307,7 +2317,11 @@ for csl_data that is JSON-serialized.</p>
 
 <span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">TypeError</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;Expected CSL_Item object, got {type(x)}&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="n">def</span><span class="w"> </span><span class="n">date_to_date_parts</span><span class="p">(</span><span class="nc">date</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">List[int</span><span class="o">]</span><span class="err">]:</span><span class="w"></span>
+<span class="n">def</span><span class="w"> </span><span class="n">date_to_date_parts</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">    </span><span class="nc">date</span><span class="err">:</span><span class="w"> </span><span class="ow">Union</span><span class="o">[</span><span class="n">None, str, datetime.date, datetime.datetime</span><span class="o">]</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">List[int</span><span class="o">]</span><span class="err">]:</span><span class="w"></span>
 
 <span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -2318,8 +2332,6 @@ for csl_data that is JSON-serialized.</p>
 <span class="ss">        or as a Python date object (datetime.date or datetime.datetime).</span>
 
 <span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">import</span><span class="w"> </span><span class="nc">datetime</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nc">date</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">None</span><span class="err">:</span><span class="w"></span>
 
@@ -2382,6 +2394,8 @@ for csl_data that is JSON-serialized.</p>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">date_parts</span><span class="p">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">date_parts</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 
 <span class="n">def</span><span class="w"> </span><span class="n">date_parts_to_string</span><span class="p">(</span><span class="n">date_parts</span><span class="p">,</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="w"> </span><span class="n">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">False</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
@@ -2541,88 +2555,92 @@ fill: if True, set missing months to January
 </details>
 <h3 id="date_to_date_parts">date_to_date_parts</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">date_to_date_parts</span><span class="p">(</span>
-    <span class="n">date</span>
+    <span class="n">date</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">NoneType</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
 </code></pre></div>
 
 <p>Convert a date string or object to a date parts list.</p>
 <p>date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
     or as a Python date object (datetime.date or datetime.datetime).</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">date_to_date_parts</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">date_to_date_parts</span><span class="p">(</span><span class="w"></span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="nc">date</span><span class="err">:</span><span class="w"> </span><span class="ow">Union</span><span class="o">[</span><span class="n">None, str, datetime.date, datetime.datetime</span><span class="o">]</span><span class="w"></span>
 
-<span class="sd">    Convert a date string or object to a date parts list.</span>
+<span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">List[int</span><span class="o">]</span><span class="err">]:</span><span class="w"></span>
 
-<span class="sd">    date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)</span>
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
-<span class="sd">        or as a Python date object (datetime.date or datetime.datetime).</span>
+<span class="ss">    Convert a date string or object to a date parts list.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="ss">    date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)</span>
 
-    <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="ss">        or as a Python date object (datetime.date or datetime.datetime).</span>
 
-    <span class="k">if</span> <span class="n">date</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="bp">None</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nc">date</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">None</span><span class="err">:</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)):</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 
-        <span class="n">date</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="nc">date</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nc">datetime</span><span class="p">.</span><span class="nc">date</span><span class="p">,</span><span class="w"> </span><span class="nc">datetime</span><span class="p">.</span><span class="nc">datetime</span><span class="p">))</span><span class="err">:</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="nc">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">date</span><span class="p">.</span><span class="n">isoformat</span><span class="p">()</span><span class="w"></span>
 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;date_to_date_parts: unsupported type for {date}&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="nc">date</span><span class="p">,</span><span class="w"> </span><span class="nf">str</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-    <span class="n">date</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;date_to_date_parts: unsupported type for {date}&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">re_year</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?P&lt;year&gt;[0-9]{4})&quot;</span>
+<span class="w">    </span><span class="nc">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">date</span><span class="p">.</span><span class="n">strip</span><span class="p">()</span><span class="w"></span>
 
-    <span class="n">re_month</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?P&lt;month&gt;1[0-2]|0[1-9])&quot;</span>
+<span class="w">    </span><span class="n">re_year</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="ss">&quot;(?P&lt;year&gt;[0-9]{4})&quot;</span><span class="w"></span>
 
-    <span class="n">re_day</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?P&lt;day&gt;[0-3][0-9])&quot;</span>
+<span class="w">    </span><span class="n">re_month</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="ss">&quot;(?P&lt;month&gt;1[0-2]|0[1-9])&quot;</span><span class="w"></span>
 
-    <span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span>
+<span class="w">    </span><span class="n">re_day</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="ss">&quot;(?P&lt;day&gt;[0-3][0-9])&quot;</span><span class="w"></span>
 
-        <span class="n">f</span><span class="s2">&quot;{re_year}-{re_month}-{re_day}&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">patterns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
 
-        <span class="n">f</span><span class="s2">&quot;{re_year}-{re_month}&quot;</span><span class="p">,</span>
+<span class="n">        f&quot;{re_year}-{re_month}-{re_day}&quot;,</span>
 
-        <span class="n">f</span><span class="s2">&quot;{re_year}&quot;</span><span class="p">,</span>
+<span class="n">        f&quot;{re_year}-{re_month}&quot;,</span>
 
-        <span class="n">f</span><span class="s2">&quot;.*&quot;</span><span class="p">,</span>  <span class="c1"># regex to match anything</span>
+<span class="n">        f&quot;{re_year}&quot;,</span>
 
-    <span class="p">]</span>
+<span class="n">        f&quot;.*&quot;,  # regex to match anything</span>
 
-    <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">patterns</span><span class="p">:</span>
+<span class="n">    </span><span class="o">]</span><span class="w"></span>
 
-        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">pattern</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">patterns</span><span class="p">:</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+<span class="w">        </span><span class="k">match</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">re</span><span class="p">.</span><span class="k">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span><span class="w"> </span><span class="nc">date</span><span class="p">)</span><span class="w"></span>
 
-            <span class="k">break</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="k">match</span><span class="err">:</span><span class="w"></span>
 
-    <span class="n">date_parts</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">            </span><span class="k">break</span><span class="w"></span>
 
-    <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="n">date_parts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">[]</span><span class="w"></span>
 
-        <span class="k">try</span><span class="p">:</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">part</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="ss">&quot;year&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;month&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;day&quot;</span><span class="err">:</span><span class="w"></span>
 
-            <span class="n">value</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+<span class="w">        </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
 
-        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+<span class="w">            </span><span class="k">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">match</span><span class="p">.</span><span class="k">group</span><span class="p">(</span><span class="n">part</span><span class="p">)</span><span class="w"></span>
 
-            <span class="k">break</span>
+<span class="w">        </span><span class="ow">except</span><span class="w"> </span><span class="nl">IndexError</span><span class="p">:</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
+<span class="w">            </span><span class="k">break</span><span class="w"></span>
 
-            <span class="k">break</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="k">value</span><span class="err">:</span><span class="w"></span>
 
-        <span class="n">date_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+<span class="w">            </span><span class="k">break</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="n">date_parts</span><span class="p">:</span>
+<span class="w">        </span><span class="n">date_parts</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nc">int</span><span class="p">(</span><span class="k">value</span><span class="p">))</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="n">date_parts</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">date_parts</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">date_parts</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2845,7 +2863,15 @@ that help cleaning and manipulating it.</p>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">set_date</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nc">date</span><span class="p">,</span><span class="w"> </span><span class="k">variable</span><span class="o">=</span><span class="ss">&quot;issued&quot;</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">set_date</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">self</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="nc">date</span><span class="err">:</span><span class="w"> </span><span class="ow">Union</span><span class="o">[</span><span class="n">None, str, datetime.date, datetime.datetime</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">variable</span><span class="o">=</span><span class="ss">&quot;issued&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -2865,7 +2891,7 @@ that help cleaning and manipulating it.</p>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_date</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="k">variable</span><span class="o">=</span><span class="ss">&quot;issued&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_date</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="k">variable</span><span class="err">:</span><span class="w"> </span><span class="nf">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;issued&quot;</span><span class="p">,</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="w"> </span><span class="n">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">False</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -3261,8 +3287,8 @@ Does nothing if <code>type</code> not present.</p>
 <h5 id="get_date">get_date</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_date</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">variable</span><span class="o">=</span><span class="s1">&#39;issued&#39;</span><span class="p">,</span>
-    <span class="n">fill</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;issued&#39;</span><span class="p">,</span>
+    <span class="n">fill</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -3271,7 +3297,7 @@ Does nothing if <code>type</code> not present.</p>
 <p>variable: which CSL JSON date variable to retrieve
 fill: if True, set missing months to January
     and missing days to the first day of the month.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_date</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="k">variable</span><span class="o">=</span><span class="ss">&quot;issued&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_date</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="k">variable</span><span class="err">:</span><span class="w"> </span><span class="nf">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;issued&quot;</span><span class="p">,</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="w"> </span><span class="n">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">False</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -3486,7 +3512,7 @@ Raises KeyError if the dict is empty.</p>
 <h5 id="set_date">set_date</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">set_date</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">date</span><span class="p">,</span>
+    <span class="n">date</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">NoneType</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">],</span>
     <span class="n">variable</span><span class="o">=</span><span class="s1">&#39;issued&#39;</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -3494,7 +3520,15 @@ Raises KeyError if the dict is empty.</p>
 <p>date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
     or as a Python date object (datetime.date or datetime.datetime).
 variable: which variable to assign the date to.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">set_date</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nc">date</span><span class="p">,</span><span class="w"> </span><span class="k">variable</span><span class="o">=</span><span class="ss">&quot;issued&quot;</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">set_date</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">self</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="nc">date</span><span class="err">:</span><span class="w"> </span><span class="ow">Union</span><span class="o">[</span><span class="n">None, str, datetime.date, datetime.datetime</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">variable</span><span class="o">=</span><span class="ss">&quot;issued&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 

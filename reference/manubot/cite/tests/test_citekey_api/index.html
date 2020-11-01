@@ -1701,7 +1701,13 @@
 
     <span class="k">assert</span> <span class="n">csl_item</span> <span class="ow">is</span> <span class="bp">None</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;Unsupported PubMed record: no &lt;Article&gt; element&quot;</span> <span class="ow">in</span> <span class="n">caplog</span><span class="o">.</span><span class="n">text</span>
+    <span class="k">assert</span> <span class="p">(</span>
+
+        <span class="s2">&quot;Expected article to be an XML element with tag PubmedArticle, received tag &#39;PubmedBookArticle&#39;&quot;</span>
+
+        <span class="ow">in</span> <span class="n">caplog</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">test_citekey_to_csl_item_isbn</span><span class="p">():</span>
 
@@ -2092,7 +2098,13 @@ https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&amp;id=29227
 
     <span class="n">assert</span> <span class="n">csl_item</span> <span class="k">is</span> <span class="k">None</span>
 
-    <span class="n">assert</span> <span class="ss">&quot;Unsupported PubMed record: no &lt;Article&gt; element&quot;</span> <span class="k">in</span> <span class="n">caplog</span><span class="p">.</span><span class="nb">text</span>
+    <span class="n">assert</span> <span class="p">(</span>
+
+        <span class="ss">&quot;Expected article to be an XML element with tag PubmedArticle, received tag &#39;PubmedBookArticle&#39;&quot;</span>
+
+        <span class="k">in</span> <span class="n">caplog</span><span class="p">.</span><span class="nb">text</span>
+
+    <span class="p">)</span>
 </code></pre></div>
 
 </details>
