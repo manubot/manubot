@@ -10,10 +10,10 @@ import subprocess
 import sys
 
 # Email address that forwards to Manubot maintainers
-contact_email = "contact@manubot.org"
+contact_email: str = "contact@manubot.org"
 
 
-def import_function(name):
+def import_function(name: str):
     """
     Import a function in a module specified by name. For example, if name were
     'manubot.cite.cite_command.cli_cite', the cli_cite function would be
@@ -24,7 +24,7 @@ def import_function(name):
     return getattr(module, function_name)
 
 
-def get_manubot_user_agent():
+def get_manubot_user_agent() -> str:
     """
     Return a User-Agent string for web request headers to help services
     identify requests as coming from Manubot.
@@ -40,7 +40,7 @@ def get_manubot_user_agent():
     )
 
 
-def shlex_join(split_command):
+def shlex_join(split_command) -> str:
     """
     Backport shlex.join for Python < 3.8.
     Also cast all args to str to increase versatility.
@@ -51,7 +51,7 @@ def shlex_join(split_command):
 
 
 """Valid schemes for HTTP URL detection"""
-_http_url_schemes = {"http", "https"}
+_http_url_schemes: set = {"http", "https"}
 
 
 def is_http_url(string: str) -> bool:

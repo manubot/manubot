@@ -24,9 +24,10 @@ for csl_data that is JSON-serialized.
 """
 
 import copy
+import datetime
 import logging
 import re
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from manubot.cite.citekey import CiteKey
 
@@ -149,7 +150,11 @@ class CSL_Item(dict):
             self.validate_against_schema()
         return self
 
-    def set_date(self, date, variable="issued"):
+    def set_date(
+        self,
+        date: Union[None, str, datetime.date, datetime.datetime],
+        variable="issued",
+    ):
         """
         date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
             or as a Python date object (datetime.date or datetime.datetime).
@@ -160,7 +165,7 @@ class CSL_Item(dict):
             self[variable] = {"date-parts": [date_parts]}
         return self
 
-    def get_date(self, variable="issued", fill=False):
+    def get_date(self, variable: str = "issued", fill: bool = False):
         """
         Return a CSL date-variable as ISO formatted string:
         ('YYYY', 'YYYY-MM', 'YYYY-MM-DD', or None).
@@ -297,15 +302,15 @@ def assert_csl_item_type(x):
         raise TypeError(f"Expected CSL_Item object, got {type(x)}")
 
 
-def date_to_date_parts(date) -> Optional[List[int]]:
+def date_to_date_parts(
+    date: Union[None, str, datetime.date, datetime.datetime]
+) -> Optional[List[int]]:
     """
     Convert a date string or object to a date parts list.
 
     date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
         or as a Python date object (datetime.date or datetime.datetime).
     """
-    import datetime
-
     if date is None:
         return None
     if isinstance(date, (datetime.date, datetime.datetime)):
@@ -337,6 +342,7 @@ def date_to_date_parts(date) -> Optional[List[int]]:
         date_parts.append(int(value))
     if date_parts:
         return date_parts
+    return None
 
 
 def date_parts_to_string(date_parts, fill: bool = False) -> Optional[str]:

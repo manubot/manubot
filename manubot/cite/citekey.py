@@ -22,18 +22,18 @@ class CiteKey:
         self.check_input_id(self.input_id)
 
     @staticmethod
-    def check_input_id(input_id):
+    def check_input_id(input_id) -> None:
         if not isinstance(input_id, str):
             raise TypeError(
                 "input_id should be type 'str' not "
                 f"{type(input_id).__name__!r}: {input_id!r}"
             )
         if input_id.startswith("@"):
-            f"invalid citekey input_id: {input_id!r}\nstarts with '@'"
+            raise ValueError(f"invalid citekey input_id: {input_id!r}\nstarts with '@'")
 
     @classmethod
     @functools.lru_cache(maxsize=None)
-    def from_input_id(cls, *args, **kwargs):
+    def from_input_id(cls, *args, **kwargs) -> "CiteKey":
         """Cached constructor"""
         return cls(*args, **kwargs)
 
@@ -45,7 +45,7 @@ class CiteKey:
         """
         return self.aliases.get(self.input_id, self.input_id)
 
-    def _set_prefix_accession(self):
+    def _set_prefix_accession(self) -> None:
         try:
             prefix, accession = self.dealiased_id.split(":", 1)
         except ValueError:
@@ -123,7 +123,7 @@ class CiteKey:
         """
         return self.handler.inspect(self)
 
-    def _standardize(self):
+    def _standardize(self) -> None:
         """
         Set `self._standard_prefix`, `self._standard_accession`, and `self._standard_id`.
         For citekeys without a prefix or with an unhandled prefix, _standard_prefix
@@ -157,7 +157,7 @@ class CiteKey:
         return shorten_citekey(self.standard_id)
 
     @cached_property
-    def all_ids(self):
+    def all_ids(self) -> tp.List[str]:
         ids = [self.input_id, self.dealiased_id, self.standard_id, self.short_id]
         ids = [x for x in ids if x]  # remove None
         ids = list(dict.fromkeys(ids))  # deduplicate
@@ -189,7 +189,7 @@ class CiteKey:
         csl_item.set_id(self.standard_id)
         return csl_item
 
-    def is_pandoc_xnos_prefix(self, log_case_warning=False):
+    def is_pandoc_xnos_prefix(self, log_case_warning: bool = False) -> bool:
         from .handlers import _pandoc_xnos_prefixes
 
         if self.prefix in _pandoc_xnos_prefixes:
@@ -258,7 +258,7 @@ def citekey_to_csl_item(
     return csl_item
 
 
-def url_to_citekey(url):
+def url_to_citekey(url: str) -> str:
     """
     Convert a HTTP(s) URL into a citekey.
     For supported sources, convert from url citekey to an alternative source like doi.
