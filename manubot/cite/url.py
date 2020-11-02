@@ -1,8 +1,11 @@
 import json
 import logging
 import re
+from typing import Dict, Any
 
 from .handlers import Handler
+
+CSLItem = Dict[str, Any]
 
 
 class Handler_URL(Handler):
@@ -24,7 +27,7 @@ class Handler_URL(Handler):
         return get_url_csl_item(citekey.standard_accession)
 
 
-def get_url_csl_item(url):
+def get_url_csl_item(url: str) -> CSLItem:
     """
     Get csl_item for a URL trying a sequence of strategies.
 
@@ -45,7 +48,7 @@ def get_url_csl_item(url):
     raise Exception(f"all get_url_csl_item methods failed for {url}")
 
 
-def get_url_csl_item_zotero(url):
+def get_url_csl_item_zotero(url: str) -> CSLItem:
     """
     Use Zotero's translation-server to generate a CSL Item for the specified URL.
     """
@@ -60,7 +63,7 @@ def get_url_csl_item_zotero(url):
     return csl_item
 
 
-def get_url_csl_item_greycite(url):
+def get_url_csl_item_greycite(url: str) -> CSLItem:
     """
     Uses Greycite which has experiened uptime problems in the past.
     API calls seem to take at least 15 seconds. Browser requests are much
@@ -92,7 +95,7 @@ def get_url_csl_item_greycite(url):
     return csl_item
 
 
-def get_url_csl_item_manual(url):
+def get_url_csl_item_manual(url: str) -> CSLItem:
     """
     Manually create csl_item for a URL.
     """
