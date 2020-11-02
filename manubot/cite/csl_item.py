@@ -153,7 +153,7 @@ class CSL_Item(dict):
     def set_date(
         self,
         date: Union[None, str, datetime.date, datetime.datetime],
-        variable="issued",
+        variable: str = "issued",
     ):
         """
         date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)

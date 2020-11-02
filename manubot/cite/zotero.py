@@ -9,15 +9,23 @@ https://github.com/manubot/manubot/issues/82.
 
 import json
 import logging
+from typing import Dict, Any, List
 
 import requests
 
 from manubot.util import get_manubot_user_agent, is_http_url
 
+ZoteroRecord = Dict[str, Any]
+ZoteroData = List[ZoteroRecord]
+# for the purposes of this module, the CSL Items and Zotero Data have the same type
+CSLItem = ZoteroRecord
+CSLItems = ZoteroData
+
 base_url = "https://translate.manubot.org"
+"""URL that provides access to the Zotero translation-server API"""
 
 
-def web_query(url: str):
+def web_query(url: str) -> ZoteroData:
     """
     Return Zotero citation metadata for a URL as a list containing a single element that
     is a dictionary with the URL's metadata.
@@ -44,13 +52,13 @@ def web_query(url: str):
     return zotero_data
 
 
-def search_query(identifier):
+def search_query(identifier: str) -> ZoteroData:
     """
     Retrive Zotero metadata for a DOI, ISBN, PMID, or arXiv ID.
     Example usage:
 
     ```shell
-    curl --silent
+    curl --silent \
       --data '10.2307/4486062' \
       --header 'Content-Type: text/plain' \
       http://127.0.0.1:1969/search
@@ -70,7 +78,7 @@ def search_query(identifier):
     return zotero_data
 
 
-def _passthrough_zotero_data(zotero_data):
+def _passthrough_zotero_data(zotero_data: ZoteroData) -> ZoteroData:
     """
     Address known issues with Zotero metadata.
     Assumes zotero data should contain a single bibliographic record.
@@ -85,7 +93,7 @@ def _passthrough_zotero_data(zotero_data):
     return zotero_data
 
 
-def export_as_csl(zotero_data):
+def export_as_csl(zotero_data: ZoteroData) -> CSLItems:
     """
     Export Zotero JSON data to CSL JSON using a translation-server /export query.
     Performs a similar query to the following curl command:
@@ -105,25 +113,25 @@ def export_as_csl(zotero_data):
         logging.warning(f"{message} with the following output:\n{response.text}")
         raise requests.HTTPError(message)
     try:
-        csl_json = response.json()
+        csl_items = response.json()
     except Exception as error:
         logging.warning(f"Error parsing export_as_csl output as JSON:\n{response.text}")
         raise error
-    return csl_json
+    return csl_items
 
 
-def get_csl_item(identifier: str):
+def get_csl_item(identifier: str) -> CSLItem:
     """
     Use a translation-server search query followed by an export query
     to return a CSL Item (the first & only record of the returned CSL JSON).
     """
     zotero_data = search_query(identifier)
-    csl_data = export_as_csl(zotero_data)
-    (csl_item,) = csl_data
+    csl_items = export_as_csl(zotero_data)
+    (csl_item,) = csl_items
     return csl_item
 
 
-def search_or_web_query(identifier: str) -> list:
+def search_or_web_query(identifier: str) -> ZoteroData:
     """
     Detect whether `identifier` is a URL. If so,
     retrieve zotero metadata using a /web query.
