@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from .handlers import Handler
 
 
@@ -23,7 +25,7 @@ class Handler_Wikidata(Handler):
         return get_wikidata_csl_item(citekey.standard_accession)
 
 
-def get_wikidata_csl_item(identifier):
+def get_wikidata_csl_item(identifier: str) -> Dict[str, Any]:
     """
     Get a CSL JSON item with the citation metadata for a Wikidata item.
     identifier should be a Wikidata item ID corresponding to a citeable

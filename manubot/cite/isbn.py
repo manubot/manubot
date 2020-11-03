@@ -30,7 +30,7 @@ class Handler_ISBN(Handler):
         return get_isbn_csl_item(citekey.standard_accession)
 
 
-def get_isbn_csl_item(isbn):
+def get_isbn_csl_item(isbn: str):
     """
     Generate CSL JSON Data for an ISBN. Converts all ISBNs to 13-digit format.
 
@@ -54,7 +54,7 @@ def get_isbn_csl_item(isbn):
     raise Exception(f"all get_isbn_csl_item methods failed for {isbn}")
 
 
-def get_isbn_csl_item_zotero(isbn):
+def get_isbn_csl_item_zotero(isbn: str):
     """
     Generate CSL JSON Data for an ISBN using Zotero's translation-server.
     """
@@ -63,7 +63,7 @@ def get_isbn_csl_item_zotero(isbn):
     return get_csl_item(f"isbn:{isbn}")
 
 
-def get_isbn_csl_item_citoid(isbn):
+def get_isbn_csl_item_citoid(isbn: str):
     """
     Return CSL JSON Data for an ISBN using the Wikipedia Citoid API.
     https://en.wikipedia.org/api/rest_v1/#!/Citation/getCitation
@@ -124,7 +124,7 @@ def get_isbn_csl_item_citoid(isbn):
     return csl_item
 
 
-def get_isbn_csl_item_isbnlib(isbn):
+def get_isbn_csl_item_isbnlib(isbn: str):
     """
     Generate CSL JSON Data for an ISBN using isbnlib.
     """

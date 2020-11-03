@@ -2,6 +2,7 @@ import json
 import logging
 import urllib.parse
 import urllib.request
+from typing import Optional, Callable, Any
 
 import requests
 
@@ -59,7 +60,7 @@ class Handler_DOI(Handler):
         return get_doi_csl_item(citekey.standard_accession)
 
 
-def expand_short_doi(short_doi):
+def expand_short_doi(short_doi: str) -> str:
     """
     Convert a shortDOI to a regular DOI.
     """
@@ -95,7 +96,7 @@ def expand_short_doi(short_doi):
     )
 
 
-def get_short_doi_url(doi):
+def get_short_doi_url(doi: str) -> Optional[str]:
     """
     Get the shortDOI URL for a DOI.
     """
@@ -120,10 +121,10 @@ Options include:
 1. <https://data.crosscite.org> documented at <https://support.datacite.org/docs/datacite-content-resolver>
 2. <https://doi.org/> documented at <https://citation.crosscite.org/docs.html>
 """
-content_negotiation_url = "https://data.crosscite.org"
+content_negotiation_url: str = "https://data.crosscite.org"
 
 
-def get_doi_csl_item_crosscite(doi):
+def get_doi_csl_item_crosscite(doi: str):
     """
     Use Content Negotioation to retrieve the CSL Item
     metadata for a DOI.
@@ -144,7 +145,7 @@ def get_doi_csl_item_crosscite(doi):
         raise error
 
 
-def get_doi_csl_item_zotero(doi):
+def get_doi_csl_item_zotero(doi: str):
     """
     Generate CSL JSON Data for a DOI using Zotero's translation-server.
     """
@@ -153,7 +154,7 @@ def get_doi_csl_item_zotero(doi):
     return get_csl_item(f"doi:{doi}")
 
 
-def augment_get_doi_csl_item(function):
+def augment_get_doi_csl_item(function: Callable[..., Any]):
     """
     Decorator providing edits to the csl_item returned by a get_doi_csl_item_* function.
     """
@@ -178,7 +179,7 @@ def augment_get_doi_csl_item(function):
 
 
 @augment_get_doi_csl_item
-def get_doi_csl_item(doi):
+def get_doi_csl_item(doi: str):
     """
     Generate CSL JSON Data for an DOI.
 
