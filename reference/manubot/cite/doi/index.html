@@ -1532,6 +1532,8 @@
 
 <span class="kn">import</span> <span class="nn">urllib.request</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span>
+
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">get_manubot_user_agent</span>
@@ -1626,7 +1628,7 @@
 
         <span class="k">return</span> <span class="n">get_doi_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">expand_short_doi</span><span class="p">(</span><span class="n">short_doi</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">expand_short_doi</span><span class="p">(</span><span class="n">short_doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1694,7 +1696,7 @@
 
     <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">get_short_doi_url</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_short_doi_url</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1736,9 +1738,9 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">content_negotiation_url</span> <span class="o">=</span> <span class="s2">&quot;https://data.crosscite.org&quot;</span>
+<span class="n">content_negotiation_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://data.crosscite.org&quot;</span>
 
-<span class="k">def</span> <span class="nf">get_doi_csl_item_crosscite</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_doi_csl_item_crosscite</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1776,7 +1778,7 @@
 
         <span class="k">raise</span> <span class="n">error</span>
 
-<span class="k">def</span> <span class="nf">get_doi_csl_item_zotero</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_doi_csl_item_zotero</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1788,7 +1790,7 @@
 
     <span class="k">return</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;doi:{doi}&quot;</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">augment_get_doi_csl_item</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">augment_get_doi_csl_item</span><span class="p">(</span><span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1830,7 +1832,7 @@
 
 <span class="nd">@augment_get_doi_csl_item</span>
 
-<span class="k">def</span> <span class="nf">get_doi_csl_item</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_doi_csl_item</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1882,12 +1884,12 @@
 <h2 id="functions">Functions</h2>
 <h3 id="augment_get_doi_csl_item">augment_get_doi_csl_item</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">augment_get_doi_csl_item</span><span class="p">(</span>
-    <span class="n">function</span>
+    <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 <span class="p">)</span>
 </code></pre></div>
 
 <p>Decorator providing edits to the csl_item returned by a get_doi_csl_item_* function.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">augment_get_doi_csl_item</span><span class="p">(</span><span class="k">function</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">augment_get_doi_csl_item</span><span class="p">(</span><span class="k">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[...,</span> <span class="k">Any</span><span class="p">]):</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
@@ -1931,12 +1933,12 @@
 </details>
 <h3 id="expand_short_doi">expand_short_doi</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">expand_short_doi</span><span class="p">(</span>
-    <span class="n">short_doi</span>
-<span class="p">)</span>
+    <span class="n">short_doi</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
 </code></pre></div>
 
 <p>Convert a shortDOI to a regular DOI.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">expand_short_doi</span><span class="p">(</span><span class="n">short_doi</span><span class="p">)</span><span class="o">:</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">expand_short_doi</span><span class="p">(</span><span class="nl">short_doi:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nl">str:</span>
 
     <span class="s">&quot;&quot;&quot;</span>
 
@@ -2046,13 +2048,13 @@
 </details>
 <h3 id="get_doi_csl_item_crosscite">get_doi_csl_item_crosscite</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_doi_csl_item_crosscite</span><span class="p">(</span>
-    <span class="n">doi</span>
+    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span>
 </code></pre></div>
 
 <p>Use Content Negotioation to retrieve the CSL Item
 metadata for a DOI.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_doi_csl_item_crosscite</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_doi_csl_item_crosscite</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="n">str</span><span class="p">):</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
@@ -2094,12 +2096,12 @@ metadata for a DOI.</p>
 </details>
 <h3 id="get_doi_csl_item_zotero">get_doi_csl_item_zotero</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_doi_csl_item_zotero</span><span class="p">(</span>
-    <span class="n">doi</span>
+    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span>
 </code></pre></div>
 
 <p>Generate CSL JSON Data for a DOI using Zotero's translation-server.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_doi_csl_item_zotero</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_doi_csl_item_zotero</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2115,40 +2117,40 @@ metadata for a DOI.</p>
 </details>
 <h3 id="get_short_doi_url">get_short_doi_url</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_short_doi_url</span><span class="p">(</span>
-    <span class="n">doi</span>
-<span class="p">)</span>
+    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Get the shortDOI URL for a DOI.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_short_doi_url</span><span class="p">(</span><span class="n">doi</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">get_short_doi_url</span><span class="p">(</span><span class="nl">doi</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
-    <span class="ss">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
 <span class="ss">    Get the shortDOI URL for a DOI.</span>
 
-<span class="ss">    &quot;&quot;&quot;</span>
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="n">quoted_doi</span> <span class="o">=</span> <span class="n">urllib</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">quote</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+<span class="w">    </span><span class="n">quoted_doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">urllib</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">quote</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="ss">&quot;http://shortdoi.org/{}?format=json&quot;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">quoted_doi</span><span class="p">)</span>
+<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;http://shortdoi.org/{}?format=json&quot;</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">quoted_doi</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">headers</span> <span class="o">=</span> <span class="err">{</span><span class="ss">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">()</span><span class="err">}</span>
+<span class="w">    </span><span class="n">headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;User-Agent&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">get_manubot_user_agent</span><span class="p">()</span><span class="err">}</span><span class="w"></span>
 
-    <span class="n">try</span><span class="p">:</span>
+<span class="w">    </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">).</span><span class="n">json</span><span class="p">()</span>
+<span class="w">        </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requests</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">).</span><span class="n">json</span><span class="p">()</span><span class="w"></span>
 
-        <span class="n">short_doi</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="ss">&quot;ShortDOI&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">short_doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">response</span><span class="o">[</span><span class="n">&quot;ShortDOI&quot;</span><span class="o">]</span><span class="w"></span>
 
-        <span class="n">short_url</span> <span class="o">=</span> <span class="ss">&quot;https://doi.org/&quot;</span> <span class="o">+</span> <span class="n">short_doi</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>  <span class="o">#</span> <span class="n">Remove</span> <span class="ss">&quot;10/&quot;</span> <span class="k">prefix</span>
+<span class="w">        </span><span class="n">short_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;https://doi.org/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">short_doi</span><span class="o">[</span><span class="n">3:</span><span class="o">]</span><span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="n">Remove</span><span class="w"> </span><span class="ss">&quot;10/&quot;</span><span class="w"> </span><span class="k">prefix</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="n">short_url</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">short_url</span><span class="w"></span>
 
-    <span class="k">except</span> <span class="k">Exception</span><span class="p">:</span>
+<span class="w">    </span><span class="ow">except</span><span class="w"> </span><span class="k">Exception</span><span class="err">:</span><span class="w"></span>
 
-        <span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;shortDOI lookup failed for {doi}&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+<span class="w">        </span><span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;shortDOI lookup failed for {doi}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">exc_info</span><span class="o">=</span><span class="k">True</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="k">None</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 </code></pre></div>
 
 </details>

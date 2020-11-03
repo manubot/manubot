@@ -1502,7 +1502,11 @@
 
 <span class="kn">import</span> <span class="nn">re</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+
 <span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="n">Handler</span>
+
+<span class="n">CSLItem</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 
 <span class="k">class</span> <span class="nc">Handler_URL</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
 
@@ -1530,7 +1534,7 @@
 
         <span class="k">return</span> <span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1566,7 +1570,7 @@
 
     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;all get_url_csl_item methods failed for {url}&quot;</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1590,7 +1594,7 @@
 
     <span class="k">return</span> <span class="n">csl_item</span>
 
-<span class="k">def</span> <span class="nf">get_url_csl_item_greycite</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_url_csl_item_greycite</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1646,7 +1650,7 @@
 
     <span class="k">return</span> <span class="n">csl_item</span>
 
-<span class="k">def</span> <span class="nf">get_url_csl_item_manual</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_url_csl_item_manual</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1669,14 +1673,17 @@
 
 </details>
 <h2 id="variables">Variables</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">CSLItem</span>
+</code></pre></div>
+
 <div class="codehilite"><pre><span></span><code><span class="n">url_retrievers</span>
 </code></pre></div>
 
 <h2 id="functions">Functions</h2>
 <h3 id="get_url_csl_item">get_url_csl_item</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item</span><span class="p">(</span>
-    <span class="n">url</span>
-<span class="p">)</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Get csl_item for a URL trying a sequence of strategies.</p>
@@ -1684,7 +1691,7 @@
 by the module-level variable <code>url_retrievers</code>. The methods are attempted
 in order, with this function returning the metadata from the first
 non-failing method.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">:</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="o">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="o">:</span>
 
     <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
 
@@ -1724,8 +1731,8 @@ non-failing method.</p>
 </details>
 <h3 id="get_url_csl_item_greycite">get_url_csl_item_greycite</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_greycite</span><span class="p">(</span>
-    <span class="n">url</span>
-<span class="p">)</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Uses Greycite which has experiened uptime problems in the past.
@@ -1737,7 +1744,7 @@ http://greycite.knowledgeblog.org/
 http://knowledgeblog.org/greycite
 https://arxiv.org/abs/1304.7151
 https://git.io/v9N2C</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_greycite</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_greycite</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1797,12 +1804,12 @@ https://git.io/v9N2C</p>
 </details>
 <h3 id="get_url_csl_item_manual">get_url_csl_item_manual</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_manual</span><span class="p">(</span>
-    <span class="n">url</span>
-<span class="p">)</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Manually create csl_item for a URL.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_url_csl_item_manual</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_url_csl_item_manual</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
@@ -1816,12 +1823,12 @@ https://git.io/v9N2C</p>
 </details>
 <h3 id="get_url_csl_item_zotero">get_url_csl_item_zotero</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_zotero</span><span class="p">(</span>
-    <span class="n">url</span>
-<span class="p">)</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Use Zotero's translation-server to generate a CSL Item for the specified URL.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 

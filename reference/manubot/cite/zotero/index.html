@@ -1385,13 +1385,27 @@ https://github.com/manubot/manubot/issues/82.</p>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span>
+
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">get_manubot_user_agent</span><span class="p">,</span> <span class="n">is_http_url</span>
 
+<span class="n">ZoteroRecord</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+
+<span class="n">ZoteroData</span> <span class="o">=</span> <span class="n">List</span><span class="p">[</span><span class="n">ZoteroRecord</span><span class="p">]</span>
+
+<span class="c1"># for the purposes of this module, the CSL Items and Zotero Data have the same type</span>
+
+<span class="n">CSLItem</span> <span class="o">=</span> <span class="n">ZoteroRecord</span>
+
+<span class="n">CSLItems</span> <span class="o">=</span> <span class="n">ZoteroData</span>
+
 <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://translate.manubot.org&quot;</span>
 
-<span class="k">def</span> <span class="nf">web_query</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="sd">&quot;&quot;&quot;URL that provides access to the Zotero translation-server API&quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">web_query</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ZoteroData</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1441,7 +1455,7 @@ https://github.com/manubot/manubot/issues/82.</p>
 
     <span class="k">return</span> <span class="n">zotero_data</span>
 
-<span class="k">def</span> <span class="nf">search_query</span><span class="p">(</span><span class="n">identifier</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">search_query</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ZoteroData</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1451,7 +1465,7 @@ https://github.com/manubot/manubot/issues/82.</p>
 
 <span class="sd">    ```shell</span>
 
-<span class="sd">    curl --silent</span>
+<span class="sd">    curl --silent \</span>
 
 <span class="sd">      --data &#39;10.2307/4486062&#39; \</span>
 
@@ -1487,7 +1501,7 @@ https://github.com/manubot/manubot/issues/82.</p>
 
     <span class="k">return</span> <span class="n">zotero_data</span>
 
-<span class="k">def</span> <span class="nf">_passthrough_zotero_data</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_passthrough_zotero_data</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">:</span> <span class="n">ZoteroData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ZoteroData</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1513,7 +1527,7 @@ https://github.com/manubot/manubot/issues/82.</p>
 
     <span class="k">return</span> <span class="n">zotero_data</span>
 
-<span class="k">def</span> <span class="nf">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">:</span> <span class="n">ZoteroData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItems</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1553,7 +1567,7 @@ https://github.com/manubot/manubot/issues/82.</p>
 
     <span class="k">try</span><span class="p">:</span>
 
-        <span class="n">csl_json</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">csl_items</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
@@ -1561,9 +1575,9 @@ https://github.com/manubot/manubot/issues/82.</p>
 
         <span class="k">raise</span> <span class="n">error</span>
 
-    <span class="k">return</span> <span class="n">csl_json</span>
+    <span class="k">return</span> <span class="n">csl_items</span>
 
-<span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1575,13 +1589,13 @@ https://github.com/manubot/manubot/issues/82.</p>
 
     <span class="n">zotero_data</span> <span class="o">=</span> <span class="n">search_query</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
 
-    <span class="n">csl_data</span> <span class="o">=</span> <span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span>
+    <span class="n">csl_items</span> <span class="o">=</span> <span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span>
 
-    <span class="p">(</span><span class="n">csl_item</span><span class="p">,)</span> <span class="o">=</span> <span class="n">csl_data</span>
+    <span class="p">(</span><span class="n">csl_item</span><span class="p">,)</span> <span class="o">=</span> <span class="n">csl_items</span>
 
     <span class="k">return</span> <span class="n">csl_item</span>
 
-<span class="k">def</span> <span class="nf">search_or_web_query</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">search_or_web_query</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ZoteroData</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1606,14 +1620,27 @@ https://github.com/manubot/manubot/issues/82.</p>
 
 </details>
 <h2 id="variables">Variables</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">CSLItem</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">CSLItems</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">ZoteroData</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">ZoteroRecord</span>
+</code></pre></div>
+
 <div class="codehilite"><pre><span></span><code><span class="n">base_url</span>
 </code></pre></div>
 
+<p>URL that provides access to the Zotero translation-server API</p>
 <h2 id="functions">Functions</h2>
 <h3 id="export_as_csl">export_as_csl</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">export_as_csl</span><span class="p">(</span>
-    <span class="n">zotero_data</span>
-<span class="p">)</span>
+    <span class="n">zotero_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 </code></pre></div>
 
 <p>Export Zotero JSON data to CSL JSON using a translation-server /export query.
@@ -1621,7 +1648,7 @@ Performs a similar query to the following curl command:</p>
 <div class="codehilite"><pre><span></span><code><span class="n">curl</span> <span class="o">--</span><span class="n">verbose</span>       <span class="o">--</span><span class="n">data</span> <span class="err">@</span><span class="n">items</span><span class="o">.</span><span class="n">json</span>       <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Content-Type: application/json&#39;</span>       <span class="s1">&#39;https://translate.manubot.org/export?format=csljson&#39;</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">:</span> <span class="n">ZoteroData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItems</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1661,7 +1688,7 @@ Performs a similar query to the following curl command:</p>
 
     <span class="n">try</span><span class="p">:</span>
 
-        <span class="n">csl_json</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">csl_items</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
     <span class="n">except</span> <span class="n">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
@@ -1669,19 +1696,19 @@ Performs a similar query to the following curl command:</p>
 
         <span class="n">raise</span> <span class="n">error</span>
 
-    <span class="k">return</span> <span class="n">csl_json</span>
+    <span class="k">return</span> <span class="n">csl_items</span>
 </code></pre></div>
 
 </details>
 <h3 id="get_csl_item">get_csl_item</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span>
     <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span>
-<span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Use a translation-server search query followed by an export query
 to return a CSL Item (the first &amp; only record of the returned CSL JSON).</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1693,9 +1720,9 @@ to return a CSL Item (the first &amp; only record of the returned CSL JSON).</p>
 
     <span class="n">zotero_data</span> <span class="o">=</span> <span class="n">search_query</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
 
-    <span class="n">csl_data</span> <span class="o">=</span> <span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span>
+    <span class="n">csl_items</span> <span class="o">=</span> <span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span>
 
-    <span class="p">(</span><span class="n">csl_item</span><span class="p">,)</span> <span class="o">=</span> <span class="n">csl_data</span>
+    <span class="p">(</span><span class="n">csl_item</span><span class="p">,)</span> <span class="o">=</span> <span class="n">csl_items</span>
 
     <span class="k">return</span> <span class="n">csl_item</span>
 </code></pre></div>
@@ -1704,13 +1731,13 @@ to return a CSL Item (the first &amp; only record of the returned CSL JSON).</p>
 <h3 id="search_or_web_query">search_or_web_query</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">search_or_web_query</span><span class="p">(</span>
     <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 </code></pre></div>
 
 <p>Detect whether <code>identifier</code> is a URL. If so,
 retrieve zotero metadata using a /web query.
 Otherwise, retrieve zotero metadata using a /search query.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">search_or_web_query</span><span class="p">(</span><span class="n">identifier</span><span class="o">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">list</span><span class="o">:</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">search_or_web_query</span><span class="p">(</span><span class="n">identifier</span><span class="o">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ZoteroData</span><span class="o">:</span>
 
     <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
 
@@ -1736,17 +1763,16 @@ Otherwise, retrieve zotero metadata using a /search query.</p>
 </details>
 <h3 id="search_query">search_query</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">search_query</span><span class="p">(</span>
-    <span class="n">identifier</span>
-<span class="p">)</span>
+    <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 </code></pre></div>
 
 <p>Retrive Zotero metadata for a DOI, ISBN, PMID, or arXiv ID.
 Example usage:</p>
-<div class="codehilite"><pre><span></span><code>curl --silent
-  --data <span class="s1">&#39;10.2307/4486062&#39;</span>       --header <span class="s1">&#39;Content-Type: text/plain&#39;</span>       http://127.0.0.1:1969/search
+<div class="codehilite"><pre><span></span><code>curl --silent       --data <span class="s1">&#39;10.2307/4486062&#39;</span>       --header <span class="s1">&#39;Content-Type: text/plain&#39;</span>       http://127.0.0.1:1969/search
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def search_query<span class="p">(</span>identifier<span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def search_query<span class="p">(</span>identifier<span class="p">:</span> str<span class="p">)</span> <span class="o">-&gt;</span> ZoteroData<span class="p">:</span>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -1756,7 +1782,7 @@ Example usage:</p>
 
 <span class="s2">    ```shell</span>
 
-<span class="s2">    curl --silent</span>
+<span class="s2">    curl --silent </span><span class="se">\</span><span class="s2"></span>
 
 <span class="s2">      --data &#39;10.2307/4486062&#39; </span><span class="se">\</span><span class="s2"></span>
 
@@ -1797,12 +1823,12 @@ Example usage:</p>
 <h3 id="web_query">web_query</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">web_query</span><span class="p">(</span>
     <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
-<span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 </code></pre></div>
 
 <p>Return Zotero citation metadata for a URL as a list containing a single element that
 is a dictionary with the URL's metadata.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def web_query<span class="p">(</span>url<span class="p">:</span> str<span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def web_query<span class="p">(</span>url<span class="p">:</span> str<span class="p">)</span> <span class="o">-&gt;</span> ZoteroData<span class="p">:</span>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
