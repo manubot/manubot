@@ -29,6 +29,7 @@ Related resources on pandoc filters:
 """
 import argparse
 import logging
+from typing import Any, Dict
 
 import panflute as pf
 
@@ -40,7 +41,7 @@ global_variables = {
 }
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     """
     Read command line arguments
     """
@@ -69,7 +70,7 @@ def parse_args():
     return args
 
 
-def _get_citekeys_action(elem, doc):
+def _get_citekeys_action(elem: pf.Element, doc: pf.Doc) -> None:
     """
     Panflute action to extract citationId from all Citations in the AST.
     """
@@ -80,7 +81,7 @@ def _get_citekeys_action(elem, doc):
     return None
 
 
-def _citation_to_id_action(elem, doc):
+def _citation_to_id_action(elem: pf.Element, doc: pf.Doc) -> None:
     """
     Panflute action to update the citationId of Citations in the AST
     with their manubot-created keys.
@@ -93,7 +94,7 @@ def _citation_to_id_action(elem, doc):
     return None
 
 
-def _get_reference_link_citekey_aliases(elem, doc):
+def _get_reference_link_citekey_aliases(elem: pf.Element, doc: pf.Doc) -> None:
     """
     Extract citekey aliases from the document that were defined
     using markdown's link reference syntax.
@@ -135,7 +136,7 @@ def _get_reference_link_citekey_aliases(elem, doc):
             elem.content.pop(0)
 
 
-def _get_load_manual_references_kwargs(doc) -> dict:
+def _get_load_manual_references_kwargs(doc: pf.Doc) -> Dict[str, Any]:
     """
     Return keyword arguments for Citations.load_manual_references.
     """
@@ -149,7 +150,7 @@ def _get_load_manual_references_kwargs(doc) -> dict:
     )
 
 
-def process_citations(doc):
+def process_citations(doc: pf.Doc) -> None:
     """
     Apply citation-by-identifier to a Python object representation of
     Pandoc's Abstract Syntax Tree.
@@ -207,7 +208,7 @@ def process_citations(doc):
     doc.metadata["citekey_aliases"] = citekey_aliases
 
 
-def main():
+def main() -> None:
     from manubot.command import setup_logging_and_errors, exit_if_error_handler_fired
 
     diagnostics = setup_logging_and_errors()
