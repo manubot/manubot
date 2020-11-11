@@ -29,18 +29,14 @@ Related resources on pandoc filters:
 """
 import argparse
 import logging
+from typing import Any, Dict
 
 import panflute as pf
 
 from manubot.cite.citations import Citations
 
 
-global_variables = {
-    "manuscript_citekeys": list(),
-}
-
-
-def parse_args():
+def parse_args() -> argparse.Namespace:
     """
     Read command line arguments
     """
@@ -69,31 +65,31 @@ def parse_args():
     return args
 
 
-def _get_citekeys_action(elem, doc):
+def _get_citekeys_action(elem: pf.Element, doc: pf.Doc) -> None:
     """
     Panflute action to extract citationId from all Citations in the AST.
     """
     if not isinstance(elem, pf.Citation):
         return None
-    manuscript_citekeys = global_variables["manuscript_citekeys"]
+    manuscript_citekeys = doc.manubot["manuscript_citekeys"]
     manuscript_citekeys.append(elem.id)
     return None
 
 
-def _citation_to_id_action(elem, doc):
+def _citation_to_id_action(elem: pf.Element, doc: pf.Doc) -> None:
     """
     Panflute action to update the citationId of Citations in the AST
     with their manubot-created keys.
     """
     if not isinstance(elem, pf.Citation):
         return None
-    mapper = global_variables["citekey_shortener"]
+    mapper = doc.manubot["citekey_shortener"]
     if elem.id in mapper:
         elem.id = mapper[elem.id]
     return None
 
 
-def _get_reference_link_citekey_aliases(elem, doc):
+def _get_reference_link_citekey_aliases(elem: pf.Element, doc: pf.Doc) -> None:
     """
     Extract citekey aliases from the document that were defined
     using markdown's link reference syntax.
@@ -121,7 +117,7 @@ def _get_reference_link_citekey_aliases(elem, doc):
             # paragraph starts with `[@something]: something`
             # save info to citekeys and remove from paragraph
             citekey = elem.content[0].citations[0].id
-            citekey_aliases = global_variables["citekey_aliases"]
+            citekey_aliases = doc.manubot["citekey_aliases"]
             if (
                 citekey in citekey_aliases
                 and citekey_aliases[citekey] != destination.text
@@ -135,7 +131,7 @@ def _get_reference_link_citekey_aliases(elem, doc):
             elem.content.pop(0)
 
 
-def _get_load_manual_references_kwargs(doc) -> dict:
+def _get_load_manual_references_kwargs(doc: pf.Doc) -> Dict[str, Any]:
     """
     Return keyword arguments for Citations.load_manual_references.
     """
@@ -149,7 +145,7 @@ def _get_load_manual_references_kwargs(doc) -> dict:
     )
 
 
-def process_citations(doc):
+def process_citations(doc: pf.Doc) -> None:
     """
     Apply citation-by-identifier to a Python object representation of
     Pandoc's Abstract Syntax Tree.
@@ -171,10 +167,10 @@ def process_citations(doc):
         )
         citekey_aliases = dict()
 
-    global_variables["citekey_aliases"] = citekey_aliases
+    doc.manubot["citekey_aliases"] = citekey_aliases
     doc.walk(_get_reference_link_citekey_aliases)
     doc.walk(_get_citekeys_action)
-    manuscript_citekeys = global_variables["manuscript_citekeys"]
+    manuscript_citekeys = doc.manubot["manuscript_citekeys"]
     citations = Citations(input_ids=manuscript_citekeys, aliases=citekey_aliases)
     citations.csl_item_failure_log_level = "ERROR"
 
@@ -192,7 +188,7 @@ def process_citations(doc):
     citations.load_manual_references(**_get_load_manual_references_kwargs(doc))
     citations.inspect(log_level="WARNING")
     citations.get_csl_items()
-    global_variables["citekey_shortener"] = citations.input_to_csl_id
+    doc.manubot["citekey_shortener"] = citations.input_to_csl_id
     doc.walk(_citation_to_id_action)
 
     if requests_cache_path:
@@ -207,7 +203,7 @@ def process_citations(doc):
     doc.metadata["citekey_aliases"] = citekey_aliases
 
 
-def main():
+def main() -> None:
     from manubot.command import setup_logging_and_errors, exit_if_error_handler_fired
 
     diagnostics = setup_logging_and_errors()
@@ -217,6 +213,9 @@ def main():
     doc = pf.load(input_stream=args.input)
     log_level = doc.get_metadata("manubot-log-level", "WARNING")
     diagnostics["logger"].setLevel(getattr(logging, log_level))
+    doc.manubot = {
+        "manuscript_citekeys": list(),
+    }
     process_citations(doc)
     pf.dump(doc, output_stream=args.output)
     if doc.get_metadata("manubot-fail-on-errors", False):

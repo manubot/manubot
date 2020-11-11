@@ -70,7 +70,9 @@ setuptools.setup(
         "jinja2",
         "jsonschema>=3.0.0",
         "packaging",
-        "panflute",
+        # panflute 2.0.4 fails with: Element "MetaList" received "CSL_Item"
+        # https://github.com/manubot/rootstock/pull/386#issuecomment-724926969
+        "panflute<2",
         "pybase62",
         "pyyaml",
         "ratelimiter",
