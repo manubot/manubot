@@ -807,13 +807,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#functions" class="md-nav__link">
     Functions
   </a>
@@ -1273,13 +1266,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#functions" class="md-nav__link">
     Functions
   </a>
@@ -1401,17 +1387,13 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
+
 <span class="kn">import</span> <span class="nn">panflute</span> <span class="kn">as</span> <span class="nn">pf</span>
 
 <span class="kn">from</span> <span class="nn">manubot.cite.citations</span> <span class="kn">import</span> <span class="n">Citations</span>
 
-<span class="n">global_variables</span> <span class="o">=</span> <span class="p">{</span>
-
-    <span class="s2">&quot;manuscript_citekeys&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(),</span>
-
-<span class="p">}</span>
-
-<span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">parse_args</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1465,7 +1447,7 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
     <span class="k">return</span> <span class="n">args</span>
 
-<span class="k">def</span> <span class="nf">_get_citekeys_action</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_citekeys_action</span><span class="p">(</span><span class="n">elem</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Doc</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1477,13 +1459,13 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
         <span class="k">return</span> <span class="bp">None</span>
 
-    <span class="n">manuscript_citekeys</span> <span class="o">=</span> <span class="n">global_variables</span><span class="p">[</span><span class="s2">&quot;manuscript_citekeys&quot;</span><span class="p">]</span>
+    <span class="n">manuscript_citekeys</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">manubot</span><span class="p">[</span><span class="s2">&quot;manuscript_citekeys&quot;</span><span class="p">]</span>
 
     <span class="n">manuscript_citekeys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">None</span>
 
-<span class="k">def</span> <span class="nf">_citation_to_id_action</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_citation_to_id_action</span><span class="p">(</span><span class="n">elem</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Doc</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1497,7 +1479,7 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
         <span class="k">return</span> <span class="bp">None</span>
 
-    <span class="n">mapper</span> <span class="o">=</span> <span class="n">global_variables</span><span class="p">[</span><span class="s2">&quot;citekey_shortener&quot;</span><span class="p">]</span>
+    <span class="n">mapper</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">manubot</span><span class="p">[</span><span class="s2">&quot;citekey_shortener&quot;</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">mapper</span><span class="p">:</span>
 
@@ -1505,7 +1487,7 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
     <span class="k">return</span> <span class="bp">None</span>
 
-<span class="k">def</span> <span class="nf">_get_reference_link_citekey_aliases</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_reference_link_citekey_aliases</span><span class="p">(</span><span class="n">elem</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Doc</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1559,7 +1541,7 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
             <span class="n">citekey</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">citations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
 
-            <span class="n">citekey_aliases</span> <span class="o">=</span> <span class="n">global_variables</span><span class="p">[</span><span class="s2">&quot;citekey_aliases&quot;</span><span class="p">]</span>
+            <span class="n">citekey_aliases</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">manubot</span><span class="p">[</span><span class="s2">&quot;citekey_aliases&quot;</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="p">(</span>
 
@@ -1583,7 +1565,7 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
             <span class="n">elem</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">_get_load_manual_references_kwargs</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">_get_load_manual_references_kwargs</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Doc</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1607,7 +1589,7 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
     <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">process_citations</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">process_citations</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Doc</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1645,13 +1627,13 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
         <span class="n">citekey_aliases</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
-    <span class="n">global_variables</span><span class="p">[</span><span class="s2">&quot;citekey_aliases&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekey_aliases</span>
+    <span class="n">doc</span><span class="o">.</span><span class="n">manubot</span><span class="p">[</span><span class="s2">&quot;citekey_aliases&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekey_aliases</span>
 
     <span class="n">doc</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">_get_reference_link_citekey_aliases</span><span class="p">)</span>
 
     <span class="n">doc</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">_get_citekeys_action</span><span class="p">)</span>
 
-    <span class="n">manuscript_citekeys</span> <span class="o">=</span> <span class="n">global_variables</span><span class="p">[</span><span class="s2">&quot;manuscript_citekeys&quot;</span><span class="p">]</span>
+    <span class="n">manuscript_citekeys</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">manubot</span><span class="p">[</span><span class="s2">&quot;manuscript_citekeys&quot;</span><span class="p">]</span>
 
     <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="o">=</span><span class="n">manuscript_citekeys</span><span class="p">,</span> <span class="n">aliases</span><span class="o">=</span><span class="n">citekey_aliases</span><span class="p">)</span>
 
@@ -1681,7 +1663,7 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
     <span class="n">citations</span><span class="o">.</span><span class="n">get_csl_items</span><span class="p">()</span>
 
-    <span class="n">global_variables</span><span class="p">[</span><span class="s2">&quot;citekey_shortener&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citations</span><span class="o">.</span><span class="n">input_to_csl_id</span>
+    <span class="n">doc</span><span class="o">.</span><span class="n">manubot</span><span class="p">[</span><span class="s2">&quot;citekey_shortener&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citations</span><span class="o">.</span><span class="n">input_to_csl_id</span>
 
     <span class="n">doc</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">_citation_to_id_action</span><span class="p">)</span>
 
@@ -1703,7 +1685,7 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
     <span class="n">doc</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;citekey_aliases&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekey_aliases</span>
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
 
     <span class="kn">from</span> <span class="nn">manubot.command</span> <span class="kn">import</span> <span class="n">setup_logging_and_errors</span><span class="p">,</span> <span class="n">exit_if_error_handler_fired</span>
 
@@ -1720,6 +1702,12 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
     <span class="n">log_level</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;manubot-log-level&quot;</span><span class="p">,</span> <span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
 
     <span class="n">diagnostics</span><span class="p">[</span><span class="s2">&quot;logger&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">log_level</span><span class="p">))</span>
+
+    <span class="n">doc</span><span class="o">.</span><span class="n">manubot</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="s2">&quot;manuscript_citekeys&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(),</span>
+
+    <span class="p">}</span>
 
     <span class="n">process_citations</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
 
@@ -1735,18 +1723,14 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 </code></pre></div>
 
 </details>
-<h2 id="variables">Variables</h2>
-<div class="codehilite"><pre><span></span><code><span class="n">global_variables</span>
-</code></pre></div>
-
 <h2 id="functions">Functions</h2>
 <h3 id="main">main</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">(</span>
 
-<span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
 
     <span class="kn">from</span> <span class="nn">manubot.command</span> <span class="kn">import</span> <span class="n">setup_logging_and_errors</span><span class="p">,</span> <span class="n">exit_if_error_handler_fired</span>
 
@@ -1764,6 +1748,12 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 
     <span class="n">diagnostics</span><span class="p">[</span><span class="s2">&quot;logger&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">log_level</span><span class="p">))</span>
 
+    <span class="n">doc</span><span class="o">.</span><span class="n">manubot</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="s2">&quot;manuscript_citekeys&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(),</span>
+
+    <span class="p">}</span>
+
     <span class="n">process_citations</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
 
     <span class="n">pf</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">output_stream</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
@@ -1777,11 +1767,11 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 <h3 id="parse_args">parse_args</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">parse_args</span><span class="p">(</span>
 
-<span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span>
 </code></pre></div>
 
 <p>Read command line arguments</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">parse_args</span><span class="p">():</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">parse_args</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="p">.</span><span class="n">Namespace</span><span class="p">:</span>
 
     <span class="ss">&quot;&quot;&quot;</span>
 
@@ -1839,8 +1829,8 @@ pandoc   --to<span class="o">=</span>json   manubot/pandoc/tests/test_cite_filte
 </details>
 <h3 id="process_citations">process_citations</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">process_citations</span><span class="p">(</span>
-    <span class="n">doc</span>
-<span class="p">)</span>
+    <span class="n">doc</span><span class="p">:</span> <span class="n">panflute</span><span class="o">.</span><span class="n">elements</span><span class="o">.</span><span class="n">Doc</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
 
 <p>Apply citation-by-identifier to a Python object representation of
@@ -1854,7 +1844,7 @@ Pandoc's Abstract Syntax Tree.</p>
 <li>manubot-output-citekeys: path to write TSV table of citekeys</li>
 <li>manubot-output-bibliography: path to write generated CSL JSON bibliography</li>
 </ul>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">process_citations</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">process_citations</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Doc</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">None</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1892,13 +1882,13 @@ Pandoc's Abstract Syntax Tree.</p>
 
         <span class="n">citekey_aliases</span> <span class="o">=</span> <span class="n">dict</span><span class="p">()</span>
 
-    <span class="n">global_variables</span><span class="p">[</span><span class="s2">&quot;citekey_aliases&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekey_aliases</span>
+    <span class="n">doc</span><span class="o">.</span><span class="n">manubot</span><span class="p">[</span><span class="s2">&quot;citekey_aliases&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citekey_aliases</span>
 
     <span class="n">doc</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">_get_reference_link_citekey_aliases</span><span class="p">)</span>
 
     <span class="n">doc</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">_get_citekeys_action</span><span class="p">)</span>
 
-    <span class="n">manuscript_citekeys</span> <span class="o">=</span> <span class="n">global_variables</span><span class="p">[</span><span class="s2">&quot;manuscript_citekeys&quot;</span><span class="p">]</span>
+    <span class="n">manuscript_citekeys</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">manubot</span><span class="p">[</span><span class="s2">&quot;manuscript_citekeys&quot;</span><span class="p">]</span>
 
     <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="o">=</span><span class="n">manuscript_citekeys</span><span class="p">,</span> <span class="n">aliases</span><span class="o">=</span><span class="n">citekey_aliases</span><span class="p">)</span>
 
@@ -1928,7 +1918,7 @@ Pandoc's Abstract Syntax Tree.</p>
 
     <span class="n">citations</span><span class="o">.</span><span class="n">get_csl_items</span><span class="p">()</span>
 
-    <span class="n">global_variables</span><span class="p">[</span><span class="s2">&quot;citekey_shortener&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citations</span><span class="o">.</span><span class="n">input_to_csl_id</span>
+    <span class="n">doc</span><span class="o">.</span><span class="n">manubot</span><span class="p">[</span><span class="s2">&quot;citekey_shortener&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citations</span><span class="o">.</span><span class="n">input_to_csl_id</span>
 
     <span class="n">doc</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">_citation_to_id_action</span><span class="p">)</span>
 
