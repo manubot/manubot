@@ -107,10 +107,6 @@ def test_cite_command_file(tmpdir):
 @pytest.mark.skipif(
     not shutil.which("pandoc"), reason="pandoc installation not found on system"
 )
-@pytest.mark.skipif(
-    not shutil.which("pandoc-citeproc"),
-    reason="pandoc-citeproc installation not found on system",
-)
 @pytest.mark.pandoc_version_sensitive
 def test_cite_command_render_stdout(args, filename):
     """
