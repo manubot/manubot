@@ -37,6 +37,16 @@ def test_cite_pandoc_filter():
       --filter=pandoc-manubot-cite \
       --filter=pandoc-citeproc \
       manubot/pandoc/tests/test_cite_filter/input.md
+
+    # Command to generate Pandoc JSON input for pandoc-manubot-cite
+    pandoc \
+      --to=json \
+      --wrap=preserve \
+      --csl=https://github.com/manubot/rootstock/raw/8b9b5ced2c7c963bf3ea5afb8f31f9a4a54ab697/build/assets/style.csl \
+      --output=manubot/pandoc/tests/test_cite_filter/filter-input.json \
+      --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.json \
+      --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.bib \
+      manubot/pandoc/tests/test_cite_filter/input.md
     ```
     """
     data_dir = directory.joinpath("test_cite_filter")
