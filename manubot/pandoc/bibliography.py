@@ -48,7 +48,7 @@ def load_bibliography(path=None, text=None, input_format=None) -> list:
         args.append(str(path))
     if use_text:
         run_kwargs["input"] = text
-    logging.info("call_pandoc subprocess args:\n>>> " + shlex_join(args))
+    logging.info("load_bibliography subprocess args:\n>>> " + shlex_join(args))
     process = subprocess.run(
         args,
         stdout=subprocess.PIPE,

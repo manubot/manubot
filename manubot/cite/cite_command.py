@@ -36,8 +36,7 @@ def call_pandoc(metadata, path, format="plain"):
     )
     args = [
         "pandoc",
-        "--filter",
-        "pandoc-citeproc",
+        "--citeproc" if info["pandoc version"] >= (2, 11) else "--filter=pandoc-citeproc",
         "--output",
         str(path) if path else "-",
     ]
@@ -114,17 +113,16 @@ def cli_cite(args):
     call_pandoc(metadata=pandoc_metadata, path=args.output, format=args.format)
 
 
-def _exit_without_pandoc():
+def _exit_without_pandoc() -> None:
     """
     Given info from get_pandoc_info, exit Python if Pandoc is not available.
     """
-    info = get_pandoc_info()
-    for command in "pandoc", "pandoc-citeproc":
-        if not info[command]:
-            logging.critical(
-                f"{command!r} not found on system. Check that Pandoc is installed."
-            )
-            raise SystemExit(1)
+    if get_pandoc_info()["pandoc"]:
+        return
+    logging.critical(
+        f"pandoc command not found on system. Ensure that Pandoc is installed."
+    )
+    raise SystemExit(1)
 
 
 def _check_pandoc_version(info, metadata, format):
