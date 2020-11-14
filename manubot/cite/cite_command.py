@@ -36,7 +36,9 @@ def call_pandoc(metadata, path, format="plain"):
     )
     args = [
         "pandoc",
-        "--citeproc" if info["pandoc version"] >= (2, 11) else "--filter=pandoc-citeproc",
+        "--citeproc"
+        if info["pandoc version"] >= (2, 11)
+        else "--filter=pandoc-citeproc",
         "--output",
         str(path) if path else "-",
     ]
