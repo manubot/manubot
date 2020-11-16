@@ -11,8 +11,24 @@ jobs:
       max-parallel: 4
       fail-fast: false
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os:
+        - ubuntu-latest
+        - windows-latest
+        - macOS-latest
+        python-version:
+        - 3.6
+        - 3.7
+        - 3.8
+        - 3.9
+        pandoc-version:
+        - 2.9.2
+        - 2.11.1.1
+        include:
+        - pandoc-version: 2.9.2
+          panflute-version: 1.12.5
+        - pandoc-version: 2.11.1.1
+          panflute-version: 2.0.5
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -21,7 +37,7 @@ jobs:
       with:
         # pandoc-versions from 2.7.3 to 2.9.1 won't install on Windows
         # https://github.com/jgm/pandoc/issues/6071
-        pandoc-version: 2.11.1.1
+        pandoc-version: ${{ matrix.pandoc-version }}
     - name: Install Python
       uses: actions/setup-python@v2
       with:
@@ -29,7 +45,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install ".[all]"
+        pip install ".[all]" panflute==${{ matrix.panflute-version }}
     - name: Test with pytest
       env:
         GITHUB_PULL_REQUEST_SHA: ${{ github.event.pull_request.head.sha }}
