@@ -1,7 +1,3 @@
-import shutil
-
-import pytest
-
 from manubot.pandoc.tests.test_bibliography import (
     directory,
     skipif_no_pdcp,
