@@ -51,6 +51,13 @@ pip install --upgrade git+https://github.com/manubot/manubot@$COMMIT
 
 The `--upgrade` argument ensures `pip` updates an existing `manubot` installation if present.
 
+Some functions in this package require [Pandoc](https://pandoc.org/),
+which must be [installed](https://pandoc.org/installing.html) separately on the system.
+The pandoc-manubot-cite filter depends on Pandoc as well as panflute (a Python package).
+Users must install a [compatible version of panflute](https://github.com/sergiocorreia/panflute#supported-pandoc-versions) based on their Pandoc version.
+For example, on a system with Pandoc 2.9,
+install the appropriate panflute like `pip install panflute==1.12.5`.
+
 ## Usage
 
 Installing the python package creates the `manubot` command line program.
