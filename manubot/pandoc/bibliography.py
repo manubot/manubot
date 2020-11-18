@@ -48,13 +48,13 @@ def load_bibliography(
     pdoc_info = get_pandoc_info()
     if pdoc_info["pandoc-citeproc"]:
         return _load_bibliography_pandoc_citeproc(path, text, input_format)
-    if (input_format and input_format != "bib") or not path.endswith(".bib"):
-        logging.error(
-            "pandoc-citeproc not found on system, but is required to convert any format besides 'bib': "
-            "manubot.pandoc.bibliography.load_bibliography returning empty CSL JSON"
-        )
-        return []
-    return _load_bibliography_pandoc(path, text)
+    if input_format == "bib" or (use_path and path.endswith(".bib")):
+        return _load_bibliography_pandoc(path, text)
+    logging.error(
+        "pandoc-citeproc not found on system, but is required to convert any format besides 'bib': "
+        "manubot.pandoc.bibliography.load_bibliography returning empty CSL JSON"
+    )
+    return []
 
 
 def _load_bibliography_pandoc_citeproc(
