@@ -2,10 +2,11 @@ import logging
 import shutil
 import subprocess
 import functools
+from typing import Any, Dict, Tuple
 
 
 @functools.lru_cache()
-def get_pandoc_info():
+def get_pandoc_info() -> Dict[str, Any]:
     """
     Return path and version information for the system's pandoc and
     pandoc-citeproc commands. When Pandoc is installed,
@@ -48,9 +49,13 @@ def get_pandoc_info():
     return stats
 
 
-def get_pandoc_version() -> (int, int, int):
+def get_pandoc_version() -> Tuple[int, ...]:
     """
     Return pandoc version as tuple of major and minor
     version numbers, for example: (2, 7, 2)
     """
-    return get_pandoc_info()["pandoc version"]
+    pandoc_info = get_pandoc_info()
+    if not pandoc_info["pandoc"]:
+        # https://twitter.com/dhimmel/status/1327082301994496000
+        raise ImportError("missing pandoc command on system.")
+    return pandoc_info["pandoc version"]

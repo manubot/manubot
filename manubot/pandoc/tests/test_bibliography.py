@@ -6,30 +6,34 @@ import pytest
 from manubot.pandoc.bibliography import load_bibliography
 
 directory = pathlib.Path(__file__).parent
-bibliography_paths = sorted(
-    directory / x for x in directory.glob("bibliographies/bibliography.*")
-)
-bibliography_path_ids = [path.name for path in bibliography_paths]
 
 
-def test_bibliography_paths():
-    """
-    Test that the correct number of bibliography files are detected.
-    """
-    assert len(bibliography_path_ids) == 4
-
-
-@pytest.mark.skipif(
+skipif_no_pandoc_citeproc = pytest.mark.skipif(
     not shutil.which("pandoc-citeproc"),
-    reason="pandoc-citeproc installation not found on system",
+    reason="pandoc-citeproc required to load this format.",
 )
-@pytest.mark.parametrize("path", bibliography_paths, ids=bibliography_path_ids)
-def test_load_bibliography_from_path(path):
+skipif_no_pandoc = pytest.mark.skipif(
+    not shutil.which("pandoc"), reason="pandoc required to load this format."
+)
+bibliographies = [
+    pytest.param("bib", marks=skipif_no_pandoc),
+    pytest.param("json", marks=skipif_no_pandoc_citeproc),
+    pytest.param("nbib", marks=skipif_no_pandoc_citeproc),
+    pytest.param("ris", marks=skipif_no_pandoc_citeproc),
+]
+
+
+@pytest.fixture(params=bibliographies)
+def bibliography_path(request):
+    return directory.joinpath(f"bibliographies/bibliography.{request.param}")
+
+
+def test_load_bibliography_from_path(bibliography_path: pathlib.Path):
     """
     Some of the bibliographies for this test were generated at
     https://zbib.org/c7f95cdef6d6409c92ffde24d519435d
     """
-    csl_json = load_bibliography(path=path)
+    csl_json = load_bibliography(path=bibliography_path)
     assert len(csl_json) == 2
     assert (
         csl_json[0]["title"].rstrip(".")
@@ -37,17 +41,12 @@ def test_load_bibliography_from_path(path):
     )
 
 
-@pytest.mark.skipif(
-    not shutil.which("pandoc-citeproc"),
-    reason="pandoc-citeproc installation not found on system",
-)
-@pytest.mark.parametrize("path", bibliography_paths, ids=bibliography_path_ids)
-def test_load_bibliography_from_text(path):
+def test_load_bibliography_from_text(bibliography_path):
     """
     https://zbib.org/c7f95cdef6d6409c92ffde24d519435d
     """
-    text = path.read_text(encoding="utf-8-sig")
-    input_format = path.suffix[1:]
+    text = bibliography_path.read_text(encoding="utf-8-sig")
+    input_format = bibliography_path.suffix[1:]
     csl_json = load_bibliography(text=text, input_format=input_format)
     assert len(csl_json) == 2
     assert (

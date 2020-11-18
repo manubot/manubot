@@ -107,10 +107,6 @@ def test_cite_command_file(tmpdir):
 @pytest.mark.skipif(
     not shutil.which("pandoc"), reason="pandoc installation not found on system"
 )
-@pytest.mark.skipif(
-    not shutil.which("pandoc-citeproc"),
-    reason="pandoc-citeproc installation not found on system",
-)
 @pytest.mark.pandoc_version_sensitive
 def test_cite_command_render_stdout(args, filename):
     """
@@ -161,6 +157,9 @@ def test_cite_command_render_stdout(args, filename):
         cwd=data_dir,
     )
     print(shlex_join(process.args))
+    print(process.stderr)
+    assert process.returncode == 0
+    print(process.stdout)
     if not path.exists():
         # https://github.com/manubot/manubot/pull/146#discussion_r333132261
         print(
@@ -169,9 +168,6 @@ def test_cite_command_render_stdout(args, filename):
         )
         path.write_text(process.stdout, encoding="utf-8")
         assert False
-
-    print(process.stdout)
-    print(process.stderr)
     expected = path.read_text(encoding="utf-8-sig")
     assert process.stdout == expected
 
