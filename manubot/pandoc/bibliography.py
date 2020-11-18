@@ -32,6 +32,7 @@ def load_bibliography(
     input_format : str or None
         Manually specified input formatted that is supported by pandoc-citeproc:
         https://github.com/jgm/pandoc-citeproc/blob/master/man/pandoc-citeproc.1.md#options
+        Use 'bib' for BibLaTeX. Use 'json' for CSL JSON.
 
     Returns
     -------
@@ -40,14 +41,16 @@ def load_bibliography(
     """
     use_text = path is None
     use_path = text is None
+    if use_path:
+        path = os.fspath(path)
     if not (use_text ^ use_path):
         raise ValueError("load_bibliography: specify either path or text but not both.")
     pdoc_info = get_pandoc_info()
     if pdoc_info["pandoc-citeproc"]:
         return _load_bibliography_pandoc_citeproc(path, text, input_format)
-    if (input_format and input_format != "biblatex") or not path.endswith(".bib"):
+    if (input_format and input_format != "bib") or not path.endswith(".bib"):
         logging.error(
-            "pandoc-citeproc not found on system, but is required to convert any format besides biblatex: "
+            "pandoc-citeproc not found on system, but is required to convert any format besides 'bib': "
             "manubot.pandoc.bibliography.load_bibliography returning empty CSL JSON"
         )
         return []
