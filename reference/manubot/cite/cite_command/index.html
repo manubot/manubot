@@ -1386,9 +1386,11 @@
 
         <span class="s2">&quot;pandoc&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;--filter&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--citeproc&quot;</span>
 
-        <span class="s2">&quot;pandoc-citeproc&quot;</span><span class="p">,</span>
+        <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;pandoc version&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+
+        <span class="k">else</span> <span class="s2">&quot;--filter=pandoc-citeproc&quot;</span><span class="p">,</span>
 
         <span class="s2">&quot;--output&quot;</span><span class="p">,</span>
 
@@ -1524,7 +1526,7 @@
 
     <span class="n">call_pandoc</span><span class="p">(</span><span class="n">metadata</span><span class="o">=</span><span class="n">pandoc_metadata</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">format</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">_exit_without_pandoc</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">_exit_without_pandoc</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1532,19 +1534,17 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">info</span> <span class="o">=</span> <span class="n">get_pandoc_info</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">get_pandoc_info</span><span class="p">()[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">]:</span>
 
-    <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="s2">&quot;pandoc&quot;</span><span class="p">,</span> <span class="s2">&quot;pandoc-citeproc&quot;</span><span class="p">:</span>
+        <span class="k">return</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">info</span><span class="p">[</span><span class="n">command</span><span class="p">]:</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span>
+        <span class="n">f</span><span class="s2">&quot;pandoc command not found on system. Ensure that Pandoc is installed.&quot;</span>
 
-                <span class="n">f</span><span class="s2">&quot;{command!r} not found on system. Check that Pandoc is installed.&quot;</span>
+    <span class="p">)</span>
 
-            <span class="p">)</span>
-
-            <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">_check_pandoc_version</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">format</span><span class="p">):</span>
 
@@ -1625,9 +1625,11 @@
 
         <span class="ss">&quot;pandoc&quot;</span><span class="p">,</span>
 
-        <span class="ss">&quot;--filter&quot;</span><span class="p">,</span>
+        <span class="ss">&quot;--citeproc&quot;</span>
 
-        <span class="ss">&quot;pandoc-citeproc&quot;</span><span class="p">,</span>
+        <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="ss">&quot;pandoc version&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+
+        <span class="k">else</span> <span class="ss">&quot;--filter=pandoc-citeproc&quot;</span><span class="p">,</span>
 
         <span class="ss">&quot;--output&quot;</span><span class="p">,</span>
 

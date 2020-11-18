@@ -1000,13 +1000,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#classes" class="md-nav__link">
     Classes
   </a>
@@ -1021,13 +1014,6 @@
   
     <nav class="md-nav" aria-label="Test_load_manual_references">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#class-variables" class="md-nav__link">
-    Class variables
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#methods" class="md-nav__link">
@@ -1315,13 +1301,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#classes" class="md-nav__link">
     Classes
   </a>
@@ -1336,13 +1315,6 @@
   
     <nav class="md-nav" aria-label="Test_load_manual_references">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#class-variables" class="md-nav__link">
-    Class variables
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#methods" class="md-nav__link">
@@ -1416,21 +1388,17 @@
                 
                 
                 <h1 id="module-manubotprocessteststest_bibliography">Module manubot.process.tests.test_bibliography</h1>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">shutil</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">manubot.pandoc.tests.test_bibliography</span> <span class="kn">import</span> <span class="p">(</span>
 
-<span class="kn">import</span> <span class="nn">pytest</span>
+    <span class="n">directory</span><span class="p">,</span>
 
-<span class="kn">from</span> <span class="nn">manubot.pandoc.tests.test_bibliography</span> <span class="kn">import</span> <span class="n">bibliography_paths</span>
+    <span class="n">skipif_no_pandoc</span><span class="p">,</span>
 
-<span class="kn">from</span> <span class="nn">manubot.process.bibliography</span> <span class="kn">import</span> <span class="n">load_manual_references</span>
-
-<span class="nd">@pytest.mark.skipif</span><span class="p">(</span>
-
-    <span class="ow">not</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;pandoc-citeproc&quot;</span><span class="p">),</span>
-
-    <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;pandoc-citeproc installation not found on system&quot;</span><span class="p">,</span>
+    <span class="n">skipif_no_pandoc_citeproc</span><span class="p">,</span>
 
 <span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">manubot.process.bibliography</span> <span class="kn">import</span> <span class="n">load_manual_references</span>
 
 <span class="k">class</span> <span class="nc">Test_load_manual_references</span><span class="p">:</span>
 
@@ -1441,6 +1409,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">setup_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">bibliography_paths</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+
+            <span class="n">directory</span> <span class="o">/</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">directory</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;bibliographies/bibliography.*&quot;</span><span class="p">)</span>
+
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span> <span class="o">=</span> <span class="n">load_manual_references</span><span class="p">(</span><span class="n">bibliography_paths</span><span class="p">)</span>
 
@@ -1460,6 +1434,8 @@
 
         <span class="k">assert</span> <span class="s2">&quot;standard_id: doi:10.7554/elife.32822&quot;</span> <span class="ow">in</span> <span class="n">csl_item_1</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
 
+    <span class="nd">@skipif_no_pandoc</span>
+
     <span class="k">def</span> <span class="nf">test_csl_item_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># raw id corresponding to bibliography.bib</span>
@@ -1473,6 +1449,8 @@
         <span class="k">assert</span> <span class="s2">&quot;manual_reference_filename: bibliography.bib&quot;</span> <span class="ow">in</span> <span class="n">csl_item_2</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
 
         <span class="k">assert</span> <span class="s2">&quot;standard_id: noauthor_techblog:_nodate&quot;</span> <span class="ow">in</span> <span class="n">csl_item_2</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
+
+    <span class="nd">@skipif_no_pandoc_citeproc</span>
 
     <span class="k">def</span> <span class="nf">test_csl_item_3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -1488,10 +1466,6 @@
 </code></pre></div>
 
 </details>
-<h2 id="variables">Variables</h2>
-<div class="codehilite"><pre><span></span><code><span class="n">bibliography_paths</span>
-</code></pre></div>
-
 <h2 id="classes">Classes</h2>
 <h3 id="test_load_manual_references">Test_load_manual_references</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">Test_load_manual_references</span><span class="p">(</span>
@@ -1502,15 +1476,7 @@
 </code></pre></div>
 
 <p>Tests loading multiple bibliography paths</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="err">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skipif</span><span class="p">(</span>
-
-    <span class="ow">not</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;pandoc-citeproc&quot;</span><span class="p">),</span>
-
-    <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;pandoc-citeproc installation not found on system&quot;</span><span class="p">,</span>
-
-<span class="p">)</span>
-
-<span class="k">class</span> <span class="n">Test_load_manual_references</span><span class="p">:</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="n">Test_load_manual_references</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1519,6 +1485,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">def</span> <span class="n">setup_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">bibliography_paths</span> <span class="o">=</span> <span class="n">sorted</span><span class="p">(</span>
+
+            <span class="n">directory</span> <span class="o">/</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">directory</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;bibliographies/bibliography.*&quot;</span><span class="p">)</span>
+
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span> <span class="o">=</span> <span class="n">load_manual_references</span><span class="p">(</span><span class="n">bibliography_paths</span><span class="p">)</span>
 
@@ -1538,6 +1510,8 @@
 
         <span class="nb">assert</span> <span class="s2">&quot;standard_id: doi:10.7554/elife.32822&quot;</span> <span class="ow">in</span> <span class="n">csl_item_1</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
 
+    <span class="err">@</span><span class="n">skipif_no_pandoc</span>
+
     <span class="n">def</span> <span class="n">test_csl_item_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># raw id corresponding to bibliography.bib</span>
@@ -1551,6 +1525,8 @@
         <span class="nb">assert</span> <span class="s2">&quot;manual_reference_filename: bibliography.bib&quot;</span> <span class="ow">in</span> <span class="n">csl_item_2</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
 
         <span class="nb">assert</span> <span class="s2">&quot;standard_id: noauthor_techblog:_nodate&quot;</span> <span class="ow">in</span> <span class="n">csl_item_2</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
+
+    <span class="err">@</span><span class="n">skipif_no_pandoc_citeproc</span>
 
     <span class="n">def</span> <span class="n">test_csl_item_3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -1567,10 +1543,6 @@
 
 </details>
 <hr />
-<h4 id="class-variables">Class variables</h4>
-<div class="codehilite"><pre><span></span><code><span class="n">pytestmark</span>
-</code></pre></div>
-
 <h4 id="methods">Methods</h4>
 <h5 id="setup_method">setup_method</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">setup_method</span><span class="p">(</span>
@@ -1579,6 +1551,12 @@
 </code></pre></div>
 
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">setup_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">bibliography_paths</span> <span class="o">=</span> <span class="n">sorted</span><span class="p">(</span>
+
+            <span class="n">directory</span> <span class="o">/</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">directory</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;bibliographies/bibliography.*&quot;</span><span class="p">)</span>
+
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span> <span class="o">=</span> <span class="n">load_manual_references</span><span class="p">(</span><span class="n">bibliography_paths</span><span class="p">)</span>
 
@@ -1614,19 +1592,21 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">test_csl_item_2</span><span class="p">(</span><span class="k">self</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">@skipif_no_pandoc</span><span class="w"></span>
 
-        <span class="o">#</span> <span class="n">raw</span> <span class="n">id</span> <span class="n">corresponding</span> <span class="k">to</span> <span class="n">bibliography</span><span class="p">.</span><span class="n">bib</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">test_csl_item_2</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-        <span class="n">assert</span> <span class="ss">&quot;noauthor_techblog:_nodate&quot;</span> <span class="k">in</span> <span class="k">self</span><span class="p">.</span><span class="n">citation_to_csl_item</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="n">raw</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">corresponding</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">bibliography</span><span class="p">.</span><span class="n">bib</span><span class="w"></span>
 
-        <span class="n">csl_item_2</span> <span class="o">=</span> <span class="k">self</span><span class="p">.</span><span class="n">citation_to_csl_item</span><span class="p">[</span><span class="ss">&quot;noauthor_techblog:_nodate&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">assert</span><span class="w"> </span><span class="ss">&quot;noauthor_techblog:_nodate&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">citation_to_csl_item</span><span class="w"></span>
 
-        <span class="n">assert</span> <span class="n">csl_item_2</span><span class="p">[</span><span class="ss">&quot;title&quot;</span><span class="p">].</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;TechBlog&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">csl_item_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">citation_to_csl_item</span><span class="o">[</span><span class="n">&quot;noauthor_techblog:_nodate&quot;</span><span class="o">]</span><span class="w"></span>
 
-        <span class="n">assert</span> <span class="ss">&quot;manual_reference_filename: bibliography.bib&quot;</span> <span class="k">in</span> <span class="n">csl_item_2</span><span class="p">[</span><span class="ss">&quot;note&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item_2</span><span class="o">[</span><span class="n">&quot;title&quot;</span><span class="o">]</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;TechBlog&quot;</span><span class="p">)</span><span class="w"></span>
 
-        <span class="n">assert</span> <span class="ss">&quot;standard_id: noauthor_techblog:_nodate&quot;</span> <span class="k">in</span> <span class="n">csl_item_2</span><span class="p">[</span><span class="ss">&quot;note&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">assert</span><span class="w"> </span><span class="ss">&quot;manual_reference_filename: bibliography.bib&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item_2</span><span class="o">[</span><span class="n">&quot;note&quot;</span><span class="o">]</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">assert</span><span class="w"> </span><span class="ss">&quot;standard_id: noauthor_techblog:_nodate&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item_2</span><span class="o">[</span><span class="n">&quot;note&quot;</span><span class="o">]</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -1636,17 +1616,19 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">test_csl_item_3</span><span class="p">(</span><span class="k">self</span><span class="p">):</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">@skipif_no_pandoc_citeproc</span><span class="w"></span>
 
-        <span class="n">assert</span> <span class="ss">&quot;Beaulieu-Jones2017&quot;</span> <span class="k">in</span> <span class="k">self</span><span class="p">.</span><span class="n">citation_to_csl_item</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">test_csl_item_3</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
-        <span class="n">csl_item_3</span> <span class="o">=</span> <span class="k">self</span><span class="p">.</span><span class="n">citation_to_csl_item</span><span class="p">[</span><span class="ss">&quot;Beaulieu-Jones2017&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">assert</span><span class="w"> </span><span class="ss">&quot;Beaulieu-Jones2017&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">citation_to_csl_item</span><span class="w"></span>
 
-        <span class="n">assert</span> <span class="n">csl_item_3</span><span class="p">[</span><span class="ss">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="ss">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;Beaulieu-Jones&quot;</span>
+<span class="w">        </span><span class="n">csl_item_3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">citation_to_csl_item</span><span class="o">[</span><span class="n">&quot;Beaulieu-Jones2017&quot;</span><span class="o">]</span><span class="w"></span>
 
-        <span class="n">assert</span> <span class="ss">&quot;manual_reference_filename: bibliography.nbib&quot;</span> <span class="k">in</span> <span class="n">csl_item_3</span><span class="p">[</span><span class="ss">&quot;note&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item_3</span><span class="o">[</span><span class="n">&quot;author&quot;</span><span class="o">][</span><span class="n">0</span><span class="o">][</span><span class="n">&quot;family&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;Beaulieu-Jones&quot;</span><span class="w"></span>
 
-        <span class="n">assert</span> <span class="ss">&quot;standard_id: Beaulieu-Jones2017&quot;</span> <span class="k">in</span> <span class="n">csl_item_3</span><span class="p">[</span><span class="ss">&quot;note&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">assert</span><span class="w"> </span><span class="ss">&quot;manual_reference_filename: bibliography.nbib&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item_3</span><span class="o">[</span><span class="n">&quot;note&quot;</span><span class="o">]</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">assert</span><span class="w"> </span><span class="ss">&quot;standard_id: Beaulieu-Jones2017&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item_3</span><span class="o">[</span><span class="n">&quot;note&quot;</span><span class="o">]</span><span class="w"></span>
 </code></pre></div>
 
 </details>

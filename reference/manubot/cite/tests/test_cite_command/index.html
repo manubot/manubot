@@ -1584,14 +1584,6 @@
 
 <span class="p">)</span>
 
-<span class="nd">@pytest.mark.skipif</span><span class="p">(</span>
-
-    <span class="ow">not</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;pandoc-citeproc&quot;</span><span class="p">),</span>
-
-    <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;pandoc-citeproc installation not found on system&quot;</span><span class="p">,</span>
-
-<span class="p">)</span>
-
 <span class="nd">@pytest.mark.pandoc_version_sensitive</span>
 
 <span class="k">def</span> <span class="nf">test_cite_command_render_stdout</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
@@ -1684,6 +1676,12 @@
 
     <span class="k">print</span><span class="p">(</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
 
+    <span class="k">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
 
         <span class="c1"># https://github.com/manubot/manubot/pull/146#discussion_r333132261</span>
@@ -1699,10 +1697,6 @@
         <span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 
         <span class="k">assert</span> <span class="bp">False</span>
-
-    <span class="k">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
-
-    <span class="k">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
     <span class="n">expected</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
 
@@ -2027,14 +2021,6 @@ Regenerate the CSL JSON using:</p>
 
 <span class="p">)</span>
 
-<span class="err">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skipif</span><span class="p">(</span>
-
-    <span class="ow">not</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;pandoc-citeproc&quot;</span><span class="p">),</span>
-
-    <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;pandoc-citeproc installation not found on system&quot;</span><span class="p">,</span>
-
-<span class="p">)</span>
-
 <span class="err">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">pandoc_version_sensitive</span>
 
 <span class="n">def</span> <span class="n">test_cite_command_render_stdout</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
@@ -2127,6 +2113,12 @@ Regenerate the CSL JSON using:</p>
 
     <span class="nb">print</span><span class="p">(</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
 
+    <span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+    <span class="nb">assert</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
 
         <span class="c1"># https://github.com/manubot/manubot/pull/146#discussion_r333132261</span>
@@ -2142,10 +2134,6 @@ Regenerate the CSL JSON using:</p>
         <span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 
         <span class="nb">assert</span> <span class="n">False</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
     <span class="n">expected</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
 
