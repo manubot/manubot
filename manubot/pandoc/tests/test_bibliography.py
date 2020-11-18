@@ -8,18 +8,18 @@ from manubot.pandoc.bibliography import load_bibliography
 directory = pathlib.Path(__file__).parent
 
 
-skipif_no_pdcp = pytest.mark.skipif(
+skipif_no_pandoc_citeproc = pytest.mark.skipif(
     not shutil.which("pandoc-citeproc"),
     reason="pandoc-citeproc required to load this format.",
 )
-skipif_no_pd = pytest.mark.skipif(
-    not shutil.which("pandoc-citeproc"), reason="pandoc required to load this format."
+skipif_no_pandoc = pytest.mark.skipif(
+    not shutil.which("pandoc"), reason="pandoc required to load this format."
 )
 bibliographies = [
-    pytest.param("bib", marks=skipif_no_pd),
-    pytest.param("json", marks=skipif_no_pdcp),
-    pytest.param("nbib", marks=skipif_no_pdcp),
-    pytest.param("ris", marks=skipif_no_pdcp),
+    pytest.param("bib", marks=skipif_no_pandoc),
+    pytest.param("json", marks=skipif_no_pandoc_citeproc),
+    pytest.param("nbib", marks=skipif_no_pandoc_citeproc),
+    pytest.param("ris", marks=skipif_no_pandoc_citeproc),
 ]
 
 
