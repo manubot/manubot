@@ -214,13 +214,18 @@ class CSL_Item(dict):
         )
         return dict(line_matches + braced_matches)
 
-    def note_append_text(self, text: str):
+    def note_append_text(self, text: str) -> None:
         """
-        Append text to the note field of a CSL Item.
+        Append text to the note field (as a new line) of a CSL Item.
+        If a line already exists equal to `text`, do nothing.
         """
         if not text:
             return
         note = self.note
+        if re.search(f"^{re.escape(text)}$", note, flags=re.MULTILINE):
+            # do not accumulate duplicate lines of text
+            # https://github.com/manubot/manubot/issues/258
+            return
         if note and not note.endswith("\n"):
             note += "\n"
         note += text
