@@ -152,6 +152,10 @@ def test_csl_item_standardize_id_note():
             {"standard_citation": "doi:10.7554/elife.32822"},
             "This CSL Item was produced using Manubot.\nstandard_citation: doi:10.7554/elife.32822",
         ),
+        # do not append duplicate lines to a note
+        # https://github.com/manubot/manubot/issues/258
+        ("Already exists.", "Already exists.", {}, "Already exists."),
+        ("", "exists: yes", {"exists": "yes"}, "exists: yes"),
     ],
 )
 def test_csl_item_note_append(input_note, text, dictionary, expected_note):
