@@ -27,7 +27,7 @@ import copy
 import datetime
 import logging
 import re
-from typing import List, Optional, Union
+from typing import Dict, List, Optional, Union
 
 from manubot.cite.citekey import CiteKey
 
@@ -64,7 +64,7 @@ class CSL_Item(dict):
         "reference-entry": "entry",
     }
 
-    def __init__(self, dictionary=None, **kwargs):
+    def __init__(self, dictionary=None, **kwargs) -> None:
         """
         Can use both a dictionary or keywords to create a CSL_Item object:
 
@@ -82,11 +82,11 @@ class CSL_Item(dict):
         super().__init__(copy.deepcopy(dictionary))
         self.update(copy.deepcopy(kwargs))
 
-    def set_id(self, id_):
+    def set_id(self, id_) -> "CSL_Item":
         self["id"] = id_
         return self
 
-    def correct_invalid_type(self):
+    def correct_invalid_type(self) -> "CSL_Item":
         """
         Correct invalid CSL item type.
         Does nothing if `type` not present.
@@ -100,14 +100,14 @@ class CSL_Item(dict):
             self["type"] = self.type_mapping.get(t, t)
         return self
 
-    def set_default_type(self):
+    def set_default_type(self) -> "CSL_Item":
         """
         Set type to 'entry', if type not specified.
         """
         self["type"] = self.get("type", "entry")
         return self
 
-    def prune_against_schema(self):
+    def prune_against_schema(self) -> "CSL_Item":
         """
         Remove fields that violate the CSL Item JSON Schema.
         """
@@ -117,7 +117,7 @@ class CSL_Item(dict):
         assert csl_item is self
         return self
 
-    def validate_against_schema(self):
+    def validate_against_schema(self) -> "CSL_Item":
         """
         Confirm that the CSL_Item validates. If not, raises a
         jsonschema.exceptions.ValidationError.
@@ -128,7 +128,7 @@ class CSL_Item(dict):
         validator.validate([self])
         return self
 
-    def clean(self, prune: bool = True):
+    def clean(self, prune: bool = True) -> "CSL_Item":
         """
         Sanitize and touch-up a potentially dirty CSL_Item.
         The following steps are performed:
@@ -154,7 +154,7 @@ class CSL_Item(dict):
         self,
         date: Union[None, str, datetime.date, datetime.datetime],
         variable: str = "issued",
-    ):
+    ) -> "CSL_Item":
         """
         date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
             or as a Python date object (datetime.date or datetime.datetime).
@@ -165,7 +165,7 @@ class CSL_Item(dict):
             self[variable] = {"date-parts": [date_parts]}
         return self
 
-    def get_date(self, variable: str = "issued", fill: bool = False):
+    def get_date(self, variable: str = "issued", fill: bool = False) -> Optional[str]:
         """
         Return a CSL date-variable as ISO formatted string:
         ('YYYY', 'YYYY-MM', 'YYYY-MM-DD', or None).
@@ -189,7 +189,7 @@ class CSL_Item(dict):
         return str(self.get("note") or "")
 
     @note.setter
-    def note(self, text: str):
+    def note(self, text: str) -> None:
         if text:
             self["note"] = text
         else:
@@ -197,7 +197,7 @@ class CSL_Item(dict):
             self.pop("note", None)
 
     @property
-    def note_dict(self) -> dict:
+    def note_dict(self) -> Dict[str, str]:
         """
         Return a dictionary with key-value pairs encoded by this CSL Item's note.
         Extracts both forms (line-entry and braced-entry) of key-value pairs from the CSL JSON "cheater syntax"
@@ -226,7 +226,7 @@ class CSL_Item(dict):
         note += text
         self.note = note
 
-    def note_append_dict(self, dictionary: dict):
+    def note_append_dict(self, dictionary: dict) -> None:
         """
         Append key-value pairs specified by `dictionary` to the note field of a CSL Item.
         Uses the the [CSL JSON "cheater syntax"](https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields)
@@ -247,7 +247,7 @@ class CSL_Item(dict):
                 continue
             self.note_append_text(f"{key}: {value}")
 
-    def infer_id(self):
+    def infer_id(self) -> "CSL_Item":
         """
         Detect and set a non-null/empty value for "id" or else raise a ValueError.
         """
@@ -265,7 +265,7 @@ class CSL_Item(dict):
             'Consider setting the CSL Item "id" field.'
         )
 
-    def standardize_id(self):
+    def standardize_id(self) -> "CSL_Item":
         """
         Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its "id" field.
         The standard_id is extracted from a "standard_citation" field, the "note" field, or the "id" field.
@@ -297,7 +297,7 @@ class CSL_Item(dict):
         return self
 
 
-def assert_csl_item_type(x):
+def assert_csl_item_type(x) -> None:
     if not isinstance(x, CSL_Item):
         raise TypeError(f"Expected CSL_Item object, got {type(x)}")
 
