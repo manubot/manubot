@@ -44,10 +44,14 @@ def load_bibliography(path: str) -> list:
 
 def load_manual_references(paths=[], extra_csl_items=[]) -> dict:
     """
-    Read manual references (overrides) from files specified by a list of paths.
-    Returns a standard_citation to CSL Item dictionary. extra_csl_items specifies
-    JSON CSL stored as a Python object, to be used in addition to the CSL JSON
-    stored as text in the file specified by path. Set paths=[] to only use extra_csl_items.
+    Read manual references from bibliography text files specified by a list of paths.
+    Returns a standard_citation to CSL Item dictionary.
+    `extra_csl_items` specifies CSL Items stored as a Python object,
+    to be used in addition to the CSL Items stored as text in the files specified by `paths`.
+    Set `paths=[]` to only use extra_csl_items.
+    When multiple references have the same standard_id,
+    precedence is given to reference defined last.
+    References in `extra_csl_items` take precedence over those from `paths`.
     """
     from manubot.cite.csl_item import CSL_Item
 
