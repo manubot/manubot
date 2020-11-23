@@ -15,6 +15,7 @@ directory = pathlib.Path(__file__).parent
 @pytest.mark.skipif(
     not shutil.which("pandoc"), reason="pandoc installation not found on system"
 )
+# FIXME: a version of this test for pandoc >= 2.11 is needed.
 @pytest.mark.skipif(
     not shutil.which("pandoc-citeproc"),
     reason="pandoc-citeproc installation not found on system",
@@ -64,7 +65,7 @@ def test_cite_pandoc_filter():
         "--bibliography",
         str(directory.joinpath("test_cite_filter", "bibliography.bib")),
         "--filter=pandoc-manubot-cite",
-        "--filter=pandoc-citeproc",
+        "--filter=pandoc-citeproc" if pandoc_version < (2, 11) else "--citeproc",
         "--to=plain",
     ]
     process = subprocess.run(
