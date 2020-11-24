@@ -6,9 +6,8 @@ import warnings
 from typing import List, Optional
 
 import jinja2
-import yaml
 
-from manubot.util import read_serialized_data, read_serialized_dict
+from manubot.util import read_serialized_data, read_serialized_dict, get_configured_yaml
 from manubot.process.ci import get_continuous_integration_parameters
 from manubot.process.metadata import (
     get_header_includes,
@@ -300,6 +299,7 @@ def prepare_manuscript(args):
     text = template_with_jinja2(text, variables)
 
     # Write manuscript for pandoc
+    yaml = get_configured_yaml()
     with args.manuscript_path.open("w", encoding="utf-8") as write_file:
         yaml.dump(
             variables["pandoc"],
@@ -308,6 +308,7 @@ def prepare_manuscript(args):
             explicit_start=True,
             explicit_end=True,
             width=float("inf"),
+            allow_unicode=True,
         )
         write_file.write("\n")
         write_file.write(text)

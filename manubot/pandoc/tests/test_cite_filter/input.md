@@ -11,7 +11,7 @@ references:
   container-title: Greene Laboratory
   location: University of Pennsylvania
   issued: {'date-parts': [[2018, 12, 19]]}
-manubot-bibliography-cache:
+# manubot-bibliography-cache: manubot/pandoc/tests/test_cite_filter/bibliography-cache.json
 manubot-requests-cache-path: .cache/requests-cache
 manubot-log-level: INFO
 ...

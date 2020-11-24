@@ -8,6 +8,7 @@ import shlex
 import shutil
 import subprocess
 import sys
+from types import ModuleType
 
 # Email address that forwards to Manubot maintainers
 contact_email: str = "contact@manubot.org"
@@ -142,3 +143,35 @@ def read_serialized_dict(path: str) -> dict:
         f"Expected data encoded by {path!r} to be a dictionary at the top-level. "
         f"Received {data.__class__.__name__!r} instead."
     )
+
+
+def _yaml_str_representer(dumper: "yaml.Dumper", data: str):
+    """
+    Use YAML literal block style for multiline strings.
+    Based on https://stackoverflow.com/a/33300001/4651668
+    """
+    if len(data.splitlines()) > 1:
+        # use literal block style for multiline strings
+        return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
+    return dumper.represent_scalar("tag:yaml.org,2002:str", data)
+
+
+def get_configured_yaml() -> ModuleType:
+    """
+    Return imported YAML library with Manubot configuration.
+    The representers are only applied to yaml.dump, not yaml.safe_dump.
+    """
+    import yaml
+    from manubot.cite.csl_item import CSL_Item
+
+    yaml.add_representer(str, _yaml_str_representer)
+    # CSL_Item: pyyaml chokes on dict subclass
+    # https://github.com/yaml/pyyaml/issues/142
+    # https://stackoverflow.com/a/50181505/4651668
+    yaml.add_representer(
+        CSL_Item,
+        lambda dumper, data: dumper.represent_mapping(
+            tag="tag:yaml.org,2002:map", mapping=data.items()
+        ),
+    )
+    return yaml

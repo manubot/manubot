@@ -163,7 +163,7 @@ def process_citations(doc: pf.Doc) -> None:
     - bibliography (use to define reference metadata manually)
     - citekey-aliases (use to define tags for cite-by-id citations)
     - manubot-bibliography-cache:
-      Path to read and write bibliographic metadata as CSL JSON.
+      Path to read and write bibliographic metadata as CSL JSON/YAML.
       Intended as a human-editable cache of the bibliography data,
       for situations where this filter is run multiple times.
     - manubot-requests-cache-path
@@ -216,8 +216,8 @@ def process_citations(doc: pf.Doc) -> None:
         req_cache.close()
 
     citations.write_citekeys_tsv(path=doc.get_metadata("manubot-output-citekeys"))
-    citations.write_csl_json(path=doc.get_metadata("manubot-output-bibliography"))
-    citations.write_csl_json(path=doc.manubot["bibliography_cache"])
+    citations.write_csl_items(path=doc.get_metadata("manubot-output-bibliography"))
+    citations.write_csl_items(path=doc.manubot["bibliography_cache"])
     # Update pandoc metadata with fields that this filter
     # has either consumed, created, or modified.
     doc.metadata["bibliography"] = []
