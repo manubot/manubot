@@ -191,6 +191,7 @@ class Citations:
             default_flow_style=False,
             width=float("inf"),
             allow_unicode=True,
+            sort_keys=False,
         )
 
     def write_csl_items(self, path: tp.Union[os.PathLike, str, None]) -> None:

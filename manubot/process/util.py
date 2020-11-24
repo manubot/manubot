@@ -309,6 +309,7 @@ def prepare_manuscript(args):
             explicit_end=True,
             width=float("inf"),
             allow_unicode=True,
+            sort_keys=False,
         )
         write_file.write("\n")
         write_file.write(text)
