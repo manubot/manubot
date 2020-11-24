@@ -162,17 +162,17 @@ def process_citations(doc: pf.Doc) -> None:
 
     - bibliography (use to define reference metadata manually)
     - citekey-aliases (use to define tags for cite-by-id citations)
-    - manubot-bibliography-cache
+    - manubot-bibliography-cache:
+      Path to read and write bibliographic metadata as CSL JSON.
+      Intended as a human-editable cache of the bibliography data,
+      for situations where this filter is run multiple times.
     - manubot-requests-cache-path
     - manubot-clear-requests-cache
     - manubot-output-citekeys: path to write TSV table of citekeys
     - manubot-output-bibliography: path to write generated CSL JSON bibliography
     """
     # process metadata.manubot-bibliography-cache
-    bib_cache = doc.get_metadata(
-        key="manubot-bibliography-cache",
-        default="manubot-bibliography-cache.json",
-    )
+    bib_cache = doc.get_metadata(key="manubot-bibliography-cache")
     if not (bib_cache is None or isinstance(bib_cache, str)):
         logging.warning(
             f"Expected metadata.manubot-bibliography-cache to be a string or null (None), "
