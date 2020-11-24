@@ -1,3 +1,6 @@
+import pathlib
+import pytest
+
 from manubot.cite.citations import Citations
 
 
@@ -82,3 +85,20 @@ def test_citations_inspect():
     print(report)
     assert len(report.splitlines()) == 4
     assert "pmid:bad-id -- PubMed Identifiers should be 1-8 digits" in report
+
+
+@pytest.mark.parametrize("csl_format", ["json", "yaml"])
+def test_citations_csl_serialization(csl_format):
+    ccr_dir = pathlib.Path(__file__).parent.joinpath("cite-command-rendered")
+    citations = Citations(
+        ["arxiv:1806.05726v1", "doi:10.7717/peerj.338", "pubmed:29618526"]
+    )
+    citations.load_manual_references(
+        paths=[ccr_dir.joinpath("input-bibliography.json")]
+    )
+    citations.get_csl_items()
+    path_out = ccr_dir.joinpath(f"output-bibliography.{csl_format}")
+    # uncomment the following line to regenerate test output
+    # citations.write_csl_items(path_out)
+    csl_out = getattr(citations, f"csl_{csl_format}")
+    assert csl_out == path_out.read_text()
