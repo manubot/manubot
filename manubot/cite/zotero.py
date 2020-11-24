@@ -10,6 +10,9 @@ https://github.com/manubot/manubot/issues/82.
 import json
 import logging
 from typing import Dict, Any, List
+import functools
+import os
+import warnings
 
 import requests
 
@@ -33,7 +36,8 @@ def web_query(url: str) -> ZoteroData:
     headers = {"User-Agent": get_manubot_user_agent(), "Content-Type": "text/plain"}
     params = {"single": 1}
     api_url = f"{base_url}/web"
-    response = requests.post(api_url, params=params, headers=headers, data=str(url))
+    with _get_zotero_rate_limiter():
+        response = requests.post(api_url, params=params, headers=headers, data=str(url))
     try:
         zotero_data = response.json()
     except Exception as error:
@@ -66,7 +70,8 @@ def search_query(identifier: str) -> ZoteroData:
     """
     api_url = f"{base_url}/search"
     headers = {"User-Agent": get_manubot_user_agent(), "Content-Type": "text/plain"}
-    response = requests.post(api_url, headers=headers, data=str(identifier))
+    with _get_zotero_rate_limiter():
+        response = requests.post(api_url, headers=headers, data=str(identifier))
     try:
         zotero_data = response.json()
     except Exception as error:
@@ -107,7 +112,10 @@ def export_as_csl(zotero_data: ZoteroData) -> CSLItems:
     api_url = f"{base_url}/export"
     params = {"format": "csljson"}
     headers = {"User-Agent": get_manubot_user_agent()}
-    response = requests.post(api_url, params=params, headers=headers, json=zotero_data)
+    with _get_zotero_rate_limiter():
+        response = requests.post(
+            api_url, params=params, headers=headers, json=zotero_data
+        )
     if not response.ok:
         message = f"export_as_csl: translation-server returned status code {response.status_code}"
         logging.warning(f"{message} with the following output:\n{response.text}")
@@ -142,3 +150,21 @@ def search_or_web_query(identifier: str) -> ZoteroData:
     else:
         zotero_data = search_query(identifier)
     return zotero_data
+
+
+@functools.lru_cache()
+def _get_zotero_rate_limiter() -> "RateLimiter":
+    """
+    Rate limiter to cap NCBI E-utilities queries to <= 3 per second as per
+    https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/
+    """
+    with warnings.catch_warnings():
+        # https://github.com/RazerM/ratelimiter/issues/10
+        # https://github.com/manubot/manubot/issues/257
+        warnings.filterwarnings("ignore", category=DeprecationWarning)
+        from ratelimiter import RateLimiter
+
+    if "CI" in os.environ:
+        # multiple CI jobs might be running concurrently
+        return RateLimiter(max_calls=1, period=1.5)
+    return RateLimiter(max_calls=2, period=1)
