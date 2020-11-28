@@ -15,6 +15,7 @@ directory = pathlib.Path(__file__).parent
 @pytest.mark.skipif(
     not shutil.which("pandoc"), reason="pandoc installation not found on system"
 )
+# FIXME: a version of this test for pandoc >= 2.11 is needed.
 @pytest.mark.skipif(
     not shutil.which("pandoc-citeproc"),
     reason="pandoc-citeproc installation not found on system",
@@ -30,10 +31,7 @@ def test_cite_pandoc_filter():
     pandoc \
       --to=plain \
       --wrap=preserve \
-      --csl=https://github.com/manubot/rootstock/raw/8b9b5ced2c7c963bf3ea5afb8f31f9a4a54ab697/build/assets/style.csl \
       --output=manubot/pandoc/tests/test_cite_filter/output.txt \
-      --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.json \
-      --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.bib \
       --filter=pandoc-manubot-cite \
       --filter=pandoc-citeproc \
       manubot/pandoc/tests/test_cite_filter/input.md
@@ -42,10 +40,7 @@ def test_cite_pandoc_filter():
     pandoc \
       --to=json \
       --wrap=preserve \
-      --csl=https://github.com/manubot/rootstock/raw/8b9b5ced2c7c963bf3ea5afb8f31f9a4a54ab697/build/assets/style.csl \
       --output=manubot/pandoc/tests/test_cite_filter/filter-input.json \
-      --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.json \
-      --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.bib \
       manubot/pandoc/tests/test_cite_filter/input.md
     ```
     """
@@ -58,13 +53,8 @@ def test_cite_pandoc_filter():
     args = [
         "pandoc",
         "--wrap=preserve",
-        "--csl=https://github.com/manubot/rootstock/raw/8b9b5ced2c7c963bf3ea5afb8f31f9a4a54ab697/build/assets/style.csl",
-        "--bibliography",
-        str(directory.joinpath("test_cite_filter", "bibliography.json")),
-        "--bibliography",
-        str(directory.joinpath("test_cite_filter", "bibliography.bib")),
         "--filter=pandoc-manubot-cite",
-        "--filter=pandoc-citeproc",
+        "--filter=pandoc-citeproc" if pandoc_version < (2, 11) else "--citeproc",
         "--to=plain",
     ]
     process = subprocess.run(

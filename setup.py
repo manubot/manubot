@@ -74,7 +74,7 @@ setuptools.setup(
         # https://github.com/sergiocorreia/panflute/issues/166
         "panflute !=2.0.3, !=2.0.4",
         "pybase62",
-        "pyyaml",
+        "pyyaml>=5.1",
         "ratelimiter",
         "requests-cache",
         "requests",

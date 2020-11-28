@@ -1,6 +1,7 @@
 import dataclasses
 import json
 import logging
+import os
 import pathlib
 import typing as tp
 
@@ -177,17 +178,36 @@ class Citations:
         json_str += "\n"
         return json_str
 
-    def write_csl_json(self, path):
+    @property
+    def csl_yaml(self) -> str:
+        from manubot.util import get_configured_yaml
+
+        yaml = get_configured_yaml()
+        assert hasattr(self, "csl_items")
+        # dump rather than safe_dump is required for
+        # pyyaml to use custom representers.
+        return yaml.dump(
+            data=self.csl_items,
+            default_flow_style=False,
+            width=float("inf"),
+            allow_unicode=True,
+            sort_keys=False,
+        )
+
+    def write_csl_items(self, path: tp.Union[os.PathLike, str, None]) -> None:
         """
-        Write CSL Items to a JSON file at `path`.
+        Write CSL Items to a JSON or YAML file at `path`.
+        If path ends with a .yml or .yaml extension, write as CSL YAML.
+        Otherwise write CSL JSON.
         If `path` evaluates as False, do nothing.
         """
         if not path:
             return
         path = pathlib.Path(path)
-        path.write_text(self.csl_json, encoding="utf-8")
+        text = self.csl_yaml if path.suffix in [".yaml", ".yml"] else self.csl_json
+        path.write_text(text, encoding="utf-8")
 
-    def write_citekeys_tsv(self, path):
+    def write_citekeys_tsv(self, path: tp.Union[os.PathLike, str, None]):
         """
         Write `self.citekeys_tsv` to a file.
         If `path` evaluates as False, do nothing.

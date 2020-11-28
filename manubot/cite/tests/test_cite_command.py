@@ -26,7 +26,7 @@ def test_cite_command_preserves_order():
     args = [
         "manubot",
         "cite",
-        "--bibliography=input-references.json",
+        "--bibliography=input-bibliography.json",
         *citekeys,
     ]
     output = subprocess.check_output(
@@ -123,7 +123,7 @@ def test_cite_command_render_stdout(args, filename):
 
     ```shell
     manubot cite \
-      --output=manubot/cite/tests/cite-command-rendered/input-references.json \
+      --output=manubot/cite/tests/cite-command-rendered/input-bibliography.json \
       arxiv:1806.05726v1 doi:10.7717/peerj.338 pmid:29618526
     ```
     """
@@ -142,7 +142,7 @@ def test_cite_command_render_stdout(args, filename):
     args = [
         "manubot",
         "cite",
-        "--bibliography=input-references.json",
+        "--bibliography=input-bibliography.json",
         "--render",
         "--csl=https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl",
         "arxiv:1806.05726v1",
