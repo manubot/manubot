@@ -3,7 +3,6 @@ import logging
 import os
 import pathlib
 
-from manubot import __version__ as manubot_version
 from manubot.cite.citekey import shorten_citekey
 from manubot.util import read_serialized_data
 
@@ -63,9 +62,9 @@ def load_manual_references(paths=[], extra_csl_items=[]) -> dict:
         bibliography = load_bibliography(path)
         for csl_item in bibliography:
             csl_item.note_append_text(
-                f"This CSL JSON Item was loaded by Manubot v{manubot_version} from a manual reference file."
+                f"Loaded from an external bibliography file by Manubot."
             )
-            csl_item.note_append_dict({"manual_reference_filename": path_obj.name})
+            csl_item.note_append_dict({"source_bibliography": path_obj.name})
             csl_items.append(csl_item)
     csl_items.extend(map(CSL_Item, extra_csl_items))
     manual_refs = dict()
