@@ -8,7 +8,12 @@ import shlex
 import shutil
 import subprocess
 import sys
+import typing
 from types import ModuleType
+
+if typing.TYPE_CHECKING:
+    # allow type annotations of lazy-imported packages
+    import yaml
 
 # Email address that forwards to Manubot maintainers
 contact_email: str = "contact@manubot.org"
