@@ -30,6 +30,7 @@ def test_cite_pandoc_filter():
     # Command to regenerate the expected output
     pandoc \
       --to=plain \
+      --wrap=preserve \
       --output=manubot/pandoc/tests/test_cite_filter/output.txt \
       --filter=pandoc-manubot-cite \
       --filter=pandoc-citeproc \
@@ -38,6 +39,7 @@ def test_cite_pandoc_filter():
     # Command to generate Pandoc JSON input for pandoc-manubot-cite
     pandoc \
       --to=json \
+      --wrap=preserve \
       --output=manubot/pandoc/tests/test_cite_filter/filter-input.json \
       manubot/pandoc/tests/test_cite_filter/input.md
     ```
@@ -50,6 +52,7 @@ def test_cite_pandoc_filter():
     expected = data_dir.joinpath("output.txt").read_text(encoding="utf-8-sig")
     args = [
         "pandoc",
+        "--wrap=preserve",
         "--filter=pandoc-manubot-cite",
         "--filter=pandoc-citeproc" if pandoc_version < (2, 11) else "--citeproc",
         "--to=plain",

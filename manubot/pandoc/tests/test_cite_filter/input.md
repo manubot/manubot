@@ -1,6 +1,5 @@
 ---
 # yaml_metadata_block with pandoc metadata
-wrap: preserve
 csl: https://github.com/manubot/rootstock/raw/8b9b5ced2c7c963bf3ea5afb8f31f9a4a54ab697/build/assets/style.csl
 citekey-aliases:
   meta-review: https://greenelab.github.io/meta-review/v/6afcab41acf01822f8af8760184cd3cb2d67ab5f/
