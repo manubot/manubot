@@ -615,6 +615,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#test_citations_csl_serialization" class="md-nav__link">
+    test_citations_csl_serialization
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#test_citations_filter_pandoc_xnos" class="md-nav__link">
     test_citations_filter_pandoc_xnos
   </a>
@@ -1318,6 +1325,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#test_citations_csl_serialization" class="md-nav__link">
+    test_citations_csl_serialization
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#test_citations_filter_pandoc_xnos" class="md-nav__link">
     test_citations_filter_pandoc_xnos
   </a>
@@ -1364,7 +1378,11 @@
                 
                 
                 <h1 id="module-manubotciteteststest_citations">Module manubot.cite.tests.test_citations</h1>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">manubot.cite.citations</span> <span class="kn">import</span> <span class="n">Citations</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pathlib</span>
+
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="kn">from</span> <span class="nn">manubot.cite.citations</span> <span class="kn">import</span> <span class="n">Citations</span>
 
 <span class="k">def</span> <span class="nf">test_citations_filter_pandoc_xnos</span><span class="p">():</span>
 
@@ -1507,6 +1525,36 @@
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span> <span class="o">==</span> <span class="mi">4</span>
 
     <span class="k">assert</span> <span class="s2">&quot;pmid:bad-id -- PubMed Identifiers should be 1-8 digits&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="s2">&quot;csl_format&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="s2">&quot;yaml&quot;</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">test_citations_csl_serialization</span><span class="p">(</span><span class="n">csl_format</span><span class="p">):</span>
+
+    <span class="n">ccr_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;cite-command-rendered&quot;</span><span class="p">)</span>
+
+    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span>
+
+        <span class="p">[</span><span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.7717/peerj.338&quot;</span><span class="p">,</span> <span class="s2">&quot;pubmed:29618526&quot;</span><span class="p">]</span>
+
+    <span class="p">)</span>
+
+    <span class="n">citations</span><span class="o">.</span><span class="n">load_manual_references</span><span class="p">(</span>
+
+        <span class="n">paths</span><span class="o">=</span><span class="p">[</span><span class="n">ccr_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;input-bibliography.json&quot;</span><span class="p">)]</span>
+
+    <span class="p">)</span>
+
+    <span class="n">citations</span><span class="o">.</span><span class="n">get_csl_items</span><span class="p">()</span>
+
+    <span class="n">path_out</span> <span class="o">=</span> <span class="n">ccr_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;output-bibliography.{csl_format}&quot;</span><span class="p">)</span>
+
+    <span class="c1"># uncomment the following line to regenerate test output</span>
+
+    <span class="c1"># citations.write_csl_items(path_out)</span>
+
+    <span class="n">csl_out</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">citations</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;csl_{csl_format}&quot;</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">csl_out</span> <span class="o">==</span> <span class="n">path_out</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
 </code></pre></div>
 
 </details>
@@ -1602,6 +1650,44 @@
     <span class="n">assert</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">citekeys_tsv</span><span class="p">,</span> <span class="n">str</span><span class="p">)</span>
 
     <span class="n">assert</span> <span class="ss">&quot;arxiv:1806.05726v1&quot;</span> <span class="k">in</span> <span class="n">citekeys_tsv</span><span class="p">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">2</span><span class="p">].</span><span class="n">split</span><span class="p">(</span><span class="ss">&quot;\t&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</details>
+<h3 id="test_citations_csl_serialization">test_citations_csl_serialization</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_citations_csl_serialization</span><span class="p">(</span>
+    <span class="n">csl_format</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="err">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;csl_format&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="s2">&quot;yaml&quot;</span><span class="p">])</span>
+
+<span class="n">def</span> <span class="n">test_citations_csl_serialization</span><span class="p">(</span><span class="n">csl_format</span><span class="p">):</span>
+
+    <span class="n">ccr_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;cite-command-rendered&quot;</span><span class="p">)</span>
+
+    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span>
+
+        <span class="p">[</span><span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.7717/peerj.338&quot;</span><span class="p">,</span> <span class="s2">&quot;pubmed:29618526&quot;</span><span class="p">]</span>
+
+    <span class="p">)</span>
+
+    <span class="n">citations</span><span class="o">.</span><span class="n">load_manual_references</span><span class="p">(</span>
+
+        <span class="n">paths</span><span class="o">=</span><span class="p">[</span><span class="n">ccr_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;input-bibliography.json&quot;</span><span class="p">)]</span>
+
+    <span class="p">)</span>
+
+    <span class="n">citations</span><span class="o">.</span><span class="n">get_csl_items</span><span class="p">()</span>
+
+    <span class="n">path_out</span> <span class="o">=</span> <span class="n">ccr_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;output-bibliography.{csl_format}&quot;</span><span class="p">)</span>
+
+    <span class="c1"># uncomment the following line to regenerate test output</span>
+
+    <span class="c1"># citations.write_csl_items(path_out)</span>
+
+    <span class="n">csl_out</span> <span class="o">=</span> <span class="n">getattr</span><span class="p">(</span><span class="n">citations</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;csl_{csl_format}&quot;</span><span class="p">)</span>
+
+    <span class="nb">assert</span> <span class="n">csl_out</span> <span class="o">==</span> <span class="n">path_out</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
 </code></pre></div>
 
 </details>

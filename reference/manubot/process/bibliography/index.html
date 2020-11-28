@@ -1398,13 +1398,21 @@
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Read manual references (overrides) from files specified by a list of paths.</span>
+<span class="sd">    Read manual references from bibliography text files specified by a list of paths.</span>
 
-<span class="sd">    Returns a standard_citation to CSL Item dictionary. extra_csl_items specifies</span>
+<span class="sd">    Returns a standard_citation to CSL Item dictionary.</span>
 
-<span class="sd">    JSON CSL stored as a Python object, to be used in addition to the CSL JSON</span>
+<span class="sd">    `extra_csl_items` specifies CSL Items stored as a Python object,</span>
 
-<span class="sd">    stored as text in the file specified by path. Set paths=[] to only use extra_csl_items.</span>
+<span class="sd">    to be used in addition to the CSL Items stored as text in the files specified by `paths`.</span>
+
+<span class="sd">    Set `paths=[]` to only use extra_csl_items.</span>
+
+<span class="sd">    When multiple references have the same standard_id,</span>
+
+<span class="sd">    precedence is given to reference defined last.</span>
+
+<span class="sd">    References in `extra_csl_items` take precedence over those from `paths`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1555,21 +1563,33 @@ If loading fails, log an error and return an empty list.</p>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
 </code></pre></div>
 
-<p>Read manual references (overrides) from files specified by a list of paths.
-Returns a standard_citation to CSL Item dictionary. extra_csl_items specifies
-JSON CSL stored as a Python object, to be used in addition to the CSL JSON
-stored as text in the file specified by path. Set paths=[] to only use extra_csl_items.</p>
+<p>Read manual references from bibliography text files specified by a list of paths.
+Returns a standard_citation to CSL Item dictionary.
+<code>extra_csl_items</code> specifies CSL Items stored as a Python object,
+to be used in addition to the CSL Items stored as text in the files specified by <code>paths</code>.
+Set <code>paths=[]</code> to only use extra_csl_items.
+When multiple references have the same standard_id,
+precedence is given to reference defined last.
+References in <code>extra_csl_items</code> take precedence over those from <code>paths</code>.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">load_manual_references</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="p">[],</span> <span class="n">extra_csl_items</span><span class="o">=</span><span class="p">[])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Read manual references (overrides) from files specified by a list of paths.</span>
+<span class="sd">    Read manual references from bibliography text files specified by a list of paths.</span>
 
-<span class="sd">    Returns a standard_citation to CSL Item dictionary. extra_csl_items specifies</span>
+<span class="sd">    Returns a standard_citation to CSL Item dictionary.</span>
 
-<span class="sd">    JSON CSL stored as a Python object, to be used in addition to the CSL JSON</span>
+<span class="sd">    `extra_csl_items` specifies CSL Items stored as a Python object,</span>
 
-<span class="sd">    stored as text in the file specified by path. Set paths=[] to only use extra_csl_items.</span>
+<span class="sd">    to be used in addition to the CSL Items stored as text in the files specified by `paths`.</span>
+
+<span class="sd">    Set `paths=[]` to only use extra_csl_items.</span>
+
+<span class="sd">    When multiple references have the same standard_id,</span>
+
+<span class="sd">    precedence is given to reference defined last.</span>
+
+<span class="sd">    References in `extra_csl_items` take precedence over those from `paths`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 

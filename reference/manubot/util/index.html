@@ -327,6 +327,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#get_configured_yaml" class="md-nav__link">
+    get_configured_yaml
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#get_manubot_user_agent" class="md-nav__link">
     get_manubot_user_agent
   </a>
@@ -1307,6 +1314,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#get_configured_yaml" class="md-nav__link">
+    get_configured_yaml
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#get_manubot_user_agent" class="md-nav__link">
     get_manubot_user_agent
   </a>
@@ -1393,6 +1407,16 @@
 <span class="kn">import</span> <span class="nn">subprocess</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">typing</span>
+
+<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">ModuleType</span>
+
+<span class="k">if</span> <span class="n">typing</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+
+    <span class="c1"># allow type annotations of lazy-imported packages</span>
+
+    <span class="kn">import</span> <span class="nn">yaml</span>
 
 <span class="c1"># Email address that forwards to Manubot maintainers</span>
 
@@ -1615,6 +1639,60 @@
         <span class="n">f</span><span class="s2">&quot;Received {data.__class__.__name__!r} instead.&quot;</span>
 
     <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_yaml_str_representer</span><span class="p">(</span><span class="n">dumper</span><span class="p">:</span> <span class="s2">&quot;yaml.Dumper&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Use YAML literal block style for multiline strings.</span>
+
+<span class="sd">    Based on https://stackoverflow.com/a/33300001/4651668</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+
+        <span class="c1"># use literal block style for multiline strings</span>
+
+        <span class="k">return</span> <span class="n">dumper</span><span class="o">.</span><span class="n">represent_scalar</span><span class="p">(</span><span class="s2">&quot;tag:yaml.org,2002:str&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dumper</span><span class="o">.</span><span class="n">represent_scalar</span><span class="p">(</span><span class="s2">&quot;tag:yaml.org,2002:str&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">get_configured_yaml</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ModuleType</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Return imported YAML library with Manubot configuration.</span>
+
+<span class="sd">    The representers are only applied to yaml.dump, not yaml.safe_dump.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">yaml</span>
+
+    <span class="kn">from</span> <span class="nn">manubot.cite.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
+
+    <span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">_yaml_str_representer</span><span class="p">)</span>
+
+    <span class="c1"># CSL_Item: pyyaml chokes on dict subclass</span>
+
+    <span class="c1"># https://github.com/yaml/pyyaml/issues/142</span>
+
+    <span class="c1"># https://stackoverflow.com/a/50181505/4651668</span>
+
+    <span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span>
+
+        <span class="n">CSL_Item</span><span class="p">,</span>
+
+        <span class="k">lambda</span> <span class="n">dumper</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">dumper</span><span class="o">.</span><span class="n">represent_mapping</span><span class="p">(</span>
+
+            <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;tag:yaml.org,2002:map&quot;</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+
+        <span class="p">),</span>
+
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">yaml</span>
 </code></pre></div>
 
 </details>
@@ -1623,6 +1701,52 @@
 </code></pre></div>
 
 <h2 id="functions">Functions</h2>
+<h3 id="get_configured_yaml">get_configured_yaml</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_configured_yaml</span><span class="p">(</span>
+
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">module</span>
+</code></pre></div>
+
+<p>Return imported YAML library with Manubot configuration.
+The representers are only applied to yaml.dump, not yaml.safe_dump.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_configured_yaml</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ModuleType</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Return imported YAML library with Manubot configuration.</span>
+
+<span class="sd">    The representers are only applied to yaml.dump, not yaml.safe_dump.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">yaml</span>
+
+    <span class="kn">from</span> <span class="nn">manubot.cite.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
+
+    <span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">_yaml_str_representer</span><span class="p">)</span>
+
+    <span class="c1"># CSL_Item: pyyaml chokes on dict subclass</span>
+
+    <span class="c1"># https://github.com/yaml/pyyaml/issues/142</span>
+
+    <span class="c1"># https://stackoverflow.com/a/50181505/4651668</span>
+
+    <span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span>
+
+        <span class="n">CSL_Item</span><span class="p">,</span>
+
+        <span class="k">lambda</span> <span class="n">dumper</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">dumper</span><span class="o">.</span><span class="n">represent_mapping</span><span class="p">(</span>
+
+            <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;tag:yaml.org,2002:map&quot;</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+
+        <span class="p">),</span>
+
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">yaml</span>
+</code></pre></div>
+
+</details>
 <h3 id="get_manubot_user_agent">get_manubot_user_agent</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_manubot_user_agent</span><span class="p">(</span>
 

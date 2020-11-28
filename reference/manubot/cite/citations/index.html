@@ -467,8 +467,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#write_csl_json" class="md-nav__link">
-    write_csl_json
+  <a href="#write_csl_items" class="md-nav__link">
+    write_csl_items
   </a>
   
 </li>
@@ -1470,8 +1470,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#write_csl_json" class="md-nav__link">
-    write_csl_json
+  <a href="#write_csl_items" class="md-nav__link">
+    write_csl_items
   </a>
   
 </li>
@@ -1517,6 +1517,8 @@
 <span class="kn">import</span> <span class="nn">json</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">import</span> <span class="nn">pathlib</span>
 
@@ -1828,11 +1830,43 @@
 
         <span class="k">return</span> <span class="n">json_str</span>
 
-    <span class="k">def</span> <span class="nf">write_csl_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="nd">@property</span>
+
+    <span class="k">def</span> <span class="nf">csl_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+        <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">get_configured_yaml</span>
+
+        <span class="n">yaml</span> <span class="o">=</span> <span class="n">get_configured_yaml</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;csl_items&quot;</span><span class="p">)</span>
+
+        <span class="c1"># dump rather than safe_dump is required for</span>
+
+        <span class="c1"># pyyaml to use custom representers.</span>
+
+        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+
+            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">csl_items</span><span class="p">,</span>
+
+            <span class="n">default_flow_style</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+
+            <span class="n">width</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
+
+            <span class="n">allow_unicode</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+
+            <span class="n">sort_keys</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">write_csl_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="bp">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">        Write CSL Items to a JSON file at `path`.</span>
+<span class="sd">        Write CSL Items to a JSON or YAML file at `path`.</span>
+
+<span class="sd">        If path ends with a .yml or .yaml extension, write as CSL YAML.</span>
+
+<span class="sd">        Otherwise write CSL JSON.</span>
 
 <span class="sd">        If `path` evaluates as False, do nothing.</span>
 
@@ -1844,9 +1878,11 @@
 
         <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-        <span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">csl_json</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_yaml</span> <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_json</span>
 
-    <span class="k">def</span> <span class="nf">write_citekeys_tsv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">write_citekeys_tsv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="bp">None</span><span class="p">]):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2184,11 +2220,43 @@ their citekey input_ids.</p>
 
         <span class="k">return</span> <span class="n">json_str</span>
 
-    <span class="n">def</span> <span class="n">write_csl_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="err">@</span><span class="n">property</span>
+
+    <span class="n">def</span> <span class="n">csl_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+        <span class="n">from</span> <span class="n">manubot</span><span class="o">.</span><span class="n">util</span> <span class="n">import</span> <span class="n">get_configured_yaml</span>
+
+        <span class="n">yaml</span> <span class="o">=</span> <span class="n">get_configured_yaml</span><span class="p">()</span>
+
+        <span class="nb">assert</span> <span class="n">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;csl_items&quot;</span><span class="p">)</span>
+
+        <span class="c1"># dump rather than safe_dump is required for</span>
+
+        <span class="c1"># pyyaml to use custom representers.</span>
+
+        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+
+            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">csl_items</span><span class="p">,</span>
+
+            <span class="n">default_flow_style</span><span class="o">=</span><span class="n">False</span><span class="p">,</span>
+
+            <span class="n">width</span><span class="o">=</span><span class="nb nb-Type">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
+
+            <span class="n">allow_unicode</span><span class="o">=</span><span class="n">True</span><span class="p">,</span>
+
+            <span class="n">sort_keys</span><span class="o">=</span><span class="n">False</span><span class="p">,</span>
+
+        <span class="p">)</span>
+
+    <span class="n">def</span> <span class="n">write_csl_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">None</span><span class="p">:</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">        Write CSL Items to a JSON file at `path`.</span>
+<span class="sd">        Write CSL Items to a JSON or YAML file at `path`.</span>
+
+<span class="sd">        If path ends with a .yml or .yaml extension, write as CSL YAML.</span>
+
+<span class="sd">        Otherwise write CSL JSON.</span>
 
 <span class="sd">        If `path` evaluates as False, do nothing.</span>
 
@@ -2200,9 +2268,11 @@ their citekey input_ids.</p>
 
         <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-        <span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">csl_json</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_yaml</span> <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_json</span>
 
-    <span class="n">def</span> <span class="n">write_citekeys_tsv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+    <span class="n">def</span> <span class="n">write_citekeys_tsv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">None</span><span class="p">]):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2238,6 +2308,9 @@ their citekey input_ids.</p>
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code><span class="n">csl_json</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">csl_yaml</span>
 </code></pre></div>
 
 <h4 id="methods">Methods</h4>
@@ -2555,13 +2628,13 @@ for <code>self.citekeys</code>.</p>
 <h5 id="write_citekeys_tsv">write_citekeys_tsv</h5>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">write_citekeys_tsv</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">path</span>
+    <span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span>
 <span class="p">)</span>
 </code></pre></div>
 
 <p>Write <code>self.citekeys_tsv</code> to a file.
 If <code>path</code> evaluates as False, do nothing.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">write_citekeys_tsv</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="k">path</span><span class="p">)</span><span class="o">:</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">write_citekeys_tsv</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="k">path</span><span class="o">:</span> <span class="n">tp</span><span class="p">.</span><span class="k">Union</span><span class="err">[</span><span class="n">os</span><span class="p">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">str</span><span class="p">,</span> <span class="k">None</span><span class="err">]</span><span class="p">)</span><span class="o">:</span>
 
         <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
 
@@ -2581,20 +2654,26 @@ If <code>path</code> evaluates as False, do nothing.</p>
 </code></pre></div>
 
 </details>
-<h5 id="write_csl_json">write_csl_json</h5>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">write_csl_json</span><span class="p">(</span>
+<h5 id="write_csl_items">write_csl_items</h5>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">write_csl_items</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">path</span>
-<span class="p">)</span>
+    <span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
 
-<p>Write CSL Items to a JSON file at <code>path</code>.
+<p>Write CSL Items to a JSON or YAML file at <code>path</code>.
+If path ends with a .yml or .yaml extension, write as CSL YAML.
+Otherwise write CSL JSON.
 If <code>path</code> evaluates as False, do nothing.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">write_csl_json</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="k">path</span><span class="p">)</span><span class="o">:</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">write_csl_items</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="k">path</span><span class="o">:</span> <span class="n">tp</span><span class="p">.</span><span class="k">Union</span><span class="err">[</span><span class="n">os</span><span class="p">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">str</span><span class="p">,</span> <span class="k">None</span><span class="err">]</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">None</span><span class="o">:</span>
 
         <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
 
-<span class="s2">        Write CSL Items to a JSON file at `path`.</span>
+<span class="s2">        Write CSL Items to a JSON or YAML file at `path`.</span>
+
+<span class="s2">        If path ends with a .yml or .yaml extension, write as CSL YAML.</span>
+
+<span class="s2">        Otherwise write CSL JSON.</span>
 
 <span class="s2">        If `path` evaluates as False, do nothing.</span>
 
@@ -2606,7 +2685,9 @@ If <code>path</code> evaluates as False, do nothing.</p>
 
         <span class="k">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="p">.</span><span class="k">Path</span><span class="p">(</span><span class="k">path</span><span class="p">)</span>
 
-        <span class="k">path</span><span class="p">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">csl_json</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="kt">text</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">csl_yaml</span> <span class="k">if</span> <span class="k">path</span><span class="p">.</span><span class="n">suffix</span> <span class="k">in</span> <span class="err">[</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="err">]</span> <span class="k">else</span> <span class="n">self</span><span class="p">.</span><span class="n">csl_json</span>
+
+        <span class="k">path</span><span class="p">.</span><span class="n">write_text</span><span class="p">(</span><span class="kt">text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 </details>
