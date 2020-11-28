@@ -186,7 +186,7 @@ def test_cite_command_bibliography():
     csl_items = json.loads(csl_json)
     assert len(csl_items) == 1
     csl_item = csl_items[0]
-    assert "bibliography: bibliography.json" in csl_item["note"]
+    assert "source_bibliography: bibliography.json" in csl_item["note"]
 
 
 def teardown_module(module):

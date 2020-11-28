@@ -64,7 +64,7 @@ def load_manual_references(paths=[], extra_csl_items=[]) -> dict:
             csl_item.note_append_text(
                 f"Loaded from an external bibliography file by Manubot."
             )
-            csl_item.note_append_dict({"bibliography": path_obj.name})
+            csl_item.note_append_dict({"source_bibliography": path_obj.name})
             csl_items.append(csl_item)
     csl_items.extend(map(CSL_Item, extra_csl_items))
     manual_refs = dict()
