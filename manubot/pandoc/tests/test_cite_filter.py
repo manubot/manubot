@@ -30,11 +30,7 @@ def test_cite_pandoc_filter():
     # Command to regenerate the expected output
     pandoc \
       --to=plain \
-      --wrap=preserve \
-      --csl=https://github.com/manubot/rootstock/raw/8b9b5ced2c7c963bf3ea5afb8f31f9a4a54ab697/build/assets/style.csl \
       --output=manubot/pandoc/tests/test_cite_filter/output.txt \
-      --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.json \
-      --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.bib \
       --filter=pandoc-manubot-cite \
       --filter=pandoc-citeproc \
       manubot/pandoc/tests/test_cite_filter/input.md
@@ -42,11 +38,7 @@ def test_cite_pandoc_filter():
     # Command to generate Pandoc JSON input for pandoc-manubot-cite
     pandoc \
       --to=json \
-      --wrap=preserve \
-      --csl=https://github.com/manubot/rootstock/raw/8b9b5ced2c7c963bf3ea5afb8f31f9a4a54ab697/build/assets/style.csl \
       --output=manubot/pandoc/tests/test_cite_filter/filter-input.json \
-      --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.json \
-      --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.bib \
       manubot/pandoc/tests/test_cite_filter/input.md
     ```
     """
@@ -58,12 +50,6 @@ def test_cite_pandoc_filter():
     expected = data_dir.joinpath("output.txt").read_text(encoding="utf-8-sig")
     args = [
         "pandoc",
-        "--wrap=preserve",
-        "--csl=https://github.com/manubot/rootstock/raw/8b9b5ced2c7c963bf3ea5afb8f31f9a4a54ab697/build/assets/style.csl",
-        "--bibliography",
-        str(directory.joinpath("test_cite_filter", "bibliography.json")),
-        "--bibliography",
-        str(directory.joinpath("test_cite_filter", "bibliography.bib")),
         "--filter=pandoc-manubot-cite",
         "--filter=pandoc-citeproc" if pandoc_version < (2, 11) else "--citeproc",
         "--to=plain",

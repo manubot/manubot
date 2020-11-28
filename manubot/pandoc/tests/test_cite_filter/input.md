@@ -1,5 +1,7 @@
 ---
 # yaml_metadata_block with pandoc metadata
+wrap: preserve
+csl: https://github.com/manubot/rootstock/raw/8b9b5ced2c7c963bf3ea5afb8f31f9a4a54ab697/build/assets/style.csl
 citekey-aliases:
   meta-review: https://greenelab.github.io/meta-review/v/6afcab41acf01822f8af8760184cd3cb2d67ab5f/
   tag:deep-review: doi:10.1098/rsif.2017.0387
@@ -11,6 +13,11 @@ references:
   container-title: Greene Laboratory
   location: University of Pennsylvania
   issued: {'date-parts': [[2018, 12, 19]]}
+bibliography:
+- manubot/pandoc/tests/test_cite_filter/bibliography.json
+- manubot/pandoc/tests/test_cite_filter/bibliography.bib
+# this test reads bibliography items from metadata.bibliography,  metadata.references, and .cache/requests-cache.
+# the following can be uncommented to explore setting manubot-bibliography-cache
 # manubot-bibliography-cache: manubot/pandoc/tests/test_cite_filter/bibliography-cache.json
 manubot-requests-cache-path: .cache/requests-cache
 manubot-log-level: INFO

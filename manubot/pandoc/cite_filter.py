@@ -1,15 +1,13 @@
 """
 This module defines a pandoc filter for manubot cite functionality.
 
-Related development commands:
+## development commands
 
 ```shell
-# export to plain text
+# export to plain text (with pandoc < 2.11)
 pandoc \
   --to=plain \
   --standalone \
-  --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.json \
-  --bibliography=manubot/pandoc/tests/test_cite_filter/bibliography.bib \
   --filter=pandoc-manubot-cite \
   --filter=pandoc-citeproc \
   manubot/pandoc/tests/test_cite_filter/input.md
