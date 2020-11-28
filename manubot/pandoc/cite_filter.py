@@ -1,5 +1,52 @@
 """
 This module defines a pandoc filter for manubot cite functionality.
+The filter can be called with the `pandoc-manubot-cite` command.
+
+## Options
+
+Configuration is provided via Pandoc metadata fields.
+
+- `bibliography` (sequence of strings):
+  Use to define reference metadata manually.
+  Pandoc supports specifying multiple external bibliography files.
+  When bibliography files are specified,
+  this filter will read them instead of pandoc.
+  Behavior should be similar to Pandoc,
+  with format inferred by extension:
+  .json for CSL JSON,
+  .yaml for CSL YAML,
+  .bib for BibLaTeX.
+
+- `references` (sequence of CSL-Item mappings):
+  Same as Pandoc's references metadata field.
+
+- `citekey-aliases` (mapping: string -> string):
+  Used to define aliases (tags) for cite-by-id citations.
+  Useful when a citation is used many times or contains invalid characters.
+  Aliases can also be defined in markdown with link reference syntax.
+
+- `manubot-output-citekeys` (string):
+  path to write TSV table of citekeys
+  showing their transformation from input_id to short_id.
+
+- `manubot-bibliography-cache` (string):
+  Path to read and write bibliographic metadata as CSL JSON/YAML.
+  Intended as a human-editable cache of the bibliography data,
+  for situations where this filter is run multiple times.
+  This is similar to specifying bibliography=FILE and manubot-output-bibliography=FILE in a single argument,
+  but will not error trying to read a bibliography file that does not yet exist.
+
+- `manubot-output-bibliography` (string):
+  path to write generated CSL JSON bibliography.
+  If specified in addition to `manubot-bibliography-cache`,
+  two output bibliographies will be written (with the same references).
+
+- `manubot-requests-cache-path` (string):
+  Enable caching HTTP requests to this path (minus the extension) using [requests-cache](https://github.com/reclosedev/requests-cache).
+  For example, setting to `.cache/requests-cache` will cache requests to `.cache/requests-cache.sqlite`.
+
+- `manubot-clear-requests-cache` (boolean):
+  If true, clear the requests cache at `manubot-requests-cache-path`.
 
 ## development commands
 
@@ -155,19 +202,6 @@ def process_citations(doc: pf.Doc) -> None:
     """
     Apply citation-by-identifier to a Python object representation of
     Pandoc's Abstract Syntax Tree.
-
-    The following Pandoc metadata fields are considered:
-
-    - bibliography (use to define reference metadata manually)
-    - citekey-aliases (use to define tags for cite-by-id citations)
-    - manubot-bibliography-cache:
-      Path to read and write bibliographic metadata as CSL JSON/YAML.
-      Intended as a human-editable cache of the bibliography data,
-      for situations where this filter is run multiple times.
-    - manubot-requests-cache-path
-    - manubot-clear-requests-cache
-    - manubot-output-citekeys: path to write TSV table of citekeys
-    - manubot-output-bibliography: path to write generated CSL JSON bibliography
     """
     # process metadata.manubot-bibliography-cache
     bib_cache = doc.get_metadata(key="manubot-bibliography-cache")
