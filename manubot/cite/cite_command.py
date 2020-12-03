@@ -1,3 +1,4 @@
+import argparse
 import json
 import logging
 import pathlib
@@ -10,18 +11,15 @@ from manubot.cite.citations import Citations
 
 # For manubot cite, infer --format from --output filename extensions
 extension_to_format = {
+    ".json": "csljson",
+    ".yaml": "cslyaml",
+    ".yml": "cslyaml",
     ".txt": "plain",
     ".md": "markdown",
     ".docx": "docx",
     ".html": "html",
     ".xml": "jats",
 }
-
-"""
-URL or path with default CSL XML style.
-<https://citation-style.manubot.org> redirects to the latest Manubot CSL Style.
-"""
-default_csl_style_path = "https://citation-style.manubot.org/"
 
 
 def call_pandoc(metadata, path, format="plain"):
@@ -70,24 +68,19 @@ def call_pandoc(metadata, path, format="plain"):
     process.check_returncode()
 
 
-def _parse_cli_cite_args(args):
+def _parse_cli_cite_args(args: argparse.Namespace):
     arg_dict = vars(args)
-    # check for implied --render
-    if args.csl or args.format:
-        arg_dict["render"] = True
-    if not args.render:
-        return
-    # set --csl default
-    arg_dict["csl"] = args.csl or default_csl_style_path
     # infer format from output extension
     if not args.format and args.output:
         arg_dict["format"] = extension_to_format.get(args.output.suffix)
-    # default format to plain
+    # default format to csljson
     if not args.format:
-        arg_dict["format"] = "plain"
+        arg_dict["format"] = "csljson"
+    # whether to render references with Pandoc
+    arg_dict["render"] = args.format not in {"csljson", "cslyaml"}
 
 
-def cli_cite(args):
+def cli_cite(args: argparse.Namespace):
     """
     Main function for the manubot cite command-line interface.
 
@@ -103,11 +96,17 @@ def cli_cite(args):
     citations.inspect(log_level="WARNING")
     csl_items = citations.get_csl_items()
 
-    # output CSL JSON data, if --render is False
+    # output CSL data, if --render is False
     if not args.render:
+        if args.format == "csljson":
+            text = citations.csl_json
+        elif args.format == "cslyaml":
+            text = citations.csl_yaml
+        else:
+            raise ValueError("format must be csljson or cslyaml")
         write_file = args.output.open("wb") if args.output else sys.stdout.buffer
         with write_file:
-            write_file.write(citations.csl_json.encode())
+            write_file.write(text.encode())
         return
 
     # use Pandoc to render references

@@ -176,9 +176,10 @@ Additional usage information is available from `manubot cite --help`:
 
 <!-- test codeblock contains output of `manubot cite --help` -->
 ```
-usage: manubot cite [-h] [--output OUTPUT] [--render]
-                    [--format {plain,markdown,docx,html,jats}] [--csl CSL]
-                    [--bibliography BIBLIOGRAPHY] [--allow-invalid-csl-data]
+usage: manubot cite [-h] [--output OUTPUT]
+                    [--format {csljson,cslyaml,plain,markdown,docx,html,jats}]
+                    [--csl CSL] [--bibliography BIBLIOGRAPHY]
+                    [--allow-invalid-csl-data]
                     [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
                     citekeys [citekeys ...]
 
@@ -194,17 +195,15 @@ optional arguments:
   -h, --help            show this help message and exit
   --output OUTPUT       Specify a file to write output, otherwise default to
                         stdout.
-  --render              Whether to render CSL Data into a formatted reference
-                        list using Pandoc. Pandoc version 2.0 or higher is
-                        required for complete support of available output
-                        formats.
-  --format {plain,markdown,docx,html,jats}
-                        Format to use for output file. Implies --render. If
-                        not specified, attempt to infer this from the --output
-                        filename extension. Otherwise, default to plain.
-  --csl CSL             Specify an XML CSL definition to style references
-                        (i.e. Pandoc's --csl option). Implies --render.
-                        Defaults to Manubot's style.
+  --format {csljson,cslyaml,plain,markdown,docx,html,jats}
+                        Format to use for output file. csljson and cslyaml
+                        output the CSL data. All other choices render the
+                        references using Pandoc. If not specified, attempt to
+                        infer this from the --output filename extension.
+                        Otherwise, default to csljson.
+  --csl CSL             URL or path with CSL XML style used to style
+                        references (i.e. Pandoc's --csl option). Defaults to
+                        Manubot's style.
   --bibliography BIBLIOGRAPHY
                         File to read manual reference metadata. Specify
                         multiple times to load multiple files. Similar to

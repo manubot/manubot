@@ -106,23 +106,20 @@ def add_subparser_cite(subparsers):
         help="Specify a file to write output, otherwise default to stdout.",
     )
     parser.add_argument(
-        "--render",
-        action="store_true",
-        help="Whether to render CSL Data into a formatted reference list using Pandoc. "
-        "Pandoc version 2.0 or higher is required for complete support of available output formats.",
-    )
-    parser.add_argument(
         "--format",
-        choices=["plain", "markdown", "docx", "html", "jats"],
+        choices=["csljson", "cslyaml", "plain", "markdown", "docx", "html", "jats"],
         help="Format to use for output file. "
-        "Implies --render. "
+        "csljson and cslyaml output the CSL data. "
+        "All other choices render the references using Pandoc. "
         "If not specified, attempt to infer this from the --output filename extension. "
-        "Otherwise, default to plain.",
+        "Otherwise, default to csljson.",
     )
     parser.add_argument(
         "--csl",
-        help="Specify an XML CSL definition to style references (i.e. Pandoc's --csl option). "
-        "Implies --render. "
+        # redirects to the latest Manubot CSL Style.
+        default="https://citation-style.manubot.org/",
+        help="URL or path with CSL XML style used to style references "
+        "(i.e. Pandoc's --csl option). "
         "Defaults to Manubot's style.",
     )
     parser.add_argument(
