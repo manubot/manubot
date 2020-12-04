@@ -105,7 +105,8 @@ def add_subparser_cite(subparsers):
         type=pathlib.Path,
         help="Specify a file to write output, otherwise default to stdout.",
     )
-    parser.add_argument(
+    format_group = parser.add_mutually_exclusive_group()
+    format_group.add_argument(
         "--format",
         choices=["csljson", "cslyaml", "plain", "markdown", "docx", "html", "jats"],
         help="Format to use for output file. "
@@ -113,6 +114,27 @@ def add_subparser_cite(subparsers):
         "All other choices render the references using Pandoc. "
         "If not specified, attempt to infer this from the --output filename extension. "
         "Otherwise, default to csljson.",
+    )
+    format_group.add_argument(
+        "--yml",
+        dest="format",
+        action="store_const",
+        const="cslyaml",
+        help="Short for --format=cslyaml.",
+    )
+    format_group.add_argument(
+        "--txt",
+        dest="format",
+        action="store_const",
+        const="plain",
+        help="Short for --format=plain.",
+    )
+    format_group.add_argument(
+        "--md",
+        dest="format",
+        action="store_const",
+        const="markdown",
+        help="Short for --format=markdown.",
     )
     parser.add_argument(
         "--csl",

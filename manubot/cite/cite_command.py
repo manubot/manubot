@@ -78,6 +78,7 @@ def _parse_cli_cite_args(args: argparse.Namespace):
         arg_dict["format"] = "csljson"
     # whether to render references with Pandoc
     arg_dict["render"] = args.format not in {"csljson", "cslyaml"}
+    logging.debug(f"_parse_cli_cite_args: {args}")
 
 
 def cli_cite(args: argparse.Namespace):

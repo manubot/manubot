@@ -177,7 +177,7 @@ Additional usage information is available from `manubot cite --help`:
 <!-- test codeblock contains output of `manubot cite --help` -->
 ```
 usage: manubot cite [-h] [--output OUTPUT]
-                    [--format {csljson,cslyaml,plain,markdown,docx,html,jats}]
+                    [--format {csljson,cslyaml,plain,markdown,docx,html,jats} | --yml | --txt | --md]
                     [--csl CSL] [--bibliography BIBLIOGRAPHY]
                     [--allow-invalid-csl-data]
                     [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
@@ -201,6 +201,9 @@ optional arguments:
                         references using Pandoc. If not specified, attempt to
                         infer this from the --output filename extension.
                         Otherwise, default to csljson.
+  --yml                 Short for --format=cslyaml.
+  --txt                 Short for --format=plain.
+  --md                  Short for --format=markdown.
   --csl CSL             URL or path with CSL XML style used to style
                         references (i.e. Pandoc's --csl option). Defaults to
                         Manubot's style.
