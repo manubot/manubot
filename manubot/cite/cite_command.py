@@ -37,19 +37,18 @@ def call_pandoc(metadata, path, format="plain"):
         "--citeproc"
         if info["pandoc version"] >= (2, 11)
         else "--filter=pandoc-citeproc",
-        "--output",
-        str(path) if path else "-",
+        f"--output={path or '-'}",
     ]
     if format == "markdown":
-        args.extend(["--to", "markdown_strict", "--wrap", "none"])
+        args.extend(["--to=markdown_strict-raw_html", "--wrap=none"])
     elif format == "jats":
-        args.extend(["--to", "jats", "--standalone"])
+        args.extend(["--to=jats", "--standalone"])
     elif format == "docx":
-        args.extend(["--to", "docx"])
+        args.extend(["--to=docx"])
     elif format == "html":
-        args.extend(["--to", "html"])
+        args.extend(["--to=html"])
     elif format == "plain":
-        args.extend(["--to", "plain", "--wrap", "none"])
+        args.extend(["--to=plain", "--wrap=none"])
         if info["pandoc version"] >= (2,):
             # Do not use ALL_CAPS for bold & underscores for italics
             # https://github.com/jgm/pandoc/issues/4834#issuecomment-412972008
@@ -59,7 +58,7 @@ def call_pandoc(metadata, path, format="plain"):
                 .resolve()
             )
             assert filter_path.exists()
-            args.extend(["--lua-filter", str(filter_path)])
+            args.append(f"--lua-filter={filter_path}")
     logging.info("call_pandoc subprocess args:\n" + shlex_join(args))
     process = subprocess.run(
         args=args,
