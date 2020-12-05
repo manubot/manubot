@@ -1402,13 +1402,15 @@
 
 <span class="n">local_only</span> <span class="o">=</span> <span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skipif</span><span class="p">(</span>
 
-    <span class="n">ci_params</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;skipping on local build since test assumes supported CI behavior&quot;</span>
+    <span class="n">ci_params</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;skipping on CI build since test assumes local behavior&quot;</span>
 
 <span class="p">)</span>
 
 <span class="n">ci_only</span> <span class="o">=</span> <span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skipif</span><span class="p">(</span>
 
-    <span class="ow">not</span> <span class="n">ci_params</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;skipping on CI build since test assumes local behavior&quot;</span>
+    <span class="ow">not</span> <span class="n">ci_params</span><span class="p">,</span>
+
+    <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;skipping on local build since test assumes supported CI behavior&quot;</span><span class="p">,</span>
 
 <span class="p">)</span>
 
