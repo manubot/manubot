@@ -1544,8 +1544,6 @@
 
     <span class="p">[</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">([],</span> <span class="s2">&quot;references-plain-{}.txt&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;no-args&quot;</span><span class="p">),</span>
-
         <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
             <span class="p">[</span><span class="s2">&quot;--format&quot;</span><span class="p">,</span> <span class="s2">&quot;plain&quot;</span><span class="p">],</span> <span class="s2">&quot;references-plain-{}.txt&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;--format=plain&quot;</span>
@@ -1590,7 +1588,7 @@
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Test the stdout output of `manubot cite --render` with various formats.</span>
+<span class="sd">    Test the stdout output of `manubot cite` with various Pandoc-output formats.</span>
 
 <span class="sd">    The output is sensitive to the version of Pandoc used, so expected output</span>
 
@@ -1647,8 +1645,6 @@
         <span class="s2">&quot;cite&quot;</span><span class="p">,</span>
 
         <span class="s2">&quot;--bibliography=input-bibliography.json&quot;</span><span class="p">,</span>
-
-        <span class="s2">&quot;--render&quot;</span><span class="p">,</span>
 
         <span class="s2">&quot;--csl=https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl&quot;</span><span class="p">,</span>
 
@@ -1740,7 +1736,7 @@
 
 <span class="sd">    which is executed following this module. E-Utility requests are</span>
 
-<span class="sd">    capped at 3 per second, which is usually controled by _get_eutils_rate_limiter,</span>
+<span class="sd">    capped at 3 per second, which is usually controlled by _get_eutils_rate_limiter,</span>
 
 <span class="sd">    but this does not seem to work across test modules.</span>
 
@@ -1765,7 +1761,7 @@
 
 <p>Avoid too many requests to NCBI E-Utils in the test_pubmed.py,
 which is executed following this module. E-Utility requests are
-capped at 3 per second, which is usually controled by _get_eutils_rate_limiter,
+capped at 3 per second, which is usually controlled by _get_eutils_rate_limiter,
 but this does not seem to work across test modules.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">teardown_module</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
 
@@ -1775,7 +1771,7 @@ but this does not seem to work across test modules.</p>
 
 <span class="sd">    which is executed following this module. E-Utility requests are</span>
 
-<span class="sd">    capped at 3 per second, which is usually controled by _get_eutils_rate_limiter,</span>
+<span class="sd">    capped at 3 per second, which is usually controlled by _get_eutils_rate_limiter,</span>
 
 <span class="sd">    but this does not seem to work across test modules.</span>
 
@@ -1961,7 +1957,7 @@ but this does not seem to work across test modules.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-<p>Test the stdout output of <code>manubot cite --render</code> with various formats.
+<p>Test the stdout output of <code>manubot cite</code> with various Pandoc-output formats.
 The output is sensitive to the version of Pandoc used, so expected output
 files include the pandoc version stamp in their filename.
 When the expected version is missing, the test fails but writes the
@@ -1980,8 +1976,6 @@ Regenerate the CSL JSON using:</p>
     <span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">],</span>
 
     <span class="p">[</span>
-
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">([],</span> <span class="s2">&quot;references-plain-{}.txt&quot;</span><span class="p">,</span> <span class="n">id</span><span class="o">=</span><span class="s2">&quot;no-args&quot;</span><span class="p">),</span>
 
         <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
@@ -2027,7 +2021,7 @@ Regenerate the CSL JSON using:</p>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Test the stdout output of `manubot cite --render` with various formats.</span>
+<span class="sd">    Test the stdout output of `manubot cite` with various Pandoc-output formats.</span>
 
 <span class="sd">    The output is sensitive to the version of Pandoc used, so expected output</span>
 
@@ -2084,8 +2078,6 @@ Regenerate the CSL JSON using:</p>
         <span class="s2">&quot;cite&quot;</span><span class="p">,</span>
 
         <span class="s2">&quot;--bibliography=input-bibliography.json&quot;</span><span class="p">,</span>
-
-        <span class="s2">&quot;--render&quot;</span><span class="p">,</span>
 
         <span class="s2">&quot;--csl=https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl&quot;</span><span class="p">,</span>
 

@@ -1575,31 +1575,65 @@
 
     <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="n">format_group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
 
-        <span class="s2">&quot;--render&quot;</span><span class="p">,</span>
-
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Whether to render CSL Data into a formatted reference list using Pandoc. &quot;</span>
-
-        <span class="s2">&quot;Pandoc version 2.0 or higher is required for complete support of available output formats.&quot;</span><span class="p">,</span>
-
-    <span class="p">)</span>
-
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
 
         <span class="s2">&quot;--format&quot;</span><span class="p">,</span>
 
-        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;plain&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span> <span class="s2">&quot;docx&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">,</span> <span class="s2">&quot;jats&quot;</span><span class="p">],</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;csljson&quot;</span><span class="p">,</span> <span class="s2">&quot;cslyaml&quot;</span><span class="p">,</span> <span class="s2">&quot;plain&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span> <span class="s2">&quot;docx&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">,</span> <span class="s2">&quot;jats&quot;</span><span class="p">],</span>
 
         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Format to use for output file. &quot;</span>
 
-        <span class="s2">&quot;Implies --render. &quot;</span>
+        <span class="s2">&quot;csljson and cslyaml output the CSL data. &quot;</span>
+
+        <span class="s2">&quot;All other choices render the references using Pandoc. &quot;</span>
 
         <span class="s2">&quot;If not specified, attempt to infer this from the --output filename extension. &quot;</span>
 
-        <span class="s2">&quot;Otherwise, default to plain.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Otherwise, default to csljson.&quot;</span><span class="p">,</span>
+
+    <span class="p">)</span>
+
+    <span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+
+        <span class="s2">&quot;--yml&quot;</span><span class="p">,</span>
+
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;format&quot;</span><span class="p">,</span>
+
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
+
+        <span class="n">const</span><span class="o">=</span><span class="s2">&quot;cslyaml&quot;</span><span class="p">,</span>
+
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Short for --format=cslyaml.&quot;</span><span class="p">,</span>
+
+    <span class="p">)</span>
+
+    <span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+
+        <span class="s2">&quot;--txt&quot;</span><span class="p">,</span>
+
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;format&quot;</span><span class="p">,</span>
+
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
+
+        <span class="n">const</span><span class="o">=</span><span class="s2">&quot;plain&quot;</span><span class="p">,</span>
+
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Short for --format=plain.&quot;</span><span class="p">,</span>
+
+    <span class="p">)</span>
+
+    <span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+
+        <span class="s2">&quot;--md&quot;</span><span class="p">,</span>
+
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;format&quot;</span><span class="p">,</span>
+
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
+
+        <span class="n">const</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
+
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Short for --format=markdown.&quot;</span><span class="p">,</span>
 
     <span class="p">)</span>
 
@@ -1607,9 +1641,13 @@
 
         <span class="s2">&quot;--csl&quot;</span><span class="p">,</span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Specify an XML CSL definition to style references (i.e. Pandoc&#39;s --csl option). &quot;</span>
+        <span class="c1"># redirects to the latest Manubot CSL Style.</span>
 
-        <span class="s2">&quot;Implies --render. &quot;</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;https://citation-style.manubot.org/&quot;</span><span class="p">,</span>
+
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;URL or path with CSL XML style used to style references &quot;</span>
+
+        <span class="s2">&quot;(i.e. Pandoc&#39;s --csl option). &quot;</span>
 
         <span class="s2">&quot;Defaults to Manubot&#39;s style.&quot;</span><span class="p">,</span>
 
@@ -1858,31 +1896,65 @@
 
     <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="n">format_group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
 
-        <span class="s2">&quot;--render&quot;</span><span class="p">,</span>
-
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Whether to render CSL Data into a formatted reference list using Pandoc. &quot;</span>
-
-        <span class="s2">&quot;Pandoc version 2.0 or higher is required for complete support of available output formats.&quot;</span><span class="p">,</span>
-
-    <span class="p">)</span>
-
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
 
         <span class="s2">&quot;--format&quot;</span><span class="p">,</span>
 
-        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;plain&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span> <span class="s2">&quot;docx&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">,</span> <span class="s2">&quot;jats&quot;</span><span class="p">],</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;csljson&quot;</span><span class="p">,</span> <span class="s2">&quot;cslyaml&quot;</span><span class="p">,</span> <span class="s2">&quot;plain&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span> <span class="s2">&quot;docx&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">,</span> <span class="s2">&quot;jats&quot;</span><span class="p">],</span>
 
         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Format to use for output file. &quot;</span>
 
-        <span class="s2">&quot;Implies --render. &quot;</span>
+        <span class="s2">&quot;csljson and cslyaml output the CSL data. &quot;</span>
+
+        <span class="s2">&quot;All other choices render the references using Pandoc. &quot;</span>
 
         <span class="s2">&quot;If not specified, attempt to infer this from the --output filename extension. &quot;</span>
 
-        <span class="s2">&quot;Otherwise, default to plain.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Otherwise, default to csljson.&quot;</span><span class="p">,</span>
+
+    <span class="p">)</span>
+
+    <span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+
+        <span class="s2">&quot;--yml&quot;</span><span class="p">,</span>
+
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;format&quot;</span><span class="p">,</span>
+
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
+
+        <span class="k">const</span><span class="o">=</span><span class="s2">&quot;cslyaml&quot;</span><span class="p">,</span>
+
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Short for --format=cslyaml.&quot;</span><span class="p">,</span>
+
+    <span class="p">)</span>
+
+    <span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+
+        <span class="s2">&quot;--txt&quot;</span><span class="p">,</span>
+
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;format&quot;</span><span class="p">,</span>
+
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
+
+        <span class="k">const</span><span class="o">=</span><span class="s2">&quot;plain&quot;</span><span class="p">,</span>
+
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Short for --format=plain.&quot;</span><span class="p">,</span>
+
+    <span class="p">)</span>
+
+    <span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+
+        <span class="s2">&quot;--md&quot;</span><span class="p">,</span>
+
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;format&quot;</span><span class="p">,</span>
+
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
+
+        <span class="k">const</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
+
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Short for --format=markdown.&quot;</span><span class="p">,</span>
 
     <span class="p">)</span>
 
@@ -1890,9 +1962,13 @@
 
         <span class="s2">&quot;--csl&quot;</span><span class="p">,</span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Specify an XML CSL definition to style references (i.e. Pandoc&#39;s --csl option). &quot;</span>
+        <span class="c1"># redirects to the latest Manubot CSL Style.</span>
 
-        <span class="s2">&quot;Implies --render. &quot;</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;https://citation-style.manubot.org/&quot;</span><span class="p">,</span>
+
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;URL or path with CSL XML style used to style references &quot;</span>
+
+        <span class="s2">&quot;(i.e. Pandoc&#39;s --csl option). &quot;</span>
 
         <span class="s2">&quot;Defaults to Manubot&#39;s style.&quot;</span><span class="p">,</span>
 
