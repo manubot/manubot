@@ -14,7 +14,6 @@ before_install:
     https://github.com/jgm/pandoc/releases/download/2.11.1.1/pandoc-2.11.1.1-1-amd64.deb
   - sudo dpkg --install pandoc.deb
 install:
-  - pip install ".[all]"
-  - python setup.py sdist bdist_wheel
+  - pip install ".[webpage,dev]"
 script:
   - pytest --color=yes -rs -m='integration or travis'

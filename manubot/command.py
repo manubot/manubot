@@ -250,7 +250,7 @@ def exit_if_error_handler_fired(error_handler):
 
 def main():
     """
-    Called as a console_scripts entry point in setup.py. This function defines
+    Called as a console_scripts entry point in setup.cfg. This function defines
     the manubot command line script.
     """
     diagnostics = setup_logging_and_errors()
