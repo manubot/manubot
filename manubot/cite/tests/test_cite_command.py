@@ -87,7 +87,6 @@ def test_cite_command_file(tmpdir):
 @pytest.mark.parametrize(
     ["args", "filename"],
     [
-        pytest.param([], "references-plain-{}.txt", id="no-args"),
         pytest.param(
             ["--format", "plain"], "references-plain-{}.txt", id="--format=plain"
         ),
@@ -110,7 +109,7 @@ def test_cite_command_file(tmpdir):
 @pytest.mark.pandoc_version_sensitive
 def test_cite_command_render_stdout(args, filename):
     """
-    Test the stdout output of `manubot cite --render` with various formats.
+    Test the stdout output of `manubot cite` with various Pandoc-output formats.
     The output is sensitive to the version of Pandoc used, so expected output
     files include the pandoc version stamp in their filename.
     When the expected version is missing, the test fails but writes the
@@ -143,7 +142,6 @@ def test_cite_command_render_stdout(args, filename):
         "manubot",
         "cite",
         "--bibliography=input-bibliography.json",
-        "--render",
         "--csl=https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl",
         "arxiv:1806.05726v1",
         "doi:10.7717/peerj.338",
@@ -193,7 +191,7 @@ def teardown_module(module):
     """
     Avoid too many requests to NCBI E-Utils in the test_pubmed.py,
     which is executed following this module. E-Utility requests are
-    capped at 3 per second, which is usually controled by _get_eutils_rate_limiter,
+    capped at 3 per second, which is usually controlled by _get_eutils_rate_limiter,
     but this does not seem to work across test modules.
     """
     import time
