@@ -1746,15 +1746,21 @@ pip install --editable <span class="s2">&quot;.[webpage,dev]&quot;</span>
 
 <h3 id="commands">Commands</h3>
 <p>Below are some common commands used for development.
-They assume the working directory is set to the repository's root, and the conda environment is activated.</p>
+They assume the working directory is set to the repository's root,
+and the conda environment is activated.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># run the test suite</span>
 pytest
 
-<span class="c1"># reformat Python files according to the black style rules (required to pass CI)</span>
-black .
+<span class="c1"># install pre-commit git hooks (once per local clone).</span>
+<span class="c1"># The pre-commit checks declared in .pre-commit-config.yaml will now</span>
+<span class="c1"># run on changed files during git commits.</span>
+pre-commit install
 
-<span class="c1"># detect any flake8 linting violations</span>
-flake8
+<span class="c1"># run the pre-commit checks (required to pass CI)</span>
+pre-commit run --all-files
+
+<span class="c1"># commit despite failing pre-commit checks (will fail CI)</span>
+git commit --no-verify
 
 <span class="c1"># regenerate the README codeblocks for --help messages</span>
 python manubot/tests/test_readme.py
