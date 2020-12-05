@@ -62,24 +62,16 @@ jobs:
       run: |
         pytest -rs --color=yes
 
-  lint:
-    name: Lint Python Code
+  pre-commit:
+    name: Pre-Commit Checks
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
     - name: Install Python
       uses: actions/setup-python@v2
-    - name: Install dependencies
-      run: pip install black flake8
-    - name: Check formatting
-      run: |
-        # if the following command fails, run `black .` locally to reformat the code.
-        # ensure your local version of black matches the version installed on CI,
-        # which will usually be the latest version from https://pypi.org/project/black/
-        black --check --diff .
-    - name: Check style
-      run: flake8
+    - name: Run checks
+      uses: pre-commit/action@v2.0.0
 
   docs:
     name: Build Docs
