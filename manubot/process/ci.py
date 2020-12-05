@@ -1,5 +1,5 @@
-import os
 import logging
+import os
 
 supported_providers = ["github", "travis", "appveyor"]
 

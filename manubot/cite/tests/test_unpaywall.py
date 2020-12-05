@@ -1,4 +1,4 @@
-from ..unpaywall import Unpaywall, Unpaywall_DOI, Unpaywall_arXiv
+from ..unpaywall import Unpaywall, Unpaywall_arXiv, Unpaywall_DOI
 
 
 def test_unpaywall_doi():

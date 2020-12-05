@@ -1,6 +1,6 @@
-from ..handlers import _generate_prefix_to_handler, prefix_to_handler
-
 import pytest
+
+from ..handlers import _generate_prefix_to_handler, prefix_to_handler
 
 
 def test_prefix_to_handler():

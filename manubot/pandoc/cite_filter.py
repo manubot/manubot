@@ -258,7 +258,7 @@ def process_citations(doc: pf.Doc) -> None:
 
 
 def main() -> None:
-    from manubot.command import setup_logging_and_errors, exit_if_error_handler_fired
+    from manubot.command import exit_if_error_handler_fired, setup_logging_and_errors
 
     diagnostics = setup_logging_and_errors()
     args = parse_args()

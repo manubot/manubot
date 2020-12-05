@@ -6,8 +6,8 @@ import pytest
 from ..csl_item import (
     CSL_Item,
     assert_csl_item_type,
-    date_to_date_parts,
     date_parts_to_string,
+    date_to_date_parts,
 )
 
 

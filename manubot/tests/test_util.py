@@ -1,6 +1,6 @@
-import manubot.util
-
 import pytest
+
+import manubot.util
 
 
 def test_shlex_join():

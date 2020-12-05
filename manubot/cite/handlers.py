@@ -2,9 +2,10 @@ import abc
 import dataclasses
 import functools
 import re
-from typing import Optional, Dict, Pattern, Tuple, Any
+from typing import Any, Dict, Optional, Pattern, Tuple
 
 from manubot.util import import_function
+
 from .citekey import CiteKey
 
 """

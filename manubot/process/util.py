@@ -7,19 +7,15 @@ from typing import List, Optional
 
 import jinja2
 
-from manubot.util import read_serialized_data, read_serialized_dict, get_configured_yaml
 from manubot.process.ci import get_continuous_integration_parameters
+from manubot.process.manuscript import datetime_now, get_manuscript_stats, get_text
 from manubot.process.metadata import (
     get_header_includes,
-    get_thumbnail_url,
     get_manuscript_urls,
     get_software_versions,
+    get_thumbnail_url,
 )
-from manubot.process.manuscript import (
-    datetime_now,
-    get_manuscript_stats,
-    get_text,
-)
+from manubot.util import get_configured_yaml, read_serialized_data, read_serialized_dict
 
 
 def read_variable_files(paths: List[str], variables: Optional[dict] = None) -> dict:

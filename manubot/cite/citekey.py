@@ -212,6 +212,7 @@ def shorten_citekey(standard_citekey: str) -> str:
     citekeys consist of characters in the following ranges: 0-9, a-z and A-Z.
     """
     import hashlib
+
     import base62
 
     assert not standard_citekey.startswith("@")
@@ -264,7 +265,7 @@ def url_to_citekey(url: str) -> str:
     For supported sources, convert from url citekey to an alternative source like doi.
     If citekeys fail inspection, revert alternative sources to URLs.
     """
-    from urllib.parse import urlparse, unquote
+    from urllib.parse import unquote, urlparse
 
     citekey = None
     parsed_url = urlparse(url)

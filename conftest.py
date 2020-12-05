@@ -1,6 +1,5 @@
 import pytest
 
-
 markers = dict(
     integration="marks integration tests that cover large portions of the codebase and their interactions",
     appveyor="marks tests where execution on AppVeyor provides additional coverage beyond GitHub Actions",
@@ -62,8 +61,9 @@ def cache_path():
 
 
 def start_caching(hours: int):
-    from datetime import timedelta
     import logging
+    from datetime import timedelta
+
     from requests_cache import install_cache
 
     ttl = timedelta(hours=hours)

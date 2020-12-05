@@ -159,8 +159,8 @@ class Citations:
 
     @property
     def citekeys_tsv(self) -> str:
-        import io
         import csv
+        import io
 
         fields = ["input_id", "dealiased_id", "standard_id", "short_id"]
         output = io.StringIO()

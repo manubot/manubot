@@ -2,8 +2,8 @@
 Create CSL JSON metadata with combinations of fields for testing
 """
 
-import pathlib
 import json
+import pathlib
 
 content_dir = pathlib.Path(__file__).parent
 

@@ -3,8 +3,8 @@ import pytest
 from manubot.cite.doi import (
     expand_short_doi,
     get_doi_csl_item,
-    get_doi_csl_item_zotero,
     get_doi_csl_item_crosscite,
+    get_doi_csl_item_zotero,
 )
 
 

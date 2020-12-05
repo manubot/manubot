@@ -2,9 +2,8 @@ import copy
 
 import pytest
 
-
-from ..metadata import get_header_includes, get_thumbnail_url, get_manuscript_urls
 from ..ci import get_continuous_integration_parameters
+from ..metadata import get_header_includes, get_manuscript_urls, get_thumbnail_url
 
 
 def test_get_header_includes_description_abstract():

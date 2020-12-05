@@ -1,7 +1,7 @@
 import json
 import logging
 import re
-from typing import Dict, Any
+from typing import Any, Dict
 
 from .handlers import Handler
 
@@ -77,6 +77,7 @@ def get_url_csl_item_greycite(url: str) -> CSLItem:
     https://git.io/v9N2C
     """
     import requests
+
     from manubot.util import get_manubot_user_agent
 
     headers = {

@@ -1,11 +1,7 @@
 """Tests rest of functions in manubot.cite, not covered by test_citekey_api.py."""
 import pytest
 
-from manubot.cite.citekey import (
-    CiteKey,
-    shorten_citekey,
-    url_to_citekey,
-)
+from manubot.cite.citekey import CiteKey, shorten_citekey, url_to_citekey
 
 
 @pytest.mark.parametrize(
