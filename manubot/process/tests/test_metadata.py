@@ -38,10 +38,11 @@ def test_get_header_includes_description_abstract():
 
 ci_params = get_continuous_integration_parameters() or {}
 local_only = pytest.mark.skipif(
-    ci_params, reason="skipping on local build since test assumes supported CI behavior"
+    ci_params, reason="skipping on CI build since test assumes local behavior"
 )
 ci_only = pytest.mark.skipif(
-    not ci_params, reason="skipping on CI build since test assumes local behavior"
+    not ci_params,
+    reason="skipping on local build since test assumes supported CI behavior",
 )
 
 repo_raw_url_template = (
