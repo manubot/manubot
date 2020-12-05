@@ -167,6 +167,7 @@ def get_configured_yaml() -> ModuleType:
     The representers are only applied to yaml.dump, not yaml.safe_dump.
     """
     import yaml
+
     from manubot.cite.csl_item import CSL_Item
 
     yaml.add_representer(str, _yaml_str_representer)

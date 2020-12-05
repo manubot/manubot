@@ -130,6 +130,7 @@ def get_manuscript_urls(html_url: Optional[str] = None) -> dict:
     Note the trailing `/` in `html_url`, which is required for proper functioning.
     """
     import requests
+
     from .ci import get_continuous_integration_parameters
 
     urls = dict()

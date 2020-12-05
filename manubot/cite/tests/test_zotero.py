@@ -1,6 +1,6 @@
 import pytest
 
-from manubot.cite.zotero import web_query, search_query, export_as_csl
+from manubot.cite.zotero import export_as_csl, search_query, web_query
 
 
 def test_web_query():

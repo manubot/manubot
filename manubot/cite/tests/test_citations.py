@@ -1,4 +1,5 @@
 import pathlib
+
 import pytest
 
 from manubot.cite.citations import Citations

@@ -9,7 +9,7 @@ https://github.com/manubot/manubot/issues/82.
 
 import json
 import logging
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 import requests
 

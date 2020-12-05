@@ -1,6 +1,5 @@
 import pytest
 
-
 from ..curie import curie_to_url, get_namespaces, get_prefix_to_namespace
 
 

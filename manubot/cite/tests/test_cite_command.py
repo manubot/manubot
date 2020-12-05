@@ -6,8 +6,8 @@ import subprocess
 import pytest
 
 from manubot.cite.csl_item import CSL_Item
-from manubot.util import shlex_join
 from manubot.pandoc.util import get_pandoc_version
+from manubot.util import shlex_join
 
 data_dir = pathlib.Path(__file__).parent.joinpath("cite-command-rendered")
 

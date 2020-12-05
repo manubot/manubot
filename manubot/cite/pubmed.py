@@ -2,15 +2,16 @@ import functools
 import json
 import logging
 import os
-from xml.etree import ElementTree
-from typing import List, Optional, Dict, Any, Union, TYPE_CHECKING
 import warnings
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
+from xml.etree import ElementTree
 
 import requests
 
+from manubot.util import get_manubot_user_agent
+
 from .citekey import CiteKey
 from .handlers import Handler
-from manubot.util import get_manubot_user_agent
 
 
 class Handler_PubMed(Handler):

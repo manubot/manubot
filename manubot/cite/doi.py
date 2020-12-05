@@ -2,11 +2,12 @@ import json
 import logging
 import urllib.parse
 import urllib.request
-from typing import Optional, Callable, Any
+from typing import Any, Callable, Optional
 
 import requests
 
 from manubot.util import get_manubot_user_agent
+
 from .handlers import Handler
 from .pubmed import get_pubmed_ids_for_doi
 

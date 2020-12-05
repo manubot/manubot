@@ -69,6 +69,7 @@ def get_isbn_csl_item_citoid(isbn: str):
     https://en.wikipedia.org/api/rest_v1/#!/Citation/getCitation
     """
     import requests
+
     from manubot.util import get_manubot_user_agent
 
     headers = {"User-Agent": get_manubot_user_agent()}
