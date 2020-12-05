@@ -309,7 +309,7 @@ Create a development environment using:
 conda create --name manubot-dev --channel conda-forge \
   python=3.8 pandoc=2.8
 conda activate manubot-dev  # assumes conda >= 4.4
-pip install --editable ".[all]"
+pip install --editable ".[webpage, dev]"
 ```
 
 ### Commands
