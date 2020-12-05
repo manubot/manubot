@@ -315,17 +315,23 @@ pip install --editable ".[webpage,dev]"
 ### Commands
 
 Below are some common commands used for development.
-They assume the working directory is set to the repository's root, and the conda environment is activated.
+They assume the working directory is set to the repository's root,
+and the conda environment is activated.
 
 ```shell
 # run the test suite
 pytest
 
-# reformat Python files according to the black style rules (required to pass CI)
-black .
+# install pre-commit git hooks (once per local clone).
+# The pre-commit checks declared in .pre-commit-config.yaml will now
+# run on changed files during git commits.
+pre-commit install
 
-# detect any flake8 linting violations
-flake8
+# run the pre-commit checks (required to pass CI)
+pre-commit run --all-files
+
+# commit despite failing pre-commit checks (will fail CI)
+git commit --no-verify
 
 # regenerate the README codeblocks for --help messages
 python manubot/tests/test_readme.py
