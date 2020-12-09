@@ -352,17 +352,16 @@ manubot process \
 [![PyPI](https://img.shields.io/pypi/v/manubot.svg?logo=PyPI&style=for-the-badge)](https://pypi.org/project/manubot/)
 
 This section is only relevant for project maintainers.
-Travis CI deployments are used to upload releases to [PyPI](https://pypi.org/project/manubot).
+GitHub Actions is used to deploy releases to [PyPI](https://pypi.org/project/manubot).
 
-To create a new release, bump the `__version__` in [`manubot/__init__.py`](manubot/__init__.py).
-Then, set the `TAG` and `OLD_TAG` environment variables:
+To create a new release,
+set the `OLD_TAG` environment variable:
 
 ```shell
-TAG=v$(python setup.py --version)
-
 # fetch tags from the upstream remote
 # (assumes upstream is the manubot organization remote)
 git fetch --tags upstream main
+
 # get previous release tag, can hardcode like OLD_TAG=v0.3.1
 OLD_TAG=$(git describe --tags --abbrev=0)
 ```
@@ -370,24 +369,16 @@ OLD_TAG=$(git describe --tags --abbrev=0)
 The following commands can help draft release notes:
 
 ```shell
-# check out a branch for a pull request as needed
-git checkout -b "release-$TAG"
-
-# create release notes file if it doesn't exist
-touch "release-notes/$TAG.md"
-
 # commit list since previous tag
-echo $'\n\nCommits\n-------\n' >> "release-notes/$TAG.md"
-git log --oneline --decorate=no $OLD_TAG..HEAD >> "release-notes/$TAG.md"
+echo $'\n\nCommits\n-------\n' && \
+  git log --oneline --decorate=no $OLD_TAG..HEAD
 
 # commit authors since previous tag
-echo $'\n\nCode authors\n------------\n' >> "release-notes/$TAG.md"
-git log $OLD_TAG..HEAD --format='%aN <%aE>' | sort --unique >> "release-notes/$TAG.md"
+echo $'\n\nCode authors\n------------\n' && \
+  git log $OLD_TAG..HEAD --format='%aN <%aE>' | sort --unique
 ```
 
-After a commit with the above updates is part of `upstream:main`,
-for example after a PR is merged,
-use the [GitHub interface](https://github.com/manubot/manubot/releases/new) to create a release with the new "Tag version".
+Use the [GitHub interface](https://github.com/manubot/manubot/releases/new) to create a release with the new "Tag version".
 Monitor [GitHub Actions](https://github.com/manubot/manubot/actions?query=workflow%3ARelease) and [PyPI](https://pypi.org/project/manubot/#history) for successful deployment of the release.
 
 ## Goals & Acknowledgments
