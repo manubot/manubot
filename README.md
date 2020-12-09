@@ -1,12 +1,12 @@
 # Python utilities for Manubot: Manuscripts, open and automated
 
-[![documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs&style=for-the-badge)](https://manubot.github.io/manubot/)
-[![PyPI](https://img.shields.io/pypi/v/manubot.svg?logo=PyPI&style=for-the-badge)](https://pypi.org/project/manubot/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge&logo=Python)](https://github.com/psf/black)
+[![documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs&logoColor=white&style=for-the-badge)](https://manubot.github.io/manubot/)
+[![PyPI](https://img.shields.io/pypi/v/manubot.svg?logo=PyPI&logoColor=white&style=for-the-badge)](https://pypi.org/project/manubot/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge&logo=Python&logoColor=white)](https://github.com/psf/black)
 
 [![GitHub Actions CI Tests Status](https://img.shields.io/github/workflow/status/manubot/manubot/Tests?label=actions&logo=github&style=for-the-badge)](https://github.com/manubot/manubot/actions)
 [![Travis Linux Build Status](https://img.shields.io/travis/com/manubot/manubot/master?style=for-the-badge&logo=travis&label=Travis)](https://travis-ci.com/manubot/manubot)
-[![AppVeyor Windows Build Status](https://img.shields.io/appveyor/build/manubot/manubot/master?style=for-the-badge&logo=appveyor&label=AppVeyor)](https://ci.appveyor.com/project/manubot/manubot/branch/master)
+[![AppVeyor Windows Build Status](https://img.shields.io/appveyor/build/manubot/manubot/master?style=for-the-badge&logo=appveyor&logoColor=white&label=AppVeyor)](https://ci.appveyor.com/project/manubot/manubot/branch/master)
 
 
 [Manubot](https://manubot.org/ "Manubot homepage") is a workflow and set of tools for the next generation of scholarly publishing.
@@ -387,7 +387,7 @@ git log $OLD_TAG..HEAD --format='%aN <%aE>' | sort --unique >> "release-notes/$T
 
 After a commit with the above updates is part of `upstream:master`,
 for example after a PR is merged,
-use the [GitHub inteferace](https://github.com/manubot/manubot/releases/new) to create a release with the new "Tag version".
+use the [GitHub interface](https://github.com/manubot/manubot/releases/new) to create a release with the new "Tag version".
 Monitor [GitHub Actions](https://github.com/manubot/manubot/actions?query=workflow%3ARelease) and [PyPI](https://pypi.org/project/manubot/#history) for successful deployment of the release.
 
 ## Goals & Acknowledgments
