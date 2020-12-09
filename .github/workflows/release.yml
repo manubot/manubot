@@ -22,7 +22,7 @@ jobs:
       run: python -m build --sdist --wheel --outdir=dist
     - name: Deploy package
       if: '!github.event.repository.fork'
-      uses: pypa/gh-action-pypi-publish@master
+      uses: pypa/gh-action-pypi-publish@v1.4.1
       with:
         user: __token__
         password: ${{ secrets.pypi_password }}
