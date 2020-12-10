@@ -182,13 +182,13 @@ def get_rootstock_commit() -> Optional[str]:
     """
     Return the most recent commit in common between the git repository
     this function is run within (usually a Manubot manuscript repository)
-    and the `master` branch of the `rootstock` remote.
+    and the `main` branch of the `rootstock` remote.
 
     WARNING: This function may modify the git repository its executed within:
 
     - if the repository has not set the `roostock` remote, it is set to
       point to the default Rootstock repository of <https://github.com/manubot/rootstock>.
-    - fetches the latest commits in the `master` branch of the `rootstock` remote
+    - fetches the latest commits in the `main` branch of the `rootstock` remote
     """
     from manubot.util import shlex_join
 
@@ -202,9 +202,9 @@ def get_rootstock_commit() -> Optional[str]:
         )
     # find most recent common ancestor commit
     try:
-        args = ["git", "fetch", "rootstock", "master"]
+        args = ["git", "fetch", "rootstock", "main"]
         subprocess.check_output(args, stderr=subprocess.PIPE, universal_newlines=True)
-        args = ["git", "merge-base", "HEAD", "rootstock/master"]
+        args = ["git", "merge-base", "HEAD", "rootstock/main"]
         output = subprocess.check_output(
             args, stderr=subprocess.PIPE, universal_newlines=True
         )

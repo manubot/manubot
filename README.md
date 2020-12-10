@@ -16,7 +16,7 @@ Package documentation is available at <https://manubot.github.io/manubot> (auto-
 The `manubot cite` command-line interface retrieves and formats bibliographic metadata for user-supplied persistent identifiers like DOIs or PubMed IDs.
 The `manubot process` command-line interface prepares scholarly manuscripts for Pandoc consumption.
 The `manubot process` command is used by Manubot manuscripts, which are based off the [Rootstock template](https://github.com/manubot/rootstock), to automate several aspects of manuscript generation.
-See Rootstock's [manuscript usage guide](https://github.com/manubot/rootstock/blob/master/USAGE.md) for more information.
+See Rootstock's [manuscript usage guide](https://github.com/manubot/rootstock/blob/main/USAGE.md) for more information.
 
 **Note:**
 If you want to experience Manubot by editing an existing manuscript, see <https://github.com/manubot/try-manubot>.
@@ -33,7 +33,7 @@ The Manubot version of this manuscript is available at <https://greenelab.github
 
 ## Installation
 
-If you are using the `manubot` Python package as part of a manuscript repository, installation of this package is handled though the Rootstock's [environment specification](https://github.com/manubot/rootstock/blob/master/build/environment.yml).
+If you are using the `manubot` Python package as part of a manuscript repository, installation of this package is handled though the Rootstock's [environment specification](https://github.com/manubot/rootstock/blob/main/build/environment.yml).
 For other use cases, this package can be installed via `pip`.
 
 Install the latest release version [from PyPI](https://pypi.org/project/manubot/):

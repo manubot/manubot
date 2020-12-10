@@ -16,8 +16,8 @@ pandoc \
   --csl=https://gist.githubusercontent.com/rmzelle/a3f1fab95a4b136962fce5b1b7cdeaf8/raw/0e2478d17476c633b080b5197e145d1e2b858a2f/manubot.csl \
   --metadata link-citations=true \
   --bibliography=content/manual-references.json \
-  --include-after-body=https://github.com/manubot/rootstock/raw/master/build/themes/default.html \
-  --include-after-body=https://github.com/manubot/rootstock/raw/master/build/plugins/tooltips.html \
+  --include-after-body=https://github.com/manubot/rootstock/raw/main/build/themes/default.html \
+  --include-after-body=https://github.com/manubot/rootstock/raw/main/build/plugins/tooltips.html \
   content/01.main-text.md
 ```
 
