@@ -1,8 +1,14 @@
 import subprocess
 
+import pytest
+
 import manubot
 
 
+@pytest.mark.xfail(
+    reason="setuptools_scm sets version for installed package, "
+    "but test can run on uninstalled repository code."
+)
 def test_version():
     stdout = subprocess.check_output(["manubot", "--version"], universal_newlines=True)
     version_str = f"v{manubot.__version__}"
