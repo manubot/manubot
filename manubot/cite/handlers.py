@@ -25,6 +25,24 @@ _local_handlers = [
     "manubot.cite.wikidata.Handler_Wikidata",
 ]
 
+_infer_handler_patterns = {
+    ("manubot.cite.doi.Handler_DOI", "accession_pattern"),
+    ("manubot.cite.doi.Handler_DOI", "shortdoi_pattern"),
+    ("manubot.cite.pubmed.Handler_PMC", "accession_pattern"),
+    ("manubot.cite.pubmed.Handler_PubMed", "accession_pattern"),
+    ("manubot.cite.pubmed.Handler_Wikidata", "accession_pattern"),
+    ("manubot.cite.pubmed.Handler_arXiv", "accession_pattern"),
+}
+
+
+def infer_prefix(dealiased_id: str) -> Optional[str]:
+    for handler, pattern_attrib in _infer_handler_patterns:
+        handler = import_function(handler)
+        pattern = handler._get_pattern(pattern_attrib)
+        if pattern.fullmatch(dealiased_id):
+            return handler.standard_prefix
+    return None
+
 
 @functools.lru_cache(maxsize=10_000)
 def get_handler(prefix_lower: str) -> "Handler":
