@@ -25,20 +25,21 @@ _local_handlers = [
     "manubot.cite.wikidata.Handler_Wikidata",
 ]
 
-_infer_handler_patterns = {
-    ("manubot.cite.doi.Handler_DOI", "accession_pattern"),
-    ("manubot.cite.doi.Handler_DOI", "shortdoi_pattern"),
-    ("manubot.cite.pubmed.Handler_PMC", "accession_pattern"),
-    ("manubot.cite.pubmed.Handler_PubMed", "accession_pattern"),
-    ("manubot.cite.pubmed.Handler_Wikidata", "accession_pattern"),
-    ("manubot.cite.pubmed.Handler_arXiv", "accession_pattern"),
+_infer_prefix_patterns = {
+    ("doi", "accession_pattern"),
+    ("doi", "shortdoi_pattern"),
+    ("pmc", "accession_pattern"),
+    ("pubmed", "accession_pattern"),
+    ("wikidata", "accession_pattern"),
+    ("arxiv", "accession_pattern"),
 }
+"""dictionary of prefix (lowercase) to pattern attribute for the corresponding handler"""
 
 
 def infer_prefix(dealiased_id: str) -> Optional[str]:
-    for handler, pattern_attrib in _infer_handler_patterns:
-        handler = import_function(handler)
-        pattern = handler._get_pattern(pattern_attrib)
+    for prefix, pattern_attrib in _infer_prefix_patterns:
+        handler = get_handler(prefix)
+        pattern = handler._get_pattern(attribute=pattern_attrib)
         if pattern.fullmatch(dealiased_id):
             return handler.standard_prefix
     return None

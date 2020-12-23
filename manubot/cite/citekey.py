@@ -16,7 +16,11 @@ except ImportError:
 @dataclasses.dataclass
 class CiteKey:
     input_id: str
+    """Input identifier for the citekey"""
     aliases: dict = dataclasses.field(default_factory=dict)
+    """Mapping from input identifier to aliases"""
+    infer_prefix: bool = True
+    """Whether to infer the citekey's prefix when a prefix is missing or unhandled"""
 
     def __post_init__(self):
         self.check_input_id(self.input_id)
@@ -46,12 +50,29 @@ class CiteKey:
         return self.aliases.get(self.input_id, self.input_id)
 
     def _set_prefix_accession(self) -> None:
-        try:
-            prefix, accession = self.dealiased_id.split(":", 1)
-        except ValueError:
-            prefix, accession = None, None
+        self._prefix = None
+        self._accession = None
+        split_id = self.dealiased_id.split(":", 1)
+        if len(split_id) == 2:
+            self._prefix, self._accession = split_id
+        if self.infer_prefix and not self.is_handled_prefix:
+            self._infer_prefix()
+
+    def _infer_prefix(self) -> None:
+        """
+        Treat `self.dealiased_id` as missing a prefix.
+        If the prefix can be inferred, set `self._prefix` and `self._accession`.
+
+        Only call this function from _set_prefix_accession,
+        since it is not safe after instance attributes or properties have been cached.
+        """
+        from .handlers import infer_prefix
+
+        prefix = infer_prefix(self.dealiased_id)
+        if not prefix:
+            return
         self._prefix = prefix
-        self._accession = accession
+        self._accession = self.dealiased_id
 
     @property
     def prefix(self) -> tp.Optional[str]:
@@ -109,7 +130,7 @@ class CiteKey:
             return get_handler(self.prefix_lower)
         return Handler(self.prefix_lower)
 
-    @cached_property
+    @property
     def is_handled_prefix(self) -> bool:
         from .handlers import prefix_to_handler
 
