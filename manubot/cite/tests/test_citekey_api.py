@@ -11,6 +11,8 @@ from manubot.cite.citekey import CiteKey
     [
         ("doi:10.5061/DRYAD.q447c/1", "doi:10.5061/dryad.q447c/1"),
         ("doi:10.5061/dryad.q447c/1", "doi:10.5061/dryad.q447c/1"),
+        # infers by default
+        ("10.5061/dryad.q447c/1", "doi:10.5061/dryad.q447c/1"),
         ("doi:10/b6vnmd", "doi:10.1016/s0933-3657(96)00367-3"),
         ("doi:10/B6VNMD", "doi:10.1016/s0933-3657(96)00367-3"),
         (
