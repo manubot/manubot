@@ -55,7 +55,7 @@ class CiteKey:
         split_id = self.dealiased_id.split(":", 1)
         if len(split_id) == 2:
             self._prefix, self._accession = split_id
-        if self.infer_prefix and not self.is_handled_prefix:
+        if self.infer_prefix and not self.is_known_prefix:
             self._infer_prefix()
 
     def _infer_prefix(self) -> None:
@@ -135,6 +135,10 @@ class CiteKey:
         from .handlers import prefix_to_handler
 
         return self.prefix_lower in prefix_to_handler
+
+    @property
+    def is_known_prefix(self) -> bool:
+        return self.is_handled_prefix or self.is_pandoc_xnos_prefix()
 
     def inspect(self) -> tp.Optional[str]:
         """
