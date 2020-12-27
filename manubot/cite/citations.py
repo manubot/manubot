@@ -19,6 +19,8 @@ class Citations:
     input_ids: list
     # Citation key aliases
     aliases: dict = dataclasses.field(default_factory=dict)
+    # infer prefixes for citekeys (e.g. support DOIs without a "doi:" prefix)
+    infer_citekey_prefixes: bool = True
     # manual references dictionary of standard_id to CSL_Item.
     manual_refs: dict = dataclasses.field(default_factory=dict)
     # level to log failures related to CSL Item generation
@@ -32,7 +34,10 @@ class Citations:
 
     def __post_init__(self):
         input_ids = list(dict.fromkeys(self.input_ids))  # deduplicate
-        self.citekeys = [CiteKey(x, self.aliases) for x in input_ids]
+        self.citekeys = [
+            CiteKey(x, aliases=self.aliases, infer_prefix=self.infer_citekey_prefixes)
+            for x in input_ids
+        ]
 
     def filter_pandoc_xnos(self) -> list:
         """

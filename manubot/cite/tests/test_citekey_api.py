@@ -11,6 +11,8 @@ from manubot.cite.citekey import CiteKey
     [
         ("doi:10.5061/DRYAD.q447c/1", "doi:10.5061/dryad.q447c/1"),
         ("doi:10.5061/dryad.q447c/1", "doi:10.5061/dryad.q447c/1"),
+        # infers by default
+        ("10.5061/dryad.q447c/1", "doi:10.5061/dryad.q447c/1"),
         ("doi:10/b6vnmd", "doi:10.1016/s0933-3657(96)00367-3"),
         ("doi:10/B6VNMD", "doi:10.1016/s0933-3657(96)00367-3"),
         (
@@ -32,6 +34,31 @@ def test_citekey_standard_id(input_id, expected):
     """
     citekey = CiteKey(input_id)
     assert citekey.standard_id == expected
+
+
+test_citekey_infer_prefix_params = [
+    ("10.5061/dryad.q447c/1", "doi"),
+    ("10/b6vnmd", "doi"),
+    ("24159271", "pubmed"),
+    ("1", "pubmed"),
+    ("PMC3041534", "pmc"),
+    ("Q50051684", "wikidata"),
+    ("1407.3561v1", "arxiv"),
+    ("no-prefix-to-infer", None),
+]
+
+
+@pytest.mark.parametrize("input_id,prefix", test_citekey_infer_prefix_params)
+def test_citekey_infer_prefix(input_id, prefix):
+    citekey = CiteKey(input_id, infer_prefix=True)
+    assert citekey.prefix == prefix
+
+
+@pytest.mark.parametrize("input_id,prefix", test_citekey_infer_prefix_params)
+def test_citekey_no_infer_prefix(input_id, prefix):
+    citekey = CiteKey(input_id, infer_prefix=False)
+    assert citekey.prefix is None
+    assert citekey.accession is None
 
 
 @pytest.mark.xfail(reason="https://twitter.com/dhimmel/status/950443969313419264")

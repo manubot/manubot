@@ -153,6 +153,12 @@ def add_subparser_cite(subparsers):
         "Similar to pandoc --bibliography.",
     )
     parser.add_argument(
+        "--no-infer-prefix",
+        dest="infer_prefix",
+        action="store_false",
+        help="Do not attempt to infer the prefix for citekeys without a known prefix.",
+    )
+    parser.add_argument(
         "--allow-invalid-csl-data",
         dest="prune_csl",
         action="store_false",

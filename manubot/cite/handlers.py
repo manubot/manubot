@@ -2,7 +2,7 @@ import abc
 import dataclasses
 import functools
 import re
-from typing import Any, Dict, Optional, Pattern, Tuple
+from typing import Any, Dict, List, Optional, Pattern, Set, Tuple
 
 from manubot.util import import_function
 
@@ -12,10 +12,10 @@ from .citekey import CiteKey
 Non-citation prefixes used by the pandoc-xnos suite of Pandoc filters,
 including pandoc-fignos, pandoc-tablenos, and pandoc-eqnos.
 """
-_pandoc_xnos_prefixes = {"fig", "tbl", "eq"}
+_pandoc_xnos_prefixes: Set[str] = {"fig", "tbl", "eq"}
 
 
-_local_handlers = [
+_local_handlers: List[str] = [
     "manubot.cite.arxiv.Handler_arXiv",
     "manubot.cite.doi.Handler_DOI",
     "manubot.cite.isbn.Handler_ISBN",
@@ -24,6 +24,35 @@ _local_handlers = [
     "manubot.cite.url.Handler_URL",
     "manubot.cite.wikidata.Handler_Wikidata",
 ]
+
+_infer_prefix_patterns: List[Tuple[str, str]] = [
+    ("doi", "accession_pattern"),
+    ("doi", "shortdoi_pattern"),
+    ("pmc", "accession_pattern"),
+    ("pubmed", "accession_pattern"),
+    ("wikidata", "accession_pattern"),
+    ("arxiv", "accession_pattern"),
+]
+"""
+Each list element is a tuple of (handler, pattern attribute).
+Handler is the handler prefix (lowercase).
+Pattern attribute refers to the Handler attribute containing a regex pattern.
+A citekey prefix is inferred from the first matching pattern in this list.
+"""
+
+
+def infer_prefix(dealiased_id: str) -> Optional[str]:
+    """
+    Infer the prefix for citekey by matching it against a sequence of regexes.
+    If a match is found, return the coressponding standard prefix.
+    Otherwise, return None.
+    """
+    for prefix, pattern_attrib in _infer_prefix_patterns:
+        handler = get_handler(prefix)
+        pattern = handler._get_pattern(attribute=pattern_attrib)
+        if pattern.fullmatch(dealiased_id):
+            return handler.standard_prefix
+    return None
 
 
 @functools.lru_cache(maxsize=10_000)
