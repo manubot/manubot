@@ -90,7 +90,10 @@ def cli_cite(args: argparse.Namespace):
     """
     _parse_cli_cite_args(args)
     citations = Citations(
-        input_ids=args.citekeys, prune_csl_items=args.prune_csl, sort_csl_items=False
+        input_ids=args.citekeys,
+        infer_citekey_prefixes=args.infer_prefix,
+        prune_csl_items=args.prune_csl,
+        sort_csl_items=False,
     )
     citations.load_manual_references(paths=args.bibliography)
     citations.inspect(log_level="WARNING")

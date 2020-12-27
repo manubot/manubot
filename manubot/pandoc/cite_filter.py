@@ -25,6 +25,11 @@ Configuration is provided via Pandoc metadata fields.
   Useful when a citation is used many times or contains invalid characters.
   Aliases can also be defined in markdown with link reference syntax.
 
+- manubot-infer-citekey-prefixes (boolean):
+  Attempt to infer the prefix for citekeys without a known prefix.
+  For example, allow '@10.1371/journal.pcbi.1007128' with a 'doi:' prefix.
+  Default is true.
+
 - `manubot-output-citekeys` (string):
   path to write TSV table of citekeys
   showing their transformation from input_id to short_id.
@@ -47,6 +52,10 @@ Configuration is provided via Pandoc metadata fields.
 
 - `manubot-clear-requests-cache` (boolean):
   If true, clear the requests cache at `manubot-requests-cache-path`.
+
+- `manubot-fail-on-errors` (boolean):
+  If true, return a nonzero exit status if any errors are logged.
+  Default is false, which allows Pandoc to proceed when some citations could not be processed.
 
 ## development commands
 
@@ -224,7 +233,13 @@ def process_citations(doc: pf.Doc) -> None:
     doc.walk(_get_reference_link_citekey_aliases)
     doc.walk(_get_citekeys_action)
     manuscript_citekeys = doc.manubot["manuscript_citekeys"]
-    citations = Citations(input_ids=manuscript_citekeys, aliases=citekey_aliases)
+    citations = Citations(
+        input_ids=manuscript_citekeys,
+        aliases=citekey_aliases,
+        infer_citekey_prefixes=doc.get_metadata(
+            "manubot-infer-citekey-prefixes", default=True
+        ),
+    )
     citations.csl_item_failure_log_level = "ERROR"
 
     requests_cache_path = doc.get_metadata("manubot-requests-cache-path")
@@ -267,6 +282,7 @@ def main() -> None:
     doc = pf.load(input_stream=args.input)
     log_level = doc.get_metadata("manubot-log-level", "WARNING")
     diagnostics["logger"].setLevel(getattr(logging, log_level))
+    logging.debug(f"Input Pandoc metadata:\n{doc.get_metadata()}")
     doc.manubot = {"manuscript_citekeys": []}
     process_citations(doc)
     pf.dump(doc, output_stream=args.output)

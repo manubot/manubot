@@ -179,7 +179,7 @@ Additional usage information is available from `manubot cite --help`:
 usage: manubot cite [-h] [--output OUTPUT]
                     [--format {csljson,cslyaml,plain,markdown,docx,html,jats} | --yml | --txt | --md]
                     [--csl CSL] [--bibliography BIBLIOGRAPHY]
-                    [--allow-invalid-csl-data]
+                    [--no-infer-prefix] [--allow-invalid-csl-data]
                     [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
                     citekeys [citekeys ...]
 
@@ -211,6 +211,8 @@ optional arguments:
                         File to read manual reference metadata. Specify
                         multiple times to load multiple files. Similar to
                         pandoc --bibliography.
+  --no-infer-prefix     Do not attempt to infer the prefix for citekeys
+                        without a known prefix.
   --allow-invalid-csl-data
                         Allow CSL Items that do not conform to the JSON
                         Schema. Skips CSL pruning.
