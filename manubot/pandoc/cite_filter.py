@@ -25,7 +25,7 @@ Configuration is provided via Pandoc metadata fields.
   Useful when a citation is used many times or contains invalid characters.
   Aliases can also be defined in markdown with link reference syntax.
 
-- manubot-infer-citekey-prefixes (boolean):
+- `manubot-infer-citekey-prefixes` (boolean):
   Attempt to infer the prefix for citekeys without a known prefix.
   For example, allow '@10.1371/journal.pcbi.1007128' with a 'doi:' prefix.
   Default is true.
