@@ -464,6 +464,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#infer_prefix" class="md-nav__link">
+    infer_prefix
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1354,6 +1361,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#infer_prefix" class="md-nav__link">
+    infer_prefix
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1462,7 +1476,7 @@
 
 <span class="kn">import</span> <span class="nn">re</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Pattern</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Pattern</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">import_function</span>
 
@@ -1476,9 +1490,9 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">_pandoc_xnos_prefixes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fig&quot;</span><span class="p">,</span> <span class="s2">&quot;tbl&quot;</span><span class="p">,</span> <span class="s2">&quot;eq&quot;</span><span class="p">}</span>
+<span class="n">_pandoc_xnos_prefixes</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fig&quot;</span><span class="p">,</span> <span class="s2">&quot;tbl&quot;</span><span class="p">,</span> <span class="s2">&quot;eq&quot;</span><span class="p">}</span>
 
-<span class="n">_local_handlers</span> <span class="o">=</span> <span class="p">[</span>
+<span class="n">_local_handlers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
 
     <span class="s2">&quot;manubot.cite.arxiv.Handler_arXiv&quot;</span><span class="p">,</span>
 
@@ -1495,6 +1509,58 @@
     <span class="s2">&quot;manubot.cite.wikidata.Handler_Wikidata&quot;</span><span class="p">,</span>
 
 <span class="p">]</span>
+
+<span class="n">_infer_prefix_patterns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+
+    <span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;accession_pattern&quot;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;shortdoi_pattern&quot;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s2">&quot;pmc&quot;</span><span class="p">,</span> <span class="s2">&quot;accession_pattern&quot;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s2">&quot;pubmed&quot;</span><span class="p">,</span> <span class="s2">&quot;accession_pattern&quot;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s2">&quot;wikidata&quot;</span><span class="p">,</span> <span class="s2">&quot;accession_pattern&quot;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s2">&quot;arxiv&quot;</span><span class="p">,</span> <span class="s2">&quot;accession_pattern&quot;</span><span class="p">),</span>
+
+<span class="p">]</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">Each list element is a tuple of (handler, pattern attribute).</span>
+
+<span class="sd">Handler is the handler prefix (lowercase).</span>
+
+<span class="sd">Pattern attribute refers to the Handler attribute containing a regex pattern.</span>
+
+<span class="sd">A citekey prefix is inferred from the first matching pattern in this list.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">infer_prefix</span><span class="p">(</span><span class="n">dealiased_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Infer the prefix for citekey by matching it against a sequence of regexes.</span>
+
+<span class="sd">    If a match is found, return the coressponding standard prefix.</span>
+
+<span class="sd">    Otherwise, return None.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">pattern_attrib</span> <span class="ow">in</span> <span class="n">_infer_prefix_patterns</span><span class="p">:</span>
+
+        <span class="n">handler</span> <span class="o">=</span> <span class="n">get_handler</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
+
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="n">attribute</span><span class="o">=</span><span class="n">pattern_attrib</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pattern</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">dealiased_id</span><span class="p">):</span>
+
+            <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="n">standard_prefix</span>
+
+    <span class="k">return</span> <span class="bp">None</span>
 
 <span class="nd">@functools.lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">10</span><span class="n">_000</span><span class="p">)</span>
 
@@ -3136,6 +3202,41 @@
 <span class="w">    </span><span class="n">handler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">import_function</span><span class="p">(</span><span class="n">handler</span><span class="p">)(</span><span class="n">prefix_lower</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">handler</span><span class="w"></span>
+</code></pre></div>
+
+</details>
+<h3 id="infer_prefix">infer_prefix</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">infer_prefix</span><span class="p">(</span>
+    <span class="n">dealiased_id</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+</code></pre></div>
+
+<p>Infer the prefix for citekey by matching it against a sequence of regexes.
+If a match is found, return the coressponding standard prefix.
+Otherwise, return None.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">infer_prefix</span><span class="p">(</span><span class="nl">dealiased_id</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Infer the prefix for citekey by matching it against a sequence of regexes.</span>
+
+<span class="ss">    If a match is found, return the coressponding standard prefix.</span>
+
+<span class="ss">    Otherwise, return None.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="k">prefix</span><span class="p">,</span><span class="w"> </span><span class="n">pattern_attrib</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">_infer_prefix_patterns</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">handler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_handler</span><span class="p">(</span><span class="k">prefix</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">handler</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="n">attribute</span><span class="o">=</span><span class="n">pattern_attrib</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">pattern</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">dealiased_id</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">handler</span><span class="p">.</span><span class="n">standard_prefix</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 </code></pre></div>
 
 </details>

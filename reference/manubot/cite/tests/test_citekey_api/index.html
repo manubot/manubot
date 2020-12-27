@@ -622,12 +622,33 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#variables" class="md-nav__link">
+    Variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#functions" class="md-nav__link">
     Functions
   </a>
   
     <nav class="md-nav" aria-label="Functions">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test_citekey_infer_prefix" class="md-nav__link">
+    test_citekey_infer_prefix
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_citekey_no_infer_prefix" class="md-nav__link">
+    test_citekey_no_infer_prefix
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#test_citekey_standard_id" class="md-nav__link">
@@ -1317,12 +1338,33 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#variables" class="md-nav__link">
+    Variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#functions" class="md-nav__link">
     Functions
   </a>
   
     <nav class="md-nav" aria-label="Functions">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test_citekey_infer_prefix" class="md-nav__link">
+    test_citekey_infer_prefix
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_citekey_no_infer_prefix" class="md-nav__link">
+    test_citekey_no_infer_prefix
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#test_citekey_standard_id" class="md-nav__link">
@@ -1439,6 +1481,10 @@
 
         <span class="p">(</span><span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">),</span>
 
+        <span class="c1"># infers by default</span>
+
+        <span class="p">(</span><span class="s2">&quot;10.5061/dryad.q447c/1&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">),</span>
+
         <span class="p">(</span><span class="s2">&quot;doi:10/b6vnmd&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.1016/s0933-3657(96)00367-3&quot;</span><span class="p">),</span>
 
         <span class="p">(</span><span class="s2">&quot;doi:10/B6VNMD&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.1016/s0933-3657(96)00367-3&quot;</span><span class="p">),</span>
@@ -1480,6 +1526,44 @@
     <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span>
 
     <span class="k">assert</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span> <span class="o">==</span> <span class="n">expected</span>
+
+<span class="n">test_citekey_infer_prefix_params</span> <span class="o">=</span> <span class="p">[</span>
+
+    <span class="p">(</span><span class="s2">&quot;10.5061/dryad.q447c/1&quot;</span><span class="p">,</span> <span class="s2">&quot;doi&quot;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s2">&quot;10/b6vnmd&quot;</span><span class="p">,</span> <span class="s2">&quot;doi&quot;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s2">&quot;24159271&quot;</span><span class="p">,</span> <span class="s2">&quot;pubmed&quot;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;pubmed&quot;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s2">&quot;PMC3041534&quot;</span><span class="p">,</span> <span class="s2">&quot;pmc&quot;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s2">&quot;Q50051684&quot;</span><span class="p">,</span> <span class="s2">&quot;wikidata&quot;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s2">&quot;1407.3561v1&quot;</span><span class="p">,</span> <span class="s2">&quot;arxiv&quot;</span><span class="p">),</span>
+
+    <span class="p">(</span><span class="s2">&quot;no-prefix-to-infer&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span>
+
+<span class="p">]</span>
+
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="s2">&quot;input_id,prefix&quot;</span><span class="p">,</span> <span class="n">test_citekey_infer_prefix_params</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_citekey_infer_prefix</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+
+    <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="n">infer_prefix</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">citekey</span><span class="o">.</span><span class="n">prefix</span> <span class="o">==</span> <span class="n">prefix</span>
+
+<span class="nd">@pytest.mark.parametrize</span><span class="p">(</span><span class="s2">&quot;input_id,prefix&quot;</span><span class="p">,</span> <span class="n">test_citekey_infer_prefix_params</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_citekey_no_infer_prefix</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+
+    <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="n">infer_prefix</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">citekey</span><span class="o">.</span><span class="n">prefix</span> <span class="ow">is</span> <span class="bp">None</span>
+
+    <span class="k">assert</span> <span class="n">citekey</span><span class="o">.</span><span class="n">accession</span> <span class="ow">is</span> <span class="bp">None</span>
 
 <span class="nd">@pytest.mark.xfail</span><span class="p">(</span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;https://twitter.com/dhimmel/status/950443969313419264&quot;</span><span class="p">)</span>
 
@@ -1737,7 +1821,47 @@
 </code></pre></div>
 
 </details>
+<h2 id="variables">Variables</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">test_citekey_infer_prefix_params</span>
+</code></pre></div>
+
 <h2 id="functions">Functions</h2>
+<h3 id="test_citekey_infer_prefix">test_citekey_infer_prefix</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_citekey_infer_prefix</span><span class="p">(</span>
+    <span class="n">input_id</span><span class="p">,</span>
+    <span class="n">prefix</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="ss">&quot;input_id,prefix&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">test_citekey_infer_prefix_params</span><span class="p">)</span><span class="w"></span>
+
+<span class="n">def</span><span class="w"> </span><span class="n">test_citekey_infer_prefix</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="k">prefix</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="n">infer_prefix</span><span class="o">=</span><span class="k">True</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">citekey</span><span class="p">.</span><span class="k">prefix</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">prefix</span><span class="w"></span>
+</code></pre></div>
+
+</details>
+<h3 id="test_citekey_no_infer_prefix">test_citekey_no_infer_prefix</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_citekey_no_infer_prefix</span><span class="p">(</span>
+    <span class="n">input_id</span><span class="p">,</span>
+    <span class="n">prefix</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="ss">&quot;input_id,prefix&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">test_citekey_infer_prefix_params</span><span class="p">)</span><span class="w"></span>
+
+<span class="n">def</span><span class="w"> </span><span class="n">test_citekey_no_infer_prefix</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="k">prefix</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="n">infer_prefix</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">citekey</span><span class="p">.</span><span class="k">prefix</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">citekey</span><span class="p">.</span><span class="n">accession</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
+</code></pre></div>
+
+</details>
 <h3 id="test_citekey_standard_id">test_citekey_standard_id</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_citekey_standard_id</span><span class="p">(</span>
     <span class="n">input_id</span><span class="p">,</span>
@@ -1755,6 +1879,10 @@
 <span class="n">        (&quot;doi:10.5061/DRYAD.q447c/1&quot;, &quot;doi:10.5061/dryad.q447c/1&quot;),</span>
 
 <span class="n">        (&quot;doi:10.5061/dryad.q447c/1&quot;, &quot;doi:10.5061/dryad.q447c/1&quot;),</span>
+
+<span class="n">        # infers by default</span>
+
+<span class="n">        (&quot;10.5061/dryad.q447c/1&quot;, &quot;doi:10.5061/dryad.q447c/1&quot;),</span>
 
 <span class="n">        (&quot;doi:10/b6vnmd&quot;, &quot;doi:10.1016/s0933-3657(96)00367-3&quot;),</span>
 

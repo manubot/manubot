@@ -1546,6 +1546,10 @@
 
     <span class="n">aliases</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
 
+    <span class="c1"># infer prefixes for citekeys (e.g. support DOIs without a &quot;doi:&quot; prefix)</span>
+
+    <span class="n">infer_citekey_prefixes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">True</span>
+
     <span class="c1"># manual references dictionary of standard_id to CSL_Item.</span>
 
     <span class="n">manual_refs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
@@ -1570,7 +1574,13 @@
 
         <span class="n">input_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_ids</span><span class="p">))</span>  <span class="c1"># deduplicate</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span> <span class="o">=</span> <span class="p">[</span><span class="n">CiteKey</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">aliases</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">input_ids</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span> <span class="o">=</span> <span class="p">[</span>
+
+            <span class="n">CiteKey</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">aliases</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">aliases</span><span class="p">,</span> <span class="n">infer_prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">infer_citekey_prefixes</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">input_ids</span>
+
+        <span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">filter_pandoc_xnos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 
@@ -1907,6 +1917,7 @@
 <div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">Citations</span><span class="p">(</span>
     <span class="n">input_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
     <span class="n">aliases</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">factory</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="n">infer_citekey_prefixes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">manual_refs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">factory</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="n">csl_item_failure_log_level</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;WARNING&#39;</span><span class="p">,</span>
     <span class="n">prune_csl_items</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -1936,6 +1947,10 @@ their citekey input_ids.</p>
 
     <span class="n">aliases</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">dict</span><span class="p">)</span>
 
+    <span class="c1"># infer prefixes for citekeys (e.g. support DOIs without a &quot;doi:&quot; prefix)</span>
+
+    <span class="n">infer_citekey_prefixes</span><span class="p">:</span> <span class="nb nb-Type">bool</span> <span class="o">=</span> <span class="n">True</span>
+
     <span class="c1"># manual references dictionary of standard_id to CSL_Item.</span>
 
     <span class="n">manual_refs</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">dict</span><span class="p">)</span>
@@ -1960,7 +1975,13 @@ their citekey input_ids.</p>
 
         <span class="n">input_ids</span> <span class="o">=</span> <span class="n">list</span><span class="p">(</span><span class="n">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_ids</span><span class="p">))</span>  <span class="c1"># deduplicate</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span> <span class="o">=</span> <span class="p">[</span><span class="n">CiteKey</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">aliases</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">input_ids</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span> <span class="o">=</span> <span class="p">[</span>
+
+            <span class="n">CiteKey</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">aliases</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">aliases</span><span class="p">,</span> <span class="n">infer_prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">infer_citekey_prefixes</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">input_ids</span>
+
+        <span class="p">]</span>
 
     <span class="n">def</span> <span class="n">filter_pandoc_xnos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">list</span><span class="p">:</span>
 
@@ -2295,6 +2316,9 @@ their citekey input_ids.</p>
 <hr />
 <h4 id="class-variables">Class variables</h4>
 <div class="codehilite"><pre><span></span><code><span class="n">csl_item_failure_log_level</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">infer_citekey_prefixes</span>
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code><span class="n">prune_csl_items</span>
