@@ -87,6 +87,7 @@ def get_url_csl_item_greycite(url: str) -> CSLItem:
     response = requests.get(
         "http://greycite.knowledgeblog.org/json", params={"uri": url}, headers=headers
     )
+    response.raise_for_status()
     # Some Greycite responses were valid JSON besides for an error appended
     # like "<p>*** Date set from uri<p>" or "<p>*** fetch error : 404<p>".
     pattern = re.compile(r"<p>\*\*\*.*<p>")
