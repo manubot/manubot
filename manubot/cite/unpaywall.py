@@ -106,6 +106,7 @@ class Unpaywall_DOI(Unpaywall):
         url = f"https://api.unpaywall.org/v2/{self.doi}"
         params = {"email": contact_email}
         response = requests.get(url, params=params)
+        response.raise_for_status()
         self.results = response.json()
         self.oa_locations = [
             Unpaywall_Location(location)

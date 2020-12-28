@@ -80,6 +80,7 @@ def get_arxiv_csl_item(arxiv_id: str):
 def query_arxiv_api(url, params):
     headers = {"User-Agent": get_manubot_user_agent()}
     response = requests.get(url, params, headers=headers)
+    response.raise_for_status()
     xml_tree = xml.etree.ElementTree.fromstring(response.text)
     return xml_tree
 
