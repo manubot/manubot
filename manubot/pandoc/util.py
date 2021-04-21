@@ -30,21 +30,15 @@ def get_pandoc_info() -> Dict[str, Any]:
     }
     ```
     """
+    
     stats = dict()
-    for command in "pandoc", "pandoc-citeproc":
-        path = shutil.which(command)
-        stats[command] = bool(path)
-        if not path:
-            continue
-        version = subprocess.check_output(args=[command, "--version"], encoding="utf-8")
-        logging.debug(version)
-        version, *_discard = version.splitlines()
-        _discard, version = version.strip().split()
-        from packaging.version import parse as parse_version
+    update_command_info("pandoc", stats)
 
-        version = parse_version(version).release
-        stats[f"{command} version"] = version
-        stats[f"{command} path"] = path
+    if stats["pandoc version"] < (2, 11):
+        update_command_info("pandoc-citeproc", stats)
+    else:
+        stats["pandoc-citeproc"] = False
+
     logging.info("\n".join(f"{k}: {v}" for k, v in stats.items()))
     return stats
 
@@ -59,3 +53,24 @@ def get_pandoc_version() -> Tuple[int, ...]:
         # https://twitter.com/dhimmel/status/1327082301994496000
         raise ImportError("missing pandoc command on system.")
     return pandoc_info["pandoc version"]
+
+def update_command_info(command: str, command_info_dict: dict) -> None:
+    """
+    Appends information about a command to the dictionary
+    """
+
+    path = shutil.which(command)
+    command_info_dict[command] = bool(path)
+    
+    if not path:
+        return
+    
+    version = subprocess.check_output(args=[command, "--version"], encoding="utf-8")
+    logging.debug(version)
+    version, *_discard = version.splitlines()
+    _discard, version = version.strip().split()
+    from packaging.version import parse as parse_version
+
+    version = parse_version(version).release
+    command_info_dict[f"{command} version"] = version
+    command_info_dict[f"{command} path"] = path
