@@ -30,12 +30,10 @@ def get_pandoc_info() -> Dict[str, Any]:
     }
     ```
     """
-    
-    stats = dict()
-    update_command_info("pandoc", stats)
 
+    stats = get_command_info("pandoc")
     if stats["pandoc version"] < (2, 11):
-        update_command_info("pandoc-citeproc", stats)
+        stats.update(get_command_info("pandoc-citeproc"))
     else:
         stats["pandoc-citeproc"] = False
 
@@ -54,17 +52,20 @@ def get_pandoc_version() -> Tuple[int, ...]:
         raise ImportError("missing pandoc command on system.")
     return pandoc_info["pandoc version"]
 
-def update_command_info(command: str, command_info_dict: dict) -> None:
+
+def get_command_info(command: str) -> dict:
     """
-    Appends information about a command to the dictionary
+    Returns a dictionary containing some information about a command
     """
+
+    command_info_dict = dict()
 
     path = shutil.which(command)
     command_info_dict[command] = bool(path)
-    
+
     if not path:
-        return
-    
+        return command_info_dict
+
     version = subprocess.check_output(args=[command, "--version"], encoding="utf-8")
     logging.debug(version)
     version, *_discard = version.splitlines()
@@ -74,3 +75,5 @@ def update_command_info(command: str, command_info_dict: dict) -> None:
     version = parse_version(version).release
     command_info_dict[f"{command} version"] = version
     command_info_dict[f"{command} path"] = path
+
+    return command_info_dict
