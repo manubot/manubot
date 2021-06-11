@@ -214,7 +214,7 @@ def load_variables(args) -> dict:
     variables["manubot"].update(get_manuscript_urls(metadata.pop("html_url", None)))
 
     # Add software versions
-    variables["manubot"].update(get_software_versions())
+    variables["manubot"].update(get_software_versions(rootstock=not args.skip_remote))
 
     # Add thumbnail URL if present
     thumbnail_url = get_thumbnail_url(metadata.pop("thumbnail", None))

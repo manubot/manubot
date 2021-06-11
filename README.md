@@ -109,7 +109,7 @@ usage: manubot process [-h] --content-directory CONTENT_DIRECTORY
                        --output-directory OUTPUT_DIRECTORY
                        [--template-variables-path TEMPLATE_VARIABLES_PATH]
                        --skip-citations [--cache-directory CACHE_DIRECTORY]
-                       [--clear-requests-cache]
+                       [--clear-requests-cache] [--skip-remote]
                        [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
 
 Process manuscript content to create outputs for Pandoc consumption. Performs
@@ -145,6 +145,8 @@ optional arguments:
                         Custom cache directory. If not specified, caches to
                         output-directory.
   --clear-requests-cache
+  --skip-remote         Do not add the rootstock repository to the local git
+                        repository remotes.
   --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
                         Set the logging level for stderr logging
 ```
