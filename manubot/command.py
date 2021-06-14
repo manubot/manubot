@@ -89,6 +89,11 @@ def add_subparser_process(subparsers):
         help="Custom cache directory. If not specified, caches to output-directory.",
     )
     parser.add_argument("--clear-requests-cache", action="store_true")
+    parser.add_argument(
+        "--skip-remote",
+        action="store_true",
+        help="Do not add the rootstock repository to the local git repository remotes.",
+    )
     parser.set_defaults(function="manubot.process.process_command.cli_process")
 
 

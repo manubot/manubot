@@ -160,7 +160,7 @@ def get_manuscript_urls(html_url: Optional[str] = None) -> dict:
     return urls
 
 
-def get_software_versions() -> dict:
+def get_software_versions(rootstock: bool = True) -> dict:
     """
     Return a dictionary of software versions for softwares components:
 
@@ -169,12 +169,15 @@ def get_software_versions() -> dict:
       included in the manuscript repository.
 
     Values whose detection fails are set to None.
+
+    The `rootstock` parameter controls whether to fetch the rootstock commit id.
+    The rootstock git remote will be added to the local git repository if true.
     """
     from manubot import __version__ as manubot_version
 
     return {
         "manubot_version": manubot_version,
-        "rootstock_commit": get_rootstock_commit(),
+        "rootstock_commit": get_rootstock_commit() if rootstock else None,
     }
 
 
