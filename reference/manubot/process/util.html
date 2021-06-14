@@ -1,0 +1,2554 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.8">
+    
+    
+      
+        <title>Util - manubot</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4cae4f">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="green" data-md-color-accent="lightgreen">
+  
+    
+    <script>function __prefix(e){return new URL("../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-manubotprocessutil" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../index.html" title="manubot" class="md-header__button md-logo" aria-label="manubot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            manubot
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Util
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/manubot/manubot/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    manubot
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../index.html" title="manubot" class="md-nav__button md-logo" aria-label="manubot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    manubot
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/manubot/manubot/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    manubot
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LICENSE.html" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        Reference
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" checked>
+      
+      <label class="md-nav__link" for="__nav_3_1">
+        Manubot
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Manubot" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Manubot
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../command.html" class="md-nav__link">
+        Command
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../util.html" class="md-nav__link">
+        Util
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1_4" type="checkbox" id="__nav_3_1_4" >
+      
+      <label class="md-nav__link" for="__nav_3_1_4">
+        Cite
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Cite" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          Cite
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/arxiv.html" class="md-nav__link">
+        Arxiv
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/citations.html" class="md-nav__link">
+        Citations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/cite_command.html" class="md-nav__link">
+        Cite Command
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/citekey.html" class="md-nav__link">
+        Citekey
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/citeproc.html" class="md-nav__link">
+        Citeproc
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/csl_item.html" class="md-nav__link">
+        Csl Item
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/curie.html" class="md-nav__link">
+        Curie
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/doi.html" class="md-nav__link">
+        Doi
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/handlers.html" class="md-nav__link">
+        Handlers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/index.html" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/isbn.html" class="md-nav__link">
+        Isbn
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/pubmed.html" class="md-nav__link">
+        Pubmed
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/unpaywall.html" class="md-nav__link">
+        Unpaywall
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/url.html" class="md-nav__link">
+        Url
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/wikidata.html" class="md-nav__link">
+        Wikidata
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/zotero.html" class="md-nav__link">
+        Zotero
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1_4_17" type="checkbox" id="__nav_3_1_4_17" >
+      
+      <label class="md-nav__link" for="__nav_3_1_4_17">
+        Tests
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Tests" data-md-level="4">
+        <label class="md-nav__title" for="__nav_3_1_4_17">
+          <span class="md-nav__icon md-icon"></span>
+          Tests
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/index.html" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_arxiv.html" class="md-nav__link">
+        Test Arxiv
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_citations.html" class="md-nav__link">
+        Test Citations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_cite_command.html" class="md-nav__link">
+        Test Cite Command
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_citekey.html" class="md-nav__link">
+        Test Citekey
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_citekey_api.html" class="md-nav__link">
+        Test Citekey Api
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_citeproc.html" class="md-nav__link">
+        Test Citeproc
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_csl_item.html" class="md-nav__link">
+        Test Csl Item
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_curie.html" class="md-nav__link">
+        Test Curie
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_doi.html" class="md-nav__link">
+        Test Doi
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_handlers.html" class="md-nav__link">
+        Test Handlers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_isbn.html" class="md-nav__link">
+        Test Isbn
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_pubmed.html" class="md-nav__link">
+        Test Pubmed
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_unpaywall.html" class="md-nav__link">
+        Test Unpaywall
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_url.html" class="md-nav__link">
+        Test Url
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_wikidata.html" class="md-nav__link">
+        Test Wikidata
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cite/tests/test_zotero.html" class="md-nav__link">
+        Test Zotero
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1_5" type="checkbox" id="__nav_3_1_5" >
+      
+      <label class="md-nav__link" for="__nav_3_1_5">
+        Pandoc
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Pandoc" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_1_5">
+          <span class="md-nav__icon md-icon"></span>
+          Pandoc
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pandoc/bibliography.html" class="md-nav__link">
+        Bibliography
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pandoc/cite_filter.html" class="md-nav__link">
+        Cite Filter
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pandoc/index.html" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pandoc/util.html" class="md-nav__link">
+        Util
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1_6" type="checkbox" id="__nav_3_1_6" checked>
+      
+      <label class="md-nav__link" for="__nav_3_1_6">
+        Process
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Process" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_1_6">
+          <span class="md-nav__icon md-icon"></span>
+          Process
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="bibliography.html" class="md-nav__link">
+        Bibliography
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ci.html" class="md-nav__link">
+        Ci
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="manuscript.html" class="md-nav__link">
+        Manuscript
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="metadata.html" class="md-nav__link">
+        Metadata
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="process_command.html" class="md-nav__link">
+        Process Command
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="requests_cache.html" class="md-nav__link">
+        Requests Cache
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Util
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="util.html" class="md-nav__link md-nav__link--active">
+        Util
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add_author_affiliations" class="md-nav__link">
+    add_author_affiliations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_variables" class="md-nav__link">
+    load_variables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prepare_manuscript" class="md-nav__link">
+    prepare_manuscript
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read_variable_files" class="md-nav__link">
+    read_variable_files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template_with_jinja2" class="md-nav__link">
+    template_with_jinja2
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1_6_9" type="checkbox" id="__nav_3_1_6_9" >
+      
+      <label class="md-nav__link" for="__nav_3_1_6_9">
+        Tests
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Tests" data-md-level="4">
+        <label class="md-nav__title" for="__nav_3_1_6_9">
+          <span class="md-nav__icon md-icon"></span>
+          Tests
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tests/index.html" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tests/test_bibliography.html" class="md-nav__link">
+        Test Bibliography
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tests/test_ci.html" class="md-nav__link">
+        Test Ci
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tests/test_metadata.html" class="md-nav__link">
+        Test Metadata
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tests/test_process_command.html" class="md-nav__link">
+        Test Process Command
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tests/test_util.html" class="md-nav__link">
+        Test Util
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1_7" type="checkbox" id="__nav_3_1_7" >
+      
+      <label class="md-nav__link" for="__nav_3_1_7">
+        Tests
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Tests" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_1_7">
+          <span class="md-nav__icon md-icon"></span>
+          Tests
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/index.html" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/test_command.html" class="md-nav__link">
+        Test Command
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/test_imports.html" class="md-nav__link">
+        Test Imports
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/test_readme.html" class="md-nav__link">
+        Test Readme
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/test_util.html" class="md-nav__link">
+        Test Util
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1_8" type="checkbox" id="__nav_3_1_8" >
+      
+      <label class="md-nav__link" for="__nav_3_1_8">
+        Webpage
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Webpage" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_1_8">
+          <span class="md-nav__icon md-icon"></span>
+          Webpage
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webpage/index.html" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webpage/webpage_command.html" class="md-nav__link">
+        Webpage Command
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add_author_affiliations" class="md-nav__link">
+    add_author_affiliations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_variables" class="md-nav__link">
+    load_variables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prepare_manuscript" class="md-nav__link">
+    prepare_manuscript
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read_variable_files" class="md-nav__link">
+    read_variable_files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template_with_jinja2" class="md-nav__link">
+    template_with_jinja2
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/manubot/manubot/edit/main/reference/manubot/process/util.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="module-manubotprocessutil">Module manubot.process.util</h1>
+<p>None</p>
+<p>None</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">jinja2</span>
+
+<span class="kn">from</span> <span class="nn">manubot.process.ci</span> <span class="kn">import</span> <span class="n">get_continuous_integration_parameters</span>
+
+<span class="kn">from</span> <span class="nn">manubot.process.manuscript</span> <span class="kn">import</span> <span class="n">datetime_now</span><span class="p">,</span> <span class="n">get_manuscript_stats</span><span class="p">,</span> <span class="n">get_text</span>
+
+<span class="kn">from</span> <span class="nn">manubot.process.metadata</span> <span class="kn">import</span> <span class="p">(</span>
+
+    <span class="n">get_header_includes</span><span class="p">,</span>
+
+    <span class="n">get_manuscript_urls</span><span class="p">,</span>
+
+    <span class="n">get_software_versions</span><span class="p">,</span>
+
+    <span class="n">get_thumbnail_url</span><span class="p">,</span>
+
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">get_configured_yaml</span><span class="p">,</span> <span class="n">read_serialized_data</span><span class="p">,</span> <span class="n">read_serialized_dict</span>
+
+<span class="k">def</span> <span class="nf">read_variable_files</span><span class="p">(</span><span class="n">paths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">variables</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Read multiple serialized data files into a user_variables dictionary.</span>
+
+<span class="sd">    Provide `paths` (a list of URLs or local file paths).</span>
+
+<span class="sd">    Paths can optionally have a namespace prepended.</span>
+
+<span class="sd">    For example:</span>
+
+<span class="sd">    ```python</span>
+
+<span class="sd">    paths = [</span>
+
+<span class="sd">        &#39;https://git.io/vbkqm&#39;,  # update the dictionary&#39;s top-level</span>
+
+<span class="sd">        &#39;namespace_1=https://git.io/vbkqm&#39;,  # store under &#39;namespace_1&#39; key</span>
+
+<span class="sd">        &#39;namespace_2=some_local_path.json&#39;,  # store under &#39;namespace_2&#39; key</span>
+
+<span class="sd">    ]</span>
+
+<span class="sd">    ```</span>
+
+<span class="sd">    If a namespace is not provided, the JSON must contain a dictionary as its</span>
+
+<span class="sd">    top level. Namespaces should consist only of ASCII alphanumeric characters</span>
+
+<span class="sd">    (includes underscores, first character cannot be numeric).</span>
+
+<span class="sd">    Pass a dictionary to `variables` to update an existing dictionary rather</span>
+
+<span class="sd">    than create a new dictionary.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">variables</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading user-provided templating variables at </span><span class="si">{</span><span class="n">path</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Match only namespaces that are valid jinja2 variable names</span>
+
+        <span class="c1"># http://jinja.pocoo.org/docs/2.10/api/#identifier-naming</span>
+
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([a-zA-Z_][a-zA-Z0-9_]*)=(.+)&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+
+            <span class="n">namespace</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+
+                <span class="sa">f</span><span class="s2">&quot;Using the </span><span class="si">{</span><span class="n">namespace</span><span class="si">!r}</span><span class="s2"> namespace for template variables from </span><span class="si">{</span><span class="n">path</span><span class="si">!r}</span><span class="s2">&quot;</span>
+
+            <span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+
+                <span class="n">obj</span> <span class="o">=</span> <span class="p">{</span><span class="n">namespace</span><span class="p">:</span> <span class="n">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">)}</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">read_serialized_dict</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+
+            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading template variables from </span><span class="si">{</span><span class="n">path</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">continue</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+
+        <span class="n">conflicts</span> <span class="o">=</span> <span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">obj</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">conflicts</span><span class="p">:</span>
+
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+                <span class="sa">f</span><span class="s2">&quot;Template variables in </span><span class="si">{</span><span class="n">path</span><span class="si">!r}</span><span class="s2"> overwrite existing &quot;</span>
+
+                <span class="s2">&quot;values for the following keys:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">conflicts</span><span class="p">)</span>
+
+            <span class="p">)</span>
+
+        <span class="n">variables</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+
+        <span class="sa">f</span><span class="s2">&quot;Reading user-provided templating variables complete:</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">variables</span>
+
+<span class="k">def</span> <span class="nf">_convert_field_to_list</span><span class="p">(</span>
+
+    <span class="n">dictionary</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">deprecation_warning_key</span><span class="o">=</span><span class="kc">None</span>
+
+<span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Convert `dictionary[field]` to a list. If value is a string and</span>
+
+<span class="sd">    `separator` is specified, split by `separator`. If `deprecation_warning_key`</span>
+
+<span class="sd">    is provided, warn when `dictionary[field]` is a string.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="n">dictionary</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">dictionary</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">dictionary</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">separator</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+
+            <span class="n">dictionary</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">dictionary</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">deprecation_warning_key</span><span class="p">:</span>
+
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+
+                <span class="sa">f</span><span class="s2">&quot;Expected list for </span><span class="si">{</span><span class="n">dictionary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">deprecation_warning_key</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;s </span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">. &quot;</span>
+
+                <span class="o">+</span> <span class="p">(</span>
+
+                    <span class="sa">f</span><span class="s2">&quot;Assuming multiple </span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> are `</span><span class="si">{</span><span class="n">separator</span><span class="si">}</span><span class="s2">` separated. &quot;</span>
+
+                    <span class="k">if</span> <span class="n">separator</span>
+
+                    <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+                <span class="p">)</span>
+
+                <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;Please switch </span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> to a list.&quot;</span><span class="p">,</span>
+
+                <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">,</span>
+
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dictionary</span>
+
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported value type </span><span class="si">{value.__class__.__name__}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">add_author_affiliations</span><span class="p">(</span><span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Edit variables to contain numbered author affiliations. Specifically,</span>
+
+<span class="sd">    add a list of affiliation_numbers for each author and add a list of</span>
+
+<span class="sd">    affiliations to the top-level of variables. If no authors have any</span>
+
+<span class="sd">    affiliations, variables is left unmodified.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">affiliations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]:</span>
+
+        <span class="n">_convert_field_to_list</span><span class="p">(</span>
+
+            <span class="n">dictionary</span><span class="o">=</span><span class="n">author</span><span class="p">,</span>
+
+            <span class="n">field</span><span class="o">=</span><span class="s2">&quot;affiliations&quot;</span><span class="p">,</span>
+
+            <span class="n">separator</span><span class="o">=</span><span class="s2">&quot;; &quot;</span><span class="p">,</span>
+
+            <span class="n">deprecation_warning_key</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+
+        <span class="p">)</span>
+
+        <span class="n">_convert_field_to_list</span><span class="p">(</span>
+
+            <span class="n">dictionary</span><span class="o">=</span><span class="n">author</span><span class="p">,</span>
+
+            <span class="n">field</span><span class="o">=</span><span class="s2">&quot;funders&quot;</span><span class="p">,</span>
+
+        <span class="p">)</span>
+
+        <span class="n">affiliations</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">author</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;affiliations&quot;</span><span class="p">,</span> <span class="p">[]))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">affiliations</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="n">variables</span>
+
+    <span class="n">affiliations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">affiliations</span><span class="p">))</span>  <span class="c1"># deduplicate</span>
+
+    <span class="n">affil_to_number</span> <span class="o">=</span> <span class="p">{</span><span class="n">affil</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">affil</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">affiliations</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">)}</span>
+
+    <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]:</span>
+
+        <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="n">affil_to_number</span><span class="p">[</span><span class="n">affil</span><span class="p">]</span> <span class="k">for</span> <span class="n">affil</span> <span class="ow">in</span> <span class="n">author</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;affiliations&quot;</span><span class="p">,</span> <span class="p">[])]</span>
+
+        <span class="n">author</span><span class="p">[</span><span class="s2">&quot;affiliation_numbers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;affiliations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+
+        <span class="nb">dict</span><span class="p">(</span><span class="n">affiliation</span><span class="o">=</span><span class="n">affil</span><span class="p">,</span> <span class="n">affiliation_number</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">affil</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">affil_to_number</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+
+    <span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">variables</span>
+
+<span class="k">def</span> <span class="nf">load_variables</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Read `metadata.yaml` and files specified by `--template-variables-path` to generate</span>
+
+<span class="sd">    manuscript variables available for jinja2 templating.</span>
+
+<span class="sd">    Returns a dictionary, refered to as `variables`, with the following keys:</span>
+
+<span class="sd">    - `pandoc`: a dictionary for passing options to Pandoc via the `yaml_metadata_block`.</span>
+
+<span class="sd">      Fields in `pandoc` are either generated by Manubot or hard-coded by the user if `metadata.yaml`</span>
+
+<span class="sd">      includes a `pandoc` dictionary.</span>
+
+<span class="sd">    - `manubot`: a dictionary for manubot-related information and metadata.</span>
+
+<span class="sd">      Fields in `manubot` are either generated by Manubot or hard-coded by the user if `metadata.yaml`</span>
+
+<span class="sd">      includes a `manubot` dictionary.</span>
+
+<span class="sd">    - All fields from a manuscript&#39;s `metadata.yaml` that are not interpreted by Manubot are</span>
+
+<span class="sd">      copied to `variables`. Interpreted fields include `pandoc`, `manubot`, `title`,</span>
+
+<span class="sd">      `keywords`, `authors` (formerly `author_info`, now deprecated), `lang`, and `thumbnail`.</span>
+
+<span class="sd">    - User-specified fields inserted according to the `--template-variables-path` option.</span>
+
+<span class="sd">      User-specified variables take highest precedence and can overwrite values for existing</span>
+
+<span class="sd">      keys like `pandoc` or `manubot` (dangerous).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Generated manuscript variables</span>
+
+    <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pandoc&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;manubot&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+
+    <span class="c1"># Read metadata which contains pandoc_yaml_metadata</span>
+
+    <span class="c1"># as well as authors information.</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">meta_yaml_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">read_serialized_dict</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">meta_yaml_path</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+            <span class="sa">f</span><span class="s2">&quot;missing </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">meta_yaml_path</span><span class="si">}</span><span class="s2"> file with yaml_metadata_block for pandoc&quot;</span>
+
+        <span class="p">)</span>
+
+    <span class="c1"># Interpreted keys that are intended for pandoc</span>
+
+    <span class="n">move_to_pandoc</span> <span class="o">=</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;keywords&quot;</span><span class="p">,</span> <span class="s2">&quot;lang&quot;</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">move_to_pandoc</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+
+            <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="c1"># Add date to metadata</span>
+
+    <span class="n">now</span> <span class="o">=</span> <span class="n">datetime_now</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+
+        <span class="sa">f</span><span class="s2">&quot;Using </span><span class="si">{</span><span class="n">now</span><span class="si">:</span><span class="s2">%Z</span><span class="si">}</span><span class="s2"> timezone.</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="sa">f</span><span class="s2">&quot;Dating manuscript with the current datetime: </span><span class="si">{</span><span class="n">now</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="p">)</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;date-meta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">now</span><span class="si">:</span><span class="s2">%B</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">now</span><span class="o">.</span><span class="n">day</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">now</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="c1"># Process authors metadata</span>
+
+    <span class="k">if</span> <span class="s2">&quot;author_info&quot;</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+
+        <span class="n">authors</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;author_info&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+
+            <span class="s2">&quot;metadata.yaml: &#39;author_info&#39; is deprecated. Use &#39;authors&#39; instead.&quot;</span><span class="p">,</span>
+
+            <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">,</span>
+
+        <span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">authors</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+    <span class="k">if</span> <span class="n">authors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="n">authors</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;author-meta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">author</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">authors</span><span class="p">]</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authors</span>
+
+    <span class="n">add_author_affiliations</span><span class="p">(</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Set repository version metadata for CI builds</span>
+
+    <span class="n">ci_params</span> <span class="o">=</span> <span class="n">get_continuous_integration_parameters</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">ci_params</span><span class="p">:</span>
+
+        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;ci_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ci_params</span>
+
+    <span class="c1"># Add manuscript URLs</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_manuscript_urls</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;html_url&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
+
+    <span class="c1"># Add software versions</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_software_versions</span><span class="p">(</span><span class="n">rootstock</span><span class="o">=</span><span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">skip_remote</span><span class="p">))</span>
+
+    <span class="c1"># Add thumbnail URL if present</span>
+
+    <span class="n">thumbnail_url</span> <span class="o">=</span> <span class="n">get_thumbnail_url</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;thumbnail&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">thumbnail_url</span><span class="p">:</span>
+
+        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;thumbnail_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">thumbnail_url</span>
+
+    <span class="c1"># Update variables with metadata.yaml pandoc/manubot dicts</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="s2">&quot;pandoc&quot;</span><span class="p">,</span> <span class="s2">&quot;manubot&quot;</span><span class="p">:</span>
+
+        <span class="n">dict_</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">{})</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dict_</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+                <span class="sa">f</span><span class="s2">&quot;load_variables expected metadata.yaml field </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2"> to be a dict.&quot;</span>
+
+                <span class="sa">f</span><span class="s2">&quot;Received a </span><span class="si">{</span><span class="n">dict_</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> instead.&quot;</span>
+
+            <span class="p">)</span>
+
+            <span class="k">continue</span>
+
+        <span class="n">variables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dict_</span><span class="p">)</span>
+
+    <span class="c1"># Update variables with uninterpreted metadata.yaml fields</span>
+
+    <span class="n">variables</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+
+    <span class="c1"># Update variables with user-provided variables here</span>
+
+    <span class="n">variables</span> <span class="o">=</span> <span class="n">read_variable_files</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">template_variables_path</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+
+    <span class="c1"># Add header-includes metadata with &lt;meta&gt; information for the HTML output&#39;s &lt;head&gt;</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;header-includes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_header_includes</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">args</span><span class="o">.</span><span class="n">skip_citations</span>
+
+    <span class="c1"># Extend Pandoc&#39;s metadata.bibliography field with manual references paths</span>
+
+    <span class="n">bibliographies</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bibliography&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bibliographies</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+
+        <span class="n">bibliographies</span> <span class="o">=</span> <span class="p">[</span><span class="n">bibliographies</span><span class="p">]</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bibliographies</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+
+    <span class="n">bibliographies</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">manual_references_paths</span><span class="p">)</span>
+
+    <span class="n">bibliographies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">,</span> <span class="n">bibliographies</span><span class="p">))</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;bibliography&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bibliographies</span>
+
+    <span class="c1"># enable pandoc-manubot-cite option to write bibliography to a file</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-output-bibliography&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">references_path</span><span class="p">)</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-output-citekeys&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">citations_path</span><span class="p">)</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-requests-cache-path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span>
+
+        <span class="n">args</span><span class="o">.</span><span class="n">requests_cache_path</span>
+
+    <span class="p">)</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-clear-requests-cache&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">clear_requests_cache</span>
+
+    <span class="k">return</span> <span class="n">variables</span>
+
+<span class="k">def</span> <span class="nf">template_with_jinja2</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">variables</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Template using jinja2 with the variables dictionary unpacked as keyword</span>
+
+<span class="sd">    arguments.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">jinja_environment</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span>
+
+        <span class="n">loader</span><span class="o">=</span><span class="n">jinja2</span><span class="o">.</span><span class="n">BaseLoader</span><span class="p">(),</span>
+
+        <span class="n">undefined</span><span class="o">=</span><span class="n">jinja2</span><span class="o">.</span><span class="n">make_logging_undefined</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()),</span>
+
+        <span class="n">autoescape</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+
+        <span class="n">comment_start_string</span><span class="o">=</span><span class="s2">&quot;{##&quot;</span><span class="p">,</span>
+
+        <span class="n">comment_end_string</span><span class="o">=</span><span class="s2">&quot;##}&quot;</span><span class="p">,</span>
+
+        <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;jinja2.ext.do&quot;</span><span class="p">,</span> <span class="s2">&quot;jinja2.ext.loopcontrols&quot;</span><span class="p">],</span>
+
+    <span class="p">)</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="n">jinja_environment</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="o">**</span><span class="n">variables</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">prepare_manuscript</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Compile manuscript, creating manuscript.md and references.json as inputs</span>
+
+<span class="sd">    for pandoc.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">text</span> <span class="o">=</span> <span class="n">get_text</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">content_directory</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">args</span><span class="o">.</span><span class="n">skip_citations</span>
+
+    <span class="n">variables</span> <span class="o">=</span> <span class="n">load_variables</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;manuscript_stats&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_manuscript_stats</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">variables_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
+
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="n">write_file</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">text</span> <span class="o">=</span> <span class="n">template_with_jinja2</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+
+    <span class="c1"># Write manuscript for pandoc</span>
+
+    <span class="n">yaml</span> <span class="o">=</span> <span class="n">get_configured_yaml</span><span class="p">()</span>
+
+    <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">manuscript_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
+
+        <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+
+            <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">],</span>
+
+            <span class="n">write_file</span><span class="p">,</span>
+
+            <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+
+            <span class="n">explicit_start</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+
+            <span class="n">explicit_end</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+
+            <span class="n">width</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
+
+            <span class="n">allow_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+
+            <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+
+        <span class="p">)</span>
+
+        <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+
+</details>
+<h2 id="functions">Functions</h2>
+<h3 id="add_author_affiliations">add_author_affiliations</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">add_author_affiliations</span><span class="p">(</span>
+    <span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
+</code></pre></div>
+
+<p>Edit variables to contain numbered author affiliations. Specifically,</p>
+<p>add a list of affiliation_numbers for each author and add a list of
+affiliations to the top-level of variables. If no authors have any
+affiliations, variables is left unmodified.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">add_author_affiliations</span><span class="p">(</span><span class="nl">variables</span><span class="p">:</span><span class="w"> </span><span class="n">dict</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nl">dict</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Edit variables to contain numbered author affiliations. Specifically,</span>
+
+<span class="ss">    add a list of affiliation_numbers for each author and add a list of</span>
+
+<span class="ss">    affiliations to the top-level of variables. If no authors have any</span>
+
+<span class="ss">    affiliations, variables is left unmodified.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">affiliations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">()</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">author</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">variables</span><span class="o">[</span><span class="n">&quot;authors&quot;</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">_convert_field_to_list</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">dictionary</span><span class="o">=</span><span class="n">author</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">field</span><span class="o">=</span><span class="ss">&quot;affiliations&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">separator</span><span class="o">=</span><span class="ss">&quot;; &quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">deprecation_warning_key</span><span class="o">=</span><span class="ss">&quot;name&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">_convert_field_to_list</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">dictionary</span><span class="o">=</span><span class="n">author</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">field</span><span class="o">=</span><span class="ss">&quot;funders&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">affiliations</span><span class="p">.</span><span class="n">extend</span><span class="p">(</span><span class="n">author</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="ss">&quot;affiliations&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">[]</span><span class="p">))</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nl">affiliations</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">variables</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">affiliations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">(</span><span class="n">dict</span><span class="p">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">affiliations</span><span class="p">))</span><span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="n">deduplicate</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">affil_to_number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="nl">affil</span><span class="p">:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">affil</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">enumerate</span><span class="p">(</span><span class="n">affiliations</span><span class="p">,</span><span class="w"> </span><span class="k">start</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="err">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">author</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">variables</span><span class="o">[</span><span class="n">&quot;authors&quot;</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">numbers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">affil_to_number[affil</span><span class="o">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">affil</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">author</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="ss">&quot;affiliations&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">[]</span><span class="p">)</span><span class="err">]</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">author</span><span class="o">[</span><span class="n">&quot;affiliation_numbers&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sorted</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">variables</span><span class="o">[</span><span class="n">&quot;affiliations&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
+
+<span class="n">        dict(affiliation=affil, affiliation_number=i)</span>
+
+<span class="n">        for affil, i in affil_to_number.items()</span>
+
+<span class="n">    </span><span class="o">]</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">variables</span><span class="w"></span>
+</code></pre></div>
+
+</details>
+<h3 id="load_variables">load_variables</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">load_variables</span><span class="p">(</span>
+    <span class="n">args</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
+</code></pre></div>
+
+<p>Read <code>metadata.yaml</code> and files specified by <code>--template-variables-path</code> to generate</p>
+<p>manuscript variables available for jinja2 templating.</p>
+<p>Returns a dictionary, refered to as <code>variables</code>, with the following keys:</p>
+<ul>
+<li><code>pandoc</code>: a dictionary for passing options to Pandoc via the <code>yaml_metadata_block</code>.
+  Fields in <code>pandoc</code> are either generated by Manubot or hard-coded by the user if <code>metadata.yaml</code>
+  includes a <code>pandoc</code> dictionary.</li>
+<li><code>manubot</code>: a dictionary for manubot-related information and metadata.
+  Fields in <code>manubot</code> are either generated by Manubot or hard-coded by the user if <code>metadata.yaml</code>
+  includes a <code>manubot</code> dictionary.</li>
+<li>All fields from a manuscript's <code>metadata.yaml</code> that are not interpreted by Manubot are
+  copied to <code>variables</code>. Interpreted fields include <code>pandoc</code>, <code>manubot</code>, <code>title</code>,
+  <code>keywords</code>, <code>authors</code> (formerly <code>author_info</code>, now deprecated), <code>lang</code>, and <code>thumbnail</code>.</li>
+<li>User-specified fields inserted according to the <code>--template-variables-path</code> option.
+  User-specified variables take highest precedence and can overwrite values for existing
+  keys like <code>pandoc</code> or <code>manubot</code> (dangerous).</li>
+</ul>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">load_variables</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dict</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Read `metadata.yaml` and files specified by `--template-variables-path` to generate</span>
+
+<span class="sd">    manuscript variables available for jinja2 templating.</span>
+
+<span class="sd">    Returns a dictionary, refered to as `variables`, with the following keys:</span>
+
+<span class="sd">    - `pandoc`: a dictionary for passing options to Pandoc via the `yaml_metadata_block`.</span>
+
+<span class="sd">      Fields in `pandoc` are either generated by Manubot or hard-coded by the user if `metadata.yaml`</span>
+
+<span class="sd">      includes a `pandoc` dictionary.</span>
+
+<span class="sd">    - `manubot`: a dictionary for manubot-related information and metadata.</span>
+
+<span class="sd">      Fields in `manubot` are either generated by Manubot or hard-coded by the user if `metadata.yaml`</span>
+
+<span class="sd">      includes a `manubot` dictionary.</span>
+
+<span class="sd">    - All fields from a manuscript&#39;s `metadata.yaml` that are not interpreted by Manubot are</span>
+
+<span class="sd">      copied to `variables`. Interpreted fields include `pandoc`, `manubot`, `title`,</span>
+
+<span class="sd">      `keywords`, `authors` (formerly `author_info`, now deprecated), `lang`, and `thumbnail`.</span>
+
+<span class="sd">    - User-specified fields inserted according to the `--template-variables-path` option.</span>
+
+<span class="sd">      User-specified variables take highest precedence and can overwrite values for existing</span>
+
+<span class="sd">      keys like `pandoc` or `manubot` (dangerous).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Generated manuscript variables</span>
+
+    <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pandoc&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;manubot&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+
+    <span class="c1"># Read metadata which contains pandoc_yaml_metadata</span>
+
+    <span class="c1"># as well as authors information.</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">meta_yaml_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">read_serialized_dict</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">meta_yaml_path</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+            <span class="n">f</span><span class="s2">&quot;missing {args.meta_yaml_path} file with yaml_metadata_block for pandoc&quot;</span>
+
+        <span class="p">)</span>
+
+    <span class="c1"># Interpreted keys that are intended for pandoc</span>
+
+    <span class="n">move_to_pandoc</span> <span class="o">=</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;keywords&quot;</span><span class="p">,</span> <span class="s2">&quot;lang&quot;</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">move_to_pandoc</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+
+            <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="c1"># Add date to metadata</span>
+
+    <span class="n">now</span> <span class="o">=</span> <span class="n">datetime_now</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+
+        <span class="n">f</span><span class="s2">&quot;Using {now:%Z} timezone.</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="n">f</span><span class="s2">&quot;Dating manuscript with the current datetime: {now.isoformat()}&quot;</span>
+
+    <span class="p">)</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;date-meta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{now:%B} {now.day}, {now.year}&quot;</span>
+
+    <span class="c1"># Process authors metadata</span>
+
+    <span class="k">if</span> <span class="s2">&quot;author_info&quot;</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+
+        <span class="n">authors</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;author_info&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+
+            <span class="s2">&quot;metadata.yaml: &#39;author_info&#39; is deprecated. Use &#39;authors&#39; instead.&quot;</span><span class="p">,</span>
+
+            <span class="n">category</span><span class="o">=</span><span class="n">DeprecationWarning</span><span class="p">,</span>
+
+        <span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">authors</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+    <span class="k">if</span> <span class="n">authors</span> <span class="k">is</span> <span class="n">None</span><span class="p">:</span>
+
+        <span class="n">authors</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;author-meta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">author</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">authors</span><span class="p">]</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authors</span>
+
+    <span class="n">add_author_affiliations</span><span class="p">(</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Set repository version metadata for CI builds</span>
+
+    <span class="n">ci_params</span> <span class="o">=</span> <span class="n">get_continuous_integration_parameters</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">ci_params</span><span class="p">:</span>
+
+        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;ci_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ci_params</span>
+
+    <span class="c1"># Add manuscript URLs</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_manuscript_urls</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;html_url&quot;</span><span class="p">,</span> <span class="n">None</span><span class="p">)))</span>
+
+    <span class="c1"># Add software versions</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_software_versions</span><span class="p">(</span><span class="n">rootstock</span><span class="o">=</span><span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">skip_remote</span><span class="p">))</span>
+
+    <span class="c1"># Add thumbnail URL if present</span>
+
+    <span class="n">thumbnail_url</span> <span class="o">=</span> <span class="n">get_thumbnail_url</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;thumbnail&quot;</span><span class="p">,</span> <span class="n">None</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">thumbnail_url</span><span class="p">:</span>
+
+        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;thumbnail_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">thumbnail_url</span>
+
+    <span class="c1"># Update variables with metadata.yaml pandoc/manubot dicts</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="s2">&quot;pandoc&quot;</span><span class="p">,</span> <span class="s2">&quot;manubot&quot;</span><span class="p">:</span>
+
+        <span class="n">dict_</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">{})</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">dict_</span><span class="p">,</span> <span class="n">dict</span><span class="p">):</span>
+
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+                <span class="n">f</span><span class="s2">&quot;load_variables expected metadata.yaml field {key!r} to be a dict.&quot;</span>
+
+                <span class="n">f</span><span class="s2">&quot;Received a {dict_.__class__.__name__!r} instead.&quot;</span>
+
+            <span class="p">)</span>
+
+            <span class="k">continue</span>
+
+        <span class="n">variables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dict_</span><span class="p">)</span>
+
+    <span class="c1"># Update variables with uninterpreted metadata.yaml fields</span>
+
+    <span class="n">variables</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+
+    <span class="c1"># Update variables with user-provided variables here</span>
+
+    <span class="n">variables</span> <span class="o">=</span> <span class="n">read_variable_files</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">template_variables_path</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+
+    <span class="c1"># Add header-includes metadata with &lt;meta&gt; information for the HTML output&#39;s &lt;head&gt;</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;header-includes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_header_includes</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
+
+    <span class="nb">assert</span> <span class="n">args</span><span class="o">.</span><span class="n">skip_citations</span>
+
+    <span class="c1"># Extend Pandoc&#39;s metadata.bibliography field with manual references paths</span>
+
+    <span class="n">bibliographies</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bibliography&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+    <span class="k">if</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">bibliographies</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+
+        <span class="n">bibliographies</span> <span class="o">=</span> <span class="p">[</span><span class="n">bibliographies</span><span class="p">]</span>
+
+    <span class="nb">assert</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">bibliographies</span><span class="p">,</span> <span class="n">list</span><span class="p">)</span>
+
+    <span class="n">bibliographies</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">manual_references_paths</span><span class="p">)</span>
+
+    <span class="n">bibliographies</span> <span class="o">=</span> <span class="n">list</span><span class="p">(</span><span class="n">map</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">,</span> <span class="n">bibliographies</span><span class="p">))</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;bibliography&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bibliographies</span>
+
+    <span class="c1"># enable pandoc-manubot-cite option to write bibliography to a file</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-output-bibliography&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">references_path</span><span class="p">)</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-output-citekeys&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">citations_path</span><span class="p">)</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-requests-cache-path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span>
+
+        <span class="n">args</span><span class="o">.</span><span class="n">requests_cache_path</span>
+
+    <span class="p">)</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;manubot-clear-requests-cache&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">clear_requests_cache</span>
+
+    <span class="k">return</span> <span class="n">variables</span>
+</code></pre></div>
+
+</details>
+<h3 id="prepare_manuscript">prepare_manuscript</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">prepare_manuscript</span><span class="p">(</span>
+    <span class="n">args</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Compile manuscript, creating manuscript.md and references.json as inputs</p>
+<p>for pandoc.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">prepare_manuscript</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Compile manuscript, creating manuscript.md and references.json as inputs</span>
+
+<span class="sd">    for pandoc.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">text</span> <span class="o">=</span> <span class="n">get_text</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">content_directory</span><span class="p">)</span>
+
+    <span class="nb">assert</span> <span class="n">args</span><span class="o">.</span><span class="n">skip_citations</span>
+
+    <span class="n">variables</span> <span class="o">=</span> <span class="n">load_variables</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;manuscript_stats&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_manuscript_stats</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="n">with</span> <span class="n">args</span><span class="o">.</span><span class="n">variables_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
+
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="n">write_file</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="n">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">text</span> <span class="o">=</span> <span class="n">template_with_jinja2</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+
+    <span class="c1"># Write manuscript for pandoc</span>
+
+    <span class="n">yaml</span> <span class="o">=</span> <span class="n">get_configured_yaml</span><span class="p">()</span>
+
+    <span class="n">with</span> <span class="n">args</span><span class="o">.</span><span class="n">manuscript_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
+
+        <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+
+            <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">],</span>
+
+            <span class="n">write_file</span><span class="p">,</span>
+
+            <span class="n">default_flow_style</span><span class="o">=</span><span class="n">False</span><span class="p">,</span>
+
+            <span class="n">explicit_start</span><span class="o">=</span><span class="n">True</span><span class="p">,</span>
+
+            <span class="n">explicit_end</span><span class="o">=</span><span class="n">True</span><span class="p">,</span>
+
+            <span class="n">width</span><span class="o">=</span><span class="nb nb-Type">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
+
+            <span class="n">allow_unicode</span><span class="o">=</span><span class="n">True</span><span class="p">,</span>
+
+            <span class="n">sort_keys</span><span class="o">=</span><span class="n">False</span><span class="p">,</span>
+
+        <span class="p">)</span>
+
+        <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+
+</details>
+<h3 id="read_variable_files">read_variable_files</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">read_variable_files</span><span class="p">(</span>
+    <span class="n">paths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">variables</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
+</code></pre></div>
+
+<p>Read multiple serialized data files into a user_variables dictionary.</p>
+<p>Provide <code>paths</code> (a list of URLs or local file paths).
+Paths can optionally have a namespace prepended.
+For example:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">paths</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;https://git.io/vbkqm&#39;</span><span class="p">,</span>  <span class="c1"># update the dictionary&#39;s top-level</span>
+    <span class="s1">&#39;namespace_1=https://git.io/vbkqm&#39;</span><span class="p">,</span>  <span class="c1"># store under &#39;namespace_1&#39; key</span>
+    <span class="s1">&#39;namespace_2=some_local_path.json&#39;</span><span class="p">,</span>  <span class="c1"># store under &#39;namespace_2&#39; key</span>
+<span class="p">]</span>
+</code></pre></div>
+
+<p>If a namespace is not provided, the JSON must contain a dictionary as its
+top level. Namespaces should consist only of ASCII alphanumeric characters
+(includes underscores, first character cannot be numeric).</p>
+<p>Pass a dictionary to <code>variables</code> to update an existing dictionary rather
+than create a new dictionary.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">read_variable_files</span><span class="p">(</span><span class="n">paths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">variables</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dict</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Read multiple serialized data files into a user_variables dictionary.</span>
+
+<span class="sd">    Provide `paths` (a list of URLs or local file paths).</span>
+
+<span class="sd">    Paths can optionally have a namespace prepended.</span>
+
+<span class="sd">    For example:</span>
+
+<span class="sd">    ```python</span>
+
+<span class="sd">    paths = [</span>
+
+<span class="sd">        &#39;https://git.io/vbkqm&#39;,  # update the dictionary&#39;s top-level</span>
+
+<span class="sd">        &#39;namespace_1=https://git.io/vbkqm&#39;,  # store under &#39;namespace_1&#39; key</span>
+
+<span class="sd">        &#39;namespace_2=some_local_path.json&#39;,  # store under &#39;namespace_2&#39; key</span>
+
+<span class="sd">    ]</span>
+
+<span class="sd">    ```</span>
+
+<span class="sd">    If a namespace is not provided, the JSON must contain a dictionary as its</span>
+
+<span class="sd">    top level. Namespaces should consist only of ASCII alphanumeric characters</span>
+
+<span class="sd">    (includes underscores, first character cannot be numeric).</span>
+
+<span class="sd">    Pass a dictionary to `variables` to update an existing dictionary rather</span>
+
+<span class="sd">    than create a new dictionary.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">variables</span> <span class="k">is</span> <span class="n">None</span><span class="p">:</span>
+
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Reading user-provided templating variables at {path!r}&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Match only namespaces that are valid jinja2 variable names</span>
+
+        <span class="c1"># http://jinja.pocoo.org/docs/2.10/api/#identifier-naming</span>
+
+        <span class="k">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([a-zA-Z_][a-zA-Z0-9_]*)=(.+)&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="k">match</span><span class="p">:</span>
+
+            <span class="n">namespace</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="k">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+
+                <span class="n">f</span><span class="s2">&quot;Using the {namespace!r} namespace for template variables from {path!r}&quot;</span>
+
+            <span class="p">)</span>
+
+        <span class="n">try</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="k">match</span><span class="p">:</span>
+
+                <span class="n">obj</span> <span class="o">=</span> <span class="p">{</span><span class="n">namespace</span><span class="p">:</span> <span class="n">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">)}</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">read_serialized_dict</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="n">except</span> <span class="n">Exception</span><span class="p">:</span>
+
+            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Error reading template variables from {path!r}&quot;</span><span class="p">)</span>
+
+            <span class="k">continue</span>
+
+        <span class="nb">assert</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">dict</span><span class="p">)</span>
+
+        <span class="n">conflicts</span> <span class="o">=</span> <span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">obj</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">conflicts</span><span class="p">:</span>
+
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+                <span class="n">f</span><span class="s2">&quot;Template variables in {path!r} overwrite existing &quot;</span>
+
+                <span class="s2">&quot;values for the following keys:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">conflicts</span><span class="p">)</span>
+
+            <span class="p">)</span>
+
+        <span class="n">variables</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+
+        <span class="n">f</span><span class="s2">&quot;Reading user-provided templating variables complete:</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="n">f</span><span class="s2">&quot;{json.dumps(variables, indent=2, ensure_ascii=False)}&quot;</span>
+
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">variables</span>
+</code></pre></div>
+
+</details>
+<h3 id="template_with_jinja2">template_with_jinja2</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">template_with_jinja2</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">,</span>
+    <span class="n">variables</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Template using jinja2 with the variables dictionary unpacked as keyword</p>
+<p>arguments.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">template_with_jinja2</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">variables</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Template using jinja2 with the variables dictionary unpacked as keyword</span>
+
+<span class="sd">    arguments.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">jinja_environment</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span>
+
+        <span class="n">loader</span><span class="o">=</span><span class="n">jinja2</span><span class="o">.</span><span class="n">BaseLoader</span><span class="p">(),</span>
+
+        <span class="n">undefined</span><span class="o">=</span><span class="n">jinja2</span><span class="o">.</span><span class="n">make_logging_undefined</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()),</span>
+
+        <span class="n">autoescape</span><span class="o">=</span><span class="n">False</span><span class="p">,</span>
+
+        <span class="n">comment_start_string</span><span class="o">=</span><span class="s2">&quot;{##&quot;</span><span class="p">,</span>
+
+        <span class="n">comment_end_string</span><span class="o">=</span><span class="s2">&quot;##}&quot;</span><span class="p">,</span>
+
+        <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;jinja2.ext.do&quot;</span><span class="p">,</span> <span class="s2">&quot;jinja2.ext.loopcontrols&quot;</span><span class="p">],</span>
+
+    <span class="p">)</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="n">jinja_environment</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="o">**</span><span class="n">variables</span><span class="p">)</span>
+</code></pre></div>
+
+</details>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="requests_cache.html" title="Requests Cache" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Requests Cache
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="tests/index.html" title="Index" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Index
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Powered by
+        <a href="http://timothycrosley.github.io/portray">portray.</a>
+        You too can
+        <a href="http://timothycrosley.github.io/portray">
+          portray</a>
+        your Python project well using automatic documentation.
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.b0710199.min.js", "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.76f349be.min.js"></script>
+      
+    
+  </body>
+</html>
