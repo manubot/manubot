@@ -227,7 +227,7 @@ optional arguments:
 This package creates the `pandoc-manubot-cite` Pandoc filter,
 providing access to Manubot's cite-by-ID functionality from within a Pandoc workflow.
 
-Options are set via Pandoc metadata fields [listed in the docs](https://manubot.github.io/manubot/reference/manubot/pandoc/cite_filter/).
+Options are set via Pandoc metadata fields [listed in the docs](https://manubot.github.io/manubot/reference/manubot/pandoc/cite_filter.html).
 
 <!-- test codeblock contains output of `pandoc-manubot-cite --help` -->
 ```
