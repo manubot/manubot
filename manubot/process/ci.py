@@ -35,7 +35,7 @@ def get_continuous_integration_parameters():
         # https://git.io/JvUf7
         repo_slug = os.environ["GITHUB_REPOSITORY"]
         repo_owner, repo_name = repo_slug.split("/")
-        action_id = os.environ["GITHUB_ACTION"]
+        run_id = os.environ["GITHUB_RUN_ID"]
         # GITHUB_SHA for pull_request event: Last merge commit on the GITHUB_REF branch
         # GITHUB_SHA for push event: Commit pushed, unless deleting a branch (when it's the default branch)
         # https://git.io/JvUfd
@@ -48,7 +48,7 @@ def get_continuous_integration_parameters():
             "commit": github_sha,
             "triggering_commit": os.getenv("GITHUB_PULL_REQUEST_SHA") or github_sha,
             "build_url": f"https://github.com/{repo_slug}/commit/{github_sha}/checks",
-            "job_url": f"https://github.com/{repo_slug}/runs/{action_id}",
+            "job_url": f"https://github.com/{repo_slug}/actions/runs/{run_id}",
         }
         return ci_params
 
