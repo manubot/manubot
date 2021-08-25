@@ -23,7 +23,9 @@ def test_get_continuous_integration_parameters_github():
     assert info["commit"]
     assert info["triggering_commit"]
     assert info["build_url"].startswith("https://github.com/manubot/manubot/commit/")
-    assert info["job_url"].startswith("https://github.com/manubot/manubot/runs/")
+    assert info["job_url"].startswith(
+        "https://github.com/manubot/manubot/actions/runs/"
+    )
 
 
 @pytest.mark.skipif(
