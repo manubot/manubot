@@ -166,7 +166,7 @@ def _get_reference_link_citekey_aliases(elem: pf.Element, doc: pf.Doc) -> None:
         # paragraph consists of at least a Cite (with one Citation),
         # a Str (equal to ":"), and additional elements, such as a
         # link destination and possibly more link-reference definitions.
-        space_index = 3 if type(elem.content[2]) == pf.Space else 2
+        space_index = 3 if type(elem.content[2]) in {pf.Space, pf.SoftBreak} else 2
         destination = elem.content[space_index]
         if type(destination) == pf.Str:
             # paragraph starts with `[@something]: something`

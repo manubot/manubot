@@ -35,7 +35,8 @@ Citations in code blocks should not be modified [@pmid:20170387].
 Defining citekeys with the link reference syntax [@issue; @bad-doi; @tag:bad-url].
 
 [@issue]: url:https://github.com/manubot/manubot/pull/189
-[@bad-doi]: doi:10.1016/S0022-2836(05)80360-2
+[@bad-doi]:
+  doi:10.1016/S0022-2836(05)80360-2
 
 [@tag:bad-url]: url:https://openreview.net/forum?id=HkwoSDPgg
 
