@@ -166,8 +166,8 @@ def _get_reference_link_citekey_aliases(elem: pf.Element, doc: pf.Doc) -> None:
         # paragraph consists of at least a Cite (with one Citation),
         # a Str (equal to ":"), and additional elements, such as a
         # link destination and possibly more link-reference definitions.
-        space_index = 3 if type(elem.content[2]) in {pf.Space, pf.SoftBreak} else 2
-        destination = elem.content[space_index]
+        dest_index = 3 if type(elem.content[2]) in {pf.Space, pf.SoftBreak} else 2
+        destination = elem.content[dest_index]
         if type(destination) == pf.Str:
             # paragraph starts with `[@something]: something`
             # save info to citekeys and remove from paragraph
@@ -180,7 +180,7 @@ def _get_reference_link_citekey_aliases(elem: pf.Element, doc: pf.Doc) -> None:
                 logging.warning(f"multiple aliases defined for @{citekey}")
             citekey_aliases[citekey] = destination.text
             # found citation, add it to citekeys and remove it from document
-            elem.content = elem.content[space_index + 1 :]
+            elem.content = elem.content[dest_index + 1 :]
         # remove leading SoftBreak, before continuing
         if len(elem.content) > 0 and type(elem.content[0]) == pf.SoftBreak:
             elem.content.pop(0)
