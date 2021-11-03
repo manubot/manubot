@@ -56,9 +56,13 @@ bioregistry_path = pathlib.Path(__file__).parent.joinpath("bioregistry.json")
 @dataclasses.dataclass
 class Handler_CURIE(Handler):
     def __post_init__(self):
-        prefix_to_resource = get_prefix_to_resource()
-        self.resource = prefix_to_resource[self.prefix_lower]
-        self.standard_prefix = self.resource["prefix"]
+        try:
+            self.resource = get_prefix_to_resource()[self.prefix_lower]
+        except KeyError:
+            raise ValueError(f"Unrecognized CURIE prefix {self.prefix_lower}")
+        self.standard_prefix = (
+            self.resource.get("preferred_prefix") or self.resource["prefix"]
+        )
         self.prefixes = self.resource["all_prefixes"]
         if "pattern" in self.resource:
             self.accession_pattern = self.resource["pattern"]
@@ -66,14 +70,18 @@ class Handler_CURIE(Handler):
     def get_csl_item(self, citekey):
         from ..url import get_url_csl_item
 
-        url = curie_to_url(citekey.standard_id)
+        url = self.get_url(accession=citekey.standard_id)
         return get_url_csl_item(url)
 
     def inspect(self, citekey):
         pattern = self._get_pattern("accession_pattern")
-        # FIXME: match or fullmatch?
         if pattern and not pattern.fullmatch(citekey.accession):
             return f"{citekey.accession} does not match regex {pattern.pattern}"
+
+    def get_url(self, accession: str) -> str:
+        if "uri_format" in self.resource:
+            return self.resource["uri_format"].replace("$1", accession)
+        return f"https://bioregistry.io/{self.standard_prefix}:{accession}"
 
 
 def get_curie_handlers():
@@ -148,27 +156,18 @@ def standardize_curie(curie):
         raise ValueError(
             f"curie must be splittable by `:` and formatted like `prefix:accession`. Received {curie}"
         )
-    prefix_lower = prefix.lower()
-    try:
-        resource = get_prefix_to_resource()[prefix_lower]
-    except KeyError:
-        raise ValueError(
-            f"Prefix {prefix_lower} for {curie} is not a recognized prefix."
-        )
-    standard_prefix = resource.get("preferred_prefix") or resource["prefix"]
-    return f"{standard_prefix}:{accession}"
+    handler = Handler_CURIE(prefix.lower())
+    return f"{handler.standard_prefix}:{accession}"
 
 
-def curie_to_url(curie):
+def curie_to_url(curie: str) -> str:
     """
     `curie` should be in `prefix:accession` format
     """
     curie = standardize_curie(curie)
     prefix, accession = curie.split(":", 1)
-    resource = get_prefix_to_resource()[prefix.lower()]
-    if "uri_format" in resource:
-        return resource["uri_format"].replace("$1", accession)
-    return f"https://bioregistry.io/{curie}"
+    handler = Handler_CURIE(prefix.lower())
+    return handler.get_url(accession)
 
 
 if __name__ == "__main__":

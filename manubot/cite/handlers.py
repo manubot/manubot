@@ -100,7 +100,7 @@ class Handler:
     prefix_lower: str
     prefixes = []
 
-    def _get_pattern(self, attribute="accession_pattern") -> Pattern:
+    def _get_pattern(self, attribute: str = "accession_pattern") -> Pattern:
         """
         Return a compiled regex pattern stored by `attribute`.
         By default, return `self.accession_pattern`, which Handler subclasses
@@ -137,7 +137,7 @@ class Handler:
         return standard_prefix, standard_accession
 
     @abc.abstractmethod
-    def get_csl_item(self, citekey) -> Dict[str, Any]:
+    def get_csl_item(self, citekey: CiteKey) -> Dict[str, Any]:
         """
         Return a CSL_Item with bibliographic details for citekey.
         """

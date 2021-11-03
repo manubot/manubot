@@ -76,7 +76,7 @@ from manubot.cite.citekey import CiteKey, shorten_citekey, url_to_citekey
         pytest.param(
             "DOID:14330",
             dict(
-                standard_id="doid:14330",
+                standard_id="DOID:14330",
             ),
             id="doid",
         ),
