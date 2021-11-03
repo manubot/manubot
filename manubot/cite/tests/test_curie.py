@@ -4,10 +4,9 @@ from ..citekey import CiteKey
 from ..curie import Handler_CURIE, curie_to_url, get_bioregistry, get_prefix_to_resource
 
 
-@pytest.mark.xfail(reason="https://github.com/biopragmatics/bioregistry/issues/242")
 def test_bioregistry_resource_patterns():
     """
-    https://github.com/biopragmatics/bioregistry/issues/242
+    Can find issues like https://github.com/biopragmatics/bioregistry/issues/242
     """
     registry = get_bioregistry(compile_patterns=True)
     assert isinstance(registry, list)

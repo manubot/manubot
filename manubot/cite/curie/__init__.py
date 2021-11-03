@@ -18,6 +18,7 @@ References:
 - https://bioregistry.io/
 - https://github.com/biopragmatics/bioregistry
 - https://en.wikipedia.org/wiki/CURIE
+- https://cthoyt.com/2021/10/07/biopragmatics-glossary.html
 - https://github.com/manubot/manubot/issues/305
 - https://identifiers.org/
 - https://github.com/manubot/manubot/issues/218
@@ -41,7 +42,7 @@ from manubot.cite.handlers import Handler
 _keep_bioregistry_fields = {
     "deprecated",
     "example",
-    "url",
+    "uri_format",
     "name",
     "pattern",
     "preferred_prefix",
@@ -165,8 +166,8 @@ def curie_to_url(curie):
     curie = standardize_curie(curie)
     prefix, accession = curie.split(":", 1)
     resource = get_prefix_to_resource()[prefix.lower()]
-    if "url" in resource:
-        return resource["url"].replace("$1", accession)
+    if "uri_format" in resource:
+        return resource["uri_format"].replace("$1", accession)
     return f"https://bioregistry.io/{curie}"
 
 
