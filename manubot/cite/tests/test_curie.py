@@ -1,22 +1,22 @@
 import pytest
 
 from ..citekey import CiteKey
-from ..curie import Handler_CURIE, curie_to_url, get_bioregistry, get_prefix_to_registry
+from ..curie import Handler_CURIE, curie_to_url, get_bioregistry, get_prefix_to_resource
 
 
 @pytest.mark.xfail(reason="https://github.com/biopragmatics/bioregistry/issues/242")
-def test_registry_patterns():
+def test_bioregistry_resource_patterns():
     """
     https://github.com/biopragmatics/bioregistry/issues/242
     """
-    bioregistry = get_bioregistry(compile_patterns=True)
-    assert isinstance(bioregistry, list)
+    registry = get_bioregistry(compile_patterns=True)
+    assert isinstance(registry, list)
     reports = list()
-    for registry in bioregistry:
-        assert registry["prefix"]  # ensure prefix field exists
-        if "example" in registry and "pattern" in registry:
-            prefix = registry["prefix"]
-            example = registry["example"]
+    for resource in registry:
+        assert resource["prefix"]  # ensure prefix field exists
+        if "example" in resource and "pattern" in resource:
+            prefix = resource["prefix"]
+            example = resource["example"]
             handler = Handler_CURIE(prefix)
             example_curie = CiteKey(f"{prefix}:{example}")
             report = handler.inspect(example_curie)
@@ -26,12 +26,12 @@ def test_registry_patterns():
     assert not reports
 
 
-def test_get_prefix_to_registry():
-    prefix_to_registry = get_prefix_to_registry()
-    assert isinstance(prefix_to_registry, dict)
-    assert "doid" in prefix_to_registry
-    registry = prefix_to_registry["doid"]
-    registry["preferred_prefix"] = "DOID"
+def test_get_prefix_to_resource():
+    prefix_to_resource = get_prefix_to_resource()
+    assert isinstance(prefix_to_resource, dict)
+    assert "doid" in prefix_to_resource
+    resource = prefix_to_resource["doid"]
+    resource["preferred_prefix"] = "DOID"
 
 
 @pytest.mark.parametrize(

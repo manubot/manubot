@@ -55,12 +55,12 @@ bioregistry_path = pathlib.Path(__file__).parent.joinpath("bioregistry.json")
 @dataclasses.dataclass
 class Handler_CURIE(Handler):
     def __post_init__(self):
-        prefix_to_registry = get_prefix_to_registry()
-        self.registry = prefix_to_registry[self.prefix_lower]
-        self.standard_prefix = self.registry["prefix"]
-        self.prefixes = self.registry["all_prefixes"]
-        if "pattern" in self.registry:
-            self.accession_pattern = self.registry["pattern"]
+        prefix_to_resource = get_prefix_to_resource()
+        self.resource = prefix_to_resource[self.prefix_lower]
+        self.standard_prefix = self.resource["prefix"]
+        self.prefixes = self.resource["all_prefixes"]
+        if "pattern" in self.resource:
+            self.accession_pattern = self.resource["pattern"]
 
     def get_csl_item(self, citekey):
         from ..url import get_url_csl_item
@@ -106,29 +106,29 @@ def _download_bioregistry():
                 *(x.lower() for x in metadata.get("synonyms", [])),
             }
         )
-    registries = list(results.values())
-    json_text = json.dumps(registries, indent=2, ensure_ascii=False)
+    registry = list(results.values())
+    json_text = json.dumps(registry, indent=2, ensure_ascii=False)
     bioregistry_path.write_text(json_text + "\n", encoding="utf-8")
 
 
 def get_bioregistry(compile_patterns=False) -> dict:
     with bioregistry_path.open(encoding="utf-8-sig") as read_file:
-        registries = json.load(read_file)
-    assert isinstance(registries, list)
+        registry = json.load(read_file)
+    assert isinstance(registry, list)
     if compile_patterns:
-        for registry in registries:
-            if "pattern" in registry:
-                registry["compiled_pattern"] = re.compile(registry["pattern"])
-    return registries
+        for resource in registry:
+            if "pattern" in resource:
+                resource["compiled_pattern"] = re.compile(resource["pattern"])
+    return registry
 
 
 @functools.lru_cache()
-def get_prefix_to_registry() -> typing.Dict[str, typing.Dict]:
-    prefix_to_registry = dict()
-    for reg in get_bioregistry():
-        for prefix in reg["all_prefixes"]:
-            prefix_to_registry[prefix] = reg
-    return prefix_to_registry
+def get_prefix_to_resource() -> typing.Dict[str, typing.Dict]:
+    prefix_to_resource = dict()
+    for resource in get_bioregistry():
+        for prefix in resource["all_prefixes"]:
+            prefix_to_resource[prefix] = resource
+    return prefix_to_resource
 
 
 def standardize_curie(curie):
@@ -149,12 +149,12 @@ def standardize_curie(curie):
         )
     prefix_lower = prefix.lower()
     try:
-        registry = get_prefix_to_registry()[prefix_lower]
+        resource = get_prefix_to_resource()[prefix_lower]
     except KeyError:
         raise ValueError(
             f"Prefix {prefix_lower} for {curie} is not a recognized prefix."
         )
-    standard_prefix = registry.get("preferred_prefix") or registry["prefix"]
+    standard_prefix = resource.get("preferred_prefix") or resource["prefix"]
     return f"{standard_prefix}:{accession}"
 
 
@@ -164,9 +164,9 @@ def curie_to_url(curie):
     """
     curie = standardize_curie(curie)
     prefix, accession = curie.split(":", 1)
-    registry = get_prefix_to_registry()[prefix.lower()]
-    if "url" in registry:
-        return registry["url"].replace("$1", accession)
+    resource = get_prefix_to_resource()[prefix.lower()]
+    if "url" in resource:
+        return resource["url"].replace("$1", accession)
     return f"https://bioregistry.io/{curie}"
 
 
