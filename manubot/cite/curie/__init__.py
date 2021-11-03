@@ -1,13 +1,13 @@
 """
 Compact Uniform Resource Identifiers
 
-Manubot keeps a local versions of the identifier.org registry.
+Manubot keeps a local versions of the Bioregistry.
 Repository developers can run the following commands to update the Manubot version.
 
 ```shell
-# regenerate manubot/cite/curie/namespaces.json
+# regenerate manubot/cite/curie/bioregistry.json
 python manubot/cite/curie/__init__.py
-# if namespaces.json has changed, the following test will likely fail:
+# if bioregistry.json has changed, the following test will likely fail:
 pytest manubot/cite/tests/test_handlers.py::test_prefix_to_handler
 # copy captured stdout from failed test_prefix_to_handler to
 # manubot.cite.handlers.prefix_to_handler. Pre-commit hook will reformat file.
@@ -15,7 +15,10 @@ pytest manubot/cite/tests/test_handlers.py::test_prefix_to_handler
 
 References:
 
+- https://bioregistry.io/
+- https://github.com/biopragmatics/bioregistry
 - https://en.wikipedia.org/wiki/CURIE
+- https://github.com/manubot/manubot/issues/305
 - https://identifiers.org/
 - https://github.com/manubot/manubot/issues/218
 - https://docs.identifiers.org/articles/api.html
@@ -29,38 +32,35 @@ References:
 import dataclasses
 import functools
 import json
-import logging
 import pathlib
 import re
 import typing
 
 from manubot.cite.handlers import Handler
 
-_keep_namespace_fields = {
-    "prefix",
-    "mirId",  # MIRIAM Registry identifier
+_keep_bioregistry_fields = {
+    "deprecated",
+    "example",
+    "url",
     "name",
-    "pattern",  # regex pattern
-    "description",
-    "sampleId",  # example identifier
-    "namespaceEmbeddedInLui",  # whether prefix is included in the local unique identifier
-    "curiePrefix",  # a computed field for the actual prefix used by CURIEs including required capitalization
+    "pattern",
+    "preferred_prefix",
+    "synonyms",
 }
 
 
-namespace_path = pathlib.Path(__file__).parent.joinpath("namespaces.json")
+bioregistry_path = pathlib.Path(__file__).parent.joinpath("bioregistry.json")
 
 
 @dataclasses.dataclass
 class Handler_CURIE(Handler):
     def __post_init__(self):
-        prefix_to_namespace = get_prefix_to_namespace()
-        self.namespace = prefix_to_namespace[self.prefix_lower]
-        self.standard_prefix = self.namespace["prefix"]
-        self.prefixes = sorted(
-            {self.namespace["prefix"], self.namespace["curiePrefix"].lower()}
-        )
-        self.accession_pattern = self.namespace["pattern"]
+        prefix_to_registry = get_prefix_to_registry()
+        self.registry = prefix_to_registry[self.prefix_lower]
+        self.standard_prefix = self.registry["prefix"]
+        self.prefixes = self.registry["all_prefixes"]
+        if "pattern" in self.registry:
+            self.accession_pattern = self.registry["pattern"]
 
     def get_csl_item(self, citekey):
         from ..url import get_url_csl_item
@@ -68,102 +68,72 @@ class Handler_CURIE(Handler):
         url = curie_to_url(citekey.standard_id)
         return get_url_csl_item(url)
 
-    def _get_lui(self, citekey) -> str:
-        """
-        When namespaceEmbeddedInLui is true, some identifiers.org namespace
-        metadata, such as pattern, include curiePrefix. This function
-        returns the local unique identifier (lui / accession) based on this
-        caveat.
-        """
-        lui = citekey.accession
-        if self.namespace.get("namespaceEmbeddedInLui", False):
-            lui = f"{self.namespace['curiePrefix']}:{lui}"
-        return lui
-
     def inspect(self, citekey):
         pattern = self._get_pattern("accession_pattern")
-        lui = self._get_lui(citekey)
-        if not pattern.fullmatch(lui):
-            return f"{lui} does not match regex {pattern.pattern}"
+        # FIXME: match or fullmatch?
+        if pattern and not pattern.fullmatch(citekey.accession):
+            return f"{citekey.accession} does not match regex {pattern.pattern}"
 
 
 def get_curie_handlers():
     """Get all possible CURIE handlers"""
-    namespaces = get_namespaces(compile_patterns=True)
-    handlers = [Handler_CURIE(ns["prefix"]) for ns in namespaces]
+    registries = get_bioregistry(compile_patterns=True)
+    handlers = [Handler_CURIE(reg["prefix"]) for reg in registries]
     return handlers
 
 
-def _download_namespaces():
+def _download_bioregistry():
     """
-    Download all namespaces from the Identifiers.org Central Registry.
-
-    Example of a single namespace JSON data at
-    <https://registry.api.identifiers.org/restApi/namespaces/230>
+    Download the Bioregistry consensus registry adding the following fields for each registry:
+    - prefix: the standard lowercase registry prefix
+    - all_prefixes: all distinct lowercase prefixes including synonyms
     """
     import requests
 
-    params = dict(size=5000, sort="prefix")
-    url = "https://registry.api.identifiers.org/restApi/namespaces"
-    response = requests.get(url, params)
+    url = "https://github.com/biopragmatics/bioregistry/raw/main/exports/registry/registry.json"
+    response = requests.get(url)
     response.raise_for_status()
     results = response.json()
-    if results["page"]["totalPages"] > 1:
-        logging.warning(
-            "_download_curie_registry does not support multi-page results\n"
-            f"{response.url}\n{json.dumps(results['page'])}"
+    assert isinstance(results, dict)
+    for prefix, metadata in results.items():
+        assert isinstance(metadata, dict)
+        for field in set(metadata) - _keep_bioregistry_fields:
+            del metadata[field]
+        metadata["prefix"] = prefix
+        metadata["all_prefixes"] = sorted(
+            {
+                prefix,
+                *(x.lower() for x in metadata.get("synonyms", [])),
+            }
         )
-    namespaces = results["_embedded"]["namespaces"]
-    # filter namespace fields to reduce diskspace
-    for namespace in namespaces:
-        namespace["curiePrefix"] = get_curie_prefix(namespace)
-        for field in set(namespace) - _keep_namespace_fields:
-            del namespace[field]
-    json_text = json.dumps(namespaces, indent=2, ensure_ascii=False)
-    namespace_path.write_text(json_text + "\n", encoding="utf-8")
+    registries = list(results.values())
+    json_text = json.dumps(registries, indent=2, ensure_ascii=False)
+    bioregistry_path.write_text(json_text + "\n", encoding="utf-8")
 
 
-def get_curie_prefix(namespace):
-    """
-    The prefix portion of a CURIE is not always the same as the identifiers.org namespace prefix.
-    This occurs when namespaceEmbeddedInLui is true.
-    When namespaceEmbeddedInLui, CURIEs require a specific prefix capitalization.
-    The actual prefix and capitalization is reverse engineered from the regex pattern.
-
-    References:
-    https://github.com/identifiers-org/identifiers-org.github.io/issues/100#issuecomment-614679142
-
-    """
-    if not namespace["namespaceEmbeddedInLui"]:
-        return namespace["prefix"]
-    import exrex
-
-    example_curie = exrex.getone(namespace["pattern"])
-    curie_prefix, _ = example_curie.split(":", 1)
-    return curie_prefix
-
-
-def get_namespaces(compile_patterns=False) -> typing.List[dict]:
-    with namespace_path.open(encoding="utf-8-sig") as read_file:
-        namespaces = json.load(read_file)
+def get_bioregistry(compile_patterns=False) -> dict:
+    with bioregistry_path.open(encoding="utf-8-sig") as read_file:
+        registries = json.load(read_file)
+    assert isinstance(registries, list)
     if compile_patterns:
-        for namespace in namespaces:
-            namespace["compiled_pattern"] = re.compile(namespace["pattern"])
-    return namespaces
+        for registry in registries:
+            if "pattern" in registry:
+                registry["compiled_pattern"] = re.compile(registry["pattern"])
+    return registries
 
 
 @functools.lru_cache()
-def get_prefix_to_namespace() -> typing.Dict[str, typing.Dict]:
-    prefix_to_namespace = dict()
-    for ns in get_namespaces():
-        for key in "prefix", "curiePrefix":
-            prefix_to_namespace[ns[key].lower()] = ns
-    return prefix_to_namespace
+def get_prefix_to_registry() -> typing.Dict[str, typing.Dict]:
+    prefix_to_registry = dict()
+    for reg in get_bioregistry():
+        for prefix in reg["all_prefixes"]:
+            prefix_to_registry[prefix] = reg
+    return prefix_to_registry
 
 
 def standardize_curie(curie):
     """
-    Return CURIE with identifiers.org expected capitalization.
+    Return CURIE with Bioregistry preferred prefix capitalization.
     `curie` should be in `prefix:accession` format.
     If `curie` is malformed or uses an unrecognized prefix, raise ValueError.
     """
@@ -177,17 +147,15 @@ def standardize_curie(curie):
         raise ValueError(
             f"curie must be splittable by `:` and formatted like `prefix:accession`. Received {curie}"
         )
-    # do not yet understand capitalization
-    # https://github.com/identifiers-org/identifiers-org.github.io/issues/100
     prefix_lower = prefix.lower()
-    prefix_to_namespaces = get_prefix_to_namespace()
     try:
-        namespace = prefix_to_namespaces[prefix_lower]
+        registry = get_prefix_to_registry()[prefix_lower]
     except KeyError:
         raise ValueError(
-            f"prefix {prefix_lower} for {curie} is not a recognized prefix"
+            f"Prefix {prefix_lower} for {curie} is not a recognized prefix."
         )
-    return f"{namespace['curiePrefix']}:{accession}"
+    standard_prefix = registry.get("preferred_prefix") or registry["prefix"]
+    return f"{standard_prefix}:{accession}"
 
 
 def curie_to_url(curie):
@@ -195,10 +163,13 @@ def curie_to_url(curie):
     `curie` should be in `prefix:accession` format
     """
     curie = standardize_curie(curie)
-    resolver_url = "https://identifiers.org"
-    return f"{resolver_url}/{curie}"
+    prefix, accession = curie.split(":", 1)
+    registry = get_prefix_to_registry()[prefix.lower()]
+    if "url" in registry:
+        return registry["url"].replace("$1", accession)
+    return f"https://bioregistry.io/{curie}"
 
 
 if __name__ == "__main__":
-    _download_namespaces()
-    namespaces = get_namespaces()
+    _download_bioregistry()
+    bioregistry = get_bioregistry()

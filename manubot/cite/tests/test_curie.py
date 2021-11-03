@@ -1,69 +1,67 @@
 import pytest
 
-from ..curie import curie_to_url, get_namespaces, get_prefix_to_namespace
+from ..citekey import CiteKey
+from ..curie import Handler_CURIE, curie_to_url, get_bioregistry, get_prefix_to_registry
 
 
-def test_get_namespaces_with_compile_patterns():
+@pytest.mark.xfail(reason="https://github.com/biopragmatics/bioregistry/issues/242")
+def test_registry_patterns():
     """
-    To see printed output when this test passes, run:
-
-    ```shell
-    # show regexes that do not match the sampleId
-    pytest --capture=no --verbose manubot/cite/tests/test_curie.py
-    ```
+    https://github.com/biopragmatics/bioregistry/issues/242
     """
-    namespaces = get_namespaces(compile_patterns=True)
-    assert isinstance(namespaces, list)
-    for namespace in namespaces:
-        # ensure prefix field exists
-        assert namespace["prefix"]
-        # check whether compiled pattern matches example identifier
-        # do not fail when no match, since this is an upstream issue
-        # https://github.com/identifiers-org/identifiers-org.github.io/issues/99
-        compact_id = namespace["sampleId"]
-        if namespace["namespaceEmbeddedInLui"]:
-            compact_id = f"{namespace['curiePrefix']}:{compact_id}"
-        match = namespace["compiled_pattern"].fullmatch(compact_id)
-        if not match:
-            print(
-                f"{namespace['prefix']} regex "
-                f"{namespace['compiled_pattern'].pattern} "
-                f"does not match {compact_id}"
-            )
-        if namespace["prefix"] != namespace["curiePrefix"].lower():
-            print(
-                f"{namespace['prefix']} identifiers use "
-                f"curiePrefix {namespace['curiePrefix']}"
-            )
+    bioregistry = get_bioregistry(compile_patterns=True)
+    assert isinstance(bioregistry, list)
+    reports = list()
+    for registry in bioregistry:
+        assert registry["prefix"]  # ensure prefix field exists
+        if "example" in registry and "pattern" in registry:
+            prefix = registry["prefix"]
+            example = registry["example"]
+            handler = Handler_CURIE(prefix)
+            example_curie = CiteKey(f"{prefix}:{example}")
+            report = handler.inspect(example_curie)
+            if report:
+                reports.append(report)
+    print("\n".join(reports))
+    assert not reports
 
 
-def test_get_prefix_to_namespace():
-    prefix_to_namespace = get_prefix_to_namespace()
-    assert isinstance(prefix_to_namespace, dict)
-    assert "doid" in prefix_to_namespace
-    namespace = prefix_to_namespace["doid"]
-    namespace["curiePrefix"] = "DOID"
+def test_get_prefix_to_registry():
+    prefix_to_registry = get_prefix_to_registry()
+    assert isinstance(prefix_to_registry, dict)
+    assert "doid" in prefix_to_registry
+    registry = prefix_to_registry["doid"]
+    registry["preferred_prefix"] = "DOID"
 
 
 @pytest.mark.parametrize(
     "curie, expected",
     [
-        ("doi:10.1038/nbt1156", "https://identifiers.org/doi:10.1038/nbt1156"),
-        ("DOI:10.1038/nbt1156", "https://identifiers.org/doi:10.1038/nbt1156"),
-        ("arXiv:0807.4956v1", "https://identifiers.org/arxiv:0807.4956v1"),
-        ("taxonomy:9606", "https://identifiers.org/taxonomy:9606"),
-        ("CHEBI:36927", "https://identifiers.org/CHEBI:36927"),
-        ("ChEBI:36927", "https://identifiers.org/CHEBI:36927"),
-        ("DOID:11337", "https://identifiers.org/DOID:11337"),
-        ("doid:11337", "https://identifiers.org/DOID:11337"),
+        ("doi:10.1038/nbt1156", "https://doi.org/10.1038/nbt1156"),
+        ("DOI:10.1038/nbt1156", "https://doi.org/10.1038/nbt1156"),
+        ("arXiv:0807.4956v1", "https://arxiv.org/abs/0807.4956v1"),
+        (
+            "taxonomy:9606",
+            "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=9606",
+        ),
+        ("CHEBI:36927", "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:36927"),
+        ("ChEBI:36927", "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:36927"),
+        (
+            "DOID:11337",
+            "https://www.ebi.ac.uk/ols/ontologies/doid/terms?obo_id=DOID:11337",
+        ),
+        (
+            "doid:11337",
+            "https://www.ebi.ac.uk/ols/ontologies/doid/terms?obo_id=DOID:11337",
+        ),
         (
             "clinicaltrials:NCT00222573",
-            "https://identifiers.org/clinicaltrials:NCT00222573",
+            "https://clinicaltrials.gov/ct2/show/NCT00222573",
         ),
-        # https://github.com/identifiers-org/identifiers-org.github.io/issues/99#issuecomment-614690283
+        # formerly afflicted by https://github.com/identifiers-org/identifiers-org.github.io/issues/99#issuecomment-614690283
         pytest.param(
-            "GRO:0007133",
-            "https://identifiers.org/GRO:0007133",
+            "gramene.growthstage:0007133",
+            "http://www.gramene.org/db/ontology/search?id=GRO:0007133",
             id="gramene.growthstage",
         ),
     ],
