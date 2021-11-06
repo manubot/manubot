@@ -53,6 +53,16 @@ _keep_bioregistry_fields = {
 bioregistry_path = pathlib.Path(__file__).parent.joinpath("bioregistry.json")
 
 
+valid_prefix_pattern = re.compile(r"^[a-z0-9][a-z0-9._-]+?$")
+"""
+Ignore Bioregistry prefixes/synonyms that do not adhere to this pattern.
+More permissive than the pattern at <https://github.com/biopragmatics/bioregistry/issues/158>,
+because there are existing Bioregistry prefixes, even preferred prefixes, that are bad.
+For example, starting with a number. We primarily care whether the prefix will work as part
+of a pandoc citation key without requiring escaping.
+"""
+
+
 @dataclasses.dataclass
 class Handler_CURIE(Handler):
     def __post_init__(self):
@@ -95,7 +105,7 @@ def _download_bioregistry():
     """
     Download the Bioregistry consensus registry adding the following fields for each registry:
     - prefix: the standard lowercase registry prefix
-    - all_prefixes: all distinct lowercase prefixes including synonyms
+    - all_prefixes: all distinct valid lowercase prefixes including synonyms
     """
     import requests
 
@@ -113,11 +123,13 @@ def _download_bioregistry():
         for field in set(resource) - _keep_bioregistry_fields:
             del resource[field]
         resource["prefix"] = prefix
+        all_prefixes = {
+            prefix,
+            *(x.lower() for x in resource.pop("synonyms", [])),
+        }
+        # remove invalid prefixes as per https://github.com/manubot/manubot/pull/306#discussion_r744125504
         resource["all_prefixes"] = sorted(
-            {
-                prefix,
-                *(x.lower() for x in resource.pop("synonyms", [])),
-            }
+            filter(valid_prefix_pattern.fullmatch, all_prefixes)
         )
         registry.append(resource)
     json_text = json.dumps(registry, indent=2, ensure_ascii=False)
