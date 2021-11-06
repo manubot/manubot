@@ -37,6 +37,7 @@ import pathlib
 import re
 import typing
 
+from manubot.cite.citekey import CiteKey
 from manubot.cite.handlers import Handler
 
 _keep_bioregistry_fields = {
@@ -77,13 +78,13 @@ class Handler_CURIE(Handler):
         if "pattern" in self.resource:
             self.accession_pattern = self.resource["pattern"]
 
-    def get_csl_item(self, citekey):
+    def get_csl_item(self, citekey: CiteKey):
         from ..url import get_url_csl_item
 
-        url = self.get_url(accession=citekey.standard_id)
+        url = self.get_url(accession=citekey.standard_accession)
         return get_url_csl_item(url)
 
-    def inspect(self, citekey):
+    def inspect(self, citekey: CiteKey) -> typing.Optional[str]:
         pattern = self._get_pattern("accession_pattern")
         if pattern and not pattern.fullmatch(citekey.accession):
             return f"{citekey.accession} does not match regex {pattern.pattern}"
@@ -101,7 +102,7 @@ def get_curie_handlers():
     return handlers
 
 
-def _download_bioregistry():
+def _download_bioregistry() -> None:
     """
     Download the Bioregistry consensus registry adding the following fields for each registry:
     - prefix: the standard lowercase registry prefix
@@ -156,7 +157,7 @@ def get_prefix_to_resource() -> typing.Dict[str, typing.Dict]:
     return prefix_to_resource
 
 
-def standardize_curie(curie):
+def standardize_curie(curie: str) -> str:
     """
     Return CURIE with Bioregistry preferred prefix capitalization.
     `curie` should be in `prefix:accession` format.

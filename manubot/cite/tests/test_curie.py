@@ -57,6 +57,10 @@ def test_get_prefix_to_resource():
             "clinicaltrials:NCT00222573",
             "https://clinicaltrials.gov/ct2/show/NCT00222573",
         ),
+        (
+            "clinicaltrials:NCT04292899",
+            "https://clinicaltrials.gov/ct2/show/NCT04292899",
+        ),
         # formerly afflicted by https://github.com/identifiers-org/identifiers-org.github.io/issues/99#issuecomment-614690283
         pytest.param(
             "gramene.growthstage:0007133",
