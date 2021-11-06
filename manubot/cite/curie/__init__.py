@@ -104,18 +104,22 @@ def _download_bioregistry():
     response.raise_for_status()
     results = response.json()
     assert isinstance(results, dict)
-    for prefix, metadata in results.items():
-        assert isinstance(metadata, dict)
-        for field in set(metadata) - _keep_bioregistry_fields:
-            del metadata[field]
-        metadata["prefix"] = prefix
-        metadata["all_prefixes"] = sorted(
+    registry = list()
+    for prefix, resource in results.items():
+        assert isinstance(resource, dict)
+        if not resource.get("uri_format"):
+            # discard unresolvable prefixes
+            continue
+        resource["prefix"] = prefix
+        resource["all_prefixes"] = sorted(
             {
                 prefix,
-                *(x.lower() for x in metadata.get("synonyms", [])),
+                *(x.lower() for x in resource.get("synonyms", [])),
             }
         )
-    registry = list(results.values())
+        for field in set(resource) - _keep_bioregistry_fields:
+            del resource[field]
+        registry.append(resource)
     json_text = json.dumps(registry, indent=2, ensure_ascii=False)
     bioregistry_path.write_text(json_text + "\n", encoding="utf-8")
 
