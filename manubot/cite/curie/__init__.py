@@ -87,8 +87,9 @@ class Handler_CURIE(Handler):
         return get_url_csl_item(url)
 
     def inspect(self, citekey: CiteKey) -> typing.Optional[str]:
-        judgement = self.resource.is_canonical_identifier(citekey.accession)
-        if judgement is None or judgement is True:
+        if not self.resource.get_pattern():
+            return None
+        if self.resource.is_canonical_identifier(citekey.accession):
             return None
         return f"{citekey.accession} does not match regex {self.resource.get_pattern()}"
 
