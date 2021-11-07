@@ -79,6 +79,10 @@ class Handler_CURIE(Handler):
         self.resource = manager.get_resource(self.prefix_lower)
         if self.resource is None:
             raise ValueError(f"Unrecognized CURIE prefix {self.prefix_lower}")
+        self.prefixes.extend(
+            self.resource.get_synonyms()
+            | {self.resource.get_preferred_prefix(), self.prefix_lower}
+        )
 
     def get_csl_item(self, citekey: CiteKey):
         from ..url import get_url_csl_item

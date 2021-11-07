@@ -22,6 +22,12 @@ def test_bioregistry_resource_patterns():
     assert not reports
 
 
+def test_synonyms():
+    """Test synonyms are loaded properly."""
+    handler = Handler_CURIE("ncbitaxon")
+    assert "taxonomy" in handler.prefixes
+
+
 @pytest.mark.parametrize(
     "curie, expected",
     [
