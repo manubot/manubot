@@ -130,7 +130,7 @@ def _download_bioregistry() -> None:
             *(x.lower() for x in resource.pop("synonyms", [])),
         }
         # remove invalid prefixes as per https://github.com/manubot/manubot/pull/306#discussion_r744125504
-        resource["all_prefixes"] = sorted(
+        resource["synonyms"] = sorted(
             filter(valid_prefix_pattern.fullmatch, all_prefixes)
         )
         registry.append(resource)
