@@ -1,36 +1,25 @@
 import pytest
 
 from ..citekey import CiteKey
-from ..curie import Handler_CURIE, curie_to_url, get_bioregistry, get_prefix_to_resource
+from ..curie import Handler_CURIE, curie_to_url, manager
 
 
 def test_bioregistry_resource_patterns():
     """
     Can find issues like https://github.com/biopragmatics/bioregistry/issues/242
     """
-    registry = get_bioregistry(compile_patterns=True)
-    assert isinstance(registry, list)
     reports = list()
-    for resource in registry:
-        assert resource["prefix"]  # ensure prefix field exists
-        if "example" in resource and "pattern" in resource:
-            prefix = resource["prefix"]
-            example = resource["example"]
-            handler = Handler_CURIE(prefix)
-            example_curie = CiteKey(f"{prefix}:{example}")
-            report = handler.inspect(example_curie)
-            if report:
-                reports.append(report)
+    for prefix, resource_model in manager.registry.items():
+        example = resource_model.get_example()
+        if example is None:
+            continue
+        handler = Handler_CURIE(prefix)
+        example_curie = CiteKey(f"{prefix}:{example}")
+        report = handler.inspect(example_curie)
+        if report:
+            reports.append(report)
     print("\n".join(reports))
     assert not reports
-
-
-def test_get_prefix_to_resource():
-    prefix_to_resource = get_prefix_to_resource()
-    assert isinstance(prefix_to_resource, dict)
-    assert "doid" in prefix_to_resource
-    resource = prefix_to_resource["doid"]
-    resource["preferred_prefix"] = "DOID"
 
 
 @pytest.mark.parametrize(
