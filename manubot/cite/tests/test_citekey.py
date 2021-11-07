@@ -76,7 +76,7 @@ from manubot.cite.citekey import CiteKey, shorten_citekey, url_to_citekey
         pytest.param(
             "DOID:14330",
             dict(
-                standard_id="doid:14330",
+                standard_id="DOID:14330",
             ),
             id="doid",
         ),
@@ -151,9 +151,9 @@ def test_shorten_citekey(standard_citekey, expected):
         "wikidata:Q50051684",
         "url:https://peerj.com/articles/705/",
         "https://peerj.com/articles/705/",
-        "GO:0006915",  # namespaceEmbeddedInLui=true
-        "go:0006915",  # namespaceEmbeddedInLui=true
-        "clinicaltrials:NCT04372602",  # namespaceEmbeddedInLui=false
+        "GO:0006915",
+        "go:0006915",
+        "clinicaltrials:NCT04372602",
     ],
 )
 def test_inspect_citekey_passes(citekey):
@@ -180,7 +180,7 @@ def test_inspect_citekey_passes(citekey):
         ("wikidata:P212", "item IDs must start with 'Q'"),
         ("wikidata:QABCD", "does not conform to the Wikidata regex"),
         ("arxiv:YYMM.number", "must conform to syntax"),
-        ("GO:GO:0006915", "GO:GO:0006915 does not match regex"),
+        ("GO:GO:0006915", "GO:0006915 does not match regex"),
     ],
 )
 def test_inspect_citekey_fails(citekey, contains):
