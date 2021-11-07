@@ -37,6 +37,8 @@ import pathlib
 import re
 import typing
 
+import bioregistry
+
 from manubot.cite.citekey import CiteKey
 from manubot.cite.handlers import Handler
 
@@ -70,7 +72,7 @@ class Handler_CURIE(Handler):
         try:
             self.resource = get_prefix_to_resource()[self.prefix_lower]
         except KeyError:
-            raise ValueError(f"Unrecognized CURIE prefix {self.prefix_lower}")
+tgith            raise ValueError(f"Unrecognized CURIE prefix {self.prefix_lower}")
         self.standard_prefix = (
             self.resource.get("preferred_prefix") or self.resource["prefix"]
         )
