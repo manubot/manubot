@@ -1840,7 +1840,7 @@
 
     <span class="n">prefixes</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">_get_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="s2">&quot;accession_pattern&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Pattern</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_get_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;accession_pattern&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Pattern</span><span class="p">:</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1908,7 +1908,7 @@
 
     <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
 
-    <span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">CiteKey</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1940,7 +1940,17 @@
 
     <span class="s2">&quot;4dn&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;4dn.biosource&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;4dn.replicate&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;aao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;abcd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;abs&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ac&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;aceview.worm&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -1948,15 +1958,35 @@
 
     <span class="s2">&quot;adw&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;aeo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;aeo_retired&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;aero&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;affy.probeset&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;aftol.taxonomy&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;agr&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;agricola&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;agricola_id&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;agro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;aism&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;allergome&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;alzforum.mutation&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;alzforum_mut&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;amoebadb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;amphx&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;antibodyregistry&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -1976,11 +2006,21 @@
 
     <span class="s2">&quot;apid.interactions&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;apidb_plasmodb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;apo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;apollosv&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;arachnoserver&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;araport&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ardb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ark&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;aro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;arrayexpress&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2004,11 +2044,17 @@
 
     <span class="s2">&quot;atc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;atc_code&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;atcc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;atcvet&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;atfdb.family&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ato&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;attc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;autdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2018,7 +2064,13 @@
 
     <span class="s2">&quot;bacmap.map&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;bactibase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;bao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;bcgo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;bco&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;bdgp.est&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2029,6 +2081,8 @@
     <span class="s2">&quot;beetlebase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;begdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;bfo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;bgee.family&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2046,6 +2100,8 @@
 
     <span class="s2">&quot;bigg.reaction&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;bila&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;bindingdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;biocarta.pathway&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
@@ -2056,7 +2112,13 @@
 
     <span class="s2">&quot;biogrid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;biogrid.interaction&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;biolegend&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;biolink&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;biomd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;biominder&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2074,6 +2136,14 @@
 
     <span class="s2">&quot;bioproject&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;bioregistry&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;bioregistry.collection&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;bioregistry.schema&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;biorxiv&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;biosample&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;biosimulations&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
@@ -2086,17 +2156,29 @@
 
     <span class="s2">&quot;biotools&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;biozil&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;birdbase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;bitterdb.cpd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;bitterdb.rec&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;bmrb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;bmrb.restraint&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;bold.taxonomy&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;bootstrep&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;bpdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;brenda&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;broad&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;bspo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;bto&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2114,7 +2196,15 @@
 
     <span class="s2">&quot;caps&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;caro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;cas&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cas_id&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cas_rn&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;casid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;cath&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2126,17 +2216,29 @@
 
     <span class="s2">&quot;cazy&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;cba&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;cbioportal&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ccdc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ccds&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;ccle&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ccle.cell&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;cco&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cdao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;cdd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;cdno&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;cdpd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cellbank.australia&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;cellimage&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2144,7 +2246,11 @@
 
     <span class="s2">&quot;cellrepo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;ceph&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;cgd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cgnc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;cgsc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2152,19 +2258,37 @@
 
     <span class="s2">&quot;chebi&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;chebiid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;chembl&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;chembl.compound&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;chembl.target&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;chembl_id&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;chemdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;chemidplus&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;cheminf&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;chemspider&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;chickenqtldb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;chiro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;chmo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cido&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cio&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;citexplore&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;civic.aid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2172,9 +2296,13 @@
 
     <span class="s2">&quot;cl&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;clao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;classyfire&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;cldb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;clingene&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;clinicaltrials&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2186,7 +2314,91 @@
 
     <span class="s2">&quot;clinvar.submitter&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;clo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;clyh&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cmf&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cmo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_320&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_321&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_322&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_323&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_324&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_325&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_327&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_330&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_331&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_333&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_334&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_335&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_336&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_337&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_338&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_339&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_340&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_341&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_343&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_345&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_346&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_347&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_348&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_350&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_356&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_357&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_358&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_359&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_360&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_365&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;co_366&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cob&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;coconut&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cog&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cog.category&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cog.pathway&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cog_cluster&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;combine.specifications&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;come&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;complexportal&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2196,6 +2408,8 @@
 
     <span class="s2">&quot;conoserver&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;conso&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;coriell&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;corrdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
@@ -2204,11 +2418,17 @@
 
     <span class="s2">&quot;cosmic&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;cosmic.cell&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;covid19&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;cpc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;cpga&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;crisprdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;cryptodb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2226,7 +2446,17 @@
 
     <span class="s2">&quot;ctd.gene&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;cteno&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cto&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ctx&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;cubedb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cvcl&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;cvdo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;d1id&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2260,7 +2490,25 @@
 
     <span class="s2">&quot;dbsnp&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;dc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;dc.terms&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;dc_cl&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;dcat&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;dcterms&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;dctypes&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ddanat&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ddpheno&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;degradome&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;depmap&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;depod&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2274,11 +2522,21 @@
 
     <span class="s2">&quot;dg.anv0&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;dg.f82a1a&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;di&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;dictybase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;dictybase.est&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;dictybase.gene&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;did&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;dideo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;dinto&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;dip&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2289,6 +2547,8 @@
     <span class="s2">&quot;dlxb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;dlxc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;do&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.doi.Handler_DOI&quot;</span><span class="p">,</span>
 
@@ -2302,6 +2562,8 @@
 
     <span class="s2">&quot;doqcs.pathway&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;dpo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;dpv&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;dragondb.allele&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
@@ -2312,21 +2574,61 @@
 
     <span class="s2">&quot;dragondb.protein&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;dron&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;drsc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;drug_central&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;drugbank&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;drugbank.salt&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;drugbank.target&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;drugbank_id&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;drugbankv4.target&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;drugcentral&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;dsmz&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;dsstox_cid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;dsstox_generic_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;duo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;eaglei&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ec&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ec-code&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;ec_code&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ecacc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ecao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;eccode&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;echobase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;ecmdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;eco&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ecocore&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ecocyc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ecogene&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ecoliwiki&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ecto&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ecyano.entity&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2346,9 +2648,31 @@
 
     <span class="s2">&quot;eggnog&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;egid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ehda&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ehdaa&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ehdaa2&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ehdaa2_retired&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;elm&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;emap&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;emapa&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;emapa_retired&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;emdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;emolecules&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;empiar&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ena&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ena.embl&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2366,15 +2690,23 @@
 
     <span class="s2">&quot;ensembl.protist&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;entrez&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;envipath&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;envo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;enzo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;eo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;epd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;epo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;erm&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ero&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;erv&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2382,27 +2714,77 @@
 
     <span class="s2">&quot;euclinicaltrials&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;eupath&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ev&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;exac.gene&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;exac.transcript&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;exac.variant&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;exo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;facebase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;fairsharing&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;faldo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;famplex&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;fao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;fb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;fbbi&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;fbbt&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;fbbt_root&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;fbcv&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;fbdv&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;fbol&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;fbrf&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;fbsp&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;fbtc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;fideo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;fix&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;flopo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;flowrepository&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;flu&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;flybase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;fma&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;fma_retired&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;fmaid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;foaf&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;fobi&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;foodb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;foodb.compound&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;foodon&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;fovt&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;fplx&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2420,11 +2802,21 @@
 
     <span class="s2">&quot;fungidb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;fypo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;ga4ghdos&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;gabi&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;gateway&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;gaz&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;gbif&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;gc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;gc_id&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;gcst&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2432,7 +2824,11 @@
 
     <span class="s2">&quot;gdsc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;gecko&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;genatlas&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;genbank&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;genecards&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2440,9 +2836,13 @@
 
     <span class="s2">&quot;genefarm&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;genepio&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;genetree&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;genewiki&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;geno&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;genpept&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2451,6 +2851,10 @@
     <span class="s2">&quot;geo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;geogeo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;gfam&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ghr&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;giardiadb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2468,6 +2872,8 @@
 
     <span class="s2">&quot;glycopost&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;glygen&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;glytoucan&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;gmd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
@@ -2480,13 +2886,25 @@
 
     <span class="s2">&quot;gmd.ref&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;gno&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;gnpis&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;go&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
-    <span class="s2">&quot;go_ref&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;go.model&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;go.ref&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;goa&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;gobp&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;gobpid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;gocc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;goccid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;gold&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2494,11 +2912,21 @@
 
     <span class="s2">&quot;gold.meta&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;gomf&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;gomfid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;google.patent&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;gpcrdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;gpmdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;gr_gene&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;gr_protein&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;gr_qtl&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;gramene.gene&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2510,15 +2938,17 @@
 
     <span class="s2">&quot;gramene.taxonomy&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;grassbase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;greengenes&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;grid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;grin.taxonomy&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
-    <span class="s2">&quot;gro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
-
     <span class="s2">&quot;grsdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;gsfa&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;gsso&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2536,9 +2966,17 @@
 
     <span class="s2">&quot;gxa.gene&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;habronattus&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;hamap&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;hancestro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;hao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;hcvdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;hdaa2&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;hdr&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2554,6 +2992,8 @@
 
     <span class="s2">&quot;hgnc.symbol&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;hgnc_group&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;hinv.locus&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;hinv.protein&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
@@ -2562,9 +3002,15 @@
 
     <span class="s2">&quot;hmdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
-    <span class="s2">&quot;hog&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hms-lincs&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;hms.lincs.compound&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;hmsl_id&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;hogenom&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;hom&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;homd.seq&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2586,7 +3032,15 @@
 
     <span class="s2">&quot;hpscreg&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;hsapdv&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;hsdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;hso&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;hssp&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;htn&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;http&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.url.Handler_URL&quot;</span><span class="p">,</span>
 
@@ -2598,17 +3052,29 @@
 
     <span class="s2">&quot;icd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;icd-10&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;icd10&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;icd10cm&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;icdc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;iceberg.element&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;iceberg.family&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;iceo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ico&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;ideal&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;identifiers.namespace&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ido&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;idomal&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;idoo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2617,6 +3083,8 @@
     <span class="s2">&quot;idr&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;iedb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;iev&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;igsn&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2632,9 +3100,17 @@
 
     <span class="s2">&quot;imgt.ligm&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;imr&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;inchi&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;inchikey&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;inn&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;inn_id&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ino&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;insdc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2642,25 +3118,43 @@
 
     <span class="s2">&quot;insdc.gca&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;insdc.run&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;insdc.sra&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;intact&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;intact.molecule&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;intenz&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;interlex&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;interpro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ip&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ipr&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ird.segment&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;irefweb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;iro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;isbn&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.isbn.Handler_ISBN&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;isbn-10&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;isbn-13&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;isfinder&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;isni&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;issn&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;itis&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ito&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2669,6 +3163,18 @@
     <span class="s2">&quot;iuphar.ligand&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;iuphar.receptor&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;iuphar_gpcr&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;iuphar_ligand&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;iuphar_ligand_id&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;iupharfam&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;iupharobj&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;jax&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;jaxmice&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2686,6 +3192,8 @@
 
     <span class="s2">&quot;kegg&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;kegg-path&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;kegg.compound&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;kegg.disease&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
@@ -2694,11 +3202,15 @@
 
     <span class="s2">&quot;kegg.environ&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;kegg.enzyme&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;kegg.genes&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;kegg.genome&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;kegg.glycan&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;kegg.ligand&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;kegg.metagenome&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2710,7 +3222,19 @@
 
     <span class="s2">&quot;kegg.reaction&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;kegg_genome&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;kegg_genomes&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;kegg_pathway&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;kegg_reaction&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;kisao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;knapsack&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;labo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;lei&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2726,6 +3250,8 @@
 
     <span class="s2">&quot;ligandexpo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;lincs&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;lincs.cell&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;lincs.data&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
@@ -2736,11 +3262,27 @@
 
     <span class="s2">&quot;linguist&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;lipid_maps_class&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;lipid_maps_instance&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;lipidbank&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;lipidmaps&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;lipro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;lncrnadb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;loggerhead&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;loinc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;lotus&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;lrg&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;lspci&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ma&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2750,11 +3292,21 @@
 
     <span class="s2">&quot;mamo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;mao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;massbank&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;massive&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;mat&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;matrixdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;matrixdb.association&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;maxo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mco&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;mdm&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2762,7 +3314,11 @@
 
     <span class="s2">&quot;medgen&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;medline&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;medlineplus&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;medra&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;merops&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2776,7 +3332,23 @@
 
     <span class="s2">&quot;mesh.2013&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;mesh_descriptor_ui&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mesh_supplemental_record_ui&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mesha&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;meshc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;meshcs&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;meshd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;meshpp&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;metabolights&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;metacyc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;metacyc.compound&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2792,9 +3364,23 @@
 
     <span class="s2">&quot;mex&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;mf&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mfmo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mfo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mfoem&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mfomd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mgd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;mge&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;mgi&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mgnify.analysis&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;mgnify.proj&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2802,11 +3388,17 @@
 
     <span class="s2">&quot;mi&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;miapa&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;micro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;microscope&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;microsporidia&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;mim&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mim.ps&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;mimodb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2822,7 +3414,13 @@
 
     <span class="s2">&quot;mirbase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;mirbase.family&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;mirbase.mature&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mirbase_family&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mirbasem&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;mirex&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2830,7 +3428,11 @@
 
     <span class="s2">&quot;miriam.resource&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;mirnao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;mirnest&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;miro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;mirtarbase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2838,7 +3440,9 @@
 
     <span class="s2">&quot;mmdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
-    <span class="s2">&quot;mmmp:biomaps&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mmmp.biomaps&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mmo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;mmp.cat&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2849,6 +3453,8 @@
     <span class="s2">&quot;mmp.ref&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;mmrrc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mmusdv&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;mo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2862,13 +3468,27 @@
 
     <span class="s2">&quot;molmedb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;mondo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mop&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;morpheus&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;mp&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;mpath&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;mpid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;mpio&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;mro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;ms&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;msh&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;multicellds&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;multicellds.cell_line&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2902,23 +3522,55 @@
 
     <span class="s2">&quot;nbn&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;nbo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;nbrc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ncats.drug&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ncbi_taxid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ncbi_taxon_id&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ncbigene&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ncbiprotein&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;ncbitaxon&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;nci&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;nci2004_11_17&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;nci_thesaurus&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;ncim&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ncit&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;ncit_thesaurus&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ncithesaurus&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ncitm&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ncitt&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ncro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;ndc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ndex&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;nemo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;neurolex&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;neuromorpho&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;neuroname&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;neuronames&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;neurondb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2930,15 +3582,33 @@
 
     <span class="s2">&quot;nextprot&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;nextprot.family&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;ngl&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;niaest&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;nif_cell&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;nif_dysfunction&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;nif_grossanatomy&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;nlm&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;nlxanat&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;nlxdys&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;nmdc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;nmr&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;nmrcv&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;nmrshiftdb2&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;nomen&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;noncodev3&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2948,11 +3618,37 @@
 
     <span class="s2">&quot;norine&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;novus&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;nuclearbd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;nucleotide&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;nxp&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;nxpfa&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;oa&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;oae&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;oarcs&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;oba&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;obcs&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;obi&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;obib&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;obo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;obo_rel&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;oboinowl&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;oborel&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;occ&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2970,7 +3666,25 @@
 
     <span class="s2">&quot;odor&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;ogg&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ogi&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ogms&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ogsf&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ohd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ohmi&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ohpi&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;oid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;oio&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;olatdv&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;oma.grp&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -2980,19 +3694,49 @@
 
     <span class="s2">&quot;omia&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;omiabis&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;omim&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;omimps&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;omit&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;omo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;omp&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;omrse&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;oncotree&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;one&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ons&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ontoneo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;oostt&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;opb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;opl&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;opm&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;opmi&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;orcid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ordb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;ordo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;oridb.sacch&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;oridb.schizo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ornaseq&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;orphanet&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3012,11 +3756,17 @@
 
     <span class="s2">&quot;otl&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;ovae&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;owl&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;p3db.protein&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;p3db.site&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;paleodb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;panorama&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;panther.family&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3026,11 +3776,19 @@
 
     <span class="s2">&quot;panther.pthcmp&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;pao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;pass2&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;patent&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pathbank&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;pathwaycommons&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;pato&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pav&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;paxdb.organism&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3038,11 +3796,27 @@
 
     <span class="s2">&quot;pazar&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;pco&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pd_st&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;pdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;pdb-ccd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;pdb.ligand&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pdb_chem_id&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pdbe&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pdbechem&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pdro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pdumdv&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;peco&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ped&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3054,11 +3828,27 @@
 
     <span class="s2">&quot;peroxibase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;pesticides&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pf&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;pfam&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pfam.clan&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pfr&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pgdso&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;pgs&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;pgx&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pharmacodb.cell&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pharmacodb.dataset&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pharmacodb.tissue&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;pharmgkb.disease&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3069,6 +3859,8 @@
     <span class="s2">&quot;pharmgkb.pathways&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;phenolexplorer&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;phipo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;phosphopoint.kinase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3082,6 +3874,8 @@
 
     <span class="s2">&quot;phytozome.locus&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;pid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;pid.pathway&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;pigqtldb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
@@ -3094,9 +3888,15 @@
 
     <span class="s2">&quot;pkdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;plana&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;planp&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;planttfdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;plasmodb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;plo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;pmap.cutdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3122,6 +3922,14 @@
 
     <span class="s2">&quot;pombase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;poro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ppdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ppo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ppr&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;pr&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;pride&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
@@ -3130,11 +3938,15 @@
 
     <span class="s2">&quot;prints&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;pro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;probonto&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;prodom&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;proglyc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;propreo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;prosite&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3148,17 +3960,37 @@
 
     <span class="s2">&quot;protonet.proteincard&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;prov&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ps&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;pscdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;psdo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;pseudomonas&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;psi-mi&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;psipar&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pso&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pubchem&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;pubchem.bioassay&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;pubchem.compound&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;pubchem.substance&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pubchem_cid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pubchem_compound_cid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;pubchem_id&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;publons.researcher&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;pubmed&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.pubmed.Handler_PubMed&quot;</span><span class="p">,</span>
 
@@ -3170,25 +4002,47 @@
 
     <span class="s2">&quot;qtldb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;qudt&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;rapdb.locus&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;rapdb.transcript&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;rbk&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;rbo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;rcb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;rdf&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;rdfs&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;re&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;re3data&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;react&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;reactome&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;rebase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;receptome.family&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;refseq&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;refseq_prot&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;repeatsdb.protein&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;repeatsdb.structure&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;resid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;retired_ehdaa2&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;rex&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;rfam&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3214,15 +4068,29 @@
 
     <span class="s2">&quot;rnacentral&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;rnamod&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;rnamods&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;rnao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;ro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ro_proposed_relation&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;rouge&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;rrid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;rs&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;runbiosimulations&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;rxcui&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;rxno&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;rxnorm&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;sabiork.compound&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3232,15 +4100,27 @@
 
     <span class="s2">&quot;sabiork.reaction&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;salk&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;sao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;sasbdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;sbo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;scdo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;scop&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;scretf&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;sctid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;sctid_2010_1_31&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;sdbs&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;secondary_cas_rn&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;sedml.format&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3252,6 +4132,10 @@
 
     <span class="s2">&quot;seed.reaction&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;sep&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;sepio&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;sgd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;sgd.pathways&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
@@ -3262,9 +4146,13 @@
 
     <span class="s2">&quot;shortdoi&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.doi.Handler_DOI&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;sibo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;sider.drug&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;sider.effect&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;sigmaaldirch&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;signaling-gateway&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3276,19 +4164,69 @@
 
     <span class="s2">&quot;sitex&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;skip&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;skos&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;slm&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;smart&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;smid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;smid-db&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;smp&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;smpdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;snomect&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snomed&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snomed_ct&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snomed_ct_us_2018_03_01&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;snomedct&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snomedct_2010_1_31&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snomedct_us&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snomedct_us_2018_03_01&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snomedct_us_2018_09_01&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snomedct_us_2019_03_01&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snomedct_us_2019_09_01&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snomedct_us_2020_03_01&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snomedct_us_2020_09_01&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snomedctct&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snomedctct_2018_03_01&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snomedctct_2019_03_01&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snowmedct&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snowmedct_us&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;snowmedct_us_2018_03_01&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;snp2tfbs&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;so&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;sopharm&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;soybase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;spd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;spdx&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3298,13 +4236,21 @@
 
     <span class="s2">&quot;spp&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;ssbd.dataset&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ssbd.project&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;stap&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;stato&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;stitch&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;storedb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;string&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;sty&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;subtilist&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3318,9 +4264,25 @@
 
     <span class="s2">&quot;swiss-model&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;swisslipid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;swisslipids&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;swissprot&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;swissregulon&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;swo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;symp&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;t3db&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;tads&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;tahe&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;tahh&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;tair.gene&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3328,17 +4290,45 @@
 
     <span class="s2">&quot;tair.protein&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;tao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;tao_retired&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;tarbase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;tax&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;taxid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;taxon&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;taxonomy&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;taxonomyid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;taxrank&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;tc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;tcdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;tdr&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;teddy&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;tfclass&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;tgd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;tgma&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;thermofisher&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;tigrfam&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
-    <span class="s2">&quot;tissuelist&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tkg&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;to&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;tol&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3347,6 +4337,8 @@
     <span class="s2">&quot;topfind&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;toxoplasma&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;trans&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;transyt&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3362,9 +4354,25 @@
 
     <span class="s2">&quot;ttd.target&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;tto&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;txpo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;uberon&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ubio.namebank&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ucsc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;um-bbd_compid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;um-bbd_enzymeid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;um-bbd_pathwayid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;um-bbd_reactionid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;um-bbd_ruleid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;umbbd.compound&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3378,6 +4386,8 @@
 
     <span class="s2">&quot;umls&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;umls_cui&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;unigene&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;unii&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
@@ -3385,6 +4395,8 @@
     <span class="s2">&quot;unimod&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;uniparc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;unipathway&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;unipathway.compound&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3394,15 +4406,47 @@
 
     <span class="s2">&quot;uniprot.chain&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;uniprot.disease&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;uniprot.isoform&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;uniprot.keyword&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;uniprot.location&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;uniprot.tissue&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;uniprot.var&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;uniprotkb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;uniprotkb-kw&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;uniprotkb-subcell&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;uniprotkb_var&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;uniref&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;unirule&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;unists&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;unite&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;uo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;up&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;upa&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;upheno&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;upiso&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;uploc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;uppro&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.url.Handler_URL&quot;</span><span class="p">,</span>
 
@@ -3428,6 +4472,10 @@
 
     <span class="s2">&quot;vgnc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;vhog&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;vhog_retired&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;viaf&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;vipr&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
@@ -3442,25 +4490,79 @@
 
     <span class="s2">&quot;vmhreaction&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;vo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;void&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;vsao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;vsao_retired&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;vsdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;vt&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;vto&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;vz&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;wb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;wb.rnai&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;wb_ref&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;wbbt&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;wbls&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;wbphenotype&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;wd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;wd_entity&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;webelements&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;wgs84&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;wikidata&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.wikidata.Handler_Wikidata&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;wikidata.property&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;wikigenes&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;wikipathways&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;wikipedia&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;wikipedia.en&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;worfdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;wormbase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;wormpep&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;worms&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;wwf.ecoregion&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;wwpdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;xao&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;xco&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;xenbase&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;xl&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;xlmod&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;xpo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;xsd&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;ydpm&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
@@ -3470,11 +4572,27 @@
 
     <span class="s2">&quot;yid&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;ymdb&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;ypo&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;yrcpdr&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;zea&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;zeco&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;zfa&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;zfa_retired&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
     <span class="s2">&quot;zfin&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
+    <span class="s2">&quot;zfs&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
     <span class="s2">&quot;zinc&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;zp&quot;</span><span class="p">:</span> <span class="s2">&quot;manubot.cite.curie.Handler_CURIE&quot;</span><span class="p">,</span>
 
 <span class="p">}</span>
 </code></pre></div>
@@ -3575,7 +4693,7 @@ Otherwise, return None.</p>
 
 <span class="w">    </span><span class="n">prefixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">[]</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">_get_pattern</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">attribute</span><span class="o">=</span><span class="ss">&quot;accession_pattern&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nl">Pattern</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">_get_pattern</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">attribute</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;accession_pattern&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nl">Pattern</span><span class="p">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -3643,7 +4761,7 @@ Otherwise, return None.</p>
 
 <span class="w">    </span><span class="nv">@abc</span><span class="p">.</span><span class="n">abstractmethod</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Dict</span><span class="o">[</span><span class="n">str, Any</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Dict</span><span class="o">[</span><span class="n">str, Any</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -3679,14 +4797,14 @@ Otherwise, return None.</p>
 <h4 id="get_csl_item">get_csl_item</h4>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">citekey</span>
+    <span class="n">citekey</span><span class="p">:</span> <span class="n">manubot</span><span class="o">.</span><span class="n">cite</span><span class="o">.</span><span class="n">citekey</span><span class="o">.</span><span class="n">CiteKey</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">@abc</span><span class="p">.</span><span class="n">abstractmethod</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Dict</span><span class="o">[</span><span class="n">str, Any</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Dict</span><span class="o">[</span><span class="n">str, Any</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
