@@ -98,9 +98,9 @@ class Handler:
     """
 
     prefix_lower: str
-    prefixes = []
+    prefixes: List[str] = dataclasses.field(default_factory=list)
 
-    def _get_pattern(self, attribute: str = "accession_pattern") -> Pattern:
+    def _get_pattern(self, attribute: str = "accession_pattern") -> Optional[Pattern]:
         """
         Return a compiled regex pattern stored by `attribute`.
         By default, return `self.accession_pattern`, which Handler subclasses
