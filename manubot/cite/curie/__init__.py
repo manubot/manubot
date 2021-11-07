@@ -152,6 +152,8 @@ def curie_to_url(curie: str) -> str:
     `curie` should be in `prefix:accession` format
     """
     prefix, accession = manager.parse_curie(curie)
+    if prefix is None or accession is None:
+        raise ValueError(f"Could not parse {curie}")
     handler = Handler_CURIE(prefix.lower())
     return handler.get_url(accession)
 
