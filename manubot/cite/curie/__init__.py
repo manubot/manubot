@@ -30,6 +30,7 @@ References:
 - [On the road to robust data citation](https://doi.org/10.1038/sdata.2018.95)
 - [Uniform Resolution of Compact Identifiers for Biomedical Data](https://doi.org/10.1038/sdata.2018.29)
 """
+
 import dataclasses
 import functools
 import json
@@ -72,7 +73,7 @@ class Handler_CURIE(Handler):
         try:
             self.resource = get_prefix_to_resource()[self.prefix_lower]
         except KeyError:
-tgith            raise ValueError(f"Unrecognized CURIE prefix {self.prefix_lower}")
+            raise ValueError(f"Unrecognized CURIE prefix {self.prefix_lower}")
         self.standard_prefix = (
             self.resource.get("preferred_prefix") or self.resource["prefix"]
         )
