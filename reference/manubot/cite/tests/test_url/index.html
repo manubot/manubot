@@ -1556,13 +1556,19 @@
 
 <span class="kn">from</span> <span class="nn">manubot.cite.url</span> <span class="kn">import</span> <span class="n">get_url_csl_item_zotero</span>
 
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span>
+
+    <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Fails due to ratelimiting https://github.com/zotero/translation-server/issues/133&quot;</span>
+
+<span class="p">)</span>
+
 <span class="k">def</span> <span class="nf">test_get_url_csl_item_zotero_nyt</span><span class="p">():</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    This command creates two translation-server queries. The first query is</span>
+<span class="sd">    This command creates two translation-server queries.</span>
 
-<span class="sd">    equivalent to:</span>
+<span class="sd">    The first query is equivalent to:</span>
 
 <span class="sd">    ```</span>
 
@@ -1575,6 +1581,10 @@
 <span class="sd">      &#39;https://translate.manubot.org/web&#39;</span>
 
 <span class="sd">    ```</span>
+
+<span class="sd">    Can fail due to NYT ratelimiting, see</span>
+
+<span class="sd">    https://github.com/zotero/translation-server/issues/133</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1987,44 +1997,56 @@ https://github.com/manubot/manubot/issues/244</p>
 <span class="p">)</span>
 </code></pre></div>
 
-<p>This command creates two translation-server queries. The first query is</p>
-<p>equivalent to:</p>
+<p>This command creates two translation-server queries.</p>
+<p>The first query is equivalent to:</p>
 <div class="codehilite"><pre><span></span><code>curl --verbose       --header &quot;Content-Type: text/plain&quot;       --data &#39;https://nyti.ms/1NuB0WJ&#39;       &#39;https://translate.manubot.org/web&#39;
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_get_url_csl_item_zotero_nyt():
+<p>Can fail due to NYT ratelimiting, see
+https://github.com/zotero/translation-server/issues/133</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">xfail</span><span class="p">(</span><span class="w"></span>
 
-    &quot;&quot;&quot;
+<span class="w">    </span><span class="n">reason</span><span class="o">=</span><span class="ss">&quot;Fails due to ratelimiting https://github.com/zotero/translation-server/issues/133&quot;</span><span class="w"></span>
 
-    This command creates two translation-server queries. The first query is
+<span class="p">)</span><span class="w"></span>
 
-    equivalent to:
+<span class="n">def</span><span class="w"> </span><span class="n">test_get_url_csl_item_zotero_nyt</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
 
-    ```
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
-    curl --verbose \
+<span class="ss">    This command creates two translation-server queries.</span>
 
-      --header &quot;Content-Type: text/plain&quot; \
+<span class="ss">    The first query is equivalent to:</span>
 
-      --data &#39;https://nyti.ms/1NuB0WJ&#39; \
+<span class="ss">    ```</span>
 
-      &#39;https://translate.manubot.org/web&#39;
+<span class="ss">    curl --verbose \</span>
 
-    ```
+<span class="ss">      --header &quot;</span><span class="n">Content</span><span class="o">-</span><span class="nl">Type</span><span class="p">:</span><span class="w"> </span><span class="nc">text</span><span class="o">/</span><span class="n">plain</span><span class="ss">&quot; \</span>
 
-    &quot;&quot;&quot;
+<span class="ss">      --data &#39;https://nyti.ms/1NuB0WJ&#39; \</span>
 
-    url = &quot;https://nyti.ms/1NuB0WJ&quot;
+<span class="ss">      &#39;https://translate.manubot.org/web&#39;</span>
 
-    csl_item = get_url_csl_item_zotero(url)
+<span class="ss">    ```</span>
 
-    assert csl_item[&quot;title&quot;].startswith(
+<span class="ss">    Can fail due to NYT ratelimiting, see</span>
 
-        &quot;Unraveling the Ties of Altitude, Oxygen and Lung Cancer&quot;
+<span class="ss">    https://github.com/zotero/translation-server/issues/133</span>
 
-    )
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    assert csl_item[&quot;author&quot;][0][&quot;family&quot;] == &quot;Johnson&quot;
+<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;https://nyti.ms/1NuB0WJ&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;title&quot;</span><span class="o">]</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">        </span><span class="ss">&quot;Unraveling the Ties of Altitude, Oxygen and Lung Cancer&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;author&quot;</span><span class="o">][</span><span class="n">0</span><span class="o">][</span><span class="n">&quot;family&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;Johnson&quot;</span><span class="w"></span>
 </code></pre></div>
 
 </details>
