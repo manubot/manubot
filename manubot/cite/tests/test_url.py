@@ -3,16 +3,21 @@ import pytest
 from manubot.cite.url import get_url_csl_item_zotero
 
 
+@pytest.mark.xfail(
+    reason="Fails due to ratelimiting https://github.com/zotero/translation-server/issues/133"
+)
 def test_get_url_csl_item_zotero_nyt():
     """
-    This command creates two translation-server queries. The first query is
-    equivalent to:
+    This command creates two translation-server queries.
+    The first query is equivalent to:
     ```
     curl --verbose \
       --header "Content-Type: text/plain" \
       --data 'https://nyti.ms/1NuB0WJ' \
       'https://translate.manubot.org/web'
     ```
+    Can fail due to NYT ratelimiting, see
+    https://github.com/zotero/translation-server/issues/133
     """
     url = "https://nyti.ms/1NuB0WJ"
     csl_item = get_url_csl_item_zotero(url)
