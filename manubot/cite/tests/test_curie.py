@@ -59,6 +59,8 @@ def test_bioregistry_resource_patterns():
     ],
 )
 def test_curie_to_url(curie, expected):
+    prefix = curie.split(":", )[0]
+    assert manager.get_resource(prefix) is not None, f"Could not look up {prefix}"
     url = curie_to_url(curie)
     assert url == expected
 
