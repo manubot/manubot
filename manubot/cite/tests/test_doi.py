@@ -4,6 +4,8 @@ from manubot.cite.doi import (
     expand_short_doi,
     get_doi_csl_item,
     get_doi_csl_item_crosscite,
+    get_doi_csl_item_datacite,
+    get_doi_csl_item_negotiation,
     get_doi_csl_item_zotero,
 )
 
@@ -23,9 +25,13 @@ def test_expand_short_doi_not_short():
         expand_short_doi("10.1016/S0933-3657(96)00367-3")
 
 
-def test_get_doi_csl_item_crosscite():
+@pytest.mark.parametrize(
+    "get_doi_csl_item_negotiation",
+    [get_doi_csl_item_datacite, get_doi_csl_item_crosscite],
+)
+def test_get_doi_csl_item_negotiation(get_doi_csl_item_negotiation):
     doi = "10.1101/142760"
-    csl_item = get_doi_csl_item_crosscite(doi)
+    csl_item = get_doi_csl_item_negotiation(doi)
     assert isinstance(csl_item, dict)
     csl_item["publisher"] == "Cold Spring Harbor Laboratory"
 
@@ -65,7 +71,7 @@ def test_get_doi_crosscite_with_consortium_author():
     - <https://github.com/crosscite/content-negotiation/issues/92>
     """
     doi = "10.1038/ng.3834"
-    csl_item = get_doi_csl_item_crosscite(doi)
+    csl_item = get_doi_csl_item_negotiation(doi)
     assert isinstance(csl_item, dict)
     assert any(
         author.get("literal") == "GTEx Consortium" for author in csl_item["author"]
