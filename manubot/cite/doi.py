@@ -2,7 +2,6 @@ import json
 import logging
 import urllib.parse
 import urllib.request
-from functools import partial
 from typing import Any, Callable, Optional
 
 import requests
@@ -146,14 +145,12 @@ def get_doi_csl_item_negotiation(
         raise error
 
 
-get_doi_csl_item_datacite = partial(
-    get_doi_csl_item_negotiation,
-    content_negotiation_url=content_negotiation_url_datacite,
-)
-get_doi_csl_item_crosscite = partial(
-    get_doi_csl_item_negotiation,
-    content_negotiation_url=content_negotiation_url_crosscite,
-)
+def get_doi_csl_item_datacite(doi: str):
+    return get_doi_csl_item_negotiation(doi, content_negotiation_url_datacite)
+
+
+def get_doi_csl_item_crosscite(doi: str):
+    return get_doi_csl_item_negotiation(doi, content_negotiation_url_crosscite)
 
 
 def get_doi_csl_item_zotero(doi: str):
