@@ -1590,7 +1590,9 @@
                 <h1 id="module-manubotcommand">Module manubot.command</h1>
 <p>Manubot's command line interface</p>
 <p>None</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="sd">&quot;&quot;&quot;</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">Manubot&#39;s command line interface</span>
 
@@ -2107,161 +2109,163 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">add_subparser_cite</span><span class="p">(</span><span class="n">subparsers</span><span class="p">):</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">add_subparser_cite</span><span class="p">(</span><span class="n">subparsers</span><span class="p">):</span><span class="w"></span>
 
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+<span class="w">    </span><span class="n">parser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="w"></span>
 
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cite&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;cite&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;citekey to CSL JSON command line utility&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;citekey to CSL JSON command line utility&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Generate bibliographic metadata in CSL JSON format for one or more citation keys. &quot;</span>
+<span class="w">        </span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Generate bibliographic metadata in CSL JSON format for one or more citation keys. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Optionally, render metadata into formatted references using Pandoc. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;Optionally, render metadata into formatted references using Pandoc. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Text outputs are UTF-8 encoded.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Text outputs are UTF-8 encoded.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--output&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--output&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">type</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+<span class="w">        </span><span class="n">type</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Specify a file to write output, otherwise default to stdout.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;Specify a file to write output, otherwise default to stdout.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">format_group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
+<span class="w">    </span><span class="n">format_group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span><span class="w"></span>
 
-    <span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--format&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--format&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;csljson&quot;</span><span class="p">,</span> <span class="s2">&quot;cslyaml&quot;</span><span class="p">,</span> <span class="s2">&quot;plain&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span> <span class="s2">&quot;docx&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">,</span> <span class="s2">&quot;jats&quot;</span><span class="p">],</span>
+<span class="w">        </span><span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;csljson&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;cslyaml&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;plain&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;markdown&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;docx&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;html&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;jats&quot;</span><span class="p">],</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Format to use for output file. &quot;</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;Format to use for output file. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;csljson and cslyaml output the CSL data. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;csljson and cslyaml output the CSL data. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;All other choices render the references using Pandoc. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;All other choices render the references using Pandoc. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;If not specified, attempt to infer this from the --output filename extension. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;If not specified, attempt to infer this from the --output filename extension. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Otherwise, default to csljson.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Otherwise, default to csljson.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--yml&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--yml&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;format&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">dest</span><span class="o">=</span><span class="s2">&quot;format&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="k">const</span><span class="o">=</span><span class="s2">&quot;cslyaml&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="k">const</span><span class="o">=</span><span class="s2">&quot;cslyaml&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Short for --format=cslyaml.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;Short for --format=cslyaml.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--txt&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--txt&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;format&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">dest</span><span class="o">=</span><span class="s2">&quot;format&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="k">const</span><span class="o">=</span><span class="s2">&quot;plain&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="k">const</span><span class="o">=</span><span class="s2">&quot;plain&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Short for --format=plain.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;Short for --format=plain.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">format_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--md&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--md&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;format&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">dest</span><span class="o">=</span><span class="s2">&quot;format&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="k">const</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="k">const</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Short for --format=markdown.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;Short for --format=markdown.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--csl&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--csl&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="c1"># redirects to the latest Manubot CSL Style.</span>
+<span class="w">        </span><span class="c1"># redirects to the latest Manubot CSL Style.</span><span class="w"></span>
 
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;https://citation-style.manubot.org/&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;https://citation-style.manubot.org/&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;URL or path with CSL XML style used to style references &quot;</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;URL or path with CSL XML style used to style references &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;(i.e. Pandoc&#39;s --csl option). &quot;</span>
+<span class="w">        </span><span class="s2">&quot;(i.e. Pandoc&#39;s --csl option). &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Defaults to Manubot&#39;s style.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Defaults to Manubot&#39;s style.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--bibliography&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--bibliography&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+<span class="w">        </span><span class="n">default</span><span class="o">=</span><span class="p">[],</span><span class="w"></span>
 
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;File to read manual reference metadata. &quot;</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;File to read manual reference metadata. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Specify multiple times to load multiple files. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;Specify multiple times to load multiple files. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Similar to pandoc --bibliography.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Similar to pandoc --bibliography.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--no-infer-prefix&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--no-infer-prefix&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;infer_prefix&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">dest</span><span class="o">=</span><span class="s2">&quot;infer_prefix&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_false&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_false&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not attempt to infer the prefix for citekeys without a known prefix.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not attempt to infer the prefix for citekeys without a known prefix.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--allow-invalid-csl-data&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--allow-invalid-csl-data&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;prune_csl&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">dest</span><span class="o">=</span><span class="s2">&quot;prune_csl&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_false&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_false&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Allow CSL Items that do not conform to the JSON Schema. Skips CSL pruning.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;Allow CSL Items that do not conform to the JSON Schema. Skips CSL pruning.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;citekeys&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;citekeys&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;One or more (space separated) citation keys to generate bibliographic metadata for.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;One or more (space separated) citation keys to generate bibliographic metadata for.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">function</span><span class="o">=</span><span class="s2">&quot;manubot.cite.cite_command.cli_cite&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">parser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">function</span><span class="o">=</span><span class="s2">&quot;manubot.cite.cite_command.cli_cite&quot;</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2271,113 +2275,115 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">add_subparser_process</span><span class="p">(</span><span class="n">subparsers</span><span class="p">):</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">add_subparser_process</span><span class="p">(</span><span class="n">subparsers</span><span class="p">):</span><span class="w"></span>
 
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+<span class="w">    </span><span class="n">parser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="w"></span>
 
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;process&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;process&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;process manuscript content&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;process manuscript content&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Process manuscript content to create outputs for Pandoc consumption. &quot;</span>
+<span class="w">        </span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Process manuscript content to create outputs for Pandoc consumption. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Performs bibliographic processing and templating.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Performs bibliographic processing and templating.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--content-directory&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--content-directory&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">type</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+<span class="w">        </span><span class="n">type</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">required</span><span class="o">=</span><span class="n">True</span><span class="p">,</span>
+<span class="w">        </span><span class="n">required</span><span class="o">=</span><span class="n">True</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Directory where manuscript content files are located.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;Directory where manuscript content files are located.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--output-directory&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--output-directory&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">type</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+<span class="w">        </span><span class="n">type</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">required</span><span class="o">=</span><span class="n">True</span><span class="p">,</span>
+<span class="w">        </span><span class="n">required</span><span class="o">=</span><span class="n">True</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Directory to output files generated by this script.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;Directory to output files generated by this script.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--template-variables-path&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--template-variables-path&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+<span class="w">        </span><span class="n">default</span><span class="o">=</span><span class="p">[],</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path or URL of a file containing template variables for jinja2. &quot;</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path or URL of a file containing template variables for jinja2. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Serialization format is inferred from the file extension, with support for JSON, YAML, and TOML. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;Serialization format is inferred from the file extension, with support for JSON, YAML, and TOML. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;If the format cannot be detected, the parser assumes JSON. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;If the format cannot be detected, the parser assumes JSON. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Specify this argument multiple times to read multiple files. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;Specify this argument multiple times to read multiple files. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Variables can be applied to a namespace (i.e. stored under a dictionary key) &quot;</span>
+<span class="w">        </span><span class="s2">&quot;Variables can be applied to a namespace (i.e. stored under a dictionary key) &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;like `--template-variables-path=namespace=path_or_url`. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;like `--template-variables-path=namespace=path_or_url`. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Namespaces must match the regex `[a-zA-Z_][a-zA-Z0-9_]*`.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Namespaces must match the regex `[a-zA-Z_][a-zA-Z0-9_]*`.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--skip-citations&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--skip-citations&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">required</span><span class="o">=</span><span class="n">True</span><span class="p">,</span>
+<span class="w">        </span><span class="n">required</span><span class="o">=</span><span class="n">True</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Skip citation and reference processing. &quot;</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;Skip citation and reference processing. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Support for citation and reference processing has been moved from `manubot process` to the pandoc-manubot-cite filter. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;Support for citation and reference processing has been moved from `manubot process` to the pandoc-manubot-cite filter. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Therefore this argument is now required. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;Therefore this argument is now required. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;If citation-tags.tsv is found in content, &quot;</span>
+<span class="w">        </span><span class="s2">&quot;If citation-tags.tsv is found in content, &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;these tags will be inserted in the markdown output using the reference-link syntax for citekey aliases. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;these tags will be inserted in the markdown output using the reference-link syntax for citekey aliases. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Appends content/manual-references*.* paths to Pandoc&#39;s metadata.bibliography field.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Appends content/manual-references*.* paths to Pandoc&#39;s metadata.bibliography field.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--cache-directory&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--cache-directory&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">type</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+<span class="w">        </span><span class="n">type</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Custom cache directory. If not specified, caches to output-directory.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;Custom cache directory. If not specified, caches to output-directory.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--clear-requests-cache&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--clear-requests-cache&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--skip-remote&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--skip-remote&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not add the rootstock repository to the local git repository remotes.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not add the rootstock repository to the local git repository remotes.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">function</span><span class="o">=</span><span class="s2">&quot;manubot.process.process_command.cli_process&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">parser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">function</span><span class="o">=</span><span class="s2">&quot;manubot.process.process_command.cli_process&quot;</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2387,87 +2393,89 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">add_subparser_webpage</span><span class="p">(</span><span class="n">subparsers</span><span class="p">)</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">add_subparser_webpage</span><span class="p">(</span><span class="n">subparsers</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-    <span class="k">parser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="p">.</span><span class="n">add_parser</span><span class="p">(</span>
+<span class="w">    </span><span class="k">parser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subparsers</span><span class="p">.</span><span class="n">add_parser</span><span class="p">(</span><span class="w"></span>
 
-        <span class="k">name</span><span class="o">=</span><span class="s2">&quot;webpage&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="k">name</span><span class="o">=</span><span class="s2">&quot;webpage&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="k">help</span><span class="o">=</span><span class="s2">&quot;deploy Manubot outputs to a webpage directory tree&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="k">help</span><span class="o">=</span><span class="s2">&quot;deploy Manubot outputs to a webpage directory tree&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="k">description</span><span class="o">=</span><span class="s2">&quot;Update the webpage directory tree with Manubot output files. &quot;</span>
+<span class="w">        </span><span class="k">description</span><span class="o">=</span><span class="s2">&quot;Update the webpage directory tree with Manubot output files. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;This command should be run from the root directory of a Manubot manuscript that follows the Rootstock layout, containing `output` and `webpage` directories. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;This command should be run from the root directory of a Manubot manuscript that follows the Rootstock layout, containing `output` and `webpage` directories. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;HTML and PDF outputs are copied to the webpage directory, which is structured as static source files for website hosting.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;HTML and PDF outputs are copied to the webpage directory, which is structured as static source files for website hosting.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="k">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--checkout&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--checkout&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">const</span><span class="o">=</span><span class="s2">&quot;gh-pages&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">const</span><span class="o">=</span><span class="s2">&quot;gh-pages&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="k">default</span><span class="o">=</span><span class="k">None</span><span class="p">,</span>
+<span class="w">        </span><span class="k">default</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"></span>
 
-        <span class="k">help</span><span class="o">=</span><span class="s2">&quot;branch to checkout /v directory contents from. &quot;</span>
+<span class="w">        </span><span class="k">help</span><span class="o">=</span><span class="s2">&quot;branch to checkout /v directory contents from. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;For example, --checkout=upstream/gh-pages. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;For example, --checkout=upstream/gh-pages. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;--checkout is equivalent to --checkout=gh-pages. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;--checkout is equivalent to --checkout=gh-pages. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;If --checkout is ommitted, no checkout is performed.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;If --checkout is ommitted, no checkout is performed.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="k">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--version&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--version&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="k">help</span><span class="o">=</span><span class="s2">&quot;Used to create webpage/v/{version} directory. &quot;</span>
+<span class="w">        </span><span class="k">help</span><span class="o">=</span><span class="s2">&quot;Used to create webpage/v/{version} directory. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Generally a commit hash, tag, or &#39;local&#39;. &quot;</span>
+<span class="w">        </span><span class="s2">&quot;Generally a commit hash, tag, or &#39;local&#39;. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;When omitted, version defaults to the commit hash on CI builds and &#39;local&#39; elsewhere.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;When omitted, version defaults to the commit hash on CI builds and &#39;local&#39; elsewhere.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="k">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--timestamp&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--timestamp&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="k">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="k">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="k">help</span><span class="o">=</span><span class="s2">&quot;timestamp versioned manuscripts in webpage/v using OpenTimestamps. &quot;</span>
+<span class="w">        </span><span class="k">help</span><span class="o">=</span><span class="s2">&quot;timestamp versioned manuscripts in webpage/v using OpenTimestamps. &quot;</span><span class="w"></span>
 
-        <span class="s2">&quot;Specify this flag to create timestamps for the current HTML and PDF outputs and upgrade any timestamps from past manuscript versions.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Specify this flag to create timestamps for the current HTML and PDF outputs and upgrade any timestamps from past manuscript versions.&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">cache_group</span> <span class="o">=</span> <span class="k">parser</span><span class="p">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
+<span class="w">    </span><span class="n">cache_group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">parser</span><span class="p">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span><span class="w"></span>
 
-    <span class="n">cache_group</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">cache_group</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--no-ots-cache&quot;</span><span class="p">,</span> <span class="k">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="k">help</span><span class="o">=</span><span class="s2">&quot;disable the timestamp cache.&quot;</span>
+<span class="w">        </span><span class="s2">&quot;--no-ots-cache&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">help</span><span class="o">=</span><span class="s2">&quot;disable the timestamp cache.&quot;</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">cache_group</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="n">cache_group</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="w"></span>
 
-        <span class="s2">&quot;--ots-cache&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--ots-cache&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="k">default</span><span class="o">=</span><span class="n">pathlib</span><span class="p">.</span><span class="k">Path</span><span class="p">(</span><span class="s2">&quot;ci/cache/ots&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="k">default</span><span class="o">=</span><span class="n">pathlib</span><span class="p">.</span><span class="k">Path</span><span class="p">(</span><span class="s2">&quot;ci/cache/ots&quot;</span><span class="p">),</span><span class="w"></span>
 
-        <span class="k">type</span><span class="o">=</span><span class="n">pathlib</span><span class="p">.</span><span class="k">Path</span><span class="p">,</span>
+<span class="w">        </span><span class="k">type</span><span class="o">=</span><span class="n">pathlib</span><span class="p">.</span><span class="k">Path</span><span class="p">,</span><span class="w"></span>
 
-        <span class="k">help</span><span class="o">=</span><span class="s2">&quot;location for the timestamp cache (default: ci/cache/ots).&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="k">help</span><span class="o">=</span><span class="s2">&quot;location for the timestamp cache (default: ci/cache/ots).&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">parser</span><span class="p">.</span><span class="k">set</span><span class="n">_defaults</span><span class="p">(</span><span class="k">function</span><span class="o">=</span><span class="s2">&quot;manubot.webpage.webpage_command.cli_webpage&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">parser</span><span class="p">.</span><span class="k">set</span><span class="n">_defaults</span><span class="p">(</span><span class="k">function</span><span class="o">=</span><span class="s2">&quot;manubot.webpage.webpage_command.cli_webpage&quot;</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2479,7 +2487,9 @@
 
 <p>If a message has been logged with severity of ERROR or greater,</p>
 <p>exit Python with a nonzero code.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">exit_if_error_handler_fired</span><span class="ss">(</span><span class="nv">error_handler</span><span class="ss">)</span>:
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">exit_if_error_handler_fired</span><span class="ss">(</span><span class="nv">error_handler</span><span class="ss">)</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -2505,7 +2515,9 @@
 
 <p>Called as a console_scripts entry point in setup.cfg. This function defines</p>
 <p>the manubot command line script.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def main():
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>def main():
 
     &quot;&quot;&quot;
 
@@ -2536,7 +2548,9 @@
 </code></pre></div>
 
 <p>Read and process command line arguments.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">parse_arguments</span><span class="ss">()</span>:
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">parse_arguments</span><span class="ss">()</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -2603,7 +2617,9 @@
 <p>Configure warnings and logging.</p>
 <p>Set up an ErrorHandler to detect whether messages have been logged
 at or above the ERROR level.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">setup_logging_and_errors</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">setup_logging_and_errors</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 

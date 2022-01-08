@@ -1524,7 +1524,9 @@
                 <h1 id="module-manubotciteteststest_wikidata">Module manubot.cite.tests.test_wikidata</h1>
 <p>None</p>
 <p>None</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">manubot.cite.wikidata</span> <span class="kn">import</span> <span class="n">get_wikidata_csl_item</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">manubot.cite.wikidata</span> <span class="kn">import</span> <span class="n">get_wikidata_csl_item</span>
 
 <span class="k">def</span> <span class="nf">test_get_wikidata_csl_item</span><span class="p">():</span>
 
@@ -1602,7 +1604,9 @@
 </code></pre></div>
 
 <p>Test metadata extraction from https://www.wikidata.org/wiki/Q50051684</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_get_wikidata_csl_item():
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>def test_get_wikidata_csl_item():
 
     &quot;&quot;&quot;
 
@@ -1639,9 +1643,11 @@
 ordering may be wrong.</p>
 <p>Author ordering was previously not properly set by the Wikidata translator
 https://github.com/zotero/translators/issues/1790</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_get_wikidata_csl_item_author_ordering</span><span class="p">():</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">test_get_wikidata_csl_item_author_ordering</span><span class="p">():</span><span class="w"></span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Test extraction of author ordering from https://www.wikidata.org/wiki/Q50051684.</span>
 
@@ -1653,33 +1659,33 @@ https://github.com/zotero/translators/issues/1790</p>
 
 <span class="sd">    https://github.com/zotero/translators/issues/1790</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="n">wikidata_id</span> <span class="o">=</span> <span class="s2">&quot;Q50051684&quot;</span>
+<span class="w">    </span><span class="n">wikidata_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Q50051684&quot;</span><span class="w"></span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_wikidata_csl_item</span><span class="p">(</span><span class="n">wikidata_id</span><span class="p">)</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_wikidata_csl_item</span><span class="p">(</span><span class="n">wikidata_id</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">family_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">author</span><span class="p">[</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]]</span>
+<span class="w">    </span><span class="n">family_names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">author</span><span class="p">[</span><span class="s2">&quot;family&quot;</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">author</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]]</span><span class="w"></span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">family_names</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="n">family_names</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nb">assert</span> <span class="n">family_names</span> <span class="o">==</span> <span class="p">[</span>
+<span class="w">    </span><span class="nb">assert</span><span class="w"> </span><span class="n">family_names</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
 
-        <span class="s2">&quot;Himmelstein&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Himmelstein&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="s2">&quot;Romero&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Romero&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="s2">&quot;Levernier&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Levernier&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="s2">&quot;Munro&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Munro&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="s2">&quot;McLaughlin&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;McLaughlin&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="s2">&quot;Greshake&quot;</span><span class="p">,</span>  <span class="c1"># actually should be Greshake Tzovaras</span>
+<span class="w">        </span><span class="s2">&quot;Greshake&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># actually should be Greshake Tzovaras</span><span class="w"></span>
 
-        <span class="s2">&quot;Greene&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Greene&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">]</span>
+<span class="w">    </span><span class="p">]</span><span class="w"></span>
 </code></pre></div>
 
 </details>

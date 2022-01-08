@@ -1594,7 +1594,9 @@
                 <h1 id="module-manubotciteteststest_zotero">Module manubot.cite.tests.test_zotero</h1>
 <p>None</p>
 <p>None</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pytest</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pytest</span>
 
 <span class="kn">from</span> <span class="nn">manubot.cite.zotero</span> <span class="kn">import</span> <span class="n">export_as_csl</span><span class="p">,</span> <span class="n">search_query</span><span class="p">,</span> <span class="n">web_query</span>
 
@@ -1890,12 +1892,14 @@
 </code></pre></div>
 
 <p>CSL export can be tested via curl:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">curl</span>       <span class="o">--</span><span class="n">header</span> <span class="s2">&quot;Content-Type: application/json&quot;</span>       <span class="o">--</span><span class="n">data</span> <span class="s1">&#39;[{&quot;key&quot;: &quot;IN22XN53&quot;, &quot;itemType&quot;: &quot;webpage&quot;, &quot;date&quot;: &quot;2016-02-09T20:12:00&quot;}]&#39;</span>       <span class="s1">&#39;https://translate.manubot.org/export?format=csljson&#39;</span>
+<div class="codehilite"><pre><span></span><code><span class="n">curl</span><span class="w">       </span><span class="o">--</span><span class="n">header</span><span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w">       </span><span class="o">--</span><span class="n">data</span><span class="w"> </span><span class="s1">&#39;[{&quot;key&quot;: &quot;IN22XN53&quot;, &quot;itemType&quot;: &quot;webpage&quot;, &quot;date&quot;: &quot;2016-02-09T20:12:00&quot;}]&#39;</span><span class="w">       </span><span class="s1">&#39;https://translate.manubot.org/export?format=csljson&#39;</span><span class="w"></span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_export_as_csl</span><span class="p">():</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">test_export_as_csl</span><span class="p">():</span><span class="w"></span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    CSL export can be tested via curl:</span>
 
@@ -1911,45 +1915,45 @@
 
 <span class="sd">    ```</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="n">zotero_data</span> <span class="o">=</span> <span class="p">[</span>
+<span class="w">    </span><span class="n">zotero_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
 
-        <span class="p">{</span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
 
-            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;IN22XN53&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IN22XN53&quot;</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;itemType&quot;</span><span class="p">:</span> <span class="s2">&quot;webpage&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;itemType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;webpage&quot;</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;creators&quot;</span><span class="p">:</span> <span class="p">[],</span>
+<span class="w">            </span><span class="s2">&quot;creators&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w"></span>
 
-            <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[],</span>
+<span class="w">            </span><span class="s2">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w"></span>
 
-            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Meet the Robin Hood of Science&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Meet the Robin Hood of Science&quot;</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;websiteTitle&quot;</span><span class="p">:</span> <span class="s2">&quot;Big Think&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;websiteTitle&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Big Think&quot;</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-02-09T20:12:00&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2016-02-09T20:12:00&quot;</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://bigthink.com/neurobonkers/a-pirate-bay-for-science&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://bigthink.com/neurobonkers/a-pirate-bay-for-science&quot;</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;abstractNote&quot;</span><span class="p">:</span> <span class="s2">&quot;How one researcher created a pirate bay for science more powerful than even libraries at top universities.&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;abstractNote&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;How one researcher created a pirate bay for science more powerful than even libraries at top universities.&quot;</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;language&quot;</span><span class="p">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;language&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;en&quot;</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;accessDate&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-12-06T20:10:14Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;accessDate&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2018-12-06T20:10:14Z&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
 
-    <span class="p">]</span>
+<span class="w">    </span><span class="p">]</span><span class="w"></span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="w"></span>
 
-    <span class="nb">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Meet the Robin Hood of Science&quot;</span>
+<span class="w">    </span><span class="nb">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Meet the Robin Hood of Science&quot;</span><span class="w"></span>
 
-    <span class="nb">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;container-title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Big Think&quot;</span>
+<span class="w">    </span><span class="nb">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;container-title&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Big Think&quot;</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -1965,7 +1969,9 @@
 
 <p>translation-server does not support PMIDs with a <code>pmid:</code> prefix.
 https://github.com/zotero/translation-server/issues/71</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
 
 <span class="w">    </span><span class="ss">&quot;identifier&quot;</span><span class="p">,</span><span class="w"></span>
 
@@ -2026,7 +2032,9 @@ https://github.com/zotero/translation-server/issues/71</p>
 <div class="codehilite"><pre><span></span><code>curl --verbose       --header &quot;Content-Type: text/plain&quot;       --data &#39;arxiv:1604.05363v1&#39;       &#39;https://translate.manubot.org/search&#39;
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_search_query_arxiv():
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>def test_search_query_arxiv():
 
     &quot;&quot;&quot;
 
@@ -2076,7 +2084,9 @@ https://github.com/zotero/translation-server/issues/71</p>
 <div class="codehilite"><pre><span></span><code>curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;isbn:9781339919881&#39;       &#39;https://translate.manubot.org/search&#39;
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_search_query_isbn():
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>def test_search_query_isbn():
 
     &quot;&quot;&quot;
 
@@ -2117,7 +2127,9 @@ https://github.com/zotero/translation-server/issues/71</p>
 <p>An outdated installation of translation-server caused the web query for this
 URL to be extraordinarily slow but has now been fixed. See
 https://github.com/zotero/translation-server/issues/63</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">test_web_query</span><span class="ss">()</span>:
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">test_web_query</span><span class="ss">()</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -2168,49 +2180,51 @@ https://github.com/zotero/translation-server/issues/65</p>
 <div class="codehilite"><pre><span></span><code>curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;https://greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/&#39;       &#39;https://translate.manubot.org/web?single=1&#39;
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">test_web_query_returns_single_result_legacy_manubot_url</span><span class="p">()</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">test_web_query_returns_single_result_legacy_manubot_url</span><span class="p">()</span><span class="o">:</span><span class="w"></span>
 
-    <span class="s">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s">&quot;&quot;&quot;</span>
 
-    <span class="n">Check</span> <span class="n">that</span> <span class="n">single</span><span class="o">=</span><span class="mh">1</span> <span class="n">is</span> <span class="n">specified</span> <span class="k">for</span> <span class="n">web</span> <span class="n">queries</span><span class="p">.</span> <span class="n">Without</span> <span class="n">this</span><span class="p">,</span> <span class="n">Zotero</span>
+<span class="w">    </span><span class="n">Check</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">single</span><span class="o">=</span><span class="mh">1</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">web</span><span class="w"> </span><span class="n">queries</span><span class="p">.</span><span class="w"> </span><span class="n">Without</span><span class="w"> </span><span class="n">this</span><span class="p">,</span><span class="w"> </span><span class="n">Zotero</span><span class="w"></span>
 
-    <span class="n">can</span> <span class="n">prefer</span> <span class="n">translators</span> <span class="n">that</span> <span class="k">return</span> <span class="n">multiple</span> <span class="n">choices</span><span class="p">.</span> <span class="n">This</span> <span class="n">occurs</span> <span class="n">with</span> <span class="n">legacy</span>
+<span class="w">    </span><span class="n">can</span><span class="w"> </span><span class="n">prefer</span><span class="w"> </span><span class="n">translators</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">multiple</span><span class="w"> </span><span class="n">choices</span><span class="p">.</span><span class="w"> </span><span class="n">This</span><span class="w"> </span><span class="n">occurs</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">legacy</span><span class="w"></span>
 
-    <span class="n">Manubot</span> <span class="n">mansucripts</span><span class="p">,</span> <span class="n">which</span> <span class="n">get</span> <span class="n">assigned</span> <span class="n">the</span> <span class="n">DOI</span> <span class="n">translator</span> <span class="n">as</span> <span class="n">top</span> <span class="n">priority</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Manubot</span><span class="w"> </span><span class="n">mansucripts</span><span class="p">,</span><span class="w"> </span><span class="n">which</span><span class="w"> </span><span class="n">get</span><span class="w"> </span><span class="n">assigned</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">DOI</span><span class="w"> </span><span class="n">translator</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">top</span><span class="w"> </span><span class="n">priority</span><span class="p">.</span><span class="w"></span>
 
-    <span class="nl">https:</span><span class="c1">//github.com/zotero/translation-server/issues/65</span>
+<span class="w">    </span><span class="nl">https:</span><span class="c1">//github.com/zotero/translation-server/issues/65</span>
 
-    <span class="err">```</span>
+<span class="w">    </span><span class="err">```</span><span class="w"></span>
 
-    <span class="n">curl</span> \
+<span class="w">    </span><span class="n">curl</span><span class="w"> </span><span class="se">\</span><span class="w"></span>
 
-      <span class="o">--</span><span class="n">header</span> <span class="s">&quot;Content-Type: text/plain&quot;</span> \
+<span class="w">      </span><span class="o">--</span><span class="n">header</span><span class="w"> </span><span class="s">&quot;Content-Type: text/plain&quot;</span><span class="w"> </span><span class="se">\</span><span class="w"></span>
 
-      <span class="o">--</span><span class="n">data</span> <span class="p">&#39;</span><span class="nl">https:</span><span class="c1">//greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/&#39; \</span>
+<span class="w">      </span><span class="o">--</span><span class="n">data</span><span class="w"> </span><span class="p">&#39;</span><span class="nl">https:</span><span class="c1">//greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/&#39; \</span>
 
-      <span class="p">&#39;</span><span class="nl">https:</span><span class="c1">//translate.manubot.org/web?single=1&#39;</span>
+<span class="w">      </span><span class="p">&#39;</span><span class="nl">https:</span><span class="c1">//translate.manubot.org/web?single=1&#39;</span>
 
-    <span class="err">```</span>
+<span class="w">    </span><span class="err">```</span><span class="w"></span>
 
-    <span class="s">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s">&quot;&quot;&quot;</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="s">&quot;https://greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/&quot;</span>
+<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;https://greenelab.github.io/scihub-manuscript/v/cfe599e25405d38092bf972b6ea1c9e0dcf3deb9/&quot;</span><span class="w"></span>
 
-    <span class="n">zotero_metadata</span> <span class="o">=</span> <span class="n">web_query</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="w">    </span><span class="n">zotero_metadata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">web_query</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">assert</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">zotero_metadata</span><span class="p">,</span> <span class="n">list</span><span class="p">)</span>
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">zotero_metadata</span><span class="p">,</span><span class="w"> </span><span class="n">list</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">assert</span> <span class="n">len</span><span class="p">(</span><span class="n">zotero_metadata</span><span class="p">)</span> <span class="o">==</span> <span class="mh">1</span>
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">len</span><span class="p">(</span><span class="n">zotero_metadata</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">1</span><span class="w"></span>
 
-    <span class="p">(</span><span class="n">zotero_metadata</span><span class="p">,)</span> <span class="o">=</span> <span class="n">zotero_metadata</span>
+<span class="w">    </span><span class="p">(</span><span class="n">zotero_metadata</span><span class="p">,)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zotero_metadata</span><span class="w"></span>
 
-    <span class="n">assert</span> <span class="p">(</span>
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 
-        <span class="n">zotero_metadata</span><span class="p">[</span><span class="s">&quot;title&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">zotero_metadata</span><span class="p">[</span><span class="s">&quot;title&quot;</span><span class="p">]</span><span class="w"></span>
 
-        <span class="o">==</span> <span class="s">&quot;Sci-Hub provides access to nearly all scholarly literature&quot;</span>
+<span class="w">        </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;Sci-Hub provides access to nearly all scholarly literature&quot;</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2224,7 +2238,9 @@ https://github.com/zotero/translation-server/issues/65</p>
 <div class="codehilite"><pre><span></span><code>curl       --header &quot;Content-Type: text/plain&quot;       --data &#39;https://www.ncbi.nlm.nih.gov/pubmed/?term=sci-hub%5Btitle%5D&#39;       &#39;https://translate.manubot.org/web?single=1&#39;
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">test_web_query_returns_single_result_pubmed_url</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">test_web_query_returns_single_result_pubmed_url</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 

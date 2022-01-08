@@ -1672,7 +1672,9 @@
                 <h1 id="module-manubotcitehandlers">Module manubot.cite.handlers</h1>
 <p>None</p>
 <p>None</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">abc</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">abc</span>
 
 <span class="kn">import</span> <span class="nn">dataclasses</span>
 
@@ -4609,7 +4611,9 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Handler&#39;</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@functools</span><span class="p">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">10</span><span class="n">_000</span><span class="p">)</span><span class="w"></span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">@functools</span><span class="p">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">10</span><span class="n">_000</span><span class="p">)</span><span class="w"></span>
 
 <span class="n">def</span><span class="w"> </span><span class="n">get_handler</span><span class="p">(</span><span class="nl">prefix_lower</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="ss">&quot;Handler&quot;</span><span class="err">:</span><span class="w"></span>
 
@@ -4640,7 +4644,9 @@
 <p>Infer the prefix for citekey by matching it against a sequence of regexes.</p>
 <p>If a match is found, return the coressponding standard prefix.
 Otherwise, return None.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">infer_prefix</span><span class="p">(</span><span class="nl">dealiased_id</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">infer_prefix</span><span class="p">(</span><span class="nl">dealiased_id</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -4673,7 +4679,9 @@ Otherwise, return None.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@dataclasses</span><span class="p">.</span><span class="n">dataclass</span><span class="w"></span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">@dataclasses</span><span class="p">.</span><span class="n">dataclass</span><span class="w"></span>
 
 <span class="k">class</span><span class="w"> </span><span class="nl">Handler</span><span class="p">:</span><span class="w"></span>
 
@@ -4802,7 +4810,9 @@ Otherwise, return None.</p>
 </code></pre></div>
 
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">@abc</span><span class="p">.</span><span class="n">abstractmethod</span><span class="w"></span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">@abc</span><span class="p">.</span><span class="n">abstractmethod</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Dict</span><span class="o">[</span><span class="n">str, Any</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
@@ -4829,7 +4839,9 @@ Otherwise, return None.</p>
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a</p>
 <p>string describing the issue is returned. Otherwise returns None.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -4862,9 +4874,11 @@ Otherwise, return None.</p>
 <p>This method defaults to returning <code>self.standard_prefix</code>
 (or <code>self.prefix_lower</code> if standard_prefix is not defined).
 Subclasses can override this method with more specific standardization logic.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="kr">self</span><span class="p">,</span> <span class="n">accession</span><span class="o">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">str</span><span class="p">,</span> <span class="n">str</span><span class="p">]</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="kr">self</span><span class="p">,</span><span class="w"> </span><span class="n">accession</span><span class="o">:</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Tuple</span><span class="p">[</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">]</span><span class="o">:</span><span class="w"></span>
 
-        <span class="s">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s">&quot;&quot;&quot;</span>
 
 <span class="s">        Return (prefix, accession) in standardized form.</span>
 
@@ -4874,13 +4888,13 @@ Subclasses can override this method with more specific standardization logic.</p
 
 <span class="s">        Subclasses can override this method with more specific standardization logic.</span>
 
-<span class="s">        &quot;&quot;&quot;</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="w"></span>
 
-        <span class="n">standard_prefix</span> <span class="o">=</span> <span class="n">getattr</span><span class="p">(</span><span class="kr">self</span><span class="p">,</span> <span class="s">&quot;standard_prefix&quot;</span><span class="p">,</span> <span class="kr">self</span><span class="p">.</span><span class="n">prefix_lower</span><span class="p">)</span>
+<span class="w">        </span><span class="n">standard_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getattr</span><span class="p">(</span><span class="kr">self</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;standard_prefix&quot;</span><span class="p">,</span><span class="w"> </span><span class="kr">self</span><span class="p">.</span><span class="n">prefix_lower</span><span class="p">)</span><span class="w"></span>
 
-        <span class="n">standard_accession</span> <span class="o">=</span> <span class="n">accession</span>
+<span class="w">        </span><span class="n">standard_accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accession</span><span class="w"></span>
 
-        <span class="kr">return</span> <span class="n">standard_prefix</span><span class="p">,</span> <span class="n">standard_accession</span>
+<span class="w">        </span><span class="kr">return</span><span class="w"> </span><span class="n">standard_prefix</span><span class="p">,</span><span class="w"> </span><span class="n">standard_accession</span><span class="w"></span>
 </code></pre></div>
 
 </details>

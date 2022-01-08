@@ -1999,7 +1999,9 @@
 <p>-- https://github.com/citation-style-language/documentation/blob/master/primer.txt</p>
 <p>The terminology we've adopted is csl_data for a list of csl_item dicts, and csl_json
 for csl_data that is JSON-serialized.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="ss">&quot;&quot;&quot;Represent bibliographic information for a single publication.</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="ss">&quot;&quot;&quot;Represent bibliographic information for a single publication.</span>
 
 <span class="ss">From the CSL docs:</span>
 
@@ -2680,11 +2682,13 @@ for csl_data that is JSON-serialized.</p>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">assert_csl_item_type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">None</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">assert_csl_item_type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">None</span><span class="o">:</span><span class="w"></span>
 
-    <span class="nf">if</span> <span class="kr">not</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">CSL_Item</span><span class="p">)</span><span class="o">:</span>
+<span class="w">    </span><span class="nf">if</span><span class="w"> </span><span class="kr">not</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-        <span class="n">raise</span> <span class="n">TypeError</span><span class="p">(</span><span class="n">f</span><span class="s">&quot;Expected CSL_Item object, got {type(x)}&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">TypeError</span><span class="p">(</span><span class="n">f</span><span class="s">&quot;Expected CSL_Item object, got {type(x)}&quot;</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2701,7 +2705,9 @@ for csl_data that is JSON-serialized.</p>
     Also supports [year, month] and [year] for situations where the day or month-and-day are missing.
 fill: if True, set missing months to January
     and missing days to the first day of the month.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">date_parts_to_string</span><span class="p">(</span><span class="n">date_parts</span><span class="p">,</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="w"> </span><span class="n">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">False</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">date_parts_to_string</span><span class="p">(</span><span class="n">date_parts</span><span class="p">,</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="w"> </span><span class="n">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">False</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -2774,7 +2780,9 @@ fill: if True, set missing months to January
 <p>Convert a date string or object to a date parts list.</p>
 <p>date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)
     or as a Python date object (datetime.date or datetime.datetime).</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">date_to_date_parts</span><span class="p">(</span><span class="w"></span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">date_to_date_parts</span><span class="p">(</span><span class="w"></span>
 
 <span class="w">    </span><span class="nc">date</span><span class="err">:</span><span class="w"> </span><span class="ow">Union</span><span class="o">[</span><span class="n">None, str, datetime.date, datetime.datetime</span><span class="o">]</span><span class="w"></span>
 
@@ -2864,7 +2872,9 @@ fill: if True, set missing months to January
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">dict</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">dict</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -3383,9 +3393,11 @@ https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e
 - set default value for "type" if missing, since CSL JSON requires type
 - validate against the CSL JSON schema (if prune=True) to ensure output
   CSL_Item is clean</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prune</span><span class="p">:</span> <span class="nb nb-Type">bool</span> <span class="o">=</span> <span class="n">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CSL_Item&quot;</span><span class="p">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">prune</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">True</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s2">&quot;CSL_Item&quot;</span><span class="p">:</span><span class="w"></span>
 
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        Sanitize and touch-up a potentially dirty CSL_Item.</span>
 
@@ -3401,29 +3413,29 @@ https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e
 
 <span class="sd">          CSL_Item is clean</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span><span class="w"></span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="w"></span>
 
-            <span class="n">f</span><span class="s2">&quot;Starting CSL_Item.clean with{&#39;&#39; if prune else &#39;out&#39;}&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="s2">&quot;Starting CSL_Item.clean with{&#39;&#39; if prune else &#39;out&#39;}&quot;</span><span class="w"></span>
 
-            <span class="n">f</span><span class="s2">&quot;CSL pruning for id: {self.get(&#39;id&#39;, &#39;id not specified&#39;)}&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="s2">&quot;CSL pruning for id: {self.get(&#39;id&#39;, &#39;id not specified&#39;)}&quot;</span><span class="w"></span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">correct_invalid_type</span><span class="p">()</span>
+<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">correct_invalid_type</span><span class="p">()</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="n">prune</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">prune</span><span class="p">:</span><span class="w"></span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">prune_against_schema</span><span class="p">()</span>
+<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">prune_against_schema</span><span class="p">()</span><span class="w"></span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_default_type</span><span class="p">()</span>
+<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">set_default_type</span><span class="p">()</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="n">prune</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">prune</span><span class="p">:</span><span class="w"></span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">validate_against_schema</span><span class="p">()</span>
+<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">validate_against_schema</span><span class="p">()</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="bp">self</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -3450,9 +3462,11 @@ https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e
 <p>Correct invalid CSL item type.</p>
 <p>Does nothing if <code>type</code> not present.</p>
 <p>For detail see https://github.com/CrossRef/rest-api-doc/issues/187</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">correct_invalid_type</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CSL_Item&quot;</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">correct_invalid_type</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s2">&quot;CSL_Item&quot;</span><span class="o">:</span><span class="w"></span>
 
-        <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
+<span class="w">        </span><span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
 
 <span class="s2">        Correct invalid CSL item type.</span>
 
@@ -3460,19 +3474,19 @@ https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e
 
 <span class="s2">        For detail see https://github.com/CrossRef/rest-api-doc/issues/187</span>
 
-<span class="s2">        </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span>
+<span class="s2">        </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="k">in</span> <span class="n">self</span><span class="o">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">self</span><span class="o">:</span><span class="w"></span>
 
-            <span class="c1"># Replace a type from in CSL_Item.type_mapping.keys(),</span>
+<span class="w">            </span><span class="c1"># Replace a type from in CSL_Item.type_mapping.keys(),</span><span class="w"></span>
 
-            <span class="c1"># leave type intact in other cases.</span>
+<span class="w">            </span><span class="c1"># leave type intact in other cases.</span><span class="w"></span>
 
-            <span class="n">t</span> <span class="o">=</span> <span class="n">self</span><span class="err">[</span><span class="s2">&quot;type&quot;</span><span class="err">]</span>
+<span class="w">            </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="err">[</span><span class="s2">&quot;type&quot;</span><span class="err">]</span><span class="w"></span>
 
-            <span class="n">self</span><span class="err">[</span><span class="s2">&quot;type&quot;</span><span class="err">]</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">type_mapping</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="w">            </span><span class="n">self</span><span class="err">[</span><span class="s2">&quot;type&quot;</span><span class="err">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">type_mapping</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="n">self</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -3508,7 +3522,9 @@ https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e
 <p>variable: which CSL JSON date variable to retrieve
 fill: if True, set missing months to January
     and missing days to the first day of the month.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_date</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="k">variable</span><span class="err">:</span><span class="w"> </span><span class="nf">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;issued&quot;</span><span class="p">,</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="w"> </span><span class="n">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">False</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_date</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="k">variable</span><span class="err">:</span><span class="w"> </span><span class="nf">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;issued&quot;</span><span class="p">,</span><span class="w"> </span><span class="nl">fill</span><span class="p">:</span><span class="w"> </span><span class="n">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">False</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -3543,39 +3559,41 @@ fill: if True, set missing months to January
 </code></pre></div>
 
 <p>Detect and set a non-null/empty value for "id" or else raise a ValueError.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">infer_id</span><span class="p">(</span><span class="kr">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s">&quot;CSL_Item&quot;</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">infer_id</span><span class="p">(</span><span class="kr">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;CSL_Item&quot;</span><span class="o">:</span><span class="w"></span>
 
-        <span class="s">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s">&quot;&quot;&quot;</span>
 
 <span class="s">        Detect and set a non-null/empty value for &quot;</span><span class="n">id</span><span class="s">&quot; or else raise a ValueError.</span>
 
-<span class="s">        &quot;&quot;&quot;</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="w"></span>
 
-        <span class="nf">if</span> <span class="kr">self</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;standard_citation&quot;</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="nf">if</span><span class="w"> </span><span class="kr">self</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;standard_citation&quot;</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-            <span class="err">#</span> <span class="s">&quot;standard_citation&quot;</span> <span class="n">field</span> <span class="n">is</span> <span class="nf">set</span> <span class="n">with</span> <span class="n">a</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span><span class="o">/</span><span class="n">empty</span> <span class="n">value</span>
+<span class="w">            </span><span class="err">#</span><span class="w"> </span><span class="s">&quot;standard_citation&quot;</span><span class="w"> </span><span class="n">field</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="nf">set</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">non</span><span class="o">-</span><span class="n">null</span><span class="o">/</span><span class="n">empty</span><span class="w"> </span><span class="n">value</span><span class="w"></span>
 
-            <span class="kr">return</span> <span class="kr">self</span><span class="p">.</span><span class="n">set_id</span><span class="p">(</span><span class="kr">self</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&quot;standard_citation&quot;</span><span class="p">))</span>
+<span class="w">            </span><span class="kr">return</span><span class="w"> </span><span class="kr">self</span><span class="p">.</span><span class="n">set_id</span><span class="p">(</span><span class="kr">self</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&quot;standard_citation&quot;</span><span class="p">))</span><span class="w"></span>
 
-        <span class="nf">if</span> <span class="kr">self</span><span class="p">.</span><span class="n">note_dict</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;standard_id&quot;</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="nf">if</span><span class="w"> </span><span class="kr">self</span><span class="p">.</span><span class="n">note_dict</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;standard_id&quot;</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-            <span class="err">#</span> <span class="s">&quot;standard_id&quot;</span> <span class="n">note</span> <span class="n">field</span> <span class="n">is</span> <span class="nf">set</span> <span class="n">with</span> <span class="n">a</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span><span class="o">/</span><span class="n">empty</span> <span class="n">value</span>
+<span class="w">            </span><span class="err">#</span><span class="w"> </span><span class="s">&quot;standard_id&quot;</span><span class="w"> </span><span class="n">note</span><span class="w"> </span><span class="n">field</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="nf">set</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">non</span><span class="o">-</span><span class="n">null</span><span class="o">/</span><span class="n">empty</span><span class="w"> </span><span class="n">value</span><span class="w"></span>
 
-            <span class="kr">return</span> <span class="kr">self</span><span class="p">.</span><span class="n">set_id</span><span class="p">(</span><span class="kr">self</span><span class="p">.</span><span class="n">note_dict</span><span class="p">[</span><span class="s">&quot;standard_id&quot;</span><span class="p">])</span>
+<span class="w">            </span><span class="kr">return</span><span class="w"> </span><span class="kr">self</span><span class="p">.</span><span class="n">set_id</span><span class="p">(</span><span class="kr">self</span><span class="p">.</span><span class="n">note_dict</span><span class="p">[</span><span class="s">&quot;standard_id&quot;</span><span class="p">])</span><span class="w"></span>
 
-        <span class="nf">if</span> <span class="kr">self</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="nf">if</span><span class="w"> </span><span class="kr">self</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-            <span class="err">#</span> <span class="s">&quot;id&quot;</span> <span class="n">field</span> <span class="nf">exists</span> <span class="kr">and</span> <span class="n">is</span> <span class="nf">set</span> <span class="n">with</span> <span class="n">a</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span><span class="o">/</span><span class="n">empty</span> <span class="n">value</span>
+<span class="w">            </span><span class="err">#</span><span class="w"> </span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="n">field</span><span class="w"> </span><span class="nf">exists</span><span class="w"> </span><span class="kr">and</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="nf">set</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">non</span><span class="o">-</span><span class="n">null</span><span class="o">/</span><span class="n">empty</span><span class="w"> </span><span class="n">value</span><span class="w"></span>
 
-            <span class="kr">return</span> <span class="kr">self</span><span class="p">.</span><span class="n">set_id</span><span class="p">(</span><span class="kr">self</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">])</span>
+<span class="w">            </span><span class="kr">return</span><span class="w"> </span><span class="kr">self</span><span class="p">.</span><span class="n">set_id</span><span class="p">(</span><span class="kr">self</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">])</span><span class="w"></span>
 
-        <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span>
+<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="w"></span>
 
-            <span class="s">&quot;infer_id could not detect a field with a citation / standard_citation. &quot;</span>
+<span class="w">            </span><span class="s">&quot;infer_id could not detect a field with a citation / standard_citation. &quot;</span><span class="w"></span>
 
-            <span class="s">&#39;Consider setting the CSL Item &quot;</span><span class="n">id</span><span class="s">&quot; field.&#39;</span>
+<span class="w">            </span><span class="s">&#39;Consider setting the CSL Item &quot;</span><span class="n">id</span><span class="s">&quot; field.&#39;</span><span class="w"></span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -3603,45 +3621,47 @@ fill: if True, set missing months to January
 <p>Append key-value pairs specified by <code>dictionary</code> to the note field of a CSL Item.</p>
 <p>Uses the the <a href="https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields">CSL JSON "cheater syntax"</a>
 to encode additional values not defined by the CSL JSON schema.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">note_append_dict</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">dictionary</span><span class="o">:</span> <span class="n">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">None</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">note_append_dict</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">dictionary</span><span class="o">:</span><span class="w"> </span><span class="n">dict</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">None</span><span class="o">:</span><span class="w"></span>
 
-        <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
+<span class="w">        </span><span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
 
 <span class="s2">        Append key-value pairs specified by `dictionary` to the note field of a CSL Item.</span>
 
-<span class="s2">        Uses the the [CSL JSON &quot;</span><span class="n">cheater</span> <span class="n">syntax</span><span class="s2">&quot;](https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields)</span>
+<span class="s2">        Uses the the [CSL JSON &quot;</span><span class="n">cheater</span><span class="w"> </span><span class="n">syntax</span><span class="s2">&quot;](https://github.com/Juris-M/citeproc-js-docs/blob/93d7991d42b4a96b74b7281f38e168e365847e40/csl-json/markup.rst#cheater-syntax-for-odd-fields)</span>
 
 <span class="s2">        to encode additional values not defined by the CSL JSON schema.</span>
 
-<span class="s2">        </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span>
+<span class="s2">        </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span><span class="w"></span>
 
-        <span class="k">for</span> <span class="k">key</span><span class="p">,</span> <span class="k">value</span> <span class="k">in</span> <span class="n">dictionary</span><span class="p">.</span><span class="n">items</span><span class="p">()</span><span class="o">:</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="k">key</span><span class="p">,</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">dictionary</span><span class="p">.</span><span class="n">items</span><span class="p">()</span><span class="o">:</span><span class="w"></span>
 
-            <span class="k">if</span> <span class="k">not</span> <span class="n">re</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">r</span><span class="s2">&quot;[A-Z]+|[-_a-z]+&quot;</span><span class="p">,</span> <span class="k">key</span><span class="p">)</span><span class="o">:</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">re</span><span class="p">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">r</span><span class="s2">&quot;[A-Z]+|[-_a-z]+&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">key</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-                <span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span>
+<span class="w">                </span><span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="w"></span>
 
-                    <span class="n">f</span><span class="s2">&quot;note_append_dict: skipping adding {key!r} because &quot;</span>
+<span class="w">                    </span><span class="n">f</span><span class="s2">&quot;note_append_dict: skipping adding {key!r} because &quot;</span><span class="w"></span>
 
-                    <span class="n">f</span><span class="s2">&quot;it does not conform to the variable_name syntax as per https://git.io/fjTzW.&quot;</span>
+<span class="w">                    </span><span class="n">f</span><span class="s2">&quot;it does not conform to the variable_name syntax as per https://git.io/fjTzW.&quot;</span><span class="w"></span>
 
-                <span class="p">)</span>
+<span class="w">                </span><span class="p">)</span><span class="w"></span>
 
-                <span class="k">continue</span>
+<span class="w">                </span><span class="k">continue</span><span class="w"></span>
 
-            <span class="k">if</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="k">in</span> <span class="k">value</span><span class="o">:</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">value</span><span class="o">:</span><span class="w"></span>
 
-                <span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span>
+<span class="w">                </span><span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="w"></span>
 
-                    <span class="n">f</span><span class="s2">&quot;note_append_dict: skipping adding {key!r} because &quot;</span>
+<span class="w">                    </span><span class="n">f</span><span class="s2">&quot;note_append_dict: skipping adding {key!r} because &quot;</span><span class="w"></span>
 
-                    <span class="n">f</span><span class="s2">&quot;the value contains a newline: {value!r}&quot;</span>
+<span class="w">                    </span><span class="n">f</span><span class="s2">&quot;the value contains a newline: {value!r}&quot;</span><span class="w"></span>
 
-                <span class="p">)</span>
+<span class="w">                </span><span class="p">)</span><span class="w"></span>
 
-                <span class="k">continue</span>
+<span class="w">                </span><span class="k">continue</span><span class="w"></span>
 
-            <span class="n">self</span><span class="p">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{key}: {value}&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{key}: {value}&quot;</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -3654,37 +3674,39 @@ to encode additional values not defined by the CSL JSON schema.</p>
 
 <p>Append text to the note field (as a new line) of a CSL Item.</p>
 <p>If a line already exists equal to <code>text</code>, do nothing.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">note_append_text</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="kt">text</span><span class="o">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">None</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">note_append_text</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="kt">text</span><span class="o">:</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">None</span><span class="o">:</span><span class="w"></span>
 
-        <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
+<span class="w">        </span><span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
 
 <span class="s2">        Append text to the note field (as a new line) of a CSL Item.</span>
 
 <span class="s2">        If a line already exists equal to `text`, do nothing.</span>
 
-<span class="s2">        </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span>
+<span class="s2">        </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="kt">text</span><span class="o">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="kt">text</span><span class="o">:</span><span class="w"></span>
 
-            <span class="k">return</span>
+<span class="w">            </span><span class="k">return</span><span class="w"></span>
 
-        <span class="n">note</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">note</span>
+<span class="w">        </span><span class="n">note</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">note</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;^{re.escape(text)}$&quot;</span><span class="p">,</span> <span class="n">note</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="p">.</span><span class="n">MULTILINE</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;^{re.escape(text)}$&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">note</span><span class="p">,</span><span class="w"> </span><span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="p">.</span><span class="n">MULTILINE</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-            <span class="c1"># do not accumulate duplicate lines of text</span>
+<span class="w">            </span><span class="c1"># do not accumulate duplicate lines of text</span><span class="w"></span>
 
-            <span class="c1"># https://github.com/manubot/manubot/issues/258</span>
+<span class="w">            </span><span class="c1"># https://github.com/manubot/manubot/issues/258</span><span class="w"></span>
 
-            <span class="k">return</span>
+<span class="w">            </span><span class="k">return</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="n">note</span> <span class="k">and</span> <span class="k">not</span> <span class="n">note</span><span class="p">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">note</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">note</span><span class="p">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-            <span class="n">note</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="n">note</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="w"></span>
 
-        <span class="n">note</span> <span class="o">+=</span> <span class="kt">text</span>
+<span class="w">        </span><span class="n">note</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="kt">text</span><span class="w"></span>
 
-        <span class="n">self</span><span class="p">.</span><span class="n">note</span> <span class="o">=</span> <span class="n">note</span>
+<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">note</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">note</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -3714,7 +3736,9 @@ Raises KeyError if the dict is empty.</p>
 </code></pre></div>
 
 <p>Remove fields that violate the CSL Item JSON Schema.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">prune_against_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CSL_Item&quot;</span><span class="p">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">prune_against_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CSL_Item&quot;</span><span class="p">:</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -3743,7 +3767,9 @@ Raises KeyError if the dict is empty.</p>
 <p>date: date either as a string (in the form YYYY, YYYY-MM, or YYYY-MM-DD)</p>
 <p>or as a Python date object (datetime.date or datetime.datetime).
 variable: which variable to assign the date to.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">set_date</span><span class="p">(</span><span class="w"></span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">set_date</span><span class="p">(</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">self</span><span class="p">,</span><span class="w"></span>
 
@@ -3780,17 +3806,19 @@ variable: which variable to assign the date to.</p>
 </code></pre></div>
 
 <p>Set type to 'entry', if type not specified.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">set_default_type</span><span class="p">(</span><span class="kr">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s">&quot;CSL_Item&quot;</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">set_default_type</span><span class="p">(</span><span class="kr">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;CSL_Item&quot;</span><span class="o">:</span><span class="w"></span>
 
-        <span class="s">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s">&quot;&quot;&quot;</span>
 
 <span class="s">        Set type to &#39;</span><span class="n">entry</span><span class="s">&#39;, if type not specified.</span>
 
-<span class="s">        &quot;&quot;&quot;</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="w"></span>
 
-        <span class="kr">self</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kr">self</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;entry&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="kr">self</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">self</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;entry&quot;</span><span class="p">)</span><span class="w"></span>
 
-        <span class="kr">return</span> <span class="kr">self</span>
+<span class="w">        </span><span class="kr">return</span><span class="w"> </span><span class="kr">self</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -3801,11 +3829,13 @@ variable: which variable to assign the date to.</p>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;CSL_Item&#39;</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">set_id</span><span class="p">(</span><span class="kr">self</span><span class="p">,</span> <span class="n">id_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s">&quot;CSL_Item&quot;</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">set_id</span><span class="p">(</span><span class="kr">self</span><span class="p">,</span><span class="w"> </span><span class="n">id_</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;CSL_Item&quot;</span><span class="o">:</span><span class="w"></span>
 
-        <span class="kr">self</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_</span>
+<span class="w">        </span><span class="kr">self</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">id_</span><span class="w"></span>
 
-        <span class="kr">return</span> <span class="kr">self</span>
+<span class="w">        </span><span class="kr">return</span><span class="w"> </span><span class="kr">self</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -3833,9 +3863,11 @@ The extracted citation is checked for validity and standardized, after which it 
 is created or updated with key-value pairs for standard_id and original_id.</p>
 <p>Note that the Manubot software generally refers to the "id" of a CSL Item as a citekey.
 However, in this context, we use "id" rather than "citekey" for consistency with CSL's "id" field.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">standardize_id</span><span class="p">(</span><span class="kr">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s">&quot;CSL_Item&quot;</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">standardize_id</span><span class="p">(</span><span class="kr">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;CSL_Item&quot;</span><span class="o">:</span><span class="w"></span>
 
-        <span class="s">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s">&quot;&quot;&quot;</span>
 
 <span class="s">        Extract the standard_id (standard citation key) for a csl_item and modify the csl_item in-place to set its &quot;</span><span class="n">id</span><span class="s">&quot; field.</span>
 
@@ -3849,9 +3881,9 @@ However, in this context, we use "id" rather than "citekey" for consistency with
 
 <span class="s">        Note that the Manubot software generally refers to the &quot;</span><span class="n">id</span><span class="s">&quot; of a CSL Item as a citekey.</span>
 
-<span class="s">        However, in this context, we use &quot;</span><span class="n">id</span><span class="s">&quot; rather than &quot;</span><span class="n">citekey</span><span class="s">&quot; for consistency with CSL&#39;</span><span class="n">s</span> <span class="s">&quot;id&quot;</span> <span class="n">field</span><span class="p">.</span>
+<span class="s">        However, in this context, we use &quot;</span><span class="n">id</span><span class="s">&quot; rather than &quot;</span><span class="n">citekey</span><span class="s">&quot; for consistency with CSL&#39;</span><span class="n">s</span><span class="w"> </span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="n">field</span><span class="p">.</span><span class="w"></span>
 
-        <span class="s">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s">&quot;&quot;&quot;</span>
 
 <span class="s">        original_id = self.get(&quot;</span><span class="n">id</span><span class="s">&quot;)</span>
 
@@ -3909,7 +3941,9 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 
 <p>Confirm that the CSL_Item validates. If not, raises a</p>
 <p>jsonschema.exceptions.ValidationError.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">validate_against_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CSL_Item&quot;</span><span class="p">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">validate_against_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CSL_Item&quot;</span><span class="p">:</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 

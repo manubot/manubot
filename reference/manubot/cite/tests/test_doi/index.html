@@ -820,8 +820,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#test_get_doi_csl_item_crosscite" class="md-nav__link">
-    test_get_doi_csl_item_crosscite
+  <a href="#test_get_doi_csl_item_negotiation" class="md-nav__link">
+    test_get_doi_csl_item_negotiation
   </a>
   
 </li>
@@ -1556,8 +1556,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#test_get_doi_csl_item_crosscite" class="md-nav__link">
-    test_get_doi_csl_item_crosscite
+  <a href="#test_get_doi_csl_item_negotiation" class="md-nav__link">
+    test_get_doi_csl_item_negotiation
   </a>
   
 </li>
@@ -1594,7 +1594,9 @@
                 <h1 id="module-manubotciteteststest_doi">Module manubot.cite.tests.test_doi</h1>
 <p>None</p>
 <p>None</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pytest</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pytest</span>
 
 <span class="kn">from</span> <span class="nn">manubot.cite.doi</span> <span class="kn">import</span> <span class="p">(</span>
 
@@ -1603,6 +1605,10 @@
     <span class="n">get_doi_csl_item</span><span class="p">,</span>
 
     <span class="n">get_doi_csl_item_crosscite</span><span class="p">,</span>
+
+    <span class="n">get_doi_csl_item_datacite</span><span class="p">,</span>
+
+    <span class="n">get_doi_csl_item_negotiation</span><span class="p">,</span>
 
     <span class="n">get_doi_csl_item_zotero</span><span class="p">,</span>
 
@@ -1626,11 +1632,19 @@
 
         <span class="n">expand_short_doi</span><span class="p">(</span><span class="s2">&quot;10.1016/S0933-3657(96)00367-3&quot;</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_get_doi_csl_item_crosscite</span><span class="p">():</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+
+    <span class="s2">&quot;get_doi_csl_item_negotiation&quot;</span><span class="p">,</span>
+
+    <span class="p">[</span><span class="n">get_doi_csl_item_datacite</span><span class="p">,</span> <span class="n">get_doi_csl_item_crosscite</span><span class="p">],</span>
+
+<span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_get_doi_csl_item_negotiation</span><span class="p">(</span><span class="n">get_doi_csl_item_negotiation</span><span class="p">):</span>
 
     <span class="n">doi</span> <span class="o">=</span> <span class="s2">&quot;10.1101/142760&quot;</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_doi_csl_item_crosscite</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_doi_csl_item_negotiation</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
 
@@ -1694,7 +1708,7 @@
 
     <span class="n">doi</span> <span class="o">=</span> <span class="s2">&quot;10.1038/ng.3834&quot;</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_doi_csl_item_crosscite</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_doi_csl_item_negotiation</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
 
@@ -1713,7 +1727,9 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_expand_short_doi():
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>def test_expand_short_doi():
 
     doi = expand_short_doi(&quot;10/b6vnmd&quot;)
 
@@ -1727,7 +1743,9 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_expand_short_doi_invalid():
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>def test_expand_short_doi_invalid():
 
     with pytest.raises(ValueError, match=&quot;Handle not found. Double check short_doi&quot;):
 
@@ -1741,7 +1759,9 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_expand_short_doi_not_short():
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>def test_expand_short_doi_not_short():
 
     with pytest.raises(ValueError, match=&quot;shortDOIs start with `10/`&quot;):
 
@@ -1762,7 +1782,9 @@
 <li><a href="https://github.com/manubot/manubot/issues/158">https://github.com/manubot/manubot/issues/158</a></li>
 <li><a href="https://github.com/crosscite/content-negotiation/issues/92">https://github.com/crosscite/content-negotiation/issues/92</a></li>
 </ul>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">test_get_doi_crosscite_with_consortium_author</span><span class="ss">()</span>:
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">test_get_doi_crosscite_with_consortium_author</span><span class="ss">()</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -1780,7 +1802,7 @@
 
     <span class="nv">doi</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">10.1038/ng.3834</span><span class="s2">&quot;</span>
 
-    <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">get_doi_csl_item_crosscite</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+    <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">get_doi_csl_item_negotiation</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
 
     <span class="nv">assert</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">csl_item</span>, <span class="nv">dict</span><span class="ss">)</span>
 
@@ -1799,7 +1821,9 @@
 </code></pre></div>
 
 <p>Test URL is set with shortDOI when calling get_doi_csl_item.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_get_doi_csl_item():
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>def test_get_doi_csl_item():
 
     &quot;&quot;&quot;
 
@@ -1817,21 +1841,31 @@
 </code></pre></div>
 
 </details>
-<h3 id="test_get_doi_csl_item_crosscite">test_get_doi_csl_item_crosscite</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_get_doi_csl_item_crosscite</span><span class="p">(</span>
-
+<h3 id="test_get_doi_csl_item_negotiation">test_get_doi_csl_item_negotiation</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_get_doi_csl_item_negotiation</span><span class="p">(</span>
+    <span class="n">get_doi_csl_item_negotiation</span>
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_get_doi_csl_item_crosscite():
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="w"></span>
 
-    doi = &quot;10.1101/142760&quot;
+<span class="w">    </span><span class="ss">&quot;get_doi_csl_item_negotiation&quot;</span><span class="p">,</span><span class="w"></span>
 
-    csl_item = get_doi_csl_item_crosscite(doi)
+<span class="w">    </span><span class="o">[</span><span class="n">get_doi_csl_item_datacite, get_doi_csl_item_crosscite</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
-    assert isinstance(csl_item, dict)
+<span class="p">)</span><span class="w"></span>
 
-    csl_item[&quot;publisher&quot;] == &quot;Cold Spring Harbor Laboratory&quot;
+<span class="n">def</span><span class="w"> </span><span class="n">test_get_doi_csl_item_negotiation</span><span class="p">(</span><span class="n">get_doi_csl_item_negotiation</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;10.1101/142760&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_doi_csl_item_negotiation</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span><span class="w"> </span><span class="n">dict</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;publisher&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;Cold Spring Harbor Laboratory&quot;</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -1846,7 +1880,9 @@
 the consortium in author.family, which is better than nothing since it's a valid
 CSL JSON field.
 https://github.com/manubot/manubot/issues/158</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_get_doi_csl_item_zotero():
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>def test_get_doi_csl_item_zotero():
 
     &quot;&quot;&quot;
 

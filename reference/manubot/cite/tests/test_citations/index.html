@@ -1594,7 +1594,9 @@
                 <h1 id="module-manubotciteteststest_citations">Module manubot.cite.tests.test_citations</h1>
 <p>None</p>
 <p>None</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pathlib</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pathlib</span>
 
 <span class="kn">import</span> <span class="nn">pytest</span>
 
@@ -1781,7 +1783,9 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_citations_check_collisions(caplog):
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>def test_citations_check_collisions(caplog):
 
     input_ids = [
 
@@ -1809,7 +1813,9 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_citations_check_multiple_input_ids(caplog):
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>def test_citations_check_multiple_input_ids(caplog):
 
     input_ids = [
 
@@ -1845,7 +1851,9 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_citations_citekeys_tsv():
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>def test_citations_citekeys_tsv():
 
     input_ids = [
 
@@ -1875,35 +1883,37 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="err">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;csl_format&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="s2">&quot;yaml&quot;</span><span class="p">])</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="err">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;csl_format&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;yaml&quot;</span><span class="p">])</span><span class="w"></span>
 
-<span class="n">def</span> <span class="n">test_citations_csl_serialization</span><span class="p">(</span><span class="n">csl_format</span><span class="p">):</span>
+<span class="n">def</span><span class="w"> </span><span class="n">test_citations_csl_serialization</span><span class="p">(</span><span class="n">csl_format</span><span class="p">):</span><span class="w"></span>
 
-    <span class="n">ccr_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;cite-command-rendered&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">ccr_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;cite-command-rendered&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span>
+<span class="w">    </span><span class="n">citations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Citations</span><span class="p">(</span><span class="w"></span>
 
-        <span class="p">[</span><span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.7717/peerj.338&quot;</span><span class="p">,</span> <span class="s2">&quot;pubmed:29618526&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doi:10.7717/peerj.338&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;pubmed:29618526&quot;</span><span class="p">]</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">citations</span><span class="o">.</span><span class="n">load_manual_references</span><span class="p">(</span>
+<span class="w">    </span><span class="n">citations</span><span class="o">.</span><span class="n">load_manual_references</span><span class="p">(</span><span class="w"></span>
 
-        <span class="n">paths</span><span class="o">=</span><span class="p">[</span><span class="n">ccr_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;input-bibliography.json&quot;</span><span class="p">)]</span>
+<span class="w">        </span><span class="n">paths</span><span class="o">=</span><span class="p">[</span><span class="n">ccr_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;input-bibliography.json&quot;</span><span class="p">)]</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">citations</span><span class="o">.</span><span class="n">get_csl_items</span><span class="p">()</span>
+<span class="w">    </span><span class="n">citations</span><span class="o">.</span><span class="n">get_csl_items</span><span class="p">()</span><span class="w"></span>
 
-    <span class="n">path_out</span> <span class="o">=</span> <span class="n">ccr_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;output-bibliography.{csl_format}&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">path_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ccr_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;output-bibliography.{csl_format}&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="c1"># uncomment the following line to regenerate test output</span>
+<span class="w">    </span><span class="c1"># uncomment the following line to regenerate test output</span><span class="w"></span>
 
-    <span class="c1"># citations.write_csl_items(path_out)</span>
+<span class="w">    </span><span class="c1"># citations.write_csl_items(path_out)</span><span class="w"></span>
 
-    <span class="n">csl_out</span> <span class="o">=</span> <span class="n">getattr</span><span class="p">(</span><span class="n">citations</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;csl_{csl_format}&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">csl_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getattr</span><span class="p">(</span><span class="n">citations</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="s2">&quot;csl_{csl_format}&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nb">assert</span> <span class="n">csl_out</span> <span class="o">==</span> <span class="n">path_out</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+<span class="w">    </span><span class="nb">assert</span><span class="w"> </span><span class="n">csl_out</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">path_out</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -1913,7 +1923,9 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_citations_filter_pandoc_xnos():
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>def test_citations_filter_pandoc_xnos():
 
     input_ids = [
 
@@ -1943,7 +1955,9 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_citations_filter_unhandled():
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>def test_citations_filter_unhandled():
 
     input_ids = [
 
@@ -1973,7 +1987,9 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>def test_citations_inspect():
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>def test_citations_inspect():
 
     input_ids = [
 

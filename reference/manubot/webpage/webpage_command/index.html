@@ -1592,7 +1592,9 @@
                 <h1 id="module-manubotwebpagewebpage_command">Module manubot.webpage.webpage_command</h1>
 <p>None</p>
 <p>None</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">import</span> <span class="nn">pathlib</span>
 
@@ -2006,7 +2008,9 @@ https://stackoverflow.com/a/2668947/4651668
 https://stackoverflow.com/a/16493707/4651668
 Command modeled after:
 git --work-tree=webpage checkout upstream/gh-pages -- v</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">checkout_existing_versions</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">checkout_existing_versions</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -2092,7 +2096,9 @@ git --work-tree=webpage checkout upstream/gh-pages -- v</p>
 
 <p>Execute manubot webpage commands.</p>
 <p>args should be an argparse.Namespace object created by parser.parse_args.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">cli_webpage</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">cli_webpage</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -2124,9 +2130,11 @@ git --work-tree=webpage checkout upstream/gh-pages -- v</p>
 <p>Derive additional variables and add them to args.
 For example, add directories to args and create them if neccessary.
 Note that versions_directory is the parent of version_directory.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">configure_args</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">configure_args</span><span class="p">(</span><span class="n">args</span><span class="p">):</span><span class="w"></span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Perform additional processing of arguments that is not handled by argparse.</span>
 
@@ -2136,109 +2144,109 @@ Note that versions_directory is the parent of version_directory.</p>
 
 <span class="sd">    Note that versions_directory is the parent of version_directory.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="n">args_dict</span> <span class="o">=</span> <span class="n">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="w"></span>
 
-    <span class="c1"># If --timestamp specified, check that opentimestamps-client is installed</span>
+<span class="w">    </span><span class="c1"># If --timestamp specified, check that opentimestamps-client is installed</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">timestamp</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">timestamp</span><span class="p">:</span><span class="w"></span>
 
-        <span class="n">ots_executable_path</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;ots&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">ots_executable_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;ots&quot;</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">ots_executable_path</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">ots_executable_path</span><span class="p">:</span><span class="w"></span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="w"></span>
 
-                <span class="s2">&quot;manubot webpage --timestamp was specified but opentimestamps-client not found on system. &quot;</span>
+<span class="w">                </span><span class="s2">&quot;manubot webpage --timestamp was specified but opentimestamps-client not found on system. &quot;</span><span class="w"></span>
 
-                <span class="s2">&quot;Setting --timestamp=False. &quot;</span>
+<span class="w">                </span><span class="s2">&quot;Setting --timestamp=False. &quot;</span><span class="w"></span>
 
-                <span class="s2">&quot;Fix this by installing https://pypi.org/project/opentimestamps-client/&quot;</span>
+<span class="w">                </span><span class="s2">&quot;Fix this by installing https://pypi.org/project/opentimestamps-client/&quot;</span><span class="w"></span>
 
-            <span class="p">)</span>
+<span class="w">            </span><span class="p">)</span><span class="w"></span>
 
-            <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">False</span>
+<span class="w">            </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">False</span><span class="w"></span>
 
-    <span class="c1"># Directory where Manubot outputs reside</span>
+<span class="w">    </span><span class="c1"># Directory where Manubot outputs reside</span><span class="w"></span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;output_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;output_directory&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="c1"># Set webpage directory</span>
+<span class="w">    </span><span class="c1"># Set webpage directory</span><span class="w"></span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;webpage_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;webpage&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;webpage_directory&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;webpage&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">args</span><span class="o">.</span><span class="n">webpage_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args</span><span class="o">.</span><span class="n">webpage_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="n">True</span><span class="p">)</span><span class="w"></span>
 
-    <span class="c1"># Create webpage/v directory (if it doesn&#39;t already exist)</span>
+<span class="w">    </span><span class="c1"># Create webpage/v directory (if it doesn&#39;t already exist)</span><span class="w"></span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;versions_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">webpage_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;versions_directory&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">webpage_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="n">True</span><span class="p">)</span><span class="w"></span>
 
-    <span class="c1"># Checkout existing version directories</span>
+<span class="w">    </span><span class="c1"># Checkout existing version directories</span><span class="w"></span>
 
-    <span class="n">checkout_existing_versions</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+<span class="w">    </span><span class="n">checkout_existing_versions</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="w"></span>
 
-    <span class="c1"># Apply --version argument defaults</span>
+<span class="w">    </span><span class="c1"># Apply --version argument defaults</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span> <span class="k">is</span> <span class="n">None</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">None</span><span class="p">:</span><span class="w"></span>
 
-        <span class="n">from</span> <span class="n">manubot</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">ci</span> <span class="n">import</span> <span class="n">get_continuous_integration_parameters</span>
+<span class="w">        </span><span class="n">from</span><span class="w"> </span><span class="n">manubot</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">ci</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">get_continuous_integration_parameters</span><span class="w"></span>
 
-        <span class="n">ci_params</span> <span class="o">=</span> <span class="n">get_continuous_integration_parameters</span><span class="p">()</span>
+<span class="w">        </span><span class="n">ci_params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_continuous_integration_parameters</span><span class="p">()</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="n">ci_params</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">ci_params</span><span class="p">:</span><span class="w"></span>
 
-            <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;commit&quot;</span><span class="p">,</span> <span class="s2">&quot;local&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;commit&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;local&quot;</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">else</span><span class="p">:</span>
+<span class="w">        </span><span class="k">else</span><span class="p">:</span><span class="w"></span>
 
-            <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;local&quot;</span>
+<span class="w">            </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;local&quot;</span><span class="w"></span>
 
-    <span class="c1"># Create empty webpage/v/version directory</span>
+<span class="w">    </span><span class="c1"># Create empty webpage/v/version directory</span><span class="w"></span>
 
-    <span class="n">version_directory</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+<span class="w">    </span><span class="n">version_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="n">version_directory</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">version_directory</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span><span class="w"></span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="w"></span>
 
-            <span class="n">f</span><span class="s2">&quot;{version_directory} exists: replacing it with an empty directory&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="s2">&quot;{version_directory} exists: replacing it with an empty directory&quot;</span><span class="w"></span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">version_directory</span><span class="p">)</span>
+<span class="w">        </span><span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">version_directory</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">version_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+<span class="w">    </span><span class="n">version_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span><span class="w"></span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;version_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">version_directory</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;version_directory&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">version_directory</span><span class="w"></span>
 
-    <span class="c1"># Symlink webpage/v/latest to point to webpage/v/commit</span>
+<span class="w">    </span><span class="c1"># Symlink webpage/v/latest to point to webpage/v/commit</span><span class="w"></span>
 
-    <span class="n">latest_directory</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;latest&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">latest_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;latest&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="n">latest_directory</span><span class="o">.</span><span class="n">is_symlink</span><span class="p">()</span> <span class="ow">or</span> <span class="n">latest_directory</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">latest_directory</span><span class="o">.</span><span class="n">is_symlink</span><span class="p">()</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">latest_directory</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span><span class="w"></span>
 
-        <span class="n">latest_directory</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+<span class="w">        </span><span class="n">latest_directory</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span><span class="w"></span>
 
-    <span class="k">elif</span> <span class="n">latest_directory</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+<span class="w">    </span><span class="k">elif</span><span class="w"> </span><span class="n">latest_directory</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span><span class="w"></span>
 
-        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">latest_directory</span><span class="p">)</span>
+<span class="w">        </span><span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">latest_directory</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">latest_directory</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">target_is_directory</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+<span class="w">    </span><span class="n">latest_directory</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">,</span><span class="w"> </span><span class="n">target_is_directory</span><span class="o">=</span><span class="n">True</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;latest_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">latest_directory</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;latest_directory&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">latest_directory</span><span class="w"></span>
 
-    <span class="c1"># Create freeze directory</span>
+<span class="w">    </span><span class="c1"># Create freeze directory</span><span class="w"></span>
 
-    <span class="n">freeze_directory</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;freeze&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">freeze_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;freeze&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">freeze_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+<span class="w">    </span><span class="n">freeze_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="n">True</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;freeze_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">freeze_directory</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;freeze_directory&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">freeze_directory</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="n">args</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">args</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2249,7 +2257,9 @@ Note that versions_directory is the parent of version_directory.</p>
 </code></pre></div>
 
 <p>Populate the version directory for a new version.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">create_version</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">create_version</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -2305,7 +2315,9 @@ Note that versions_directory is the parent of version_directory.</p>
 
 <p>Extract versions from the webpage/v directory, which should each contain</p>
 <p>a manuscript.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">get_versions</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">get_versions</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -2334,9 +2346,11 @@ Note that versions_directory is the parent of version_directory.</p>
 <p>Timestamp a file using OpenTimestamps.</p>
 <p>This function calls <code>ots stamp path</code>.
 If <code>path</code> does not exist, this function does nothing.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">ots_stamp</span><span class="p">(</span><span class="k">path</span><span class="p">)</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">ots_stamp</span><span class="p">(</span><span class="k">path</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-    <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
+<span class="w">    </span><span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
 
 <span class="s2">    Timestamp a file using OpenTimestamps.</span>
 
@@ -2344,33 +2358,33 @@ If <code>path</code> does not exist, this function does nothing.</p>
 
 <span class="s2">    If `path` does not exist, this function does nothing.</span>
 
-<span class="s2">    </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span>
+<span class="s2">    </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span><span class="w"></span>
 
-    <span class="n">process_args</span> <span class="o">=</span> <span class="err">[</span><span class="s2">&quot;ots&quot;</span><span class="p">,</span> <span class="s2">&quot;stamp&quot;</span><span class="p">,</span> <span class="n">str</span><span class="p">(</span><span class="k">path</span><span class="p">)</span><span class="err">]</span>
+<span class="w">    </span><span class="n">process_args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">[</span><span class="s2">&quot;ots&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;stamp&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="k">path</span><span class="p">)</span><span class="err">]</span><span class="w"></span>
 
-    <span class="k">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span>
+<span class="w">    </span><span class="k">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="w"></span>
 
-        <span class="n">process_args</span><span class="p">,</span>
+<span class="w">        </span><span class="n">process_args</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span>
+<span class="w">        </span><span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">STDOUT</span><span class="p">,</span>
+<span class="w">        </span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">STDOUT</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">universal_newlines</span><span class="o">=</span><span class="no">True</span><span class="p">,</span>
+<span class="w">        </span><span class="n">universal_newlines</span><span class="o">=</span><span class="no">True</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="k">process</span><span class="p">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">process</span><span class="p">.</span><span class="n">returncode</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="w"></span>
 
-        <span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span>
+<span class="w">        </span><span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="w"></span>
 
-            <span class="n">f</span><span class="s2">&quot;OpenTimestamp command returned nonzero code ({process.returncode}).</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="s2">&quot;OpenTimestamp command returned nonzero code ({process.returncode}).</span><span class="se">\n</span><span class="s2">&quot;</span><span class="w"></span>
 
-            <span class="n">f</span><span class="s2">&quot;&gt;&gt;&gt; {shlex_join(process.args)}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="s2">&quot;&gt;&gt;&gt; {shlex_join(process.args)}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="w"></span>
 
-            <span class="n">f</span><span class="s2">&quot;{process.stdout}&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="s2">&quot;{process.stdout}&quot;</span><span class="w"></span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2383,7 +2397,9 @@ If <code>path</code> does not exist, this function does nothing.</p>
 <p>Upgrade OpenTimestamps .ots files in versioned commit directory trees.</p>
 <p>Upgrades each .ots file with a separate ots upgrade subprocess call due to
 https://github.com/opentimestamps/opentimestamps-client/issues/71</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">ots_upgrade</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">ots_upgrade</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 

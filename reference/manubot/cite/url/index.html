@@ -1700,7 +1700,9 @@
                 <h1 id="module-manubotciteurl">Module manubot.cite.url</h1>
 <p>None</p>
 <p>None</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
@@ -1897,9 +1899,11 @@
 by the module-level variable <code>url_retrievers</code>. The methods are attempted
 in order, with this function returning the metadata from the first
 non-failing method.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="o">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="o">:</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">CSLItem</span><span class="o">:</span><span class="w"></span>
 
-    <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
+<span class="w">    </span><span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
 
 <span class="s2">    Get csl_item for a URL trying a sequence of strategies.</span>
 
@@ -1911,27 +1915,27 @@ non-failing method.</p>
 
 <span class="s2">    non-failing method.</span>
 
-<span class="s2">    </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span>
+<span class="s2">    </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span><span class="w"></span>
 
-    <span class="k">for</span> <span class="n">retriever</span> <span class="k">in</span> <span class="n">url_retrievers</span><span class="o">:</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">retriever</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">url_retrievers</span><span class="o">:</span><span class="w"></span>
 
-        <span class="n">try</span><span class="o">:</span>
+<span class="w">        </span><span class="n">try</span><span class="o">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="n">retriever</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">retriever</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">except</span> <span class="n">Exception</span> <span class="k">as</span> <span class="k">error</span><span class="o">:</span>
+<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="k">error</span><span class="o">:</span><span class="w"></span>
 
-            <span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span>
+<span class="w">            </span><span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="w"></span>
 
-                <span class="n">f</span><span class="s2">&quot;Error in {retriever.__name__} for {url} &quot;</span>
+<span class="w">                </span><span class="n">f</span><span class="s2">&quot;Error in {retriever.__name__} for {url} &quot;</span><span class="w"></span>
 
-                <span class="n">f</span><span class="s2">&quot;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s2">{error}&quot;</span>
+<span class="w">                </span><span class="n">f</span><span class="s2">&quot;due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s2">{error}&quot;</span><span class="w"></span>
 
-            <span class="p">)</span>
+<span class="w">            </span><span class="p">)</span><span class="w"></span>
 
-            <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="k">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="no">True</span><span class="p">)</span>
+<span class="w">            </span><span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="k">error</span><span class="p">,</span><span class="w"> </span><span class="n">exc_info</span><span class="o">=</span><span class="no">True</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">raise</span> <span class="n">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;all get_url_csl_item methods failed for {url}&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">raise</span><span class="w"> </span><span class="n">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;all get_url_csl_item methods failed for {url}&quot;</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -1950,7 +1954,9 @@ http://greycite.knowledgeblog.org/
 http://knowledgeblog.org/greycite
 https://arxiv.org/abs/1304.7151
 https://git.io/v9N2C</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_greycite</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_greycite</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2017,15 +2023,17 @@ https://git.io/v9N2C</p>
 </code></pre></div>
 
 <p>Manually create csl_item for a URL.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_url_csl_item_manual</span><span class="p">(</span><span class="n">url</span><span class="o">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">get_url_csl_item_manual</span><span class="p">(</span><span class="n">url</span><span class="o">:</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">CSLItem</span><span class="o">:</span><span class="w"></span>
 
-    <span class="s">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s">&quot;&quot;&quot;</span>
 
 <span class="s">    Manually create csl_item for a URL.</span>
 
-<span class="s">    &quot;&quot;&quot;</span>
+<span class="s">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="kr">return</span> <span class="p">{</span><span class="s">&quot;URL&quot;</span><span class="o">:</span> <span class="n">url</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="o">:</span> <span class="s">&quot;webpage&quot;</span><span class="p">}</span>
+<span class="w">    </span><span class="kr">return</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;URL&quot;</span><span class="o">:</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;webpage&quot;</span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2036,7 +2044,9 @@ https://git.io/v9N2C</p>
 </code></pre></div>
 
 <p>Use Zotero's translation-server to generate a CSL Item for the specified URL.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2069,7 +2079,9 @@ https://git.io/v9N2C</p>
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="n">Handler_URL</span>(<span class="n">Handler</span>):
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="n">Handler_URL</span>(<span class="n">Handler</span>):
 
     <span class="n">standard_prefix</span> = <span class="s">&quot;url&quot;</span>
 
@@ -2118,7 +2130,9 @@ https://git.io/v9N2C</p>
 </code></pre></div>
 
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">get_csl_item</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">citekey</span><span class="ss">)</span>:
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">get_csl_item</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">citekey</span><span class="ss">)</span>:
 
         <span class="k">return</span> <span class="nv">get_url_csl_item</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">standard_accession</span><span class="ss">)</span>
 </code></pre></div>
@@ -2133,7 +2147,9 @@ https://git.io/v9N2C</p>
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a</p>
 <p>string describing the issue is returned. Otherwise returns None.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -2166,7 +2182,9 @@ https://git.io/v9N2C</p>
 <p>This method defaults to returning <code>self.standard_prefix</code>
 (or <code>self.prefix_lower</code> if standard_prefix is not defined).
 Subclasses can override this method with more specific standardization logic.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">standardize_prefix_accession</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">accession</span><span class="ss">)</span>:
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">standardize_prefix_accession</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">accession</span><span class="ss">)</span>:
 
         <span class="k">if</span> <span class="nv">self</span>.<span class="nv">prefix_lower</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="s">url</span><span class="s2">&quot;</span>:
 

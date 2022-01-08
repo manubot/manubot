@@ -1754,7 +1754,9 @@ pytest manubot/cite/tests/test_handlers.py::test_prefix_to_handler
 <li><a href="https://doi.org/10.1038/sdata.2018.95">On the road to robust data citation</a></li>
 <li><a href="https://doi.org/10.1038/sdata.2018.29">Uniform Resolution of Compact Identifiers for Biomedical Data</a></li>
 </ul>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="sd">&quot;&quot;&quot;</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">Compact Uniform Resource Identifiers</span>
 
@@ -1808,45 +1810,45 @@ pytest manubot/cite/tests/test_handlers.py::test_prefix_to_handler
 
 <span class="sd">- [Uniform Resolution of Compact Identifiers for Biomedical Data](https://doi.org/10.1038/sdata.2018.29)</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="w"></span>
 
-<span class="n">import</span> <span class="n">dataclasses</span>
+<span class="n">import</span><span class="w"> </span><span class="n">dataclasses</span><span class="w"></span>
 
-<span class="n">import</span> <span class="n">functools</span>
+<span class="n">import</span><span class="w"> </span><span class="n">functools</span><span class="w"></span>
 
-<span class="n">import</span> <span class="n">json</span>
+<span class="n">import</span><span class="w"> </span><span class="n">json</span><span class="w"></span>
 
-<span class="n">import</span> <span class="n">pathlib</span>
+<span class="n">import</span><span class="w"> </span><span class="n">pathlib</span><span class="w"></span>
 
-<span class="n">import</span> <span class="n">re</span>
+<span class="n">import</span><span class="w"> </span><span class="n">re</span><span class="w"></span>
 
-<span class="n">import</span> <span class="n">typing</span>
+<span class="n">import</span><span class="w"> </span><span class="n">typing</span><span class="w"></span>
 
-<span class="n">from</span> <span class="n">manubot</span><span class="o">.</span><span class="n">cite</span><span class="o">.</span><span class="n">citekey</span> <span class="n">import</span> <span class="n">CiteKey</span>
+<span class="n">from</span><span class="w"> </span><span class="n">manubot</span><span class="o">.</span><span class="n">cite</span><span class="o">.</span><span class="n">citekey</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">CiteKey</span><span class="w"></span>
 
-<span class="n">from</span> <span class="n">manubot</span><span class="o">.</span><span class="n">cite</span><span class="o">.</span><span class="n">handlers</span> <span class="n">import</span> <span class="n">Handler</span>
+<span class="n">from</span><span class="w"> </span><span class="n">manubot</span><span class="o">.</span><span class="n">cite</span><span class="o">.</span><span class="n">handlers</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">Handler</span><span class="w"></span>
 
-<span class="n">_keep_bioregistry_fields</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">_keep_bioregistry_fields</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-    <span class="s2">&quot;deprecated&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;deprecated&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="s2">&quot;example&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;example&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="s2">&quot;uri_format&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;uri_format&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;name&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="s2">&quot;pattern&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pattern&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="s2">&quot;preferred_prefix&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;preferred_prefix&quot;</span><span class="p">,</span><span class="w"></span>
 
-    <span class="s2">&quot;synonyms&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;synonyms&quot;</span><span class="p">,</span><span class="w"></span>
 
-<span class="p">}</span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="n">bioregistry_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;bioregistry.json&quot;</span><span class="p">)</span>
+<span class="n">bioregistry_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;bioregistry.json&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="n">valid_prefix_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[a-z0-9][a-z0-9._-]+?$&quot;</span><span class="p">)</span>
+<span class="n">valid_prefix_pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[a-z0-9][a-z0-9._-]+?$&quot;</span><span class="p">)</span><span class="w"></span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1860,71 +1862,71 @@ pytest manubot/cite/tests/test_handlers.py::test_prefix_to_handler
 
 <span class="sd">of a pandoc citation key without requiring escaping.</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="w"></span>
 
-<span class="err">@</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
+<span class="err">@</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="w"></span>
 
-<span class="k">class</span> <span class="n">Handler_CURIE</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="n">Handler_CURIE</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span><span class="w"></span>
 
-    <span class="n">def</span> <span class="n">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span><span class="w"></span>
 
-        <span class="n">try</span><span class="p">:</span>
+<span class="w">        </span><span class="n">try</span><span class="p">:</span><span class="w"></span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">resource</span> <span class="o">=</span> <span class="n">get_prefix_to_resource</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="p">]</span>
+<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_prefix_to_resource</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="p">]</span><span class="w"></span>
 
-        <span class="n">except</span> <span class="n">KeyError</span><span class="p">:</span>
+<span class="w">        </span><span class="n">except</span><span class="w"> </span><span class="n">KeyError</span><span class="p">:</span><span class="w"></span>
 
-            <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Unrecognized CURIE prefix {self.prefix_lower}&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Unrecognized CURIE prefix {self.prefix_lower}&quot;</span><span class="p">)</span><span class="w"></span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">standard_prefix</span> <span class="o">=</span> <span class="p">(</span>
+<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">standard_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;preferred_prefix&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;prefix&quot;</span><span class="p">]</span>
+<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;preferred_prefix&quot;</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;prefix&quot;</span><span class="p">]</span><span class="w"></span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;all_prefixes&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">prefixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;all_prefixes&quot;</span><span class="p">]</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="s2">&quot;pattern&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;pattern&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">:</span><span class="w"></span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">accession_pattern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;pattern&quot;</span><span class="p">]</span>
+<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">accession_pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;pattern&quot;</span><span class="p">]</span><span class="w"></span>
 
-    <span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">CiteKey</span><span class="p">):</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">):</span><span class="w"></span>
 
-        <span class="n">from</span> <span class="o">..</span><span class="n">url</span> <span class="n">import</span> <span class="n">get_url_csl_item</span>
+<span class="w">        </span><span class="n">from</span><span class="w"> </span><span class="o">..</span><span class="n">url</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">get_url_csl_item</span><span class="w"></span>
 
-        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">(</span><span class="n">accession</span><span class="o">=</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">)</span>
+<span class="w">        </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">(</span><span class="n">accession</span><span class="o">=</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">CiteKey</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span><span class="w"></span>
 
-        <span class="n">pattern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="s2">&quot;accession_pattern&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="s2">&quot;accession_pattern&quot;</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="n">pattern</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">pattern</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">accession</span><span class="p">):</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">pattern</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">pattern</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">accession</span><span class="p">):</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;{citekey.accession} does not match regex {pattern.pattern}&quot;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="s2">&quot;{citekey.accession} does not match regex {pattern.pattern}&quot;</span><span class="w"></span>
 
-    <span class="n">def</span> <span class="n">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">accession</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="s2">&quot;uri_format&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;uri_format&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;uri_format&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;$1&quot;</span><span class="p">,</span> <span class="n">accession</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;uri_format&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;$1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">accession</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;https://bioregistry.io/{self.standard_prefix}:{accession}&quot;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="s2">&quot;https://bioregistry.io/{self.standard_prefix}:{accession}&quot;</span><span class="w"></span>
 
-<span class="n">def</span> <span class="n">get_curie_handlers</span><span class="p">():</span>
+<span class="n">def</span><span class="w"> </span><span class="n">get_curie_handlers</span><span class="p">():</span><span class="w"></span>
 
-    <span class="sd">&quot;&quot;&quot;Get all possible CURIE handlers&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all possible CURIE handlers&quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="n">registries</span> <span class="o">=</span> <span class="n">get_bioregistry</span><span class="p">(</span><span class="n">compile_patterns</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+<span class="w">    </span><span class="n">registries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_bioregistry</span><span class="p">(</span><span class="n">compile_patterns</span><span class="o">=</span><span class="n">True</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">handlers</span> <span class="o">=</span> <span class="p">[</span><span class="n">Handler_CURIE</span><span class="p">(</span><span class="n">reg</span><span class="p">[</span><span class="s2">&quot;prefix&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">reg</span> <span class="ow">in</span> <span class="n">registries</span><span class="p">]</span>
+<span class="w">    </span><span class="n">handlers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">Handler_CURIE</span><span class="p">(</span><span class="n">reg</span><span class="p">[</span><span class="s2">&quot;prefix&quot;</span><span class="p">])</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">reg</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">registries</span><span class="p">]</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="n">handlers</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">handlers</span><span class="w"></span>
 
-<span class="n">def</span> <span class="n">_download_bioregistry</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">None</span><span class="p">:</span>
+<span class="n">def</span><span class="w"> </span><span class="n">_download_bioregistry</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">None</span><span class="p">:</span><span class="w"></span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Download the Bioregistry consensus registry adding the following fields for each registry:</span>
 
@@ -1932,95 +1934,95 @@ pytest manubot/cite/tests/test_handlers.py::test_prefix_to_handler
 
 <span class="sd">    - all_prefixes: all distinct valid lowercase prefixes including synonyms</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="n">import</span> <span class="n">requests</span>
+<span class="w">    </span><span class="n">import</span><span class="w"> </span><span class="n">requests</span><span class="w"></span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/biopragmatics/bioregistry/raw/main/exports/registry/registry.json&quot;</span>
+<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/biopragmatics/bioregistry/raw/main/exports/registry/registry.json&quot;</span><span class="w"></span>
 
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="w">    </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="w">    </span><span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span><span class="w"></span>
 
-    <span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="w">    </span><span class="n">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="w"></span>
 
-    <span class="nb">assert</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">dict</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">assert</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span><span class="w"> </span><span class="n">dict</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">registry</span> <span class="o">=</span> <span class="n">list</span><span class="p">()</span>
+<span class="w">    </span><span class="n">registry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">()</span><span class="w"></span>
 
-    <span class="k">for</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">prefix</span><span class="p">,</span><span class="w"> </span><span class="n">resource</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span><span class="w"></span>
 
-        <span class="nb">assert</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">dict</span><span class="p">)</span>
+<span class="w">        </span><span class="nb">assert</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span><span class="w"> </span><span class="n">dict</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;uri_format&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;uri_format&quot;</span><span class="p">):</span><span class="w"></span>
 
-            <span class="c1"># discard unresolvable prefixes</span>
+<span class="w">            </span><span class="c1"># discard unresolvable prefixes</span><span class="w"></span>
 
-            <span class="k">continue</span>
+<span class="w">            </span><span class="k">continue</span><span class="w"></span>
 
-        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">set</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span> <span class="o">-</span> <span class="n">_keep_bioregistry_fields</span><span class="p">:</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">field</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">set</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_keep_bioregistry_fields</span><span class="p">:</span><span class="w"></span>
 
-            <span class="n">del</span> <span class="n">resource</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
+<span class="w">            </span><span class="n">del</span><span class="w"> </span><span class="n">resource</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="w"></span>
 
-        <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;prefix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span>
+<span class="w">        </span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;prefix&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prefix</span><span class="w"></span>
 
-        <span class="n">all_prefixes</span> <span class="o">=</span> <span class="p">{</span>
+<span class="w">        </span><span class="n">all_prefixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-            <span class="n">prefix</span><span class="p">,</span>
+<span class="w">            </span><span class="n">prefix</span><span class="p">,</span><span class="w"></span>
 
-            <span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">resource</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;synonyms&quot;</span><span class="p">,</span> <span class="p">[])),</span>
+<span class="w">            </span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">resource</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;synonyms&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[])),</span><span class="w"></span>
 
-        <span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
 
-        <span class="c1"># remove invalid prefixes as per https://github.com/manubot/manubot/pull/306#discussion_r744125504</span>
+<span class="w">        </span><span class="c1"># remove invalid prefixes as per https://github.com/manubot/manubot/pull/306#discussion_r744125504</span><span class="w"></span>
 
-        <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;all_prefixes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sorted</span><span class="p">(</span>
+<span class="w">        </span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;all_prefixes&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sorted</span><span class="p">(</span><span class="w"></span>
 
-            <span class="n">filter</span><span class="p">(</span><span class="n">valid_prefix_pattern</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">,</span> <span class="n">all_prefixes</span><span class="p">)</span>
+<span class="w">            </span><span class="n">filter</span><span class="p">(</span><span class="n">valid_prefix_pattern</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">,</span><span class="w"> </span><span class="n">all_prefixes</span><span class="p">)</span><span class="w"></span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-        <span class="n">registry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+<span class="w">        </span><span class="n">registry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">json_text</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">registry</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="n">False</span><span class="p">)</span>
+<span class="w">    </span><span class="n">json_text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">registry</span><span class="p">,</span><span class="w"> </span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">ensure_ascii</span><span class="o">=</span><span class="n">False</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">bioregistry_path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">json_text</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">bioregistry_path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">json_text</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="n">def</span> <span class="n">get_bioregistry</span><span class="p">(</span><span class="n">compile_patterns</span><span class="o">=</span><span class="n">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dict</span><span class="p">:</span>
+<span class="n">def</span><span class="w"> </span><span class="n">get_bioregistry</span><span class="p">(</span><span class="n">compile_patterns</span><span class="o">=</span><span class="n">False</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">dict</span><span class="p">:</span><span class="w"></span>
 
-    <span class="n">with</span> <span class="n">bioregistry_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
+<span class="w">    </span><span class="n">with</span><span class="w"> </span><span class="n">bioregistry_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">read_file</span><span class="p">:</span><span class="w"></span>
 
-        <span class="n">registry</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">read_file</span><span class="p">)</span>
+<span class="w">        </span><span class="n">registry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">read_file</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nb">assert</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">registry</span><span class="p">,</span> <span class="n">list</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">assert</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">registry</span><span class="p">,</span><span class="w"> </span><span class="n">list</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="n">compile_patterns</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">compile_patterns</span><span class="p">:</span><span class="w"></span>
 
-        <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">registry</span><span class="p">:</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">resource</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">registry</span><span class="p">:</span><span class="w"></span>
 
-            <span class="k">if</span> <span class="s2">&quot;pattern&quot;</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">:</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;pattern&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">resource</span><span class="p">:</span><span class="w"></span>
 
-                <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;compiled_pattern&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;pattern&quot;</span><span class="p">])</span>
+<span class="w">                </span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;compiled_pattern&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;pattern&quot;</span><span class="p">])</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="n">registry</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">registry</span><span class="w"></span>
 
-<span class="err">@</span><span class="n">functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">()</span>
+<span class="err">@</span><span class="n">functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">()</span><span class="w"></span>
 
-<span class="n">def</span> <span class="n">get_prefix_to_resource</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">]:</span>
+<span class="n">def</span><span class="w"> </span><span class="n">get_prefix_to_resource</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">]:</span><span class="w"></span>
 
-    <span class="n">prefix_to_resource</span> <span class="o">=</span> <span class="n">dict</span><span class="p">()</span>
+<span class="w">    </span><span class="n">prefix_to_resource</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dict</span><span class="p">()</span><span class="w"></span>
 
-    <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">get_bioregistry</span><span class="p">():</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">resource</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">get_bioregistry</span><span class="p">():</span><span class="w"></span>
 
-        <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;all_prefixes&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">prefix</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;all_prefixes&quot;</span><span class="p">]:</span><span class="w"></span>
 
-            <span class="n">prefix_to_resource</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">=</span> <span class="n">resource</span>
+<span class="w">            </span><span class="n">prefix_to_resource</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">resource</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="n">prefix_to_resource</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">prefix_to_resource</span><span class="w"></span>
 
-<span class="n">def</span> <span class="n">standardize_curie</span><span class="p">(</span><span class="n">curie</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="n">def</span><span class="w"> </span><span class="n">standardize_curie</span><span class="p">(</span><span class="n">curie</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span><span class="w"></span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Return CURIE with Bioregistry preferred prefix capitalization.</span>
 
@@ -2028,53 +2030,53 @@ pytest manubot/cite/tests/test_handlers.py::test_prefix_to_handler
 
 <span class="sd">    If `curie` is malformed or uses an unrecognized prefix, raise ValueError.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">curie</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">curie</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">):</span><span class="w"></span>
 
-        <span class="n">raise</span> <span class="n">TypeError</span><span class="p">(</span>
+<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">TypeError</span><span class="p">(</span><span class="w"></span>
 
-            <span class="n">f</span><span class="s2">&quot;curie parameter should be string. Received {curie.__class__.__name__} instead for {curie}&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="s2">&quot;curie parameter should be string. Received {curie.__class__.__name__} instead for {curie}&quot;</span><span class="w"></span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">try</span><span class="p">:</span>
+<span class="w">    </span><span class="n">try</span><span class="p">:</span><span class="w"></span>
 
-        <span class="n">prefix</span><span class="p">,</span> <span class="n">accession</span> <span class="o">=</span> <span class="n">curie</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="w">        </span><span class="n">prefix</span><span class="p">,</span><span class="w"> </span><span class="n">accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">curie</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">except</span> <span class="n">ValueError</span><span class="p">:</span>
+<span class="w">    </span><span class="n">except</span><span class="w"> </span><span class="n">ValueError</span><span class="p">:</span><span class="w"></span>
 
-        <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span>
+<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="w"></span>
 
-            <span class="n">f</span><span class="s2">&quot;curie must be splittable by `:` and formatted like `prefix:accession`. Received {curie}&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="s2">&quot;curie must be splittable by `:` and formatted like `prefix:accession`. Received {curie}&quot;</span><span class="w"></span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">handler</span> <span class="o">=</span> <span class="n">Handler_CURIE</span><span class="p">(</span><span class="n">prefix</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+<span class="w">    </span><span class="n">handler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Handler_CURIE</span><span class="p">(</span><span class="n">prefix</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;{handler.standard_prefix}:{accession}&quot;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="s2">&quot;{handler.standard_prefix}:{accession}&quot;</span><span class="w"></span>
 
-<span class="n">def</span> <span class="n">curie_to_url</span><span class="p">(</span><span class="n">curie</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="n">def</span><span class="w"> </span><span class="n">curie_to_url</span><span class="p">(</span><span class="n">curie</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span><span class="w"></span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    `curie` should be in `prefix:accession` format</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="n">curie</span> <span class="o">=</span> <span class="n">standardize_curie</span><span class="p">(</span><span class="n">curie</span><span class="p">)</span>
+<span class="w">    </span><span class="n">curie</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">standardize_curie</span><span class="p">(</span><span class="n">curie</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">prefix</span><span class="p">,</span> <span class="n">accession</span> <span class="o">=</span> <span class="n">curie</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="w">    </span><span class="n">prefix</span><span class="p">,</span><span class="w"> </span><span class="n">accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">curie</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">handler</span> <span class="o">=</span> <span class="n">Handler_CURIE</span><span class="p">(</span><span class="n">prefix</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+<span class="w">    </span><span class="n">handler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Handler_CURIE</span><span class="p">(</span><span class="n">prefix</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="n">get_url</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">handler</span><span class="o">.</span><span class="n">get_url</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span><span class="w"></span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">if</span><span class="w"> </span><span class="n">__name__</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span><span class="w"></span>
 
-    <span class="n">_download_bioregistry</span><span class="p">()</span>
+<span class="w">    </span><span class="n">_download_bioregistry</span><span class="p">()</span><span class="w"></span>
 
-    <span class="n">bioregistry</span> <span class="o">=</span> <span class="n">get_bioregistry</span><span class="p">()</span>
+<span class="w">    </span><span class="n">bioregistry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_bioregistry</span><span class="p">()</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2098,21 +2100,23 @@ of a pandoc citation key without requiring escaping.</p>
 </code></pre></div>
 
 <p><code>curie</code> should be in <code>prefix:accession</code> format</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">curie_to_url</span><span class="p">(</span><span class="n">curie</span><span class="o">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">str</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">curie_to_url</span><span class="p">(</span><span class="n">curie</span><span class="o">:</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">str</span><span class="o">:</span><span class="w"></span>
 
-    <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
+<span class="w">    </span><span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
 
 <span class="s2">    `curie` should be in `prefix:accession` format</span>
 
-<span class="s2">    </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span>
+<span class="s2">    </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span><span class="w"></span>
 
-    <span class="n">curie</span> <span class="o">=</span> <span class="n">standardize_curie</span><span class="p">(</span><span class="n">curie</span><span class="p">)</span>
+<span class="w">    </span><span class="n">curie</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">standardize_curie</span><span class="p">(</span><span class="n">curie</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">prefix</span><span class="p">,</span> <span class="n">accession</span> <span class="o">=</span> <span class="n">curie</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="w">    </span><span class="n">prefix</span><span class="p">,</span><span class="w"> </span><span class="n">accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">curie</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">handler</span> <span class="o">=</span> <span class="n">Handler_CURIE</span><span class="p">(</span><span class="n">prefix</span><span class="p">.</span><span class="nf">lower</span><span class="p">())</span>
+<span class="w">    </span><span class="k">handler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Handler_CURIE</span><span class="p">(</span><span class="n">prefix</span><span class="p">.</span><span class="nf">lower</span><span class="p">())</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="k">handler</span><span class="p">.</span><span class="n">get_url</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">handler</span><span class="p">.</span><span class="n">get_url</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2122,23 +2126,25 @@ of a pandoc citation key without requiring escaping.</p>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_bioregistry</span><span class="p">(</span><span class="n">compile_patterns</span><span class="o">=</span><span class="n">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dict</span><span class="p">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">get_bioregistry</span><span class="p">(</span><span class="n">compile_patterns</span><span class="o">=</span><span class="n">False</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">dict</span><span class="p">:</span><span class="w"></span>
 
-    <span class="n">with</span> <span class="n">bioregistry_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
+<span class="w">    </span><span class="n">with</span><span class="w"> </span><span class="n">bioregistry_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">read_file</span><span class="p">:</span><span class="w"></span>
 
-        <span class="n">registry</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">read_file</span><span class="p">)</span>
+<span class="w">        </span><span class="n">registry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">read_file</span><span class="p">)</span><span class="w"></span>
 
-    <span class="nb">assert</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">registry</span><span class="p">,</span> <span class="n">list</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">assert</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">registry</span><span class="p">,</span><span class="w"> </span><span class="n">list</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="n">compile_patterns</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">compile_patterns</span><span class="p">:</span><span class="w"></span>
 
-        <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">registry</span><span class="p">:</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">resource</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">registry</span><span class="p">:</span><span class="w"></span>
 
-            <span class="k">if</span> <span class="s2">&quot;pattern&quot;</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">:</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;pattern&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">resource</span><span class="p">:</span><span class="w"></span>
 
-                <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;compiled_pattern&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;pattern&quot;</span><span class="p">])</span>
+<span class="w">                </span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;compiled_pattern&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;pattern&quot;</span><span class="p">])</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="n">registry</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">registry</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2149,15 +2155,17 @@ of a pandoc citation key without requiring escaping.</p>
 </code></pre></div>
 
 <p>Get all possible CURIE handlers</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_curie_handlers</span><span class="p">()</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">get_curie_handlers</span><span class="p">()</span><span class="o">:</span><span class="w"></span>
 
-    <span class="s">&quot;&quot;&quot;Get all possible CURIE handlers&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s">&quot;&quot;&quot;Get all possible CURIE handlers&quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="n">registries</span> <span class="o">=</span> <span class="n">get_bioregistry</span><span class="p">(</span><span class="n">compile_patterns</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+<span class="w">    </span><span class="n">registries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_bioregistry</span><span class="p">(</span><span class="n">compile_patterns</span><span class="o">=</span><span class="n">True</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">handlers</span> <span class="o">=</span> <span class="p">[</span><span class="n">Handler_CURIE</span><span class="p">(</span><span class="kt">reg</span><span class="p">[</span><span class="s">&quot;prefix&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="kt">reg</span> <span class="n">in</span> <span class="n">registries</span><span class="p">]</span>
+<span class="w">    </span><span class="n">handlers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">Handler_CURIE</span><span class="p">(</span><span class="kt">reg</span><span class="p">[</span><span class="s">&quot;prefix&quot;</span><span class="p">])</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">registries</span><span class="p">]</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="n">handlers</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">handlers</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2167,7 +2175,9 @@ of a pandoc citation key without requiring escaping.</p>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@functools</span><span class="p">.</span><span class="n">lru_cache</span><span class="p">()</span><span class="w"></span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">@functools</span><span class="p">.</span><span class="n">lru_cache</span><span class="p">()</span><span class="w"></span>
 
 <span class="n">def</span><span class="w"> </span><span class="n">get_prefix_to_resource</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">typing</span><span class="p">.</span><span class="n">Dict</span><span class="o">[</span><span class="n">str, typing.Dict</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
@@ -2192,9 +2202,11 @@ of a pandoc citation key without requiring escaping.</p>
 <p>Return CURIE with Bioregistry preferred prefix capitalization.</p>
 <p><code>curie</code> should be in <code>prefix:accession</code> format.
 If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueError.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">standardize_curie</span><span class="p">(</span><span class="n">curie</span><span class="o">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">str</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">standardize_curie</span><span class="p">(</span><span class="n">curie</span><span class="o">:</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">str</span><span class="o">:</span><span class="w"></span>
 
-    <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
+<span class="w">    </span><span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
 
 <span class="s2">    Return CURIE with Bioregistry preferred prefix capitalization.</span>
 
@@ -2202,31 +2214,31 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
 
 <span class="s2">    If `curie` is malformed or uses an unrecognized prefix, raise ValueError.</span>
 
-<span class="s2">    </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span>
+<span class="s2">    </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="k">not</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">curie</span><span class="p">,</span> <span class="n">str</span><span class="p">)</span><span class="o">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">curie</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-        <span class="n">raise</span> <span class="n">TypeError</span><span class="p">(</span>
+<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">TypeError</span><span class="p">(</span><span class="w"></span>
 
-            <span class="n">f</span><span class="s2">&quot;curie parameter should be string. Received {curie.__class__.__name__} instead for {curie}&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="s2">&quot;curie parameter should be string. Received {curie.__class__.__name__} instead for {curie}&quot;</span><span class="w"></span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">try</span><span class="o">:</span>
+<span class="w">    </span><span class="n">try</span><span class="o">:</span><span class="w"></span>
 
-        <span class="n">prefix</span><span class="p">,</span> <span class="n">accession</span> <span class="o">=</span> <span class="n">curie</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="w">        </span><span class="n">prefix</span><span class="p">,</span><span class="w"> </span><span class="n">accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">curie</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">except</span> <span class="n">ValueError</span><span class="o">:</span>
+<span class="w">    </span><span class="k">except</span><span class="w"> </span><span class="n">ValueError</span><span class="o">:</span><span class="w"></span>
 
-        <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span>
+<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="w"></span>
 
-            <span class="n">f</span><span class="s2">&quot;curie must be splittable by `:` and formatted like `prefix:accession`. Received {curie}&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="s2">&quot;curie must be splittable by `:` and formatted like `prefix:accession`. Received {curie}&quot;</span><span class="w"></span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">handler</span> <span class="o">=</span> <span class="n">Handler_CURIE</span><span class="p">(</span><span class="n">prefix</span><span class="p">.</span><span class="nf">lower</span><span class="p">())</span>
+<span class="w">    </span><span class="k">handler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Handler_CURIE</span><span class="p">(</span><span class="n">prefix</span><span class="p">.</span><span class="nf">lower</span><span class="p">())</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;{handler.standard_prefix}:{accession}&quot;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="s2">&quot;{handler.standard_prefix}:{accession}&quot;</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2237,7 +2249,9 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
 
 <span class="k">class</span> <span class="nc">Handler_CURIE</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
 
@@ -2307,7 +2321,9 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
 </code></pre></div>
 
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">CiteKey</span><span class="p">):</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">CiteKey</span><span class="p">):</span>
 
         <span class="kn">from</span> <span class="nn">..url</span> <span class="kn">import</span> <span class="n">get_url_csl_item</span>
 
@@ -2324,13 +2340,15 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">get_url</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="nl">accession:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nl">str:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_url</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">accession:</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nl">str:</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="s">&quot;uri_format&quot;</span> <span class="n">in</span> <span class="n">self</span><span class="p">.</span><span class="nl">resource:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="s">&quot;uri_format&quot;</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="nl">resource:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">resource</span><span class="p">[</span><span class="s">&quot;uri_format&quot;</span><span class="p">].</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$1&quot;</span><span class="p">,</span> <span class="n">accession</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">resource</span><span class="p">[</span><span class="s">&quot;uri_format&quot;</span><span class="p">].</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">accession</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="n">f</span><span class="s">&quot;https://bioregistry.io/{self.standard_prefix}:{accession}&quot;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="s">&quot;https://bioregistry.io/{self.standard_prefix}:{accession}&quot;</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2343,7 +2361,9 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a</p>
 <p>string describing the issue is returned. Otherwise returns None.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">typing</span><span class="p">.</span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="nl">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">typing</span><span class="p">.</span><span class="n">Optional</span><span class="o">[</span><span class="n">str</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="ss">&quot;accession_pattern&quot;</span><span class="p">)</span><span class="w"></span>
 
@@ -2364,9 +2384,11 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
 <p>This method defaults to returning <code>self.standard_prefix</code>
 (or <code>self.prefix_lower</code> if standard_prefix is not defined).
 Subclasses can override this method with more specific standardization logic.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="kr">self</span><span class="p">,</span> <span class="n">accession</span><span class="o">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">str</span><span class="p">,</span> <span class="n">str</span><span class="p">]</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="kr">self</span><span class="p">,</span><span class="w"> </span><span class="n">accession</span><span class="o">:</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Tuple</span><span class="p">[</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">]</span><span class="o">:</span><span class="w"></span>
 
-        <span class="s">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s">&quot;&quot;&quot;</span>
 
 <span class="s">        Return (prefix, accession) in standardized form.</span>
 
@@ -2376,13 +2398,13 @@ Subclasses can override this method with more specific standardization logic.</p
 
 <span class="s">        Subclasses can override this method with more specific standardization logic.</span>
 
-<span class="s">        &quot;&quot;&quot;</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="w"></span>
 
-        <span class="n">standard_prefix</span> <span class="o">=</span> <span class="n">getattr</span><span class="p">(</span><span class="kr">self</span><span class="p">,</span> <span class="s">&quot;standard_prefix&quot;</span><span class="p">,</span> <span class="kr">self</span><span class="p">.</span><span class="n">prefix_lower</span><span class="p">)</span>
+<span class="w">        </span><span class="n">standard_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getattr</span><span class="p">(</span><span class="kr">self</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;standard_prefix&quot;</span><span class="p">,</span><span class="w"> </span><span class="kr">self</span><span class="p">.</span><span class="n">prefix_lower</span><span class="p">)</span><span class="w"></span>
 
-        <span class="n">standard_accession</span> <span class="o">=</span> <span class="n">accession</span>
+<span class="w">        </span><span class="n">standard_accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accession</span><span class="w"></span>
 
-        <span class="kr">return</span> <span class="n">standard_prefix</span><span class="p">,</span> <span class="n">standard_accession</span>
+<span class="w">        </span><span class="kr">return</span><span class="w"> </span><span class="n">standard_prefix</span><span class="p">,</span><span class="w"> </span><span class="n">standard_accession</span><span class="w"></span>
 </code></pre></div>
 
 </details>

@@ -1644,7 +1644,9 @@
                 <h1 id="module-manubotcitewikidata">Module manubot.cite.wikidata</h1>
 <p>None</p>
 <p>None</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
 
 <span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="n">Handler</span>
 
@@ -1724,7 +1726,9 @@
 <p>Get a CSL JSON item with the citation metadata for a Wikidata item.</p>
 <p>identifier should be a Wikidata item ID corresponding to a citeable
 work, such as Q50051684.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_wikidata_csl_item</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_wikidata_csl_item</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1761,41 +1765,43 @@ work, such as Q50051684.</p>
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">class</span> <span class="n">Handler_Wikidata</span><span class="p">(</span><span class="n">Handler</span><span class="p">)</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">class</span><span class="w"> </span><span class="n">Handler_Wikidata</span><span class="p">(</span><span class="n">Handler</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-    <span class="n">prefixes</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;wikidata&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="n">prefixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;wikidata&quot;</span><span class="p">]</span><span class="w"></span>
 
-    <span class="n">standard_prefix</span> <span class="o">=</span> <span class="s">&quot;wikidata&quot;</span>
+<span class="w">    </span><span class="n">standard_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wikidata&quot;</span><span class="w"></span>
 
-    <span class="n">accession_pattern</span> <span class="o">=</span> <span class="n">r</span><span class="s">&quot;Q[0-9]+&quot;</span>
+<span class="w">    </span><span class="n">accession_pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="s">&quot;Q[0-9]+&quot;</span><span class="w"></span>
 
-    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-        <span class="s">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s">&quot;&quot;&quot;</span>
 
-        <span class="nl">https:</span><span class="c1">//www.wikidata.org/wiki/Wikidata:Identifiers</span>
+<span class="w">        </span><span class="nl">https:</span><span class="c1">//www.wikidata.org/wiki/Wikidata:Identifiers</span>
 
-        <span class="s">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s">&quot;&quot;&quot;</span>
 
-        <span class="n">accession</span> <span class="o">=</span> <span class="n">citekey</span><span class="p">.</span><span class="n">accession</span>
+<span class="w">        </span><span class="n">accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey</span><span class="p">.</span><span class="n">accession</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">accession</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;Q&quot;</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">accession</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;Q&quot;</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="s">&quot;Wikidata item IDs must start with &#39;Q&#39;.&quot;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Wikidata item IDs must start with &#39;Q&#39;.&quot;</span><span class="w"></span>
 
-        <span class="n">elif</span> <span class="k">not</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="n">elif</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="p">(</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 
-                <span class="s">&quot;Accession does not conform to the Wikidata regex. &quot;</span>
+<span class="w">                </span><span class="s">&quot;Accession does not conform to the Wikidata regex. &quot;</span><span class="w"></span>
 
-                <span class="s">&quot;Double check the entity ID.&quot;</span>
+<span class="w">                </span><span class="s">&quot;Double check the entity ID.&quot;</span><span class="w"></span>
 
-            <span class="p">)</span>
+<span class="w">            </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">def</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_csl_item</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="n">get_wikidata_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_accession</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">get_wikidata_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">.</span><span class="n">standard_accession</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -1823,7 +1829,9 @@ work, such as Q50051684.</p>
 </code></pre></div>
 
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">get_csl_item</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">citekey</span><span class="ss">)</span>:
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">get_csl_item</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">citekey</span><span class="ss">)</span>:
 
         <span class="k">return</span> <span class="nv">get_wikidata_csl_item</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">standard_accession</span><span class="ss">)</span>
 </code></pre></div>
@@ -1837,29 +1845,31 @@ work, such as Q50051684.</p>
 </code></pre></div>
 
 <p>https://www.wikidata.org/wiki/Wikidata:Identifiers</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">inspect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-        <span class="s">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s">&quot;&quot;&quot;</span>
 
-        <span class="nl">https:</span><span class="c1">//www.wikidata.org/wiki/Wikidata:Identifiers</span>
+<span class="w">        </span><span class="nl">https:</span><span class="c1">//www.wikidata.org/wiki/Wikidata:Identifiers</span>
 
-        <span class="s">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s">&quot;&quot;&quot;</span>
 
-        <span class="n">accession</span> <span class="o">=</span> <span class="n">citekey</span><span class="p">.</span><span class="n">accession</span>
+<span class="w">        </span><span class="n">accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey</span><span class="p">.</span><span class="n">accession</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="k">not</span> <span class="n">accession</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;Q&quot;</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">accession</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;Q&quot;</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="s">&quot;Wikidata item IDs must start with &#39;Q&#39;.&quot;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Wikidata item IDs must start with &#39;Q&#39;.&quot;</span><span class="w"></span>
 
-        <span class="n">elif</span> <span class="k">not</span> <span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="n">elif</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">_get_pattern</span><span class="p">().</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="p">(</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 
-                <span class="s">&quot;Accession does not conform to the Wikidata regex. &quot;</span>
+<span class="w">                </span><span class="s">&quot;Accession does not conform to the Wikidata regex. &quot;</span><span class="w"></span>
 
-                <span class="s">&quot;Double check the entity ID.&quot;</span>
+<span class="w">                </span><span class="s">&quot;Double check the entity ID.&quot;</span><span class="w"></span>
 
-            <span class="p">)</span>
+<span class="w">            </span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -1874,9 +1884,11 @@ work, such as Q50051684.</p>
 <p>This method defaults to returning <code>self.standard_prefix</code>
 (or <code>self.prefix_lower</code> if standard_prefix is not defined).
 Subclasses can override this method with more specific standardization logic.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="kr">self</span><span class="p">,</span> <span class="n">accession</span><span class="o">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">str</span><span class="p">,</span> <span class="n">str</span><span class="p">]</span><span class="o">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">standardize_prefix_accession</span><span class="p">(</span><span class="kr">self</span><span class="p">,</span><span class="w"> </span><span class="n">accession</span><span class="o">:</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Tuple</span><span class="p">[</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">]</span><span class="o">:</span><span class="w"></span>
 
-        <span class="s">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s">&quot;&quot;&quot;</span>
 
 <span class="s">        Return (prefix, accession) in standardized form.</span>
 
@@ -1886,13 +1898,13 @@ Subclasses can override this method with more specific standardization logic.</p
 
 <span class="s">        Subclasses can override this method with more specific standardization logic.</span>
 
-<span class="s">        &quot;&quot;&quot;</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="w"></span>
 
-        <span class="n">standard_prefix</span> <span class="o">=</span> <span class="n">getattr</span><span class="p">(</span><span class="kr">self</span><span class="p">,</span> <span class="s">&quot;standard_prefix&quot;</span><span class="p">,</span> <span class="kr">self</span><span class="p">.</span><span class="n">prefix_lower</span><span class="p">)</span>
+<span class="w">        </span><span class="n">standard_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getattr</span><span class="p">(</span><span class="kr">self</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;standard_prefix&quot;</span><span class="p">,</span><span class="w"> </span><span class="kr">self</span><span class="p">.</span><span class="n">prefix_lower</span><span class="p">)</span><span class="w"></span>
 
-        <span class="n">standard_accession</span> <span class="o">=</span> <span class="n">accession</span>
+<span class="w">        </span><span class="n">standard_accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accession</span><span class="w"></span>
 
-        <span class="kr">return</span> <span class="n">standard_prefix</span><span class="p">,</span> <span class="n">standard_accession</span>
+<span class="w">        </span><span class="kr">return</span><span class="w"> </span><span class="n">standard_prefix</span><span class="p">,</span><span class="w"> </span><span class="n">standard_accession</span><span class="w"></span>
 </code></pre></div>
 
 </details>

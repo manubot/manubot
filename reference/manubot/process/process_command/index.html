@@ -1508,7 +1508,9 @@
                 <h1 id="module-manubotprocessprocess_command">Module manubot.process.process_command</h1>
 <p>None</p>
 <p>None</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="k">def</span> <span class="nf">cli_process</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
@@ -1571,57 +1573,59 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">cli_process</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">cli_process</span><span class="p">(</span><span class="n">args</span><span class="p">):</span><span class="w"></span>
 
-    <span class="n">args_dict</span> <span class="o">=</span> <span class="n">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="w"></span>
 
-    <span class="c1"># Set paths for content</span>
+<span class="w">    </span><span class="c1"># Set paths for content</span><span class="w"></span>
 
-    <span class="n">content_dir</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">content_directory</span>
+<span class="w">    </span><span class="n">content_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">content_directory</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">content_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">content_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span><span class="w"></span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;content directory does not exist: {content_dir}&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;content directory does not exist: {content_dir}&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;citation_tags_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">content_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;citation-tags.tsv&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;citation_tags_path&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">content_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;citation-tags.tsv&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;meta_yaml_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">content_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;metadata.yaml&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;meta_yaml_path&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">content_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;metadata.yaml&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;manual_references_paths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sorted</span><span class="p">(</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;manual_references_paths&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sorted</span><span class="p">(</span><span class="w"></span>
 
-        <span class="n">content_dir</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;manual-references*.*&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">content_dir</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;manual-references*.*&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="c1"># Set paths for output</span>
+<span class="w">    </span><span class="c1"># Set paths for output</span><span class="w"></span>
 
-    <span class="n">output_dir</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">output_directory</span>
+<span class="w">    </span><span class="n">output_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="w"></span>
 
-    <span class="n">output_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="n">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+<span class="w">    </span><span class="n">output_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="n">True</span><span class="p">,</span><span class="w"> </span><span class="n">exist_ok</span><span class="o">=</span><span class="n">True</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;manuscript_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;manuscript.md&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;manuscript_path&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">output_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;manuscript.md&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;citations_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;citations.tsv&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;citations_path&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">output_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;citations.tsv&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;references_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;references.json&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;references_path&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">output_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;references.json&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;variables_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;variables.json&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;variables_path&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">output_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;variables.json&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="c1"># Set paths for caching</span>
+<span class="w">    </span><span class="c1"># Set paths for caching</span><span class="w"></span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;cache_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">cache_directory</span> <span class="ow">or</span> <span class="n">output_dir</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;cache_directory&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">cache_directory</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">output_dir</span><span class="w"></span>
 
-    <span class="n">args</span><span class="o">.</span><span class="n">cache_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="n">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args</span><span class="o">.</span><span class="n">cache_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="n">True</span><span class="p">,</span><span class="w"> </span><span class="n">exist_ok</span><span class="o">=</span><span class="n">True</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;requests_cache_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;requests_cache_path&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">str</span><span class="p">(</span><span class="w"></span>
 
-        <span class="n">args</span><span class="o">.</span><span class="n">cache_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;requests-cache&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">args</span><span class="o">.</span><span class="n">cache_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;requests-cache&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">from</span> <span class="n">manubot</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">util</span> <span class="n">import</span> <span class="n">prepare_manuscript</span>
+<span class="w">    </span><span class="n">from</span><span class="w"> </span><span class="n">manubot</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">util</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">prepare_manuscript</span><span class="w"></span>
 
-    <span class="n">prepare_manuscript</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+<span class="w">    </span><span class="n">prepare_manuscript</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>

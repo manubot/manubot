@@ -1578,7 +1578,9 @@
                 <h1 id="module-manubotprocessmetadata">Module manubot.process.metadata</h1>
 <p>Tools for manuscript metadata processing including thumbnail detection and processing.</p>
 <p>None</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="sd">&quot;&quot;&quot;</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">Tools for manuscript metadata processing including thumbnail detection and processing.</span>
 
@@ -1974,7 +1976,9 @@
 </code></pre></div>
 
 <p>Render <code>header-includes-template.html</code> using information from <code>variables</code>.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_header_includes</span><span class="p">(</span><span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_header_includes</span><span class="p">(</span><span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2028,9 +2032,11 @@ the return dictionary will be like:</p>
 </code></pre></div>
 
 <p>Note the trailing <code>/</code> in <code>html_url</code>, which is required for proper functioning.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_manuscript_urls</span><span class="p">(</span><span class="n">html_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dict</span><span class="p">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">get_manuscript_urls</span><span class="p">(</span><span class="n">html_url</span><span class="p">:</span><span class="w"> </span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">None</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">dict</span><span class="p">:</span><span class="w"></span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Return a dictionary with URLs for a manuscript.</span>
 
@@ -2076,61 +2082,61 @@ the return dictionary will be like:</p>
 
 <span class="sd">    Note the trailing `/` in `html_url`, which is required for proper functioning.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="n">import</span> <span class="n">requests</span>
+<span class="w">    </span><span class="n">import</span><span class="w"> </span><span class="n">requests</span><span class="w"></span>
 
-    <span class="n">from</span> <span class="o">.</span><span class="n">ci</span> <span class="n">import</span> <span class="n">get_continuous_integration_parameters</span>
+<span class="w">    </span><span class="n">from</span><span class="w"> </span><span class="o">.</span><span class="n">ci</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">get_continuous_integration_parameters</span><span class="w"></span>
 
-    <span class="n">urls</span> <span class="o">=</span> <span class="n">dict</span><span class="p">()</span>
+<span class="w">    </span><span class="n">urls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dict</span><span class="p">()</span><span class="w"></span>
 
-    <span class="n">ci_params</span> <span class="o">=</span> <span class="n">get_continuous_integration_parameters</span><span class="p">()</span>
+<span class="w">    </span><span class="n">ci_params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_continuous_integration_parameters</span><span class="p">()</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="n">html_url</span> <span class="k">is</span> <span class="n">None</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">html_url</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">None</span><span class="p">:</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">ci_params</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">ci_params</span><span class="p">:</span><span class="w"></span>
 
-            <span class="k">return</span> <span class="n">urls</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">urls</span><span class="w"></span>
 
-        <span class="n">html_url</span> <span class="o">=</span> <span class="s2">&quot;https://{repo_owner}.github.io/{repo_name}/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">ci_params</span><span class="p">)</span>
+<span class="w">        </span><span class="n">html_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://{repo_owner}.github.io/{repo_name}/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">ci_params</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">urls</span><span class="p">[</span><span class="s2">&quot;html_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">html_url</span>
+<span class="w">    </span><span class="n">urls</span><span class="p">[</span><span class="s2">&quot;html_url&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">html_url</span><span class="w"></span>
 
-    <span class="n">urls</span><span class="p">[</span><span class="s2">&quot;pdf_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">html_url</span><span class="p">,</span> <span class="s2">&quot;manuscript.pdf&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">urls</span><span class="p">[</span><span class="s2">&quot;pdf_url&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">urljoin</span><span class="p">(</span><span class="n">html_url</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;manuscript.pdf&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">ci_params</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">ci_params</span><span class="p">:</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="n">urls</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">urls</span><span class="w"></span>
 
-    <span class="n">urls</span><span class="p">[</span><span class="s2">&quot;html_url_versioned&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">html_url</span><span class="p">,</span> <span class="s2">&quot;v/{commit}/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">ci_params</span><span class="p">))</span>
+<span class="w">    </span><span class="n">urls</span><span class="p">[</span><span class="s2">&quot;html_url_versioned&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">urljoin</span><span class="p">(</span><span class="n">html_url</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;v/{commit}/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">ci_params</span><span class="p">))</span><span class="w"></span>
 
-    <span class="n">urls</span><span class="p">[</span><span class="s2">&quot;pdf_url_versioned&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">urls</span><span class="p">[</span><span class="s2">&quot;html_url_versioned&quot;</span><span class="p">],</span> <span class="s2">&quot;manuscript.pdf&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">urls</span><span class="p">[</span><span class="s2">&quot;pdf_url_versioned&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">urljoin</span><span class="p">(</span><span class="n">urls</span><span class="p">[</span><span class="s2">&quot;html_url_versioned&quot;</span><span class="p">],</span><span class="w"> </span><span class="s2">&quot;manuscript.pdf&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">html_url</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+<span class="w">    </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">html_url</span><span class="p">,</span><span class="w"> </span><span class="n">allow_redirects</span><span class="o">=</span><span class="n">True</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span><span class="w"></span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="w"></span>
 
-            <span class="s2">&quot;html_url is not web accessible. &quot;</span>
+<span class="w">            </span><span class="s2">&quot;html_url is not web accessible. &quot;</span><span class="w"></span>
 
-            <span class="n">f</span><span class="s2">&quot;{html_url} returned status code {response.status_code}. &quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="s2">&quot;{html_url} returned status code {response.status_code}. &quot;</span><span class="w"></span>
 
-            <span class="s2">&quot;Ignore this warning if the manuscript has not yet been deployed for the first time. &quot;</span>
+<span class="w">            </span><span class="s2">&quot;Ignore this warning if the manuscript has not yet been deployed for the first time. &quot;</span><span class="w"></span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">history</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">history</span><span class="p">:</span><span class="w"></span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="w"></span>
 
-            <span class="s2">&quot;html_url includes redirects. In order of oldest to most recent:</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="s2">&quot;html_url includes redirects. In order of oldest to most recent:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="w"></span>
 
-            <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">url</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">history</span> <span class="o">+</span> <span class="p">[</span><span class="n">response</span><span class="p">])</span>
+<span class="w">            </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">url</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">history</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">[</span><span class="n">response</span><span class="p">])</span><span class="w"></span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="n">urls</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">urls</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2149,7 +2155,9 @@ and the <code>main</code> branch of the <code>rootstock</code> remote.</p>
   point to the default Rootstock repository of <a href="https://github.com/manubot/rootstock">https://github.com/manubot/rootstock</a>.</li>
 <li>fetches the latest commits in the <code>main</code> branch of the <code>rootstock</code> remote</li>
 </ul>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_rootstock_commit</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_rootstock_commit</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2238,7 +2246,9 @@ and the <code>main</code> branch of the <code>rootstock</code> remote.</p>
 <p>Values whose detection fails are set to None.</p>
 <p>The <code>rootstock</code> parameter controls whether to fetch the rootstock commit id.
 The rootstock git remote will be added to the local git repository if true.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_software_versions</span><span class="p">(</span><span class="n">rootstock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_software_versions</span><span class="p">(</span><span class="n">rootstock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2283,7 +2293,9 @@ within the git repository from which this function is executed. If <code>thumbna
 is a local path, the path should be relative to root directory of the git repository
 it is located in. If a local path is provided or detected,
 it is converted to a GitHub raw URL.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_thumbnail_url</span><span class="p">(</span><span class="n">thumbnail</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_thumbnail_url</span><span class="p">(</span><span class="n">thumbnail</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2340,37 +2352,39 @@ it is converted to a GitHub raw URL.</p>
 </code></pre></div>
 
 <p>Return the path to repository root directory or <code>None</code> if indeterminate.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">@functools.lru_cache</span><span class="p">()</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">@functools.lru_cache</span><span class="p">()</span><span class="w"></span>
 
-<span class="n">def</span> <span class="n">git_repository_root</span><span class="p">()</span><span class="o">:</span>
+<span class="n">def</span><span class="w"> </span><span class="n">git_repository_root</span><span class="p">()</span><span class="o">:</span><span class="w"></span>
 
-    <span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
+<span class="w">    </span><span class="s2">&quot;</span><span class="se">&quot;&quot;</span><span class="s2"></span>
 
 <span class="s2">    Return the path to repository root directory or `None` if indeterminate.</span>
 
-<span class="s2">    </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span>
+<span class="s2">    </span><span class="se">&quot;&quot;</span><span class="s2">&quot;</span><span class="w"></span>
 
-    <span class="k">for</span> <span class="n">cmd</span> <span class="k">in</span> <span class="p">(</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">cmd</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 
-        <span class="err">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;rev-parse&quot;</span><span class="p">,</span> <span class="s2">&quot;--show-superproject-working-tree&quot;</span><span class="err">]</span><span class="p">,</span>
+<span class="w">        </span><span class="err">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;rev-parse&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--show-superproject-working-tree&quot;</span><span class="err">]</span><span class="p">,</span><span class="w"></span>
 
-        <span class="err">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;rev-parse&quot;</span><span class="p">,</span> <span class="s2">&quot;--show-toplevel&quot;</span><span class="err">]</span><span class="p">,</span>
+<span class="w">        </span><span class="err">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;rev-parse&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--show-toplevel&quot;</span><span class="err">]</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span><span class="o">:</span>
+<span class="w">    </span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-        <span class="n">try</span><span class="o">:</span>
+<span class="w">        </span><span class="n">try</span><span class="o">:</span><span class="w"></span>
 
-            <span class="k">path</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="no">True</span><span class="p">).</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="p">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span><span class="w"> </span><span class="n">universal_newlines</span><span class="o">=</span><span class="no">True</span><span class="p">).</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="w"></span>
 
-            <span class="k">if</span> <span class="k">path</span><span class="o">:</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="k">path</span><span class="o">:</span><span class="w"></span>
 
-                <span class="k">return</span> <span class="n">pathlib</span><span class="p">.</span><span class="k">Path</span><span class="p">(</span><span class="k">path</span><span class="p">)</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">pathlib</span><span class="p">.</span><span class="k">Path</span><span class="p">(</span><span class="k">path</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">except</span> <span class="p">(</span><span class="n">subprocess</span><span class="p">.</span><span class="n">CalledProcessError</span><span class="p">,</span> <span class="n">OSError</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="p">(</span><span class="n">subprocess</span><span class="p">.</span><span class="n">CalledProcessError</span><span class="p">,</span><span class="w"> </span><span class="n">OSError</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
-            <span class="n">pass</span>
+<span class="w">            </span><span class="n">pass</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="k">None</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 </code></pre></div>
 
 </details>

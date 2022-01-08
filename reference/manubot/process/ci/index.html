@@ -1522,7 +1522,9 @@
                 <h1 id="module-manubotprocessci">Module manubot.process.ci</h1>
 <p>None</p>
 <p>None</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -1732,13 +1734,15 @@
 - job_url: URL for the webpage with job details</p>
 <p>GitHub Actions does not set an environment variable with triggering_commit
 for pull requests. Therefore, set the following environment variable in your workflow:</p>
-<div class="codehilite"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
-  <span class="nt">GITHUB_PULL_REQUEST_SHA</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${{ github.event.pull_request.head.sha }}</span>
+<div class="codehilite"><pre><span></span><code><span class="nt">env</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">GITHUB_PULL_REQUEST_SHA</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ github.event.pull_request.head.sha }}</span><span class="w"></span>
 </code></pre></div>
 
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_continuous_integration_parameters</span><span class="p">():</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">get_continuous_integration_parameters</span><span class="p">():</span><span class="w"></span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Return a dictionary with information on a continuous integration build</span>
 
@@ -1782,133 +1786,133 @@ for pull requests. Therefore, set the following environment variable in your wor
 
 <span class="sd">    ```</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;GITHUB_ACTIONS&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;GITHUB_ACTIONS&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">:</span><span class="w"></span>
 
-        <span class="c1"># https://git.io/JvUf7</span>
+<span class="w">        </span><span class="c1"># https://git.io/JvUf7</span><span class="w"></span>
 
-        <span class="n">repo_slug</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;GITHUB_REPOSITORY&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">repo_slug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;GITHUB_REPOSITORY&quot;</span><span class="p">]</span><span class="w"></span>
 
-        <span class="n">repo_owner</span><span class="p">,</span> <span class="n">repo_name</span> <span class="o">=</span> <span class="n">repo_slug</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">repo_owner</span><span class="p">,</span><span class="w"> </span><span class="n">repo_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">repo_slug</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="w"></span>
 
-        <span class="n">run_id</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;GITHUB_RUN_ID&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">run_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;GITHUB_RUN_ID&quot;</span><span class="p">]</span><span class="w"></span>
 
-        <span class="c1"># GITHUB_SHA for pull_request event: Last merge commit on the GITHUB_REF branch</span>
+<span class="w">        </span><span class="c1"># GITHUB_SHA for pull_request event: Last merge commit on the GITHUB_REF branch</span><span class="w"></span>
 
-        <span class="c1"># GITHUB_SHA for push event: Commit pushed, unless deleting a branch (when it&#39;s the default branch)</span>
+<span class="w">        </span><span class="c1"># GITHUB_SHA for push event: Commit pushed, unless deleting a branch (when it&#39;s the default branch)</span><span class="w"></span>
 
-        <span class="c1"># https://git.io/JvUfd</span>
+<span class="w">        </span><span class="c1"># https://git.io/JvUfd</span><span class="w"></span>
 
-        <span class="n">github_sha</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;GITHUB_SHA&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">github_sha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;GITHUB_SHA&quot;</span><span class="p">]</span><span class="w"></span>
 
-        <span class="n">ci_params</span> <span class="o">=</span> <span class="p">{</span>
+<span class="w">        </span><span class="n">ci_params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-            <span class="s2">&quot;provider&quot;</span><span class="p">:</span> <span class="s2">&quot;github&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;provider&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;github&quot;</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;repo_slug&quot;</span><span class="p">:</span> <span class="n">repo_slug</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;repo_slug&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">repo_slug</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;repo_owner&quot;</span><span class="p">:</span> <span class="n">repo_owner</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;repo_owner&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">repo_owner</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;repo_name&quot;</span><span class="p">:</span> <span class="n">repo_name</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;repo_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">repo_name</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;commit&quot;</span><span class="p">:</span> <span class="n">github_sha</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;commit&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">github_sha</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;triggering_commit&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;GITHUB_PULL_REQUEST_SHA&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">github_sha</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;triggering_commit&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;GITHUB_PULL_REQUEST_SHA&quot;</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">github_sha</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;build_url&quot;</span><span class="p">:</span> <span class="n">f</span><span class="s2">&quot;https://github.com/{repo_slug}/commit/{github_sha}/checks&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;build_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">f</span><span class="s2">&quot;https://github.com/{repo_slug}/commit/{github_sha}/checks&quot;</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;job_url&quot;</span><span class="p">:</span> <span class="n">f</span><span class="s2">&quot;https://github.com/{repo_slug}/actions/runs/{run_id}&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;job_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">f</span><span class="s2">&quot;https://github.com/{repo_slug}/actions/runs/{run_id}&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="n">ci_params</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ci_params</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;TRAVIS&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;TRAVIS&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">:</span><span class="w"></span>
 
-        <span class="c1"># https://docs.travis-ci.com/user/environment-variables/</span>
+<span class="w">        </span><span class="c1"># https://docs.travis-ci.com/user/environment-variables/</span><span class="w"></span>
 
-        <span class="n">repo_slug</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TRAVIS_REPO_SLUG&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">repo_slug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TRAVIS_REPO_SLUG&quot;</span><span class="p">]</span><span class="w"></span>
 
-        <span class="n">repo_owner</span><span class="p">,</span> <span class="n">repo_name</span> <span class="o">=</span> <span class="n">repo_slug</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">repo_owner</span><span class="p">,</span><span class="w"> </span><span class="n">repo_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">repo_slug</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-            <span class="s2">&quot;provider&quot;</span><span class="p">:</span> <span class="s2">&quot;travis&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;provider&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;travis&quot;</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;repo_slug&quot;</span><span class="p">:</span> <span class="n">repo_slug</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;repo_slug&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">repo_slug</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;repo_owner&quot;</span><span class="p">:</span> <span class="n">repo_owner</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;repo_owner&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">repo_owner</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;repo_name&quot;</span><span class="p">:</span> <span class="n">repo_name</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;repo_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">repo_name</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;commit&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TRAVIS_COMMIT&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="s2">&quot;commit&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TRAVIS_COMMIT&quot;</span><span class="p">],</span><span class="w"></span>
 
-            <span class="s2">&quot;triggering_commit&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;TRAVIS_PULL_REQUEST_SHA&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="s2">&quot;triggering_commit&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;TRAVIS_PULL_REQUEST_SHA&quot;</span><span class="p">)</span><span class="w"></span>
 
-            <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TRAVIS_COMMIT&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="ow">or</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TRAVIS_COMMIT&quot;</span><span class="p">],</span><span class="w"></span>
 
-            <span class="s2">&quot;build_url&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TRAVIS_BUILD_WEB_URL&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="s2">&quot;build_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TRAVIS_BUILD_WEB_URL&quot;</span><span class="p">],</span><span class="w"></span>
 
-            <span class="s2">&quot;job_url&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TRAVIS_JOB_WEB_URL&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="s2">&quot;job_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TRAVIS_JOB_WEB_URL&quot;</span><span class="p">],</span><span class="w"></span>
 
-        <span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;APPVEYOR&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;APPVEYOR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">:</span><span class="w"></span>
 
-        <span class="c1"># https://www.appveyor.com/docs/environment-variables/</span>
+<span class="w">        </span><span class="c1"># https://www.appveyor.com/docs/environment-variables/</span><span class="w"></span>
 
-        <span class="n">repo_slug</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;APPVEYOR_REPO_NAME&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">repo_slug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;APPVEYOR_REPO_NAME&quot;</span><span class="p">]</span><span class="w"></span>
 
-        <span class="n">repo_owner</span><span class="p">,</span> <span class="n">repo_name</span> <span class="o">=</span> <span class="n">repo_slug</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">repo_owner</span><span class="p">,</span><span class="w"> </span><span class="n">repo_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">repo_slug</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="w"></span>
 
-        <span class="n">provider_url</span> <span class="o">=</span> <span class="s2">&quot;{APPVEYOR_URL}/project/{APPVEYOR_ACCOUNT_NAME}/{APPVEYOR_PROJECT_SLUG}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">        </span><span class="n">provider_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;{APPVEYOR_URL}/project/{APPVEYOR_ACCOUNT_NAME}/{APPVEYOR_PROJECT_SLUG}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="w"></span>
 
-            <span class="o">**</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span>
+<span class="w">            </span><span class="o">**</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="w"></span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-        <span class="n">build_url</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{provider_url}/builds/{os.environ[&#39;APPVEYOR_BUILD_ID&#39;]}&quot;</span>
+<span class="w">        </span><span class="n">build_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="s2">&quot;{provider_url}/builds/{os.environ[&#39;APPVEYOR_BUILD_ID&#39;]}&quot;</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-            <span class="s2">&quot;provider&quot;</span><span class="p">:</span> <span class="s2">&quot;appveyor&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;provider&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;appveyor&quot;</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;provider_account&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;APPVEYOR_ACCOUNT_NAME&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="s2">&quot;provider_account&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;APPVEYOR_ACCOUNT_NAME&quot;</span><span class="p">],</span><span class="w"></span>
 
-            <span class="s2">&quot;repo_slug&quot;</span><span class="p">:</span> <span class="n">repo_slug</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;repo_slug&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">repo_slug</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;repo_owner&quot;</span><span class="p">:</span> <span class="n">repo_owner</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;repo_owner&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">repo_owner</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;repo_name&quot;</span><span class="p">:</span> <span class="n">repo_name</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;repo_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">repo_name</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;commit&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;APPVEYOR_REPO_COMMIT&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="s2">&quot;commit&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;APPVEYOR_REPO_COMMIT&quot;</span><span class="p">],</span><span class="w"></span>
 
-            <span class="s2">&quot;triggering_commit&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;APPVEYOR_PULL_REQUEST_HEAD_COMMIT&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="s2">&quot;triggering_commit&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;APPVEYOR_PULL_REQUEST_HEAD_COMMIT&quot;</span><span class="p">)</span><span class="w"></span>
 
-            <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;APPVEYOR_REPO_COMMIT&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="ow">or</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;APPVEYOR_REPO_COMMIT&quot;</span><span class="p">],</span><span class="w"></span>
 
-            <span class="s2">&quot;build_url&quot;</span><span class="p">:</span> <span class="n">build_url</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;build_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">build_url</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;job_url&quot;</span><span class="p">:</span> <span class="n">f</span><span class="s2">&quot;{provider_url}/build/job/{os.environ[&#39;APPVEYOR_JOB_ID&#39;]}&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;job_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">f</span><span class="s2">&quot;{provider_url}/build/job/{os.environ[&#39;APPVEYOR_JOB_ID&#39;]}&quot;</span><span class="p">,</span><span class="w"></span>
 
-            <span class="s2">&quot;artifact_url&quot;</span><span class="p">:</span> <span class="n">f</span><span class="s2">&quot;{build_url}/artifacts&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;artifact_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">f</span><span class="s2">&quot;{build_url}/artifacts&quot;</span><span class="p">,</span><span class="w"></span>
 
-        <span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CI&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CI&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">:</span><span class="w"></span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="w"></span>
 
-            <span class="s2">&quot;Detected CI environment variable, but get_continuous_integration_parameters &quot;</span>
+<span class="w">            </span><span class="s2">&quot;Detected CI environment variable, but get_continuous_integration_parameters &quot;</span><span class="w"></span>
 
-            <span class="s2">&quot;did not detect environment variables for a supported CI provider. &quot;</span>
+<span class="w">            </span><span class="s2">&quot;did not detect environment variables for a supported CI provider. &quot;</span><span class="w"></span>
 
-            <span class="s2">&quot;Supported providers are: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supported_providers</span><span class="p">))</span>
+<span class="w">            </span><span class="s2">&quot;Supported providers are: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supported_providers</span><span class="p">))</span><span class="w"></span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="n">None</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">None</span><span class="w"></span>
 </code></pre></div>
 
 </details>

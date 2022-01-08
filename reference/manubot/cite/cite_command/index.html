@@ -1536,7 +1536,9 @@
                 <h1 id="module-manubotcitecite_command">Module manubot.cite.cite_command</h1>
 <p>None</p>
 <p>None</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">argparse</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">argparse</span>
 
 <span class="kn">import</span> <span class="nn">json</span>
 
@@ -1818,7 +1820,9 @@
 </code></pre></div>
 
 <p>path is the path to write to.</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">call_pandoc</span><span class="ss">(</span><span class="nv">metadata</span>, <span class="nv">path</span>, <span class="nv">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">plain</span><span class="s2">&quot;</span><span class="ss">)</span>:
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">call_pandoc</span><span class="ss">(</span><span class="nv">metadata</span>, <span class="nv">path</span>, <span class="nv">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">plain</span><span class="s2">&quot;</span><span class="ss">)</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -1916,9 +1920,11 @@
 <p>Does not allow user to directly specify Pandoc's --to argument, due to
 inconsistent citation rendering by output format. See
 https://github.com/jgm/pandoc/issues/4834</p>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">cli_cite</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">):</span>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">cli_cite</span><span class="p">(</span><span class="n">args</span><span class="p">:</span><span class="w"> </span><span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">):</span><span class="w"></span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Main function for the manubot cite command-line interface.</span>
 
@@ -1928,57 +1934,57 @@ https://github.com/jgm/pandoc/issues/4834</p>
 
 <span class="sd">    https://github.com/jgm/pandoc/issues/4834</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="w"></span>
 
-    <span class="n">_parse_cli_cite_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+<span class="w">    </span><span class="n">_parse_cli_cite_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span>
+<span class="w">    </span><span class="n">citations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Citations</span><span class="p">(</span><span class="w"></span>
 
-        <span class="n">input_ids</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">citekeys</span><span class="p">,</span>
+<span class="w">        </span><span class="n">input_ids</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">citekeys</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">infer_citekey_prefixes</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">infer_prefix</span><span class="p">,</span>
+<span class="w">        </span><span class="n">infer_citekey_prefixes</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">infer_prefix</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">prune_csl_items</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">prune_csl</span><span class="p">,</span>
+<span class="w">        </span><span class="n">prune_csl_items</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">prune_csl</span><span class="p">,</span><span class="w"></span>
 
-        <span class="n">sort_csl_items</span><span class="o">=</span><span class="n">False</span><span class="p">,</span>
+<span class="w">        </span><span class="n">sort_csl_items</span><span class="o">=</span><span class="n">False</span><span class="p">,</span><span class="w"></span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">citations</span><span class="o">.</span><span class="n">load_manual_references</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">bibliography</span><span class="p">)</span>
+<span class="w">    </span><span class="n">citations</span><span class="o">.</span><span class="n">load_manual_references</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">bibliography</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">citations</span><span class="o">.</span><span class="n">inspect</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">citations</span><span class="o">.</span><span class="n">inspect</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">csl_items</span> <span class="o">=</span> <span class="n">citations</span><span class="o">.</span><span class="n">get_csl_items</span><span class="p">()</span>
+<span class="w">    </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citations</span><span class="o">.</span><span class="n">get_csl_items</span><span class="p">()</span><span class="w"></span>
 
-    <span class="c1"># output CSL data, if --render is False</span>
+<span class="w">    </span><span class="c1"># output CSL data, if --render is False</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">render</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">render</span><span class="p">:</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s2">&quot;csljson&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">format</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;csljson&quot;</span><span class="p">:</span><span class="w"></span>
 
-            <span class="n">text</span> <span class="o">=</span> <span class="n">citations</span><span class="o">.</span><span class="n">csl_json</span>
+<span class="w">            </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citations</span><span class="o">.</span><span class="n">csl_json</span><span class="w"></span>
 
-        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s2">&quot;cslyaml&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="k">elif</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">format</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;cslyaml&quot;</span><span class="p">:</span><span class="w"></span>
 
-            <span class="n">text</span> <span class="o">=</span> <span class="n">citations</span><span class="o">.</span><span class="n">csl_yaml</span>
+<span class="w">            </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citations</span><span class="o">.</span><span class="n">csl_yaml</span><span class="w"></span>
 
-        <span class="k">else</span><span class="p">:</span>
+<span class="w">        </span><span class="k">else</span><span class="p">:</span><span class="w"></span>
 
-            <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span><span class="s2">&quot;format must be csljson or cslyaml&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="s2">&quot;format must be csljson or cslyaml&quot;</span><span class="p">)</span><span class="w"></span>
 
-        <span class="n">write_file</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span> <span class="k">else</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span>
+<span class="w">        </span><span class="n">write_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;wb&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="w"></span>
 
-        <span class="n">with</span> <span class="n">write_file</span><span class="p">:</span>
+<span class="w">        </span><span class="n">with</span><span class="w"> </span><span class="n">write_file</span><span class="p">:</span><span class="w"></span>
 
-            <span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+<span class="w">            </span><span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="w"></span>
 
-        <span class="k">return</span>
+<span class="w">        </span><span class="k">return</span><span class="w"></span>
 
-    <span class="c1"># use Pandoc to render references</span>
+<span class="w">    </span><span class="c1"># use Pandoc to render references</span><span class="w"></span>
 
-    <span class="n">pandoc_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nocite&quot;</span><span class="p">:</span> <span class="s2">&quot;@*&quot;</span><span class="p">,</span> <span class="s2">&quot;csl&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">csl</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">:</span> <span class="n">csl_items</span><span class="p">}</span>
+<span class="w">    </span><span class="n">pandoc_metadata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;nocite&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;@*&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;csl&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">csl</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;references&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">csl_items</span><span class="p">}</span><span class="w"></span>
 
-    <span class="n">call_pandoc</span><span class="p">(</span><span class="n">metadata</span><span class="o">=</span><span class="n">pandoc_metadata</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">format</span><span class="p">)</span>
+<span class="w">    </span><span class="n">call_pandoc</span><span class="p">(</span><span class="n">metadata</span><span class="o">=</span><span class="n">pandoc_metadata</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="n">format</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">format</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
