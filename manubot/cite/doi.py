@@ -2,6 +2,7 @@ import json
 import logging
 import urllib.parse
 import urllib.request
+from functools import partial
 from typing import Any, Callable, Optional
 
 import requests
@@ -114,21 +115,20 @@ def get_short_doi_url(doi: str) -> Optional[str]:
         return None
 
 
-"""
-Base URL to use for content negotiation.
-
-Options include:
-
-1. <https://data.crosscite.org> documented at <https://support.datacite.org/docs/datacite-content-resolver>
-2. <https://doi.org/> documented at <https://citation.crosscite.org/docs.html>
-"""
-content_negotiation_url: str = "https://data.crosscite.org"
+content_negotiation_url_datacite: str = "https://data.crosscite.org"
+content_negotiation_url_crosscite: str = "https://doi.org"
 
 
-def get_doi_csl_item_crosscite(doi: str):
+def get_doi_csl_item_negotiation(
+    doi: str, content_negotiation_url: str = content_negotiation_url_datacite
+):
     """
-    Use Content Negotioation to retrieve the CSL Item
-    metadata for a DOI.
+    Use Content Negotiation to retrieve the CSL Item metadata for a DOI.
+
+    content_negotiation_url: base URL to use for content negotiation.
+    Options include:
+    1. <https://data.crosscite.org> documented at <https://support.datacite.org/docs/datacite-content-resolver>
+    2. <https://doi.org/> documented at <https://citation.crosscite.org/docs.html>
     """
     url = urllib.parse.urljoin(content_negotiation_url, urllib.request.quote(doi))
     header = {
@@ -144,6 +144,16 @@ def get_doi_csl_item_crosscite(doi: str):
             f"Invalid response from {response.url}:\n{response.text}"
         )
         raise error
+
+
+get_doi_csl_item_datacite = partial(
+    get_doi_csl_item_negotiation,
+    content_negotiation_url=content_negotiation_url_datacite,
+)
+get_doi_csl_item_crosscite = partial(
+    get_doi_csl_item_negotiation,
+    content_negotiation_url=content_negotiation_url_crosscite,
+)
 
 
 def get_doi_csl_item_zotero(doi: str):
@@ -202,4 +212,8 @@ def get_doi_csl_item(doi: str):
     raise Exception(f"all get_doi_csl_item methods failed for {doi}")
 
 
-doi_retrievers = [get_doi_csl_item_crosscite, get_doi_csl_item_zotero]
+doi_retrievers = [
+    get_doi_csl_item_datacite,
+    get_doi_csl_item_crosscite,
+    get_doi_csl_item_zotero,
+]
