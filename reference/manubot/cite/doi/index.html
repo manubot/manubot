@@ -533,6 +533,20 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#get_doi_csl_item_crosscite" class="md-nav__link">
+    get_doi_csl_item_crosscite
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_doi_csl_item_datacite" class="md-nav__link">
+    get_doi_csl_item_datacite
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#get_doi_csl_item_negotiation" class="md-nav__link">
     get_doi_csl_item_negotiation
   </a>
@@ -1615,6 +1629,20 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#get_doi_csl_item_crosscite" class="md-nav__link">
+    get_doi_csl_item_crosscite
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_doi_csl_item_datacite" class="md-nav__link">
+    get_doi_csl_item_datacite
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#get_doi_csl_item_negotiation" class="md-nav__link">
     get_doi_csl_item_negotiation
   </a>
@@ -1737,8 +1765,6 @@
 <span class="kn">import</span> <span class="nn">urllib.parse</span>
 
 <span class="kn">import</span> <span class="nn">urllib.request</span>
-
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
 
@@ -1986,21 +2012,13 @@
 
         <span class="k">raise</span> <span class="n">error</span>
 
-<span class="n">get_doi_csl_item_datacite</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">get_doi_csl_item_datacite</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
-    <span class="n">get_doi_csl_item_negotiation</span><span class="p">,</span>
+    <span class="k">return</span> <span class="n">get_doi_csl_item_negotiation</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">content_negotiation_url_datacite</span><span class="p">)</span>
 
-    <span class="n">content_negotiation_url</span><span class="o">=</span><span class="n">content_negotiation_url_datacite</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">get_doi_csl_item_crosscite</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
-<span class="p">)</span>
-
-<span class="n">get_doi_csl_item_crosscite</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
-
-    <span class="n">get_doi_csl_item_negotiation</span><span class="p">,</span>
-
-    <span class="n">content_negotiation_url</span><span class="o">=</span><span class="n">content_negotiation_url_crosscite</span><span class="p">,</span>
-
-<span class="p">)</span>
+    <span class="k">return</span> <span class="n">get_doi_csl_item_negotiation</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">content_negotiation_url_crosscite</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">get_doi_csl_item_zotero</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
@@ -2114,12 +2132,6 @@
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code><span class="n">doi_retrievers</span>
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="n">get_doi_csl_item_crosscite</span>
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="n">get_doi_csl_item_datacite</span>
 </code></pre></div>
 
 <h2 id="functions">Functions</h2>
@@ -2290,6 +2302,34 @@
             <span class="ss">)</span>
 
         <span class="k">return</span> <span class="nv">csl_item</span>
+</code></pre></div>
+
+</details>
+<h3 id="get_doi_csl_item_crosscite">get_doi_csl_item_crosscite</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_doi_csl_item_crosscite</span><span class="p">(</span>
+    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">get_doi_csl_item_crosscite</span><span class="ss">(</span><span class="nv">doi</span>: <span class="nv">str</span><span class="ss">)</span>:
+
+    <span class="k">return</span> <span class="nv">get_doi_csl_item_negotiation</span><span class="ss">(</span><span class="nv">doi</span>, <span class="nv">content_negotiation_url_crosscite</span><span class="ss">)</span>
+</code></pre></div>
+
+</details>
+<h3 id="get_doi_csl_item_datacite">get_doi_csl_item_datacite</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_doi_csl_item_datacite</span><span class="p">(</span>
+    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">get_doi_csl_item_datacite</span><span class="ss">(</span><span class="nv">doi</span>: <span class="nv">str</span><span class="ss">)</span>:
+
+    <span class="k">return</span> <span class="nv">get_doi_csl_item_negotiation</span><span class="ss">(</span><span class="nv">doi</span>, <span class="nv">content_negotiation_url_datacite</span><span class="ss">)</span>
 </code></pre></div>
 
 </details>
