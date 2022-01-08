@@ -98,7 +98,7 @@ class Handler:
     """
 
     prefix_lower: str
-    prefixes: List[str] = dataclasses.field(default_factory=list)
+    prefixes = []
 
     def _get_pattern(self, attribute: str = "accession_pattern") -> Optional[Pattern]:
         """
