@@ -30,12 +30,14 @@ References:
 - [On the road to robust data citation](https://doi.org/10.1038/sdata.2018.95)
 - [Uniform Resolution of Compact Identifiers for Biomedical Data](https://doi.org/10.1038/sdata.2018.29)
 """
+
 import dataclasses
-import functools
 import json
 import pathlib
 import re
 import typing
+
+from bioregistry import Manager, Resource
 
 from manubot.cite.citekey import CiteKey
 from manubot.cite.handlers import Handler
@@ -50,9 +52,16 @@ _keep_bioregistry_fields = {
     "synonyms",
 }
 
-
 bioregistry_path = pathlib.Path(__file__).parent.joinpath("bioregistry.json")
 
+
+def _get_manager() -> Manager:
+    with bioregistry_path.open() as file:
+        resources = json.load(file)
+    return Manager({entry["prefix"]: Resource(**entry) for entry in resources})
+
+
+manager = _get_manager()
 
 valid_prefix_pattern = re.compile(r"^[a-z0-9][a-z0-9._-]+?$")
 """
@@ -67,16 +76,13 @@ of a pandoc citation key without requiring escaping.
 @dataclasses.dataclass
 class Handler_CURIE(Handler):
     def __post_init__(self):
-        try:
-            self.resource = get_prefix_to_resource()[self.prefix_lower]
-        except KeyError:
+        self.resource = manager.get_resource(self.prefix_lower)
+        if self.resource is None:
             raise ValueError(f"Unrecognized CURIE prefix {self.prefix_lower}")
-        self.standard_prefix = (
-            self.resource.get("preferred_prefix") or self.resource["prefix"]
+        self.prefixes.extend(
+            self.resource.get_synonyms()
+            | {self.resource.get_preferred_prefix(), self.prefix_lower}
         )
-        self.prefixes = self.resource["all_prefixes"]
-        if "pattern" in self.resource:
-            self.accession_pattern = self.resource["pattern"]
 
     def get_csl_item(self, citekey: CiteKey):
         from ..url import get_url_csl_item
@@ -85,20 +91,19 @@ class Handler_CURIE(Handler):
         return get_url_csl_item(url)
 
     def inspect(self, citekey: CiteKey) -> typing.Optional[str]:
-        pattern = self._get_pattern("accession_pattern")
-        if pattern and not pattern.fullmatch(citekey.accession):
-            return f"{citekey.accession} does not match regex {pattern.pattern}"
+        if not self.resource.get_pattern():
+            return None
+        if self.resource.is_canonical_identifier(citekey.accession):
+            return None
+        return f"{citekey.accession} does not match regex {self.resource.get_pattern()}"
 
     def get_url(self, accession: str) -> str:
-        if "uri_format" in self.resource:
-            return self.resource["uri_format"].replace("$1", accession)
-        return f"https://bioregistry.io/{self.standard_prefix}:{accession}"
+        return self.resource.get_default_uri(accession)
 
 
 def get_curie_handlers():
     """Get all possible CURIE handlers"""
-    registries = get_bioregistry(compile_patterns=True)
-    handlers = [Handler_CURIE(reg["prefix"]) for reg in registries]
+    handlers = [Handler_CURIE(prefix) for prefix in manager.registry]
     return handlers
 
 
@@ -129,32 +134,12 @@ def _download_bioregistry() -> None:
             *(x.lower() for x in resource.pop("synonyms", [])),
         }
         # remove invalid prefixes as per https://github.com/manubot/manubot/pull/306#discussion_r744125504
-        resource["all_prefixes"] = sorted(
+        resource["synonyms"] = sorted(
             filter(valid_prefix_pattern.fullmatch, all_prefixes)
         )
         registry.append(resource)
     json_text = json.dumps(registry, indent=2, ensure_ascii=False)
     bioregistry_path.write_text(json_text + "\n", encoding="utf-8")
-
-
-def get_bioregistry(compile_patterns=False) -> dict:
-    with bioregistry_path.open(encoding="utf-8-sig") as read_file:
-        registry = json.load(read_file)
-    assert isinstance(registry, list)
-    if compile_patterns:
-        for resource in registry:
-            if "pattern" in resource:
-                resource["compiled_pattern"] = re.compile(resource["pattern"])
-    return registry
-
-
-@functools.lru_cache()
-def get_prefix_to_resource() -> typing.Dict[str, typing.Dict]:
-    prefix_to_resource = dict()
-    for resource in get_bioregistry():
-        for prefix in resource["all_prefixes"]:
-            prefix_to_resource[prefix] = resource
-    return prefix_to_resource
 
 
 def standardize_curie(curie: str) -> str:
@@ -163,30 +148,19 @@ def standardize_curie(curie: str) -> str:
     `curie` should be in `prefix:accession` format.
     If `curie` is malformed or uses an unrecognized prefix, raise ValueError.
     """
-    if not isinstance(curie, str):
-        raise TypeError(
-            f"curie parameter should be string. Received {curie.__class__.__name__} instead for {curie}"
-        )
-    try:
-        prefix, accession = curie.split(":", 1)
-    except ValueError:
-        raise ValueError(
-            f"curie must be splittable by `:` and formatted like `prefix:accession`. Received {curie}"
-        )
-    handler = Handler_CURIE(prefix.lower())
-    return f"{handler.standard_prefix}:{accession}"
+    return manager.normalize_curie(curie)
 
 
 def curie_to_url(curie: str) -> str:
     """
     `curie` should be in `prefix:accession` format
     """
-    curie = standardize_curie(curie)
-    prefix, accession = curie.split(":", 1)
+    prefix, accession = manager.parse_curie(curie)
+    if prefix is None or accession is None:
+        raise ValueError(f"Could not parse {curie}")
     handler = Handler_CURIE(prefix.lower())
     return handler.get_url(accession)
 
 
 if __name__ == "__main__":
     _download_bioregistry()
-    bioregistry = get_bioregistry()
