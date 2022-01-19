@@ -1080,6 +1080,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#get_head_commit" class="md-nav__link">
+    get_head_commit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#get_header_includes" class="md-nav__link">
     get_header_includes
   </a>
@@ -1512,6 +1519,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#get_head_commit" class="md-nav__link">
+    get_head_commit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#get_header_includes" class="md-nav__link">
     get_header_includes
   </a>
@@ -1727,6 +1741,34 @@
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">return</span> <span class="n">url</span>
+
+<span class="k">def</span> <span class="nf">get_head_commit</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+
+    <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">shlex_join</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;rev-parse&quot;</span><span class="p">,</span> <span class="s2">&quot;HEAD&quot;</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+
+            <span class="n">args</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span>
+
+        <span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+            <span class="sa">f</span><span class="s2">&quot;get_head_commit: </span><span class="si">{</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">cmd</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned exit code </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2"> &quot;</span>
+
+            <span class="sa">f</span><span class="s2">&quot;with the following stdout:</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">stdout</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+            <span class="sa">f</span><span class="s2">&quot;And the following stderr:</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">stderr</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
 
 <span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">()</span>
 
@@ -1969,6 +2011,44 @@
 
 </details>
 <h2 id="functions">Functions</h2>
+<h3 id="get_head_commit">get_head_commit</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_head_commit</span><span class="p">(</span>
+
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+</code></pre></div>
+
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_head_commit</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+
+    <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">shlex_join</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;rev-parse&quot;</span><span class="p">,</span> <span class="s2">&quot;HEAD&quot;</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+
+            <span class="n">args</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span>
+
+        <span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+            <span class="sa">f</span><span class="s2">&quot;get_head_commit: </span><span class="si">{</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">cmd</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned exit code </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2"> &quot;</span>
+
+            <span class="sa">f</span><span class="s2">&quot;with the following stdout:</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">stdout</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+            <span class="sa">f</span><span class="s2">&quot;And the following stderr:</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">stderr</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+
+</details>
 <h3 id="get_header_includes">get_header_includes</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_header_includes</span><span class="p">(</span>
     <span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span>

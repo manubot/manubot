@@ -1143,6 +1143,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#randomize_authors" class="md-nav__link">
+    randomize_authors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#read_variable_files" class="md-nav__link">
     read_variable_files
   </a>
@@ -1526,6 +1533,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#randomize_authors" class="md-nav__link">
+    randomize_authors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#read_variable_files" class="md-nav__link">
     read_variable_files
   </a>
@@ -1572,6 +1586,8 @@
 
 <span class="kn">import</span> <span class="nn">os</span>
 
+<span class="kn">import</span> <span class="nn">random</span>
+
 <span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -1585,6 +1601,8 @@
 <span class="kn">from</span> <span class="nn">manubot.process.manuscript</span> <span class="kn">import</span> <span class="n">datetime_now</span><span class="p">,</span> <span class="n">get_manuscript_stats</span><span class="p">,</span> <span class="n">get_text</span>
 
 <span class="kn">from</span> <span class="nn">manubot.process.metadata</span> <span class="kn">import</span> <span class="p">(</span>
+
+    <span class="n">get_head_commit</span><span class="p">,</span>
 
     <span class="n">get_header_includes</span><span class="p">,</span>
 
@@ -1764,6 +1782,18 @@
 
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported value type </span><span class="si">{value.__class__.__name__}</span><span class="s2">&quot;</span><span class="p">)</span>
 
+<span class="k">def</span> <span class="nf">randomize_authors</span><span class="p">(</span><span class="n">authors</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Randomize author list based on a given random seed.</span>
+
+<span class="sd">    See https://github.com/manubot/manubot/issues/315.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">authors</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">authors</span><span class="p">))</span>
+
 <span class="k">def</span> <span class="nf">add_author_affiliations</span><span class="p">(</span><span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1933,6 +1963,32 @@
     <span class="k">if</span> <span class="n">authors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="n">authors</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># author order randomization</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;randomize_author_order&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span>
+
+        <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;manubot-randomize-author-order&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;randomize_author_order&quot;</span><span class="p">]:</span>
+
+        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;randomize_author_order_seed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+
+            <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;manubot-randomize-author-order-seed&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+            <span class="ow">or</span> <span class="n">get_head_commit</span><span class="p">()</span>
+
+        <span class="p">)</span>
+
+        <span class="n">authors</span> <span class="o">=</span> <span class="n">randomize_authors</span><span class="p">(</span>
+
+            <span class="n">authors</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;randomize_author_order_seed&quot;</span><span class="p">]</span>
+
+        <span class="p">)</span>
+
+    <span class="c1"># set author variables</span>
 
     <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;author-meta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">author</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">authors</span><span class="p">]</span>
 
@@ -2328,6 +2384,32 @@ affiliations, variables is left unmodified.</p>
 
 <span class="w">        </span><span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span><span class="w"></span>
 
+<span class="w">    </span><span class="c1"># author order randomization</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;randomize_author_order&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb nb-Type">bool</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;manubot-randomize-author-order&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">False</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;randomize_author_order&quot;</span><span class="p">]:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;randomize_author_order_seed&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;manubot-randomize-author-order-seed&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">None</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="ow">or</span><span class="w"> </span><span class="n">get_head_commit</span><span class="p">()</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">randomize_authors</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">authors</span><span class="p">,</span><span class="w"> </span><span class="nb">seed</span><span class="o">=</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;randomize_author_order_seed&quot;</span><span class="p">]</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1"># set author variables</span><span class="w"></span>
+
 <span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;author-meta&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">author</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">author</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">authors</span><span class="p">]</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">authors</span><span class="w"></span>
@@ -2491,6 +2573,31 @@ affiliations, variables is left unmodified.</p>
 <span class="w">        </span><span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">write_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+
+</details>
+<h3 id="randomize_authors">randomize_authors</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">randomize_authors</span><span class="p">(</span>
+    <span class="n">authors</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span>
+</code></pre></div>
+
+<p>Randomize author list based on a given random seed.</p>
+<p>See https://github.com/manubot/manubot/issues/315.</p>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">randomize_authors</span><span class="p">(</span><span class="n">authors</span><span class="o">:</span><span class="w"> </span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="n">seed</span><span class="o">=</span><span class="n">None</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">list</span><span class="o">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="s">&quot;&quot;&quot;</span>
+
+<span class="s">    Randomize author list based on a given random seed.</span>
+
+<span class="s">    See https://github.com/manubot/manubot/issues/315.</span>
+
+<span class="s">    &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="kr">return</span><span class="w"> </span><span class="nf">random</span><span class="p">.</span><span class="nf">Random</span><span class="p">(</span><span class="n">seed</span><span class="p">).</span><span class="nf">sample</span><span class="p">(</span><span class="n">authors</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="o">=</span><span class="n">len</span><span class="p">(</span><span class="n">authors</span><span class="p">))</span><span class="w"></span>
 </code></pre></div>
 
 </details>
