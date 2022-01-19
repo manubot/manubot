@@ -85,6 +85,23 @@ def _thumbnail_path_to_url(path):
     return url
 
 
+def get_head_commit() -> Optional[str]:
+    from manubot.util import shlex_join
+
+    args = ["git", "rev-parse", "HEAD"]
+    try:
+        return subprocess.check_output(
+            args, stderr=subprocess.PIPE, universal_newlines=True
+        ).strip()
+    except subprocess.CalledProcessError as error:
+        logging.warning(
+            f"get_head_commit: {shlex_join(error.cmd)!r} returned exit code {error.returncode} "
+            f"with the following stdout:\n{error.stdout}\n"
+            f"And the following stderr:\n{error.stderr}"
+        )
+        return None
+
+
 @functools.lru_cache()
 def git_repository_root():
     """
