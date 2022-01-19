@@ -4,7 +4,7 @@ import manubot
 
 
 def test_version():
-    stdout = subprocess.check_output(["manubot", "--version"], universal_newlines=True)
+    stdout = subprocess.check_output(["manubot", "--version"], text=True)
     version_str = f"v{manubot.__version__}"
     assert version_str == stdout.rstrip()
 

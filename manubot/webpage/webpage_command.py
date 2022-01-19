@@ -188,7 +188,7 @@ def ots_upgrade(args):
             process_args,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            universal_newlines=True,
+            text=True,
         )
         message = f">>> {shlex_join(process.args)}\n{process.stdout}"
         if process.returncode != 0:
@@ -217,7 +217,7 @@ def ots_stamp(path):
         process_args,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        universal_newlines=True,
+        text=True,
     )
     if process.returncode != 0:
         logging.warning(
