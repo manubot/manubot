@@ -110,12 +110,11 @@ def _convert_field_to_list(
     raise ValueError("Unsupported value type {value.__class__.__name__}")
 
 
-def randomize_authors(authors: list) -> list:
+def randomize_authors(authors: list, seed=None) -> list:
     """
-    Randomize author list in-place using the Git HEAD commit as the seed.
+    Randomize author list based on a given random seed.
     See https://github.com/manubot/manubot/issues/315.
     """
-    seed = get_head_commit()
     return random.Random(seed).sample(authors, k=len(authors))
 
 
@@ -212,11 +211,19 @@ def load_variables(args) -> dict:
         authors = metadata.pop("authors", [])
     if authors is None:
         authors = []
+    # author order randomization
     variables["manubot"]["randomize_author_order"] = bool(
-        metadata.pop("manubot-randomize-author-order")
+        metadata.pop("manubot-randomize-author-order", False)
     )
     if variables["manubot"]["randomize_author_order"]:
-        authors = randomize_authors(authors)
+        variables["manubot"]["randomize_author_order_seed"] = (
+            metadata.pop("manubot-randomize-author-order-seed", None)
+            or get_head_commit()
+        )
+        authors = randomize_authors(
+            authors, seed=variables["manubot"]["randomize_author_order_seed"]
+        )
+    # set author variables
     variables["pandoc"]["author-meta"] = [author["name"] for author in authors]
     variables["manubot"]["authors"] = authors
     add_author_affiliations(variables["manubot"])
