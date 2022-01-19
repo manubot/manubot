@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import random
 import re
 import warnings
 from typing import List, Optional
@@ -10,6 +11,7 @@ import jinja2
 from manubot.process.ci import get_continuous_integration_parameters
 from manubot.process.manuscript import datetime_now, get_manuscript_stats, get_text
 from manubot.process.metadata import (
+    get_head_commit,
     get_header_includes,
     get_manuscript_urls,
     get_software_versions,
@@ -108,6 +110,14 @@ def _convert_field_to_list(
     raise ValueError("Unsupported value type {value.__class__.__name__}")
 
 
+def randomize_authors(authors: list, seed=None) -> list:
+    """
+    Randomize author list based on a given random seed.
+    See https://github.com/manubot/manubot/issues/315.
+    """
+    return random.Random(seed).sample(authors, k=len(authors))
+
+
 def add_author_affiliations(variables: dict) -> dict:
     """
     Edit variables to contain numbered author affiliations. Specifically,
@@ -201,6 +211,19 @@ def load_variables(args) -> dict:
         authors = metadata.pop("authors", [])
     if authors is None:
         authors = []
+    # author order randomization
+    variables["manubot"]["randomize_author_order"] = bool(
+        metadata.pop("manubot-randomize-author-order", False)
+    )
+    if variables["manubot"]["randomize_author_order"]:
+        variables["manubot"]["randomize_author_order_seed"] = (
+            metadata.pop("manubot-randomize-author-order-seed", None)
+            or get_head_commit()
+        )
+        authors = randomize_authors(
+            authors, seed=variables["manubot"]["randomize_author_order_seed"]
+        )
+    # set author variables
     variables["pandoc"]["author-meta"] = [author["name"] for author in authors]
     variables["manubot"]["authors"] = authors
     add_author_affiliations(variables["manubot"])
