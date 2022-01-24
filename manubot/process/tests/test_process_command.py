@@ -38,9 +38,7 @@ def test_example_manuscript(manuscript):
                 str(manuscript_dir.joinpath("content/template-variables.json")),
             ]
         )
-    process = subprocess.run(
-        args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8"
-    )
+    process = subprocess.run(args, capture_output=True, encoding="utf-8")
     print(shlex_join(process.args))
     print(process.stderr)
     assert process.returncode == 0

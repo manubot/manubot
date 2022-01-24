@@ -102,7 +102,7 @@ def get_short_doi_url(doi: str) -> Optional[str]:
     Get the shortDOI URL for a DOI.
     """
     quoted_doi = urllib.request.quote(doi)
-    url = "http://shortdoi.org/{}?format=json".format(quoted_doi)
+    url = f"http://shortdoi.org/{quoted_doi}?format=json"
     headers = {"User-Agent": get_manubot_user_agent()}
     try:
         response = requests.get(url, headers=headers).json()

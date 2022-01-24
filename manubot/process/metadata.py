@@ -213,7 +213,7 @@ def get_rootstock_commit() -> Optional[str]:
     # add rootstock remote if remote is not already set
     rootstock_remote = "https://github.com/manubot/rootstock.git"
     args = ["git", "remote", "add", "rootstock", rootstock_remote]
-    process = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.run(args, capture_output=True)
     if process.returncode == 0:
         logging.info(
             "get_rootstock_commit added a `rootstock` remote to the git repository."

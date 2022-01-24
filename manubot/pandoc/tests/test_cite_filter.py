@@ -55,8 +55,7 @@ def test_cite_pandoc_filter():
     process = subprocess.run(
         args,
         input=input_md,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         encoding="utf-8",
     )
     print(shlex_join(process.args))

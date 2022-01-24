@@ -12,8 +12,7 @@ def test_version():
 def test_missing_subcommand():
     process = subprocess.run(
         ["manubot"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         encoding="utf-8",
     )
     print(process.stderr)

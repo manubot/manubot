@@ -134,8 +134,7 @@ def _pandoc_system_call(
     logging.info("load_bibliography subprocess args:\n>>> " + shlex_join(command_args))
     process = subprocess.run(
         command_args,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         encoding="utf-8",
         **run_kwargs,
     )

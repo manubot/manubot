@@ -47,8 +47,7 @@ def test_cite_command_preserves_order():
 def test_cite_command_empty():
     process = subprocess.run(
         ["manubot", "cite"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         encoding="utf-8",
     )
     print(process.stderr)
@@ -59,8 +58,7 @@ def test_cite_command_empty():
 def test_cite_command_stdout():
     process = subprocess.run(
         ["manubot", "cite", "arxiv:1806.05726v1"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         encoding="utf-8",
     )
     print(process.stderr)
@@ -73,8 +71,7 @@ def test_cite_command_file(tmpdir):
     path = pathlib.Path(tmpdir) / "csl-items.json"
     process = subprocess.run(
         ["manubot", "cite", "--output", str(path), "arxiv:1806.05726v1"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
     )
     print(process.stderr.decode())
     assert process.returncode == 0
@@ -149,8 +146,7 @@ def test_cite_command_render_stdout(args, filename):
     ] + args
     process = subprocess.run(
         args,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         encoding="utf-8",
         cwd=data_dir,
     )
