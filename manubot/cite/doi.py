@@ -245,5 +245,5 @@ On retreiver ordering
    since it also uses content negotiation.
 
 get_doi_csl_item_datacite is not included because as of 2022-01 it only works for DataCite DOIs,
-and get_doi_csl_item_default ends up redirrecting to this endpoint for DataCite registered DOIs.
+and get_doi_csl_item_default ends up redirecting to this endpoint for DataCite registered DOIs.
 """
