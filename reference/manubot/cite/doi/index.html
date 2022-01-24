@@ -533,13 +533,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#get_doi_csl_item_crosscite" class="md-nav__link">
-    get_doi_csl_item_crosscite
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#get_doi_csl_item_datacite" class="md-nav__link">
     get_doi_csl_item_datacite
   </a>
@@ -547,8 +540,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#get_doi_csl_item_negotiation" class="md-nav__link">
-    get_doi_csl_item_negotiation
+  <a href="#get_doi_csl_item_default" class="md-nav__link">
+    get_doi_csl_item_default
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_doi_csl_item_url" class="md-nav__link">
+    get_doi_csl_item_url
   </a>
   
 </li>
@@ -1629,13 +1629,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#get_doi_csl_item_crosscite" class="md-nav__link">
-    get_doi_csl_item_crosscite
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#get_doi_csl_item_datacite" class="md-nav__link">
     get_doi_csl_item_datacite
   </a>
@@ -1643,8 +1636,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#get_doi_csl_item_negotiation" class="md-nav__link">
-    get_doi_csl_item_negotiation
+  <a href="#get_doi_csl_item_default" class="md-nav__link">
+    get_doi_csl_item_default
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_doi_csl_item_url" class="md-nav__link">
+    get_doi_csl_item_url
   </a>
   
 </li>
@@ -1962,13 +1962,9 @@
 
 <span class="n">content_negotiation_url_datacite</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://data.crosscite.org&quot;</span>
 
-<span class="n">content_negotiation_url_crosscite</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://doi.org&quot;</span>
+<span class="n">content_negotiation_url_default</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://doi.org&quot;</span>
 
-<span class="k">def</span> <span class="nf">get_doi_csl_item_negotiation</span><span class="p">(</span>
-
-    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">content_negotiation_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">content_negotiation_url_datacite</span>
-
-<span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_doi_csl_item_negotiation</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">content_negotiation_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1978,9 +1974,13 @@
 
 <span class="sd">    Options include:</span>
 
-<span class="sd">    1. &lt;https://data.crosscite.org&gt; documented at &lt;https://support.datacite.org/docs/datacite-content-resolver&gt;</span>
+<span class="sd">    1. The DataCite CN service &lt;https://data.crosscite.org&gt;</span>
 
-<span class="sd">    2. &lt;https://doi.org/&gt; documented at &lt;https://citation.crosscite.org/docs.html&gt;</span>
+<span class="sd">       Documented at &lt;https://support.datacite.org/docs/datacite-content-resolver&gt;</span>
+
+<span class="sd">    2. The doi.org CN service &lt;https://doi.org/&gt;</span>
+
+<span class="sd">       Documented at &lt;https://citation.crosscite.org/docs.html&gt;</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -2014,11 +2014,31 @@
 
 <span class="k">def</span> <span class="nf">get_doi_csl_item_datacite</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
-    <span class="k">return</span> <span class="n">get_doi_csl_item_negotiation</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">content_negotiation_url_datacite</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="k">def</span> <span class="nf">get_doi_csl_item_crosscite</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="sd">    As of 2022-01, the DataCite Content Negotiation restricted</span>
 
-    <span class="k">return</span> <span class="n">get_doi_csl_item_negotiation</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">content_negotiation_url_crosscite</span><span class="p">)</span>
+<span class="sd">    service to just DataCite DOIs, and began returning 404s for Crossref DOIs.</span>
+
+<span class="sd">    https://github.com/crosscite/content-negotiation/issues/104</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">_get_doi_csl_item_negotiation</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">content_negotiation_url_datacite</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">get_doi_csl_item_default</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    doi.org content negotiation redirects to the content negotiation service of</span>
+
+<span class="sd">    the Registration Agency, e.g. Crossref or DataCite.</span>
+
+<span class="sd">    https://github.com/crosscite/content-negotiation/issues/104</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">_get_doi_csl_item_negotiation</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">content_negotiation_url_default</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">get_doi_csl_item_zotero</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
@@ -2031,6 +2051,22 @@
     <span class="kn">from</span> <span class="nn">manubot.cite.zotero</span> <span class="kn">import</span> <span class="n">get_csl_item</span>
 
     <span class="k">return</span> <span class="n">get_csl_item</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">get_doi_csl_item_url</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Generate CSL JSON Data for a DOI using Zotero&#39;s translation-server.</span>
+
+<span class="sd">    This function converts the DOI to a URL that presumably resolves to the publisher&#39;s site.</span>
+
+<span class="sd">    Zotero resolves and scrapes data from the resulting webpage.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">manubot.cite.url</span> <span class="kn">import</span> <span class="n">get_url_csl_item_zotero</span>
+
+    <span class="k">return</span> <span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;https://doi.org/</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">augment_get_doi_csl_item</span><span class="p">(</span><span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 
@@ -2114,26 +2150,56 @@
 
 <span class="n">doi_retrievers</span> <span class="o">=</span> <span class="p">[</span>
 
-    <span class="n">get_doi_csl_item_datacite</span><span class="p">,</span>
+    <span class="n">get_doi_csl_item_default</span><span class="p">,</span>
 
-    <span class="n">get_doi_csl_item_crosscite</span><span class="p">,</span>
+    <span class="n">get_doi_csl_item_url</span><span class="p">,</span>
 
     <span class="n">get_doi_csl_item_zotero</span><span class="p">,</span>
 
 <span class="p">]</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">On retreiver ordering</span>
+
+<span class="sd">1. get_doi_csl_item_default: try DOI metadata first as per the Registration Agency&#39;s Content Negotiation.</span>
+
+<span class="sd">2. get_doi_csl_item_url: scrape data from the website where the DOI resolves.</span>
+
+<span class="sd">3. get_doi_csl_item_zotero: use Zotero translation-server to get DOI metadata.</span>
+
+<span class="sd">   Placed last since it&#39;s unlikely to work when get_doi_csl_item_default fails,</span>
+
+<span class="sd">   since it also uses content negotiation.</span>
+
+<span class="sd">get_doi_csl_item_datacite is not included because as of 2022-01 it only works for DataCite DOIs,</span>
+
+<span class="sd">and get_doi_csl_item_default ends up redirecting to this endpoint for DataCite registered DOIs.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
 </code></pre></div>
 
 </details>
 <h2 id="variables">Variables</h2>
-<div class="codehilite"><pre><span></span><code><span class="n">content_negotiation_url_crosscite</span>
+<div class="codehilite"><pre><span></span><code><span class="n">content_negotiation_url_datacite</span>
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code><span class="n">content_negotiation_url_datacite</span>
+<div class="codehilite"><pre><span></span><code><span class="n">content_negotiation_url_default</span>
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code><span class="n">doi_retrievers</span>
 </code></pre></div>
 
+<p>On retreiver ordering</p>
+<ol>
+<li>get_doi_csl_item_default: try DOI metadata first as per the Registration Agency's Content Negotiation.</li>
+<li>get_doi_csl_item_url: scrape data from the website where the DOI resolves.</li>
+<li>get_doi_csl_item_zotero: use Zotero translation-server to get DOI metadata.
+   Placed last since it's unlikely to work when get_doi_csl_item_default fails,
+   since it also uses content negotiation.</li>
+</ol>
+<p>get_doi_csl_item_datacite is not included because as of 2022-01 it only works for DataCite DOIs,
+and get_doi_csl_item_default ends up redirecting to this endpoint for DataCite registered DOIs.</p>
 <h2 id="functions">Functions</h2>
 <h3 id="augment_get_doi_csl_item">augment_get_doi_csl_item</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">augment_get_doi_csl_item</span><span class="p">(</span>
@@ -2305,95 +2371,86 @@
 </code></pre></div>
 
 </details>
-<h3 id="get_doi_csl_item_crosscite">get_doi_csl_item_crosscite</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_doi_csl_item_crosscite</span><span class="p">(</span>
-    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span>
-<span class="p">)</span>
-</code></pre></div>
-
-<details class="example">
-<summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">get_doi_csl_item_crosscite</span><span class="ss">(</span><span class="nv">doi</span>: <span class="nv">str</span><span class="ss">)</span>:
-
-    <span class="k">return</span> <span class="nv">get_doi_csl_item_negotiation</span><span class="ss">(</span><span class="nv">doi</span>, <span class="nv">content_negotiation_url_crosscite</span><span class="ss">)</span>
-</code></pre></div>
-
-</details>
 <h3 id="get_doi_csl_item_datacite">get_doi_csl_item_datacite</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_doi_csl_item_datacite</span><span class="p">(</span>
     <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span>
 </code></pre></div>
 
+<p>As of 2022-01, the DataCite Content Negotiation restricted</p>
+<p>service to just DataCite DOIs, and began returning 404s for Crossref DOIs.
+https://github.com/crosscite/content-negotiation/issues/104</p>
 <details class="example">
 <summary>View Source</summary>
 <div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">get_doi_csl_item_datacite</span><span class="ss">(</span><span class="nv">doi</span>: <span class="nv">str</span><span class="ss">)</span>:
 
-    <span class="k">return</span> <span class="nv">get_doi_csl_item_negotiation</span><span class="ss">(</span><span class="nv">doi</span>, <span class="nv">content_negotiation_url_datacite</span><span class="ss">)</span>
+    <span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="nv">As</span> <span class="nv">of</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">01</span>, <span class="nv">the</span> <span class="nv">DataCite</span> <span class="nv">Content</span> <span class="nv">Negotiation</span> <span class="nv">restricted</span>
+
+    <span class="nv">service</span> <span class="nv">to</span> <span class="nv">just</span> <span class="nv">DataCite</span> <span class="nv">DOIs</span>, <span class="nv">and</span> <span class="nv">began</span> <span class="nv">returning</span> <span class="mi">404</span><span class="nv">s</span> <span class="k">for</span> <span class="nv">Crossref</span> <span class="nv">DOIs</span>.
+
+    <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">crosscite</span><span class="o">/</span><span class="nv">content</span><span class="o">-</span><span class="nv">negotiation</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">104</span>
+
+    <span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="nv">_get_doi_csl_item_negotiation</span><span class="ss">(</span><span class="nv">doi</span>, <span class="nv">content_negotiation_url_datacite</span><span class="ss">)</span>
 </code></pre></div>
 
 </details>
-<h3 id="get_doi_csl_item_negotiation">get_doi_csl_item_negotiation</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_doi_csl_item_negotiation</span><span class="p">(</span>
-    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">content_negotiation_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;https://data.crosscite.org&#39;</span>
+<h3 id="get_doi_csl_item_default">get_doi_csl_item_default</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_doi_csl_item_default</span><span class="p">(</span>
+    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span>
 </code></pre></div>
 
-<p>Use Content Negotiation to retrieve the CSL Item metadata for a DOI.</p>
-<p>content_negotiation_url: base URL to use for content negotiation.
-Options include:
-1. <a href="https://data.crosscite.org">https://data.crosscite.org</a> documented at <a href="https://support.datacite.org/docs/datacite-content-resolver">https://support.datacite.org/docs/datacite-content-resolver</a>
-2. <a href="https://doi.org/">https://doi.org/</a> documented at <a href="https://citation.crosscite.org/docs.html">https://citation.crosscite.org/docs.html</a></p>
+<p>doi.org content negotiation redirects to the content negotiation service of</p>
+<p>the Registration Agency, e.g. Crossref or DataCite.
+https://github.com/crosscite/content-negotiation/issues/104</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">get_doi_csl_item_negotiation</span><span class="ss">(</span>
-
-    <span class="nv">doi</span>: <span class="nv">str</span>, <span class="nv">content_negotiation_url</span>: <span class="nv">str</span> <span class="o">=</span> <span class="nv">content_negotiation_url_datacite</span>
-
-<span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">get_doi_csl_item_default</span><span class="ss">(</span><span class="nv">doi</span>: <span class="nv">str</span><span class="ss">)</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">Use</span> <span class="nv">Content</span> <span class="nv">Negotiation</span> <span class="nv">to</span> <span class="nv">retrieve</span> <span class="nv">the</span> <span class="nv">CSL</span> <span class="nv">Item</span> <span class="nv">metadata</span> <span class="k">for</span> <span class="nv">a</span> <span class="nv">DOI</span>.
+    <span class="nv">doi</span>.<span class="nv">org</span> <span class="nv">content</span> <span class="nv">negotiation</span> <span class="nv">redirects</span> <span class="nv">to</span> <span class="nv">the</span> <span class="nv">content</span> <span class="nv">negotiation</span> <span class="nv">service</span> <span class="nv">of</span>
 
-    <span class="nv">content_negotiation_url</span>: <span class="nv">base</span> <span class="nv">URL</span> <span class="nv">to</span> <span class="nv">use</span> <span class="k">for</span> <span class="nv">content</span> <span class="nv">negotiation</span>.
+    <span class="nv">the</span> <span class="nv">Registration</span> <span class="nv">Agency</span>, <span class="nv">e</span>.<span class="nv">g</span>. <span class="nv">Crossref</span> <span class="nv">or</span> <span class="nv">DataCite</span>.
 
-    <span class="nv">Options</span> <span class="k">include</span>:
-
-    <span class="mi">1</span>. <span class="o">&lt;</span><span class="nv">https</span>:<span class="o">//</span><span class="nv">data</span>.<span class="nv">crosscite</span>.<span class="nv">org</span><span class="o">&gt;</span> <span class="nv">documented</span> <span class="nv">at</span> <span class="o">&lt;</span><span class="nv">https</span>:<span class="o">//</span><span class="nv">support</span>.<span class="nv">datacite</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">docs</span><span class="o">/</span><span class="nv">datacite</span><span class="o">-</span><span class="nv">content</span><span class="o">-</span><span class="nv">resolver</span><span class="o">&gt;</span>
-
-    <span class="mi">2</span>. <span class="o">&lt;</span><span class="nv">https</span>:<span class="o">//</span><span class="nv">doi</span>.<span class="nv">org</span><span class="o">/&gt;</span> <span class="nv">documented</span> <span class="nv">at</span> <span class="o">&lt;</span><span class="nv">https</span>:<span class="o">//</span><span class="nv">citation</span>.<span class="nv">crosscite</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">docs</span>.<span class="nv">html</span><span class="o">&gt;</span>
+    <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">crosscite</span><span class="o">/</span><span class="nv">content</span><span class="o">-</span><span class="nv">negotiation</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">104</span>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">url</span> <span class="o">=</span> <span class="nv">urllib</span>.<span class="nv">parse</span>.<span class="nv">urljoin</span><span class="ss">(</span><span class="nv">content_negotiation_url</span>, <span class="nv">urllib</span>.<span class="nv">request</span>.<span class="nv">quote</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">))</span>
+    <span class="k">return</span> <span class="nv">_get_doi_csl_item_negotiation</span><span class="ss">(</span><span class="nv">doi</span>, <span class="nv">content_negotiation_url_default</span><span class="ss">)</span>
+</code></pre></div>
 
-    <span class="nv">header</span> <span class="o">=</span> {
+</details>
+<h3 id="get_doi_csl_item_url">get_doi_csl_item_url</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_doi_csl_item_url</span><span class="p">(</span>
+    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span>
+</code></pre></div>
 
-        <span class="s2">&quot;</span><span class="s">Accept</span><span class="s2">&quot;</span>: <span class="s2">&quot;</span><span class="s">application/vnd.citationstyles.csl+json</span><span class="s2">&quot;</span>,
+<p>Generate CSL JSON Data for a DOI using Zotero's translation-server.</p>
+<p>This function converts the DOI to a URL that presumably resolves to the publisher's site.
+Zotero resolves and scrapes data from the resulting webpage.</p>
+<details class="example">
+<summary>View Source</summary>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_doi_csl_item_url</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
-        <span class="s2">&quot;</span><span class="s">User-Agent</span><span class="s2">&quot;</span>: <span class="nv">get_manubot_user_agent</span><span class="ss">()</span>,
+    <span class="sd">&quot;&quot;&quot;</span>
 
-    }
+<span class="sd">    Generate CSL JSON Data for a DOI using Zotero&#39;s translation-server.</span>
 
-    <span class="nv">response</span> <span class="o">=</span> <span class="nv">requests</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">url</span>, <span class="nv">headers</span><span class="o">=</span><span class="nv">header</span><span class="ss">)</span>
+<span class="sd">    This function converts the DOI to a URL that presumably resolves to the publisher&#39;s site.</span>
 
-    <span class="nv">try</span>:
+<span class="sd">    Zotero resolves and scrapes data from the resulting webpage.</span>
 
-        <span class="k">return</span> <span class="nv">response</span>.<span class="nv">json</span><span class="ss">()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="nv">except</span> <span class="nv">Exception</span> <span class="nv">as</span> <span class="nv">error</span>:
+    <span class="kn">from</span> <span class="nn">manubot.cite.url</span> <span class="kn">import</span> <span class="n">get_url_csl_item_zotero</span>
 
-        <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span>
-
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error fetching metadata for doi:{doi}.</span><span class="se">\n</span><span class="s2">&quot;</span>
-
-            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Invalid response from {response.url}:</span><span class="se">\n</span><span class="s">{response.text}</span><span class="s2">&quot;</span>
-
-        <span class="ss">)</span>
-
-        <span class="nv">raise</span> <span class="nv">error</span>
+    <span class="k">return</span> <span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;https://doi.org/</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 </details>
