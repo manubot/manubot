@@ -235,3 +235,15 @@ doi_retrievers = [
     get_doi_csl_item_url,
     get_doi_csl_item_zotero,
 ]
+"""
+On retreiver ordering
+
+1. get_doi_csl_item_default: try DOI metadata first as per the Registration Agency's Content Negotiation.
+2. get_doi_csl_item_url: scrape data from the website where the DOI resolves.
+3. get_doi_csl_item_zotero: use Zotero translation-server to get DOI metadata.
+   Placed last since it's unlikely to work when get_doi_csl_item_default fails,
+   since it also uses content negotiation.
+
+get_doi_csl_item_datacite is not included because as of 2022-01 it only works for DataCite DOIs,
+and get_doi_csl_item_default ends up redirrecting to this endpoint for DataCite registered DOIs.
+"""
