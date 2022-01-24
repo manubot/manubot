@@ -15,11 +15,6 @@ directory = pathlib.Path(__file__).parent
 @pytest.mark.skipif(
     not shutil.which("pandoc"), reason="pandoc installation not found on system"
 )
-# FIXME: a version of this test for pandoc >= 2.11 is needed.
-@pytest.mark.skipif(
-    not shutil.which("pandoc-citeproc"),
-    reason="pandoc-citeproc installation not found on system",
-)
 def test_cite_pandoc_filter():
     """
     Test the stdout output of `manubot cite --render` with various formats.
@@ -33,7 +28,7 @@ def test_cite_pandoc_filter():
       --wrap=preserve \
       --output=manubot/pandoc/tests/test_cite_filter/output.txt \
       --filter=pandoc-manubot-cite \
-      --filter=pandoc-citeproc \
+      --citeproc \
       manubot/pandoc/tests/test_cite_filter/input.md
 
     # Command to generate Pandoc JSON input for pandoc-manubot-cite
@@ -46,15 +41,15 @@ def test_cite_pandoc_filter():
     """
     data_dir = directory.joinpath("test_cite_filter")
     pandoc_version = get_pandoc_info()["pandoc version"]
-    if pandoc_version < (1, 12):
-        pytest.skip("Test requires pandoc >= 1.12 to support --filter")
+    if pandoc_version < (2, 11):
+        pytest.skip("Test requires pandoc >= 2.11 to support --citeproc")
     input_md = data_dir.joinpath("input.md").read_text(encoding="utf-8-sig")
     expected = data_dir.joinpath("output.txt").read_text(encoding="utf-8-sig")
     args = [
         "pandoc",
         "--wrap=preserve",
         "--filter=pandoc-manubot-cite",
-        "--filter=pandoc-citeproc" if pandoc_version < (2, 11) else "--citeproc",
+        "--citeproc",
         "--to=plain",
     ]
     process = subprocess.run(
