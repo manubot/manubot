@@ -115,19 +115,19 @@ def get_short_doi_url(doi: str) -> Optional[str]:
 
 
 content_negotiation_url_datacite: str = "https://data.crosscite.org"
-content_negotiation_url_crosscite: str = "https://doi.org"
+content_negotiation_url_default: str = "https://doi.org"
 
 
-def get_doi_csl_item_negotiation(
-    doi: str, content_negotiation_url: str = content_negotiation_url_datacite
-):
+def _get_doi_csl_item_negotiation(doi: str, content_negotiation_url: str):
     """
     Use Content Negotiation to retrieve the CSL Item metadata for a DOI.
 
     content_negotiation_url: base URL to use for content negotiation.
     Options include:
-    1. <https://data.crosscite.org> documented at <https://support.datacite.org/docs/datacite-content-resolver>
-    2. <https://doi.org/> documented at <https://citation.crosscite.org/docs.html>
+    1. The DataCite CN service <https://data.crosscite.org>
+       Documented at <https://support.datacite.org/docs/datacite-content-resolver>
+    2. The doi.org CN service <https://doi.org/>
+       Documented at <https://citation.crosscite.org/docs.html>
     """
     url = urllib.parse.urljoin(content_negotiation_url, urllib.request.quote(doi))
     header = {
@@ -146,11 +146,21 @@ def get_doi_csl_item_negotiation(
 
 
 def get_doi_csl_item_datacite(doi: str):
-    return get_doi_csl_item_negotiation(doi, content_negotiation_url_datacite)
+    """
+    As of 2022-01, the DataCite Content Negotiation restricted
+    service to just DataCite DOIs, and began returning 404s for Crossref DOIs.
+    https://github.com/crosscite/content-negotiation/issues/104
+    """
+    return _get_doi_csl_item_negotiation(doi, content_negotiation_url_datacite)
 
 
-def get_doi_csl_item_crosscite(doi: str):
-    return get_doi_csl_item_negotiation(doi, content_negotiation_url_crosscite)
+def get_doi_csl_item_default(doi: str):
+    """
+    doi.org content negotiation redirects to the content negotiation service of
+    the Registration Agency, e.g. Crossref or DataCite.
+    https://github.com/crosscite/content-negotiation/issues/104
+    """
+    return _get_doi_csl_item_negotiation(doi, content_negotiation_url_default)
 
 
 def get_doi_csl_item_zotero(doi: str):
@@ -160,6 +170,17 @@ def get_doi_csl_item_zotero(doi: str):
     from manubot.cite.zotero import get_csl_item
 
     return get_csl_item(f"doi:{doi}")
+
+
+def get_doi_csl_item_url(doi: str):
+    """
+    Generate CSL JSON Data for a DOI using Zotero's translation-server.
+    This function converts the DOI to a URL that presumably resolves to the publisher's site.
+    Zotero resolves and scrapes data from the resulting webpage.
+    """
+    from manubot.cite.url import get_url_csl_item_zotero
+
+    return get_url_csl_item_zotero(f"https://doi.org/{doi}")
 
 
 def augment_get_doi_csl_item(function: Callable[..., Any]):
@@ -210,7 +231,19 @@ def get_doi_csl_item(doi: str):
 
 
 doi_retrievers = [
-    get_doi_csl_item_datacite,
-    get_doi_csl_item_crosscite,
+    get_doi_csl_item_default,
+    get_doi_csl_item_url,
     get_doi_csl_item_zotero,
 ]
+"""
+On retreiver ordering
+
+1. get_doi_csl_item_default: try DOI metadata first as per the Registration Agency's Content Negotiation.
+2. get_doi_csl_item_url: scrape data from the website where the DOI resolves.
+3. get_doi_csl_item_zotero: use Zotero translation-server to get DOI metadata.
+   Placed last since it's unlikely to work when get_doi_csl_item_default fails,
+   since it also uses content negotiation.
+
+get_doi_csl_item_datacite is not included because as of 2022-01 it only works for DataCite DOIs,
+and get_doi_csl_item_default ends up redirecting to this endpoint for DataCite registered DOIs.
+"""
