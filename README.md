@@ -69,7 +69,7 @@ usage: manubot [-h] [--version] {process,cite,webpage} ...
 
 Manubot: the manuscript bot for scholarly writing
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --version             show program's version number and exit
 
@@ -115,7 +115,7 @@ usage: manubot process [-h] --content-directory CONTENT_DIRECTORY
 Process manuscript content to create outputs for Pandoc consumption. Performs
 bibliographic processing and templating.
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --content-directory CONTENT_DIRECTORY
                         Directory where manuscript content files are located.
@@ -193,7 +193,7 @@ positional arguments:
   citekeys              One or more (space separated) citation keys to
                         generate bibliographic metadata for.
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --output OUTPUT       Specify a file to write output, otherwise default to
                         stdout.
@@ -243,7 +243,7 @@ positional arguments:
   target_format      output format of the pandoc command, as per Pandoc's --to
                      option
 
-optional arguments:
+options:
   -h, --help         show this help message and exit
   --input [INPUT]    path read JSON input (defaults to stdin)
   --output [OUTPUT]  path to write JSON output (defaults to stdout)
@@ -280,7 +280,7 @@ Rootstock layout, containing `output` and `webpage` directories. HTML and PDF
 outputs are copied to the webpage directory, which is structured as static
 source files for website hosting.
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --checkout [CHECKOUT]
                         branch to checkout /v directory contents from. For
@@ -311,7 +311,7 @@ Create a development environment using:
 
 ```shell
 conda create --name manubot-dev --channel conda-forge \
-  python=3.8 pandoc=2.8
+  python=3.10 pandoc=2.8
 conda activate manubot-dev  # assumes conda >= 4.4
 pip install --editable ".[webpage,dev]"
 ```

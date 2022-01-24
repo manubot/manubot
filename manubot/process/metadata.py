@@ -90,9 +90,7 @@ def get_head_commit() -> Optional[str]:
 
     args = ["git", "rev-parse", "HEAD"]
     try:
-        return subprocess.check_output(
-            args, stderr=subprocess.PIPE, universal_newlines=True
-        ).strip()
+        return subprocess.check_output(args, stderr=subprocess.PIPE, text=True).strip()
     except subprocess.CalledProcessError as error:
         logging.warning(
             f"get_head_commit: {shlex_join(error.cmd)!r} returned exit code {error.returncode} "
@@ -112,7 +110,7 @@ def git_repository_root():
         ["git", "rev-parse", "--show-toplevel"],
     ):
         try:
-            path = subprocess.check_output(cmd, universal_newlines=True).rstrip("\r\n")
+            path = subprocess.check_output(cmd, text=True).rstrip("\r\n")
             if path:
                 return pathlib.Path(path)
         except (subprocess.CalledProcessError, OSError):
@@ -223,11 +221,9 @@ def get_rootstock_commit() -> Optional[str]:
     # find most recent common ancestor commit
     try:
         args = ["git", "fetch", "rootstock", "main"]
-        subprocess.check_output(args, stderr=subprocess.PIPE, universal_newlines=True)
+        subprocess.check_output(args, stderr=subprocess.PIPE, text=True)
         args = ["git", "merge-base", "HEAD", "rootstock/main"]
-        output = subprocess.check_output(
-            args, stderr=subprocess.PIPE, universal_newlines=True
-        )
+        output = subprocess.check_output(args, stderr=subprocess.PIPE, text=True)
     except subprocess.CalledProcessError as error:
         logging.warning(
             f"get_rootstock_commit: {shlex_join(error.cmd)!r} returned exit code {error.returncode} "

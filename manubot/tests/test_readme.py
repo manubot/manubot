@@ -2,6 +2,7 @@ import pathlib
 import re
 import shlex
 import subprocess
+import sys
 
 import pytest
 
@@ -22,6 +23,10 @@ matches = list(pattern.finditer(readme))
     argnames=["command", "expected"],
     argvalues=[match.groups() for match in matches],
     ids=[match.group("command") for match in matches],
+)
+@pytest.mark.skipif(
+    sys.version_info < (3, 10),
+    reason="Python 3.10 changed 'optional arguments' to 'options' in argparse usage output.",
 )
 def test_readme_codeblock_contains_output_from(command, expected):
     """
