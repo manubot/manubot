@@ -90,9 +90,7 @@ def get_head_commit() -> Optional[str]:
 
     args = ["git", "rev-parse", "HEAD"]
     try:
-        return subprocess.check_output(
-            args, stderr=subprocess.PIPE, universal_newlines=True
-        ).strip()
+        return subprocess.check_output(args, stderr=subprocess.PIPE, text=True).strip()
     except subprocess.CalledProcessError as error:
         logging.warning(
             f"get_head_commit: {shlex_join(error.cmd)!r} returned exit code {error.returncode} "
