@@ -1532,6 +1532,8 @@
 
 <span class="kn">import</span> <span class="nn">subprocess</span>
 
+<span class="kn">import</span> <span class="nn">sys</span>
+
 <span class="kn">import</span> <span class="nn">pytest</span>
 
 <span class="n">readme_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;README.md&quot;</span>
@@ -1561,6 +1563,14 @@
     <span class="n">argvalues</span><span class="o">=</span><span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span> <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">],</span>
 
     <span class="n">ids</span><span class="o">=</span><span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;command&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">],</span>
+
+<span class="p">)</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skipif</span><span class="p">(</span>
+
+    <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+
+    <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Python 3.10 changed &#39;optional arguments&#39; to &#39;options&#39; in argparse usage output.&quot;</span><span class="p">,</span>
 
 <span class="p">)</span>
 
@@ -1657,6 +1667,14 @@ construct:</p>
 <span class="w">    </span><span class="n">argvalues</span><span class="o">=</span><span class="p">[</span><span class="k">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">match</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">matches</span><span class="p">],</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">ids</span><span class="o">=</span><span class="p">[</span><span class="k">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;command&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">match</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">matches</span><span class="p">],</span><span class="w"></span>
+
+<span class="p">)</span><span class="w"></span>
+
+<span class="err">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skipif</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Python 3.10 changed &#39;optional arguments&#39; to &#39;options&#39; in argparse usage output.&quot;</span><span class="p">,</span><span class="w"></span>
 
 <span class="p">)</span><span class="w"></span>
 
