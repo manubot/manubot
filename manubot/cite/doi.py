@@ -147,7 +147,7 @@ def _get_doi_csl_item_negotiation(doi: str, content_negotiation_url: str):
 
 def get_doi_csl_item_datacite(doi: str):
     """
-    As of 2021-01, the DataCite Content Negotiation restricted
+    As of 2022-01, the DataCite Content Negotiation restricted
     service to just DataCite DOIs, and began returning 404s for Crossref DOIs.
     https://github.com/crosscite/content-negotiation/issues/104
     """
