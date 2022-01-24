@@ -16,9 +16,7 @@ def test_webpage_command():
     if webpage_path.exists():
         shutil.rmtree(webpage_path)
     args = ["manubot", "webpage", "--timestamp", "--no-ots-cache", "--version=testing"]
-    process = subprocess.run(
-        args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=manuscript_path
-    )
+    process = subprocess.run(args, capture_output=True, cwd=manuscript_path)
     print(process.args)
     print(process.stdout.decode())
     print(process.stderr.decode())

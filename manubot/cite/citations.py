@@ -91,7 +91,7 @@ class Citations:
         Check for short_id hash collisions
         """
         for short_id, citekeys in self.group_citekeys_by("short_id"):
-            standard_ids = sorted(set(x.standard_id for x in citekeys))
+            standard_ids = sorted({x.standard_id for x in citekeys})
             if len(standard_ids) == 1:
                 continue
             logging.error(
