@@ -35,4 +35,7 @@ def test_webpage_command():
         # https://github.com/manubot/manubot/runs/488343989#step:6:123
         # https://github.com/petertodd/python-bitcoinlib/issues/238
         return
+    if os.environ.get("GITHUB_ACTIONS") == "true" and platform.system() == "Darwin":
+        # Undiagnosed issue on macOS https://github.com/manubot/manubot/issues/320
+        return
     assert index_html_version_path.with_name("index.html.ots").exists()
