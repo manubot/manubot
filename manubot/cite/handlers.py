@@ -1255,6 +1255,7 @@ prefix_to_handler: Dict[str, str] = {
     "pubchem": "manubot.cite.curie.Handler_CURIE",
     "pubchem.bioassay": "manubot.cite.curie.Handler_CURIE",
     "pubchem.compound": "manubot.cite.curie.Handler_CURIE",
+    "pubchem.element": "manubot.cite.curie.Handler_CURIE",
     "pubchem.substance": "manubot.cite.curie.Handler_CURIE",
     "pubchem_cid": "manubot.cite.curie.Handler_CURIE",
     "pubchem_compound_cid": "manubot.cite.curie.Handler_CURIE",
