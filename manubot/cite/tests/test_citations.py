@@ -10,6 +10,7 @@ def test_citations_filter_pandoc_xnos():
         "fig:pandoc-fignos-key",  # should filter
         "eq:pandoc-eqnos-key",  # should filter
         "tbl:pandoc-tablenos-key",  # should filter
+        "sec:pandoc-secnos-key",  # should filter
         "not-pandoc-xnos-key",  # should keep
     ]
     citations = Citations(input_ids)

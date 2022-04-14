@@ -10,9 +10,9 @@ from .citekey import CiteKey
 
 """
 Non-citation prefixes used by the pandoc-xnos suite of Pandoc filters,
-including pandoc-fignos, pandoc-tablenos, and pandoc-eqnos.
+including pandoc-fignos, pandoc-tablenos, pandoc-eqnos, and pandoc-secnos.
 """
-_pandoc_xnos_prefixes: Set[str] = {"fig", "tbl", "eq"}
+_pandoc_xnos_prefixes: Set[str] = {"fig", "tbl", "eq", "sec"}
 
 
 _local_handlers: List[str] = [
