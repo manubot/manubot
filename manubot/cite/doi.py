@@ -11,6 +11,8 @@ from manubot.util import get_manubot_user_agent
 from .handlers import Handler
 from .pubmed import get_pubmed_ids_for_doi
 
+default_timeout = (3, 15)
+
 
 class Handler_DOI(Handler):
 
@@ -57,11 +59,13 @@ class Handler_DOI(Handler):
         accession = accession.lower()
         return self.standard_prefix, accession
 
-    def get_csl_item(self, citekey):
-        return get_doi_csl_item(citekey.standard_accession)
+    def get_csl_item(self, citekey, timeout_seconds=default_timeout):
+        return get_doi_csl_item(
+            citekey.standard_accession, timeout_seconds=timeout_seconds
+        )
 
 
-def expand_short_doi(short_doi: str) -> str:
+def expand_short_doi(short_doi: str, timeout_seconds: int = default_timeout) -> str:
     """
     Convert a shortDOI to a regular DOI.
     """
@@ -71,7 +75,7 @@ def expand_short_doi(short_doi: str) -> str:
         )
     url = f"https://doi.org/api/handles/{short_doi.lower()}"
     params = {"type": "HS_ALIAS"}
-    response = requests.get(url, params=params)
+    response = requests.get(url, params=params, timeout=timeout_seconds)
     # response documentation at https://www.handle.net/proxy_servlet.html
     results = response.json()
     response_code = results.get("responseCode")  # Handle protocol response code
@@ -97,7 +101,9 @@ def expand_short_doi(short_doi: str) -> str:
     )
 
 
-def get_short_doi_url(doi: str) -> Optional[str]:
+def get_short_doi_url(
+    doi: str, timeout_seconds: int = default_timeout
+) -> Optional[str]:
     """
     Get the shortDOI URL for a DOI.
     """
@@ -105,7 +111,7 @@ def get_short_doi_url(doi: str) -> Optional[str]:
     url = f"http://shortdoi.org/{quoted_doi}?format=json"
     headers = {"User-Agent": get_manubot_user_agent()}
     try:
-        response = requests.get(url, headers=headers).json()
+        response = requests.get(url, headers=headers, timeout=timeout_seconds).json()
         short_doi = response["ShortDOI"]
         short_url = "https://doi.org/" + short_doi[3:]  # Remove "10/" prefix
         return short_url
@@ -118,7 +124,9 @@ content_negotiation_url_datacite: str = "https://data.crosscite.org"
 content_negotiation_url_default: str = "https://doi.org"
 
 
-def _get_doi_csl_item_negotiation(doi: str, content_negotiation_url: str):
+def _get_doi_csl_item_negotiation(
+    doi: str, content_negotiation_url: str, timeout_seconds: int = default_timeout
+):
     """
     Use Content Negotiation to retrieve the CSL Item metadata for a DOI.
 
@@ -134,7 +142,7 @@ def _get_doi_csl_item_negotiation(doi: str, content_negotiation_url: str):
         "Accept": "application/vnd.citationstyles.csl+json",
         "User-Agent": get_manubot_user_agent(),
     }
-    response = requests.get(url, headers=header)
+    response = requests.get(url, headers=header, timeout=timeout_seconds)
     try:
         return response.json()
     except Exception as error:
@@ -145,34 +153,38 @@ def _get_doi_csl_item_negotiation(doi: str, content_negotiation_url: str):
         raise error
 
 
-def get_doi_csl_item_datacite(doi: str):
+def get_doi_csl_item_datacite(doi: str, timeout_seconds: int = default_timeout):
     """
     As of 2022-01, the DataCite Content Negotiation restricted
     service to just DataCite DOIs, and began returning 404s for Crossref DOIs.
     https://github.com/crosscite/content-negotiation/issues/104
     """
-    return _get_doi_csl_item_negotiation(doi, content_negotiation_url_datacite)
+    return _get_doi_csl_item_negotiation(
+        doi, content_negotiation_url_datacite, timeout_seconds=timeout_seconds
+    )
 
 
-def get_doi_csl_item_default(doi: str):
+def get_doi_csl_item_default(doi: str, timeout_seconds: int = default_timeout):
     """
     doi.org content negotiation redirects to the content negotiation service of
     the Registration Agency, e.g. Crossref or DataCite.
     https://github.com/crosscite/content-negotiation/issues/104
     """
-    return _get_doi_csl_item_negotiation(doi, content_negotiation_url_default)
+    return _get_doi_csl_item_negotiation(
+        doi, content_negotiation_url_default, timeout_seconds=timeout_seconds
+    )
 
 
-def get_doi_csl_item_zotero(doi: str):
+def get_doi_csl_item_zotero(doi: str, timeout_seconds: int = default_timeout):
     """
     Generate CSL JSON Data for a DOI using Zotero's translation-server.
     """
     from manubot.cite.zotero import get_csl_item
 
-    return get_csl_item(f"doi:{doi}")
+    return get_csl_item(f"doi:{doi}", timeout_seconds=timeout_seconds)
 
 
-def get_doi_csl_item_url(doi: str):
+def get_doi_csl_item_url(doi: str, timeout_seconds: int = default_timeout):
     """
     Generate CSL JSON Data for a DOI using Zotero's translation-server.
     This function converts the DOI to a URL that presumably resolves to the publisher's site.
@@ -180,7 +192,9 @@ def get_doi_csl_item_url(doi: str):
     """
     from manubot.cite.url import get_url_csl_item_zotero
 
-    return get_url_csl_item_zotero(f"https://doi.org/{doi}")
+    return get_url_csl_item_zotero(
+        f"https://doi.org/{doi}", timeout_seconds=timeout_seconds
+    )
 
 
 def augment_get_doi_csl_item(function: Callable[..., Any]):
@@ -188,16 +202,18 @@ def augment_get_doi_csl_item(function: Callable[..., Any]):
     Decorator providing edits to the csl_item returned by a get_doi_csl_item_* function.
     """
 
-    def wrapper(doi: str):
+    def wrapper(doi: str, timeout_seconds: int = default_timeout):
         doi = doi.lower()
         csl_item = function(doi)
         csl_item["DOI"] = doi
         csl_item["URL"] = f"https://doi.org/{doi}"
-        short_doi_url = get_short_doi_url(doi)
+        short_doi_url = get_short_doi_url(doi, timeout_seconds=timeout_seconds)
         if short_doi_url:
             csl_item["URL"] = short_doi_url
         try:
-            csl_item.update(get_pubmed_ids_for_doi(doi))
+            csl_item.update(
+                get_pubmed_ids_for_doi(doi, timeout_seconds=timeout_seconds)
+            )
         except Exception:
             logging.warning(
                 f"Error calling get_pubmed_ids_for_doi for {doi}", exc_info=True
@@ -208,7 +224,7 @@ def augment_get_doi_csl_item(function: Callable[..., Any]):
 
 
 @augment_get_doi_csl_item
-def get_doi_csl_item(doi: str):
+def get_doi_csl_item(doi: str, timeout_seconds: int = default_timeout):
     """
     Generate CSL JSON Data for an DOI.
 
@@ -220,7 +236,7 @@ def get_doi_csl_item(doi: str):
     # FIXME: this function is repetitive with other get_*_csl_item functions.
     for retriever in doi_retrievers:
         try:
-            return retriever(doi)
+            return retriever(doi, timeout_seconds=timeout_seconds)
         except Exception as error:
             logging.warning(
                 f"Error in {retriever.__name__} for {doi} "

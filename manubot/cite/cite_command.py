@@ -94,6 +94,7 @@ def cli_cite(args: argparse.Namespace):
         infer_citekey_prefixes=args.infer_prefix,
         prune_csl_items=args.prune_csl,
         sort_csl_items=False,
+        timeout_seconds=args.timeout_seconds,
     )
     citations.load_manual_references(paths=args.bibliography)
     citations.inspect(log_level="WARNING")
