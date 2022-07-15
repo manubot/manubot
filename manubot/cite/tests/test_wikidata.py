@@ -34,6 +34,6 @@ def test_get_wikidata_csl_item_author_ordering():
         "Levernier",
         "Munro",
         "McLaughlin",
-        "Greshake",  # actually should be Greshake Tzovaras
+        "Tzovaras",
         "Greene",
     ]
