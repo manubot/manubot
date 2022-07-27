@@ -4,6 +4,16 @@ import re
 
 from .handlers import Handler
 
+default_timeout = 3
+
+
+def set_isbnlib_timeout(seconds=default_timeout):
+    import isbnlib
+
+    isbnlib.config.setthreadstimeout(seconds=seconds)
+    isbnlib.config.seturlopentimeout(seconds=seconds)
+    return isbnlib
+
 
 class Handler_ISBN(Handler):
 
@@ -14,8 +24,7 @@ class Handler_ISBN(Handler):
     ]
 
     def inspect(self, citekey):
-        import isbnlib
-
+        isbnlib = set_isbnlib_timeout()
         fail = isbnlib.notisbn(citekey.accession, level="strict")
         if fail:
             return f"identifier violates the ISBN syntax according to isbnlib v{isbnlib.__version__}"
@@ -39,7 +48,7 @@ def get_isbn_csl_item(isbn: str):
     in order, with this function returning the metadata from the first
     non-failing method.
     """
-    import isbnlib
+    isbnlib = set_isbnlib_timeout()
 
     isbn = isbnlib.to_isbn13(isbn)
     for retriever in isbn_retrievers:
@@ -129,8 +138,7 @@ def get_isbn_csl_item_isbnlib(isbn: str):
     """
     Generate CSL JSON Data for an ISBN using isbnlib.
     """
-    import isbnlib
-
+    isbnlib = set_isbnlib_timeout()
     metadata = isbnlib.meta(isbn)
     csl_json = isbnlib.registry.bibformatters["csl"](metadata)
     csl_data = json.loads(csl_json)
