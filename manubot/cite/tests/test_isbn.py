@@ -42,3 +42,14 @@ def test_get_isbn_csl_item_zotero_with_note_issue():
     isbn = "9780262517638"
     csl_item = get_isbn_csl_item_zotero(isbn)
     assert csl_item["author"][0]["family"] == "Suber"
+
+
+def test_get_isbn_csl_item_citoid_author_order():
+    """
+    Confirm author order is parsed correctly
+    https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9781801819312
+    https://www.mediawiki.org/wiki/Citoid/API#mediawiki
+    """
+    csl_item = get_isbn_csl_item_citoid("9781801819312")
+    assert csl_item["author"][0]["given"] == "Sebastian"
+    assert csl_item["author"][0]["family"] == "Raschka"
