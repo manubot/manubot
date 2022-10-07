@@ -2908,17 +2908,17 @@ This endpoint does not support versioned <code>arxiv_id</code>.</p>
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">query_arxiv_api</span><span class="ss">(</span><span class="nv">url</span>, <span class="nb">params</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">query_arxiv_api</span><span class="ss">(</span><span class="nv">url</span>,<span class="w"> </span><span class="nb">params</span><span class="ss">)</span>:<span class="w"></span>
 
-    <span class="nv">headers</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">User-Agent</span><span class="s2">&quot;</span>: <span class="nv">get_manubot_user_agent</span><span class="ss">()</span>}
+<span class="w">    </span><span class="nv">headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>{<span class="s2">&quot;User-Agent&quot;</span>:<span class="w"> </span><span class="nv">get_manubot_user_agent</span><span class="ss">()</span>}<span class="w"></span>
 
-    <span class="nv">response</span> <span class="o">=</span> <span class="nv">requests</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">url</span>, <span class="nb">params</span>, <span class="nv">headers</span><span class="o">=</span><span class="nv">headers</span><span class="ss">)</span>
+<span class="w">    </span><span class="nv">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">requests</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">url</span>,<span class="w"> </span><span class="nb">params</span>,<span class="w"> </span><span class="nv">headers</span><span class="o">=</span><span class="nv">headers</span><span class="ss">)</span><span class="w"></span>
 
-    <span class="nv">response</span>.<span class="nv">raise_for_status</span><span class="ss">()</span>
+<span class="w">    </span><span class="nv">response</span>.<span class="nv">raise_for_status</span><span class="ss">()</span><span class="w"></span>
 
-    <span class="nv">xml_tree</span> <span class="o">=</span> <span class="nv">xml</span>.<span class="nv">etree</span>.<span class="nv">ElementTree</span>.<span class="nv">fromstring</span><span class="ss">(</span><span class="nv">response</span>.<span class="nv">text</span><span class="ss">)</span>
+<span class="w">    </span><span class="nv">xml_tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">xml</span>.<span class="nv">etree</span>.<span class="nv">ElementTree</span>.<span class="nv">fromstring</span><span class="ss">(</span><span class="nv">response</span>.<span class="nv">text</span><span class="ss">)</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="nv">xml_tree</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">xml_tree</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2930,9 +2930,9 @@ This endpoint does not support versioned <code>arxiv_id</code>.</p>
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">remove_newlines</span><span class="ss">(</span><span class="nv">text</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">remove_newlines</span><span class="ss">(</span><span class="nv">text</span><span class="ss">)</span>:<span class="w"></span>
 
-    <span class="k">return</span> <span class="nv">re</span>.<span class="nv">sub</span><span class="ss">(</span><span class="nv">pattern</span><span class="o">=</span><span class="nv">r</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s">(?!\s)</span><span class="s2">&quot;</span>, <span class="nv">repl</span><span class="o">=</span><span class="s2">&quot;</span><span class="s"> </span><span class="s2">&quot;</span>, <span class="nv">string</span><span class="o">=</span><span class="nv">text</span><span class="ss">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">re</span>.<span class="nv">sub</span><span class="ss">(</span><span class="nv">pattern</span><span class="o">=</span><span class="nv">r</span><span class="s2">&quot;\n(?!\s)&quot;</span>,<span class="w"> </span><span class="nv">repl</span><span class="o">=</span><span class="s2">&quot; &quot;</span>,<span class="w"> </span><span class="nv">string</span><span class="o">=</span><span class="nv">text</span><span class="ss">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2946,19 +2946,19 @@ This endpoint does not support versioned <code>arxiv_id</code>.</p>
 <p>Version refers to the verion suffix like 'v2' or None.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">split_arxiv_id_version</span><span class="ss">(</span><span class="nv">arxiv_id</span>: <span class="nv">str</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">split_arxiv_id_version</span><span class="ss">(</span><span class="nv">arxiv_id</span>:<span class="w"> </span><span class="nv">str</span><span class="ss">)</span>:<span class="w"></span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-    <span class="k">Return</span> <span class="ss">(</span><span class="nv">versionless_id</span>, <span class="nv">version</span><span class="ss">)</span> <span class="nv">tuple</span>.
+<span class="err">    Return (versionless_id, version) tuple.</span>
 
-    <span class="nv">Version</span> <span class="nv">refers</span> <span class="nv">to</span> <span class="nv">the</span> <span class="nv">verion</span> <span class="nv">suffix</span> <span class="nv">like</span> <span class="s1">&#39;</span><span class="s">v2</span><span class="s1">&#39;</span> <span class="nv">or</span> <span class="nv">None</span>.
+<span class="err">    Version refers to the verion suffix like &#39;v2&#39; or None.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-    <span class="nv">match</span> <span class="o">=</span> <span class="nv">re</span>.<span class="nv">match</span><span class="ss">(</span><span class="nv">Handler_arXiv</span>.<span class="nv">accession_pattern</span>, <span class="nv">arxiv_id</span><span class="ss">)</span>
+<span class="err">    match = re.match(Handler_arXiv.accession_pattern, arxiv_id)</span>
 
-    <span class="k">return</span> <span class="nv">match</span>.<span class="nv">group</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">versionless_id</span><span class="s2">&quot;</span><span class="ss">)</span>, <span class="nv">match</span>.<span class="nv">group</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">version</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">match</span>.<span class="nv">group</span><span class="ss">(</span><span class="s2">&quot;versionless_id&quot;</span><span class="ss">)</span>,<span class="w"> </span><span class="nv">match</span>.<span class="nv">group</span><span class="ss">(</span><span class="s2">&quot;version&quot;</span><span class="ss">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -3284,19 +3284,19 @@ fill: if True, set missing months to January
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">log_journal_doi</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">arxiv_id</span>, <span class="nv">journal_ref</span><span class="o">=</span><span class="nv">None</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">log_journal_doi</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">arxiv_id</span>,<span class="w"> </span><span class="nv">journal_ref</span><span class="o">=</span><span class="nv">None</span><span class="ss">)</span>:<span class="w"></span>
 
-        <span class="k">if</span> <span class="s2">&quot;</span><span class="s">DOI</span><span class="s2">&quot;</span> <span class="nv">not</span> <span class="nv">in</span> <span class="nv">self</span>:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;DOI&quot;</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">self</span>:<span class="w"></span>
 
-            <span class="k">return</span>
+<span class="w">            </span><span class="k">return</span><span class="w"></span>
 
-        <span class="nv">msg</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">arXiv article {arxiv_id} published at https://doi.org/{self[&#39;DOI&#39;]}</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="nv">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;arXiv article {arxiv_id} published at https://doi.org/{self[&#39;DOI&#39;]}&quot;</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="nv">journal_ref</span>:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">journal_ref</span>:<span class="w"></span>
 
-            <span class="nv">msg</span> <span class="o">+=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s"> — {journal_ref}</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="nv">msg</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot; — {journal_ref}&quot;</span><span class="w"></span>
 
-        <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">msg</span><span class="ss">)</span>
+<span class="w">        </span><span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">msg</span><span class="ss">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -3537,19 +3537,19 @@ variable: which variable to assign the date to.</p>
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">set_identifier_fields</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">arxiv_id</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">set_identifier_fields</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">arxiv_id</span><span class="ss">)</span>:<span class="w"></span>
 
-        <span class="nv">self</span>.<span class="nv">set_id</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">arxiv:{arxiv_id}</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">        </span><span class="nv">self</span>.<span class="nv">set_id</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;arxiv:{arxiv_id}&quot;</span><span class="ss">)</span><span class="w"></span>
 
-        <span class="nv">self</span>[<span class="s2">&quot;</span><span class="s">URL</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">https://arxiv.org/abs/{arxiv_id}</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="nv">self</span>[<span class="s2">&quot;URL&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;https://arxiv.org/abs/{arxiv_id}&quot;</span><span class="w"></span>
 
-        <span class="nv">self</span>[<span class="s2">&quot;</span><span class="s">number</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">arxiv_id</span>
+<span class="w">        </span><span class="nv">self</span>[<span class="s2">&quot;number&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">arxiv_id</span><span class="w"></span>
 
-        <span class="nv">_</span>, <span class="nv">version</span> <span class="o">=</span> <span class="nv">split_arxiv_id_version</span><span class="ss">(</span><span class="nv">arxiv_id</span><span class="ss">)</span>
+<span class="w">        </span><span class="nv">_</span>,<span class="w"> </span><span class="nv">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">split_arxiv_id_version</span><span class="ss">(</span><span class="nv">arxiv_id</span><span class="ss">)</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="nv">version</span>:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">version</span>:<span class="w"></span>
 
-            <span class="nv">self</span>[<span class="s2">&quot;</span><span class="s">version</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">version</span>
+<span class="w">            </span><span class="nv">self</span>[<span class="s2">&quot;version&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">version</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -3748,9 +3748,9 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">get_csl_item</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">citekey</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">get_csl_item</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">citekey</span><span class="ss">)</span>:<span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">get_arxiv_csl_item</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">standard_accession</span><span class="ss">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">get_arxiv_csl_item</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">standard_accession</span><span class="ss">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -3765,13 +3765,13 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 <p>string describing the issue is returned. Otherwise returns None.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">inspect</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">citekey</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">inspect</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">citekey</span><span class="ss">)</span>:<span class="w"></span>
 
-        # <span class="nv">https</span>:<span class="o">//</span><span class="nv">arxiv</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">help</span><span class="o">/</span><span class="nv">arxiv_identifier</span>
+<span class="w">        </span>#<span class="w"> </span><span class="nv">https</span>:<span class="o">//</span><span class="nv">arxiv</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">help</span><span class="o">/</span><span class="nv">arxiv_identifier</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="nv">not</span> <span class="nv">self</span>.<span class="nv">_get_pattern</span><span class="ss">()</span>.<span class="nv">fullmatch</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">accession</span><span class="ss">)</span>:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">_get_pattern</span><span class="ss">()</span>.<span class="nv">fullmatch</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">accession</span><span class="ss">)</span>:<span class="w"></span>
 
-            <span class="k">return</span> <span class="s2">&quot;</span><span class="s">arXiv identifiers must conform to syntax described at https://arxiv.org/help/arxiv_identifier.</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s2">&quot;arXiv identifiers must conform to syntax described at https://arxiv.org/help/arxiv_identifier.&quot;</span><span class="w"></span>
 </code></pre></div>
 
 </details>

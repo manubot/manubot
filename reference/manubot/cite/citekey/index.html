@@ -2775,7 +2775,7 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
 <span class="w">        </span><span class="s">&quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="nf">hasattr</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;_prefix&quot;</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">hasattr</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;_prefix&quot;</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
 <span class="w">            </span><span class="nb">self</span><span class="p">.</span><span class="n">_set_prefix_accession</span><span class="p">()</span><span class="w"></span>
 
@@ -2915,7 +2915,7 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
 <span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">_standard_prefix</span><span class="p">,</span><span class="w"> </span><span class="nb">self</span><span class="p">.</span><span class="n">_standard_accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fxn</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">accession</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">_standard_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="s">&quot;</span><span class="p">{</span><span class="nb">self</span><span class="p">.</span><span class="n">_standard_prefix</span><span class="p">}</span><span class="o">:</span><span class="p">{</span><span class="nb">self</span><span class="p">.</span><span class="n">_standard_accession</span><span class="p">}</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">_standard_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="s">&quot;{self._standard_prefix}:{self._standard_accession}&quot;</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">@property</span><span class="w"></span>
 
@@ -2929,7 +2929,7 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
 <span class="w">        </span><span class="s">&quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="nf">hasattr</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;_standard_id&quot;</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">hasattr</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;_standard_id&quot;</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
 
 <span class="w">            </span><span class="nb">self</span><span class="p">.</span><span class="n">_standardize</span><span class="p">()</span><span class="w"></span>
 
@@ -2969,9 +2969,9 @@ If citekeys fail inspection, revert alternative sources to URLs.</p>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">&quot; --&gt; &quot;</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">f</span><span class="s">&quot;</span><span class="p">{</span><span class="n">getattr</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p">)}</span><span class="w"> </span><span class="p">({</span><span class="n">key</span><span class="p">})</span><span class="s">&quot;</span>
+<span class="w">            </span><span class="n">f</span><span class="s">&quot;{getattr(self, key)} ({key})&quot;</span><span class="w"></span>
 
-<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="nf">in</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 
 <span class="w">                </span><span class="s">&quot;input_id&quot;</span><span class="p">,</span><span class="w"></span>
 

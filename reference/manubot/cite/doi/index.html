@@ -2210,45 +2210,45 @@ and get_doi_csl_item_default ends up redirecting to this endpoint for DataCite r
 <p>Decorator providing edits to the csl_item returned by a get_doi_csl_item_* function.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">augment_get_doi_csl_item</span><span class="ss">(</span><span class="nv">function</span>: <span class="nv">Callable</span>[..., <span class="nv">Any</span>]<span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">augment_get_doi_csl_item</span><span class="ss">(</span><span class="nv">function</span>:<span class="w"> </span><span class="nv">Callable</span>[...,<span class="w"> </span><span class="nv">Any</span>]<span class="ss">)</span>:<span class="w"></span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-    <span class="nv">Decorator</span> <span class="nv">providing</span> <span class="nv">edits</span> <span class="nv">to</span> <span class="nv">the</span> <span class="nv">csl_item</span> <span class="nv">returned</span> <span class="nv">by</span> <span class="nv">a</span> <span class="nv">get_doi_csl_item_</span><span class="o">*</span> <span class="nv">function</span>.
+<span class="err">    Decorator providing edits to the csl_item returned by a get_doi_csl_item_* function.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-    <span class="nv">def</span> <span class="nv">wrapper</span><span class="ss">(</span><span class="nv">doi</span>: <span class="nv">str</span><span class="ss">)</span>:
+<span class="err">    def wrapper(doi: str):</span>
 
-        <span class="nv">doi</span> <span class="o">=</span> <span class="nv">doi</span>.<span class="nv">lower</span><span class="ss">()</span>
+<span class="err">        doi = doi.lower()</span>
 
-        <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+<span class="err">        csl_item = function(doi)</span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">DOI</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">doi</span>
+<span class="w">        </span><span class="nv">csl_item</span>[<span class="s2">&quot;DOI&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">doi</span><span class="w"></span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">URL</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">https://doi.org/{doi}</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="nv">csl_item</span>[<span class="s2">&quot;URL&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;https://doi.org/{doi}&quot;</span><span class="w"></span>
 
-        <span class="nv">short_doi_url</span> <span class="o">=</span> <span class="nv">get_short_doi_url</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+<span class="w">        </span><span class="nv">short_doi_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">get_short_doi_url</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="nv">short_doi_url</span>:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">short_doi_url</span>:<span class="w"></span>
 
-            <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">URL</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">short_doi_url</span>
+<span class="w">            </span><span class="nv">csl_item</span>[<span class="s2">&quot;URL&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">short_doi_url</span><span class="w"></span>
 
-        <span class="nv">try</span>:
+<span class="w">        </span><span class="nv">try</span>:<span class="w"></span>
 
-            <span class="nv">csl_item</span>.<span class="nv">update</span><span class="ss">(</span><span class="nv">get_pubmed_ids_for_doi</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">))</span>
+<span class="w">            </span><span class="nv">csl_item</span>.<span class="nv">update</span><span class="ss">(</span><span class="nv">get_pubmed_ids_for_doi</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">))</span><span class="w"></span>
 
-        <span class="nv">except</span> <span class="nv">Exception</span>:
+<span class="w">        </span><span class="nv">except</span><span class="w"> </span><span class="nv">Exception</span>:<span class="w"></span>
 
-            <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+<span class="w">            </span><span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="w"></span>
 
-                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error calling get_pubmed_ids_for_doi for {doi}</span><span class="s2">&quot;</span>, <span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span>
+<span class="w">                </span><span class="nv">f</span><span class="s2">&quot;Error calling get_pubmed_ids_for_doi for {doi}&quot;</span>,<span class="w"> </span><span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span><span class="w"></span>
 
-            <span class="ss">)</span>
+<span class="w">            </span><span class="ss">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">csl_item</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">csl_item</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="nv">wrapper</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">wrapper</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2339,35 +2339,35 @@ and get_doi_csl_item_default ends up redirecting to this endpoint for DataCite r
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">wrapper</span><span class="ss">(</span><span class="nv">doi</span>: <span class="nv">str</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">wrapper</span><span class="ss">(</span><span class="nv">doi</span>:<span class="w"> </span><span class="nv">str</span><span class="ss">)</span>:<span class="w"></span>
 
-        <span class="nv">doi</span> <span class="o">=</span> <span class="nv">doi</span>.<span class="nv">lower</span><span class="ss">()</span>
+<span class="w">        </span><span class="nv">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">doi</span>.<span class="nv">lower</span><span class="ss">()</span><span class="w"></span>
 
-        <span class="nv">csl_item</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+<span class="w">        </span><span class="nv">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">function</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span><span class="w"></span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">DOI</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">doi</span>
+<span class="w">        </span><span class="nv">csl_item</span>[<span class="s2">&quot;DOI&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">doi</span><span class="w"></span>
 
-        <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">URL</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">https://doi.org/{doi}</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="nv">csl_item</span>[<span class="s2">&quot;URL&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;https://doi.org/{doi}&quot;</span><span class="w"></span>
 
-        <span class="nv">short_doi_url</span> <span class="o">=</span> <span class="nv">get_short_doi_url</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+<span class="w">        </span><span class="nv">short_doi_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">get_short_doi_url</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="nv">short_doi_url</span>:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">short_doi_url</span>:<span class="w"></span>
 
-            <span class="nv">csl_item</span>[<span class="s2">&quot;</span><span class="s">URL</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">short_doi_url</span>
+<span class="w">            </span><span class="nv">csl_item</span>[<span class="s2">&quot;URL&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">short_doi_url</span><span class="w"></span>
 
-        <span class="nv">try</span>:
+<span class="w">        </span><span class="nv">try</span>:<span class="w"></span>
 
-            <span class="nv">csl_item</span>.<span class="nv">update</span><span class="ss">(</span><span class="nv">get_pubmed_ids_for_doi</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">))</span>
+<span class="w">            </span><span class="nv">csl_item</span>.<span class="nv">update</span><span class="ss">(</span><span class="nv">get_pubmed_ids_for_doi</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">))</span><span class="w"></span>
 
-        <span class="nv">except</span> <span class="nv">Exception</span>:
+<span class="w">        </span><span class="nv">except</span><span class="w"> </span><span class="nv">Exception</span>:<span class="w"></span>
 
-            <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+<span class="w">            </span><span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="w"></span>
 
-                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error calling get_pubmed_ids_for_doi for {doi}</span><span class="s2">&quot;</span>, <span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span>
+<span class="w">                </span><span class="nv">f</span><span class="s2">&quot;Error calling get_pubmed_ids_for_doi for {doi}&quot;</span>,<span class="w"> </span><span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span><span class="w"></span>
 
-            <span class="ss">)</span>
+<span class="w">            </span><span class="ss">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">csl_item</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">csl_item</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2382,19 +2382,19 @@ and get_doi_csl_item_default ends up redirecting to this endpoint for DataCite r
 https://github.com/crosscite/content-negotiation/issues/104</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">get_doi_csl_item_datacite</span><span class="ss">(</span><span class="nv">doi</span>: <span class="nv">str</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">get_doi_csl_item_datacite</span><span class="ss">(</span><span class="nv">doi</span>:<span class="w"> </span><span class="nv">str</span><span class="ss">)</span>:<span class="w"></span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-    <span class="nv">As</span> <span class="nv">of</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">01</span>, <span class="nv">the</span> <span class="nv">DataCite</span> <span class="nv">Content</span> <span class="nv">Negotiation</span> <span class="nv">restricted</span>
+<span class="err">    As of 2022-01, the DataCite Content Negotiation restricted</span>
 
-    <span class="nv">service</span> <span class="nv">to</span> <span class="nv">just</span> <span class="nv">DataCite</span> <span class="nv">DOIs</span>, <span class="nv">and</span> <span class="nv">began</span> <span class="nv">returning</span> <span class="mi">404</span><span class="nv">s</span> <span class="k">for</span> <span class="nv">Crossref</span> <span class="nv">DOIs</span>.
+<span class="err">    service to just DataCite DOIs, and began returning 404s for Crossref DOIs.</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">crosscite</span><span class="o">/</span><span class="nv">content</span><span class="o">-</span><span class="nv">negotiation</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">104</span>
+<span class="err">    https://github.com/crosscite/content-negotiation/issues/104</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-    <span class="k">return</span> <span class="nv">_get_doi_csl_item_negotiation</span><span class="ss">(</span><span class="nv">doi</span>, <span class="nv">content_negotiation_url_datacite</span><span class="ss">)</span>
+<span class="err">    return _get_doi_csl_item_negotiation(doi, content_negotiation_url_datacite)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2409,19 +2409,19 @@ https://github.com/crosscite/content-negotiation/issues/104</p>
 https://github.com/crosscite/content-negotiation/issues/104</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">get_doi_csl_item_default</span><span class="ss">(</span><span class="nv">doi</span>: <span class="nv">str</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">get_doi_csl_item_default</span><span class="ss">(</span><span class="nv">doi</span>:<span class="w"> </span><span class="nv">str</span><span class="ss">)</span>:<span class="w"></span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-    <span class="nv">doi</span>.<span class="nv">org</span> <span class="nv">content</span> <span class="nv">negotiation</span> <span class="nv">redirects</span> <span class="nv">to</span> <span class="nv">the</span> <span class="nv">content</span> <span class="nv">negotiation</span> <span class="nv">service</span> <span class="nv">of</span>
+<span class="err">    doi.org content negotiation redirects to the content negotiation service of</span>
 
-    <span class="nv">the</span> <span class="nv">Registration</span> <span class="nv">Agency</span>, <span class="nv">e</span>.<span class="nv">g</span>. <span class="nv">Crossref</span> <span class="nv">or</span> <span class="nv">DataCite</span>.
+<span class="err">    the Registration Agency, e.g. Crossref or DataCite.</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">crosscite</span><span class="o">/</span><span class="nv">content</span><span class="o">-</span><span class="nv">negotiation</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">104</span>
+<span class="err">    https://github.com/crosscite/content-negotiation/issues/104</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-    <span class="k">return</span> <span class="nv">_get_doi_csl_item_negotiation</span><span class="ss">(</span><span class="nv">doi</span>, <span class="nv">content_negotiation_url_default</span><span class="ss">)</span>
+<span class="err">    return _get_doi_csl_item_negotiation(doi, content_negotiation_url_default)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2644,9 +2644,9 @@ Zotero resolves and scrapes data from the resulting webpage.</p>
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">get_csl_item</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">citekey</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">get_csl_item</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">citekey</span><span class="ss">)</span>:<span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">get_doi_csl_item</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">standard_accession</span><span class="ss">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">get_doi_csl_item</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">standard_accession</span><span class="ss">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2712,35 +2712,35 @@ Zotero resolves and scrapes data from the resulting webpage.</p>
 Subclasses can override this method with more specific standardization logic.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">standardize_prefix_accession</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">accession</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">standardize_prefix_accession</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">accession</span><span class="ss">)</span>:<span class="w"></span>
 
-        <span class="k">if</span> <span class="nv">accession</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">10/</span><span class="s2">&quot;</span><span class="ss">)</span>:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">accession</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;10/&quot;</span><span class="ss">)</span>:<span class="w"></span>
 
-            <span class="nv">try</span>:
+<span class="w">            </span><span class="nv">try</span>:<span class="w"></span>
 
-                <span class="nv">accession</span> <span class="o">=</span> <span class="nv">expand_short_doi</span><span class="ss">(</span><span class="nv">accession</span><span class="ss">)</span>
+<span class="w">                </span><span class="nv">accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">expand_short_doi</span><span class="ss">(</span><span class="nv">accession</span><span class="ss">)</span><span class="w"></span>
 
-            <span class="nv">except</span> <span class="nv">Exception</span> <span class="nv">as</span> <span class="nv">error</span>:
+<span class="w">            </span><span class="nv">except</span><span class="w"> </span><span class="nv">Exception</span><span class="w"> </span><span class="nv">as</span><span class="w"> </span><span class="nv">error</span>:<span class="w"></span>
 
-                # <span class="k">If</span> <span class="nv">DOI</span> <span class="nv">shortening</span> <span class="nv">fails</span>, <span class="k">return</span> <span class="nv">the</span> <span class="nv">unshortened</span> <span class="nv">DOI</span>.
+<span class="w">                </span>#<span class="w"> </span><span class="k">If</span><span class="w"> </span><span class="nv">DOI</span><span class="w"> </span><span class="nv">shortening</span><span class="w"> </span><span class="nv">fails</span>,<span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">unshortened</span><span class="w"> </span><span class="nv">DOI</span>.<span class="w"></span>
 
-                # <span class="nv">DOI</span> <span class="nv">metadata</span> <span class="nv">lookup</span> <span class="nv">will</span> <span class="nv">eventually</span> <span class="nv">fail</span> <span class="nv">somewhere</span> <span class="nv">with</span>
+<span class="w">                </span>#<span class="w"> </span><span class="nv">DOI</span><span class="w"> </span><span class="nv">metadata</span><span class="w"> </span><span class="nv">lookup</span><span class="w"> </span><span class="nv">will</span><span class="w"> </span><span class="nv">eventually</span><span class="w"> </span><span class="nv">fail</span><span class="w"> </span><span class="nv">somewhere</span><span class="w"> </span><span class="nv">with</span><span class="w"></span>
 
-                # <span class="nv">appropriate</span> <span class="nv">error</span> <span class="nv">handling</span>, <span class="nv">as</span> <span class="nv">opposed</span> <span class="nv">to</span> <span class="nv">here</span>.
+<span class="w">                </span>#<span class="w"> </span><span class="nv">appropriate</span><span class="w"> </span><span class="nv">error</span><span class="w"> </span><span class="nv">handling</span>,<span class="w"> </span><span class="nv">as</span><span class="w"> </span><span class="nv">opposed</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">here</span>.<span class="w"></span>
 
-                <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span>
+<span class="w">                </span><span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span><span class="w"></span>
 
-                    <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Error in expand_short_doi for {accession} </span><span class="s2">&quot;</span>
+<span class="w">                    </span><span class="nv">f</span><span class="s2">&quot;Error in expand_short_doi for {accession} &quot;</span><span class="w"></span>
 
-                    <span class="nv">f</span><span class="s2">&quot;</span><span class="s">due to a {error.__class__.__name__}:</span><span class="se">\n</span><span class="s">{error}</span><span class="s2">&quot;</span>
+<span class="w">                    </span><span class="nv">f</span><span class="s2">&quot;due to a {error.__class__.__name__}:\n{error}&quot;</span><span class="w"></span>
 
-                <span class="ss">)</span>
+<span class="w">                </span><span class="ss">)</span><span class="w"></span>
 
-                <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">error</span>, <span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+<span class="w">                </span><span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">error</span>,<span class="w"> </span><span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span><span class="w"></span>
 
-        <span class="nv">accession</span> <span class="o">=</span> <span class="nv">accession</span>.<span class="nv">lower</span><span class="ss">()</span>
+<span class="w">        </span><span class="nv">accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">accession</span>.<span class="nv">lower</span><span class="ss">()</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">self</span>.<span class="nv">standard_prefix</span>, <span class="nv">accession</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">standard_prefix</span>,<span class="w"> </span><span class="nv">accession</span><span class="w"></span>
 </code></pre></div>
 
 </details>

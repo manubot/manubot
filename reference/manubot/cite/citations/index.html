@@ -2553,29 +2553,29 @@
 <p>Check for short_id hash collisions</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">check_collisions</span><span class="ss">(</span><span class="nv">self</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">check_collisions</span><span class="ss">(</span><span class="nv">self</span><span class="ss">)</span>:<span class="w"></span>
 
-        <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-        <span class="nv">Check</span> <span class="k">for</span> <span class="nv">short_id</span> <span class="nv">hash</span> <span class="nv">collisions</span>
+<span class="err">        Check for short_id hash collisions</span>
 
-        <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-        <span class="k">for</span> <span class="nv">short_id</span>, <span class="nv">citekeys</span> <span class="nv">in</span> <span class="nv">self</span>.<span class="nv">group_citekeys_by</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">short_id</span><span class="s2">&quot;</span><span class="ss">)</span>:
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="nv">short_id</span>,<span class="w"> </span><span class="nv">citekeys</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">group_citekeys_by</span><span class="ss">(</span><span class="s2">&quot;short_id&quot;</span><span class="ss">)</span>:<span class="w"></span>
 
-            <span class="nv">standard_ids</span> <span class="o">=</span> <span class="nv">sorted</span><span class="ss">(</span>{<span class="nv">x</span>.<span class="nv">standard_id</span> <span class="k">for</span> <span class="nv">x</span> <span class="nv">in</span> <span class="nv">citekeys</span>}<span class="ss">)</span>
+<span class="w">            </span><span class="nv">standard_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">sorted</span><span class="ss">(</span>{<span class="nv">x</span>.<span class="nv">standard_id</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">citekeys</span>}<span class="ss">)</span><span class="w"></span>
 
-            <span class="k">if</span> <span class="nv">len</span><span class="ss">(</span><span class="nv">standard_ids</span><span class="ss">)</span> <span class="o">==</span> <span class="mi">1</span>:
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nv">len</span><span class="ss">(</span><span class="nv">standard_ids</span><span class="ss">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span>:<span class="w"></span>
 
-                <span class="k">continue</span>
+<span class="w">                </span><span class="k">continue</span><span class="w"></span>
 
-            <span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span>
+<span class="w">            </span><span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span><span class="w"></span>
 
-                <span class="s2">&quot;</span><span class="s">Congratulations! Hash collision. Please report to https://git.io/JfuhH.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="w">                </span><span class="s2">&quot;Congratulations! Hash collision. Please report to https://git.io/JfuhH.\n&quot;</span><span class="w"></span>
 
-                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Multiple standard_ids hashed to {short_id}: {standard_ids}</span><span class="s2">&quot;</span>
+<span class="w">                </span><span class="nv">f</span><span class="s2">&quot;Multiple standard_ids hashed to {short_id}: {standard_ids}&quot;</span><span class="w"></span>
 
-            <span class="ss">)</span>
+<span class="w">            </span><span class="ss">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2588,27 +2588,27 @@
 <p>Identify different input_ids referring to the same reference.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">check_multiple_input_ids</span><span class="ss">(</span><span class="nv">self</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">check_multiple_input_ids</span><span class="ss">(</span><span class="nv">self</span><span class="ss">)</span>:<span class="w"></span>
 
-        <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-        <span class="nv">Identify</span> <span class="nv">different</span> <span class="nv">input_ids</span> <span class="nv">referring</span> <span class="nv">to</span> <span class="nv">the</span> <span class="nv">same</span> <span class="nv">reference</span>.
+<span class="err">        Identify different input_ids referring to the same reference.</span>
 
-        <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-        <span class="k">for</span> <span class="nv">standard_id</span>, <span class="nv">citekeys</span> <span class="nv">in</span> <span class="nv">self</span>.<span class="nv">group_citekeys_by</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">standard_id</span><span class="s2">&quot;</span><span class="ss">)</span>:
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="nv">standard_id</span>,<span class="w"> </span><span class="nv">citekeys</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">group_citekeys_by</span><span class="ss">(</span><span class="s2">&quot;standard_id&quot;</span><span class="ss">)</span>:<span class="w"></span>
 
-            <span class="nv">input_ids</span> <span class="o">=</span> [<span class="nv">x</span>.<span class="nv">input_id</span> <span class="k">for</span> <span class="nv">x</span> <span class="nv">in</span> <span class="nv">citekeys</span>]
+<span class="w">            </span><span class="nv">input_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>[<span class="nv">x</span>.<span class="nv">input_id</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">citekeys</span>]<span class="w"></span>
 
-            <span class="k">if</span> <span class="nv">len</span><span class="ss">(</span><span class="nv">input_ids</span><span class="ss">)</span> <span class="o">&lt;</span> <span class="mi">2</span>:
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nv">len</span><span class="ss">(</span><span class="nv">input_ids</span><span class="ss">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span>:<span class="w"></span>
 
-                <span class="k">continue</span>
+<span class="w">                </span><span class="k">continue</span><span class="w"></span>
 
-            <span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+<span class="w">            </span><span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span><span class="w"></span>
 
-                <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Multiple citekey input_ids refer to the same standard_id {standard_id}:</span><span class="se">\n</span><span class="s">{input_ids}</span><span class="s2">&quot;</span>
+<span class="w">                </span><span class="nv">f</span><span class="s2">&quot;Multiple citekey input_ids refer to the same standard_id {standard_id}:\n{input_ids}&quot;</span><span class="w"></span>
 
-            <span class="ss">)</span>
+<span class="w">            </span><span class="ss">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2795,39 +2795,39 @@
 <p>If log_level is not None, log combined inspection report at this level.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">inspect</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">log_level</span><span class="o">=</span><span class="nv">None</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">inspect</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">log_level</span><span class="o">=</span><span class="nv">None</span><span class="ss">)</span>:<span class="w"></span>
 
-        <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-        <span class="k">If</span> <span class="nv">log_level</span> <span class="nv">is</span> <span class="nv">not</span> <span class="nv">None</span>, <span class="nv">log</span> <span class="nv">combined</span> <span class="nv">inspection</span> <span class="nv">report</span> <span class="nv">at</span> <span class="nv">this</span> <span class="nv">level</span>.
+<span class="err">        If log_level is not None, log combined inspection report at this level.</span>
 
-        <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-        <span class="nv">citekeys</span> <span class="o">=</span> <span class="nv">self</span>.<span class="nv">unique_citekeys_by</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">dealiased_id</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">        </span><span class="nv">citekeys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">unique_citekeys_by</span><span class="ss">(</span><span class="s2">&quot;dealiased_id&quot;</span><span class="ss">)</span><span class="w"></span>
 
-        <span class="nv">reports</span> <span class="o">=</span> []
+<span class="w">        </span><span class="nv">reports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>[]<span class="w"></span>
 
-        <span class="k">for</span> <span class="nv">citekey</span> <span class="nv">in</span> <span class="nv">citekeys</span>:
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="nv">citekey</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">citekeys</span>:<span class="w"></span>
 
-            <span class="nv">report</span> <span class="o">=</span> <span class="nv">citekey</span>.<span class="nv">inspect</span><span class="ss">()</span>
+<span class="w">            </span><span class="nv">report</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">citekey</span>.<span class="nv">inspect</span><span class="ss">()</span><span class="w"></span>
 
-            <span class="k">if</span> <span class="nv">not</span> <span class="nv">report</span>:
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">report</span>:<span class="w"></span>
 
-                <span class="k">continue</span>
+<span class="w">                </span><span class="k">continue</span><span class="w"></span>
 
-            <span class="nv">reports</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">{citekey.dealiased_id} -- {report}</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">            </span><span class="nv">reports</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;{citekey.dealiased_id} -- {report}&quot;</span><span class="ss">)</span><span class="w"></span>
 
-        <span class="nv">report</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">reports</span><span class="ss">)</span>
+<span class="w">        </span><span class="nv">report</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;\n&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">reports</span><span class="ss">)</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="nv">reports</span> <span class="nv">and</span> <span class="nv">log_level</span> <span class="nv">is</span> <span class="nv">not</span> <span class="nv">None</span>:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">reports</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="nv">log_level</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">None</span>:<span class="w"></span>
 
-            <span class="nv">log_level</span> <span class="o">=</span> <span class="nv">logging</span>.<span class="nv">_checkLevel</span><span class="ss">(</span><span class="nv">log_level</span><span class="ss">)</span>
+<span class="w">            </span><span class="nv">log_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">logging</span>.<span class="nv">_checkLevel</span><span class="ss">(</span><span class="nv">log_level</span><span class="ss">)</span><span class="w"></span>
 
-            <span class="nv">msg</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">Inspection of dealiased citekeys revealed potential problems:</span><span class="se">\n</span><span class="s">{report}</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="nv">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;Inspection of dealiased citekeys revealed potential problems:\n{report}&quot;</span><span class="w"></span>
 
-            <span class="nv">logging</span>.<span class="nv">log</span><span class="ss">(</span><span class="nv">log_level</span>, <span class="nv">msg</span><span class="ss">)</span>
+<span class="w">            </span><span class="nv">logging</span>.<span class="nv">log</span><span class="ss">(</span><span class="nv">log_level</span>,<span class="w"> </span><span class="nv">msg</span><span class="ss">)</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">report</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">report</span><span class="w"></span>
 </code></pre></div>
 
 </details>

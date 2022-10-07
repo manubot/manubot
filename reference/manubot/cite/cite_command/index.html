@@ -1822,91 +1822,91 @@
 <p>path is the path to write to.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">call_pandoc</span><span class="ss">(</span><span class="nv">metadata</span>, <span class="nv">path</span>, <span class="nv">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">plain</span><span class="s2">&quot;</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">call_pandoc</span><span class="ss">(</span><span class="nv">metadata</span>,<span class="w"> </span><span class="nv">path</span>,<span class="w"> </span><span class="nv">format</span><span class="o">=</span><span class="s2">&quot;plain&quot;</span><span class="ss">)</span>:<span class="w"></span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-    <span class="nv">path</span> <span class="nv">is</span> <span class="nv">the</span> <span class="nv">path</span> <span class="nv">to</span> <span class="nv">write</span> <span class="nv">to</span>.
+<span class="err">    path is the path to write to.</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-    <span class="nv">_exit_without_pandoc</span><span class="ss">()</span>
+<span class="err">    _exit_without_pandoc()</span>
 
-    <span class="nv">info</span> <span class="o">=</span> <span class="nv">get_pandoc_info</span><span class="ss">()</span>
+<span class="err">    info = get_pandoc_info()</span>
 
-    <span class="nv">_check_pandoc_version</span><span class="ss">(</span><span class="nv">info</span>, <span class="nv">metadata</span>, <span class="nv">format</span><span class="ss">)</span>
+<span class="err">    _check_pandoc_version(info, metadata, format)</span>
 
-    <span class="nv">metadata_block</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">---</span><span class="se">\n</span><span class="s">{yaml}</span><span class="se">\n</span><span class="s">...</span><span class="se">\n</span><span class="s2">&quot;</span>.<span class="nv">format</span><span class="ss">(</span>
+<span class="w">    </span><span class="nv">metadata_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;---\n{yaml}\n...\n&quot;</span>.<span class="nv">format</span><span class="ss">(</span><span class="w"></span>
 
-        <span class="nv">yaml</span><span class="o">=</span><span class="nv">json</span>.<span class="nv">dumps</span><span class="ss">(</span><span class="nv">metadata</span>, <span class="nv">ensure_ascii</span><span class="o">=</span><span class="nv">False</span>, <span class="nv">indent</span><span class="o">=</span><span class="mi">2</span><span class="ss">)</span>
+<span class="w">        </span><span class="nv">yaml</span><span class="o">=</span><span class="nv">json</span>.<span class="nv">dumps</span><span class="ss">(</span><span class="nv">metadata</span>,<span class="w"> </span><span class="nv">ensure_ascii</span><span class="o">=</span><span class="nv">False</span>,<span class="w"> </span><span class="nv">indent</span><span class="o">=</span><span class="mi">2</span><span class="ss">)</span><span class="w"></span>
 
-    <span class="ss">)</span>
+<span class="w">    </span><span class="ss">)</span><span class="w"></span>
 
-    <span class="nv">args</span> <span class="o">=</span> [
+<span class="w">    </span><span class="nv">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>[<span class="w"></span>
 
-        <span class="s2">&quot;</span><span class="s">pandoc</span><span class="s2">&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;pandoc&quot;</span>,<span class="w"></span>
 
-        <span class="s2">&quot;</span><span class="s">--citeproc</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="s2">&quot;--citeproc&quot;</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="nv">info</span>[<span class="s2">&quot;</span><span class="s">pandoc version</span><span class="s2">&quot;</span>] <span class="o">&gt;=</span> <span class="ss">(</span><span class="mi">2</span>, <span class="mi">11</span><span class="ss">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">info</span>[<span class="s2">&quot;pandoc version&quot;</span>]<span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="ss">(</span><span class="mi">2</span>,<span class="w"> </span><span class="mi">11</span><span class="ss">)</span><span class="w"></span>
 
-        <span class="k">else</span> <span class="s2">&quot;</span><span class="s">--filter=pandoc-citeproc</span><span class="s2">&quot;</span>,
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="s2">&quot;--filter=pandoc-citeproc&quot;</span>,<span class="w"></span>
 
-        <span class="nv">f</span><span class="s2">&quot;</span><span class="s">--output={path or &#39;-&#39;}</span><span class="s2">&quot;</span>,
+<span class="w">        </span><span class="nv">f</span><span class="s2">&quot;--output={path or &#39;-&#39;}&quot;</span>,<span class="w"></span>
 
-    ]
+<span class="w">    </span>]<span class="w"></span>
 
-    <span class="k">if</span> <span class="nv">format</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">markdown</span><span class="s2">&quot;</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nv">format</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;markdown&quot;</span>:<span class="w"></span>
 
-        <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;</span><span class="s">--to=markdown_strict-raw_html</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">--wrap=none</span><span class="s2">&quot;</span>]<span class="ss">)</span>
+<span class="w">        </span><span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;--to=markdown_strict-raw_html&quot;</span>,<span class="w"> </span><span class="s2">&quot;--wrap=none&quot;</span>]<span class="ss">)</span><span class="w"></span>
 
-    <span class="nv">elif</span> <span class="nv">format</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">jats</span><span class="s2">&quot;</span>:
+<span class="w">    </span><span class="nv">elif</span><span class="w"> </span><span class="nv">format</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;jats&quot;</span>:<span class="w"></span>
 
-        <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;</span><span class="s">--to=jats</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">--standalone</span><span class="s2">&quot;</span>]<span class="ss">)</span>
+<span class="w">        </span><span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;--to=jats&quot;</span>,<span class="w"> </span><span class="s2">&quot;--standalone&quot;</span>]<span class="ss">)</span><span class="w"></span>
 
-    <span class="nv">elif</span> <span class="nv">format</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">docx</span><span class="s2">&quot;</span>:
+<span class="w">    </span><span class="nv">elif</span><span class="w"> </span><span class="nv">format</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;docx&quot;</span>:<span class="w"></span>
 
-        <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;</span><span class="s">--to=docx</span><span class="s2">&quot;</span>]<span class="ss">)</span>
+<span class="w">        </span><span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;--to=docx&quot;</span>]<span class="ss">)</span><span class="w"></span>
 
-    <span class="nv">elif</span> <span class="nv">format</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">html</span><span class="s2">&quot;</span>:
+<span class="w">    </span><span class="nv">elif</span><span class="w"> </span><span class="nv">format</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;html&quot;</span>:<span class="w"></span>
 
-        <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;</span><span class="s">--to=html</span><span class="s2">&quot;</span>]<span class="ss">)</span>
+<span class="w">        </span><span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;--to=html&quot;</span>]<span class="ss">)</span><span class="w"></span>
 
-    <span class="nv">elif</span> <span class="nv">format</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">plain</span><span class="s2">&quot;</span>:
+<span class="w">    </span><span class="nv">elif</span><span class="w"> </span><span class="nv">format</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;plain&quot;</span>:<span class="w"></span>
 
-        <span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;</span><span class="s">--to=plain</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">--wrap=none</span><span class="s2">&quot;</span>]<span class="ss">)</span>
+<span class="w">        </span><span class="nv">args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;--to=plain&quot;</span>,<span class="w"> </span><span class="s2">&quot;--wrap=none&quot;</span>]<span class="ss">)</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="nv">info</span>[<span class="s2">&quot;</span><span class="s">pandoc version</span><span class="s2">&quot;</span>] <span class="o">&gt;=</span> <span class="ss">(</span><span class="mi">2</span>,<span class="ss">)</span>:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">info</span>[<span class="s2">&quot;pandoc version&quot;</span>]<span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="ss">(</span><span class="mi">2</span>,<span class="ss">)</span>:<span class="w"></span>
 
-            # <span class="k">Do</span> <span class="nv">not</span> <span class="nv">use</span> <span class="nv">ALL_CAPS</span> <span class="k">for</span> <span class="nv">bold</span> <span class="o">&amp;</span> <span class="nv">underscores</span> <span class="k">for</span> <span class="nv">italics</span>
+<span class="w">            </span>#<span class="w"> </span><span class="k">Do</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">use</span><span class="w"> </span><span class="nv">ALL_CAPS</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">bold</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">underscores</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">italics</span><span class="w"></span>
 
-            # <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">jgm</span><span class="o">/</span><span class="nv">pandoc</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">4834</span>#<span class="nv">issuecomment</span><span class="o">-</span><span class="mi">412972008</span>
+<span class="w">            </span>#<span class="w"> </span><span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">jgm</span><span class="o">/</span><span class="nv">pandoc</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">4834</span>#<span class="nv">issuecomment</span><span class="o">-</span><span class="mi">412972008</span><span class="w"></span>
 
-            <span class="nv">filter_path</span> <span class="o">=</span> <span class="ss">(</span>
+<span class="w">            </span><span class="nv">filter_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">(</span><span class="w"></span>
 
-                <span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="nv">__file__</span><span class="ss">)</span>
+<span class="w">                </span><span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="nv">__file__</span><span class="ss">)</span><span class="w"></span>
 
-                .<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">..</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">plain-pandoc-filter.lua</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">                </span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;..&quot;</span>,<span class="w"> </span><span class="s2">&quot;plain-pandoc-filter.lua&quot;</span><span class="ss">)</span><span class="w"></span>
 
-                .<span class="nv">resolve</span><span class="ss">()</span>
+<span class="w">                </span>.<span class="nv">resolve</span><span class="ss">()</span><span class="w"></span>
 
-            <span class="ss">)</span>
+<span class="w">            </span><span class="ss">)</span><span class="w"></span>
 
-            <span class="nv">assert</span> <span class="nv">filter_path</span>.<span class="nv">exists</span><span class="ss">()</span>
+<span class="w">            </span><span class="nv">assert</span><span class="w"> </span><span class="nv">filter_path</span>.<span class="nv">exists</span><span class="ss">()</span><span class="w"></span>
 
-            <span class="nv">args</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">--lua-filter={filter_path}</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="w">            </span><span class="nv">args</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;--lua-filter={filter_path}&quot;</span><span class="ss">)</span><span class="w"></span>
 
-    <span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">call_pandoc subprocess args:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nv">shlex_join</span><span class="ss">(</span><span class="nv">args</span><span class="ss">))</span>
+<span class="w">    </span><span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="s2">&quot;call_pandoc subprocess args:\n&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">shlex_join</span><span class="ss">(</span><span class="nv">args</span><span class="ss">))</span><span class="w"></span>
 
-    <span class="nv">process</span> <span class="o">=</span> <span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span>
+<span class="w">    </span><span class="nv">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span><span class="w"></span>
 
-        <span class="nv">args</span><span class="o">=</span><span class="nv">args</span>,
+<span class="w">        </span><span class="nv">args</span><span class="o">=</span><span class="nv">args</span>,<span class="w"></span>
 
-        <span class="nv">input</span><span class="o">=</span><span class="nv">metadata_block</span>.<span class="nv">encode</span><span class="ss">()</span>,
+<span class="w">        </span><span class="nv">input</span><span class="o">=</span><span class="nv">metadata_block</span>.<span class="nv">encode</span><span class="ss">()</span>,<span class="w"></span>
 
-    <span class="ss">)</span>
+<span class="w">    </span><span class="ss">)</span><span class="w"></span>
 
-    <span class="nv">process</span>.<span class="nv">check_returncode</span><span class="ss">()</span>
+<span class="w">    </span><span class="nv">process</span>.<span class="nv">check_returncode</span><span class="ss">()</span><span class="w"></span>
 </code></pre></div>
 
 </details>

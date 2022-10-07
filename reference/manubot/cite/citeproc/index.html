@@ -1829,65 +1829,65 @@ https://github.com/Julian/jsonschema/issues/448
 https://stackoverflow.com/questions/44694835</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">remove_jsonschema_errors</span><span class="ss">(</span><span class="nv">instance</span>, <span class="nv">recurse_depth</span><span class="o">=</span><span class="mi">5</span>, <span class="nv">in_place</span><span class="o">=</span><span class="nv">False</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">remove_jsonschema_errors</span><span class="ss">(</span><span class="nv">instance</span>,<span class="w"> </span><span class="nv">recurse_depth</span><span class="o">=</span><span class="mi">5</span>,<span class="w"> </span><span class="nv">in_place</span><span class="o">=</span><span class="nv">False</span><span class="ss">)</span>:<span class="w"></span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-    <span class="nv">Remove</span> <span class="nv">fields</span> <span class="nv">in</span> <span class="nv">CSL</span> <span class="nv">Items</span> <span class="nv">that</span> <span class="nv">produce</span> <span class="nv">JSON</span> <span class="nv">Schema</span> <span class="nv">errors</span>. <span class="nv">Should</span> <span class="nv">errors</span>
+<span class="err">    Remove fields in CSL Items that produce JSON Schema errors. Should errors</span>
 
-    <span class="nv">be</span> <span class="nv">removed</span>, <span class="nv">but</span> <span class="nv">the</span> <span class="nv">JSON</span> <span class="nv">instance</span> <span class="nv">still</span> <span class="nv">fails</span> <span class="nv">to</span> <span class="nv">validate</span>, <span class="nv">recursively</span> <span class="nv">call</span>
+<span class="err">    be removed, but the JSON instance still fails to validate, recursively call</span>
 
-    <span class="nv">remove_jsonschema_errors</span> <span class="k">until</span> <span class="nv">the</span> <span class="nv">instance</span> <span class="nv">validates</span> <span class="nv">or</span> <span class="nv">the</span> <span class="nv">recursion</span>
+<span class="err">    remove_jsonschema_errors until the instance validates or the recursion</span>
 
-    <span class="nv">depth</span> <span class="nv">limit</span> <span class="nv">is</span> <span class="nv">reached</span>.
+<span class="err">    depth limit is reached.</span>
 
-    <span class="nv">Note</span> <span class="nv">that</span> <span class="nv">this</span> <span class="nv">method</span> <span class="nv">may</span> <span class="nv">not</span> <span class="nv">be</span> <span class="nv">work</span> <span class="k">for</span> <span class="nv">all</span> <span class="nv">types</span> <span class="nv">of</span> <span class="nv">JSON</span> <span class="nv">Schema</span> <span class="nv">errors</span>
+<span class="err">    Note that this method may not be work for all types of JSON Schema errors</span>
 
-    <span class="nv">and</span> <span class="nv">users</span> <span class="nv">looking</span> <span class="nv">to</span> <span class="nv">adapt</span> <span class="nv">it</span> <span class="k">for</span> <span class="nv">other</span> <span class="nv">applications</span> <span class="nv">should</span> <span class="nv">write</span>
+<span class="err">    and users looking to adapt it for other applications should write</span>
 
-    <span class="nv">task</span><span class="o">-</span><span class="nv">specific</span> <span class="nv">tests</span> <span class="nv">to</span> <span class="nv">provide</span> <span class="nv">empirical</span> <span class="nv">evaluate</span> <span class="nv">that</span> <span class="nv">it</span> <span class="nv">works</span> <span class="nv">as</span>
+<span class="err">    task-specific tests to provide empirical evaluate that it works as</span>
 
-    <span class="nv">intended</span>.
+<span class="err">    intended.</span>
 
-    <span class="nv">The</span> <span class="nv">default</span> <span class="nv">in_place</span><span class="o">=</span><span class="nv">False</span> <span class="nv">creates</span> <span class="nv">a</span> <span class="nv">deepcopy</span> <span class="nv">of</span> <span class="nv">instance</span> <span class="nv">before</span> <span class="nv">pruning</span> <span class="nv">it</span>,
+<span class="err">    The default in_place=False creates a deepcopy of instance before pruning it,</span>
 
-    <span class="nv">such</span> <span class="nv">that</span> <span class="nv">a</span> <span class="nv">new</span> <span class="nv">dictionary</span> <span class="nv">is</span> <span class="nv">returned</span> <span class="nv">and</span> <span class="nv">instance</span> <span class="nv">is</span> <span class="nv">not</span> <span class="nv">edited</span>.
+<span class="err">    such that a new dictionary is returned and instance is not edited.</span>
 
-    <span class="nv">Set</span> <span class="nv">in_place</span><span class="o">=</span><span class="nv">True</span> <span class="nv">to</span> <span class="nv">edit</span> <span class="nv">instance</span> <span class="nv">in</span><span class="o">-</span><span class="nv">place</span>. <span class="nv">The</span> <span class="nv">inital</span> <span class="nv">implementation</span> <span class="nv">of</span>
+<span class="err">    Set in_place=True to edit instance in-place. The inital implementation of</span>
 
-    <span class="nv">remove_jsonschema_errors</span> <span class="nv">always</span> <span class="nv">deepcopied</span> <span class="nv">instance</span>, <span class="nv">and</span> <span class="nv">it</span> <span class="nv">is</span> <span class="nv">possible</span> <span class="nv">deepcopying</span>
+<span class="err">    remove_jsonschema_errors always deepcopied instance, and it is possible deepcopying</span>
 
-    <span class="nv">is</span> <span class="nv">important</span> <span class="nv">to</span> <span class="nv">prevent</span> <span class="nv">malfunction</span> <span class="nv">when</span> <span class="nv">encountering</span> <span class="nv">certain</span> <span class="nv">edge</span> <span class="nv">cases</span>.
+<span class="err">    is important to prevent malfunction when encountering certain edge cases.</span>
 
-    <span class="nv">Please</span> <span class="nv">report</span> <span class="k">if</span> <span class="nv">you</span> <span class="nv">observe</span> <span class="nv">any</span> <span class="nv">in_place</span> <span class="nv">dependent</span> <span class="nv">behaviors</span>.
+<span class="err">    Please report if you observe any in_place dependent behaviors.</span>
 
-    <span class="nv">See</span> <span class="nv">also</span>:
+<span class="err">    See also:</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">Julian</span><span class="o">/</span><span class="nv">jsonschema</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">448</span>
+<span class="err">    https://github.com/Julian/jsonschema/issues/448</span>
 
-    <span class="nv">https</span>:<span class="o">//</span><span class="nv">stackoverflow</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">questions</span><span class="o">/</span><span class="mi">44694835</span>
+<span class="err">    https://stackoverflow.com/questions/44694835</span>
 
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
 
-    <span class="nv">validator</span> <span class="o">=</span> <span class="nv">get_jsonschema_csl_validator</span><span class="ss">()</span>
+<span class="err">    validator = get_jsonschema_csl_validator()</span>
 
-    <span class="nv">errors</span> <span class="o">=</span> <span class="nv">list</span><span class="ss">(</span><span class="nv">validator</span>.<span class="nv">iter_errors</span><span class="ss">(</span><span class="nv">instance</span><span class="ss">))</span>
+<span class="err">    errors = list(validator.iter_errors(instance))</span>
 
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">in_place</span>:
+<span class="err">    if not in_place:</span>
 
-        <span class="nv">instance</span> <span class="o">=</span> <span class="nv">copy</span>.<span class="nv">deepcopy</span><span class="ss">(</span><span class="nv">instance</span><span class="ss">)</span>
+<span class="err">        instance = copy.deepcopy(instance)</span>
 
-    <span class="nv">errors</span> <span class="o">=</span> <span class="nv">sorted</span><span class="ss">(</span><span class="nv">errors</span>, <span class="nv">key</span><span class="o">=</span><span class="nv">lambda</span> <span class="nv">e</span>: <span class="nv">e</span>.<span class="nv">path</span>, <span class="nv">reverse</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+<span class="err">    errors = sorted(errors, key=lambda e: e.path, reverse=True)</span>
 
-    <span class="k">for</span> <span class="nv">error</span> <span class="nv">in</span> <span class="nv">errors</span>:
+<span class="err">    for error in errors:</span>
 
-        <span class="nv">_remove_error</span><span class="ss">(</span><span class="nv">instance</span>, <span class="nv">error</span><span class="ss">)</span>
+<span class="err">        _remove_error(instance, error)</span>
 
-    <span class="k">if</span> <span class="nv">validator</span>.<span class="nv">is_valid</span><span class="ss">(</span><span class="nv">instance</span><span class="ss">)</span> <span class="nv">or</span> <span class="nv">recurse_depth</span> <span class="o">&lt;</span> <span class="mi">1</span>:
+<span class="err">    if validator.is_valid(instance) or recurse_depth &lt; 1:</span>
 
-        <span class="k">return</span> <span class="nv">instance</span>
+<span class="err">        return instance</span>
 
-    <span class="k">return</span> <span class="nv">remove_jsonschema_errors</span><span class="ss">(</span><span class="nv">instance</span>, <span class="nv">recurse_depth</span> <span class="o">-</span> <span class="mi">1</span>, <span class="nv">in_place</span><span class="o">=</span><span class="nv">in_place</span><span class="ss">)</span>
+<span class="err">    return remove_jsonschema_errors(instance, recurse_depth - 1, in_place=in_place)</span><span class="w"></span>
 </code></pre></div>
 
 </details>

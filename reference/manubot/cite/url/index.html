@@ -2132,9 +2132,9 @@ https://git.io/v9N2C</p>
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">get_csl_item</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">citekey</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">get_csl_item</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">citekey</span><span class="ss">)</span>:<span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">get_url_csl_item</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">standard_accession</span><span class="ss">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">get_url_csl_item</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">standard_accession</span><span class="ss">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2184,13 +2184,13 @@ https://git.io/v9N2C</p>
 Subclasses can override this method with more specific standardization logic.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">standardize_prefix_accession</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">accession</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">standardize_prefix_accession</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">accession</span><span class="ss">)</span>:<span class="w"></span>
 
-        <span class="k">if</span> <span class="nv">self</span>.<span class="nv">prefix_lower</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="s">url</span><span class="s2">&quot;</span>:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">prefix_lower</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s2">&quot;url&quot;</span>:<span class="w"></span>
 
-            <span class="nv">accession</span> <span class="o">=</span> <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{self.prefix_lower}:{accession}</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="nv">accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;{self.prefix_lower}:{accession}&quot;</span><span class="w"></span>
 
-        <span class="k">return</span> <span class="nv">self</span>.<span class="nv">standard_prefix</span>, <span class="nv">accession</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">standard_prefix</span>,<span class="w"> </span><span class="nv">accession</span><span class="w"></span>
 </code></pre></div>
 
 </details>
