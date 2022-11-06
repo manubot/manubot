@@ -40,7 +40,7 @@ jobs:
           
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Install Pandoc
       uses: r-lib/actions/setup-pandoc@9598b8eeb6d88de7d76d580d84443542bbfdffce
       with:
@@ -48,7 +48,7 @@ jobs:
         # https://github.com/jgm/pandoc/issues/6071
         pandoc-version: ${{ matrix.pandoc-version }}
     - name: Install Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -66,20 +66,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Install Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
     - name: Run checks
-      uses: pre-commit/action@v2.0.0
+      uses: pre-commit/action@v3.0.0
 
   docs:
     name: Build Docs
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Install Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
     - name: Install dependencies
       run: |
         pip install --upgrade pip
