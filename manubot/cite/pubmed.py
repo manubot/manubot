@@ -2,7 +2,6 @@ import functools
 import json
 import logging
 import os
-import warnings
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 from xml.etree import ElementTree
 
@@ -372,24 +371,20 @@ def get_pubmed_ids_for_doi(doi: str) -> Dict[str, str]:
 
 
 if TYPE_CHECKING:
-    # support RateLimiter return type while avoiding unused runtime import
+    # support Throttler return type while avoiding unused runtime import
     # https://stackoverflow.com/a/39757388/4651668
-    from ratelimiter import RateLimiter
+    from throttler import Throttler
 
 
 @functools.lru_cache()
-def _get_eutils_rate_limiter() -> "RateLimiter":
-    """
+def _get_eutils_rate_limiter() -> "Throttler":
+    """Throttler
     Rate limiter to cap NCBI E-utilities queries to <= 3 per second as per
     https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/
     """
-    with warnings.catch_warnings():
-        # https://github.com/RazerM/ratelimiter/issues/10
-        # https://github.com/manubot/manubot/issues/257
-        warnings.filterwarnings("ignore", category=DeprecationWarning)
-        from ratelimiter import RateLimiter
+    from throttler import Throttler
 
     if "CI" in os.environ:
         # multiple CI jobs might be running concurrently
-        return RateLimiter(max_calls=1, period=1.5)
-    return RateLimiter(max_calls=2, period=1)
+        return Throttler(rate_limit=1, period=1.5)
+    return Throttler(rate_limit=2, period=1)
