@@ -30,6 +30,14 @@ def import_function(name: str):
     return getattr(module, function_name)
 
 
+def import_tomllib() -> ModuleType:
+    try:
+        import tomllib
+    except ModuleNotFoundError:
+        import tomli as tomllib
+    return tomllib
+
+
 def get_manubot_user_agent() -> str:
     """
     Return a User-Agent string for web request headers to help services
@@ -101,9 +109,7 @@ def read_serialized_data(path: str):
             _lint_yaml(path)
             raise error
     if ".toml" in suffixes:
-        import toml
-
-        return toml.loads(text)
+        return import_tomllib().loads(text)
     if ".json" not in suffixes:
         logging.info(
             f"read_serialized_data cannot infer serialization format from the extension of {path_str!r}. "
