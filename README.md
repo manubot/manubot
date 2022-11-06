@@ -5,7 +5,6 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge&logo=Python&logoColor=white)](https://github.com/psf/black)
 
 [![GitHub Actions CI Tests Status](https://img.shields.io/github/workflow/status/manubot/manubot/Tests?label=actions&logo=github&style=for-the-badge)](https://github.com/manubot/manubot/actions)
-[![Travis Linux Build Status](https://img.shields.io/travis/com/manubot/manubot/main?style=for-the-badge&logo=travis&label=Travis)](https://travis-ci.com/manubot/manubot)
 [![AppVeyor Windows Build Status](https://img.shields.io/appveyor/build/manubot/manubot/main?style=for-the-badge&logo=appveyor&logoColor=white&label=AppVeyor)](https://ci.appveyor.com/project/manubot/manubot/branch/main)
 
 
