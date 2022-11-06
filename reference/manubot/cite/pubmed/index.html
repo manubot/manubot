@@ -10,7 +10,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.4, mkdocs-material-7.3.0">
+      <meta name="generator" content="mkdocs-1.2.4, mkdocs-material-7.3.6">
     
     
       
@@ -18,7 +18,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.8b42a75e.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.a57b2b03.min.css">
       
         
         <link rel="stylesheet" href="../../../../assets/stylesheets/palette.3f5d1f46.min.css">
@@ -539,6 +539,8 @@
       </a>
       
         
+
+
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
@@ -1627,6 +1629,8 @@
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
+
+
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
@@ -1861,8 +1865,6 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
-
-<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
@@ -2496,17 +2498,17 @@
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
 
-    <span class="c1"># support RateLimiter return type while avoiding unused runtime import</span>
+    <span class="c1"># support Throttler return type while avoiding unused runtime import</span>
 
     <span class="c1"># https://stackoverflow.com/a/39757388/4651668</span>
 
-    <span class="kn">from</span> <span class="nn">ratelimiter</span> <span class="kn">import</span> <span class="n">RateLimiter</span>
+    <span class="kn">from</span> <span class="nn">throttler</span> <span class="kn">import</span> <span class="n">Throttler</span>
 
 <span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">_get_eutils_rate_limiter</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s2">&quot;RateLimiter&quot;</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">_get_eutils_rate_limiter</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s2">&quot;Throttler&quot;</span><span class="p">:</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Throttler</span>
 
 <span class="sd">    Rate limiter to cap NCBI E-utilities queries to &lt;= 3 per second as per</span>
 
@@ -2514,23 +2516,15 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
-
-        <span class="c1"># https://github.com/RazerM/ratelimiter/issues/10</span>
-
-        <span class="c1"># https://github.com/manubot/manubot/issues/257</span>
-
-        <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">)</span>
-
-        <span class="kn">from</span> <span class="nn">ratelimiter</span> <span class="kn">import</span> <span class="n">RateLimiter</span>
+    <span class="kn">from</span> <span class="nn">throttler</span> <span class="kn">import</span> <span class="n">Throttler</span>
 
     <span class="k">if</span> <span class="s2">&quot;CI&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
 
         <span class="c1"># multiple CI jobs might be running concurrently</span>
 
-        <span class="k">return</span> <span class="n">RateLimiter</span><span class="p">(</span><span class="n">max_calls</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Throttler</span><span class="p">(</span><span class="n">rate_limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">RateLimiter</span><span class="p">(</span><span class="n">max_calls</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Throttler</span><span class="p">(</span><span class="n">rate_limit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 
 </details>
@@ -2882,7 +2876,7 @@ https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/</p>
 <h3 id="get_pmid_for_doi">get_pmid_for_doi</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_pmid_for_doi</span><span class="p">(</span>
     <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Query NCBI's E-utilities to retrieve the PMID for a DOI.</p>
@@ -3150,7 +3144,7 @@ https://github.com/ncbi/citation-exporter/issues/3#issuecomment-355313143</p>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">citekey</span><span class="p">:</span> <span class="n">manubot</span><span class="o">.</span><span class="n">cite</span><span class="o">.</span><span class="n">citekey</span><span class="o">.</span><span class="n">CiteKey</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a</p>
@@ -3298,7 +3292,7 @@ Subclasses can override this method with more specific standardization logic.</p
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">citekey</span><span class="p">:</span> <span class="n">manubot</span><span class="o">.</span><span class="n">cite</span><span class="o">.</span><span class="n">citekey</span><span class="o">.</span><span class="n">CiteKey</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span>
 </code></pre></div>
 
 <p>Check citekeys adhere to expected formats. If an issue is detected a</p>
@@ -3433,10 +3427,10 @@ Subclasses can override this method with more specific standardization logic.</p
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../../assets/javascripts/workers/search.f8263e09.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": null}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.4fc53ad4.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.b1047164.min.js"></script>
       
     
   </body>
