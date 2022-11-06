@@ -1,3 +1,4 @@
+import asyncio
 import functools
 import json
 import logging
@@ -121,7 +122,7 @@ def _get_literature_citation_exporter_csl_item(
     return csl_item
 
 
-def get_pubmed_csl_item(pmid: Union[str, int]) -> Dict[str, Any]:
+async def get_pubmed_csl_item(pmid: Union[str, int]) -> Dict[str, Any]:
     """
     Query NCBI E-Utilities to create CSL Items for PubMed IDs.
 
@@ -132,8 +133,7 @@ def get_pubmed_csl_item(pmid: Union[str, int]) -> Dict[str, Any]:
     params = {"db": "pubmed", "id": pmid, "rettype": "full"}
     headers = {"User-Agent": get_manubot_user_agent()}
     url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
-    with _get_eutils_rate_limiter():
-        response = requests.get(url, params, headers=headers)
+    response = _request_eutils(url, params, headers=headers)
     try:
         xml_article_set = ElementTree.fromstring(response.text)
         assert isinstance(xml_article_set, ElementTree.Element)
@@ -331,8 +331,7 @@ def get_pmid_for_doi(doi: str) -> Optional[str]:
     params = {"db": "pubmed", "term": f"{doi}[DOI]"}
     headers = {"User-Agent": get_manubot_user_agent()}
     url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
-    with _get_eutils_rate_limiter():
-        response = requests.get(url, params, headers=headers)
+    response = _request_eutils(url, params, headers=headers)
     if not response.ok:
         logging.warning(f"Status code {response.status_code} querying {response.url}\n")
         return None
@@ -377,9 +376,9 @@ if TYPE_CHECKING:
 
 
 @functools.lru_cache()
-def _get_eutils_rate_limiter() -> "Throttler":
-    """Throttler
-    Rate limiter to cap NCBI E-utilities queries to <= 3 per second as per
+def _get_eutils_throttler() -> "Throttler":
+    """
+    Throttler (rate limiter) to cap NCBI E-utilities queries to <= 3 per second as per
     https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/
     """
     from throttler import Throttler
@@ -388,3 +387,22 @@ def _get_eutils_rate_limiter() -> "Throttler":
         # multiple CI jobs might be running concurrently
         return Throttler(rate_limit=1, period=1.5)
     return Throttler(rate_limit=2, period=1)
+
+
+async def _request_eutils_async(
+    url: str, params: Dict[str, Any], headers: Dict[str, Any]
+) -> requests.Response:
+    async with _get_eutils_throttler():
+        return requests.get(url, params, headers=headers)
+
+
+def _request_eutils(
+    url: str, params: Dict[str, Any], headers: Dict[str, Any]
+) -> requests.Response:
+    """
+    Synchronous function to query the NCBI E-utilities API with a throttler.
+    Probably is a not a good solution, but throttler.Throttler only support
+    async context managers.
+    """
+    future = _request_eutils_async(url, params, headers)
+    return asyncio.get_event_loop().run_until_complete(future)
