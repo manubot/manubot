@@ -193,7 +193,7 @@ def load_variables(args) -> dict:
             variables["pandoc"][key] = metadata.pop(key)
 
     # Add date & generated timestamp to metadata
-    manuscript_date = metadata.pop("date")
+    manuscript_date = metadata.pop("date", None)
     if isinstance(manuscript_date, str):
         manuscript_date = date.fromisoformat(manuscript_date)
     now = datetime_now()
@@ -205,10 +205,11 @@ def load_variables(args) -> dict:
             f"(in the {now:%Z} timezone)"
         )
     variables["pandoc"]["date-meta"] = manuscript_date.isoformat()
+    variables["manubot"]["date"] = manuscript_date.isoformat()
     variables["manubot"][
-        "date"
+        "date_long"
     ] = f"{manuscript_date:%B} {manuscript_date.day}, {manuscript_date.year}"
-    variables["manubot"]["generated_iso"] = now.isoformat(timespec="seconds")
+    variables["manubot"]["generated"] = now.isoformat(timespec="seconds")
     variables["manubot"]["generated_date_long"] = f"{now:%B} {now.day}, {now.year}"
 
     # Process authors metadata
