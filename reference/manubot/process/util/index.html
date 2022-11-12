@@ -1596,6 +1596,8 @@
 
 <span class="kn">import</span> <span class="nn">warnings</span>
 
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">jinja2</span>
@@ -1930,21 +1932,43 @@
 
             <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
-    <span class="c1"># Add date to metadata</span>
+    <span class="c1"># Add date &amp; generated timestamp to metadata</span>
+
+    <span class="n">manuscript_date</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">manuscript_date</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+
+        <span class="n">manuscript_date</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">manuscript_date</span><span class="p">)</span>
 
     <span class="n">now</span> <span class="o">=</span> <span class="n">datetime_now</span><span class="p">()</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">manuscript_date</span><span class="p">:</span>
 
-        <span class="sa">f</span><span class="s2">&quot;Using </span><span class="si">{</span><span class="n">now</span><span class="si">:</span><span class="s2">%Z</span><span class="si">}</span><span class="s2"> timezone.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">manuscript_date</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
 
-        <span class="sa">f</span><span class="s2">&quot;Dating manuscript with the current datetime: </span><span class="si">{</span><span class="n">now</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
-    <span class="p">)</span>
+            <span class="s2">&quot;No explicit manuscript date provided. &quot;</span>
 
-    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;date-meta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+            <span class="sa">f</span><span class="s2">&quot;Dating manuscript based on the current datetime: </span><span class="si">{</span><span class="n">now</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="si">}</span><span class="s2"> &quot;</span>
 
-    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">now</span><span class="si">:</span><span class="s2">%B</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">now</span><span class="o">.</span><span class="n">day</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">now</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;(in the </span><span class="si">{</span><span class="n">now</span><span class="si">:</span><span class="s2">%Z</span><span class="si">}</span><span class="s2"> timezone)&quot;</span>
+
+        <span class="p">)</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;date-meta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manuscript_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manuscript_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span>
+
+        <span class="s2">&quot;date_long&quot;</span>
+
+    <span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">manuscript_date</span><span class="si">:</span><span class="s2">%B</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">manuscript_date</span><span class="o">.</span><span class="n">day</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">manuscript_date</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;generated&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
+
+    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;generated_date_long&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">now</span><span class="si">:</span><span class="s2">%B</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">now</span><span class="o">.</span><span class="n">day</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">now</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="c1"># Process authors metadata</span>
 
@@ -2350,21 +2374,43 @@ affiliations, variables is left unmodified.</p>
 
 <span class="w">            </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="c1"># Add date to metadata</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Add date &amp; generated timestamp to metadata</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">manuscript_date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metadata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">None</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">manuscript_date</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">):</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">manuscript_date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">manuscript_date</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">datetime_now</span><span class="p">()</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">manuscript_date</span><span class="p">:</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">f</span><span class="s2">&quot;Using {now:%Z} timezone.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">manuscript_date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">f</span><span class="s2">&quot;Dating manuscript with the current datetime: {now.isoformat()}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">    </span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;No explicit manuscript date provided. &quot;</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;date-meta&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="w"></span>
+<span class="w">            </span><span class="n">f</span><span class="s2">&quot;Dating manuscript based on the current datetime: {now.isoformat()} &quot;</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="s2">&quot;{now:%B} {now.day}, {now.year}&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="n">f</span><span class="s2">&quot;(in the {now:%Z} timezone)&quot;</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;date-meta&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">manuscript_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">manuscript_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="w"></span>
+
+<span class="w">        </span><span class="s2">&quot;date_long&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="s2">&quot;{manuscript_date:%B} {manuscript_date.day}, {manuscript_date.year}&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;generated&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s2">&quot;seconds&quot;</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;generated_date_long&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="s2">&quot;{now:%B} {now.day}, {now.year}&quot;</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1"># Process authors metadata</span><span class="w"></span>
 
