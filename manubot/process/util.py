@@ -4,6 +4,7 @@ import os
 import random
 import re
 import warnings
+from datetime import date
 from typing import List, Optional
 
 import jinja2
@@ -191,14 +192,24 @@ def load_variables(args) -> dict:
         if key in metadata:
             variables["pandoc"][key] = metadata.pop(key)
 
-    # Add date to metadata
+    # Add date & generated timestamp to metadata
+    manuscript_date = metadata.pop("date")
+    if isinstance(manuscript_date, str):
+        manuscript_date = date.fromisoformat(manuscript_date)
     now = datetime_now()
-    logging.info(
-        f"Using {now:%Z} timezone.\n"
-        f"Dating manuscript with the current datetime: {now.isoformat()}"
-    )
-    variables["pandoc"]["date-meta"] = now.date().isoformat()
-    variables["manubot"]["date"] = f"{now:%B} {now.day}, {now.year}"
+    if not manuscript_date:
+        manuscript_date = now.date()
+        logging.info(
+            "No explicit manuscript date provided. "
+            f"Dating manuscript based on the current datetime: {now.isoformat()} "
+            f"(in the {now:%Z} timezone)"
+        )
+    variables["pandoc"]["date-meta"] = manuscript_date.isoformat()
+    variables["manubot"][
+        "date"
+    ] = f"{manuscript_date:%B} {manuscript_date.day}, {manuscript_date.year}"
+    variables["manubot"]["generated_iso"] = now.isoformat(timespec="seconds")
+    variables["manubot"]["generated_date_long"] = f"{now:%B} {now.day}, {now.year}"
 
     # Process authors metadata
     if "author_info" in metadata:
