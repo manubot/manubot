@@ -64,7 +64,7 @@ def test_get_prefix_to_resource():
         # formerly afflicted by https://github.com/identifiers-org/identifiers-org.github.io/issues/99#issuecomment-614690283
         pytest.param(
             "gramene.growthstage:0007133",
-            "http://www.gramene.org/db/ontology/search?id=GRO:0007133",
+            "http://www.bootstrep.eu/ontology/GRO#0007133",
             id="gramene.growthstage",
         ),
     ],
