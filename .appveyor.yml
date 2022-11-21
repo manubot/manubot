@@ -4,7 +4,7 @@ environment:
   matrix:
     - PYTHON: "C:\\Python37"
     - PYTHON: "C:\\Python37-x64"
-    - PYTHON: "C:\\Python311-x64"
+    - PYTHON: "C:\\Python310-x64"
 
 build: off
 
@@ -14,7 +14,6 @@ install:
   - "%CMD_IN_ENV% pip install .[webpage,dev] panflute==1.12.5"
 
 before_test:
-  - choco install openssl  # On Python 3.11, fix: Could not find module 'libeay32'
   - choco install pandoc --version 2.9.2
   - ps: $env:Path += ";C:\Program Files\Pandoc\"
 
