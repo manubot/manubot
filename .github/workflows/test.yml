@@ -20,7 +20,7 @@ jobs:
         - "3.8"
         - "3.9"
         - "3.10"
-        # - "3.11"
+        - "3.11"
         pandoc-version:
         - "2.9.2"
         - "2.11.3.1"
@@ -43,7 +43,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
     - name: Install Pandoc
-      uses: r-lib/actions/setup-pandoc@9598b8eeb6d88de7d76d580d84443542bbfdffce
+      uses: r-lib/actions/setup-pandoc@v2
       with:
         # pandoc-versions from 2.7.3 to 2.9.1 won't install on Windows
         # https://github.com/jgm/pandoc/issues/6071
@@ -71,7 +71,7 @@ jobs:
     - name: Install Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'  # should match default_language_version in .pre-commit-config.yaml
+        python-version: '3.11'  # should match default_language_version in .pre-commit-config.yaml
     - name: Run checks
       uses: pre-commit/action@v3.0.0
 
