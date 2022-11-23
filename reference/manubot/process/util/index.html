@@ -2138,6 +2138,16 @@
 
         <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;jinja2.ext.do&quot;</span><span class="p">,</span> <span class="s2">&quot;jinja2.ext.loopcontrols&quot;</span><span class="p">],</span>
 
+        <span class="c1"># A trailing newline is critical to prevent pyyaml</span>
+
+        <span class="c1"># from adding a block chomping strip indicator to</span>
+
+        <span class="c1"># header-includes metadata, which caused an unwanted Pandoc behavior.</span>
+
+        <span class="c1"># https://github.com/jgm/pandoc/issues/8449</span>
+
+        <span class="n">keep_trailing_newline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+
     <span class="p">)</span>
 
     <span class="n">template</span> <span class="o">=</span> <span class="n">jinja_environment</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
@@ -2816,6 +2826,16 @@ than create a new dictionary.</p>
 <span class="w">        </span><span class="n">comment_end_string</span><span class="o">=</span><span class="s2">&quot;##}&quot;</span><span class="p">,</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;jinja2.ext.do&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;jinja2.ext.loopcontrols&quot;</span><span class="p">],</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1"># A trailing newline is critical to prevent pyyaml</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1"># from adding a block chomping strip indicator to</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1"># header-includes metadata, which caused an unwanted Pandoc behavior.</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1"># https://github.com/jgm/pandoc/issues/8449</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">keep_trailing_newline</span><span class="o">=</span><span class="n">True</span><span class="p">,</span><span class="w"></span>
 
 <span class="w">    </span><span class="p">)</span><span class="w"></span>
 
