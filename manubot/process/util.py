@@ -308,6 +308,11 @@ def template_with_jinja2(text, variables):
         comment_start_string="{##",
         comment_end_string="##}",
         extensions=["jinja2.ext.do", "jinja2.ext.loopcontrols"],
+        # A trailing newline is critical to prevent pyyaml
+        # from adding a block chomping strip indicator to
+        # header-includes metadata, which caused an unwanted Pandoc behavior.
+        # https://github.com/jgm/pandoc/issues/8449
+        keep_trailing_newline=True,
     )
     template = jinja_environment.from_string(text)
     return template.render(**variables)
