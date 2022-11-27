@@ -20,7 +20,7 @@ def get_jsonschema_csl_validator():
     """
     import jsonschema
 
-    url = "https://github.com/dhimmel/csl-schema/raw/manubot/csl-data.json"
+    url = "https://github.com/citation-style-language/schema/raw/v1.0.2/schemas/input/csl-data.json"
     schema = read_serialized_data(url)
     Validator = jsonschema.validators.validator_for(schema)
     Validator.check_schema(schema)
