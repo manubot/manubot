@@ -129,7 +129,7 @@ def get_pubmed_csl_item(pmid: Union[str, int]) -> Dict[str, Any]:
     https://github.com/ncbi/citation-exporter/issues/3#issuecomment-355313143
     """
     pmid = str(pmid)
-    params = {"db": "pubmed", "id": pmid, "rettype": "full"}
+    params = {"db": "pubmed", "id": pmid, "retmode": "xml"}
     headers = {"User-Agent": get_manubot_user_agent()}
     url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
     with _get_eutils_rate_limiter():
