@@ -41,7 +41,7 @@ def load_bibliography(path: str) -> list:
     return csl_items
 
 
-def load_manual_references(paths=[], extra_csl_items=[]) -> dict:
+def load_manual_references(paths=None, extra_csl_items=None) -> dict:
     """
     Read manual references from bibliography text files specified by a list of paths.
     Returns a standard_citation to CSL Item dictionary.
@@ -52,6 +52,11 @@ def load_manual_references(paths=[], extra_csl_items=[]) -> dict:
     precedence is given to reference defined last.
     References in `extra_csl_items` take precedence over those from `paths`.
     """
+    if paths is None:
+        paths = []
+    if extra_csl_items is None:
+        extra_csl_items = []
+
     from manubot.cite.csl_item import CSL_Item
 
     csl_items = []
@@ -62,12 +67,12 @@ def load_manual_references(paths=[], extra_csl_items=[]) -> dict:
         bibliography = load_bibliography(path)
         for csl_item in bibliography:
             csl_item.note_append_text(
-                f"Loaded from an external bibliography file by Manubot."
+                "Loaded from an external bibliography file by Manubot."
             )
             csl_item.note_append_dict({"source_bibliography": path_obj.name})
             csl_items.append(csl_item)
     csl_items.extend(map(CSL_Item, extra_csl_items))
-    manual_refs = dict()
+    manual_refs = {}
     for csl_item in csl_items:
         try:
             csl_item.standardize_id()

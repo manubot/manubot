@@ -1,7 +1,12 @@
 import pytest
 
 from ..citekey import CiteKey
-from ..curie import Handler_CURIE, curie_to_url, get_bioregistry, get_prefix_to_resource
+from ..curie import (
+    Handler_CURIE,
+    curie_to_url,
+    get_bioregistry,
+    get_prefix_to_resource,
+)
 
 
 def test_bioregistry_resource_patterns():
@@ -10,7 +15,7 @@ def test_bioregistry_resource_patterns():
     """
     registry = get_bioregistry(compile_patterns=True)
     assert isinstance(registry, list)
-    reports = list()
+    reports = []
     for resource in registry:
         assert resource["prefix"]  # ensure prefix field exists
         if "example" in resource and "pattern" in resource:

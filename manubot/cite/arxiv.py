@@ -132,7 +132,7 @@ def get_arxiv_csl_item_export_api(arxiv_id):
     csl_item.set_date(published, variable="issued")
 
     # Extract authors
-    authors = list()
+    authors = []
     for elem in entry.findall(prefix + "author"):
         name = elem.findtext(prefix + "name")
         author = {"literal": name}
@@ -203,7 +203,7 @@ def get_arxiv_csl_item_oai(arxiv_id):
 
     # Extract authors
     author_elems = arxiv_elem.findall(f"{ns_arxiv}authors/{ns_arxiv}author")
-    authors = list()
+    authors = []
     for author_elem in author_elems:
         author = {}
         given = author_elem.findtext(f"{ns_arxiv}forenames")

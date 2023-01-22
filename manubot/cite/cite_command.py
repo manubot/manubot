@@ -124,7 +124,7 @@ def _exit_without_pandoc() -> None:
     if get_pandoc_info()["pandoc"]:
         return
     logging.critical(
-        f"pandoc command not found on system. Ensure that Pandoc is installed."
+        "pandoc command not found on system. Ensure that Pandoc is installed."
     )
     raise SystemExit(1)
 
@@ -136,7 +136,7 @@ def _check_pandoc_version(info, metadata, format):
     Please add additional minimum version information to this function, as its
     discovered.
     """
-    issues = list()
+    issues = []
     if format == "jats" and info["pandoc version"] < (2,):
         issues.append("--jats requires pandoc >= v2.0.")
     # --csl=URL did not work in https://travis-ci.org/greenelab/manubot/builds/417314743#L796,

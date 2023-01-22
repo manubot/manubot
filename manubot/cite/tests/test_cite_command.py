@@ -161,7 +161,7 @@ def test_cite_command_render_stdout(args, filename):
             "Writing output to file such that future tests will pass."
         )
         path.write_text(process.stdout, encoding="utf-8")
-        assert False
+        raise AssertionError()
     expected = path.read_text(encoding="utf-8-sig")
     assert process.stdout == expected
 
