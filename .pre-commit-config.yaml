@@ -16,22 +16,14 @@ repos:
       - id: check-toml
       # This hook checks yaml files for parseable syntax.
       - id: check-yaml
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.2.2
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.0.229
     hooks:
-      - id: pyupgrade
-        args: [--py37-plus]
-  - repo: https://github.com/timothycrosley/isort
-    rev: 5.10.1
-    hooks:
-      - id: isort
+      - id: ruff
+        args:
+        - --fix
   - repo: https://github.com/python/black
     rev: 22.10.0
     hooks:
       - id: black
-        language_version: python3
-  - repo: https://github.com/PyCQA/flake8
-    rev: 5.0.4
-    hooks:
-      - id: flake8
         language_version: python3
