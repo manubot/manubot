@@ -74,10 +74,10 @@ class Citations:
         def get_key(x):
             return getattr(x, attribute)
 
-        key_to_indices = dict()
+        key_to_indices = {}
         for i, citekey in enumerate(self.citekeys):
             key = get_key(citekey)
-            key_to_indices.setdefault(key, list()).append(i)
+            key_to_indices.setdefault(key, []).append(i)
         items = list(key_to_indices.items())
         if sort:
             items.sort(key=lambda item: item[0])

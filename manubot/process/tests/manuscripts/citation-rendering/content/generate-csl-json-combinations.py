@@ -60,7 +60,7 @@ csl_key_subset = [
 combinations = list(powerset(csl_key_subset))
 print(f"generated {len(combinations)} combinations of CSL JSON keys")
 
-csl_data = list()
+csl_data = []
 citation_list_md = ""
 for i, keys in enumerate(combinations):
     citation_id = "raw:" + "_".join(keys) if keys else "raw:blank"

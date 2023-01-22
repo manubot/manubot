@@ -78,7 +78,7 @@ class CSL_Item(dict):
         but constructing small CSL_Item objects is useful for testing.
         """
         if dictionary is None:
-            dictionary = dict()
+            dictionary = {}
         super().__init__(copy.deepcopy(dictionary))
         self.update(copy.deepcopy(kwargs))
 
@@ -330,7 +330,7 @@ def date_to_date_parts(
         f"{re_year}-{re_month}-{re_day}",
         f"{re_year}-{re_month}",
         f"{re_year}",
-        f".*",  # regex to match anything
+        ".*",  # regex to match anything
     ]
     for pattern in patterns:
         match = re.match(pattern, date)
@@ -363,7 +363,7 @@ def date_parts_to_string(date_parts, fill: bool = False) -> Optional[str]:
     if not date_parts:
         return None
     if not isinstance(date_parts, (tuple, list)):
-        raise ValueError(f"date_parts must be a tuple or list")
+        raise ValueError("date_parts must be a tuple or list")
     while fill and 1 <= len(date_parts) < 3:
         date_parts.append(1)
     widths = 4, 2, 2

@@ -28,7 +28,7 @@ def test_get_doi_csl_item_default():
     doi = "10.1101/142760"
     csl_item = get_doi_csl_item_default(doi)
     assert isinstance(csl_item, dict)
-    csl_item["publisher"] == "Cold Spring Harbor Laboratory"
+    assert csl_item["publisher"] == "Cold Spring Harbor Laboratory"
 
 
 def test_get_doi_csl_item_zotero():
@@ -42,7 +42,7 @@ def test_get_doi_csl_item_zotero():
     doi = "10.1038/ng.3834"
     csl_item = get_doi_csl_item_zotero(doi)
     assert isinstance(csl_item, dict)
-    csl_item["author"][9]["family"] == "GTEx Consortium"
+    assert csl_item["author"][9]["family"] == "GTEx Consortium"
 
 
 def test_get_doi_csl_item():

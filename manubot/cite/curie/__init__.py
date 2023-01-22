@@ -69,8 +69,8 @@ class Handler_CURIE(Handler):
     def __post_init__(self):
         try:
             self.resource = get_prefix_to_resource()[self.prefix_lower]
-        except KeyError:
-            raise ValueError(f"Unrecognized CURIE prefix {self.prefix_lower}")
+        except KeyError as err:
+            raise ValueError(f"Unrecognized CURIE prefix {self.prefix_lower}") from err
         self.standard_prefix = (
             self.resource.get("preferred_prefix") or self.resource["prefix"]
         )
@@ -115,7 +115,7 @@ def _download_bioregistry() -> None:
     response.raise_for_status()
     results = response.json()
     assert isinstance(results, dict)
-    registry = list()
+    registry = []
     for prefix, resource in results.items():
         assert isinstance(resource, dict)
         if not resource.get("uri_format"):
@@ -150,7 +150,7 @@ def get_bioregistry(compile_patterns=False) -> dict:
 
 @functools.lru_cache()
 def get_prefix_to_resource() -> typing.Dict[str, typing.Dict]:
-    prefix_to_resource = dict()
+    prefix_to_resource = {}
     for resource in get_bioregistry():
         for prefix in resource["all_prefixes"]:
             prefix_to_resource[prefix] = resource
@@ -169,10 +169,10 @@ def standardize_curie(curie: str) -> str:
         )
     try:
         prefix, accession = curie.split(":", 1)
-    except ValueError:
+    except ValueError as err:
         raise ValueError(
             f"curie must be splittable by `:` and formatted like `prefix:accession`. Received {curie}"
-        )
+        ) from err
     handler = Handler_CURIE(prefix.lower())
     return f"{handler.standard_prefix}:{accession}"
 

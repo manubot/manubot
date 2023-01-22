@@ -10,7 +10,11 @@ from typing import List, Optional
 import jinja2
 
 from manubot.process.ci import get_continuous_integration_parameters
-from manubot.process.manuscript import datetime_now, get_manuscript_stats, get_text
+from manubot.process.manuscript import (
+    datetime_now,
+    get_manuscript_stats,
+    get_text,
+)
 from manubot.process.metadata import (
     get_head_commit,
     get_header_includes,
@@ -18,7 +22,11 @@ from manubot.process.metadata import (
     get_software_versions,
     get_thumbnail_url,
 )
-from manubot.util import get_configured_yaml, read_serialized_data, read_serialized_dict
+from manubot.util import (
+    get_configured_yaml,
+    read_serialized_data,
+    read_serialized_dict,
+)
 
 
 def read_variable_files(paths: List[str], variables: Optional[dict] = None) -> dict:
@@ -126,7 +134,7 @@ def add_author_affiliations(variables: dict) -> dict:
     affiliations to the top-level of variables. If no authors have any
     affiliations, variables is left unmodified.
     """
-    affiliations = list()
+    affiliations = []
     for author in variables["authors"]:
         _convert_field_to_list(
             dictionary=author,
@@ -147,7 +155,7 @@ def add_author_affiliations(variables: dict) -> dict:
         numbers = [affil_to_number[affil] for affil in author.get("affiliations", [])]
         author["affiliation_numbers"] = sorted(numbers)
     variables["affiliations"] = [
-        dict(affiliation=affil, affiliation_number=i)
+        {"affiliation": affil, "affiliation_number": i}
         for affil, i in affil_to_number.items()
     ]
     return variables
