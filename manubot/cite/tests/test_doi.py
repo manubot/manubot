@@ -42,7 +42,9 @@ def test_get_doi_csl_item_zotero():
     doi = "10.1038/ng.3834"
     csl_item = get_doi_csl_item_zotero(doi)
     assert isinstance(csl_item, dict)
-    assert csl_item["author"][9]["family"] == "GTEx Consortium"
+    # for an unknown reason, GTEx Consortium becomes the first author
+    # which differs from the publisher HTML and Crossref metadata ordering.
+    assert csl_item["author"][0]["family"] == "GTEx Consortium"
 
 
 def test_get_doi_csl_item():
