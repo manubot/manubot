@@ -14,15 +14,16 @@ def cli_process(args):
     if output_dir is not None:
         output_dir.mkdir(parents=True, exist_ok=True)
     else:
-        output_dir = content_dir
+        import tempfile
+        from pathlib import Path
+
+        tmp_dir = tempfile.TemporaryDirectory()
+        output_dir = Path(tmp_dir.name)
         logging.warning(
-            f"output directory not specified, using content "
-            f"directory: {content_dir}"
+            f"output directory not specified, using directory: {output_dir}"
         )
 
-    import tempfile
-    from pathlib import Path
-
+    import shutil
     from manubot_ai_editor.editor import ManuscriptEditor
     from manubot_ai_editor.models import GPT3CompletionModel
 
@@ -45,4 +46,4 @@ def cli_process(args):
 
     # move the revised manuscript back to the content folder
     for f in output_dir.glob("*"):
-        f.rename(me.content_dir / f.name)
+        shutil.move(f, content_dir / f.name)
