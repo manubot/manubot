@@ -10,18 +10,18 @@ def cli_process(args):
         logging.warning(f"content directory does not exist: {content_dir}")
 
     # Set paths for output
-    output_dir = args.output_directory
-    if output_dir is not None:
-        output_dir.mkdir(parents=True, exist_ok=True)
-    else:
+    tmp_dir = args.temporary_directory
+    if tmp_dir is None:
         import tempfile
         from pathlib import Path
 
         tmp_dir = tempfile.TemporaryDirectory()
-        output_dir = Path(tmp_dir.name)
+        tmp_dir = Path(tmp_dir.name)
         logging.warning(
-            f"output directory not specified, using directory: {output_dir}"
+            f"output directory not specified, using: {tmp_dir}"
         )
+
+    tmp_dir.mkdir(parents=True, exist_ok=True)
 
     import shutil
     from manubot_ai_editor.editor import ManuscriptEditor
@@ -42,8 +42,8 @@ def cli_process(args):
     #     output_folder = Path(t)
     #     print(f"Temporary directory: {output_folder}")
 
-    me.revise_manuscript(output_dir, model, debug=True)
+    me.revise_manuscript(tmp_dir, model, debug=True)
 
     # move the revised manuscript back to the content folder
-    for f in output_dir.glob("*"):
+    for f in tmp_dir.glob("*"):
         shutil.move(f, content_dir / f.name)
