@@ -64,7 +64,7 @@ Here is the usage information as per `manubot --help`:
 
 <!-- test codeblock contains output of `manubot --help` -->
 ```
-usage: manubot [-h] [--version] {process,cite,webpage} ...
+usage: manubot [-h] [--version] {process,cite,webpage,ai-revision} ...
 
 Manubot: the manuscript bot for scholarly writing
 
@@ -75,10 +75,11 @@ options:
 subcommands:
   All operations are done through subcommands:
 
-  {process,cite,webpage}
+  {process,cite,webpage,ai-revision}
     process             process manuscript content
     cite                citekey to CSL JSON command line utility
     webpage             deploy Manubot outputs to a webpage directory tree
+    ai-revision         revise manuscript content with language models
 ```
 
 Note that all operations are done through the following sub-commands.
@@ -301,6 +302,10 @@ options:
   --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
                         Set the logging level for stderr logging
 ```
+
+### AI-assisted academic authoring
+
+The `manubot ai-revision` command ... COMPLETE
 
 ## Development
 
