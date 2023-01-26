@@ -2,16 +2,15 @@ import logging
 
 
 def cli_process(args):
-    args_dict = vars(args)
-
-    # Set paths for content
+    # set paths for content
     content_dir = args.content_directory
     if not content_dir.is_dir():
         logging.warning(f"content directory does not exist: {content_dir}")
 
-    # Set paths for output
+    # set paths for temporary output
     tmp_dir = args.temporary_directory
     if tmp_dir is None:
+        # if temporary directory is not given, generate one
         import tempfile
         from pathlib import Path
 
@@ -35,11 +34,6 @@ def cli_process(args):
         title=me.title,
         keywords=me.keywords,
     )
-
-    # revise the manuscript
-    # with tempfile.TemporaryDirectory() as t:
-    #     output_folder = Path(t)
-    #     print(f"Temporary directory: {output_folder}")
 
     me.revise_manuscript(tmp_dir, model, debug=True)
 
