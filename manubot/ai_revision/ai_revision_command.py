@@ -17,13 +17,12 @@ def cli_process(args):
 
         tmp_dir = tempfile.TemporaryDirectory()
         tmp_dir = Path(tmp_dir.name)
-        logging.warning(
-            f"output directory not specified, using: {tmp_dir}"
-        )
+        logging.warning(f"output directory not specified, using: {tmp_dir}")
 
     tmp_dir.mkdir(parents=True, exist_ok=True)
 
     import shutil
+
     from manubot_ai_editor.editor import ManuscriptEditor
     from manubot_ai_editor.models import GPT3CompletionModel
 
