@@ -225,7 +225,7 @@ def add_subparser_airevision(subparsers):
     parser = subparsers.add_parser(
         name="ai-revision",
         help="revise manuscript content with language models",
-        description="Revise manuscript content to suggest text improvements.",
+        description="Revise manuscript content using AI models to suggest text improvements.",
     )
     parser.add_argument(
         "--content-directory",
