@@ -22,21 +22,64 @@ def cli_process(args):
 
     import shutil
 
+    from manubot_ai_editor import models
     from manubot_ai_editor.editor import ManuscriptEditor
-    from manubot_ai_editor.models import GPT3CompletionModel
 
     # create a manuscript editor and model to revise
     me = ManuscriptEditor(
         content_dir=content_dir,
     )
 
-    model = GPT3CompletionModel(
-        title=me.title,
-        keywords=me.keywords,
-    )
+    # instantiate a model
+    module_class = getattr(models, args.model_type)
 
+    if module_class == models.GPT3CompletionModel:
+        model = module_class(
+            title=me.title,
+            keywords=me.keywords,
+        )
+    else:
+        model_kwargs = parse_kwargs(args.model_kwargs)
+
+        model = module_class(
+            **model_kwargs,
+        )
+
+    # revise
     me.revise_manuscript(tmp_dir, model, debug=True)
 
     # move the revised manuscript back to the content folder
     for f in tmp_dir.glob("*"):
         shutil.move(f, content_dir / f.name)
+
+
+def parse_kwargs(kwargs: list[str]) -> dict[str, object]:
+    """
+    Parse a list of keyword arguments into a dictionary. Values are converted to int or bool if possible.
+
+    Args:
+        kwargs: A list of keyword arguments with format "key=value".
+
+    Returns:
+        A dictionary of keyword arguments. Returns an empty dictionary if kwargs is None.
+    """
+    out = {}
+
+    if kwargs is None:
+        return out
+
+    for kwarg in kwargs:
+        if "=" not in kwarg:
+            raise ValueError(f"Invalid keyword argument: {kwarg}")
+
+        key, value = kwarg.split("=", maxsplit=1)
+
+        # try to convert values to int or bool if possible
+        if value.isdigit():
+            value = int(value)
+        elif value.lower() in ["true", "false"]:
+            value = value.lower() == "true"
+
+        out[key] = value
+
+    return out

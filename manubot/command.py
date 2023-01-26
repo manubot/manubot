@@ -234,6 +234,21 @@ def add_subparser_airevision(subparsers):
         help="Directory where manuscript content files are located.",
     )
     parser.add_argument(
+        "--model-type",
+        type=str,
+        required=False,
+        default="GPT3CompletionModel",
+        help="Model type used to revise the manuscript. Default is GPT3CompletionModel. "
+        "It can be any subclass of manubot_ai_editor.models.ManuscriptRevisionModel",
+    )
+    parser.add_argument(
+        "--model-kwargs",
+        required=False,
+        metavar="key=value",
+        nargs="+",
+        help="Keyword arguments for the revision model (--model-type), with format key=value.",
+    )
+    parser.add_argument(
         "--temporary-directory",
         type=pathlib.Path,
         required=False,
