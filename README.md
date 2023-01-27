@@ -326,8 +326,8 @@ options:
                         GPT3CompletionModel. It can be any subclass of
                         manubot_ai_editor.models.ManuscriptRevisionModel
   --model-kwargs key=value [key=value ...]
-                        Keyword arguments for the revision model
-                        (--model-type), with format key=value.
+                        Keyword arguments for the revision model (--model-
+                        type), with format key=value.
   --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
                         Set the logging level for stderr logging
 ```
