@@ -91,13 +91,13 @@ def _get_literature_citation_exporter_csl_item(
             f"Error calling _get_literature_citation_exporter_csl_item.\n"
             f'database must be either "pubmed" or "pmc", not {database}'
         )
-        assert False
+        raise AssertionError()
     if not identifier:
         logging.error(
-            f"Error calling _get_literature_citation_exporter_csl_item.\n"
-            f"identifier cannot be blank"
+            "Error calling _get_literature_citation_exporter_csl_item.\n"
+            "identifier cannot be blank"
         )
-        assert False
+        raise AssertionError()
     params = {"format": "csl", "id": identifier}
     headers = {"User-Agent": get_manubot_user_agent()}
     url = f"https://api.ncbi.nlm.nih.gov/lit/ctxp/v1/{database}/"
@@ -117,7 +117,7 @@ def _get_literature_citation_exporter_csl_item(
             f"Literature Citation Exporter returned JSON indicating an error for {response.url}\n"
             f"{json.dumps(csl_item, indent=2)}"
         )
-        assert False
+        raise AssertionError()
     return csl_item
 
 
@@ -165,7 +165,7 @@ def csl_item_from_pubmed_article(article: ElementTree.Element) -> Dict[str, Any]
             f"Expected article to be an XML element with tag PubmedArticle, received tag {article.tag!r}"
         )
 
-    csl_item = dict()
+    csl_item = {}
 
     if not article.find("MedlineCitation/Article"):
         raise NotImplementedError("Unsupported PubMed record: no <Article> element")
@@ -202,10 +202,10 @@ def csl_item_from_pubmed_article(article: ElementTree.Element) -> Dict[str, Any]
     if date_parts:
         csl_item["issued"] = {"date-parts": [date_parts]}
 
-    authors_csl = list()
+    authors_csl = []
     authors = article.findall("MedlineCitation/Article/AuthorList/Author")
     for author in authors:
-        author_csl = dict()
+        author_csl = {}
         given = author.findtext("ForeName")
         if given:
             author_csl["given"] = given

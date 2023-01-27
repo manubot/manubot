@@ -249,12 +249,15 @@ def shorten_citekey(standard_citekey: str) -> str:
 
 
 def citekey_to_csl_item(
-    citekey, prune=True, manual_refs={}, log_level: tp.Union[str, int] = "WARNING"
+    citekey, prune=True, manual_refs=None, log_level: tp.Union[str, int] = "WARNING"
 ):
     """
     Generate a CSL_Item for the input citekey.
     """
     from manubot import __version__ as manubot_version
+
+    if manual_refs is None:
+        manual_refs = {}
 
     # https://stackoverflow.com/a/35704430/4651668
     log_level = logging._checkLevel(log_level)

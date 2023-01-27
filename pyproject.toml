@@ -8,3 +8,24 @@ addopts = "--color=yes -rs"
 
 [tool.black]
 target-version = ['py37', 'py38', 'py39', 'py310', 'py311']
+line-length = 88
+
+[tool.ruff]
+target-version = "py37"
+ignore = [
+    "E501",  # line-too-long (black should handle)
+]
+line-length = 88
+select = [
+    "B",  # flake8-bugbear
+    "C",  # flake8-comprehensions
+    "C90",  # mccabe
+    "E",  # pycodestyle errors
+    "F",  # pyflakes
+    "I",  # isort
+    "UP",  # pyupgrade
+    "W",  # pycode warnings
+]
+
+[tool.ruff.mccabe]
+max-complexity = 19

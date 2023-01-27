@@ -173,7 +173,7 @@ def ots_upgrade(args):
     Upgrades each .ots file with a separate ots upgrade subprocess call due to
     https://github.com/opentimestamps/opentimestamps-client/issues/71
     """
-    ots_paths = list()
+    ots_paths = []
     for version in get_versions(args):
         ots_paths.extend(args.versions_directory.joinpath(version).glob("**/*.ots"))
     ots_paths.sort()

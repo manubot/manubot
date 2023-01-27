@@ -94,12 +94,12 @@ def get_isbn_csl_item_citoid(isbn: str):
                 f"{json.dumps(result.text)}"
             )
     (mediawiki,) = result
-    csl_item = dict()
+    csl_item = {}
     csl_item["type"] = mediawiki.get("itemType", "book")
     if "title" in mediawiki:
         csl_item["title"] = mediawiki["title"]
     if "author" in mediawiki:
-        csl_author = list()
+        csl_author = []
         for first, last in mediawiki["author"]:
             csl_author.append({"given": first, "family": last})
         if csl_author:

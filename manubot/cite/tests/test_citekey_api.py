@@ -97,7 +97,7 @@ def test_citekey_to_csl_item_pmc():
     """
     https://api.ncbi.nlm.nih.gov/lit/ctxp/v1/pmc/?format=csl&id=3041534
     """
-    citekey = f"pmc:PMC3041534"
+    citekey = "pmc:PMC3041534"
     csl_item = citekey_to_csl_item(citekey)
     assert csl_item["id"] == "1CGP1eifE"
     assert csl_item["URL"] == "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3041534/"

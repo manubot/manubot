@@ -9,89 +9,89 @@ from manubot.cite.citekey import CiteKey, shorten_citekey, url_to_citekey
     [
         pytest.param(
             "DOI:10.5061/DRYad.q447c/1",
-            dict(
-                prefix="DOI",
-                prefix_lower="doi",
-                standard_accession="10.5061/dryad.q447c/1",
-                standard_id="doi:10.5061/dryad.q447c/1",
-            ),
+            {
+                "prefix": "DOI",
+                "prefix_lower": "doi",
+                "standard_accession": "10.5061/dryad.q447c/1",
+                "standard_id": "doi:10.5061/dryad.q447c/1",
+            },
             id="doi",
         ),
         pytest.param(
             "10.5061/DRYad.q447c/1",
-            dict(
-                prefix="doi",
-                prefix_lower="doi",
-                standard_prefix="doi",
-                standard_accession="10.5061/dryad.q447c/1",
-                standard_id="doi:10.5061/dryad.q447c/1",
-            ),
+            {
+                "prefix": "doi",
+                "prefix_lower": "doi",
+                "standard_prefix": "doi",
+                "standard_accession": "10.5061/dryad.q447c/1",
+                "standard_id": "doi:10.5061/dryad.q447c/1",
+            },
             id="doi-infer-prefix",
         ),
         pytest.param(
             "arXiv:1407.3561v1",
-            dict(
-                prefix="arXiv",
-                prefix_lower="arxiv",
-                standard_prefix="arxiv",
-                standard_accession="1407.3561v1",
-                standard_id="arxiv:1407.3561v1",
-            ),
+            {
+                "prefix": "arXiv",
+                "prefix_lower": "arxiv",
+                "standard_prefix": "arxiv",
+                "standard_accession": "1407.3561v1",
+                "standard_id": "arxiv:1407.3561v1",
+            },
             id="arxiv",
         ),
         pytest.param(
             "pmid:24159271",
-            dict(
-                standard_id="pubmed:24159271",
-            ),
+            {
+                "standard_id": "pubmed:24159271",
+            },
             id="pmid",
         ),
         pytest.param(
             "pmcid:PMC4304851",
-            dict(
-                prefix="pmcid",
-                prefix_lower="pmcid",
-                standard_prefix="pmc",
-                standard_id="pmc:PMC4304851",
-            ),
+            {
+                "prefix": "pmcid",
+                "prefix_lower": "pmcid",
+                "standard_prefix": "pmc",
+                "standard_id": "pmc:PMC4304851",
+            },
             id="pmcid",
         ),
         pytest.param(
             "https://greenelab.github.io/manubot-rootstock/",
-            dict(
-                prefix="https",
-                prefix_lower="https",
-                standard_prefix="url",
-                standard_id="url:https://greenelab.github.io/manubot-rootstock/",
-            ),
+            {
+                "prefix": "https",
+                "prefix_lower": "https",
+                "standard_prefix": "url",
+                "standard_id": "url:https://greenelab.github.io/manubot-rootstock/",
+            },
             id="https",
         ),
         pytest.param(
             "isbn:1-339-91988-5",
-            dict(
-                standard_id="isbn:9781339919881",
-            ),
+            {
+                "standard_id": "isbn:9781339919881",
+            },
             id="isbn",
         ),
         pytest.param(
             "DOID:14330",
-            dict(
-                standard_id="DOID:14330",
-            ),
+            {
+                "standard_id": "DOID:14330",
+            },
             id="doid",
         ),
         pytest.param(
             "PubChem.substance:100101",
-            dict(
-                standard_id="pubchem.substance:100101",
-            ),
+            {
+                "standard_id": "pubchem.substance:100101",
+            },
             id="PubChem.substance",
         ),
         pytest.param(
             "Wikidata:Q50051684",
-            dict(
-                standard_id="wikidata:Q50051684",
-            ),
+            {
+                "standard_id": "wikidata:Q50051684",
+            },
             id="wikidata",
         ),
     ],

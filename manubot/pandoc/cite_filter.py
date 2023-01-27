@@ -203,10 +203,10 @@ def _get_load_manual_references_kwargs(doc: pf.Doc) -> Dict[str, Any]:
         and os.path.exists(bibliography_cache_path)
     ):
         bibliography_paths.append(bibliography_cache_path)
-    return dict(
-        paths=bibliography_paths,
-        extra_csl_items=manual_refs,
-    )
+    return {
+        "paths": bibliography_paths,
+        "extra_csl_items": manual_refs,
+    }
 
 
 def process_citations(doc: pf.Doc) -> None:
@@ -230,7 +230,7 @@ def process_citations(doc: pf.Doc) -> None:
             f"Expected metadata.citekey-aliases to be a dict, "
             f"but received a {citekey_aliases.__class__.__name__}. Disregarding."
         )
-        citekey_aliases = dict()
+        citekey_aliases = {}
     doc.manubot["citekey_aliases"] = citekey_aliases
     doc.walk(_get_reference_link_citekey_aliases)
     doc.walk(_get_citekeys_action)
@@ -275,7 +275,10 @@ def process_citations(doc: pf.Doc) -> None:
 
 
 def main() -> None:
-    from manubot.command import exit_if_error_handler_fired, setup_logging_and_errors
+    from manubot.command import (
+        exit_if_error_handler_fired,
+        setup_logging_and_errors,
+    )
 
     diagnostics = setup_logging_and_errors()
     args = parse_args()
