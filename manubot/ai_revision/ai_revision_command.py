@@ -46,9 +46,9 @@ def cli_process(args):
     # revise
     me.revise_manuscript(tmp_dir, model, debug=True)
 
-    # move the revised manuscript back to the content folder
+    # copy the revised manuscript back to the content folder
     for f in tmp_dir.glob("*"):
-        shutil.move(f, content_dir / f.name)
+        shutil.copyfile(f, content_dir / f.name)
 
 
 def parse_kwargs(kwargs: list[str]) -> dict[str, object]:
