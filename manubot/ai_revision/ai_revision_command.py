@@ -11,7 +11,7 @@ def cli_process(args):
     # set paths for content
     content_dir = args.content_directory
     if not content_dir.is_dir():
-        logging.warning(f"content directory does not exist: {content_dir}")
+        raise SystemExit(f"content directory is not a directory or does not exist: {content_dir}")
 
     # set paths for temporary output
     tmp_dir = Path(tempfile.mkdtemp(suffix="_manubot_ai_revision"))
