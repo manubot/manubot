@@ -1,7 +1,7 @@
+import logging
+import shutil
 import tempfile
 from pathlib import Path
-import shutil
-import logging
 
 
 def cli_process(args):
@@ -14,14 +14,8 @@ def cli_process(args):
         logging.warning(f"content directory does not exist: {content_dir}")
 
     # set paths for temporary output
-    tmp_dir = args.temporary_directory
-    if tmp_dir is None:
-        # if temporary directory is not given, generate one
-
-        tmp_dir = Path(tempfile.mkdtemp(suffix="_manubot_ai_revision"))
-        logging.info(f"output directory not specified, using: {tmp_dir}")
-
-    tmp_dir.mkdir(parents=True, exist_ok=True)
+    tmp_dir = Path(tempfile.mkdtemp(suffix="_manubot_ai_revision"))
+    logging.info(f"using temporary directory: {tmp_dir}")
 
     # create a manuscript editor and model to revise
     me = ManuscriptEditor(
