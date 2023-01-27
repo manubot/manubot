@@ -1,7 +1,13 @@
+import tempfile
+from pathlib import Path
+import shutil
 import logging
 
 
 def cli_process(args):
+    from manubot_ai_editor import models
+    from manubot_ai_editor.editor import ManuscriptEditor
+
     # set paths for content
     content_dir = args.content_directory
     if not content_dir.is_dir():
@@ -11,19 +17,11 @@ def cli_process(args):
     tmp_dir = args.temporary_directory
     if tmp_dir is None:
         # if temporary directory is not given, generate one
-        import tempfile
-        from pathlib import Path
-
         tmp_dir = tempfile.TemporaryDirectory()
         tmp_dir = Path(tmp_dir.name)
         logging.warning(f"output directory not specified, using: {tmp_dir}")
 
     tmp_dir.mkdir(parents=True, exist_ok=True)
-
-    import shutil
-
-    from manubot_ai_editor import models
-    from manubot_ai_editor.editor import ManuscriptEditor
 
     # create a manuscript editor and model to revise
     me = ManuscriptEditor(
