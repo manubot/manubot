@@ -306,7 +306,7 @@ options:
 
 ### AI-assisted academic authoring
 
-The `manubot ai-revision` command ... COMPLETE
+The `manubot ai-revision` command uses large language models from [OpenAI](https://openai.com/api/) to automatically revise a manuscript and suggest text improvements.
 
 <!-- test codeblock contains output of `manubot ai-revision --help` -->
 ```
