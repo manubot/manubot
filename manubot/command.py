@@ -30,6 +30,7 @@ def parse_arguments():
     add_subparser_process(subparsers)
     add_subparser_cite(subparsers)
     add_subparser_webpage(subparsers)
+    add_subparser_airevision(subparsers)
     for subparser in subparsers.choices.values():
         subparser.add_argument(
             "--log-level",
@@ -218,6 +219,36 @@ def add_subparser_webpage(subparsers):
         help="location for the timestamp cache (default: ci/cache/ots).",
     )
     parser.set_defaults(function="manubot.webpage.webpage_command.cli_webpage")
+
+
+def add_subparser_airevision(subparsers):
+    parser = subparsers.add_parser(
+        name="ai-revision",
+        help="revise manuscript content with language models",
+        description="Revise manuscript content using AI models to suggest text improvements.",
+    )
+    parser.add_argument(
+        "--content-directory",
+        type=pathlib.Path,
+        required=True,
+        help="Directory where manuscript content files are located.",
+    )
+    parser.add_argument(
+        "--model-type",
+        type=str,
+        required=False,
+        default="GPT3CompletionModel",
+        help="Model type used to revise the manuscript. Default is GPT3CompletionModel. "
+        "It can be any subclass of manubot_ai_editor.models.ManuscriptRevisionModel",
+    )
+    parser.add_argument(
+        "--model-kwargs",
+        required=False,
+        metavar="key=value",
+        nargs="+",
+        help="Keyword arguments for the revision model (--model-type), with format key=value.",
+    )
+    parser.set_defaults(function="manubot.ai_revision.ai_revision_command.cli_process")
 
 
 def setup_logging_and_errors() -> dict:

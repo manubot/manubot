@@ -15,6 +15,7 @@ Package documentation is available at <https://manubot.github.io/manubot> (auto-
 The `manubot cite` command-line interface retrieves and formats bibliographic metadata for user-supplied persistent identifiers like DOIs or PubMed IDs.
 The `manubot process` command-line interface prepares scholarly manuscripts for Pandoc consumption.
 The `manubot process` command is used by Manubot manuscripts, which are based off the [Rootstock template](https://github.com/manubot/rootstock), to automate several aspects of manuscript generation.
+The `manubot ai-revision` command is used to automatically revise a manuscript based on a set of AI-generated suggestions.
 See Rootstock's [manuscript usage guide](https://github.com/manubot/rootstock/blob/main/USAGE.md) for more information.
 
 **Note:**
@@ -64,7 +65,7 @@ Here is the usage information as per `manubot --help`:
 
 <!-- test codeblock contains output of `manubot --help` -->
 ```
-usage: manubot [-h] [--version] {process,cite,webpage} ...
+usage: manubot [-h] [--version] {process,cite,webpage,ai-revision} ...
 
 Manubot: the manuscript bot for scholarly writing
 
@@ -75,10 +76,11 @@ options:
 subcommands:
   All operations are done through subcommands:
 
-  {process,cite,webpage}
+  {process,cite,webpage,ai-revision}
     process             process manuscript content
     cite                citekey to CSL JSON command line utility
     webpage             deploy Manubot outputs to a webpage directory tree
+    ai-revision         revise manuscript content with language models
 ```
 
 Note that all operations are done through the following sub-commands.
@@ -300,6 +302,51 @@ options:
                         ci/cache/ots).
   --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
                         Set the logging level for stderr logging
+```
+
+### AI-assisted academic authoring
+
+The `manubot ai-revision` command uses large language models from [OpenAI](https://openai.com/api/) to automatically revise a manuscript and suggest text improvements.
+
+<!-- test codeblock contains output of `manubot ai-revision --help` -->
+```
+usage: manubot ai-revision [-h] --content-directory CONTENT_DIRECTORY
+                           [--model-type MODEL_TYPE]
+                           [--model-kwargs key=value [key=value ...]]
+                           [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
+
+Revise manuscript content using AI models to suggest text improvements.
+
+options:
+  -h, --help            show this help message and exit
+  --content-directory CONTENT_DIRECTORY
+                        Directory where manuscript content files are located.
+  --model-type MODEL_TYPE
+                        Model type used to revise the manuscript. Default is
+                        GPT3CompletionModel. It can be any subclass of
+                        manubot_ai_editor.models.ManuscriptRevisionModel
+  --model-kwargs key=value [key=value ...]
+                        Keyword arguments for the revision model (--model-
+                        type), with format key=value.
+  --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
+                        Set the logging level for stderr logging
+```
+
+The usual call is:
+
+```
+manubot ai-revision --content-directory content/
+```
+
+The parameters `--model-type` and `--model-kwargs` are used for debugging purposes.
+For example, since the tool splits the text into paragraphs, you might want to see if paragraphs were detected correctly.
+Since the tool incurs a cost when using OpenAI API, this could be important to check if you have a text with a more complicated structure.
+
+```
+manubot ai-revision \
+  --content-directory content/ \
+  --model-type DummyManuscriptRevisionModel \
+  --model-kwargs add_paragraph_marks=true
 ```
 
 ## Development
