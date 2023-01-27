@@ -17,9 +17,9 @@ def cli_process(args):
     tmp_dir = args.temporary_directory
     if tmp_dir is None:
         # if temporary directory is not given, generate one
-        tmp_dir = tempfile.TemporaryDirectory()
-        tmp_dir = Path(tmp_dir.name)
-        logging.warning(f"output directory not specified, using: {tmp_dir}")
+
+        tmp_dir = Path(tempfile.mkdtemp(suffix="_manubot_ai_revision"))
+        logging.info(f"output directory not specified, using: {tmp_dir}")
 
     tmp_dir.mkdir(parents=True, exist_ok=True)
 
