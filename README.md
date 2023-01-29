@@ -228,7 +228,7 @@ options:
 This package creates the `pandoc-manubot-cite` Pandoc filter,
 providing access to Manubot's cite-by-ID functionality from within a Pandoc workflow.
 
-Options are set via Pandoc metadata fields [listed in the docs](https://manubot.github.io/manubot/reference/manubot/pandoc/cite_filter.html).
+Options are set via Pandoc metadata fields [listed in the docs](https://manubot.github.io/manubot/reference/manubot/pandoc/cite_filter).
 
 <!-- test codeblock contains output of `pandoc-manubot-cite --help` -->
 ```
@@ -340,7 +340,7 @@ manubot ai-revision --content-directory content/
 
 The parameters `--model-type` and `--model-kwargs` are used for debugging purposes.
 For example, since the tool splits the text into paragraphs, you might want to see if paragraphs were detected correctly.
-Since the tool incurs a cost when using OpenAI API, this could be important to check if you have a text with a more complicated structure.
+The tool incurs a cost when using the OpenAI API, so this could be important to check for text with complicated structure.
 
 ```
 manubot ai-revision \
