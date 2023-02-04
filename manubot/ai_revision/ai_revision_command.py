@@ -5,8 +5,13 @@ from pathlib import Path
 
 
 def cli_process(args):
-    from manubot_ai_editor import models
-    from manubot_ai_editor.editor import ManuscriptEditor
+    try:
+        from manubot_ai_editor import models
+        from manubot_ai_editor.editor import ManuscriptEditor
+    except ImportError as err:
+        raise ModuleNotFoundError(
+            "Install manubot with: pip install manubot[ai-rev]"
+        ) from err
 
     # set paths for content
     content_dir = args.content_directory
