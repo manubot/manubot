@@ -384,11 +384,13 @@ def _get_eutils_rate_limiter() -> "Limiter":
     https://pyratelimiter.readthedocs.io/en/latest/
     https://github.com/vutran1710/PyrateLimiter
     """
-    from pyrate_limiter import Duration, Limiter, Rate
+    # does not work pyrate_limiter v3
+    # https://github.com/manubot/manubot/issues/367
+    from pyrate_limiter import Duration, Limiter, RequestRate
 
     if "CI" in os.environ:
         # multiple CI jobs might be running concurrently
-        rate = Rate(limit=1, interval=2 * Duration.SECOND)
+        rate = RequestRate(limit=1, interval=Duration.SECOND * 2)
     else:
-        rate = Rate(limit=2, interval=Duration.SECOND)
+        rate = RequestRate(limit=2, interval=Duration.SECOND)
     return Limiter(rate).ratelimit("ncbi_eutils", delay=True)
