@@ -2073,81 +2073,81 @@ Command modeled after:
 git --work-tree=webpage checkout upstream/gh-pages -- v</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">checkout_existing_versions</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>def checkout_existing_versions(args):
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    Must populate webpage/v from the gh-pages branch to get history</span>
+    Must populate webpage/v from the gh-pages branch to get history
 
-<span class="err">    References:</span>
+    References:
 
-<span class="err">    http://clubmate.fi/git-checkout-file-or-directories-from-another-branch/</span>
+    http://clubmate.fi/git-checkout-file-or-directories-from-another-branch/
 
-<span class="err">    https://stackoverflow.com/a/2668947/4651668</span>
+    https://stackoverflow.com/a/2668947/4651668
 
-<span class="err">    https://stackoverflow.com/a/16493707/4651668</span>
+    https://stackoverflow.com/a/16493707/4651668
 
-<span class="err">    Command modeled after:</span>
+    Command modeled after:
 
-<span class="err">    git --work-tree=webpage checkout upstream/gh-pages -- v</span>
+    git --work-tree=webpage checkout upstream/gh-pages -- v
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    if not args.checkout:</span>
+    if not args.checkout:
 
-<span class="err">        return</span>
+        return
 
-<span class="err">    command = [</span>
+    command = [
 
-<span class="w">        </span><span class="s2">&quot;git&quot;</span>,
+        &quot;git&quot;,
 
-<span class="w">        </span><span class="nv">f</span><span class="s2">&quot;--work-tree={args.webpage_directory}&quot;</span>,
+        f&quot;--work-tree={args.webpage_directory}&quot;,
 
-<span class="w">        </span><span class="s2">&quot;checkout&quot;</span>,
+        &quot;checkout&quot;,
 
-<span class="w">        </span><span class="nv">args</span>.<span class="nv">checkout</span>,
+        args.checkout,
 
-<span class="w">        </span><span class="s2">&quot;--&quot;</span>,
+        &quot;--&quot;,
 
-<span class="w">        </span><span class="s2">&quot;v&quot;</span>,
+        &quot;v&quot;,
 
-<span class="w">    </span>]
+    ]
 
-<span class="w">    </span><span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span>
+    logging.info(
 
-<span class="w">        </span><span class="nv">f</span><span class="s2">&quot;Attempting checkout with the following command:\n{shlex_join(command)}&quot;</span>
+        f&quot;Attempting checkout with the following command:\n{shlex_join(command)}&quot;
 
-<span class="w">    </span><span class="ss">)</span>
+    )
 
-<span class="w">    </span><span class="nv">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span><span class="nv">command</span>,<span class="w"> </span><span class="nv">stdout</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>,<span class="w"> </span><span class="nv">stderr</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">STDOUT</span><span class="ss">)</span>
+    process = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nv">process</span>.<span class="nv">returncode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span>:
+    if process.returncode == 0:
 
-<span class="w">        </span>#<span class="w"> </span><span class="nv">Addresses</span><span class="w"> </span><span class="nv">an</span><span class="w"> </span><span class="nv">odd</span><span class="w"> </span><span class="nv">behavior</span><span class="w"> </span><span class="nv">where</span><span class="w"> </span><span class="nv">git</span><span class="w"> </span><span class="nv">checkout</span><span class="w"> </span><span class="nv">stages</span><span class="w"> </span><span class="nv">v</span><span class="cm">/* files that don&#39;t actually exist</span>
+        # Addresses an odd behavior where git checkout stages v/* files that don&#39;t actually exist
 
-<span class="cm">        subprocess.run([&quot;git&quot;, &quot;add&quot;, &quot;v&quot;], stdout=subprocess.PIPE)</span>
+        subprocess.run([&quot;git&quot;, &quot;add&quot;, &quot;v&quot;], stdout=subprocess.PIPE)
 
-<span class="cm">    else:</span>
+    else:
 
-<span class="cm">        output = process.stdout.decode()</span>
+        output = process.stdout.decode()
 
-<span class="cm">        message = (</span>
+        message = (
 
-<span class="cm">            f&quot;Checkout returned a nonzero exit status. See output:\n{output.rstrip()}&quot;</span>
+            f&quot;Checkout returned a nonzero exit status. See output:\n{output.rstrip()}&quot;
 
-<span class="cm">        )</span>
+        )
 
-<span class="cm">        if &quot;pathspec&quot; in output:</span>
+        if &quot;pathspec&quot; in output:
 
-<span class="cm">            message += (</span>
+            message += (
 
-<span class="cm">                &quot;\nManubot note: if there are no preexisting webpage versions (like for a newly created manuscript), &quot;</span>
+                &quot;\nManubot note: if there are no preexisting webpage versions (like for a newly created manuscript), &quot;
 
-<span class="cm">                &quot;the pathspec error above is expected and can be safely ignored.&quot;</span>
+                &quot;the pathspec error above is expected and can be safely ignored.&quot;
 
-<span class="cm">            )  # see https://github.com/manubot/rootstock/issues/183</span>
+            )  # see https://github.com/manubot/rootstock/issues/183
 
-<span class="cm">        logging.warning(message)</span>
+        logging.warning(message)
 </code></pre></div>
 
 </details>
@@ -2161,25 +2161,25 @@ git --work-tree=webpage checkout upstream/gh-pages -- v</p>
 <p>args should be an argparse.Namespace object created by parser.parse_args.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">cli_webpage</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>def cli_webpage(args):
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    Execute manubot webpage commands.</span>
+    Execute manubot webpage commands.
 
-<span class="err">    args should be an argparse.Namespace object created by parser.parse_args.</span>
+    args should be an argparse.Namespace object created by parser.parse_args.
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    configure_args(args)</span>
+    configure_args(args)
 
-<span class="w">    </span><span class="nv">logging</span>.<span class="nv">debug</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;Running `manubot webpage` with the following args:\n{args}&quot;</span><span class="ss">)</span>
+    logging.debug(f&quot;Running <span class="sb">`manubot webpage`</span> with the following args:\n{args}&quot;)
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nv">args</span>.<span class="nv">timestamp</span>:
+    if args.timestamp:
 
-<span class="w">        </span><span class="nv">ots_upgrade</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>
+        ots_upgrade(args)
 
-<span class="w">    </span><span class="nv">create_version</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>
+    create_version(args)
 </code></pre></div>
 
 </details>
@@ -2322,51 +2322,51 @@ Note that versions_directory is the parent of version_directory.</p>
 <p>Populate the version directory for a new version.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">create_version</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>def create_version(args):
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    Populate the version directory for a new version.</span>
+    Populate the version directory for a new version.
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    # Copy content/images to webpage/v/commit/images</span>
+    # Copy content/images to webpage/v/commit/images
 
-<span class="w">    </span><span class="nv">images_src</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="s2">&quot;content/images&quot;</span><span class="ss">)</span>
+    images_src = pathlib.Path(&quot;content/images&quot;)
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nv">images_src</span>.<span class="nv">exists</span><span class="ss">()</span>:
+    if images_src.exists():
 
-<span class="w">        </span><span class="nv">shutil</span>.<span class="nv">copytree</span><span class="ss">(</span><span class="nv">src</span><span class="o">=</span><span class="nv">images_src</span>,<span class="w"> </span><span class="nv">dst</span><span class="o">=</span><span class="nv">args</span>.<span class="nv">version_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;images&quot;</span><span class="ss">))</span>
+        shutil.copytree(src=images_src, dst=args.version_directory.joinpath(&quot;images&quot;))
 
-<span class="w">    </span>#<span class="w"> </span><span class="nv">Copy</span><span class="w"> </span><span class="nv">output</span><span class="w"> </span><span class="nv">files</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">webpage</span><span class="o">/</span><span class="nv">v</span><span class="o">/</span><span class="nv">version</span><span class="o">/</span>
+    # Copy output files to to webpage/v/version/
 
-<span class="w">    </span><span class="nv">renamer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>{<span class="s2">&quot;manuscript.html&quot;</span>:<span class="w"> </span><span class="s2">&quot;index.html&quot;</span>,<span class="w"> </span><span class="s2">&quot;manuscript.pdf&quot;</span>:<span class="w"> </span><span class="s2">&quot;manuscript.pdf&quot;</span>}
+    renamer = {&quot;manuscript.html&quot;: &quot;index.html&quot;, &quot;manuscript.pdf&quot;: &quot;manuscript.pdf&quot;}
 
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nv">src</span>,<span class="w"> </span><span class="nv">dst</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">renamer</span>.<span class="nv">items</span><span class="ss">()</span>:
+    for src, dst in renamer.items():
 
-<span class="w">        </span><span class="nv">src_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">args</span>.<span class="nv">output_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="nv">src</span><span class="ss">)</span>
+        src_path = args.output_directory.joinpath(src)
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">src_path</span>.<span class="nv">exists</span><span class="ss">()</span>:
+        if not src_path.exists():
 
-<span class="w">            </span><span class="k">continue</span>
+            continue
 
-<span class="w">        </span><span class="nv">dst_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">args</span>.<span class="nv">version_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="nv">dst</span><span class="ss">)</span>
+        dst_path = args.version_directory.joinpath(dst)
 
-<span class="w">        </span><span class="nv">shutil</span>.<span class="nv">copy2</span><span class="ss">(</span><span class="nv">src</span><span class="o">=</span><span class="nv">src_path</span>,<span class="w"> </span><span class="nv">dst</span><span class="o">=</span><span class="nv">dst_path</span><span class="ss">)</span>
+        shutil.copy2(src=src_path, dst=dst_path)
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">args</span>.<span class="nv">timestamp</span>:
+        if args.timestamp:
 
-<span class="w">            </span><span class="nv">ots_stamp</span><span class="ss">(</span><span class="nv">dst_path</span><span class="ss">)</span>
+            ots_stamp(dst_path)
 
-<span class="w">    </span>#<span class="w"> </span><span class="nv">Create</span><span class="w"> </span><span class="nv">v</span><span class="o">/</span><span class="nv">freeze</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">redirect</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">v</span><span class="o">/</span><span class="nv">commit</span>
+    # Create v/freeze to redirect to v/commit
 
-<span class="w">    </span><span class="nv">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">pathlib</span>.<span class="nv">Path</span><span class="ss">(</span><span class="nv">__file__</span><span class="ss">)</span>.<span class="nv">with_name</span><span class="ss">(</span><span class="s2">&quot;redirect-template.html&quot;</span><span class="ss">)</span>
+    path = pathlib.Path(__file__).with_name(&quot;redirect-template.html&quot;)
 
-<span class="w">    </span><span class="nv">redirect_html</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">path</span>.<span class="nv">read_text</span><span class="ss">()</span>
+    redirect_html = path.read_text()
 
-<span class="w">    </span><span class="nv">redirect_html</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">redirect_html</span>.<span class="nv">format</span><span class="ss">(</span><span class="nv">url</span><span class="o">=</span><span class="nv">f</span><span class="s2">&quot;../{args.version}/&quot;</span><span class="ss">)</span>
+    redirect_html = redirect_html.format(url=f&quot;../{args.version}/&quot;)
 
-<span class="w">    </span><span class="nv">args</span>.<span class="nv">freeze_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s2">&quot;index.html&quot;</span><span class="ss">)</span>.<span class="nv">write_text</span><span class="ss">(</span><span class="nv">redirect_html</span><span class="ss">)</span>
+    args.freeze_directory.joinpath(&quot;index.html&quot;).write_text(redirect_html)
 </code></pre></div>
 
 </details>
@@ -2380,23 +2380,23 @@ Note that versions_directory is the parent of version_directory.</p>
 <p>a manuscript.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">get_versions</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>def get_versions(args):
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    Extract versions from the webpage/v directory, which should each contain</span>
+    Extract versions from the webpage/v directory, which should each contain
 
-<span class="err">    a manuscript.</span>
+    a manuscript.
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    versions = {x.name for x in args.versions_directory.iterdir() if x.is_dir()}</span>
+    versions = {x.name for x in args.versions_directory.iterdir() if x.is_dir()}
 
-<span class="w">    </span><span class="nv">versions</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span>{<span class="s2">&quot;freeze&quot;</span>,<span class="w"> </span><span class="s2">&quot;latest&quot;</span>}
+    versions -= {&quot;freeze&quot;, &quot;latest&quot;}
 
-<span class="w">    </span><span class="nv">versions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">sorted</span><span class="ss">(</span><span class="nv">versions</span><span class="ss">)</span>
+    versions = sorted(versions)
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">versions</span>
+    return versions
 </code></pre></div>
 
 </details>
@@ -2462,79 +2462,79 @@ If <code>path</code> does not exist, this function does nothing.</p>
 https://github.com/opentimestamps/opentimestamps-client/issues/71</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">ots_upgrade</span><span class="ss">(</span><span class="nv">args</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>def ots_upgrade(args):
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    Upgrade OpenTimestamps .ots files in versioned commit directory trees.</span>
+    Upgrade OpenTimestamps .ots files in versioned commit directory trees.
 
-<span class="err">    Upgrades each .ots file with a separate ots upgrade subprocess call due to</span>
+    Upgrades each .ots file with a separate ots upgrade subprocess call due to
 
-<span class="err">    https://github.com/opentimestamps/opentimestamps-client/issues/71</span>
+    https://github.com/opentimestamps/opentimestamps-client/issues/71
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    ots_paths = []</span>
+    ots_paths = []
 
-<span class="err">    for version in get_versions(args):</span>
+    for version in get_versions(args):
 
-<span class="w">        </span><span class="nv">ots_paths</span>.<span class="nv">extend</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">versions_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="nv">version</span><span class="ss">)</span>.<span class="nv">glob</span><span class="ss">(</span><span class="s2">&quot;**/*.ots&quot;</span><span class="ss">))</span>
+        ots_paths.extend(args.versions_directory.joinpath(version).glob(&quot;**/*.ots&quot;))
 
-<span class="w">    </span><span class="nv">ots_paths</span>.<span class="nv">sort</span><span class="ss">()</span>
+    ots_paths.sort()
 
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nv">ots_path</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">ots_paths</span>:
+    for ots_path in ots_paths:
 
-<span class="w">        </span><span class="nv">process_args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>[<span class="s2">&quot;ots&quot;</span>]
+        process_args = [&quot;ots&quot;]
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">args</span>.<span class="nv">no_ots_cache</span>:
+        if args.no_ots_cache:
 
-<span class="w">            </span><span class="nv">process_args</span>.<span class="nv">append</span><span class="ss">(</span><span class="s2">&quot;--no-cache&quot;</span><span class="ss">)</span>
+            process_args.append(&quot;--no-cache&quot;)
 
-<span class="w">        </span><span class="k">else</span>:
+        else:
 
-<span class="w">            </span><span class="nv">process_args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;--cache&quot;</span>,<span class="w"> </span><span class="nv">str</span><span class="ss">(</span><span class="nv">args</span>.<span class="nv">ots_cache</span><span class="ss">)</span>]<span class="ss">)</span>
+            process_args.extend([&quot;--cache&quot;, str(args.ots_cache)])
 
-<span class="w">        </span><span class="nv">process_args</span>.<span class="nv">extend</span><span class="ss">(</span>[<span class="s2">&quot;upgrade&quot;</span>,<span class="w"> </span><span class="nv">str</span><span class="ss">(</span><span class="nv">ots_path</span><span class="ss">)</span>]<span class="ss">)</span>
+        process_args.extend([&quot;upgrade&quot;, str(ots_path)])
 
-<span class="w">        </span><span class="nv">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">subprocess</span>.<span class="nv">run</span><span class="ss">(</span>
+        process = subprocess.run(
 
-<span class="w">            </span><span class="nv">process_args</span>,
+            process_args,
 
-<span class="w">            </span><span class="nv">stdout</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">PIPE</span>,
+            stdout=subprocess.PIPE,
 
-<span class="w">            </span><span class="nv">stderr</span><span class="o">=</span><span class="nv">subprocess</span>.<span class="nv">STDOUT</span>,
+            stderr=subprocess.STDOUT,
 
-<span class="w">            </span><span class="nv">text</span><span class="o">=</span><span class="nv">True</span>,
+            text=True,
 
-<span class="w">        </span><span class="ss">)</span>
+        )
 
-<span class="w">        </span><span class="nv">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;&gt;&gt;&gt; {shlex_join(process.args)}\n{process.stdout}&quot;</span>
+        message = f&quot;&gt;&gt;&gt; {shlex_join(process.args)}\n{process.stdout}&quot;
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">process</span>.<span class="nv">returncode</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span>:
+        if process.returncode != 0:
 
-<span class="w">            </span><span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+            logging.warning(
 
-<span class="w">                </span><span class="nv">f</span><span class="s2">&quot;OpenTimestamp upgrade failed with exit code {process.returncode}.\n{message}&quot;</span>
+                f&quot;OpenTimestamp upgrade failed with exit code {process.returncode}.\n{message}&quot;
 
-<span class="w">            </span><span class="ss">)</span>
+            )
 
-<span class="w">        </span><span class="nv">elif</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">process</span>.<span class="nv">stdout</span>.<span class="nv">strip</span><span class="ss">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Success! Timestamp complete&quot;</span>:
+        elif not process.stdout.strip() == &quot;Success! Timestamp complete&quot;:
 
-<span class="w">            </span><span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">message</span><span class="ss">)</span>
+            logging.info(message)
 
-<span class="w">        </span><span class="nv">backup_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">ots_path</span>.<span class="nv">with_suffix</span><span class="ss">(</span><span class="s2">&quot;.ots.bak&quot;</span><span class="ss">)</span>
+        backup_path = ots_path.with_suffix(&quot;.ots.bak&quot;)
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">backup_path</span>.<span class="nv">exists</span><span class="ss">()</span>:
+        if backup_path.exists():
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nv">process</span>.<span class="nv">returncode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span>:
+            if process.returncode == 0:
 
-<span class="w">                </span><span class="nv">backup_path</span>.<span class="k">unlink</span><span class="ss">()</span>
+                backup_path.unlink()
 
-<span class="w">            </span><span class="k">else</span>:
+            else:
 
-<span class="w">                </span>#<span class="w"> </span><span class="nv">Restore</span><span class="w"> </span><span class="nv">original</span><span class="w"> </span><span class="nv">timestamp</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">failure</span>
+                # Restore original timestamp if failure
 
-<span class="w">                </span><span class="nv">backup_path</span>.<span class="nv">rename</span><span class="ss">(</span><span class="nv">ots_path</span><span class="ss">)</span>
+                backup_path.rename(ots_path)
 </code></pre></div>
 
 </details>

@@ -1676,19 +1676,19 @@
 <p>https://stackoverflow.com/a/39079819/4651668</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">datetime_now</span><span class="ss">()</span>:
+<div class="codehilite"><pre><span></span><code>def datetime_now():
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    Return the current datetime, with timezone awareness</span>
+    Return the current datetime, with timezone awareness
 
-<span class="err">    https://stackoverflow.com/a/39079819/4651668</span>
+    https://stackoverflow.com/a/39079819/4651668
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    tzinfo = datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo</span>
+    tzinfo = datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo
 
-<span class="err">    return datetime.datetime.now(tzinfo)</span>
+    return datetime.datetime.now(tzinfo)
 </code></pre></div>
 
 </details>
@@ -1701,21 +1701,21 @@
 <p>Compute manuscript statistics.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">get_manuscript_stats</span><span class="ss">(</span><span class="nv">text</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>def get_manuscript_stats(text):
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    Compute manuscript statistics.</span>
+    Compute manuscript statistics.
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    stats = {}</span>
+    stats = {}
 
-<span class="w">    </span><span class="nv">stats</span>[<span class="s2">&quot;word_count&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">len</span><span class="ss">(</span><span class="nv">text</span>.<span class="nv">split</span><span class="ss">())</span>
+    stats[&quot;word_count&quot;] = len(text.split())
 
-<span class="w">    </span><span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;Generated manscript stats:\n{json.dumps(stats, indent=2)}&quot;</span><span class="ss">)</span>
+    logging.info(f&quot;Generated manscript stats:\n{json.dumps(stats, indent=2)}&quot;)
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">stats</span>
+    return stats
 </code></pre></div>
 
 </details>
@@ -1729,29 +1729,29 @@
 <p>Text files should be UTF-8 encoded.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">get_text</span><span class="ss">(</span><span class="nv">directory</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>def get_text(directory):
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    Return a concatenated string of section texts from the specified directory.</span>
+    Return a concatenated string of section texts from the specified directory.
 
-<span class="err">    Text files should be UTF-8 encoded.</span>
+    Text files should be UTF-8 encoded.
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    section_dir = pathlib.Path(directory)</span>
+    section_dir = pathlib.Path(directory)
 
-<span class="w">    </span><span class="nv">paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">sorted</span><span class="ss">(</span><span class="nv">section_dir</span>.<span class="nv">glob</span><span class="ss">(</span><span class="s2">&quot;[0-9]*.md&quot;</span><span class="ss">))</span>
+    paths = sorted(section_dir.glob(&quot;[0-9]*.md&quot;))
 
-<span class="w">    </span><span class="nv">name_to_text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>{}
+    name_to_text = {}
 
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nv">path</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">paths</span>:
+    for path in paths:
 
-<span class="w">        </span><span class="nv">name_to_text</span>[<span class="nv">path</span>.<span class="nv">stem</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">path</span>.<span class="nv">read_text</span><span class="ss">(</span><span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="ss">)</span>
+        name_to_text[path.stem] = path.read_text(encoding=&quot;utf-8-sig&quot;)
 
-<span class="w">    </span><span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="s2">&quot;Manuscript content parts:\n&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;\n&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">name_to_text</span><span class="ss">))</span>
+    logging.info(&quot;Manuscript content parts:\n&quot; + &quot;\n&quot;.join(name_to_text))
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s2">&quot;\n\n&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">name_to_text</span>.<span class="nv">values</span><span class="ss">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;\n&quot;</span>
+    return &quot;\n\n&quot;.join(name_to_text.values()) + &quot;\n&quot;
 </code></pre></div>
 
 </details>

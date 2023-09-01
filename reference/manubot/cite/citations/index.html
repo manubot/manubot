@@ -2618,29 +2618,29 @@
 <p>Check for short_id hash collisions</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">check_collisions</span><span class="ss">(</span><span class="nv">self</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    def check_collisions(self):
 
-<span class="w">        </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+        &quot;&quot;&quot;
 
-<span class="err">        Check for short_id hash collisions</span>
+        Check for short_id hash collisions
 
-<span class="w">        </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+        &quot;&quot;&quot;
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="nv">short_id</span>,<span class="w"> </span><span class="nv">citekeys</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">group_citekeys_by</span><span class="ss">(</span><span class="s2">&quot;short_id&quot;</span><span class="ss">)</span>:
+        for short_id, citekeys in self.group_citekeys_by(&quot;short_id&quot;):
 
-<span class="w">            </span><span class="nv">standard_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">sorted</span><span class="ss">(</span>{<span class="nv">x</span>.<span class="nv">standard_id</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">citekeys</span>}<span class="ss">)</span>
+            standard_ids = sorted({x.standard_id for x in citekeys})
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nv">len</span><span class="ss">(</span><span class="nv">standard_ids</span><span class="ss">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span>:
+            if len(standard_ids) == 1:
 
-<span class="w">                </span><span class="k">continue</span>
+                continue
 
-<span class="w">            </span><span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span>
+            logging.error(
 
-<span class="w">                </span><span class="s2">&quot;Congratulations! Hash collision. Please report to https://git.io/JfuhH.\n&quot;</span>
+                &quot;Congratulations! Hash collision. Please report to https://git.io/JfuhH.\n&quot;
 
-<span class="w">                </span><span class="nv">f</span><span class="s2">&quot;Multiple standard_ids hashed to {short_id}: {standard_ids}&quot;</span>
+                f&quot;Multiple standard_ids hashed to {short_id}: {standard_ids}&quot;
 
-<span class="w">            </span><span class="ss">)</span>
+            )
 </code></pre></div>
 
 </details>
@@ -2653,27 +2653,27 @@
 <p>Identify different input_ids referring to the same reference.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">check_multiple_input_ids</span><span class="ss">(</span><span class="nv">self</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    def check_multiple_input_ids(self):
 
-<span class="w">        </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+        &quot;&quot;&quot;
 
-<span class="err">        Identify different input_ids referring to the same reference.</span>
+        Identify different input_ids referring to the same reference.
 
-<span class="w">        </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+        &quot;&quot;&quot;
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="nv">standard_id</span>,<span class="w"> </span><span class="nv">citekeys</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">group_citekeys_by</span><span class="ss">(</span><span class="s2">&quot;standard_id&quot;</span><span class="ss">)</span>:
+        for standard_id, citekeys in self.group_citekeys_by(&quot;standard_id&quot;):
 
-<span class="w">            </span><span class="nv">input_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>[<span class="nv">x</span>.<span class="nv">input_id</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">citekeys</span>]
+            input_ids = [x.input_id for x in citekeys]
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nv">len</span><span class="ss">(</span><span class="nv">input_ids</span><span class="ss">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span>:
+            if len(input_ids) &lt; 2:
 
-<span class="w">                </span><span class="k">continue</span>
+                continue
 
-<span class="w">            </span><span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+            logging.warning(
 
-<span class="w">                </span><span class="nv">f</span><span class="s2">&quot;Multiple citekey input_ids refer to the same standard_id {standard_id}:\n{input_ids}&quot;</span>
+                f&quot;Multiple citekey input_ids refer to the same standard_id {standard_id}:\n{input_ids}&quot;
 
-<span class="w">            </span><span class="ss">)</span>
+            )
 </code></pre></div>
 
 </details>
@@ -2860,39 +2860,39 @@
 <p>If log_level is not None, log combined inspection report at this level.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">inspect</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">log_level</span><span class="o">=</span><span class="nv">None</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    def inspect(self, log_level=None):
 
-<span class="w">        </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+        &quot;&quot;&quot;
 
-<span class="err">        If log_level is not None, log combined inspection report at this level.</span>
+        If log_level is not None, log combined inspection report at this level.
 
-<span class="w">        </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+        &quot;&quot;&quot;
 
-<span class="w">        </span><span class="nv">citekeys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">unique_citekeys_by</span><span class="ss">(</span><span class="s2">&quot;dealiased_id&quot;</span><span class="ss">)</span>
+        citekeys = self.unique_citekeys_by(&quot;dealiased_id&quot;)
 
-<span class="w">        </span><span class="nv">reports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>[]
+        reports = []
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="nv">citekey</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">citekeys</span>:
+        for citekey in citekeys:
 
-<span class="w">            </span><span class="nv">report</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">citekey</span>.<span class="nv">inspect</span><span class="ss">()</span>
+            report = citekey.inspect()
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">report</span>:
+            if not report:
 
-<span class="w">                </span><span class="k">continue</span>
+                continue
 
-<span class="w">            </span><span class="nv">reports</span>.<span class="nv">append</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;{citekey.dealiased_id} -- {report}&quot;</span><span class="ss">)</span>
+            reports.append(f&quot;{citekey.dealiased_id} -- {report}&quot;)
 
-<span class="w">        </span><span class="nv">report</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;\n&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">reports</span><span class="ss">)</span>
+        report = &quot;\n&quot;.join(reports)
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">reports</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="nv">log_level</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">None</span>:
+        if reports and log_level is not None:
 
-<span class="w">            </span><span class="nv">log_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">logging</span>.<span class="nv">_checkLevel</span><span class="ss">(</span><span class="nv">log_level</span><span class="ss">)</span>
+            log_level = logging._checkLevel(log_level)
 
-<span class="w">            </span><span class="nv">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;Inspection of dealiased citekeys revealed potential problems:\n{report}&quot;</span>
+            msg = f&quot;Inspection of dealiased citekeys revealed potential problems:\n{report}&quot;
 
-<span class="w">            </span><span class="nv">logging</span>.<span class="nv">log</span><span class="ss">(</span><span class="nv">log_level</span>,<span class="w"> </span><span class="nv">msg</span><span class="ss">)</span>
+            logging.log(log_level, msg)
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">report</span>
+        return report
 </code></pre></div>
 
 </details>

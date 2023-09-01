@@ -2282,7 +2282,7 @@ pandoc<span class="w">   </span>--to<span class="o">=</span>json<span class="w">
 <p>Read command line arguments</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">parse_args</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">argparse</span><span class="p">.</span><span class="n">Namespace</span><span class="o">:</span>
+<div class="codehilite"><pre><span></span><code><span class="nx">def</span><span class="w"> </span><span class="nx">parse_args</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nx">argparse</span><span class="p">.</span><span class="nx">Namespace</span><span class="p">:</span>
 
 <span class="w">    </span><span class="s">&quot;&quot;&quot;</span>
 
@@ -2290,9 +2290,9 @@ pandoc<span class="w">   </span>--to<span class="o">=</span>json<span class="w">
 
 <span class="s">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">parser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">argparse</span><span class="p">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+<span class="w">    </span><span class="nx">parser</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">argparse</span><span class="p">.</span><span class="nx">ArgumentParser</span><span class="p">(</span>
 
-<span class="w">        </span><span class="n">description</span><span class="o">=</span><span class="s">&quot;Pandoc filter for citation by persistent identifier. &quot;</span>
+<span class="w">        </span><span class="nx">description</span><span class="p">=</span><span class="s">&quot;Pandoc filter for citation by persistent identifier. &quot;</span>
 
 <span class="w">        </span><span class="s">&quot;Filters are command-line programs that read and write a JSON-encoded abstract syntax tree for Pandoc. &quot;</span>
 
@@ -2300,41 +2300,41 @@ pandoc<span class="w">   </span>--to<span class="o">=</span>json<span class="w">
 
 <span class="w">    </span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="w">    </span><span class="nx">parser</span><span class="p">.</span><span class="nx">add_argument</span><span class="p">(</span>
 
 <span class="w">        </span><span class="s">&quot;target_format&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="n">help</span><span class="o">=</span><span class="s">&quot;output format of the pandoc command, as per Pandoc&#39;</span><span class="n">s</span><span class="w"> </span><span class="o">--</span><span class="n">to</span><span class="w"> </span><span class="n">option</span><span class="s">&quot;,</span>
+<span class="w">        </span><span class="nx">help</span><span class="p">=</span><span class="s">&quot;output format of the pandoc command, as per Pandoc&#39;s --to option&quot;</span><span class="p">,</span>
 
-<span class="s">    )</span>
+<span class="w">    </span><span class="p">)</span>
 
-<span class="s">    parser.add_argument(</span>
+<span class="w">    </span><span class="nx">parser</span><span class="p">.</span><span class="nx">add_argument</span><span class="p">(</span>
 
-<span class="s">        &quot;</span><span class="o">--</span><span class="n">input</span><span class="s">&quot;,</span>
+<span class="w">        </span><span class="s">&quot;--input&quot;</span><span class="p">,</span>
 
-<span class="s">        nargs=&quot;</span><span class="o">?</span><span class="s">&quot;,</span>
+<span class="w">        </span><span class="nx">nargs</span><span class="p">=</span><span class="s">&quot;?&quot;</span><span class="p">,</span>
 
-<span class="s">        type=argparse.FileType(&quot;</span><span class="n">r</span><span class="s">&quot;, encoding=&quot;</span><span class="n">utf</span><span class="o">-</span><span class="mi">8</span><span class="s">&quot;),</span>
+<span class="w">        </span><span class="k">type</span><span class="p">=</span><span class="nx">argparse</span><span class="p">.</span><span class="nx">FileType</span><span class="p">(</span><span class="s">&quot;r&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">encoding</span><span class="p">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">),</span>
 
-<span class="s">        help=&quot;</span><span class="n">path</span><span class="w"> </span><span class="n">read</span><span class="w"> </span><span class="n">JSON</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="n">defaults</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">stdin</span><span class="p">)</span><span class="s">&quot;,</span>
+<span class="w">        </span><span class="nx">help</span><span class="p">=</span><span class="s">&quot;path read JSON input (defaults to stdin)&quot;</span><span class="p">,</span>
 
-<span class="s">    )</span>
+<span class="w">    </span><span class="p">)</span>
 
-<span class="s">    parser.add_argument(</span>
+<span class="w">    </span><span class="nx">parser</span><span class="p">.</span><span class="nx">add_argument</span><span class="p">(</span>
 
-<span class="s">        &quot;</span><span class="o">--</span><span class="kr">output</span><span class="s">&quot;,</span>
+<span class="w">        </span><span class="s">&quot;--output&quot;</span><span class="p">,</span>
 
-<span class="s">        nargs=&quot;</span><span class="o">?</span><span class="s">&quot;,</span>
+<span class="w">        </span><span class="nx">nargs</span><span class="p">=</span><span class="s">&quot;?&quot;</span><span class="p">,</span>
 
-<span class="s">        type=argparse.FileType(&quot;</span><span class="n">w</span><span class="s">&quot;, encoding=&quot;</span><span class="n">utf</span><span class="o">-</span><span class="mi">8</span><span class="s">&quot;),</span>
+<span class="w">        </span><span class="k">type</span><span class="p">=</span><span class="nx">argparse</span><span class="p">.</span><span class="nx">FileType</span><span class="p">(</span><span class="s">&quot;w&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">encoding</span><span class="p">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">),</span>
 
-<span class="s">        help=&quot;</span><span class="n">path</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="n">JSON</span><span class="w"> </span><span class="kr">output</span><span class="w"> </span><span class="p">(</span><span class="n">defaults</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">stdout</span><span class="p">)</span><span class="s">&quot;,</span>
+<span class="w">        </span><span class="nx">help</span><span class="p">=</span><span class="s">&quot;path to write JSON output (defaults to stdout)&quot;</span><span class="p">,</span>
 
-<span class="s">    )</span>
+<span class="w">    </span><span class="p">)</span>
 
-<span class="s">    args = parser.parse_args()</span>
+<span class="w">    </span><span class="nx">args</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">parser</span><span class="p">.</span><span class="nx">parse_args</span><span class="p">()</span>
 
-<span class="s">    return args</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">args</span>
 </code></pre></div>
 
 </details>

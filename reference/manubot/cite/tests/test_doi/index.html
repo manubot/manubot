@@ -1826,7 +1826,7 @@
 <summary>View Source</summary>
 <div class="codehilite"><pre><span></span><code>def test_expand_short_doi_not_short():
 
-    with pytest.raises(ValueError, match=&quot;shortDOIs start with `10/`&quot;):
+    with pytest.raises(ValueError, match=&quot;shortDOIs start with <span class="sb">`10/`</span>&quot;):
 
         expand_short_doi(&quot;10.1016/S0933-3657(96)00367-3&quot;)
 </code></pre></div>
@@ -1943,33 +1943,33 @@ CSL JSON field.
 https://github.com/manubot/manubot/issues/158</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">test_get_doi_csl_item_zotero</span><span class="ss">()</span>:
+<div class="codehilite"><pre><span></span><code>def test_get_doi_csl_item_zotero():
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    As of 2019-10-25, DOI Content Negotiation (i.e. crosscite) encodes the consortium</span>
+    As of 2019-10-25, DOI Content Negotiation (i.e. crosscite) encodes the consortium
 
-<span class="err">    in author.name rather than author.literal. Zotero translation-server encodes</span>
+    in author.name rather than author.literal. Zotero translation-server encodes
 
-<span class="err">    the consortium in author.family, which is better than nothing since it&#39;s a valid</span>
+    the consortium in author.family, which is better than nothing since it&#39;s a valid
 
-<span class="err">    CSL JSON field.</span>
+    CSL JSON field.
 
-<span class="err">    https://github.com/manubot/manubot/issues/158</span>
+    https://github.com/manubot/manubot/issues/158
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="w">    </span><span class="nv">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.1038/ng.3834&quot;</span>
+    doi = &quot;10.1038/ng.3834&quot;
 
-<span class="w">    </span><span class="nv">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">get_doi_csl_item_zotero</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+    csl_item = get_doi_csl_item_zotero(doi)
 
-<span class="w">    </span><span class="nv">assert</span><span class="w"> </span><span class="nv">isinstance</span><span class="ss">(</span><span class="nv">csl_item</span>,<span class="w"> </span><span class="nv">dict</span><span class="ss">)</span>
+    assert isinstance(csl_item, dict)
 
-<span class="w">    </span>#<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">an</span><span class="w"> </span><span class="nv">unknown</span><span class="w"> </span><span class="nv">reason</span>,<span class="w"> </span><span class="nv">GTEx</span><span class="w"> </span><span class="nv">Consortium</span><span class="w"> </span><span class="nv">becomes</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">first</span><span class="w"> </span><span class="nv">author</span>
+    # for an unknown reason, GTEx Consortium becomes the first author
 
-<span class="w">    </span>#<span class="w"> </span><span class="nv">which</span><span class="w"> </span><span class="nv">differs</span><span class="w"> </span><span class="nv">from</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">publisher</span><span class="w"> </span><span class="nv">HTML</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="nv">Crossref</span><span class="w"> </span><span class="nv">metadata</span><span class="w"> </span><span class="nv">ordering</span>.
+    # which differs from the publisher HTML and Crossref metadata ordering.
 
-<span class="w">    </span><span class="nv">assert</span><span class="w"> </span><span class="nv">csl_item</span>[<span class="s2">&quot;author&quot;</span>][<span class="mi">0</span>][<span class="s2">&quot;family&quot;</span>]<span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;GTEx Consortium&quot;</span>
+    assert csl_item[&quot;author&quot;][0][&quot;family&quot;] == &quot;GTEx Consortium&quot;
 </code></pre></div>
 
 </details>

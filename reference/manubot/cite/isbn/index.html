@@ -2362,9 +2362,9 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">get_csl_item</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">citekey</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    def get_csl_item(self, citekey):
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">get_isbn_csl_item</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">standard_accession</span><span class="ss">)</span>
+        return get_isbn_csl_item(citekey.standard_accession)
 </code></pre></div>
 
 </details>
@@ -2379,15 +2379,15 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <p>string describing the issue is returned. Otherwise returns None.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">inspect</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">citekey</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    def inspect(self, citekey):
 
-<span class="w">        </span><span class="nv">isbnlib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">set_isbnlib_timeout</span><span class="ss">()</span>
+        isbnlib = set_isbnlib_timeout()
 
-<span class="w">        </span><span class="nv">fail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">isbnlib</span>.<span class="nv">notisbn</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">accession</span>,<span class="w"> </span><span class="nv">level</span><span class="o">=</span><span class="s2">&quot;strict&quot;</span><span class="ss">)</span>
+        fail = isbnlib.notisbn(citekey.accession, level=&quot;strict&quot;)
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">fail</span>:
+        if fail:
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;identifier violates the ISBN syntax according to isbnlib v{isbnlib.__version__}&quot;</span>
+            return f&quot;identifier violates the ISBN syntax according to isbnlib v{isbnlib.__version__}&quot;
 </code></pre></div>
 
 </details>

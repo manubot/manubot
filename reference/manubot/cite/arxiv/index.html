@@ -2971,17 +2971,17 @@ This endpoint does not support versioned <code>arxiv_id</code>.</p>
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">query_arxiv_api</span><span class="ss">(</span><span class="nv">url</span>,<span class="w"> </span><span class="nb">params</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>def query_arxiv_api(url, params):
 
-<span class="w">    </span><span class="nv">headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>{<span class="s2">&quot;User-Agent&quot;</span>:<span class="w"> </span><span class="nv">get_manubot_user_agent</span><span class="ss">()</span>}
+    headers = {&quot;User-Agent&quot;: get_manubot_user_agent()}
 
-<span class="w">    </span><span class="nv">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">requests</span>.<span class="nv">get</span><span class="ss">(</span><span class="nv">url</span>,<span class="w"> </span><span class="nb">params</span>,<span class="w"> </span><span class="nv">headers</span><span class="o">=</span><span class="nv">headers</span><span class="ss">)</span>
+    response = requests.get(url, params, headers=headers)
 
-<span class="w">    </span><span class="nv">response</span>.<span class="nv">raise_for_status</span><span class="ss">()</span>
+    response.raise_for_status()
 
-<span class="w">    </span><span class="nv">xml_tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">xml</span>.<span class="nv">etree</span>.<span class="nv">ElementTree</span>.<span class="nv">fromstring</span><span class="ss">(</span><span class="nv">response</span>.<span class="nv">text</span><span class="ss">)</span>
+    xml_tree = xml.etree.ElementTree.fromstring(response.text)
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">xml_tree</span>
+    return xml_tree
 </code></pre></div>
 
 </details>
@@ -2993,9 +2993,9 @@ This endpoint does not support versioned <code>arxiv_id</code>.</p>
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">remove_newlines</span><span class="ss">(</span><span class="nv">text</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>def remove_newlines(text):
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">re</span>.<span class="nv">sub</span><span class="ss">(</span><span class="nv">pattern</span><span class="o">=</span><span class="nv">r</span><span class="s2">&quot;\n(?!\s)&quot;</span>,<span class="w"> </span><span class="nv">repl</span><span class="o">=</span><span class="s2">&quot; &quot;</span>,<span class="w"> </span><span class="nv">string</span><span class="o">=</span><span class="nv">text</span><span class="ss">)</span>
+    return re.sub(pattern=r&quot;\n(?!\s)&quot;, repl=&quot; &quot;, string=text)
 </code></pre></div>
 
 </details>
@@ -3009,19 +3009,19 @@ This endpoint does not support versioned <code>arxiv_id</code>.</p>
 <p>Version refers to the verion suffix like 'v2' or None.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">split_arxiv_id_version</span><span class="ss">(</span><span class="nv">arxiv_id</span>:<span class="w"> </span><span class="nv">str</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>def split_arxiv_id_version(arxiv_id: str):
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    Return (versionless_id, version) tuple.</span>
+    Return (versionless_id, version) tuple.
 
-<span class="err">    Version refers to the verion suffix like &#39;v2&#39; or None.</span>
+    Version refers to the verion suffix like &#39;v2&#39; or None.
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    match = re.match(Handler_arXiv.accession_pattern, arxiv_id)</span>
+    match = re.match(Handler_arXiv.accession_pattern, arxiv_id)
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">match</span>.<span class="nv">group</span><span class="ss">(</span><span class="s2">&quot;versionless_id&quot;</span><span class="ss">)</span>,<span class="w"> </span><span class="nv">match</span>.<span class="nv">group</span><span class="ss">(</span><span class="s2">&quot;version&quot;</span><span class="ss">)</span>
+    return match.group(&quot;versionless_id&quot;), match.group(&quot;version&quot;)
 </code></pre></div>
 
 </details>
@@ -3358,19 +3358,19 @@ fill: if True, set missing months to January
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">log_journal_doi</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">arxiv_id</span>,<span class="w"> </span><span class="nv">journal_ref</span><span class="o">=</span><span class="nv">None</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    def log_journal_doi(self, arxiv_id, journal_ref=None):
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;DOI&quot;</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">self</span>:
+        if &quot;DOI&quot; not in self:
 
-<span class="w">            </span><span class="k">return</span>
+            return
 
-<span class="w">        </span><span class="nv">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;arXiv article {arxiv_id} published at https://doi.org/{self[&#39;DOI&#39;]}&quot;</span>
+        msg = f&quot;arXiv article {arxiv_id} published at https://doi.org/{self[&#39;DOI&#39;]}&quot;
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">journal_ref</span>:
+        if journal_ref:
 
-<span class="w">            </span><span class="nv">msg</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot; — {journal_ref}&quot;</span>
+            msg += f&quot; — {journal_ref}&quot;
 
-<span class="w">        </span><span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">msg</span><span class="ss">)</span>
+        logging.info(msg)
 </code></pre></div>
 
 </details>
@@ -3571,17 +3571,17 @@ variable: which variable to assign the date to.</p>
 <p>Set type to 'entry', if type not specified.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">set_default_type</span><span class="p">(</span><span class="kr">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;CSL_Item&quot;</span><span class="o">:</span>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nx">def</span><span class="w"> </span><span class="nx">set_default_type</span><span class="p">(</span><span class="kp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;CSL_Item&quot;</span><span class="p">:</span>
 
 <span class="w">        </span><span class="s">&quot;&quot;&quot;</span>
 
-<span class="s">        Set type to &#39;</span><span class="n">entry</span><span class="s">&#39;, if type not specified.</span>
+<span class="s">        Set type to &#39;entry&#39;, if type not specified.</span>
 
 <span class="s">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="kr">self</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">self</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;entry&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="kp">self</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kp">self</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;entry&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="kr">return</span><span class="w"> </span><span class="kr">self</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kp">self</span>
 </code></pre></div>
 
 </details>
@@ -3611,19 +3611,19 @@ variable: which variable to assign the date to.</p>
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">set_identifier_fields</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">arxiv_id</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    def set_identifier_fields(self, arxiv_id):
 
-<span class="w">        </span><span class="nv">self</span>.<span class="nv">set_id</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;arxiv:{arxiv_id}&quot;</span><span class="ss">)</span>
+        self.set_id(f&quot;arxiv:{arxiv_id}&quot;)
 
-<span class="w">        </span><span class="nv">self</span>[<span class="s2">&quot;URL&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;https://arxiv.org/abs/{arxiv_id}&quot;</span>
+        self[&quot;URL&quot;] = f&quot;https://arxiv.org/abs/{arxiv_id}&quot;
 
-<span class="w">        </span><span class="nv">self</span>[<span class="s2">&quot;number&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">arxiv_id</span>
+        self[&quot;number&quot;] = arxiv_id
 
-<span class="w">        </span><span class="nv">_</span>,<span class="w"> </span><span class="nv">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">split_arxiv_id_version</span><span class="ss">(</span><span class="nv">arxiv_id</span><span class="ss">)</span>
+        _, version = split_arxiv_id_version(arxiv_id)
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">version</span>:
+        if version:
 
-<span class="w">            </span><span class="nv">self</span>[<span class="s2">&quot;version&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">version</span>
+            self[&quot;version&quot;] = version
 </code></pre></div>
 
 </details>
@@ -3826,9 +3826,9 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">get_csl_item</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">citekey</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    def get_csl_item(self, citekey):
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">get_arxiv_csl_item</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">standard_accession</span><span class="ss">)</span>
+        return get_arxiv_csl_item(citekey.standard_accession)
 </code></pre></div>
 
 </details>
@@ -3843,13 +3843,13 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <p>string describing the issue is returned. Otherwise returns None.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">inspect</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">citekey</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    def inspect(self, citekey):
 
-<span class="w">        </span>#<span class="w"> </span><span class="nv">https</span>:<span class="o">//</span><span class="nv">arxiv</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">help</span><span class="o">/</span><span class="nv">arxiv_identifier</span>
+        # https://arxiv.org/help/arxiv_identifier
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">_get_pattern</span><span class="ss">()</span>.<span class="nv">fullmatch</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">accession</span><span class="ss">)</span>:
+        if not self._get_pattern().fullmatch(citekey.accession):
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s2">&quot;arXiv identifiers must conform to syntax described at https://arxiv.org/help/arxiv_identifier.&quot;</span>
+            return &quot;arXiv identifiers must conform to syntax described at https://arxiv.org/help/arxiv_identifier.&quot;
 </code></pre></div>
 
 </details>

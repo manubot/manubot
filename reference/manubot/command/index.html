@@ -2691,21 +2691,21 @@
 <p>exit Python with a nonzero code.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">exit_if_error_handler_fired</span><span class="ss">(</span><span class="nv">error_handler</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>def exit_if_error_handler_fired(error_handler):
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    If a message has been logged with severity of ERROR or greater,</span>
+    If a message has been logged with severity of ERROR or greater,
 
-<span class="err">    exit Python with a nonzero code.</span>
+    exit Python with a nonzero code.
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    if error_handler.fired:</span>
+    if error_handler.fired:
 
-<span class="w">        </span><span class="nv">logging</span>.<span class="nv">critical</span><span class="ss">(</span><span class="s2">&quot;Failure: exiting with code 1 due to logged errors&quot;</span><span class="ss">)</span>
+        logging.critical(&quot;Failure: exiting with code 1 due to logged errors&quot;)
 
-<span class="w">        </span><span class="nv">raise</span><span class="w"> </span><span class="nv">SystemExit</span><span class="ss">(</span><span class="mi">1</span><span class="ss">)</span>
+        raise SystemExit(1)
 </code></pre></div>
 
 </details>
@@ -2752,63 +2752,63 @@
 <p>Read and process command line arguments.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">parse_arguments</span><span class="ss">()</span>:
+<div class="codehilite"><pre><span></span><code><span class="nx">def</span><span class="w"> </span><span class="nx">parse_arguments</span><span class="p">():</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+<span class="w">    </span><span class="s">&quot;&quot;&quot;</span>
 
-<span class="err">    Read and process command line arguments.</span>
+<span class="s">    Read and process command line arguments.</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+<span class="s">    &quot;&quot;&quot;</span>
 
-<span class="err">    parser = argparse.ArgumentParser(</span>
+<span class="w">    </span><span class="nx">parser</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">argparse</span><span class="p">.</span><span class="nx">ArgumentParser</span><span class="p">(</span>
 
-<span class="w">        </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;Manubot: the manuscript bot for scholarly writing&quot;</span>
+<span class="w">        </span><span class="nx">description</span><span class="p">=</span><span class="s">&quot;Manubot: the manuscript bot for scholarly writing&quot;</span>
 
-<span class="w">    </span><span class="ss">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-<span class="w">    </span><span class="nv">parser</span>.<span class="nv">add_argument</span><span class="ss">(</span>
+<span class="w">    </span><span class="nx">parser</span><span class="p">.</span><span class="nx">add_argument</span><span class="p">(</span>
 
-<span class="w">        </span><span class="s2">&quot;--version&quot;</span>,<span class="w"> </span><span class="nv">action</span><span class="o">=</span><span class="s2">&quot;version&quot;</span>,<span class="w"> </span><span class="nv">version</span><span class="o">=</span><span class="nv">f</span><span class="s2">&quot;v{manubot.__version__}&quot;</span>
+<span class="w">        </span><span class="s">&quot;--version&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">action</span><span class="p">=</span><span class="s">&quot;version&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">version</span><span class="p">=</span><span class="nx">f</span><span class="s">&quot;v{manubot.__version__}&quot;</span>
 
-<span class="w">    </span><span class="ss">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-<span class="w">    </span><span class="nv">subparsers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">parser</span>.<span class="nv">add_subparsers</span><span class="ss">(</span>
+<span class="w">    </span><span class="nx">subparsers</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">parser</span><span class="p">.</span><span class="nx">add_subparsers</span><span class="p">(</span>
 
-<span class="w">        </span><span class="nv">title</span><span class="o">=</span><span class="s2">&quot;subcommands&quot;</span>,<span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;All operations are done through subcommands:&quot;</span>
+<span class="w">        </span><span class="nx">title</span><span class="p">=</span><span class="s">&quot;subcommands&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">description</span><span class="p">=</span><span class="s">&quot;All operations are done through subcommands:&quot;</span>
 
-<span class="w">    </span><span class="ss">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-<span class="w">    </span>#<span class="w"> </span><span class="nv">Require</span><span class="w"> </span><span class="nv">specifying</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">sub</span><span class="o">-</span><span class="nv">command</span>
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="nx">Require</span><span class="w"> </span><span class="nx">specifying</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">sub</span><span class="o">-</span><span class="nx">command</span>
 
-<span class="w">    </span><span class="nv">subparsers</span>.<span class="nv">required</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">True</span><span class="w">  </span>#<span class="w"> </span><span class="nv">https</span>:<span class="o">//</span><span class="nv">bugs</span>.<span class="nv">python</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">issue26510</span>
+<span class="w">    </span><span class="nx">subparsers</span><span class="p">.</span><span class="nx">required</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">True</span><span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="nx">https</span><span class="p">:</span><span class="c1">//bugs.python.org/issue26510</span>
 
-<span class="w">    </span><span class="nv">subparsers</span>.<span class="nv">dest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;subcommand&quot;</span><span class="w">  </span>#<span class="w"> </span><span class="nv">https</span>:<span class="o">//</span><span class="nv">bugs</span>.<span class="nv">python</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">msg186387</span>
+<span class="w">    </span><span class="nx">subparsers</span><span class="p">.</span><span class="nx">dest</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;subcommand&quot;</span><span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="nx">https</span><span class="p">:</span><span class="c1">//bugs.python.org/msg186387</span>
 
-<span class="w">    </span><span class="nv">add_subparser_process</span><span class="ss">(</span><span class="nv">subparsers</span><span class="ss">)</span>
+<span class="w">    </span><span class="nx">add_subparser_process</span><span class="p">(</span><span class="nx">subparsers</span><span class="p">)</span>
 
-<span class="w">    </span><span class="nv">add_subparser_cite</span><span class="ss">(</span><span class="nv">subparsers</span><span class="ss">)</span>
+<span class="w">    </span><span class="nx">add_subparser_cite</span><span class="p">(</span><span class="nx">subparsers</span><span class="p">)</span>
 
-<span class="w">    </span><span class="nv">add_subparser_webpage</span><span class="ss">(</span><span class="nv">subparsers</span><span class="ss">)</span>
+<span class="w">    </span><span class="nx">add_subparser_webpage</span><span class="p">(</span><span class="nx">subparsers</span><span class="p">)</span>
 
-<span class="w">    </span><span class="nv">add_subparser_airevision</span><span class="ss">(</span><span class="nv">subparsers</span><span class="ss">)</span>
+<span class="w">    </span><span class="nx">add_subparser_airevision</span><span class="p">(</span><span class="nx">subparsers</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nv">subparser</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">subparsers</span>.<span class="nv">choices</span>.<span class="nv">values</span><span class="ss">()</span>:
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">subparser</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">subparsers</span><span class="p">.</span><span class="nx">choices</span><span class="p">.</span><span class="nx">values</span><span class="p">():</span>
 
-<span class="w">        </span><span class="nv">subparser</span>.<span class="nv">add_argument</span><span class="ss">(</span>
+<span class="w">        </span><span class="nx">subparser</span><span class="p">.</span><span class="nx">add_argument</span><span class="p">(</span>
 
-<span class="w">            </span><span class="s2">&quot;--log-level&quot;</span>,
+<span class="w">            </span><span class="s">&quot;--log-level&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;WARNING&quot;</span>,
+<span class="w">            </span><span class="k">default</span><span class="p">=</span><span class="s">&quot;WARNING&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="nv">choices</span><span class="o">=</span>[<span class="s2">&quot;DEBUG&quot;</span>,<span class="w"> </span><span class="s2">&quot;INFO&quot;</span>,<span class="w"> </span><span class="s2">&quot;WARNING&quot;</span>,<span class="w"> </span><span class="s2">&quot;ERROR&quot;</span>,<span class="w"> </span><span class="s2">&quot;CRITICAL&quot;</span>],
+<span class="w">            </span><span class="nx">choices</span><span class="p">=[</span><span class="s">&quot;DEBUG&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;INFO&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;WARNING&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ERROR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;CRITICAL&quot;</span><span class="p">],</span>
 
-<span class="w">            </span><span class="nv">help</span><span class="o">=</span><span class="s2">&quot;Set the logging level for stderr logging&quot;</span>,
+<span class="w">            </span><span class="nx">help</span><span class="p">=</span><span class="s">&quot;Set the logging level for stderr logging&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="ss">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-<span class="w">    </span><span class="nv">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">parser</span>.<span class="nv">parse_args</span><span class="ss">()</span>
+<span class="w">    </span><span class="nx">args</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">parser</span><span class="p">.</span><span class="nx">parse_args</span><span class="p">()</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">args</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">args</span>
 </code></pre></div>
 
 </details>

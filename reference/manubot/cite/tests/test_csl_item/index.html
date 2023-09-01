@@ -2340,9 +2340,9 @@
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>def test_assert_csl_item_type_passes():
+<div class="codehilite"><pre><span></span><code><span class="nx">def</span><span class="w"> </span><span class="nx">test_assert_csl_item_type_passes</span><span class="p">():</span>
 
-    assert_csl_item_type(CSL_Item())
+<span class="w">    </span><span class="nx">assert_csl_item_type</span><span class="p">(</span><span class="nx">CSL_Item</span><span class="p">())</span>
 </code></pre></div>
 
 </details>
@@ -2354,11 +2354,11 @@
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>def test_assert_csl_item_type_raises_error_on_dict():
+<div class="codehilite"><pre><span></span><code><span class="nx">def</span><span class="w"> </span><span class="nx">test_assert_csl_item_type_raises_error_on_dict</span><span class="p">():</span>
 
-    with pytest.raises(TypeError):
+<span class="w">    </span><span class="nx">with</span><span class="w"> </span><span class="nx">pytest</span><span class="p">.</span><span class="nx">raises</span><span class="p">(</span><span class="nx">TypeError</span><span class="p">):</span>
 
-        assert_csl_item_type({})
+<span class="w">        </span><span class="nx">assert_csl_item_type</span><span class="p">({})</span>
 </code></pre></div>
 
 </details>
@@ -2373,79 +2373,79 @@
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="err">@</span><span class="nx">pytest</span><span class="p">.</span><span class="nx">mark</span><span class="p">.</span><span class="nx">parametrize</span><span class="p">(</span>
 
-<span class="w">    </span><span class="o">[</span><span class="n">&quot;input_note&quot;, &quot;text&quot;, &quot;dictionary&quot;, &quot;expected_note&quot;</span><span class="o">]</span><span class="p">,</span>
+<span class="w">    </span><span class="p">[</span><span class="s">&quot;input_note&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;dictionary&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;expected_note&quot;</span><span class="p">],</span>
 
-<span class="w">    </span><span class="o">[</span>
+<span class="w">    </span><span class="p">[</span>
 
-<span class="n">        (&quot;&quot;, &quot;&quot;, {}, &quot;&quot;),</span>
+<span class="w">        </span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">),</span>
 
-<span class="n">        (None, &quot;&quot;, {}, &quot;&quot;),</span>
+<span class="w">        </span><span class="p">(</span><span class="nx">None</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">),</span>
 
-<span class="n">        (&quot;preexisting note&quot;, &quot;&quot;, {}, &quot;preexisting note&quot;),</span>
+<span class="w">        </span><span class="p">(</span><span class="s">&quot;preexisting note&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="s">&quot;preexisting note&quot;</span><span class="p">),</span>
 
-<span class="n">        (</span>
+<span class="w">        </span><span class="p">(</span>
 
-<span class="n">            &quot;preexisting note&quot;,</span>
+<span class="w">            </span><span class="s">&quot;preexisting note&quot;</span><span class="p">,</span>
 
-<span class="n">            &quot;&quot;,</span>
+<span class="w">            </span><span class="s">&quot;&quot;</span><span class="p">,</span>
 
-<span class="n">            {&quot;key&quot;: &quot;the value&quot;},</span>
+<span class="w">            </span><span class="p">{</span><span class="s">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;the value&quot;</span><span class="p">},</span>
 
-<span class="n">            &quot;preexisting note\nkey: the value&quot;,</span>
+<span class="w">            </span><span class="s">&quot;preexisting note\nkey: the value&quot;</span><span class="p">,</span>
 
-<span class="n">        ),</span>
+<span class="w">        </span><span class="p">),</span>
 
-<span class="n">        (&quot;&quot;, &quot;&quot;, {&quot;KEYOKAY&quot;: &quot;the value&quot;}, &quot;KEYOKAY: the value&quot;),</span>
+<span class="w">        </span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;KEYOKAY&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;the value&quot;</span><span class="p">},</span><span class="w"> </span><span class="s">&quot;KEYOKAY: the value&quot;</span><span class="p">),</span>
 
-<span class="n">        (&quot;preexisting note&quot;, &quot;&quot;, {&quot;KEY-NOT-OKAY&quot;: &quot;the value&quot;}, &quot;preexisting note&quot;),</span>
+<span class="w">        </span><span class="p">(</span><span class="s">&quot;preexisting note&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;KEY-NOT-OKAY&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;the value&quot;</span><span class="p">},</span><span class="w"> </span><span class="s">&quot;preexisting note&quot;</span><span class="p">),</span>
 
-<span class="n">        (</span>
+<span class="w">        </span><span class="p">(</span>
 
-<span class="n">            &quot;&quot;,</span>
+<span class="w">            </span><span class="s">&quot;&quot;</span><span class="p">,</span>
 
-<span class="n">            &quot;&quot;,</span>
+<span class="w">            </span><span class="s">&quot;&quot;</span><span class="p">,</span>
 
-<span class="n">            {&quot;standard_citation&quot;: &quot;doi:10.7554/elife.32822&quot;},</span>
+<span class="w">            </span><span class="p">{</span><span class="s">&quot;standard_citation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">},</span>
 
-<span class="n">            &quot;standard_citation: doi:10.7554/elife.32822&quot;,</span>
+<span class="w">            </span><span class="s">&quot;standard_citation: doi:10.7554/elife.32822&quot;</span><span class="p">,</span>
 
-<span class="n">        ),</span>
+<span class="w">        </span><span class="p">),</span>
 
-<span class="n">        (</span>
+<span class="w">        </span><span class="p">(</span>
 
-<span class="n">            &quot;This CSL Item was produced using Manubot.&quot;,</span>
+<span class="w">            </span><span class="s">&quot;This CSL Item was produced using Manubot.&quot;</span><span class="p">,</span>
 
-<span class="n">            &quot;&quot;,</span>
+<span class="w">            </span><span class="s">&quot;&quot;</span><span class="p">,</span>
 
-<span class="n">            {&quot;standard_citation&quot;: &quot;doi:10.7554/elife.32822&quot;},</span>
+<span class="w">            </span><span class="p">{</span><span class="s">&quot;standard_citation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">},</span>
 
-<span class="n">            &quot;This CSL Item was produced using Manubot.\nstandard_citation: doi:10.7554/elife.32822&quot;,</span>
+<span class="w">            </span><span class="s">&quot;This CSL Item was produced using Manubot.\nstandard_citation: doi:10.7554/elife.32822&quot;</span><span class="p">,</span>
 
-<span class="n">        ),</span>
+<span class="w">        </span><span class="p">),</span>
 
-<span class="n">        # do not append duplicate lines to a note</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="nx">do</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="nx">append</span><span class="w"> </span><span class="nx">duplicate</span><span class="w"> </span><span class="nx">lines</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">note</span>
 
-<span class="n">        # https://github.com/manubot/manubot/issues/258</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="nx">https</span><span class="p">:</span><span class="c1">//github.com/manubot/manubot/issues/258</span>
 
-<span class="n">        (&quot;Already exists.&quot;, &quot;Already exists.&quot;, {}, &quot;Already exists.&quot;),</span>
+<span class="w">        </span><span class="p">(</span><span class="s">&quot;Already exists.&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Already exists.&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="s">&quot;Already exists.&quot;</span><span class="p">),</span>
 
-<span class="n">        (&quot;&quot;, &quot;exists: yes&quot;, {&quot;exists&quot;: &quot;yes&quot;}, &quot;exists: yes&quot;),</span>
+<span class="w">        </span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;exists: yes&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;exists&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;yes&quot;</span><span class="p">},</span><span class="w"> </span><span class="s">&quot;exists: yes&quot;</span><span class="p">),</span>
 
-<span class="n">    </span><span class="o">]</span><span class="p">,</span>
+<span class="w">    </span><span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="n">def</span><span class="w"> </span><span class="n">test_csl_item_note_append</span><span class="p">(</span><span class="n">input_note</span><span class="p">,</span><span class="w"> </span><span class="nc">text</span><span class="p">,</span><span class="w"> </span><span class="k">dictionary</span><span class="p">,</span><span class="w"> </span><span class="n">expected_note</span><span class="p">)</span><span class="err">:</span>
+<span class="nx">def</span><span class="w"> </span><span class="nx">test_csl_item_note_append</span><span class="p">(</span><span class="nx">input_note</span><span class="p">,</span><span class="w"> </span><span class="nx">text</span><span class="p">,</span><span class="w"> </span><span class="nx">dictionary</span><span class="p">,</span><span class="w"> </span><span class="nx">expected_note</span><span class="p">):</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="err">{</span><span class="ss">&quot;id&quot;</span><span class="err">:</span><span class="w"> </span><span class="ss">&quot;test_csl_item&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;type&quot;</span><span class="err">:</span><span class="w"> </span><span class="ss">&quot;entry&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;note&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">input_note</span><span class="err">}</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">csl_item</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">CSL_Item</span><span class="p">({</span><span class="s">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;test_csl_item&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;entry&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;note&quot;</span><span class="p">:</span><span class="w"> </span><span class="nx">input_note</span><span class="p">})</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="p">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="nc">text</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">csl_item</span><span class="p">.</span><span class="nx">note_append_text</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="p">.</span><span class="n">note_append_dict</span><span class="p">(</span><span class="k">dictionary</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">csl_item</span><span class="p">.</span><span class="nx">note_append_dict</span><span class="p">(</span><span class="nx">dictionary</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">.</span><span class="n">note</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected_note</span>
+<span class="w">    </span><span class="nx">assert</span><span class="w"> </span><span class="nx">csl_item</span><span class="p">.</span><span class="nx">note</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nx">expected_note</span>
 </code></pre></div>
 
 </details>
@@ -2587,39 +2587,39 @@
 <p>note fields.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>def test_csl_item_standardize_id_note():
+<div class="codehilite"><pre><span></span><code><span class="nx">def</span><span class="w"> </span><span class="nx">test_csl_item_standardize_id_note</span><span class="p">():</span>
 
-    &quot;&quot;&quot;
+<span class="w">    </span><span class="s">&quot;&quot;&quot;</span>
 
-    Test extracting standard_id from a note and setting additional
+<span class="s">    Test extracting standard_id from a note and setting additional</span>
 
-    note fields.
+<span class="s">    note fields.</span>
 
-    &quot;&quot;&quot;
+<span class="s">    &quot;&quot;&quot;</span>
 
-    csl_item = CSL_Item(
+<span class="w">    </span><span class="nx">csl_item</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">CSL_Item</span><span class="p">(</span>
 
-        {
+<span class="w">        </span><span class="p">{</span>
 
-            &quot;id&quot;: &quot;original-id&quot;,
+<span class="w">            </span><span class="s">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;original-id&quot;</span><span class="p">,</span>
 
-            &quot;type&quot;: &quot;article-journal&quot;,
+<span class="w">            </span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;article-journal&quot;</span><span class="p">,</span>
 
-            &quot;note&quot;: &quot;standard_id: doi:10.1371/journal.PPAT.1006256&quot;,
+<span class="w">            </span><span class="s">&quot;note&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;standard_id: doi:10.1371/journal.PPAT.1006256&quot;</span><span class="p">,</span>
 
-        }
+<span class="w">        </span><span class="p">}</span>
 
-    )
+<span class="w">    </span><span class="p">)</span>
 
-    csl_item.standardize_id()
+<span class="w">    </span><span class="nx">csl_item</span><span class="p">.</span><span class="nx">standardize_id</span><span class="p">()</span>
 
-    assert csl_item[&quot;id&quot;] == &quot;doi:10.1371/journal.ppat.1006256&quot;
+<span class="w">    </span><span class="nx">assert</span><span class="w"> </span><span class="nx">csl_item</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;doi:10.1371/journal.ppat.1006256&quot;</span>
 
-    note_dict = csl_item.note_dict
+<span class="w">    </span><span class="nx">note_dict</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">csl_item</span><span class="p">.</span><span class="nx">note_dict</span>
 
-    assert note_dict[&quot;original_id&quot;] == &quot;original-id&quot;
+<span class="w">    </span><span class="nx">assert</span><span class="w"> </span><span class="nx">note_dict</span><span class="p">[</span><span class="s">&quot;original_id&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;original-id&quot;</span>
 
-    assert note_dict[&quot;original_standard_id&quot;] == &quot;doi:10.1371/journal.PPAT.1006256&quot;
+<span class="w">    </span><span class="nx">assert</span><span class="w"> </span><span class="nx">note_dict</span><span class="p">[</span><span class="s">&quot;original_standard_id&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;doi:10.1371/journal.PPAT.1006256&quot;</span>
 </code></pre></div>
 
 </details>
@@ -2631,17 +2631,17 @@
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>def test_csl_item_standardize_id_repeated():
+<div class="codehilite"><pre><span></span><code><span class="nx">def</span><span class="w"> </span><span class="nx">test_csl_item_standardize_id_repeated</span><span class="p">():</span>
 
-    csl_item = CSL_Item(id=&quot;pmid:1&quot;, type=&quot;article-journal&quot;)
+<span class="w">    </span><span class="nx">csl_item</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">CSL_Item</span><span class="p">(</span><span class="nx">id</span><span class="p">=</span><span class="s">&quot;pmid:1&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">type</span><span class="p">=</span><span class="s">&quot;article-journal&quot;</span><span class="p">)</span>
 
-    csl_item_1 = copy.deepcopy(csl_item.standardize_id())
+<span class="w">    </span><span class="nx">csl_item_1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">copy</span><span class="p">.</span><span class="nx">deepcopy</span><span class="p">(</span><span class="nx">csl_item</span><span class="p">.</span><span class="nx">standardize_id</span><span class="p">())</span>
 
-    assert &quot;standard_citation&quot; not in &quot;csl_item&quot;
+<span class="w">    </span><span class="nx">assert</span><span class="w"> </span><span class="s">&quot;standard_citation&quot;</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s">&quot;csl_item&quot;</span>
 
-    csl_item_2 = copy.deepcopy(csl_item.standardize_id())
+<span class="w">    </span><span class="nx">csl_item_2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">copy</span><span class="p">.</span><span class="nx">deepcopy</span><span class="p">(</span><span class="nx">csl_item</span><span class="p">.</span><span class="nx">standardize_id</span><span class="p">())</span>
 
-    assert csl_item_1 == csl_item_2
+<span class="w">    </span><span class="nx">assert</span><span class="w"> </span><span class="nx">csl_item_1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nx">csl_item_2</span>
 </code></pre></div>
 
 </details>
@@ -2859,13 +2859,13 @@
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    def test_clean(self):
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nx">def</span><span class="w"> </span><span class="nx">test_clean</span><span class="p">(</span><span class="kp">self</span><span class="p">):</span>
 
-        csl_item = CSL_Item(type=&quot;chapter&quot;, id=&quot;abc&quot;)
+<span class="w">        </span><span class="nx">csl_item</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">CSL_Item</span><span class="p">(</span><span class="k">type</span><span class="p">=</span><span class="s">&quot;chapter&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">id</span><span class="p">=</span><span class="s">&quot;abc&quot;</span><span class="p">)</span>
 
-        csl_item.clean(prune=True)
+<span class="w">        </span><span class="nx">csl_item</span><span class="p">.</span><span class="nx">clean</span><span class="p">(</span><span class="nx">prune</span><span class="p">=</span><span class="nx">True</span><span class="p">)</span>
 
-        assert csl_item == {&quot;type&quot;: &quot;chapter&quot;, &quot;id&quot;: &quot;abc&quot;}
+<span class="w">        </span><span class="nx">assert</span><span class="w"> </span><span class="nx">csl_item</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chapter&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;abc&quot;</span><span class="p">}</span>
 </code></pre></div>
 
 </details>
@@ -2877,15 +2877,15 @@
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    def test_clean_set_id(self):
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nx">def</span><span class="w"> </span><span class="nx">test_clean_set_id</span><span class="p">(</span><span class="kp">self</span><span class="p">):</span>
 
-        csl_item = CSL_Item(type=&quot;chapter&quot;)
+<span class="w">        </span><span class="nx">csl_item</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">CSL_Item</span><span class="p">(</span><span class="k">type</span><span class="p">=</span><span class="s">&quot;chapter&quot;</span><span class="p">)</span>
 
-        csl_item.set_id(&quot;abc&quot;)
+<span class="w">        </span><span class="nx">csl_item</span><span class="p">.</span><span class="nx">set_id</span><span class="p">(</span><span class="s">&quot;abc&quot;</span><span class="p">)</span>
 
-        csl_item.clean(prune=True)
+<span class="w">        </span><span class="nx">csl_item</span><span class="p">.</span><span class="nx">clean</span><span class="p">(</span><span class="nx">prune</span><span class="p">=</span><span class="nx">True</span><span class="p">)</span>
 
-        assert csl_item == {&quot;type&quot;: &quot;chapter&quot;, &quot;id&quot;: &quot;abc&quot;}
+<span class="w">        </span><span class="nx">assert</span><span class="w"> </span><span class="nx">csl_item</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chapter&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;abc&quot;</span><span class="p">}</span>
 </code></pre></div>
 
 </details>
@@ -2981,13 +2981,13 @@
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    def test_correct_invalid_type(self):
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nx">def</span><span class="w"> </span><span class="nx">test_correct_invalid_type</span><span class="p">(</span><span class="kp">self</span><span class="p">):</span>
 
-        assert CSL_Item(type=&quot;journal-article&quot;).correct_invalid_type() == {
+<span class="w">        </span><span class="nx">assert</span><span class="w"> </span><span class="nx">CSL_Item</span><span class="p">(</span><span class="k">type</span><span class="p">=</span><span class="s">&quot;journal-article&quot;</span><span class="p">).</span><span class="nx">correct_invalid_type</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span>
 
-            &quot;type&quot;: &quot;article-journal&quot;
+<span class="w">            </span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;article-journal&quot;</span>
 
-        }
+<span class="w">        </span><span class="p">}</span>
 </code></pre></div>
 
 </details>
@@ -2999,11 +2999,11 @@
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    def test_no_change_of_type(self):
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nx">def</span><span class="w"> </span><span class="nx">test_no_change_of_type</span><span class="p">(</span><span class="kp">self</span><span class="p">):</span>
 
-        assert CSL_Item(type=&quot;book&quot;).correct_invalid_type() == {&quot;type&quot;: &quot;book&quot;}
+<span class="w">        </span><span class="nx">assert</span><span class="w"> </span><span class="nx">CSL_Item</span><span class="p">(</span><span class="k">type</span><span class="p">=</span><span class="s">&quot;book&quot;</span><span class="p">).</span><span class="nx">correct_invalid_type</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;book&quot;</span><span class="p">}</span>
 
-        assert CSL_Item(type=&quot;book&quot;).set_default_type() == {&quot;type&quot;: &quot;book&quot;}
+<span class="w">        </span><span class="nx">assert</span><span class="w"> </span><span class="nx">CSL_Item</span><span class="p">(</span><span class="k">type</span><span class="p">=</span><span class="s">&quot;book&quot;</span><span class="p">).</span><span class="nx">set_default_type</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;book&quot;</span><span class="p">}</span>
 </code></pre></div>
 
 </details>
@@ -3031,9 +3031,9 @@
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    def test_set_default_type(self):
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nx">def</span><span class="w"> </span><span class="nx">test_set_default_type</span><span class="p">(</span><span class="kp">self</span><span class="p">):</span>
 
-        assert CSL_Item().set_default_type() == {&quot;type&quot;: &quot;entry&quot;}
+<span class="w">        </span><span class="nx">assert</span><span class="w"> </span><span class="nx">CSL_Item</span><span class="p">().</span><span class="nx">set_default_type</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;entry&quot;</span><span class="p">}</span>
 </code></pre></div>
 
 </details>

@@ -2273,45 +2273,45 @@ and get_doi_csl_item_default ends up redirecting to this endpoint for DataCite r
 <p>Decorator providing edits to the csl_item returned by a get_doi_csl_item_* function.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">augment_get_doi_csl_item</span><span class="ss">(</span><span class="nv">function</span>:<span class="w"> </span><span class="nv">Callable</span>[...,<span class="w"> </span><span class="nv">Any</span>]<span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>def augment_get_doi_csl_item(function: Callable[..., Any]):
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    Decorator providing edits to the csl_item returned by a get_doi_csl_item_* function.</span>
+    Decorator providing edits to the csl_item returned by a get_doi_csl_item_* function.
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    def wrapper(doi: str):</span>
+    def wrapper(doi: str):
 
-<span class="err">        doi = doi.lower()</span>
+        doi = doi.lower()
 
-<span class="err">        csl_item = function(doi)</span>
+        csl_item = function(doi)
 
-<span class="w">        </span><span class="nv">csl_item</span>[<span class="s2">&quot;DOI&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">doi</span>
+        csl_item[&quot;DOI&quot;] = doi
 
-<span class="w">        </span><span class="nv">csl_item</span>[<span class="s2">&quot;URL&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;https://doi.org/{doi}&quot;</span>
+        csl_item[&quot;URL&quot;] = f&quot;https://doi.org/{doi}&quot;
 
-<span class="w">        </span><span class="nv">short_doi_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">get_short_doi_url</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+        short_doi_url = get_short_doi_url(doi)
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">short_doi_url</span>:
+        if short_doi_url:
 
-<span class="w">            </span><span class="nv">csl_item</span>[<span class="s2">&quot;URL&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">short_doi_url</span>
+            csl_item[&quot;URL&quot;] = short_doi_url
 
-<span class="w">        </span><span class="nv">try</span>:
+        try:
 
-<span class="w">            </span><span class="nv">csl_item</span>.<span class="nv">update</span><span class="ss">(</span><span class="nv">get_pubmed_ids_for_doi</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">))</span>
+            csl_item.update(get_pubmed_ids_for_doi(doi))
 
-<span class="w">        </span><span class="nv">except</span><span class="w"> </span><span class="nv">Exception</span>:
+        except Exception:
 
-<span class="w">            </span><span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+            logging.warning(
 
-<span class="w">                </span><span class="nv">f</span><span class="s2">&quot;Error calling get_pubmed_ids_for_doi for {doi}&quot;</span>,<span class="w"> </span><span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span>
+                f&quot;Error calling get_pubmed_ids_for_doi for {doi}&quot;, exc_info=True
 
-<span class="w">            </span><span class="ss">)</span>
+            )
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">csl_item</span>
+        return csl_item
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">wrapper</span>
+    return wrapper
 </code></pre></div>
 
 </details>
@@ -2324,71 +2324,71 @@ and get_doi_csl_item_default ends up redirecting to this endpoint for DataCite r
 <p>Convert a shortDOI to a regular DOI.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">expand_short_doi</span><span class="p">(</span><span class="nl">short_doi:</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nl">str:</span>
+<div class="codehilite"><pre><span></span><code><span class="nx">def</span><span class="w"> </span><span class="nx">expand_short_doi</span><span class="p">(</span><span class="nx">short_doi</span><span class="p">:</span><span class="w"> </span><span class="nx">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nx">str</span><span class="p">:</span>
 
 <span class="w">    </span><span class="s">&quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">Convert</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">shortDOI</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">regular</span><span class="w"> </span><span class="n">DOI</span><span class="p">.</span>
+<span class="s">    Convert a shortDOI to a regular DOI.</span>
 
-<span class="w">    </span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">short_doi</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;10/&quot;</span><span class="p">)</span><span class="o">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="nx">short_doi</span><span class="p">.</span><span class="nx">startswith</span><span class="p">(</span><span class="s">&quot;10/&quot;</span><span class="p">):</span>
 
-<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span>
+<span class="w">        </span><span class="nx">raise</span><span class="w"> </span><span class="nx">ValueError</span><span class="p">(</span>
 
-<span class="w">            </span><span class="n">f</span><span class="s">&quot;shortDOIs start with `10/`, but expand_short_doi received: {short_doi}&quot;</span>
-
-<span class="w">        </span><span class="p">)</span>
-
-<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="s">&quot;https://doi.org/api/handles/{short_doi.lower()}&quot;</span>
-
-<span class="w">    </span><span class="n">params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;HS_ALIAS&quot;</span><span class="p">}</span>
-
-<span class="w">    </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-
-<span class="w">    </span><span class="p">#</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="n">documentation</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="nl">https:</span><span class="c1">//www.handle.net/proxy_servlet.html</span>
-
-<span class="w">    </span><span class="n">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">response</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
-
-<span class="w">    </span><span class="n">response_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">results</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;responseCode&quot;</span><span class="p">)</span><span class="w">  </span><span class="p">#</span><span class="w"> </span><span class="n">Handle</span><span class="w"> </span><span class="n">protocol</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="n">code</span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">response_code</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">100</span><span class="o">:</span>
-
-<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s">&quot;Handle not found. Double check short_doi: {short_doi}&quot;</span><span class="p">)</span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">response_code</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">200</span><span class="o">:</span>
-
-<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span>
-
-<span class="w">            </span><span class="n">f</span><span class="s">&quot;HS_ALIAS values not found. Double check short_doi: {short_doi}&quot;</span>
+<span class="w">            </span><span class="nx">f</span><span class="s">&quot;shortDOIs start with `10/`, but expand_short_doi received: {short_doi}&quot;</span>
 
 <span class="w">        </span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">response_code</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mh">1</span><span class="o">:</span>
+<span class="w">    </span><span class="nx">url</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">f</span><span class="s">&quot;https://doi.org/api/handles/{short_doi.lower()}&quot;</span>
 
-<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span>
+<span class="w">    </span><span class="nx">params</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;HS_ALIAS&quot;</span><span class="p">}</span>
 
-<span class="w">            </span><span class="n">f</span><span class="s">&quot;Error response code of {response_code} returned by {response.url}&quot;</span>
+<span class="w">    </span><span class="nx">response</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">requests</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="w"> </span><span class="nx">params</span><span class="p">=</span><span class="nx">params</span><span class="p">)</span>
+
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="nx">response</span><span class="w"> </span><span class="nx">documentation</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="nx">https</span><span class="p">:</span><span class="c1">//www.handle.net/proxy_servlet.html</span>
+
+<span class="w">    </span><span class="nx">results</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+
+<span class="w">    </span><span class="nx">response_code</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">results</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">&quot;responseCode&quot;</span><span class="p">)</span><span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="nx">Handle</span><span class="w"> </span><span class="nx">protocol</span><span class="w"> </span><span class="nx">response</span><span class="w"> </span><span class="nx">code</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">response_code</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">100</span><span class="p">:</span>
+
+<span class="w">        </span><span class="nx">raise</span><span class="w"> </span><span class="nx">ValueError</span><span class="p">(</span><span class="nx">f</span><span class="s">&quot;Handle not found. Double check short_doi: {short_doi}&quot;</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">response_code</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">200</span><span class="p">:</span>
+
+<span class="w">        </span><span class="nx">raise</span><span class="w"> </span><span class="nx">ValueError</span><span class="p">(</span>
+
+<span class="w">            </span><span class="nx">f</span><span class="s">&quot;HS_ALIAS values not found. Double check short_doi: {short_doi}&quot;</span>
 
 <span class="w">        </span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">results</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;values&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[])</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">response_code</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
 
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="nl">values:</span>
+<span class="w">        </span><span class="nx">raise</span><span class="w"> </span><span class="nx">ValueError</span><span class="p">(</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">value</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;HS_ALIAS&quot;</span><span class="o">:</span>
+<span class="w">            </span><span class="nx">f</span><span class="s">&quot;Error response code of {response_code} returned by {response.url}&quot;</span>
 
-<span class="w">            </span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">[</span><span class="s">&quot;data&quot;</span><span class="p">][</span><span class="s">&quot;value&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">)</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">doi</span><span class="p">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="w">    </span><span class="nx">values</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">results</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">&quot;values&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[])</span>
 
-<span class="w">    </span><span class="n">raise</span><span class="w"> </span><span class="n">RuntimeError</span><span class="p">(</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">values</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">f</span><span class="p">&#39;</span><span class="n">HS_ALIAS</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">expand_short_doi</span><span class="p">(</span><span class="s">&quot;{short_doi}&quot;</span><span class="p">)</span><span class="n">\n&#39;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">value</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;HS_ALIAS&quot;</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">f</span><span class="s">&quot;The following JSON was retrieved from {response.url}:</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">            </span><span class="nx">doi</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">value</span><span class="p">[</span><span class="s">&quot;data&quot;</span><span class="p">][</span><span class="s">&quot;value&quot;</span><span class="p">]</span>
 
-<span class="w">        </span><span class="o">+</span><span class="w"> </span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">results</span><span class="p">,</span><span class="w"> </span><span class="n">indent</span><span class="o">=</span><span class="mh">2</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">doi</span><span class="p">.</span><span class="nx">lower</span><span class="p">()</span>
+
+<span class="w">    </span><span class="nx">raise</span><span class="w"> </span><span class="nx">RuntimeError</span><span class="p">(</span>
+
+<span class="w">        </span><span class="nx">f</span><span class="err">&#39;</span><span class="nx">HS_ALIAS</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="nx">found</span><span class="w"> </span><span class="nx">by</span><span class="w"> </span><span class="nx">expand_short_doi</span><span class="p">(</span><span class="s">&quot;{short_doi}&quot;</span><span class="p">)</span><span class="err">\</span><span class="nx">n</span><span class="err">&#39;</span>
+
+<span class="w">        </span><span class="nx">f</span><span class="s">&quot;The following JSON was retrieved from {response.url}:\n&quot;</span>
+
+<span class="w">        </span><span class="o">+</span><span class="w"> </span><span class="nx">json</span><span class="p">.</span><span class="nx">dumps</span><span class="p">(</span><span class="nx">results</span><span class="p">,</span><span class="w"> </span><span class="nx">indent</span><span class="p">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="w">    </span><span class="p">)</span>
 </code></pre></div>
@@ -2402,35 +2402,35 @@ and get_doi_csl_item_default ends up redirecting to this endpoint for DataCite r
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">wrapper</span><span class="ss">(</span><span class="nv">doi</span>:<span class="w"> </span><span class="nv">str</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    def wrapper(doi: str):
 
-<span class="w">        </span><span class="nv">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">doi</span>.<span class="nv">lower</span><span class="ss">()</span>
+        doi = doi.lower()
 
-<span class="w">        </span><span class="nv">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">function</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+        csl_item = function(doi)
 
-<span class="w">        </span><span class="nv">csl_item</span>[<span class="s2">&quot;DOI&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">doi</span>
+        csl_item[&quot;DOI&quot;] = doi
 
-<span class="w">        </span><span class="nv">csl_item</span>[<span class="s2">&quot;URL&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;https://doi.org/{doi}&quot;</span>
+        csl_item[&quot;URL&quot;] = f&quot;https://doi.org/{doi}&quot;
 
-<span class="w">        </span><span class="nv">short_doi_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">get_short_doi_url</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">)</span>
+        short_doi_url = get_short_doi_url(doi)
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">short_doi_url</span>:
+        if short_doi_url:
 
-<span class="w">            </span><span class="nv">csl_item</span>[<span class="s2">&quot;URL&quot;</span>]<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">short_doi_url</span>
+            csl_item[&quot;URL&quot;] = short_doi_url
 
-<span class="w">        </span><span class="nv">try</span>:
+        try:
 
-<span class="w">            </span><span class="nv">csl_item</span>.<span class="nv">update</span><span class="ss">(</span><span class="nv">get_pubmed_ids_for_doi</span><span class="ss">(</span><span class="nv">doi</span><span class="ss">))</span>
+            csl_item.update(get_pubmed_ids_for_doi(doi))
 
-<span class="w">        </span><span class="nv">except</span><span class="w"> </span><span class="nv">Exception</span>:
+        except Exception:
 
-<span class="w">            </span><span class="nv">logging</span>.<span class="nv">warning</span><span class="ss">(</span>
+            logging.warning(
 
-<span class="w">                </span><span class="nv">f</span><span class="s2">&quot;Error calling get_pubmed_ids_for_doi for {doi}&quot;</span>,<span class="w"> </span><span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span>
+                f&quot;Error calling get_pubmed_ids_for_doi for {doi}&quot;, exc_info=True
 
-<span class="w">            </span><span class="ss">)</span>
+            )
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">csl_item</span>
+        return csl_item
 </code></pre></div>
 
 </details>
@@ -2445,19 +2445,19 @@ and get_doi_csl_item_default ends up redirecting to this endpoint for DataCite r
 https://github.com/crosscite/content-negotiation/issues/104</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">get_doi_csl_item_datacite</span><span class="ss">(</span><span class="nv">doi</span>:<span class="w"> </span><span class="nv">str</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>def get_doi_csl_item_datacite(doi: str):
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    As of 2022-01, the DataCite Content Negotiation restricted</span>
+    As of 2022-01, the DataCite Content Negotiation restricted
 
-<span class="err">    service to just DataCite DOIs, and began returning 404s for Crossref DOIs.</span>
+    service to just DataCite DOIs, and began returning 404s for Crossref DOIs.
 
-<span class="err">    https://github.com/crosscite/content-negotiation/issues/104</span>
+    https://github.com/crosscite/content-negotiation/issues/104
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    return _get_doi_csl_item_negotiation(doi, content_negotiation_url_datacite)</span>
+    return _get_doi_csl_item_negotiation(doi, content_negotiation_url_datacite)
 </code></pre></div>
 
 </details>
@@ -2472,19 +2472,19 @@ https://github.com/crosscite/content-negotiation/issues/104</p>
 https://github.com/crosscite/content-negotiation/issues/104</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">get_doi_csl_item_default</span><span class="ss">(</span><span class="nv">doi</span>:<span class="w"> </span><span class="nv">str</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>def get_doi_csl_item_default(doi: str):
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    doi.org content negotiation redirects to the content negotiation service of</span>
+    doi.org content negotiation redirects to the content negotiation service of
 
-<span class="err">    the Registration Agency, e.g. Crossref or DataCite.</span>
+    the Registration Agency, e.g. Crossref or DataCite.
 
-<span class="err">    https://github.com/crosscite/content-negotiation/issues/104</span>
+    https://github.com/crosscite/content-negotiation/issues/104
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    return _get_doi_csl_item_negotiation(doi, content_negotiation_url_default)</span>
+    return _get_doi_csl_item_negotiation(doi, content_negotiation_url_default)
 </code></pre></div>
 
 </details>
@@ -2711,9 +2711,9 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">get_csl_item</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">citekey</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    def get_csl_item(self, citekey):
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">get_doi_csl_item</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">standard_accession</span><span class="ss">)</span>
+        return get_doi_csl_item(citekey.standard_accession)
 </code></pre></div>
 
 </details>
@@ -2779,35 +2779,35 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 Subclasses can override this method with more specific standardization logic.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">standardize_prefix_accession</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">accession</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    def standardize_prefix_accession(self, accession):
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">accession</span>.<span class="nv">startswith</span><span class="ss">(</span><span class="s2">&quot;10/&quot;</span><span class="ss">)</span>:
+        if accession.startswith(&quot;10/&quot;):
 
-<span class="w">            </span><span class="nv">try</span>:
+            try:
 
-<span class="w">                </span><span class="nv">accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">expand_short_doi</span><span class="ss">(</span><span class="nv">accession</span><span class="ss">)</span>
+                accession = expand_short_doi(accession)
 
-<span class="w">            </span><span class="nv">except</span><span class="w"> </span><span class="nv">Exception</span><span class="w"> </span><span class="nv">as</span><span class="w"> </span><span class="nv">error</span>:
+            except Exception as error:
 
-<span class="w">                </span>#<span class="w"> </span><span class="k">If</span><span class="w"> </span><span class="nv">DOI</span><span class="w"> </span><span class="nv">shortening</span><span class="w"> </span><span class="nv">fails</span>,<span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">unshortened</span><span class="w"> </span><span class="nv">DOI</span>.
+                # If DOI shortening fails, return the unshortened DOI.
 
-<span class="w">                </span>#<span class="w"> </span><span class="nv">DOI</span><span class="w"> </span><span class="nv">metadata</span><span class="w"> </span><span class="nv">lookup</span><span class="w"> </span><span class="nv">will</span><span class="w"> </span><span class="nv">eventually</span><span class="w"> </span><span class="nv">fail</span><span class="w"> </span><span class="nv">somewhere</span><span class="w"> </span><span class="nv">with</span>
+                # DOI metadata lookup will eventually fail somewhere with
 
-<span class="w">                </span>#<span class="w"> </span><span class="nv">appropriate</span><span class="w"> </span><span class="nv">error</span><span class="w"> </span><span class="nv">handling</span>,<span class="w"> </span><span class="nv">as</span><span class="w"> </span><span class="nv">opposed</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">here</span>.
+                # appropriate error handling, as opposed to here.
 
-<span class="w">                </span><span class="nv">logging</span>.<span class="nv">error</span><span class="ss">(</span>
+                logging.error(
 
-<span class="w">                    </span><span class="nv">f</span><span class="s2">&quot;Error in expand_short_doi for {accession} &quot;</span>
+                    f&quot;Error in expand_short_doi for {accession} &quot;
 
-<span class="w">                    </span><span class="nv">f</span><span class="s2">&quot;due to a {error.__class__.__name__}:\n{error}&quot;</span>
+                    f&quot;due to a {error.__class__.__name__}:\n{error}&quot;
 
-<span class="w">                </span><span class="ss">)</span>
+                )
 
-<span class="w">                </span><span class="nv">logging</span>.<span class="nv">info</span><span class="ss">(</span><span class="nv">error</span>,<span class="w"> </span><span class="nv">exc_info</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+                logging.info(error, exc_info=True)
 
-<span class="w">        </span><span class="nv">accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">accession</span>.<span class="nv">lower</span><span class="ss">()</span>
+        accession = accession.lower()
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">standard_prefix</span>,<span class="w"> </span><span class="nv">accession</span>
+        return self.standard_prefix, accession
 </code></pre></div>
 
 </details>

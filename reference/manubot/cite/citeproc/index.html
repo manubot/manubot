@@ -1615,7 +1615,7 @@ Citation Style Language (CSL) styles.
 
 <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">read_serialized_data</span>
 
-<span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">()</span>
+<span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span>
 
 <span class="k">def</span> <span class="nf">get_jsonschema_csl_validator</span><span class="p">():</span>
 
@@ -1843,7 +1843,7 @@ Citation Style Language (CSL) styles.
 <p>Return a jsonschema validator for the CSL Item JSON Schema</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">()</span>
+<div class="codehilite"><pre><span></span><code><span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span>
 
 <span class="k">def</span> <span class="nf">get_jsonschema_csl_validator</span><span class="p">():</span>
 
@@ -1894,65 +1894,65 @@ https://github.com/Julian/jsonschema/issues/448
 https://stackoverflow.com/questions/44694835</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">remove_jsonschema_errors</span><span class="ss">(</span><span class="nv">instance</span>,<span class="w"> </span><span class="nv">recurse_depth</span><span class="o">=</span><span class="mi">5</span>,<span class="w"> </span><span class="nv">in_place</span><span class="o">=</span><span class="nv">False</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="nx">def</span><span class="w"> </span><span class="nx">remove_jsonschema_errors</span><span class="p">(</span><span class="nx">instance</span><span class="p">,</span><span class="w"> </span><span class="nx">recurse_depth</span><span class="p">=</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="nx">in_place</span><span class="p">=</span><span class="nx">False</span><span class="p">):</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+<span class="w">    </span><span class="s">&quot;&quot;&quot;</span>
 
-<span class="err">    Remove fields in CSL Items that produce JSON Schema errors. Should errors</span>
+<span class="s">    Remove fields in CSL Items that produce JSON Schema errors. Should errors</span>
 
-<span class="err">    be removed, but the JSON instance still fails to validate, recursively call</span>
+<span class="s">    be removed, but the JSON instance still fails to validate, recursively call</span>
 
-<span class="err">    remove_jsonschema_errors until the instance validates or the recursion</span>
+<span class="s">    remove_jsonschema_errors until the instance validates or the recursion</span>
 
-<span class="err">    depth limit is reached.</span>
+<span class="s">    depth limit is reached.</span>
 
-<span class="err">    Note that this method may not be work for all types of JSON Schema errors</span>
+<span class="s">    Note that this method may not be work for all types of JSON Schema errors</span>
 
-<span class="err">    and users looking to adapt it for other applications should write</span>
+<span class="s">    and users looking to adapt it for other applications should write</span>
 
-<span class="err">    task-specific tests to provide empirical evaluate that it works as</span>
+<span class="s">    task-specific tests to provide empirical evaluate that it works as</span>
 
-<span class="err">    intended.</span>
+<span class="s">    intended.</span>
 
-<span class="err">    The default in_place=False creates a deepcopy of instance before pruning it,</span>
+<span class="s">    The default in_place=False creates a deepcopy of instance before pruning it,</span>
 
-<span class="err">    such that a new dictionary is returned and instance is not edited.</span>
+<span class="s">    such that a new dictionary is returned and instance is not edited.</span>
 
-<span class="err">    Set in_place=True to edit instance in-place. The inital implementation of</span>
+<span class="s">    Set in_place=True to edit instance in-place. The inital implementation of</span>
 
-<span class="err">    remove_jsonschema_errors always deepcopied instance, and it is possible deepcopying</span>
+<span class="s">    remove_jsonschema_errors always deepcopied instance, and it is possible deepcopying</span>
 
-<span class="err">    is important to prevent malfunction when encountering certain edge cases.</span>
+<span class="s">    is important to prevent malfunction when encountering certain edge cases.</span>
 
-<span class="err">    Please report if you observe any in_place dependent behaviors.</span>
+<span class="s">    Please report if you observe any in_place dependent behaviors.</span>
 
-<span class="err">    See also:</span>
+<span class="s">    See also:</span>
 
-<span class="err">    https://github.com/Julian/jsonschema/issues/448</span>
+<span class="s">    https://github.com/Julian/jsonschema/issues/448</span>
 
-<span class="err">    https://stackoverflow.com/questions/44694835</span>
+<span class="s">    https://stackoverflow.com/questions/44694835</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+<span class="s">    &quot;&quot;&quot;</span>
 
-<span class="err">    validator = get_jsonschema_csl_validator()</span>
+<span class="w">    </span><span class="nx">validator</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">get_jsonschema_csl_validator</span><span class="p">()</span>
 
-<span class="err">    errors = list(validator.iter_errors(instance))</span>
+<span class="w">    </span><span class="nx">errors</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">list</span><span class="p">(</span><span class="nx">validator</span><span class="p">.</span><span class="nx">iter_errors</span><span class="p">(</span><span class="nx">instance</span><span class="p">))</span>
 
-<span class="err">    if not in_place:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="nx">in_place</span><span class="p">:</span>
 
-<span class="err">        instance = copy.deepcopy(instance)</span>
+<span class="w">        </span><span class="nx">instance</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">copy</span><span class="p">.</span><span class="nx">deepcopy</span><span class="p">(</span><span class="nx">instance</span><span class="p">)</span>
 
-<span class="err">    errors = sorted(errors, key=lambda e: e.path, reverse=True)</span>
+<span class="w">    </span><span class="nx">errors</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">sorted</span><span class="p">(</span><span class="nx">errors</span><span class="p">,</span><span class="w"> </span><span class="nx">key</span><span class="p">=</span><span class="nx">lambda</span><span class="w"> </span><span class="nx">e</span><span class="p">:</span><span class="w"> </span><span class="nx">e</span><span class="p">.</span><span class="nx">path</span><span class="p">,</span><span class="w"> </span><span class="nx">reverse</span><span class="p">=</span><span class="nx">True</span><span class="p">)</span>
 
-<span class="err">    for error in errors:</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">errors</span><span class="p">:</span>
 
-<span class="err">        _remove_error(instance, error)</span>
+<span class="w">        </span><span class="nx">_remove_error</span><span class="p">(</span><span class="nx">instance</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">)</span>
 
-<span class="err">    if validator.is_valid(instance) or recurse_depth &lt; 1:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">validator</span><span class="p">.</span><span class="nx">is_valid</span><span class="p">(</span><span class="nx">instance</span><span class="p">)</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="nx">recurse_depth</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
 
-<span class="err">        return instance</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">instance</span>
 
-<span class="err">    return remove_jsonschema_errors(instance, recurse_depth - 1, in_place=in_place)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">remove_jsonschema_errors</span><span class="p">(</span><span class="nx">instance</span><span class="p">,</span><span class="w"> </span><span class="nx">recurse_depth</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nx">in_place</span><span class="p">=</span><span class="nx">in_place</span><span class="p">)</span>
 </code></pre></div>
 
 </details>

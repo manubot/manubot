@@ -2088,7 +2088,7 @@ https://git.io/v9N2C</p>
 <p>Manually create csl_item for a URL.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">get_url_csl_item_manual</span><span class="p">(</span><span class="n">url</span><span class="o">:</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">CSLItem</span><span class="o">:</span>
+<div class="codehilite"><pre><span></span><code><span class="nx">def</span><span class="w"> </span><span class="nx">get_url_csl_item_manual</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span><span class="w"> </span><span class="nx">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nx">CSLItem</span><span class="p">:</span>
 
 <span class="w">    </span><span class="s">&quot;&quot;&quot;</span>
 
@@ -2096,7 +2096,7 @@ https://git.io/v9N2C</p>
 
 <span class="s">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="kr">return</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;URL&quot;</span><span class="o">:</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;webpage&quot;</span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="nx">url</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;webpage&quot;</span><span class="p">}</span>
 </code></pre></div>
 
 </details>
@@ -2199,9 +2199,9 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">get_csl_item</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">citekey</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    def get_csl_item(self, citekey):
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">get_url_csl_item</span><span class="ss">(</span><span class="nv">citekey</span>.<span class="nv">standard_accession</span><span class="ss">)</span>
+        return get_url_csl_item(citekey.standard_accession)
 </code></pre></div>
 
 </details>
@@ -2251,13 +2251,13 @@ including how to standardize the citekey and how to retrieve CSL Item metadata.<
 Subclasses can override this method with more specific standardization logic.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nv">def</span><span class="w"> </span><span class="nv">standardize_prefix_accession</span><span class="ss">(</span><span class="nv">self</span>,<span class="w"> </span><span class="nv">accession</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    def standardize_prefix_accession(self, accession):
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">prefix_lower</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s2">&quot;url&quot;</span>:
+        if self.prefix_lower != &quot;url&quot;:
 
-<span class="w">            </span><span class="nv">accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;{self.prefix_lower}:{accession}&quot;</span>
+            accession = f&quot;{self.prefix_lower}:{accession}&quot;
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">standard_prefix</span>,<span class="w"> </span><span class="nv">accession</span>
+        return self.standard_prefix, accession
 </code></pre></div>
 
 </details>

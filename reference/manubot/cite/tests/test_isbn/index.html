@@ -1730,15 +1730,15 @@
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">reason</span><span class="o">=</span><span class="ss">&quot;Quotation in title removed at some upstream point&quot;</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="err">@</span><span class="nx">pytest</span><span class="p">.</span><span class="nx">mark</span><span class="p">.</span><span class="nx">xfail</span><span class="p">(</span><span class="nx">reason</span><span class="p">=</span><span class="s">&quot;Quotation in title removed at some upstream point&quot;</span><span class="p">)</span>
 
-<span class="n">def</span><span class="w"> </span><span class="n">test_citekey_to_csl_item_isbnlib_title_with_quotation_mark</span><span class="p">()</span><span class="err">:</span>
+<span class="nx">def</span><span class="w"> </span><span class="nx">test_citekey_to_csl_item_isbnlib_title_with_quotation_mark</span><span class="p">():</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_isbn_csl_item_isbnlib</span><span class="p">(</span><span class="ss">&quot;9780312353780&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">csl_item</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">get_isbn_csl_item_isbnlib</span><span class="p">(</span><span class="s">&quot;9780312353780&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;type&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;book&quot;</span>
+<span class="w">    </span><span class="nx">assert</span><span class="w"> </span><span class="nx">csl_item</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;book&quot;</span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;title&quot;</span><span class="o">]</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&quot;F&quot; is for Fugitive&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">assert</span><span class="w"> </span><span class="nx">csl_item</span><span class="p">[</span><span class="s">&quot;title&quot;</span><span class="p">].</span><span class="nx">startswith</span><span class="p">(</span><span class="err">&#39;</span><span class="s">&quot;F&quot;</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">Fugitive</span><span class="err">&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 </details>
@@ -1783,19 +1783,19 @@ https://www.mediawiki.org/wiki/Citoid/API#mediawiki</p>
 <p>https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9781439566039</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">test_get_isbn_csl_item_citoid_not_found</span><span class="ss">()</span>:
+<div class="codehilite"><pre><span></span><code>def test_get_isbn_csl_item_citoid_not_found():
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="err">    isbn:9781439566039 is not found by Citoid:</span>
+    isbn:9781439566039 is not found by Citoid:
 
-<span class="err">    https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9781439566039</span>
+    https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9781439566039
 
-<span class="w">    </span><span class="s2">&quot;&quot;</span><span class="err">&quot;</span>
+    &quot;&quot;&quot;
 
-<span class="w">    </span><span class="nv">with</span><span class="w"> </span><span class="nv">pytest</span>.<span class="nv">raises</span><span class="ss">(</span><span class="nv">KeyError</span>,<span class="w"> </span><span class="nv">match</span><span class="o">=</span><span class="nv">r</span><span class="s2">&quot;Metadata for ISBN [0-9]{10,13} not found&quot;</span><span class="ss">)</span>:
+    with pytest.raises(KeyError, match=r&quot;Metadata for ISBN [0-9]{10,13} not found&quot;):
 
-<span class="w">        </span><span class="nv">get_isbn_csl_item_citoid</span><span class="ss">(</span><span class="s2">&quot;9781439566039&quot;</span><span class="ss">)</span>
+        get_isbn_csl_item_citoid(&quot;9781439566039&quot;)
 </code></pre></div>
 
 </details>
