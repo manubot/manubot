@@ -100,7 +100,7 @@ def get_head_commit() -> Optional[str]:
         return None
 
 
-@functools.lru_cache()
+@functools.lru_cache
 def git_repository_root():
     """
     Return the path to repository root directory or `None` if indeterminate.

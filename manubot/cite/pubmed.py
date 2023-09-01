@@ -376,7 +376,7 @@ if TYPE_CHECKING:
     from pyrate_limiter import Limiter
 
 
-@functools.lru_cache()
+@functools.lru_cache
 def _get_eutils_rate_limiter() -> "Limiter":
     """
     Rate limiter to cap NCBI E-utilities queries to <= 3 per second as per
@@ -384,11 +384,13 @@ def _get_eutils_rate_limiter() -> "Limiter":
     https://pyratelimiter.readthedocs.io/en/latest/
     https://github.com/vutran1710/PyrateLimiter
     """
+    # does not work pyrate_limiter v3
+    # https://github.com/manubot/manubot/issues/367
     from pyrate_limiter import Duration, Limiter, RequestRate
 
     if "CI" in os.environ:
         # multiple CI jobs might be running concurrently
-        rate = RequestRate(limit=1, interval=2 * Duration.SECOND)
+        rate = RequestRate(limit=1, interval=Duration.SECOND * 2)
     else:
         rate = RequestRate(limit=2, interval=Duration.SECOND)
     return Limiter(rate).ratelimit("ncbi_eutils", delay=True)

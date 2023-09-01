@@ -13,7 +13,7 @@ import logging
 from manubot.util import read_serialized_data
 
 
-@functools.lru_cache()
+@functools.lru_cache
 def get_jsonschema_csl_validator():
     """
     Return a jsonschema validator for the CSL Item JSON Schema
