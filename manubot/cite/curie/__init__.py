@@ -148,7 +148,7 @@ def get_bioregistry(compile_patterns=False) -> dict:
     return registry
 
 
-@functools.lru_cache()
+@functools.lru_cache
 def get_prefix_to_resource() -> typing.Dict[str, typing.Dict]:
     prefix_to_resource = {}
     for resource in get_bioregistry():
