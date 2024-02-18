@@ -2071,11 +2071,11 @@ Otherwise, retrieve zotero metadata using a /search query.</p>
 
 <span class="s2">    ```shell</span>
 
-<span class="s2">    curl --silent </span><span class="se">\</span>
+<span class="s2">    curl --silent \</span>
 
-<span class="s2">      --data &#39;10.2307/4486062&#39; </span><span class="se">\</span>
+<span class="s2">      --data &#39;10.2307/4486062&#39; \</span>
 
-<span class="s2">      --header &#39;Content-Type: text/plain&#39; </span><span class="se">\</span>
+<span class="s2">      --header &#39;Content-Type: text/plain&#39; \</span>
 
 <span class="s2">      http://127.0.0.1:1969/search</span>
 
@@ -2083,27 +2083,27 @@ Otherwise, retrieve zotero metadata using a /search query.</p>
 
 <span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="ss">api_url =</span> f<span class="s2">&quot;{base_url}/search&quot;</span>
+    <span class="ss">api_url</span> <span class="o">=</span> f<span class="s2">&quot;{base_url}/search&quot;</span>
 
-    <span class="ss">headers =</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> get_manubot_user_agent<span class="p">(),</span> <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">}</span>
+    <span class="ss">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> get_manubot_user_agent<span class="p">(),</span> <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">}</span>
 
-    <span class="ss">response =</span> requests<span class="o">.</span>post<span class="p">(</span>api_url<span class="p">,</span> <span class="ss">headers=</span>headers<span class="p">,</span> <span class="ss">data=</span>str<span class="p">(</span>identifier<span class="p">))</span>
+    <span class="ss">response</span> <span class="o">=</span> requests<span class="o">.</span>post<span class="p">(</span>api_url<span class="p">,</span> <span class="ss">headers</span><span class="o">=</span>headers<span class="p">,</span> <span class="ss">data</span><span class="o">=</span>str<span class="p">(</span>identifier<span class="p">))</span>
 
     try<span class="p">:</span>
 
-        <span class="ss">zotero_data =</span> response<span class="o">.</span>json<span class="p">()</span>
+        <span class="ss">zotero_data</span> <span class="o">=</span> response<span class="o">.</span>json<span class="p">()</span>
 
     except Exception as error<span class="p">:</span>
 
         logging<span class="o">.</span>warning<span class="p">(</span>
 
-            f<span class="s2">&quot;Error parsing search_query output as JSON for {identifier}:</span><span class="se">\</span><span class="s2">n{response.text}&quot;</span>
+            f<span class="s2">&quot;Error parsing search_query output as JSON for {identifier}:</span><span class="se">\n</span><span class="s2">{response.text}&quot;</span>
 
         <span class="p">)</span>
 
         raise error
 
-    <span class="ss">zotero_data =</span> _passthrough_zotero_data<span class="p">(</span>zotero_data<span class="p">)</span>
+    <span class="ss">zotero_data</span> <span class="o">=</span> _passthrough_zotero_data<span class="p">(</span>zotero_data<span class="p">)</span>
 
     return zotero_data
 </code></pre></div>
@@ -2129,43 +2129,43 @@ Otherwise, retrieve zotero metadata using a /search query.</p>
 
 <span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="ss">headers =</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> get_manubot_user_agent<span class="p">(),</span> <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">}</span>
+    <span class="ss">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> get_manubot_user_agent<span class="p">(),</span> <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">}</span>
 
-    <span class="ss">params =</span> <span class="p">{</span><span class="s2">&quot;single&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+    <span class="ss">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;single&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
 
-    <span class="ss">api_url =</span> f<span class="s2">&quot;{base_url}/web&quot;</span>
+    <span class="ss">api_url</span> <span class="o">=</span> f<span class="s2">&quot;{base_url}/web&quot;</span>
 
-    <span class="ss">response =</span> requests<span class="o">.</span>post<span class="p">(</span>api_url<span class="p">,</span> <span class="ss">params=</span>params<span class="p">,</span> <span class="ss">headers=</span>headers<span class="p">,</span> <span class="ss">data=</span>str<span class="p">(</span>url<span class="p">))</span>
+    <span class="ss">response</span> <span class="o">=</span> requests<span class="o">.</span>post<span class="p">(</span>api_url<span class="p">,</span> <span class="ss">params</span><span class="o">=</span>params<span class="p">,</span> <span class="ss">headers</span><span class="o">=</span>headers<span class="p">,</span> <span class="ss">data</span><span class="o">=</span>str<span class="p">(</span>url<span class="p">))</span>
 
     try<span class="p">:</span>
 
-        <span class="ss">zotero_data =</span> response<span class="o">.</span>json<span class="p">()</span>
+        <span class="ss">zotero_data</span> <span class="o">=</span> response<span class="o">.</span>json<span class="p">()</span>
 
     except Exception as error<span class="p">:</span>
 
         logging<span class="o">.</span>warning<span class="p">(</span>
 
-            f<span class="s2">&quot;Error parsing web_query output as JSON for {url}:</span><span class="se">\</span><span class="s2">n{response.text}&quot;</span>
+            f<span class="s2">&quot;Error parsing web_query output as JSON for {url}:</span><span class="se">\n</span><span class="s2">{response.text}&quot;</span>
 
         <span class="p">)</span>
 
         raise error
 
-    <span class="k">if</span> response<span class="o">.</span><span class="ss">status_code =</span><span class="o">=</span> <span class="mi">300</span><span class="p">:</span>
+    <span class="k">if</span> response<span class="o">.</span><span class="ss">status_code</span> <span class="o">==</span> <span class="mi">300</span><span class="p">:</span>
 
         <span class="c1"># When single=1 is specified, multiple results should never be returned</span>
 
         logging<span class="o">.</span>warning<span class="p">(</span>
 
-            f<span class="s2">&quot;web_query returned multiple results for {url}:</span><span class="se">\</span><span class="s2">n&quot;</span>
+            f<span class="s2">&quot;web_query returned multiple results for {url}:</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-            <span class="o">+</span> json<span class="o">.</span>dumps<span class="p">(</span>zotero_data<span class="p">,</span> <span class="ss">indent=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="o">+</span> json<span class="o">.</span>dumps<span class="p">(</span>zotero_data<span class="p">,</span> <span class="ss">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
         <span class="p">)</span>
 
         raise ValueError<span class="p">(</span>f<span class="s2">&quot;multiple results for {url}&quot;</span><span class="p">)</span>
 
-    <span class="ss">zotero_data =</span> _passthrough_zotero_data<span class="p">(</span>zotero_data<span class="p">)</span>
+    <span class="ss">zotero_data</span> <span class="o">=</span> _passthrough_zotero_data<span class="p">(</span>zotero_data<span class="p">)</span>
 
     return zotero_data
 </code></pre></div>

@@ -1787,11 +1787,11 @@
 
 <span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="ss">registry =</span> get_bioregistry<span class="p">(</span><span class="ss">compile_patterns=</span>True<span class="p">)</span>
+    <span class="ss">registry</span> <span class="o">=</span> get_bioregistry<span class="p">(</span><span class="ss">compile_patterns</span><span class="o">=</span>True<span class="p">)</span>
 
     <span class="k">assert</span> isinstance<span class="p">(</span>registry<span class="p">,</span> list<span class="p">)</span>
 
-    <span class="ss">reports =</span> <span class="p">[]</span>
+    <span class="ss">reports</span> <span class="o">=</span> <span class="p">[]</span>
 
     for resource <span class="k">in</span> registry<span class="p">:</span>
 
@@ -1799,21 +1799,21 @@
 
         <span class="k">if</span> <span class="s2">&quot;example&quot;</span> <span class="k">in</span> resource <span class="ow">and</span> <span class="s2">&quot;pattern&quot;</span> <span class="k">in</span> resource<span class="p">:</span>
 
-            <span class="ss">prefix =</span> resource<span class="p">[</span><span class="s2">&quot;prefix&quot;</span><span class="p">]</span>
+            <span class="ss">prefix</span> <span class="o">=</span> resource<span class="p">[</span><span class="s2">&quot;prefix&quot;</span><span class="p">]</span>
 
-            <span class="ss">example =</span> resource<span class="p">[</span><span class="s2">&quot;example&quot;</span><span class="p">]</span>
+            <span class="ss">example</span> <span class="o">=</span> resource<span class="p">[</span><span class="s2">&quot;example&quot;</span><span class="p">]</span>
 
-            <span class="ss">handler =</span> Handler_CURIE<span class="p">(</span>prefix<span class="p">)</span>
+            <span class="ss">handler</span> <span class="o">=</span> Handler_CURIE<span class="p">(</span>prefix<span class="p">)</span>
 
-            <span class="ss">example_curie =</span> CiteKey<span class="p">(</span>f<span class="s2">&quot;{prefix}:{example}&quot;</span><span class="p">)</span>
+            <span class="ss">example_curie</span> <span class="o">=</span> CiteKey<span class="p">(</span>f<span class="s2">&quot;{prefix}:{example}&quot;</span><span class="p">)</span>
 
-            <span class="ss">report =</span> handler<span class="o">.</span>inspect<span class="p">(</span>example_curie<span class="p">)</span>
+            <span class="ss">report</span> <span class="o">=</span> handler<span class="o">.</span>inspect<span class="p">(</span>example_curie<span class="p">)</span>
 
             <span class="k">if</span> report<span class="p">:</span>
 
                 reports<span class="o">.</span>append<span class="p">(</span>report<span class="p">)</span>
 
-    print<span class="p">(</span><span class="s2">&quot;</span><span class="se">\</span><span class="s2">n&quot;</span><span class="o">.</span>join<span class="p">(</span>reports<span class="p">))</span>
+    print<span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span>join<span class="p">(</span>reports<span class="p">))</span>
 
     <span class="k">assert</span> not reports
 </code></pre></div>
