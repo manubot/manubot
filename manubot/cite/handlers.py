@@ -99,6 +99,7 @@ class Handler:
 
     prefix_lower: str
     prefixes = []
+    timeout_seconds: int = 3
 
     def _get_pattern(self, attribute: str = "accession_pattern") -> Optional[Pattern]:
         """
@@ -137,7 +138,9 @@ class Handler:
         return standard_prefix, standard_accession
 
     @abc.abstractmethod
-    def get_csl_item(self, citekey: CiteKey) -> Dict[str, Any]:
+    def get_csl_item(
+        self, citekey: CiteKey, timeout: int = timeout_seconds
+    ) -> Dict[str, Any]:
         """
         Return a CSL_Item with bibliographic details for citekey.
         """

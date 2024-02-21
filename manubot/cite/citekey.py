@@ -21,6 +21,8 @@ class CiteKey:
     """Mapping from input identifier to aliases"""
     infer_prefix: bool = True
     """Whether to infer the citekey's prefix when a prefix is missing or unhandled"""
+    timeout_seconds: tp.Union[tuple, int, float, None] = (3, 12)
+    """The time to wait when making requests"""
 
     def __post_init__(self):
         self.check_input_id(self.input_id)
@@ -208,7 +210,7 @@ class CiteKey:
     def csl_item(self):
         from .csl_item import CSL_Item
 
-        csl_item = self.handler.get_csl_item(self)
+        csl_item = self.handler.get_csl_item(self, self.timeout_seconds)
         if not isinstance(csl_item, CSL_Item):
             csl_item = CSL_Item(csl_item)
         csl_item.set_id(self.standard_id)

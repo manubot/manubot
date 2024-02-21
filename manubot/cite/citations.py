@@ -31,11 +31,18 @@ class Citations:
     # `sort_csl_items=False` retains order of input_ids in get_csl_items.
     # (input_ids with the same standard_id will still be deduplicated).
     sort_csl_items: bool = True
+    # timeout for requests
+    timeout_seconds: tp.Union[tuple, int, float, None] = (3, 15)
 
     def __post_init__(self):
         input_ids = list(dict.fromkeys(self.input_ids))  # deduplicate
         self.citekeys = [
-            CiteKey(x, aliases=self.aliases, infer_prefix=self.infer_citekey_prefixes)
+            CiteKey(
+                x,
+                aliases=self.aliases,
+                infer_prefix=self.infer_citekey_prefixes,
+                timeout_seconds=self.timeout_seconds,
+            )
             for x in input_ids
         ]
 
