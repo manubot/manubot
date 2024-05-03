@@ -32,7 +32,7 @@ def cli_process(args):
     # instantiate a model
     module_class = getattr(models, args.model_type)
 
-    if module_class == models.GPT3CompletionModel:
+    if issubclass(module_class, models.GPT3CompletionModel):
         model = module_class(
             title=me.title,
             keywords=me.keywords,
