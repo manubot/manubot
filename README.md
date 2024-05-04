@@ -112,6 +112,7 @@ usage: manubot process [-h] --content-directory CONTENT_DIRECTORY
                        --skip-citations [--cache-directory CACHE_DIRECTORY]
                        [--clear-requests-cache] [--skip-remote]
                        [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
+                       [-t TIMEOUT_SECONDS]
 
 Process manuscript content to create outputs for Pandoc consumption. Performs
 bibliographic processing and templating.
@@ -150,6 +151,8 @@ options:
                         repository remotes.
   --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
                         Set the logging level for stderr logging
+  -t TIMEOUT_SECONDS, --timeout TIMEOUT_SECONDS
+                        timeout for web requests
 ```
 
 #### Manual references
@@ -184,6 +187,7 @@ usage: manubot cite [-h] [--output OUTPUT]
                     [--csl CSL] [--bibliography BIBLIOGRAPHY]
                     [--no-infer-prefix] [--allow-invalid-csl-data]
                     [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
+                    [-t TIMEOUT_SECONDS]
                     citekeys [citekeys ...]
 
 Generate bibliographic metadata in CSL JSON format for one or more citation
@@ -221,6 +225,8 @@ options:
                         Schema. Skips CSL pruning.
   --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
                         Set the logging level for stderr logging
+  -t TIMEOUT_SECONDS, --timeout TIMEOUT_SECONDS
+                        timeout for web requests
 ```
 
 ### Pandoc filter
@@ -274,6 +280,7 @@ The `manubot webpage` command populates a `webpage` directory with Manubot outpu
 usage: manubot webpage [-h] [--checkout [CHECKOUT]] [--version VERSION]
                        [--timestamp] [--no-ots-cache | --ots-cache OTS_CACHE]
                        [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
+                       [-t TIMEOUT_SECONDS]
 
 Update the webpage directory tree with Manubot output files. This command
 should be run from the root directory of a Manubot manuscript that follows the
@@ -302,6 +309,8 @@ options:
                         ci/cache/ots).
   --log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}
                         Set the logging level for stderr logging
+  -t TIMEOUT_SECONDS, --timeout TIMEOUT_SECONDS
+                        timeout for web requests
 ```
 
 ### AI-assisted academic authoring

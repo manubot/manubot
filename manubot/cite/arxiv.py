@@ -1,5 +1,6 @@
 import logging
 import re
+import typing as tp
 import xml.etree.ElementTree
 
 import requests
@@ -9,14 +10,15 @@ from manubot.util import get_manubot_user_agent
 from .csl_item import CSL_Item
 from .handlers import Handler
 
+default_timeout = (3, 15)
+
 
 class Handler_arXiv(Handler):
-
     standard_prefix = "arxiv"
-
     prefixes = [
         "arxiv",
     ]
+
     accession_pattern = re.compile(
         r"(?P<versionless_id>[0-9]{4}\.[0-9]{4,5}|[a-z\-]+(\.[A-Z]{2})?/[0-9]{7})(?P<version>v[0-9]+)?"
     )
@@ -26,8 +28,14 @@ class Handler_arXiv(Handler):
         if not self._get_pattern().fullmatch(citekey.accession):
             return "arXiv identifiers must conform to syntax described at https://arxiv.org/help/arxiv_identifier."
 
-    def get_csl_item(self, citekey):
-        return get_arxiv_csl_item(citekey.standard_accession)
+    def get_csl_item(
+        self,
+        citekey,
+        timeout_seconds: tp.Union[tuple, int, float, None] = default_timeout,
+    ):
+        return get_arxiv_csl_item(
+            citekey.standard_accession, timeout_seconds=default_timeout
+        )
 
 
 class CSL_Item_arXiv(CSL_Item):
@@ -65,7 +73,9 @@ def split_arxiv_id_version(arxiv_id: str):
     return match.group("versionless_id"), match.group("version")
 
 
-def get_arxiv_csl_item(arxiv_id: str):
+def get_arxiv_csl_item(
+    arxiv_id: str, timeout_seconds: tp.Union[tuple, int, float, None] = default_timeout
+):
     """
     Return csl_item item for an arXiv identifier.
     Chooses which arXiv API to use based on whether arxiv_id
@@ -73,19 +83,23 @@ def get_arxiv_csl_item(arxiv_id: str):
     """
     _, version = split_arxiv_id_version(arxiv_id)
     if version:
-        return get_arxiv_csl_item_export_api(arxiv_id)
-    return get_arxiv_csl_item_oai(arxiv_id)
+        return get_arxiv_csl_item_export_api(arxiv_id, timeout_seconds=timeout_seconds)
+    return get_arxiv_csl_item_oai(arxiv_id, timeout_seconds=timeout_seconds)
 
 
-def query_arxiv_api(url, params):
+def query_arxiv_api(
+    url, params, timeout_seconds: tp.Union[tuple, int, float, None] = default_timeout
+):
     headers = {"User-Agent": get_manubot_user_agent()}
-    response = requests.get(url, params, headers=headers)
+    response = requests.get(url, params, headers=headers, timeout=timeout_seconds)
     response.raise_for_status()
     xml_tree = xml.etree.ElementTree.fromstring(response.text)
     return xml_tree
 
 
-def get_arxiv_csl_item_export_api(arxiv_id):
+def get_arxiv_csl_item_export_api(
+    arxiv_id, timeout_seconds: tp.Union[tuple, int, float, None] = default_timeout
+):
     """
     Return csl_item item for an arXiv record.
 
@@ -105,6 +119,7 @@ def get_arxiv_csl_item_export_api(arxiv_id):
     xml_tree = query_arxiv_api(
         url="https://export.arxiv.org/api/query",
         params={"id_list": arxiv_id, "max_results": 1},
+        timeout_seconds=timeout_seconds,
     )
 
     # XML namespace prefixes
@@ -157,7 +172,9 @@ def get_arxiv_csl_item_export_api(arxiv_id):
     return csl_item
 
 
-def get_arxiv_csl_item_oai(arxiv_id):
+def get_arxiv_csl_item_oai(
+    arxiv_id, timeout_seconds: tp.Union[tuple, int, float, None] = default_timeout
+):
     """
     Generate a CSL Item for an unversioned arXiv identifier
     using arXiv's OAI_PMH v2.0 API <https://arxiv.org/help/oa>.
@@ -174,6 +191,7 @@ def get_arxiv_csl_item_oai(arxiv_id):
             "metadataPrefix": "arXiv",
             "identifier": f"oai:arXiv.org:{arxiv_id}",
         },
+        timeout_seconds=timeout_seconds,
     )
 
     # Create dictionary for CSL Item
@@ -237,10 +255,12 @@ def remove_newlines(text):
     return re.sub(pattern=r"\n(?!\s)", repl=" ", string=text)
 
 
-def get_arxiv_csl_item_zotero(arxiv_id):
+def get_arxiv_csl_item_zotero(
+    arxiv_id, timeout_seconds: tp.Union[tuple, int, float, None] = default_timeout
+):
     """
     Generate CSL JSON Data for an arXiv ID using Zotero's translation-server.
     """
     from manubot.cite.zotero import get_csl_item
 
-    return get_csl_item(f"arxiv:{arxiv_id}")
+    return get_csl_item(f"arxiv:{arxiv_id}", timeout_seconds=timeout_seconds)
