@@ -311,6 +311,7 @@ The `manubot ai-revision` command uses large language models from [OpenAI](https
 <!-- test codeblock contains output of `manubot ai-revision --help` -->
 ```
 usage: manubot ai-revision [-h] --content-directory CONTENT_DIRECTORY
+                           [--config-directory CONFIG_DIRECTORY]
                            [--model-type MODEL_TYPE]
                            [--model-kwargs key=value [key=value ...]]
                            [--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
@@ -321,6 +322,9 @@ options:
   -h, --help            show this help message and exit
   --content-directory CONTENT_DIRECTORY
                         Directory where manuscript content files are located.
+  --config-directory CONFIG_DIRECTORY
+                        Directory where AI revision configuration files are
+                        located. If unspecified, disables custom configuration.
   --model-type MODEL_TYPE
                         Model type used to revise the manuscript. Default is
                         GPT3CompletionModel. It can be any subclass of

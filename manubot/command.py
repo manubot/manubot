@@ -234,6 +234,13 @@ def add_subparser_airevision(subparsers):
         help="Directory where manuscript content files are located.",
     )
     parser.add_argument(
+        "--config-directory",
+        type=pathlib.Path,
+        required=False,
+        default=None,
+        help="Directory where AI revision configuration files are located. If unspecified, disables custom configuration.",
+    )
+    parser.add_argument(
         "--model-type",
         type=str,
         required=False,
