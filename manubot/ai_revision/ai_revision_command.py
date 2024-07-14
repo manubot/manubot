@@ -19,7 +19,7 @@ def cli_process(args):
         raise SystemExit(
             f"content directory is not a directory or does not exist: {content_dir}"
         )
-    
+
     # set paths for config
     # (the config directory is optional, but if it is provided, it must be a directory)
     config_dir = args.config_directory
