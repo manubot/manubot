@@ -1631,93 +1631,93 @@
 <h1 id="module-manubotciteteststest_isbn">Module manubot.cite.tests.test_isbn</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pytest</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
 
-<span class="kn">from</span> <span class="nn">manubot.cite.isbn</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.isbn</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
 
-    <span class="n">get_isbn_csl_item_citoid</span><span class="p">,</span>
+<span class="w">    </span><span class="n">get_isbn_csl_item_citoid</span><span class="p">,</span>
 
-    <span class="n">get_isbn_csl_item_isbnlib</span><span class="p">,</span>
+<span class="w">    </span><span class="n">get_isbn_csl_item_isbnlib</span><span class="p">,</span>
 
-    <span class="n">get_isbn_csl_item_zotero</span><span class="p">,</span>
+<span class="w">    </span><span class="n">get_isbn_csl_item_zotero</span><span class="p">,</span>
 
 <span class="p">)</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Quotation in title removed at some upstream point&quot;</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_citekey_to_csl_item_isbnlib_title_with_quotation_mark</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_to_csl_item_isbnlib_title_with_quotation_mark</span><span class="p">():</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_isbn_csl_item_isbnlib</span><span class="p">(</span><span class="s2">&quot;9780312353780&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_isbn_csl_item_isbnlib</span><span class="p">(</span><span class="s2">&quot;9780312353780&quot;</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;book&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;book&quot;</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&quot;F&quot; is for Fugitive&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&quot;F&quot; is for Fugitive&#39;</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_get_isbn_csl_item_citoid_weird_date</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_get_isbn_csl_item_citoid_weird_date</span><span class="p">():</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    isbn:9780719561023 has a date value of &quot;(2004 printing)&quot;</span>
+<span class="s2">    isbn:9780719561023 has a date value of &quot;(2004 printing)&quot;</span>
 
-<span class="sd">    https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9780719561023</span>
+<span class="s2">    https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9780719561023</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_isbn_csl_item_citoid</span><span class="p">(</span><span class="s2">&quot;9780719561023&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_isbn_csl_item_citoid</span><span class="p">(</span><span class="s2">&quot;9780719561023&quot;</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">][</span><span class="s2">&quot;date-parts&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[[</span><span class="mi">2004</span><span class="p">]]</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">][</span><span class="s2">&quot;date-parts&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[[</span><span class="mi">2004</span><span class="p">]]</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;ISBN&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;9780719561023&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;ISBN&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;9780719561023&quot;</span>
 
-<span class="k">def</span> <span class="nf">test_get_isbn_csl_item_citoid_not_found</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_get_isbn_csl_item_citoid_not_found</span><span class="p">():</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    isbn:9781439566039 is not found by Citoid:</span>
+<span class="s2">    isbn:9781439566039 is not found by Citoid:</span>
 
-<span class="sd">    https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9781439566039</span>
+<span class="s2">    https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9781439566039</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Metadata for ISBN [0-9]{10,13} not found&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="k">with</span><span class="w"> </span><span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">KeyError</span><span class="p">,</span><span class="w"> </span><span class="n">match</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Metadata for ISBN [0-9]{10,13} not found&quot;</span><span class="p">):</span>
 
-        <span class="n">get_isbn_csl_item_citoid</span><span class="p">(</span><span class="s2">&quot;9781439566039&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">get_isbn_csl_item_citoid</span><span class="p">(</span><span class="s2">&quot;9781439566039&quot;</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_get_isbn_csl_item_zotero_with_note_issue</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_get_isbn_csl_item_zotero_with_note_issue</span><span class="p">():</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    translation-server returns two metadata records for this ISBN.</span>
+<span class="s2">    translation-server returns two metadata records for this ISBN.</span>
 
-<span class="sd">    The second has itemType=note and previously caused CSL export to fail.</span>
+<span class="s2">    The second has itemType=note and previously caused CSL export to fail.</span>
 
-<span class="sd">    https://github.com/zotero/translation-server/issues/67</span>
+<span class="s2">    https://github.com/zotero/translation-server/issues/67</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">isbn</span> <span class="o">=</span> <span class="s2">&quot;9780262517638&quot;</span>
+<span class="w">    </span><span class="n">isbn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;9780262517638&quot;</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_isbn_csl_item_zotero</span><span class="p">(</span><span class="n">isbn</span><span class="p">)</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_isbn_csl_item_zotero</span><span class="p">(</span><span class="n">isbn</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Suber&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Suber&quot;</span>
 
-<span class="k">def</span> <span class="nf">test_get_isbn_csl_item_citoid_author_order</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_get_isbn_csl_item_citoid_author_order</span><span class="p">():</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Confirm author order is parsed correctly</span>
+<span class="s2">    Confirm author order is parsed correctly</span>
 
-<span class="sd">    https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9781801819312</span>
+<span class="s2">    https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/9781801819312</span>
 
-<span class="sd">    https://www.mediawiki.org/wiki/Citoid/API#mediawiki</span>
+<span class="s2">    https://www.mediawiki.org/wiki/Citoid/API#mediawiki</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_isbn_csl_item_citoid</span><span class="p">(</span><span class="s2">&quot;9781801819312&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_isbn_csl_item_citoid</span><span class="p">(</span><span class="s2">&quot;9781801819312&quot;</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;given&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Sebastian&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;given&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Sebastian&quot;</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Raschka&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Raschka&quot;</span>
 </code></pre></div>
 
 </details>

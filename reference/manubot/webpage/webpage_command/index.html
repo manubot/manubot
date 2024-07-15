@@ -1657,403 +1657,403 @@
 <h1 id="module-manubotwebpagewebpage_command">Module manubot.webpage.webpage_command</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
-<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
 
-<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 
-<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 
-<span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">shlex_join</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.util</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">shlex_join</span>
 
-<span class="k">def</span> <span class="nf">cli_webpage</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cli_webpage</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Execute manubot webpage commands.</span>
+<span class="s2">    Execute manubot webpage commands.</span>
 
-<span class="sd">    args should be an argparse.Namespace object created by parser.parse_args.</span>
+<span class="s2">    args should be an argparse.Namespace object created by parser.parse_args.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">configure_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+<span class="w">    </span><span class="n">configure_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running `manubot webpage` with the following args:</span><span class="se">\n</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running `manubot webpage` with the following args:</span><span class="se">\n</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">timestamp</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">timestamp</span><span class="p">:</span>
 
-        <span class="n">ots_upgrade</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+<span class="w">        </span><span class="n">ots_upgrade</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="n">create_version</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+<span class="w">    </span><span class="n">create_version</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">configure_args</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">configure_args</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Perform additional processing of arguments that is not handled by argparse.</span>
+<span class="s2">    Perform additional processing of arguments that is not handled by argparse.</span>
 
-<span class="sd">    Derive additional variables and add them to args.</span>
+<span class="s2">    Derive additional variables and add them to args.</span>
 
-<span class="sd">    For example, add directories to args and create them if neccessary.</span>
+<span class="s2">    For example, add directories to args and create them if neccessary.</span>
 
-<span class="sd">    Note that versions_directory is the parent of version_directory.</span>
+<span class="s2">    Note that versions_directory is the parent of version_directory.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">args_dict</span> <span class="o">=</span> <span class="nb">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="c1"># If --timestamp specified, check that opentimestamps-client is installed</span>
+<span class="w">    </span><span class="c1"># If --timestamp specified, check that opentimestamps-client is installed</span>
 
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">timestamp</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">timestamp</span><span class="p">:</span>
 
-        <span class="n">ots_executable_path</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;ots&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">ots_executable_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;ots&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">ots_executable_path</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">ots_executable_path</span><span class="p">:</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
 
-                <span class="s2">&quot;manubot webpage --timestamp was specified but opentimestamps-client not found on system. &quot;</span>
+<span class="w">                </span><span class="s2">&quot;manubot webpage --timestamp was specified but opentimestamps-client not found on system. &quot;</span>
 
-                <span class="s2">&quot;Setting --timestamp=False. &quot;</span>
+<span class="w">                </span><span class="s2">&quot;Setting --timestamp=False. &quot;</span>
 
-                <span class="s2">&quot;Fix this by installing https://pypi.org/project/opentimestamps-client/&quot;</span>
+<span class="w">                </span><span class="s2">&quot;Fix this by installing https://pypi.org/project/opentimestamps-client/&quot;</span>
 
-            <span class="p">)</span>
+<span class="w">            </span><span class="p">)</span>
 
-            <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">            </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">False</span>
 
-    <span class="c1"># Directory where Manubot outputs reside</span>
+<span class="w">    </span><span class="c1"># Directory where Manubot outputs reside</span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;output_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;output_directory&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
 
-    <span class="c1"># Set webpage directory</span>
+<span class="w">    </span><span class="c1"># Set webpage directory</span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;webpage_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;webpage&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;webpage_directory&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;webpage&quot;</span><span class="p">)</span>
 
-    <span class="n">args</span><span class="o">.</span><span class="n">webpage_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args</span><span class="o">.</span><span class="n">webpage_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="c1"># Create webpage/v directory (if it doesn&#39;t already exist)</span>
+<span class="w">    </span><span class="c1"># Create webpage/v directory (if it doesn&#39;t already exist)</span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;versions_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">webpage_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;versions_directory&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">webpage_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
 
-    <span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="c1"># Checkout existing version directories</span>
+<span class="w">    </span><span class="c1"># Checkout existing version directories</span>
 
-    <span class="n">checkout_existing_versions</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+<span class="w">    </span><span class="n">checkout_existing_versions</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="c1"># Apply --version argument defaults</span>
+<span class="w">    </span><span class="c1"># Apply --version argument defaults</span>
 
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
 
-        <span class="kn">from</span> <span class="nn">manubot.process.ci</span> <span class="kn">import</span> <span class="n">get_continuous_integration_parameters</span>
+<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.process.ci</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">get_continuous_integration_parameters</span>
 
-        <span class="n">ci_params</span> <span class="o">=</span> <span class="n">get_continuous_integration_parameters</span><span class="p">()</span>
+<span class="w">        </span><span class="n">ci_params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_continuous_integration_parameters</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">ci_params</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">ci_params</span><span class="p">:</span>
 
-            <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;commit&quot;</span><span class="p">,</span> <span class="s2">&quot;local&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;commit&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;local&quot;</span><span class="p">)</span>
 
-        <span class="k">else</span><span class="p">:</span>
+<span class="w">        </span><span class="k">else</span><span class="p">:</span>
 
-            <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;local&quot;</span>
+<span class="w">            </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;local&quot;</span>
 
-    <span class="c1"># Create empty webpage/v/version directory</span>
+<span class="w">    </span><span class="c1"># Create empty webpage/v/version directory</span>
 
-    <span class="n">version_directory</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+<span class="w">    </span><span class="n">version_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">version_directory</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">version_directory</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">version_directory</span><span class="si">}</span><span class="s2"> exists: replacing it with an empty directory&quot;</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">version_directory</span><span class="si">}</span><span class="s2"> exists: replacing it with an empty directory&quot;</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">version_directory</span><span class="p">)</span>
+<span class="w">        </span><span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">version_directory</span><span class="p">)</span>
 
-    <span class="n">version_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+<span class="w">    </span><span class="n">version_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;version_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">version_directory</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;version_directory&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">version_directory</span>
 
-    <span class="c1"># Symlink webpage/v/latest to point to webpage/v/commit</span>
+<span class="w">    </span><span class="c1"># Symlink webpage/v/latest to point to webpage/v/commit</span>
 
-    <span class="n">latest_directory</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;latest&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">latest_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;latest&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">latest_directory</span><span class="o">.</span><span class="n">is_symlink</span><span class="p">()</span> <span class="ow">or</span> <span class="n">latest_directory</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">latest_directory</span><span class="o">.</span><span class="n">is_symlink</span><span class="p">()</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">latest_directory</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
 
-        <span class="n">latest_directory</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+<span class="w">        </span><span class="n">latest_directory</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
 
-    <span class="k">elif</span> <span class="n">latest_directory</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+<span class="w">    </span><span class="k">elif</span><span class="w"> </span><span class="n">latest_directory</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
 
-        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">latest_directory</span><span class="p">)</span>
+<span class="w">        </span><span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">latest_directory</span><span class="p">)</span>
 
-    <span class="n">latest_directory</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">target_is_directory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="w">    </span><span class="n">latest_directory</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">,</span><span class="w"> </span><span class="n">target_is_directory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;latest_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">latest_directory</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;latest_directory&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">latest_directory</span>
 
-    <span class="c1"># Create freeze directory</span>
+<span class="w">    </span><span class="c1"># Create freeze directory</span>
 
-    <span class="n">freeze_directory</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;freeze&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">freeze_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;freeze&quot;</span><span class="p">)</span>
 
-    <span class="n">freeze_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="w">    </span><span class="n">freeze_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;freeze_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">freeze_directory</span>
+<span class="w">    </span><span class="n">args_dict</span><span class="p">[</span><span class="s2">&quot;freeze_directory&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">freeze_directory</span>
 
-    <span class="k">return</span> <span class="n">args</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">args</span>
 
-<span class="k">def</span> <span class="nf">checkout_existing_versions</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">checkout_existing_versions</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Must populate webpage/v from the gh-pages branch to get history</span>
+<span class="s2">    Must populate webpage/v from the gh-pages branch to get history</span>
 
-<span class="sd">    References:</span>
+<span class="s2">    References:</span>
 
-<span class="sd">    http://clubmate.fi/git-checkout-file-or-directories-from-another-branch/</span>
+<span class="s2">    http://clubmate.fi/git-checkout-file-or-directories-from-another-branch/</span>
 
-<span class="sd">    https://stackoverflow.com/a/2668947/4651668</span>
+<span class="s2">    https://stackoverflow.com/a/2668947/4651668</span>
 
-<span class="sd">    https://stackoverflow.com/a/16493707/4651668</span>
+<span class="s2">    https://stackoverflow.com/a/16493707/4651668</span>
 
-<span class="sd">    Command modeled after:</span>
+<span class="s2">    Command modeled after:</span>
 
-<span class="sd">    git --work-tree=webpage checkout upstream/gh-pages -- v</span>
+<span class="s2">    git --work-tree=webpage checkout upstream/gh-pages -- v</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">checkout</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">checkout</span><span class="p">:</span>
 
-        <span class="k">return</span>
+<span class="w">        </span><span class="k">return</span>
 
-    <span class="n">command</span> <span class="o">=</span> <span class="p">[</span>
+<span class="w">    </span><span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 
-        <span class="s2">&quot;git&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;git&quot;</span><span class="p">,</span>
 
-        <span class="sa">f</span><span class="s2">&quot;--work-tree=</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">webpage_directory</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="sa">f</span><span class="s2">&quot;--work-tree=</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">webpage_directory</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;checkout&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;checkout&quot;</span><span class="p">,</span>
 
-        <span class="n">args</span><span class="o">.</span><span class="n">checkout</span><span class="p">,</span>
+<span class="w">        </span><span class="n">args</span><span class="o">.</span><span class="n">checkout</span><span class="p">,</span>
 
-        <span class="s2">&quot;--&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;v&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;v&quot;</span><span class="p">,</span>
 
-    <span class="p">]</span>
+<span class="w">    </span><span class="p">]</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+<span class="w">    </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
-        <span class="sa">f</span><span class="s2">&quot;Attempting checkout with the following command:</span><span class="se">\n</span><span class="si">{</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">command</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="sa">f</span><span class="s2">&quot;Attempting checkout with the following command:</span><span class="se">\n</span><span class="si">{</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">command</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
+<span class="w">    </span><span class="n">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="w"> </span><span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span><span class="w"> </span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">process</span><span class="o">.</span><span class="n">returncode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span>
 
-        <span class="c1"># Addresses an odd behavior where git checkout stages v/* files that don&#39;t actually exist</span>
+<span class="w">        </span><span class="c1"># Addresses an odd behavior where git checkout stages v/* files that don&#39;t actually exist</span>
 
-        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="s2">&quot;v&quot;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+<span class="w">        </span><span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;add&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;v&quot;</span><span class="p">],</span><span class="w"> </span><span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
 
-    <span class="k">else</span><span class="p">:</span>
+<span class="w">    </span><span class="k">else</span><span class="p">:</span>
 
-        <span class="n">output</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
 
-        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+<span class="w">        </span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span>
 
-            <span class="sa">f</span><span class="s2">&quot;Checkout returned a nonzero exit status. See output:</span><span class="se">\n</span><span class="si">{</span><span class="n">output</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;Checkout returned a nonzero exit status. See output:</span><span class="se">\n</span><span class="si">{</span><span class="n">output</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="s2">&quot;pathspec&quot;</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;pathspec&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">output</span><span class="p">:</span>
 
-            <span class="n">message</span> <span class="o">+=</span> <span class="p">(</span>
+<span class="w">            </span><span class="n">message</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span>
 
-                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Manubot note: if there are no preexisting webpage versions (like for a newly created manuscript), &quot;</span>
+<span class="w">                </span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Manubot note: if there are no preexisting webpage versions (like for a newly created manuscript), &quot;</span>
 
-                <span class="s2">&quot;the pathspec error above is expected and can be safely ignored.&quot;</span>
+<span class="w">                </span><span class="s2">&quot;the pathspec error above is expected and can be safely ignored.&quot;</span>
 
-            <span class="p">)</span>  <span class="c1"># see https://github.com/manubot/rootstock/issues/183</span>
+<span class="w">            </span><span class="p">)</span><span class="w">  </span><span class="c1"># see https://github.com/manubot/rootstock/issues/183</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">create_version</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_version</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Populate the version directory for a new version.</span>
+<span class="s2">    Populate the version directory for a new version.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Copy content/images to webpage/v/commit/images</span>
+<span class="w">    </span><span class="c1"># Copy content/images to webpage/v/commit/images</span>
 
-    <span class="n">images_src</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;content/images&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">images_src</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;content/images&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">images_src</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">images_src</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
 
-        <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">images_src</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">version_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;images&quot;</span><span class="p">))</span>
+<span class="w">        </span><span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">images_src</span><span class="p">,</span><span class="w"> </span><span class="n">dst</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">version_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;images&quot;</span><span class="p">))</span>
 
-    <span class="c1"># Copy output files to to webpage/v/version/</span>
+<span class="w">    </span><span class="c1"># Copy output files to to webpage/v/version/</span>
 
-    <span class="n">renamer</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;manuscript.html&quot;</span><span class="p">:</span> <span class="s2">&quot;index.html&quot;</span><span class="p">,</span> <span class="s2">&quot;manuscript.pdf&quot;</span><span class="p">:</span> <span class="s2">&quot;manuscript.pdf&quot;</span><span class="p">}</span>
+<span class="w">    </span><span class="n">renamer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;manuscript.html&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;index.html&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;manuscript.pdf&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;manuscript.pdf&quot;</span><span class="p">}</span>
 
-    <span class="k">for</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span> <span class="ow">in</span> <span class="n">renamer</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">dst</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">renamer</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
-        <span class="n">src_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+<span class="w">        </span><span class="n">src_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">src_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">src_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
 
-            <span class="k">continue</span>
+<span class="w">            </span><span class="k">continue</span>
 
-        <span class="n">dst_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">version_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
+<span class="w">        </span><span class="n">dst_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">version_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
 
-        <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">src_path</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">dst_path</span><span class="p">)</span>
+<span class="w">        </span><span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">src_path</span><span class="p">,</span><span class="w"> </span><span class="n">dst</span><span class="o">=</span><span class="n">dst_path</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">timestamp</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">timestamp</span><span class="p">:</span>
 
-            <span class="n">ots_stamp</span><span class="p">(</span><span class="n">dst_path</span><span class="p">)</span>
+<span class="w">            </span><span class="n">ots_stamp</span><span class="p">(</span><span class="n">dst_path</span><span class="p">)</span>
 
-    <span class="c1"># Create v/freeze to redirect to v/commit</span>
+<span class="w">    </span><span class="c1"># Create v/freeze to redirect to v/commit</span>
 
-    <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="s2">&quot;redirect-template.html&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="s2">&quot;redirect-template.html&quot;</span><span class="p">)</span>
 
-    <span class="n">redirect_html</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+<span class="w">    </span><span class="n">redirect_html</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
 
-    <span class="n">redirect_html</span> <span class="o">=</span> <span class="n">redirect_html</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;../</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">redirect_html</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redirect_html</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;../</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
 
-    <span class="n">args</span><span class="o">.</span><span class="n">freeze_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;index.html&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">redirect_html</span><span class="p">)</span>
+<span class="w">    </span><span class="n">args</span><span class="o">.</span><span class="n">freeze_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;index.html&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">redirect_html</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">get_versions</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_versions</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Extract versions from the webpage/v directory, which should each contain</span>
+<span class="s2">    Extract versions from the webpage/v directory, which should each contain</span>
 
-<span class="sd">    a manuscript.</span>
+<span class="s2">    a manuscript.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">versions</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()}</span>
+<span class="w">    </span><span class="n">versions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()}</span>
 
-    <span class="n">versions</span> <span class="o">-=</span> <span class="p">{</span><span class="s2">&quot;freeze&quot;</span><span class="p">,</span> <span class="s2">&quot;latest&quot;</span><span class="p">}</span>
+<span class="w">    </span><span class="n">versions</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;freeze&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;latest&quot;</span><span class="p">}</span>
 
-    <span class="n">versions</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">versions</span><span class="p">)</span>
+<span class="w">    </span><span class="n">versions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">sorted</span><span class="p">(</span><span class="n">versions</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">versions</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">versions</span>
 
-<span class="k">def</span> <span class="nf">ots_upgrade</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ots_upgrade</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Upgrade OpenTimestamps .ots files in versioned commit directory trees.</span>
+<span class="s2">    Upgrade OpenTimestamps .ots files in versioned commit directory trees.</span>
 
-<span class="sd">    Upgrades each .ots file with a separate ots upgrade subprocess call due to</span>
+<span class="s2">    Upgrades each .ots file with a separate ots upgrade subprocess call due to</span>
 
-<span class="sd">    https://github.com/opentimestamps/opentimestamps-client/issues/71</span>
+<span class="s2">    https://github.com/opentimestamps/opentimestamps-client/issues/71</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">ots_paths</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">    </span><span class="n">ots_paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
 
-    <span class="k">for</span> <span class="n">version</span> <span class="ow">in</span> <span class="n">get_versions</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">get_versions</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-        <span class="n">ots_paths</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;**/*.ots&quot;</span><span class="p">))</span>
+<span class="w">        </span><span class="n">ots_paths</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">versions_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;**/*.ots&quot;</span><span class="p">))</span>
 
-    <span class="n">ots_paths</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="w">    </span><span class="n">ots_paths</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="n">ots_path</span> <span class="ow">in</span> <span class="n">ots_paths</span><span class="p">:</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">ots_path</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">ots_paths</span><span class="p">:</span>
 
-        <span class="n">process_args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ots&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">process_args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;ots&quot;</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">no_ots_cache</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">no_ots_cache</span><span class="p">:</span>
 
-            <span class="n">process_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--no-cache&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">process_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--no-cache&quot;</span><span class="p">)</span>
 
-        <span class="k">else</span><span class="p">:</span>
+<span class="w">        </span><span class="k">else</span><span class="p">:</span>
 
-            <span class="n">process_args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--cache&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">ots_cache</span><span class="p">)])</span>
+<span class="w">            </span><span class="n">process_args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--cache&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">ots_cache</span><span class="p">)])</span>
 
-        <span class="n">process_args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;upgrade&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ots_path</span><span class="p">)])</span>
+<span class="w">        </span><span class="n">process_args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;upgrade&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">(</span><span class="n">ots_path</span><span class="p">)])</span>
 
-        <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+<span class="w">        </span><span class="n">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
 
-            <span class="n">process_args</span><span class="p">,</span>
+<span class="w">            </span><span class="n">process_args</span><span class="p">,</span>
 
-            <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+<span class="w">            </span><span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
 
-            <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">,</span>
+<span class="w">            </span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">,</span>
 
-            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="w">            </span><span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-        <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&gt;&gt;&gt; </span><span class="si">{</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;&gt;&gt;&gt; </span><span class="si">{</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="si">}</span><span class="s2">&quot;</span>
 
-        <span class="k">if</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">process</span><span class="o">.</span><span class="n">returncode</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-                <span class="sa">f</span><span class="s2">&quot;OpenTimestamp upgrade failed with exit code </span><span class="si">{</span><span class="n">process</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;OpenTimestamp upgrade failed with exit code </span><span class="si">{</span><span class="n">process</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span>
 
-            <span class="p">)</span>
+<span class="w">            </span><span class="p">)</span>
 
-        <span class="k">elif</span> <span class="ow">not</span> <span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Success! Timestamp complete&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="k">elif</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Success! Timestamp complete&quot;</span><span class="p">:</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
-        <span class="n">backup_path</span> <span class="o">=</span> <span class="n">ots_path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.ots.bak&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">backup_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ots_path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.ots.bak&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">backup_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">backup_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
 
-            <span class="k">if</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">process</span><span class="o">.</span><span class="n">returncode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span>
 
-                <span class="n">backup_path</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+<span class="w">                </span><span class="n">backup_path</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
 
-            <span class="k">else</span><span class="p">:</span>
+<span class="w">            </span><span class="k">else</span><span class="p">:</span>
 
-                <span class="c1"># Restore original timestamp if failure</span>
+<span class="w">                </span><span class="c1"># Restore original timestamp if failure</span>
 
-                <span class="n">backup_path</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">ots_path</span><span class="p">)</span>
+<span class="w">                </span><span class="n">backup_path</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">ots_path</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">ots_stamp</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ots_stamp</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Timestamp a file using OpenTimestamps.</span>
+<span class="s2">    Timestamp a file using OpenTimestamps.</span>
 
-<span class="sd">    This function calls `ots stamp path`.</span>
+<span class="s2">    This function calls `ots stamp path`.</span>
 
-<span class="sd">    If `path` does not exist, this function does nothing.</span>
+<span class="s2">    If `path` does not exist, this function does nothing.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">process_args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ots&quot;</span><span class="p">,</span> <span class="s2">&quot;stamp&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)]</span>
+<span class="w">    </span><span class="n">process_args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;ots&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;stamp&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)]</span>
 
-    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+<span class="w">    </span><span class="n">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
 
-        <span class="n">process_args</span><span class="p">,</span>
+<span class="w">        </span><span class="n">process_args</span><span class="p">,</span>
 
-        <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+<span class="w">        </span><span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
 
-        <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">,</span>
+<span class="w">        </span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">,</span>
 
-        <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="w">        </span><span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">process</span><span class="o">.</span><span class="n">returncode</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-            <span class="sa">f</span><span class="s2">&quot;OpenTimestamp command returned nonzero code (</span><span class="si">{</span><span class="n">process</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2">).</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;OpenTimestamp command returned nonzero code (</span><span class="si">{</span><span class="n">process</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2">).</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-            <span class="sa">f</span><span class="s2">&quot;&gt;&gt;&gt; </span><span class="si">{</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;&gt;&gt;&gt; </span><span class="si">{</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="si">}</span><span class="s2">&quot;</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 </code></pre></div>
 
 </details>

@@ -1673,351 +1673,351 @@
 <h1 id="module-manubotciteteststest_cite_command">Module manubot.cite.tests.test_cite_command</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
 
-<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 
-<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 
-<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
 
-<span class="kn">from</span> <span class="nn">manubot.cite.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.csl_item</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CSL_Item</span>
 
-<span class="kn">from</span> <span class="nn">manubot.pandoc.util</span> <span class="kn">import</span> <span class="n">get_pandoc_version</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.pandoc.util</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">get_pandoc_version</span>
 
-<span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">shlex_join</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.util</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">shlex_join</span>
 
-<span class="n">data_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;cite-command-rendered&quot;</span><span class="p">)</span>
+<span class="n">data_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;cite-command-rendered&quot;</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_cite_command_preserves_order</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_cite_command_preserves_order</span><span class="p">():</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    https://github.com/manubot/manubot/issues/240</span>
+<span class="s2">    https://github.com/manubot/manubot/issues/240</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">citekeys</span> <span class="o">=</span> <span class="p">[</span>
+<span class="w">    </span><span class="n">citekeys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 
-        <span class="s2">&quot;pmid:29618526&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;pmid:29618526&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;doi:10.7717/peerj.338&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;doi:10.7717/peerj.338&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;pubmed:29618526&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;pubmed:29618526&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;DOI:10.7717/PEERJ.338&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;DOI:10.7717/PEERJ.338&quot;</span><span class="p">,</span>
 
-    <span class="p">]</span>
+<span class="w">    </span><span class="p">]</span>
 
-    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
+<span class="w">    </span><span class="n">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 
-        <span class="s2">&quot;manubot&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;manubot&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;cite&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;cite&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;--bibliography=input-bibliography.json&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--bibliography=input-bibliography.json&quot;</span><span class="p">,</span>
 
-        <span class="o">*</span><span class="n">citekeys</span><span class="p">,</span>
+<span class="w">        </span><span class="o">*</span><span class="n">citekeys</span><span class="p">,</span>
 
-    <span class="p">]</span>
+<span class="w">    </span><span class="p">]</span>
 
-    <span class="n">output</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
 
-        <span class="n">args</span><span class="p">,</span>
+<span class="w">        </span><span class="n">args</span><span class="p">,</span>
 
-        <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
 
-        <span class="n">cwd</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span>
+<span class="w">        </span><span class="n">cwd</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-    <span class="n">csl_items</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+<span class="w">    </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 
-    <span class="n">csl_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">csl_items</span><span class="p">]</span>
+<span class="w">    </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_items</span><span class="p">]</span>
 
-    <span class="n">standard_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;standard_id&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">csl_item</span> <span class="ow">in</span> <span class="n">csl_items</span><span class="p">]</span>
+<span class="w">    </span><span class="n">standard_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;standard_id&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">csl_item</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_items</span><span class="p">]</span>
 
-    <span class="k">assert</span> <span class="n">standard_ids</span> <span class="o">==</span> <span class="p">[</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">standard_ids</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span>
 
-        <span class="s2">&quot;pubmed:29618526&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;pubmed:29618526&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;doi:10.7717/peerj.338&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;doi:10.7717/peerj.338&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">,</span>
 
-    <span class="p">]</span>
+<span class="w">    </span><span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">test_cite_command_empty</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_cite_command_empty</span><span class="p">():</span>
 
-    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+<span class="w">    </span><span class="n">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
 
-        <span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">,</span> <span class="s2">&quot;cite&quot;</span><span class="p">],</span>
+<span class="w">        </span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;cite&quot;</span><span class="p">],</span>
 
-        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="w">        </span><span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 
-        <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">process</span><span class="o">.</span><span class="n">returncode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;the following arguments are required: citekeys&quot;</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">stderr</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;the following arguments are required: citekeys&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span>
 
-<span class="k">def</span> <span class="nf">test_cite_command_stdout</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_cite_command_stdout</span><span class="p">():</span>
 
-    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+<span class="w">    </span><span class="n">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
 
-        <span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">,</span> <span class="s2">&quot;cite&quot;</span><span class="p">,</span> <span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">],</span>
+<span class="w">        </span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;cite&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">],</span>
 
-        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="w">        </span><span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 
-        <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">process</span><span class="o">.</span><span class="n">returncode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span>
 
-    <span class="p">(</span><span class="n">csl</span><span class="p">,)</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="n">csl</span><span class="p">,)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">csl</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://arxiv.org/abs/1806.05726v1&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;https://arxiv.org/abs/1806.05726v1&quot;</span>
 
-<span class="k">def</span> <span class="nf">test_cite_command_file</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_cite_command_file</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">):</span>
 
-    <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;csl-items.json&quot;</span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="s2">&quot;csl-items.json&quot;</span>
 
-    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+<span class="w">    </span><span class="n">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
 
-        <span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">,</span> <span class="s2">&quot;cite&quot;</span><span class="p">,</span> <span class="s2">&quot;--output&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">],</span>
+<span class="w">        </span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;cite&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--output&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span><span class="w"> </span><span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">],</span>
 
-        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="w">        </span><span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
 
-    <span class="k">assert</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">process</span><span class="o">.</span><span class="n">returncode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span>
 
-    <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
+<span class="w">    </span><span class="k">with</span><span class="w"> </span><span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">()</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">read_file</span><span class="p">:</span>
 
-        <span class="p">(</span><span class="n">csl</span><span class="p">,)</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">read_file</span><span class="p">)</span>
+<span class="w">        </span><span class="p">(</span><span class="n">csl</span><span class="p">,)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">read_file</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">csl</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://arxiv.org/abs/1806.05726v1&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;https://arxiv.org/abs/1806.05726v1&quot;</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">integration</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-    <span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;filename&quot;</span><span class="p">],</span>
 
-    <span class="p">[</span>
+<span class="w">    </span><span class="p">[</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="p">[</span><span class="s2">&quot;--format&quot;</span><span class="p">,</span> <span class="s2">&quot;plain&quot;</span><span class="p">],</span> <span class="s2">&quot;references-plain-</span><span class="si">{}</span><span class="s2">.txt&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;--format=plain&quot;</span>
+<span class="w">            </span><span class="p">[</span><span class="s2">&quot;--format&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;plain&quot;</span><span class="p">],</span><span class="w"> </span><span class="s2">&quot;references-plain-</span><span class="si">{}</span><span class="s2">.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;--format=plain&quot;</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="p">[</span><span class="s2">&quot;--format&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="p">[</span><span class="s2">&quot;--format&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;markdown&quot;</span><span class="p">],</span>
 
-            <span class="s2">&quot;references-markdown-</span><span class="si">{}</span><span class="s2">.md&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;references-markdown-</span><span class="si">{}</span><span class="s2">.md&quot;</span><span class="p">,</span>
 
-            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;--format=markdown&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;--format=markdown&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="p">[</span><span class="s2">&quot;--format&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">],</span> <span class="s2">&quot;references-html-</span><span class="si">{}</span><span class="s2">.html&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;--format=html&quot;</span>
+<span class="w">            </span><span class="p">[</span><span class="s2">&quot;--format&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;html&quot;</span><span class="p">],</span><span class="w"> </span><span class="s2">&quot;references-html-</span><span class="si">{}</span><span class="s2">.html&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;--format=html&quot;</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="p">[</span><span class="s2">&quot;--format&quot;</span><span class="p">,</span> <span class="s2">&quot;jats&quot;</span><span class="p">],</span> <span class="s2">&quot;references-jats-</span><span class="si">{}</span><span class="s2">.xml&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;--format=jats&quot;</span>
+<span class="w">            </span><span class="p">[</span><span class="s2">&quot;--format&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;jats&quot;</span><span class="p">],</span><span class="w"> </span><span class="s2">&quot;references-jats-</span><span class="si">{}</span><span class="s2">.xml&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;--format=jats&quot;</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-    <span class="p">],</span>
+<span class="w">    </span><span class="p">],</span>
 
 <span class="p">)</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skipif</span><span class="p">(</span>
 
-    <span class="ow">not</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;pandoc&quot;</span><span class="p">),</span> <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;pandoc installation not found on system&quot;</span>
+<span class="w">    </span><span class="ow">not</span><span class="w"> </span><span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;pandoc&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;pandoc installation not found on system&quot;</span>
 
 <span class="p">)</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">pandoc_version_sensitive</span>
 
-<span class="k">def</span> <span class="nf">test_cite_command_render_stdout</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_cite_command_render_stdout</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Test the stdout output of `manubot cite` with various Pandoc-output formats.</span>
+<span class="s2">    Test the stdout output of `manubot cite` with various Pandoc-output formats.</span>
 
-<span class="sd">    The output is sensitive to the version of Pandoc used, so expected output</span>
+<span class="s2">    The output is sensitive to the version of Pandoc used, so expected output</span>
 
-<span class="sd">    files include the pandoc version stamp in their filename.</span>
+<span class="s2">    files include the pandoc version stamp in their filename.</span>
 
-<span class="sd">    When the expected version is missing, the test fails but writes the</span>
+<span class="s2">    When the expected version is missing, the test fails but writes the</span>
 
-<span class="sd">    command output to that file. Therefore, subsequent runs of the same test</span>
+<span class="s2">    command output to that file. Therefore, subsequent runs of the same test</span>
 
-<span class="sd">    will pass. Before committing the auto-generated output, do look to ensure</span>
+<span class="s2">    will pass. Before committing the auto-generated output, do look to ensure</span>
 
-<span class="sd">    its integrity.</span>
+<span class="s2">    its integrity.</span>
 
-<span class="sd">    This test uses --bibliography to avoid slow network calls.</span>
+<span class="s2">    This test uses --bibliography to avoid slow network calls.</span>
 
-<span class="sd">    Regenerate the CSL JSON using:</span>
+<span class="s2">    Regenerate the CSL JSON using:</span>
 
-<span class="sd">    ```shell</span>
+<span class="s2">    ```shell</span>
 
-<span class="sd">    manubot cite \</span>
+<span class="s2">    manubot cite </span><span class="se">\</span>
 
-<span class="sd">      --output=manubot/cite/tests/cite-command-rendered/input-bibliography.json \</span>
+<span class="s2">      --output=manubot/cite/tests/cite-command-rendered/input-bibliography.json </span><span class="se">\</span>
 
-<span class="sd">      arxiv:1806.05726v1 doi:10.7717/peerj.338 pmid:29618526</span>
+<span class="s2">      arxiv:1806.05726v1 doi:10.7717/peerj.338 pmid:29618526</span>
 
-<span class="sd">    ```</span>
+<span class="s2">    ```</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># get pandoc version info</span>
+<span class="w">    </span><span class="c1"># get pandoc version info</span>
 
-    <span class="n">pandoc_version</span> <span class="o">=</span> <span class="n">get_pandoc_version</span><span class="p">()</span>
+<span class="w">    </span><span class="n">pandoc_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_pandoc_version</span><span class="p">()</span>
 
-    <span class="n">pandoc_stamp</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">pandoc_version</span><span class="p">))</span>
+<span class="w">    </span><span class="n">pandoc_stamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">pandoc_version</span><span class="p">))</span>
 
-    <span class="n">path</span> <span class="o">=</span> <span class="n">data_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pandoc_stamp</span><span class="p">))</span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pandoc_stamp</span><span class="p">))</span>
 
-    <span class="c1"># skip test on old pandoc versions</span>
+<span class="w">    </span><span class="c1"># skip test on old pandoc versions</span>
 
-    <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">,</span> <span class="s2">&quot;jats&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="s2">&quot;markdown&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;html&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;jats&quot;</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="n">pandoc_version</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">pandoc_version</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">):</span>
 
-            <span class="n">pytest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2"> output assumes pandoc &gt;= 2.5&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">pytest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2"> output assumes pandoc &gt;= 2.5&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">pandoc_version</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">pandoc_version</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">):</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="s2">&quot;Test requires pandoc &gt;= 2.0 to support --lua-filter and --csl=URL&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="s2">&quot;Test requires pandoc &gt;= 2.0 to support --lua-filter and --csl=URL&quot;</span><span class="p">)</span>
 
-    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
+<span class="w">    </span><span class="n">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 
-        <span class="s2">&quot;manubot&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;manubot&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;cite&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;cite&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;--bibliography=input-bibliography.json&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--bibliography=input-bibliography.json&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;--csl=https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--csl=https://github.com/greenelab/manubot-rootstock/raw/e83e51dcd89256403bb787c3d9a46e4ee8d04a9e/build/assets/style.csl&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;doi:10.7717/peerj.338&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;doi:10.7717/peerj.338&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;pmid:29618526&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;pmid:29618526&quot;</span><span class="p">,</span>
 
-    <span class="p">]</span> <span class="o">+</span> <span class="n">args</span>
+<span class="w">    </span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">args</span>
 
-    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+<span class="w">    </span><span class="n">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
 
-        <span class="n">args</span><span class="p">,</span>
+<span class="w">        </span><span class="n">args</span><span class="p">,</span>
 
-        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="w">        </span><span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 
-        <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
 
-        <span class="n">cwd</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span>
+<span class="w">        </span><span class="n">cwd</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">process</span><span class="o">.</span><span class="n">returncode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
 
-        <span class="c1"># https://github.com/manubot/manubot/pull/146#discussion_r333132261</span>
+<span class="w">        </span><span class="c1"># https://github.com/manubot/manubot/pull/146#discussion_r333132261</span>
 
-        <span class="nb">print</span><span class="p">(</span>
+<span class="w">        </span><span class="nb">print</span><span class="p">(</span>
 
-            <span class="sa">f</span><span class="s2">&quot;Missing expected output at </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;Missing expected output at </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-            <span class="s2">&quot;Writing output to file such that future tests will pass.&quot;</span>
+<span class="w">            </span><span class="s2">&quot;Writing output to file such that future tests will pass.&quot;</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-        <span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 
-        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+<span class="w">        </span><span class="k">raise</span><span class="w"> </span><span class="n">AssertionError</span><span class="p">()</span>
 
-    <span class="n">expected</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">process</span><span class="o">.</span><span class="n">stdout</span> <span class="o">==</span> <span class="n">expected</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span>
 
-<span class="k">def</span> <span class="nf">test_cite_command_bibliography</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_cite_command_bibliography</span><span class="p">():</span>
 
-    <span class="n">bib_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span>
+<span class="w">    </span><span class="n">bib_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span>
 
-        <span class="s2">&quot;pandoc/tests/bibliographies&quot;</span>
+<span class="w">        </span><span class="s2">&quot;pandoc/tests/bibliographies&quot;</span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
+<span class="w">    </span><span class="n">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 
-        <span class="s2">&quot;manubot&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;manubot&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;cite&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;cite&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;--bibliography=bibliography.json&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--bibliography=bibliography.json&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;DOI:10.7554/elife.32822&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;DOI:10.7554/elife.32822&quot;</span><span class="p">,</span>
 
-    <span class="p">]</span>
+<span class="w">    </span><span class="p">]</span>
 
-    <span class="n">csl_json</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">bib_dir</span><span class="p">)</span>
+<span class="w">    </span><span class="n">csl_json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cwd</span><span class="o">=</span><span class="n">bib_dir</span><span class="p">)</span>
 
-    <span class="n">csl_items</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">csl_json</span><span class="p">)</span>
+<span class="w">    </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">csl_json</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">csl_items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">csl_items</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">csl_items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;source_bibliography: bibliography.json&quot;</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;source_bibliography: bibliography.json&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">teardown_module</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">teardown_module</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Avoid too many requests to NCBI E-Utils in the test_pubmed.py,</span>
+<span class="s2">    Avoid too many requests to NCBI E-Utils in the test_pubmed.py,</span>
 
-<span class="sd">    which is executed following this module. E-Utility requests are</span>
+<span class="s2">    which is executed following this module. E-Utility requests are</span>
 
-<span class="sd">    capped at 3 per second, which is usually controlled by _get_eutils_rate_limiter,</span>
+<span class="s2">    capped at 3 per second, which is usually controlled by _get_eutils_rate_limiter,</span>
 
-<span class="sd">    but this does not seem to work across test modules.</span>
+<span class="s2">    but this does not seem to work across test modules.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">time</span>
+<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">    </span><span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 
 </details>
@@ -2038,23 +2038,23 @@ capped at 3 per second, which is usually controlled by _get_eutils_rate_limiter,
 but this does not seem to work across test modules.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">teardown_module</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">teardown_module</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Avoid too many requests to NCBI E-Utils in the test_pubmed.py,</span>
+<span class="s2">    Avoid too many requests to NCBI E-Utils in the test_pubmed.py,</span>
 
-<span class="sd">    which is executed following this module. E-Utility requests are</span>
+<span class="s2">    which is executed following this module. E-Utility requests are</span>
 
-<span class="sd">    capped at 3 per second, which is usually controlled by _get_eutils_rate_limiter,</span>
+<span class="s2">    capped at 3 per second, which is usually controlled by _get_eutils_rate_limiter,</span>
 
-<span class="sd">    but this does not seem to work across test modules.</span>
+<span class="s2">    but this does not seem to work across test modules.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">time</span>
+<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">    </span><span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 
 </details>

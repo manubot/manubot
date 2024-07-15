@@ -1683,205 +1683,205 @@
 <h1 id="module-manubotutil">Module manubot.util</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">importlib</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
 
-<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
 
-<span class="kn">import</span> <span class="nn">platform</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
 
-<span class="kn">import</span> <span class="nn">shlex</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shlex</span>
 
-<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 
-<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 
-<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
-<span class="kn">import</span> <span class="nn">typing</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span>
 
-<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">ModuleType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">ModuleType</span>
 
-<span class="k">if</span> <span class="n">typing</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+<span class="k">if</span><span class="w"> </span><span class="n">typing</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
 
-    <span class="c1"># allow type annotations of lazy-imported packages</span>
+<span class="w">    </span><span class="c1"># allow type annotations of lazy-imported packages</span>
 
-    <span class="kn">import</span> <span class="nn">yaml</span>
+<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 
 <span class="c1"># Email address that forwards to Manubot maintainers</span>
 
-<span class="n">contact_email</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;contact@manubot.org&quot;</span>
+<span class="n">contact_email</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;contact@manubot.org&quot;</span>
 
-<span class="k">def</span> <span class="nf">import_function</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">import_function</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Import a function in a module specified by name. For example, if name were</span>
+<span class="s2">    Import a function in a module specified by name. For example, if name were</span>
 
-<span class="sd">    &#39;manubot.cite.cite_command.cli_cite&#39;, the cli_cite function would be</span>
+<span class="s2">    &#39;manubot.cite.cite_command.cli_cite&#39;, the cli_cite function would be</span>
 
-<span class="sd">    returned as an object. See https://stackoverflow.com/a/8790232/4651668.</span>
+<span class="s2">    returned as an object. See https://stackoverflow.com/a/8790232/4651668.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">module_name</span><span class="p">,</span> <span class="n">function_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="w">    </span><span class="n">module_name</span><span class="p">,</span><span class="w"> </span><span class="n">function_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+<span class="w">    </span><span class="n">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">function_name</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span><span class="w"> </span><span class="n">function_name</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">import_tomllib</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ModuleType</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">import_tomllib</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ModuleType</span><span class="p">:</span>
 
-    <span class="k">try</span><span class="p">:</span>
+<span class="w">    </span><span class="k">try</span><span class="p">:</span>
 
-        <span class="kn">import</span> <span class="nn">tomllib</span>
+<span class="w">        </span><span class="kn">import</span><span class="w"> </span><span class="nn">tomllib</span>
 
-    <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+<span class="w">    </span><span class="k">except</span><span class="w"> </span><span class="n">ModuleNotFoundError</span><span class="p">:</span>
 
-        <span class="kn">import</span> <span class="nn">tomli</span> <span class="k">as</span> <span class="nn">tomllib</span>
+<span class="w">        </span><span class="kn">import</span><span class="w"> </span><span class="nn">tomli</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tomllib</span>
 
-    <span class="k">return</span> <span class="n">tomllib</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">tomllib</span>
 
-<span class="k">def</span> <span class="nf">get_manubot_user_agent</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_manubot_user_agent</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Return a User-Agent string for web request headers to help services</span>
+<span class="s2">    Return a User-Agent string for web request headers to help services</span>
 
-<span class="sd">    identify requests as coming from Manubot.</span>
+<span class="s2">    identify requests as coming from Manubot.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="k">try</span><span class="p">:</span>
+<span class="w">    </span><span class="k">try</span><span class="p">:</span>
 
-        <span class="kn">from</span> <span class="nn">manubot</span> <span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">manubot_version</span>
+<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">__version__</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">manubot_version</span>
 
-    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+<span class="w">    </span><span class="k">except</span><span class="w"> </span><span class="n">ImportError</span><span class="p">:</span>
 
-        <span class="n">manubot_version</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="w">        </span><span class="n">manubot_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="p">(</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
 
-        <span class="sa">f</span><span class="s2">&quot;manubot/</span><span class="si">{</span><span class="n">manubot_version</span><span class="si">}</span><span class="s2"> &quot;</span>
+<span class="w">        </span><span class="sa">f</span><span class="s2">&quot;manubot/</span><span class="si">{</span><span class="n">manubot_version</span><span class="si">}</span><span class="s2"> &quot;</span>
 
-        <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span><span class="si">}</span><span class="s2">; Python/</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">minor</span><span class="si">}</span><span class="s2">) &quot;</span>
+<span class="w">        </span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span><span class="si">}</span><span class="s2">; Python/</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">minor</span><span class="si">}</span><span class="s2">) &quot;</span>
 
-        <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="n">contact_email</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
+<span class="w">        </span><span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="n">contact_email</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">shlex_join</span><span class="p">(</span><span class="n">split_command</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">shlex_join</span><span class="p">(</span><span class="n">split_command</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Backport shlex.join for Python &lt; 3.8.</span>
+<span class="s2">    Backport shlex.join for Python &lt; 3.8.</span>
 
-<span class="sd">    Also cast all args to str to increase versatility.</span>
+<span class="s2">    Also cast all args to str to increase versatility.</span>
 
-<span class="sd">    https://github.com/python/cpython/pull/7605</span>
+<span class="s2">    https://github.com/python/cpython/pull/7605</span>
 
-<span class="sd">    https://bugs.python.org/issue22454</span>
+<span class="s2">    https://bugs.python.org/issue22454</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">shlex</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">split_command</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">shlex</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">arg</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">split_command</span><span class="p">)</span>
 
 <span class="sd">&quot;&quot;&quot;Valid schemes for HTTP URL detection&quot;&quot;&quot;</span>
 
-<span class="n">_http_url_schemes</span><span class="p">:</span> <span class="nb">set</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="s2">&quot;https&quot;</span><span class="p">}</span>
+<span class="n">_http_url_schemes</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;http&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;https&quot;</span><span class="p">}</span>
 
-<span class="k">def</span> <span class="nf">is_http_url</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_http_url</span><span class="p">(</span><span class="n">string</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">bool</span><span class="p">:</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Return whether `string` is an HTTP(s) Uniform Resource Locator (URL).</span>
+<span class="s2">    Return whether `string` is an HTTP(s) Uniform Resource Locator (URL).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
+<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">urlparse</span>
 
-    <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+<span class="w">    </span><span class="n">parsed_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">urlparse</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">in</span> <span class="n">_http_url_schemes</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_http_url_schemes</span>
 
-<span class="k">def</span> <span class="nf">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Read seralized data from a local file path or web-address.</span>
+<span class="s2">    Read seralized data from a local file path or web-address.</span>
 
-<span class="sd">    If file format extension is not detected in path, assumes JSON.</span>
+<span class="s2">    If file format extension is not detected in path, assumes JSON.</span>
 
-<span class="sd">    If a URL does not contain the appropriate suffix, one workaround</span>
+<span class="s2">    If a URL does not contain the appropriate suffix, one workaround</span>
 
-<span class="sd">    is to hack the fragment like https://example.org#/variables.toml</span>
+<span class="s2">    is to hack the fragment like https://example.org#/variables.toml</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">requests</span>
+<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
-    <span class="n">path_str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">    </span><span class="n">path_str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-    <span class="n">path_obj</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">    </span><span class="n">path_obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-    <span class="n">supported_suffixes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;.toml&quot;</span><span class="p">}</span>
+<span class="w">    </span><span class="n">supported_suffixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;.yml&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;.toml&quot;</span><span class="p">}</span>
 
-    <span class="n">suffixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">path_obj</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
+<span class="w">    </span><span class="n">suffixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">set</span><span class="p">(</span><span class="n">path_obj</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">is_http_url</span><span class="p">(</span><span class="n">path_str</span><span class="p">):</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">is_http_url</span><span class="p">(</span><span class="n">path_str</span><span class="p">):</span>
 
-        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">()}</span>
+<span class="w">        </span><span class="n">headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">get_manubot_user_agent</span><span class="p">()}</span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path_str</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+<span class="w">        </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path_str</span><span class="p">,</span><span class="w"> </span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">suffixes</span> <span class="o">&amp;</span> <span class="n">supported_suffixes</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">suffixes</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">supported_suffixes</span><span class="p">:</span>
 
-            <span class="c1"># if URL has no supported suffixes, evaluate suffixes of final redirect</span>
+<span class="w">            </span><span class="c1"># if URL has no supported suffixes, evaluate suffixes of final redirect</span>
 
-            <span class="n">suffixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
+<span class="w">            </span><span class="n">suffixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">set</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
 
-        <span class="n">text</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+<span class="w">        </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">text</span>
 
-    <span class="k">else</span><span class="p">:</span>
+<span class="w">    </span><span class="k">else</span><span class="p">:</span>
 
-        <span class="n">text</span> <span class="o">=</span> <span class="n">path_obj</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">path_obj</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="p">{</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">}</span> <span class="o">&amp;</span> <span class="n">suffixes</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;.yml&quot;</span><span class="p">}</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">suffixes</span><span class="p">:</span>
 
-        <span class="kn">import</span> <span class="nn">yaml</span>
+<span class="w">        </span><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 
-        <span class="k">try</span><span class="p">:</span>
+<span class="w">        </span><span class="k">try</span><span class="p">:</span>
 
-            <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-        <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">ParserError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">yaml</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">ParserError</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">error</span><span class="p">:</span>
 
-            <span class="n">_lint_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">            </span><span class="n">_lint_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-            <span class="k">raise</span> <span class="n">error</span>
+<span class="w">            </span><span class="k">raise</span><span class="w"> </span><span class="n">error</span>
 
-    <span class="k">if</span> <span class="s2">&quot;.toml&quot;</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;.toml&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">suffixes</span><span class="p">:</span>
 
-        <span class="k">return</span> <span class="n">import_tomllib</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">import_tomllib</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="s2">&quot;.json&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;.json&quot;</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">suffixes</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
-            <span class="sa">f</span><span class="s2">&quot;read_serialized_data cannot infer serialization format from the extension of </span><span class="si">{</span><span class="n">path_str</span><span class="si">!r}</span><span class="s2">. &quot;</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;read_serialized_data cannot infer serialization format from the extension of </span><span class="si">{</span><span class="n">path_str</span><span class="si">!r}</span><span class="s2">. &quot;</span>
 
-            <span class="sa">f</span><span class="s2">&quot;Supported extensions are </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supported_suffixes</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;Supported extensions are </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supported_suffixes</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
 
-            <span class="s2">&quot;Assuming JSON.&quot;</span>
+<span class="w">            </span><span class="s2">&quot;Assuming JSON.&quot;</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1889,115 +1889,115 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">_yamllint_config</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">_yamllint_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 
-    <span class="s2">&quot;extends&quot;</span><span class="p">:</span> <span class="s2">&quot;relaxed&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;extends&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;relaxed&quot;</span><span class="p">,</span>
 
-    <span class="s2">&quot;rules&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;line-length&quot;</span><span class="p">:</span> <span class="s2">&quot;disable&quot;</span><span class="p">,</span> <span class="s2">&quot;trailing-spaces&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;warning&quot;</span><span class="p">}},</span>
+<span class="w">    </span><span class="s2">&quot;rules&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;line-length&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;disable&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;trailing-spaces&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;warning&quot;</span><span class="p">}},</span>
 
 <span class="p">}</span>
 
-<span class="k">def</span> <span class="nf">_lint_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_lint_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;yamllint&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;yamllint&quot;</span><span class="p">):</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;yamllint executable not found, skipping linting for </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;yamllint executable not found, skipping linting for </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span>
+<span class="w">        </span><span class="k">return</span>
 
-    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
+<span class="w">    </span><span class="n">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 
-        <span class="s2">&quot;yamllint&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;yamllint&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;--config-data&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;--config-data&quot;</span><span class="p">,</span>
 
-        <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">_yamllint_config</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+<span class="w">        </span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">_yamllint_config</span><span class="p">,</span><span class="w"> </span><span class="n">indent</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
 
-        <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">),</span>
+<span class="w">        </span><span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">),</span>
 
-    <span class="p">]</span>
+<span class="w">    </span><span class="p">]</span>
 
-    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;yamllint </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;yamllint </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+<span class="w">    </span><span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">stdout</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">read_serialized_dict</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_serialized_dict</span><span class="p">(</span><span class="n">path</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">dict</span><span class="p">:</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Read serialized data, confirming that the top-level object is a dictionary.</span>
+<span class="s2">    Read serialized data, confirming that the top-level object is a dictionary.</span>
 
-<span class="sd">    Delegates to `read_serialized_data`.</span>
+<span class="s2">    Delegates to `read_serialized_data`.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">data</span> <span class="o">=</span> <span class="n">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">    </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="nb">dict</span><span class="p">):</span>
 
-        <span class="k">return</span> <span class="n">data</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">data</span>
 
-    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+<span class="w">    </span><span class="k">raise</span><span class="w"> </span><span class="n">TypeError</span><span class="p">(</span>
 
-        <span class="sa">f</span><span class="s2">&quot;Expected data encoded by </span><span class="si">{</span><span class="n">path</span><span class="si">!r}</span><span class="s2"> to be a dictionary at the top-level. &quot;</span>
+<span class="w">        </span><span class="sa">f</span><span class="s2">&quot;Expected data encoded by </span><span class="si">{</span><span class="n">path</span><span class="si">!r}</span><span class="s2"> to be a dictionary at the top-level. &quot;</span>
 
-        <span class="sa">f</span><span class="s2">&quot;Received </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> instead.&quot;</span>
+<span class="w">        </span><span class="sa">f</span><span class="s2">&quot;Received </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> instead.&quot;</span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">_yaml_str_representer</span><span class="p">(</span><span class="n">dumper</span><span class="p">:</span> <span class="s2">&quot;yaml.Dumper&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_yaml_str_representer</span><span class="p">(</span><span class="n">dumper</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;yaml.Dumper&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Use YAML literal block style for multiline strings.</span>
+<span class="s2">    Use YAML literal block style for multiline strings.</span>
 
-<span class="sd">    Based on https://stackoverflow.com/a/33300001/4651668</span>
+<span class="s2">    Based on https://stackoverflow.com/a/33300001/4651668</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
 
-        <span class="c1"># use literal block style for multiline strings</span>
+<span class="w">        </span><span class="c1"># use literal block style for multiline strings</span>
 
-        <span class="k">return</span> <span class="n">dumper</span><span class="o">.</span><span class="n">represent_scalar</span><span class="p">(</span><span class="s2">&quot;tag:yaml.org,2002:str&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">dumper</span><span class="o">.</span><span class="n">represent_scalar</span><span class="p">(</span><span class="s2">&quot;tag:yaml.org,2002:str&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">dumper</span><span class="o">.</span><span class="n">represent_scalar</span><span class="p">(</span><span class="s2">&quot;tag:yaml.org,2002:str&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">dumper</span><span class="o">.</span><span class="n">represent_scalar</span><span class="p">(</span><span class="s2">&quot;tag:yaml.org,2002:str&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">get_configured_yaml</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ModuleType</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_configured_yaml</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ModuleType</span><span class="p">:</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Return imported YAML library with Manubot configuration.</span>
+<span class="s2">    Return imported YAML library with Manubot configuration.</span>
 
-<span class="sd">    The representers are only applied to yaml.dump, not yaml.safe_dump.</span>
+<span class="s2">    The representers are only applied to yaml.dump, not yaml.safe_dump.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">yaml</span>
+<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 
-    <span class="kn">from</span> <span class="nn">manubot.cite.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
+<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.csl_item</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CSL_Item</span>
 
-    <span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">_yaml_str_representer</span><span class="p">)</span>
+<span class="w">    </span><span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">_yaml_str_representer</span><span class="p">)</span>
 
-    <span class="c1"># CSL_Item: pyyaml chokes on dict subclass</span>
+<span class="w">    </span><span class="c1"># CSL_Item: pyyaml chokes on dict subclass</span>
 
-    <span class="c1"># https://github.com/yaml/pyyaml/issues/142</span>
+<span class="w">    </span><span class="c1"># https://github.com/yaml/pyyaml/issues/142</span>
 
-    <span class="c1"># https://stackoverflow.com/a/50181505/4651668</span>
+<span class="w">    </span><span class="c1"># https://stackoverflow.com/a/50181505/4651668</span>
 
-    <span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span>
+<span class="w">    </span><span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span>
 
-        <span class="n">CSL_Item</span><span class="p">,</span>
+<span class="w">        </span><span class="n">CSL_Item</span><span class="p">,</span>
 
-        <span class="k">lambda</span> <span class="n">dumper</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">dumper</span><span class="o">.</span><span class="n">represent_mapping</span><span class="p">(</span>
+<span class="w">        </span><span class="k">lambda</span><span class="w"> </span><span class="n">dumper</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">:</span><span class="w"> </span><span class="n">dumper</span><span class="o">.</span><span class="n">represent_mapping</span><span class="p">(</span>
 
-            <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;tag:yaml.org,2002:map&quot;</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="w">            </span><span class="n">tag</span><span class="o">=</span><span class="s2">&quot;tag:yaml.org,2002:map&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">mapping</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">yaml</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">yaml</span>
 </code></pre></div>
 
 </details>
@@ -2016,41 +2016,41 @@
 <p>The representers are only applied to yaml.dump, not yaml.safe_dump.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_configured_yaml</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ModuleType</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_configured_yaml</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ModuleType</span><span class="p">:</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Return imported YAML library with Manubot configuration.</span>
+<span class="s2">    Return imported YAML library with Manubot configuration.</span>
 
-<span class="sd">    The representers are only applied to yaml.dump, not yaml.safe_dump.</span>
+<span class="s2">    The representers are only applied to yaml.dump, not yaml.safe_dump.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">yaml</span>
+<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 
-    <span class="kn">from</span> <span class="nn">manubot.cite.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
+<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.csl_item</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CSL_Item</span>
 
-    <span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">_yaml_str_representer</span><span class="p">)</span>
+<span class="w">    </span><span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">_yaml_str_representer</span><span class="p">)</span>
 
-    <span class="c1"># CSL_Item: pyyaml chokes on dict subclass</span>
+<span class="w">    </span><span class="c1"># CSL_Item: pyyaml chokes on dict subclass</span>
 
-    <span class="c1"># https://github.com/yaml/pyyaml/issues/142</span>
+<span class="w">    </span><span class="c1"># https://github.com/yaml/pyyaml/issues/142</span>
 
-    <span class="c1"># https://stackoverflow.com/a/50181505/4651668</span>
+<span class="w">    </span><span class="c1"># https://stackoverflow.com/a/50181505/4651668</span>
 
-    <span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span>
+<span class="w">    </span><span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span>
 
-        <span class="n">CSL_Item</span><span class="p">,</span>
+<span class="w">        </span><span class="n">CSL_Item</span><span class="p">,</span>
 
-        <span class="k">lambda</span> <span class="n">dumper</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">dumper</span><span class="o">.</span><span class="n">represent_mapping</span><span class="p">(</span>
+<span class="w">        </span><span class="k">lambda</span><span class="w"> </span><span class="n">dumper</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">:</span><span class="w"> </span><span class="n">dumper</span><span class="o">.</span><span class="n">represent_mapping</span><span class="p">(</span>
 
-            <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;tag:yaml.org,2002:map&quot;</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="w">            </span><span class="n">tag</span><span class="o">=</span><span class="s2">&quot;tag:yaml.org,2002:map&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">mapping</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">yaml</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">yaml</span>
 </code></pre></div>
 
 </details>
@@ -2064,33 +2064,33 @@
 <p>identify requests as coming from Manubot.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_manubot_user_agent</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_manubot_user_agent</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Return a User-Agent string for web request headers to help services</span>
+<span class="s2">    Return a User-Agent string for web request headers to help services</span>
 
-<span class="sd">    identify requests as coming from Manubot.</span>
+<span class="s2">    identify requests as coming from Manubot.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="k">try</span><span class="p">:</span>
+<span class="w">    </span><span class="k">try</span><span class="p">:</span>
 
-        <span class="kn">from</span> <span class="nn">manubot</span> <span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">manubot_version</span>
+<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">__version__</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">manubot_version</span>
 
-    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+<span class="w">    </span><span class="k">except</span><span class="w"> </span><span class="n">ImportError</span><span class="p">:</span>
 
-        <span class="n">manubot_version</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="w">        </span><span class="n">manubot_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="p">(</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
 
-        <span class="sa">f</span><span class="s2">&quot;manubot/</span><span class="si">{</span><span class="n">manubot_version</span><span class="si">}</span><span class="s2"> &quot;</span>
+<span class="w">        </span><span class="sa">f</span><span class="s2">&quot;manubot/</span><span class="si">{</span><span class="n">manubot_version</span><span class="si">}</span><span class="s2"> &quot;</span>
 
-        <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span><span class="si">}</span><span class="s2">; Python/</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">minor</span><span class="si">}</span><span class="s2">) &quot;</span>
+<span class="w">        </span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span><span class="si">}</span><span class="s2">; Python/</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">minor</span><span class="si">}</span><span class="s2">) &quot;</span>
 
-        <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="n">contact_email</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
+<span class="w">        </span><span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="n">contact_email</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
 </code></pre></div>
 
 </details>
@@ -2133,17 +2133,17 @@ returned as an object. See https://stackoverflow.com/a/8790232/4651668.</p>
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">import_tomllib</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ModuleType</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">import_tomllib</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ModuleType</span><span class="p">:</span>
 
-    <span class="k">try</span><span class="p">:</span>
+<span class="w">    </span><span class="k">try</span><span class="p">:</span>
 
-        <span class="kn">import</span> <span class="nn">tomllib</span>
+<span class="w">        </span><span class="kn">import</span><span class="w"> </span><span class="nn">tomllib</span>
 
-    <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+<span class="w">    </span><span class="k">except</span><span class="w"> </span><span class="n">ModuleNotFoundError</span><span class="p">:</span>
 
-        <span class="kn">import</span> <span class="nn">tomli</span> <span class="k">as</span> <span class="nn">tomllib</span>
+<span class="w">        </span><span class="kn">import</span><span class="w"> </span><span class="nn">tomli</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tomllib</span>
 
-    <span class="k">return</span> <span class="n">tomllib</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">tomllib</span>
 </code></pre></div>
 
 </details>
@@ -2156,19 +2156,19 @@ returned as an object. See https://stackoverflow.com/a/8790232/4651668.</p>
 <p>Return whether <code>string</code> is an HTTP(s) Uniform Resource Locator (URL).</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">is_http_url</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_http_url</span><span class="p">(</span><span class="n">string</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">bool</span><span class="p">:</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Return whether `string` is an HTTP(s) Uniform Resource Locator (URL).</span>
+<span class="s2">    Return whether `string` is an HTTP(s) Uniform Resource Locator (URL).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
+<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">urlparse</span>
 
-    <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+<span class="w">    </span><span class="n">parsed_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">urlparse</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">in</span> <span class="n">_http_url_schemes</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_http_url_schemes</span>
 </code></pre></div>
 
 </details>
@@ -2184,79 +2184,79 @@ If a URL does not contain the appropriate suffix, one workaround
 is to hack the fragment like https://example.org#/variables.toml</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Read seralized data from a local file path or web-address.</span>
+<span class="s2">    Read seralized data from a local file path or web-address.</span>
 
-<span class="sd">    If file format extension is not detected in path, assumes JSON.</span>
+<span class="s2">    If file format extension is not detected in path, assumes JSON.</span>
 
-<span class="sd">    If a URL does not contain the appropriate suffix, one workaround</span>
+<span class="s2">    If a URL does not contain the appropriate suffix, one workaround</span>
 
-<span class="sd">    is to hack the fragment like https://example.org#/variables.toml</span>
+<span class="s2">    is to hack the fragment like https://example.org#/variables.toml</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">requests</span>
+<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
-    <span class="n">path_str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">    </span><span class="n">path_str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-    <span class="n">path_obj</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">    </span><span class="n">path_obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-    <span class="n">supported_suffixes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;.toml&quot;</span><span class="p">}</span>
+<span class="w">    </span><span class="n">supported_suffixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;.yml&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;.toml&quot;</span><span class="p">}</span>
 
-    <span class="n">suffixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">path_obj</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
+<span class="w">    </span><span class="n">suffixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">set</span><span class="p">(</span><span class="n">path_obj</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">is_http_url</span><span class="p">(</span><span class="n">path_str</span><span class="p">):</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">is_http_url</span><span class="p">(</span><span class="n">path_str</span><span class="p">):</span>
 
-        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">()}</span>
+<span class="w">        </span><span class="n">headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">get_manubot_user_agent</span><span class="p">()}</span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path_str</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+<span class="w">        </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path_str</span><span class="p">,</span><span class="w"> </span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">suffixes</span> <span class="o">&amp;</span> <span class="n">supported_suffixes</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">suffixes</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">supported_suffixes</span><span class="p">:</span>
 
-            <span class="c1"># if URL has no supported suffixes, evaluate suffixes of final redirect</span>
+<span class="w">            </span><span class="c1"># if URL has no supported suffixes, evaluate suffixes of final redirect</span>
 
-            <span class="n">suffixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
+<span class="w">            </span><span class="n">suffixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">set</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span>
 
-        <span class="n">text</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+<span class="w">        </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">text</span>
 
-    <span class="k">else</span><span class="p">:</span>
+<span class="w">    </span><span class="k">else</span><span class="p">:</span>
 
-        <span class="n">text</span> <span class="o">=</span> <span class="n">path_obj</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">path_obj</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="p">{</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">}</span> <span class="o">&amp;</span> <span class="n">suffixes</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;.yml&quot;</span><span class="p">}</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">suffixes</span><span class="p">:</span>
 
-        <span class="kn">import</span> <span class="nn">yaml</span>
+<span class="w">        </span><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 
-        <span class="k">try</span><span class="p">:</span>
+<span class="w">        </span><span class="k">try</span><span class="p">:</span>
 
-            <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-        <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">ParserError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">yaml</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">ParserError</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">error</span><span class="p">:</span>
 
-            <span class="n">_lint_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">            </span><span class="n">_lint_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-            <span class="k">raise</span> <span class="n">error</span>
+<span class="w">            </span><span class="k">raise</span><span class="w"> </span><span class="n">error</span>
 
-    <span class="k">if</span> <span class="s2">&quot;.toml&quot;</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;.toml&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">suffixes</span><span class="p">:</span>
 
-        <span class="k">return</span> <span class="n">import_tomllib</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">import_tomllib</span><span class="p">()</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="s2">&quot;.json&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;.json&quot;</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">suffixes</span><span class="p">:</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
-            <span class="sa">f</span><span class="s2">&quot;read_serialized_data cannot infer serialization format from the extension of </span><span class="si">{</span><span class="n">path_str</span><span class="si">!r}</span><span class="s2">. &quot;</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;read_serialized_data cannot infer serialization format from the extension of </span><span class="si">{</span><span class="n">path_str</span><span class="si">!r}</span><span class="s2">. &quot;</span>
 
-            <span class="sa">f</span><span class="s2">&quot;Supported extensions are </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supported_suffixes</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;Supported extensions are </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supported_suffixes</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
 
-            <span class="s2">&quot;Assuming JSON.&quot;</span>
+<span class="w">            </span><span class="s2">&quot;Assuming JSON.&quot;</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 </code></pre></div>
 
 </details>

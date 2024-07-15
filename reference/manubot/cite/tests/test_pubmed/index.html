@@ -1603,97 +1603,97 @@
 <h1 id="module-manubotciteteststest_pubmed">Module manubot.cite.tests.test_pubmed</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pytest</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
 
-<span class="kn">from</span> <span class="nn">manubot.cite.pubmed</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.pubmed</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
 
-    <span class="n">get_pmcid_and_pmid_for_doi</span><span class="p">,</span>
+<span class="w">    </span><span class="n">get_pmcid_and_pmid_for_doi</span><span class="p">,</span>
 
-    <span class="n">get_pmid_for_doi</span><span class="p">,</span>
+<span class="w">    </span><span class="n">get_pmid_for_doi</span><span class="p">,</span>
 
-    <span class="n">get_pubmed_ids_for_doi</span><span class="p">,</span>
+<span class="w">    </span><span class="n">get_pubmed_ids_for_doi</span><span class="p">,</span>
 
 <span class="p">)</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-    <span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;pmid&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;pmid&quot;</span><span class="p">),</span>
 
-    <span class="p">[</span>
+<span class="w">    </span><span class="p">[</span>
 
-        <span class="p">(</span><span class="s2">&quot;10.1098/rsif.2017.0387&quot;</span><span class="p">,</span> <span class="s2">&quot;29618526&quot;</span><span class="p">),</span>  <span class="c1"># in PubMed and PMC</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;10.1098/rsif.2017.0387&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;29618526&quot;</span><span class="p">),</span><span class="w">  </span><span class="c1"># in PubMed and PMC</span>
 
-        <span class="p">(</span><span class="s2">&quot;10.1161/CIRCGENETICS.115.001181&quot;</span><span class="p">,</span> <span class="s2">&quot;27094199&quot;</span><span class="p">),</span>  <span class="c1"># in PubMed but not PMC</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;10.1161/CIRCGENETICS.115.001181&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;27094199&quot;</span><span class="p">),</span><span class="w">  </span><span class="c1"># in PubMed but not PMC</span>
 
-        <span class="p">(</span><span class="s2">&quot;10.7717/peerj-cs.134&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>  <span class="c1"># DOI in journal not indexed by PubMed</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;10.7717/peerj-cs.134&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">),</span><span class="w">  </span><span class="c1"># DOI in journal not indexed by PubMed</span>
 
-        <span class="p">(</span><span class="s2">&quot;10.1161/CIRC&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>  <span class="c1"># invalid DOI</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;10.1161/CIRC&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">),</span><span class="w">  </span><span class="c1"># invalid DOI</span>
 
-    <span class="p">],</span>
+<span class="w">    </span><span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_get_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">pmid</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_get_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span><span class="w"> </span><span class="n">pmid</span><span class="p">):</span>
 
-    <span class="n">output</span> <span class="o">=</span> <span class="n">get_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">pmid</span> <span class="o">==</span> <span class="n">output</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">pmid</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">output</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-    <span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;id_dict&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;id_dict&quot;</span><span class="p">),</span>
 
-    <span class="p">[</span>
+<span class="w">    </span><span class="p">[</span>
 
-        <span class="p">(</span><span class="s2">&quot;10.1098/rsif.2017.0387&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;PMCID&quot;</span><span class="p">:</span> <span class="s2">&quot;PMC5938574&quot;</span><span class="p">,</span> <span class="s2">&quot;PMID&quot;</span><span class="p">:</span> <span class="s2">&quot;29618526&quot;</span><span class="p">}),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;10.1098/rsif.2017.0387&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;PMCID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PMC5938574&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;PMID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;29618526&quot;</span><span class="p">}),</span>
 
-        <span class="p">(</span><span class="s2">&quot;10.7554/ELIFE.32822&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;PMCID&quot;</span><span class="p">:</span> <span class="s2">&quot;PMC5832410&quot;</span><span class="p">,</span> <span class="s2">&quot;PMID&quot;</span><span class="p">:</span> <span class="s2">&quot;29424689&quot;</span><span class="p">}),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;10.7554/ELIFE.32822&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;PMCID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PMC5832410&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;PMID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;29424689&quot;</span><span class="p">}),</span>
 
-        <span class="p">(</span><span class="s2">&quot;10.1161/CIRCGENETICS.115.001181&quot;</span><span class="p">,</span> <span class="p">{}),</span>  <span class="c1"># only in PubMed, not in PMC</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;10.1161/CIRCGENETICS.115.001181&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{}),</span><span class="w">  </span><span class="c1"># only in PubMed, not in PMC</span>
 
-        <span class="p">(</span><span class="s2">&quot;10.7717/peerj.000&quot;</span><span class="p">,</span> <span class="p">{}),</span>  <span class="c1"># Non-existent DOI</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;10.7717/peerj.000&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{}),</span><span class="w">  </span><span class="c1"># Non-existent DOI</span>
 
-        <span class="p">(</span><span class="s2">&quot;10.peerj.000&quot;</span><span class="p">,</span> <span class="p">{}),</span>  <span class="c1"># malformed DOI</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;10.peerj.000&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{}),</span><span class="w">  </span><span class="c1"># malformed DOI</span>
 
-    <span class="p">],</span>
+<span class="w">    </span><span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_get_pmcid_and_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">id_dict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_get_pmcid_and_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span><span class="w"> </span><span class="n">id_dict</span><span class="p">):</span>
 
-    <span class="n">output</span> <span class="o">=</span> <span class="n">get_pmcid_and_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_pmcid_and_pmid_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">id_dict</span> <span class="o">==</span> <span class="n">output</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">id_dict</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">output</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-    <span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;id_dict&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;id_dict&quot;</span><span class="p">),</span>
 
-    <span class="p">[</span>
+<span class="w">    </span><span class="p">[</span>
 
-        <span class="p">(</span><span class="s2">&quot;10.1098/rsif.2017.0387&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;PMCID&quot;</span><span class="p">:</span> <span class="s2">&quot;PMC5938574&quot;</span><span class="p">,</span> <span class="s2">&quot;PMID&quot;</span><span class="p">:</span> <span class="s2">&quot;29618526&quot;</span><span class="p">}),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;10.1098/rsif.2017.0387&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;PMCID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PMC5938574&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;PMID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;29618526&quot;</span><span class="p">}),</span>
 
-        <span class="p">(</span><span class="s2">&quot;10.7554/ELIFE.32822&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;PMCID&quot;</span><span class="p">:</span> <span class="s2">&quot;PMC5832410&quot;</span><span class="p">,</span> <span class="s2">&quot;PMID&quot;</span><span class="p">:</span> <span class="s2">&quot;29424689&quot;</span><span class="p">}),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;10.7554/ELIFE.32822&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;PMCID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PMC5832410&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;PMID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;29424689&quot;</span><span class="p">}),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;10.1161/CIRCGENETICS.115.001181&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;10.1161/CIRCGENETICS.115.001181&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span><span class="s2">&quot;PMID&quot;</span><span class="p">:</span> <span class="s2">&quot;27094199&quot;</span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="s2">&quot;PMID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;27094199&quot;</span><span class="p">},</span>
 
-        <span class="p">),</span>  <span class="c1"># only in PubMed, not in PMC</span>
+<span class="w">        </span><span class="p">),</span><span class="w">  </span><span class="c1"># only in PubMed, not in PMC</span>
 
-        <span class="p">(</span><span class="s2">&quot;10.7717/peerj.000&quot;</span><span class="p">,</span> <span class="p">{}),</span>  <span class="c1"># Non-existent DOI</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;10.7717/peerj.000&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{}),</span><span class="w">  </span><span class="c1"># Non-existent DOI</span>
 
-    <span class="p">],</span>
+<span class="w">    </span><span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_get_pubmed_ids_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">id_dict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_get_pubmed_ids_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span><span class="w"> </span><span class="n">id_dict</span><span class="p">):</span>
 
-    <span class="n">output</span> <span class="o">=</span> <span class="n">get_pubmed_ids_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_pubmed_ids_for_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">id_dict</span> <span class="o">==</span> <span class="n">output</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">id_dict</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">output</span>
 </code></pre></div>
 
 </details>

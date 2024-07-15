@@ -3814,21 +3814,21 @@ Raises KeyError if the dict is empty.</p>
 <p>Remove fields that violate the CSL Item JSON Schema.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">prune_against_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CSL_Item&quot;</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">prune_against_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s2">&quot;CSL_Item&quot;</span><span class="p">:</span>
 
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">        Remove fields that violate the CSL Item JSON Schema.</span>
+<span class="s2">        Remove fields that violate the CSL Item JSON Schema.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="s2">        &quot;&quot;&quot;</span>
 
-        <span class="kn">from</span> <span class="nn">.citeproc</span> <span class="kn">import</span> <span class="n">remove_jsonschema_errors</span>
+<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.citeproc</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">remove_jsonschema_errors</span>
 
-        <span class="p">(</span><span class="n">csl_item</span><span class="p">,)</span> <span class="o">=</span> <span class="n">remove_jsonschema_errors</span><span class="p">([</span><span class="bp">self</span><span class="p">],</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="w">        </span><span class="p">(</span><span class="n">csl_item</span><span class="p">,)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">remove_jsonschema_errors</span><span class="p">([</span><span class="bp">self</span><span class="p">],</span><span class="w"> </span><span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="k">assert</span> <span class="n">csl_item</span> <span class="ow">is</span> <span class="bp">self</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="bp">self</span>
 
-        <span class="k">return</span> <span class="bp">self</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span>
 </code></pre></div>
 
 </details>
@@ -4019,23 +4019,23 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 <p>jsonschema.exceptions.ValidationError.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">validate_against_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CSL_Item&quot;</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">validate_against_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s2">&quot;CSL_Item&quot;</span><span class="p">:</span>
 
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">        Confirm that the CSL_Item validates. If not, raises a</span>
+<span class="s2">        Confirm that the CSL_Item validates. If not, raises a</span>
 
-<span class="sd">        jsonschema.exceptions.ValidationError.</span>
+<span class="s2">        jsonschema.exceptions.ValidationError.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="s2">        &quot;&quot;&quot;</span>
 
-        <span class="kn">from</span> <span class="nn">.citeproc</span> <span class="kn">import</span> <span class="n">get_jsonschema_csl_validator</span>
+<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.citeproc</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">get_jsonschema_csl_validator</span>
 
-        <span class="n">validator</span> <span class="o">=</span> <span class="n">get_jsonschema_csl_validator</span><span class="p">()</span>
+<span class="w">        </span><span class="n">validator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_jsonschema_csl_validator</span><span class="p">()</span>
 
-        <span class="n">validator</span><span class="o">.</span><span class="n">validate</span><span class="p">([</span><span class="bp">self</span><span class="p">])</span>
+<span class="w">        </span><span class="n">validator</span><span class="o">.</span><span class="n">validate</span><span class="p">([</span><span class="bp">self</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="bp">self</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span>
 </code></pre></div>
 
 </details>

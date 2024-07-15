@@ -1662,511 +1662,511 @@
 <summary>View Source</summary>
 <div class="codehilite"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Tests rest of functions in manubot.cite, not covered by test_citekey_api.py.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
 
-<span class="kn">from</span> <span class="nn">manubot.cite.citekey</span> <span class="kn">import</span> <span class="n">CiteKey</span><span class="p">,</span> <span class="n">shorten_citekey</span><span class="p">,</span> <span class="n">url_to_citekey</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.citekey</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">,</span><span class="w"> </span><span class="n">shorten_citekey</span><span class="p">,</span><span class="w"> </span><span class="n">url_to_citekey</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-    <span class="p">[</span><span class="s2">&quot;input_id&quot;</span><span class="p">,</span> <span class="s2">&quot;citekey_attrs&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="p">[</span><span class="s2">&quot;input_id&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;citekey_attrs&quot;</span><span class="p">],</span>
 
-    <span class="p">[</span>
+<span class="w">    </span><span class="p">[</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="s2">&quot;DOI:10.5061/DRYad.q447c/1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;DOI:10.5061/DRYad.q447c/1&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span>
+<span class="w">            </span><span class="p">{</span>
 
-                <span class="s2">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;DOI&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DOI&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;prefix_lower&quot;</span><span class="p">:</span> <span class="s2">&quot;doi&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;prefix_lower&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;doi&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;standard_accession&quot;</span><span class="p">:</span> <span class="s2">&quot;10.5061/dryad.q447c/1&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_accession&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10.5061/dryad.q447c/1&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">,</span>
 
-            <span class="p">},</span>
+<span class="w">            </span><span class="p">},</span>
 
-            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="s2">&quot;10.5061/DRYad.q447c/1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;10.5061/DRYad.q447c/1&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span>
+<span class="w">            </span><span class="p">{</span>
 
-                <span class="s2">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;doi&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;doi&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;prefix_lower&quot;</span><span class="p">:</span> <span class="s2">&quot;doi&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;prefix_lower&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;doi&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;standard_prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;doi&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;doi&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;standard_accession&quot;</span><span class="p">:</span> <span class="s2">&quot;10.5061/dryad.q447c/1&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_accession&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10.5061/dryad.q447c/1&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">,</span>
 
-            <span class="p">},</span>
+<span class="w">            </span><span class="p">},</span>
 
-            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;doi-infer-prefix&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;doi-infer-prefix&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="s2">&quot;arXiv:1407.3561v1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;arXiv:1407.3561v1&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span>
+<span class="w">            </span><span class="p">{</span>
 
-                <span class="s2">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;arXiv&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arXiv&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;prefix_lower&quot;</span><span class="p">:</span> <span class="s2">&quot;arxiv&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;prefix_lower&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arxiv&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;standard_prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;arxiv&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arxiv&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;standard_accession&quot;</span><span class="p">:</span> <span class="s2">&quot;1407.3561v1&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_accession&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1407.3561v1&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="s2">&quot;arxiv:1407.3561v1&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arxiv:1407.3561v1&quot;</span><span class="p">,</span>
 
-            <span class="p">},</span>
+<span class="w">            </span><span class="p">},</span>
 
-            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;arxiv&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;arxiv&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="s2">&quot;pmid:24159271&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;pmid:24159271&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span>
+<span class="w">            </span><span class="p">{</span>
 
-                <span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="s2">&quot;pubmed:24159271&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pubmed:24159271&quot;</span><span class="p">,</span>
 
-            <span class="p">},</span>
+<span class="w">            </span><span class="p">},</span>
 
-            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;pmid&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;pmid&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="s2">&quot;pmcid:PMC4304851&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;pmcid:PMC4304851&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span>
+<span class="w">            </span><span class="p">{</span>
 
-                <span class="s2">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;pmcid&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pmcid&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;prefix_lower&quot;</span><span class="p">:</span> <span class="s2">&quot;pmcid&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;prefix_lower&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pmcid&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;standard_prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;pmc&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pmc&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="s2">&quot;pmc:PMC4304851&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pmc:PMC4304851&quot;</span><span class="p">,</span>
 
-            <span class="p">},</span>
+<span class="w">            </span><span class="p">},</span>
 
-            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;pmcid&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;pmcid&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="s2">&quot;https://greenelab.github.io/manubot-rootstock/&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;https://greenelab.github.io/manubot-rootstock/&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span>
+<span class="w">            </span><span class="p">{</span>
 
-                <span class="s2">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;https&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;prefix_lower&quot;</span><span class="p">:</span> <span class="s2">&quot;https&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;prefix_lower&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;standard_prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;url&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;url&quot;</span><span class="p">,</span>
 
-                <span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="s2">&quot;url:https://greenelab.github.io/manubot-rootstock/&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;url:https://greenelab.github.io/manubot-rootstock/&quot;</span><span class="p">,</span>
 
-            <span class="p">},</span>
+<span class="w">            </span><span class="p">},</span>
 
-            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="s2">&quot;isbn:1-339-91988-5&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;isbn:1-339-91988-5&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span>
+<span class="w">            </span><span class="p">{</span>
 
-                <span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="s2">&quot;isbn:9781339919881&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;isbn:9781339919881&quot;</span><span class="p">,</span>
 
-            <span class="p">},</span>
+<span class="w">            </span><span class="p">},</span>
 
-            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;isbn&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;isbn&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="s2">&quot;DOID:14330&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;DOID:14330&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span>
+<span class="w">            </span><span class="p">{</span>
 
-                <span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="s2">&quot;DOID:14330&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DOID:14330&quot;</span><span class="p">,</span>
 
-            <span class="p">},</span>
+<span class="w">            </span><span class="p">},</span>
 
-            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;doid&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;doid&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="s2">&quot;PubChem.substance:100101&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;PubChem.substance:100101&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span>
+<span class="w">            </span><span class="p">{</span>
 
-                <span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="s2">&quot;pubchem.substance:100101&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pubchem.substance:100101&quot;</span><span class="p">,</span>
 
-            <span class="p">},</span>
+<span class="w">            </span><span class="p">},</span>
 
-            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;PubChem.substance&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;PubChem.substance&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="s2">&quot;Wikidata:Q50051684&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;Wikidata:Q50051684&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span>
+<span class="w">            </span><span class="p">{</span>
 
-                <span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="s2">&quot;wikidata:Q50051684&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;wikidata:Q50051684&quot;</span><span class="p">,</span>
 
-            <span class="p">},</span>
+<span class="w">            </span><span class="p">},</span>
 
-            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;wikidata&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;wikidata&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-    <span class="p">],</span>
+<span class="w">    </span><span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_citekey_class</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="n">citekey_attrs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_class</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="n">citekey_attrs</span><span class="p">):</span>
 
-    <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span>
+<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">citekey_attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">citekey_attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
-        <span class="k">assert</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="n">value</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="nb">getattr</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">value</span>
 
-    <span class="k">assert</span> <span class="n">citekey</span><span class="o">.</span><span class="n">short_id</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">short_id</span>
 
-<span class="k">def</span> <span class="nf">test_citekey_check_input_id_type</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_check_input_id_type</span><span class="p">():</span>
 
-    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">excinfo</span><span class="p">:</span>
+<span class="w">    </span><span class="k">with</span><span class="w"> </span><span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">TypeError</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">excinfo</span><span class="p">:</span>
 
-        <span class="n">CiteKey</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="w">        </span><span class="n">CiteKey</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;input_id should be type &#39;str&#39; not &#39;NoneType&#39;: None&quot;</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">excinfo</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;input_id should be type &#39;str&#39; not &#39;NoneType&#39;: None&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">str</span><span class="p">(</span><span class="n">excinfo</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
-    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span>
+<span class="w">    </span><span class="k">with</span><span class="w"> </span><span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">TypeError</span><span class="p">):</span>
 
-        <span class="n">CiteKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="w">        </span><span class="n">CiteKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_citekey_check_input_id_at_prefix</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_check_input_id_at_prefix</span><span class="p">():</span>
 
-    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">excinfo</span><span class="p">:</span>
+<span class="w">    </span><span class="k">with</span><span class="w"> </span><span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">ValueError</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">excinfo</span><span class="p">:</span>
 
-        <span class="n">CiteKey</span><span class="p">(</span><span class="s2">&quot;@my-citekey&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">CiteKey</span><span class="p">(</span><span class="s2">&quot;@my-citekey&quot;</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;input_id: &#39;@my-citekey&#39;</span><span class="se">\n</span><span class="s2">starts with &#39;@&#39;&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">excinfo</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;input_id: &#39;@my-citekey&#39;</span><span class="se">\n</span><span class="s2">starts with &#39;@&#39;&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nb">str</span><span class="p">(</span><span class="n">excinfo</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-    <span class="s2">&quot;standard_citekey,expected&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;standard_citekey,expected&quot;</span><span class="p">,</span>
 
-    <span class="p">[</span>
+<span class="w">    </span><span class="p">[</span>
 
-        <span class="p">(</span><span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">,</span> <span class="s2">&quot;kQFQ8EaO&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;kQFQ8EaO&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;arxiv:1407.3561v1&quot;</span><span class="p">,</span> <span class="s2">&quot;16kozZ9Ys&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;arxiv:1407.3561v1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;16kozZ9Ys&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;pmid:24159271&quot;</span><span class="p">,</span> <span class="s2">&quot;11sli93ov&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;pmid:24159271&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;11sli93ov&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;url:http://blog.dhimmel.com/irreproducible-timestamps/&quot;</span><span class="p">,</span> <span class="s2">&quot;QBWMEuxW&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;url:http://blog.dhimmel.com/irreproducible-timestamps/&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;QBWMEuxW&quot;</span><span class="p">),</span>
 
-    <span class="p">],</span>
+<span class="w">    </span><span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_shorten_citekey</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_shorten_citekey</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p">):</span>
 
-    <span class="n">short_citekey</span> <span class="o">=</span> <span class="n">shorten_citekey</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">)</span>
+<span class="w">    </span><span class="n">short_citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">shorten_citekey</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">short_citekey</span> <span class="o">==</span> <span class="n">expected</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">short_citekey</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-    <span class="s2">&quot;citekey&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;citekey&quot;</span><span class="p">,</span>
 
-    <span class="p">[</span>
+<span class="w">    </span><span class="p">[</span>
 
-        <span class="s2">&quot;doi:10.7717/peerj.705&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;doi:10.7717/peerj.705&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;doi:10/b6vnmd&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;doi:10/b6vnmd&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;pmc:PMC4304851&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;pmc:PMC4304851&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;pubmed:25648772&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;pubmed:25648772&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;arxiv:1407.3561&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;arxiv:1407.3561&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;arxiv:1407.3561v1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;arxiv:1407.3561v1&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;arxiv:math.GT/0309136&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;arxiv:math.GT/0309136&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;arxiv:math.GT/0309136v1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;arxiv:math.GT/0309136v1&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;arxiv:hep-th/9305059&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;arxiv:hep-th/9305059&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;arxiv:hep-th/9305059v2&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;arxiv:hep-th/9305059v2&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;isbn:978-1-339-91988-1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;isbn:978-1-339-91988-1&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;isbn:1-339-91988-5&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;isbn:1-339-91988-5&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;wikidata:Q1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;wikidata:Q1&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;wikidata:Q50051684&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;wikidata:Q50051684&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;url:https://peerj.com/articles/705/&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;url:https://peerj.com/articles/705/&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;https://peerj.com/articles/705/&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;https://peerj.com/articles/705/&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;GO:0006915&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;GO:0006915&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;go:0006915&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;go:0006915&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;clinicaltrials:NCT04372602&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;clinicaltrials:NCT04372602&quot;</span><span class="p">,</span>
 
-    <span class="p">],</span>
+<span class="w">    </span><span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_inspect_citekey_passes</span><span class="p">(</span><span class="n">citekey</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_inspect_citekey_passes</span><span class="p">(</span><span class="n">citekey</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    These citekeys should pass inspection by inspect_citekey.</span>
+<span class="s2">    These citekeys should pass inspection by inspect_citekey.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">report</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span>
+<span class="w">    </span><span class="n">report</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span>
 
-    <span class="k">assert</span> <span class="n">report</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">report</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-    <span class="p">[</span><span class="s2">&quot;citekey&quot;</span><span class="p">,</span> <span class="s2">&quot;contains&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="p">[</span><span class="s2">&quot;citekey&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;contains&quot;</span><span class="p">],</span>
 
-    <span class="p">[</span>
+<span class="w">    </span><span class="p">[</span>
 
-        <span class="p">(</span><span class="s2">&quot;doi:10.771/peerj.705&quot;</span><span class="p">,</span> <span class="s2">&quot;Double check the DOI&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;doi:10.771/peerj.705&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Double check the DOI&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;doi:10/b6v_nmd&quot;</span><span class="p">,</span> <span class="s2">&quot;Double check the shortDOI&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;doi:10/b6v_nmd&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Double check the shortDOI&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;doi:7717/peerj.705&quot;</span><span class="p">,</span> <span class="s2">&quot;must start with &#39;10.&#39;&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;doi:7717/peerj.705&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;must start with &#39;10.&#39;&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;doi:b6vnmd&quot;</span><span class="p">,</span> <span class="s2">&quot;must start with &#39;10.&#39;&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;doi:b6vnmd&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;must start with &#39;10.&#39;&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;pmcid:25648772&quot;</span><span class="p">,</span> <span class="s2">&quot;must start with &#39;PMC&#39;&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;pmcid:25648772&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;must start with &#39;PMC&#39;&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;pmid:PMC4304851&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;pmid:PMC4304851&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;Should &#39;pmid:PMC4304851&#39; switch the citation source to &#39;pmc&#39;?&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;Should &#39;pmid:PMC4304851&#39; switch the citation source to &#39;pmc&#39;?&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;isbn:1-339-91988-X&quot;</span><span class="p">,</span> <span class="s2">&quot;identifier violates the ISBN syntax&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;isbn:1-339-91988-X&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;identifier violates the ISBN syntax&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;wikidata:P212&quot;</span><span class="p">,</span> <span class="s2">&quot;item IDs must start with &#39;Q&#39;&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;wikidata:P212&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;item IDs must start with &#39;Q&#39;&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;wikidata:QABCD&quot;</span><span class="p">,</span> <span class="s2">&quot;does not conform to the Wikidata regex&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;wikidata:QABCD&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;does not conform to the Wikidata regex&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;arxiv:YYMM.number&quot;</span><span class="p">,</span> <span class="s2">&quot;must conform to syntax&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;arxiv:YYMM.number&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;must conform to syntax&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;GO:GO:0006915&quot;</span><span class="p">,</span> <span class="s2">&quot;GO:0006915 does not match regex&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;GO:GO:0006915&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;GO:0006915 does not match regex&quot;</span><span class="p">),</span>
 
-    <span class="p">],</span>
+<span class="w">    </span><span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_inspect_citekey_fails</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">contains</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_inspect_citekey_fails</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">contains</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    These citekeys should fail inspection by inspect_citekey.</span>
+<span class="s2">    These citekeys should fail inspection by inspect_citekey.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">report</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span>
+<span class="w">    </span><span class="n">report</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span>
 
-    <span class="k">assert</span> <span class="n">report</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">report</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span>
 
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">report</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">report</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">contains</span> <span class="ow">in</span> <span class="n">report</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">contains</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">report</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-    <span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="s2">&quot;citekey&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;citekey&quot;</span><span class="p">],</span>
 
-    <span class="p">[</span>
+<span class="w">    </span><span class="p">[</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;https://www.doi.org/&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;https://www.doi.org/&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;url:https://www.doi.org/&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;url:https://www.doi.org/&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;https://www.doi.org/factsheets/Identifier_Interoper.html&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;https://www.doi.org/factsheets/Identifier_Interoper.html&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;url:https://www.doi.org/factsheets/Identifier_Interoper.html&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;url:https://www.doi.org/factsheets/Identifier_Interoper.html&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;https://doi.org/10.1097</span><span class="si">%2F</span><span class="s2">00004032-200403000-00012&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;https://doi.org/10.1097</span><span class="si">%2F</span><span class="s2">00004032-200403000-00012&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;doi:10.1097/00004032-200403000-00012&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;doi:10.1097/00004032-200403000-00012&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;http://dx.doi.org/10.7554/eLife.46574&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.7554/eLife.46574&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;http://dx.doi.org/10.7554/eLife.46574&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doi:10.7554/eLife.46574&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://doi.org/10/b6vnmd#anchor&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10/b6vnmd&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://doi.org/10/b6vnmd#anchor&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doi:10/b6vnmd&quot;</span><span class="p">),</span>
 
-        <span class="c1"># ShortDOI URLs without `10/` prefix not yet supported`</span>
+<span class="w">        </span><span class="c1"># ShortDOI URLs without `10/` prefix not yet supported`</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://doi.org/b6vnmd&quot;</span><span class="p">,</span> <span class="s2">&quot;url:https://doi.org/b6vnmd&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://doi.org/b6vnmd&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;url:https://doi.org/b6vnmd&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;https://www.biorxiv.org/about-biorxiv&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;https://www.biorxiv.org/about-biorxiv&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;url:https://www.biorxiv.org/about-biorxiv&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;url:https://www.biorxiv.org/about-biorxiv&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://sci-hub.tw/10.1038/nature19057&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.1038/nature19057&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://sci-hub.tw/10.1038/nature19057&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doi:10.1038/nature19057&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://www.biorxiv.org/content/10.1101/087619v3&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.1101/087619&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://www.biorxiv.org/content/10.1101/087619v3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doi:10.1101/087619&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://www.biorxiv.org/content/10.1101/087619v3.full&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.1101/087619&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://www.biorxiv.org/content/10.1101/087619v3.full&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doi:10.1101/087619&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;https://www.biorxiv.org/content/early/2017/08/31/087619.full.pdf&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;https://www.biorxiv.org/content/early/2017/08/31/087619.full.pdf&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;doi:10.1101/087619&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;doi:10.1101/087619&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;https://www.biorxiv.org/content/10.1101/2019.12.11.872580v1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;https://www.biorxiv.org/content/10.1101/2019.12.11.872580v1&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;doi:10.1101/2019.12.11.872580&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;doi:10.1101/2019.12.11.872580&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;https://www.biorxiv.org/content/10.1101/2019.12.11.872580v1.full.pdf+html&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;https://www.biorxiv.org/content/10.1101/2019.12.11.872580v1.full.pdf+html&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;doi:10.1101/2019.12.11.872580&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;doi:10.1101/2019.12.11.872580&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;https://www.biorxiv.org/content/10.1101/2019.12.11.872580v1.full.pdf&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;https://www.biorxiv.org/content/10.1101/2019.12.11.872580v1.full.pdf&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;doi:10.1101/2019.12.11.872580&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;doi:10.1101/2019.12.11.872580&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov&quot;</span><span class="p">,</span> <span class="s2">&quot;url:https://www.ncbi.nlm.nih.gov&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;url:https://www.ncbi.nlm.nih.gov&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pubmed&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pubmed&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;url:https://www.ncbi.nlm.nih.gov/pubmed&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;url:https://www.ncbi.nlm.nih.gov/pubmed&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pubmed/31233491&quot;</span><span class="p">,</span> <span class="s2">&quot;pmid:31233491&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pubmed/31233491&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;pmid:31233491&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pmc/&quot;</span><span class="p">,</span> <span class="s2">&quot;url:https://www.ncbi.nlm.nih.gov/pmc/&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pmc/&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;url:https://www.ncbi.nlm.nih.gov/pmc/&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pmc/about/intro/&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pmc/about/intro/&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;url:https://www.ncbi.nlm.nih.gov/pmc/about/intro/&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;url:https://www.ncbi.nlm.nih.gov/pmc/about/intro/&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4304851/&quot;</span><span class="p">,</span> <span class="s2">&quot;pmcid:PMC4304851&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4304851/&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;pmcid:PMC4304851&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;https://www.wikidata.org/wiki/Wikidata:Main_Page&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;https://www.wikidata.org/wiki/Wikidata:Main_Page&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;url:https://www.wikidata.org/wiki/Wikidata:Main_Page&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;url:https://www.wikidata.org/wiki/Wikidata:Main_Page&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://www.wikidata.org/wiki/Q50051684&quot;</span><span class="p">,</span> <span class="s2">&quot;wikidata:Q50051684&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://www.wikidata.org/wiki/Q50051684&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;wikidata:Q50051684&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://arxiv.org/&quot;</span><span class="p">,</span> <span class="s2">&quot;url:https://arxiv.org/&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://arxiv.org/&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;url:https://arxiv.org/&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;https://arxiv.org/list/q-fin/recent&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;https://arxiv.org/list/q-fin/recent&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;url:https://arxiv.org/list/q-fin/recent&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;url:https://arxiv.org/list/q-fin/recent&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://arxiv.org/abs/1912.03529v1&quot;</span><span class="p">,</span> <span class="s2">&quot;arxiv:1912.03529v1&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://arxiv.org/abs/1912.03529v1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;arxiv:1912.03529v1&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://arxiv.org/pdf/1912.03529v1.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;arxiv:1912.03529v1&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://arxiv.org/pdf/1912.03529v1.pdf&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;arxiv:1912.03529v1&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://arxiv.org/ps/1912.03529v1&quot;</span><span class="p">,</span> <span class="s2">&quot;arxiv:1912.03529v1&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://arxiv.org/ps/1912.03529v1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;arxiv:1912.03529v1&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://arxiv.org/abs/math.GT/0309136&quot;</span><span class="p">,</span> <span class="s2">&quot;arxiv:math.GT/0309136&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://arxiv.org/abs/math.GT/0309136&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;arxiv:math.GT/0309136&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://arxiv.org/abs/hep-th/9305059&quot;</span><span class="p">,</span> <span class="s2">&quot;arxiv:hep-th/9305059&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://arxiv.org/abs/hep-th/9305059&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;arxiv:hep-th/9305059&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;https://arxiv.org/pdf/hep-th/9305059.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;arxiv:hep-th/9305059&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;https://arxiv.org/pdf/hep-th/9305059.pdf&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;arxiv:hep-th/9305059&quot;</span><span class="p">),</span>
 
-    <span class="p">],</span>
+<span class="w">    </span><span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_url_to_citekey</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_url_to_citekey</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">):</span>
 
-    <span class="k">assert</span> <span class="n">url_to_citekey</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="n">citekey</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">url_to_citekey</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">citekey</span>
 </code></pre></div>
 
 </details>

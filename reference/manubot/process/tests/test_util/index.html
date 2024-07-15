@@ -1631,145 +1631,145 @@
 <h1 id="module-manubotprocessteststest_util">Module manubot.process.tests.test_util</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pathlib</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
 
-<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
 
-<span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">add_author_affiliations</span><span class="p">,</span> <span class="n">read_variable_files</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..util</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">add_author_affiliations</span><span class="p">,</span><span class="w"> </span><span class="n">read_variable_files</span>
 
-<span class="n">directory</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+<span class="n">directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">test_read_variable_files_empty</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_read_variable_files_empty</span><span class="p">():</span>
 
-    <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">    </span><span class="n">paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
 
-    <span class="n">user_variables</span> <span class="o">=</span> <span class="n">read_variable_files</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
+<span class="w">    </span><span class="n">user_variables</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_variable_files</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">user_variables</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">user_variables</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">user_variables</span><span class="p">,</span><span class="w"> </span><span class="nb">dict</span><span class="p">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">user_variables</span>
 
-<span class="k">def</span> <span class="nf">test_read_variable_files</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_read_variable_files</span><span class="p">():</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Test reading multiple JSON files, from both local paths and URLs.</span>
+<span class="s2">    Test reading multiple JSON files, from both local paths and URLs.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">local_path</span> <span class="o">=</span> <span class="s2">&quot;manuscripts/variables/content/template-variables.json&quot;</span>
+<span class="w">    </span><span class="n">local_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;manuscripts/variables/content/template-variables.json&quot;</span>
 
-    <span class="n">local_path</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">local_path</span><span class="p">)</span>
+<span class="w">    </span><span class="n">local_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">local_path</span><span class="p">)</span>
 
-    <span class="n">paths</span> <span class="o">=</span> <span class="p">[</span>
+<span class="w">    </span><span class="n">paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 
-        <span class="s2">&quot;https://git.io/vbkqm&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;https://git.io/vbkqm&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;https://git.io/vbkqm&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;https://git.io/vbkqm&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;namespace_1=https://git.io/vbkqm&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;namespace_1=https://git.io/vbkqm&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;namespace_2=https://git.io/vbkqm&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;namespace_2=https://git.io/vbkqm&quot;</span><span class="p">,</span>
 
-        <span class="sa">f</span><span class="s2">&quot;namespace_2=</span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="sa">f</span><span class="s2">&quot;namespace_2=</span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
 
-        <span class="sa">f</span><span class="s2">&quot;namespace_3=</span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="sa">f</span><span class="s2">&quot;namespace_3=</span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
 
-    <span class="p">]</span>
+<span class="w">    </span><span class="p">]</span>
 
-    <span class="n">user_variables</span> <span class="o">=</span> <span class="n">read_variable_files</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
+<span class="w">    </span><span class="n">user_variables</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_variable_files</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;namespace_1&quot;</span> <span class="ow">in</span> <span class="n">user_variables</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;namespace_1&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">user_variables</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;namespace_2&quot;</span> <span class="ow">in</span> <span class="n">user_variables</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;namespace_2&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">user_variables</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;namespace_3&quot;</span> <span class="ow">in</span> <span class="n">user_variables</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;namespace_3&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">user_variables</span>
 
-    <span class="k">assert</span> <span class="n">user_variables</span><span class="p">[</span><span class="s2">&quot;generated_by&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Manubot&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">user_variables</span><span class="p">[</span><span class="s2">&quot;generated_by&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Manubot&quot;</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;violet&quot;</span> <span class="ow">in</span> <span class="n">user_variables</span><span class="p">[</span><span class="s2">&quot;namespace_1&quot;</span><span class="p">][</span><span class="s2">&quot;rainbow&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;violet&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">user_variables</span><span class="p">[</span><span class="s2">&quot;namespace_1&quot;</span><span class="p">][</span><span class="s2">&quot;rainbow&quot;</span><span class="p">]</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;yellow&quot;</span> <span class="ow">in</span> <span class="n">user_variables</span><span class="p">[</span><span class="s2">&quot;namespace_2&quot;</span><span class="p">][</span><span class="s2">&quot;rainbow&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;yellow&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">user_variables</span><span class="p">[</span><span class="s2">&quot;namespace_2&quot;</span><span class="p">][</span><span class="s2">&quot;rainbow&quot;</span><span class="p">]</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;orange&quot;</span> <span class="ow">in</span> <span class="n">user_variables</span><span class="p">[</span><span class="s2">&quot;namespace_3&quot;</span><span class="p">][</span><span class="s2">&quot;rainbow&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;orange&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">user_variables</span><span class="p">[</span><span class="s2">&quot;namespace_3&quot;</span><span class="p">][</span><span class="s2">&quot;rainbow&quot;</span><span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">test_add_author_affiliations_empty</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_add_author_affiliations_empty</span><span class="p">():</span>
 
-    <span class="n">variables</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="w">    </span><span class="n">variables</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
 
-    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Jane Roe&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John Doe&quot;</span><span class="p">}]</span>
+<span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jane Roe&quot;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;John Doe&quot;</span><span class="p">}]</span>
 
-    <span class="n">returned_variables</span> <span class="o">=</span> <span class="n">add_author_affiliations</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
+<span class="w">    </span><span class="n">returned_variables</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_author_affiliations</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">variables</span> <span class="ow">is</span> <span class="n">returned_variables</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="n">returned_variables</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;affiliations&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">variables</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;affiliations&quot;</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">variables</span>
 
-    <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]:</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">author</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]:</span>
 
-        <span class="k">assert</span> <span class="s2">&quot;affiliation_numbers&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">author</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;affiliation_numbers&quot;</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">author</span>
 
-<span class="k">def</span> <span class="nf">test_add_author_affiliations</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_add_author_affiliations</span><span class="p">():</span>
 
-    <span class="n">variables</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="w">    </span><span class="n">variables</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
 
-    <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+<span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 
-        <span class="c1"># Deprecated affiliations format (as a string that&#39;s `; ` separated)</span>
+<span class="w">        </span><span class="c1"># Deprecated affiliations format (as a string that&#39;s `; ` separated)</span>
 
-        <span class="p">{</span>
+<span class="w">        </span><span class="p">{</span>
 
-            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Jane Roe&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jane Roe&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;affiliations&quot;</span><span class="p">:</span> <span class="s2">&quot;Department of Doe, University of Roe; Peppertea University&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;affiliations&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Department of Doe, University of Roe; Peppertea University&quot;</span><span class="p">,</span>
 
-        <span class="p">},</span>
+<span class="w">        </span><span class="p">},</span>
 
-        <span class="c1"># Prefered affiliations format as a list</span>
+<span class="w">        </span><span class="c1"># Prefered affiliations format as a list</span>
 
-        <span class="p">{</span>
+<span class="w">        </span><span class="p">{</span>
 
-            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John Doe&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;affiliations&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Unique University&quot;</span><span class="p">,</span> <span class="s2">&quot;Peppertea University&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="s2">&quot;affiliations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Unique University&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Peppertea University&quot;</span><span class="p">],</span>
 
-        <span class="p">},</span>
+<span class="w">        </span><span class="p">},</span>
 
-    <span class="p">]</span>
+<span class="w">    </span><span class="p">]</span>
 
-    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">warns</span><span class="p">(</span><span class="ne">DeprecationWarning</span><span class="p">):</span>
+<span class="w">    </span><span class="k">with</span><span class="w"> </span><span class="n">pytest</span><span class="o">.</span><span class="n">warns</span><span class="p">(</span><span class="n">DeprecationWarning</span><span class="p">):</span>
 
-        <span class="n">returned_variables</span> <span class="o">=</span> <span class="n">add_author_affiliations</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
+<span class="w">        </span><span class="n">returned_variables</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_author_affiliations</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">variables</span> <span class="ow">is</span> <span class="n">returned_variables</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="n">returned_variables</span>
 
-    <span class="k">assert</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;affiliations&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;affiliations&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span>
 
-        <span class="p">{</span>
+<span class="w">        </span><span class="p">{</span>
 
-            <span class="s2">&quot;affiliation&quot;</span><span class="p">:</span> <span class="s2">&quot;Department of Doe, University of Roe&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;affiliation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Department of Doe, University of Roe&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;affiliation_number&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;affiliation_number&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
 
-        <span class="p">},</span>
+<span class="w">        </span><span class="p">},</span>
 
-        <span class="p">{</span><span class="s2">&quot;affiliation&quot;</span><span class="p">:</span> <span class="s2">&quot;Peppertea University&quot;</span><span class="p">,</span> <span class="s2">&quot;affiliation_number&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="s2">&quot;affiliation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Peppertea University&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;affiliation_number&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span>
 
-        <span class="p">{</span><span class="s2">&quot;affiliation&quot;</span><span class="p">:</span> <span class="s2">&quot;Unique University&quot;</span><span class="p">,</span> <span class="s2">&quot;affiliation_number&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="s2">&quot;affiliation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Unique University&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;affiliation_number&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">},</span>
 
-    <span class="p">]</span>
+<span class="w">    </span><span class="p">]</span>
 
-    <span class="n">authors</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span>
 
-    <span class="k">assert</span> <span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;affiliations&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;affiliations&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span>
 
-        <span class="s2">&quot;Department of Doe, University of Roe&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Department of Doe, University of Roe&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;Peppertea University&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Peppertea University&quot;</span><span class="p">,</span>
 
-    <span class="p">]</span>
+<span class="w">    </span><span class="p">]</span>
 
-    <span class="k">assert</span> <span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;affiliation_numbers&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;affiliation_numbers&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span>
 
-    <span class="k">assert</span> <span class="n">authors</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;affiliation_numbers&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">authors</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;affiliation_numbers&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span>
 </code></pre></div>
 
 </details>

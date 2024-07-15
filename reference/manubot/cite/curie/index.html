@@ -2319,53 +2319,53 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
 <summary>View Source</summary>
 <div class="codehilite"><pre><span></span><code><span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
 
-<span class="k">class</span> <span class="nc">Handler_CURIE</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Handler_CURIE</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">try</span><span class="p">:</span>
+<span class="w">        </span><span class="k">try</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">resource</span> <span class="o">=</span> <span class="n">get_prefix_to_resource</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="p">]</span>
+<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_prefix_to_resource</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="p">]</span>
 
-        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">KeyError</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">err</span><span class="p">:</span>
 
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unrecognized CURIE prefix </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span>
+<span class="w">            </span><span class="k">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unrecognized CURIE prefix </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w"> </span><span class="kn">from</span><span class="w"> </span><span class="nn">err</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">standard_prefix</span> <span class="o">=</span> <span class="p">(</span>
+<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">standard_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;preferred_prefix&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;prefix&quot;</span><span class="p">]</span>
+<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;preferred_prefix&quot;</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;prefix&quot;</span><span class="p">]</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;all_prefixes&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">prefixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;all_prefixes&quot;</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="s2">&quot;pattern&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;pattern&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">accession_pattern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;pattern&quot;</span><span class="p">]</span>
+<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">accession_pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;pattern&quot;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">CiteKey</span><span class="p">):</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">):</span>
 
-        <span class="kn">from</span> <span class="nn">..url</span> <span class="kn">import</span> <span class="n">get_url_csl_item</span>
+<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">..url</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">get_url_csl_item</span>
 
-        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">(</span><span class="n">accession</span><span class="o">=</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">)</span>
+<span class="w">        </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">(</span><span class="n">accession</span><span class="o">=</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">CiteKey</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 
-        <span class="n">pattern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="s2">&quot;accession_pattern&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_get_pattern</span><span class="p">(</span><span class="s2">&quot;accession_pattern&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">pattern</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">pattern</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">accession</span><span class="p">):</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">pattern</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">pattern</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">accession</span><span class="p">):</span>
 
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">accession</span><span class="si">}</span><span class="s2"> does not match regex </span><span class="si">{</span><span class="n">pattern</span><span class="o">.</span><span class="n">pattern</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">accession</span><span class="si">}</span><span class="s2"> does not match regex </span><span class="si">{</span><span class="n">pattern</span><span class="o">.</span><span class="n">pattern</span><span class="si">}</span><span class="s2">&quot;</span>
 
-    <span class="k">def</span> <span class="nf">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">accession</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="s2">&quot;uri_format&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;uri_format&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">:</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;uri_format&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;$1&quot;</span><span class="p">,</span> <span class="n">accession</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;uri_format&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;$1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">accession</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;https://bioregistry.io/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">standard_prefix</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">accession</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://bioregistry.io/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">standard_prefix</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">accession</span><span class="si">}</span><span class="s2">&quot;</span>
 </code></pre></div>
 
 </details>
@@ -2389,13 +2389,13 @@ If <code>curie</code> is malformed or uses an unrecognized prefix, raise ValueEr
 <p>Return a CSL_Item with bibliographic details for citekey.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">:</span> <span class="n">CiteKey</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">:</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">):</span>
 
-        <span class="kn">from</span> <span class="nn">..url</span> <span class="kn">import</span> <span class="n">get_url_csl_item</span>
+<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">..url</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">get_url_csl_item</span>
 
-        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">(</span><span class="n">accession</span><span class="o">=</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">)</span>
+<span class="w">        </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">(</span><span class="n">accession</span><span class="o">=</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 </code></pre></div>
 
 </details>

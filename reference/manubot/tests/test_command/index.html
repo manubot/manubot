@@ -1587,35 +1587,35 @@
 <h1 id="module-manubotteststest_command">Module manubot.tests.test_command</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">subprocess</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 
-<span class="kn">import</span> <span class="nn">manubot</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">manubot</span>
 
-<span class="k">def</span> <span class="nf">test_version</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_version</span><span class="p">():</span>
 
-    <span class="n">stdout</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;manubot&quot;</span><span class="p">,</span> <span class="s2">&quot;--version&quot;</span><span class="p">],</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="w">    </span><span class="n">stdout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;manubot&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--version&quot;</span><span class="p">],</span><span class="w"> </span><span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">version_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;v</span><span class="si">{</span><span class="n">manubot</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="n">version_str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;v</span><span class="si">{</span><span class="n">manubot</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span>
 
-    <span class="k">assert</span> <span class="n">version_str</span> <span class="o">==</span> <span class="n">stdout</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">version_str</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">stdout</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">test_missing_subcommand</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_missing_subcommand</span><span class="p">():</span>
 
-    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+<span class="w">    </span><span class="n">process</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
 
-        <span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">],</span>
+<span class="w">        </span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">],</span>
 
-        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="w">        </span><span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 
-        <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">process</span><span class="o">.</span><span class="n">returncode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;error: the following arguments are required: subcommand&quot;</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">stderr</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;error: the following arguments are required: subcommand&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span>
 </code></pre></div>
 
 </details>

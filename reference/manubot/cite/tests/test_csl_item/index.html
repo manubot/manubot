@@ -1907,427 +1907,427 @@
 <h1 id="module-manubotciteteststest_csl_item">Module manubot.cite.tests.test_csl_item</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">copy</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 
-<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 
-<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
 
-<span class="kn">from</span> <span class="nn">..csl_item</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..csl_item</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
 
-    <span class="n">CSL_Item</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CSL_Item</span><span class="p">,</span>
 
-    <span class="n">assert_csl_item_type</span><span class="p">,</span>
+<span class="w">    </span><span class="n">assert_csl_item_type</span><span class="p">,</span>
 
-    <span class="n">date_parts_to_string</span><span class="p">,</span>
+<span class="w">    </span><span class="n">date_parts_to_string</span><span class="p">,</span>
 
-    <span class="n">date_to_date_parts</span><span class="p">,</span>
+<span class="w">    </span><span class="n">date_to_date_parts</span><span class="p">,</span>
 
 <span class="p">)</span>
 
-<span class="k">class</span> <span class="nc">Test_CSL_Item</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Test_CSL_Item</span><span class="p">:</span>
 
-    <span class="k">def</span> <span class="nf">test_constuctor_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">test_constuctor_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">assert</span> <span class="n">CSL_Item</span><span class="p">()</span> <span class="o">==</span> <span class="p">{}</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{}</span>
 
-    <span class="k">def</span> <span class="nf">test_constuctor_by_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">test_constuctor_by_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;My book&quot;</span><span class="p">}</span>
+<span class="w">        </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My book&quot;</span><span class="p">}</span>
 
-        <span class="k">assert</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">==</span> <span class="n">d</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">d</span>
 
-    <span class="k">def</span> <span class="nf">test_constuctor_by_keyword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">test_constuctor_by_keyword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">assert</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;journal-article&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;journal-article&quot;</span><span class="p">}</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;journal-article&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;journal-article&quot;</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">test_constuctor_by_dict_keyword_combination</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">test_constuctor_by_dict_keyword_combination</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">assert</span> <span class="n">CSL_Item</span><span class="p">({</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;My journal article&quot;</span><span class="p">},</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;journal-article&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">({</span><span class="s2">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My journal article&quot;</span><span class="p">},</span><span class="w"> </span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;journal-article&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span>
 
-            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;My journal article&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My journal article&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;journal-article&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;journal-article&quot;</span><span class="p">,</span>
 
-        <span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">test_recursive_constructor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">test_recursive_constructor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">assert</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">CSL_Item</span><span class="p">())</span> <span class="o">==</span> <span class="p">{}</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">CSL_Item</span><span class="p">())</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{}</span>
 
-        <span class="k">assert</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">abc</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;abc&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">abc</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;abc&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">test_constructor_leaves_no_inplace_effects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">test_constructor_leaves_no_inplace_effects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="n">dict1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="w">        </span><span class="n">dict1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">}</span>
 
-        <span class="n">ci</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">dict1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">        </span><span class="n">ci</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">dict1</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-        <span class="k">assert</span> <span class="n">ci</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">ci</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;b&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">}</span>
 
-        <span class="k">assert</span> <span class="n">dict1</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">dict1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">test_correct_invalid_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">test_correct_invalid_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">assert</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;journal-article&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">correct_invalid_type</span><span class="p">()</span> <span class="o">==</span> <span class="p">{</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;journal-article&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">correct_invalid_type</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span>
 
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;article-journal&quot;</span>
+<span class="w">            </span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;article-journal&quot;</span>
 
-        <span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">test_set_default_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">test_set_default_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">assert</span> <span class="n">CSL_Item</span><span class="p">()</span><span class="o">.</span><span class="n">set_default_type</span><span class="p">()</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;entry&quot;</span><span class="p">}</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">()</span><span class="o">.</span><span class="n">set_default_type</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;entry&quot;</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">test_no_change_of_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">test_no_change_of_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">assert</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;book&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">correct_invalid_type</span><span class="p">()</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;book&quot;</span><span class="p">}</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;book&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">correct_invalid_type</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;book&quot;</span><span class="p">}</span>
 
-        <span class="k">assert</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;book&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set_default_type</span><span class="p">()</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;book&quot;</span><span class="p">}</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;book&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set_default_type</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;book&quot;</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">test_clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">test_clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;chapter&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;abc&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;chapter&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;abc&quot;</span><span class="p">)</span>
 
-        <span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="k">assert</span> <span class="n">csl_item</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;chapter&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;abc&quot;</span><span class="p">}</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chapter&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abc&quot;</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">test_clean_set_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">test_clean_set_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;chapter&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;chapter&quot;</span><span class="p">)</span>
 
-        <span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">)</span>
 
-        <span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="k">assert</span> <span class="n">csl_item</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;chapter&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;abc&quot;</span><span class="p">}</span>
+<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chapter&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abc&quot;</span><span class="p">}</span>
 
-<span class="k">def</span> <span class="nf">test_assert_csl_item_type_passes</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_assert_csl_item_type_passes</span><span class="p">():</span>
 
-    <span class="n">assert_csl_item_type</span><span class="p">(</span><span class="n">CSL_Item</span><span class="p">())</span>
+<span class="w">    </span><span class="n">assert_csl_item_type</span><span class="p">(</span><span class="n">CSL_Item</span><span class="p">())</span>
 
-<span class="k">def</span> <span class="nf">test_assert_csl_item_type_raises_error_on_dict</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_assert_csl_item_type_raises_error_on_dict</span><span class="p">():</span>
 
-    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span>
+<span class="w">    </span><span class="k">with</span><span class="w"> </span><span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">TypeError</span><span class="p">):</span>
 
-        <span class="n">assert_csl_item_type</span><span class="p">({})</span>
+<span class="w">        </span><span class="n">assert_csl_item_type</span><span class="p">({})</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-    <span class="p">[</span><span class="s2">&quot;csl_item&quot;</span><span class="p">,</span> <span class="s2">&quot;standard_citation&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="p">[</span><span class="s2">&quot;csl_item&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;standard_citation&quot;</span><span class="p">],</span>
 
-    <span class="p">[</span>
+<span class="w">    </span><span class="p">[</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;my-id&quot;</span><span class="p">,</span> <span class="s2">&quot;standard_citation&quot;</span><span class="p">:</span> <span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-id&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;standard_citation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">},</span>
 
-            <span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">,</span>
 
-            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;from_standard_citation&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;from_standard_citation&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">},</span>
 
-            <span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">,</span>
 
-            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;from_doi_id&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;from_doi_id&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-            <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;DOI:10.7554/ELIFE.32822&quot;</span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DOI:10.7554/ELIFE.32822&quot;</span><span class="p">},</span>
 
-            <span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">,</span>
 
-            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;from_doi_id_standardize&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;from_doi_id_standardize&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;my-id&quot;</span><span class="p">},</span> <span class="s2">&quot;my-id&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;from_raw_id&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-id&quot;</span><span class="p">},</span><span class="w"> </span><span class="s2">&quot;my-id&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;from_raw_id&quot;</span><span class="p">),</span>
 
-    <span class="p">],</span>
+<span class="w">    </span><span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_csl_item_standardize_id</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="n">standard_citation</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_csl_item_standardize_id</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span><span class="w"> </span><span class="n">standard_citation</span><span class="p">):</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-    <span class="n">output</span> <span class="o">=</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">()</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">()</span>
 
-    <span class="k">assert</span> <span class="n">output</span> <span class="ow">is</span> <span class="n">csl_item</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="n">csl_item</span>
 
-    <span class="k">assert</span> <span class="n">output</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">standard_citation</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">standard_citation</span>
 
-<span class="k">def</span> <span class="nf">test_csl_item_standardize_id_repeated</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_csl_item_standardize_id_repeated</span><span class="p">():</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;pmid:1&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;article-journal&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;pmid:1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;article-journal&quot;</span><span class="p">)</span>
 
-    <span class="n">csl_item_1</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">())</span>
+<span class="w">    </span><span class="n">csl_item_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">())</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;standard_citation&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s2">&quot;csl_item&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;standard_citation&quot;</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="s2">&quot;csl_item&quot;</span>
 
-    <span class="n">csl_item_2</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">())</span>
+<span class="w">    </span><span class="n">csl_item_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">())</span>
 
-    <span class="k">assert</span> <span class="n">csl_item_1</span> <span class="o">==</span> <span class="n">csl_item_2</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item_1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">csl_item_2</span>
 
-<span class="k">def</span> <span class="nf">test_csl_item_standardize_id_note</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_csl_item_standardize_id_note</span><span class="p">():</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Test extracting standard_id from a note and setting additional</span>
+<span class="s2">    Test extracting standard_id from a note and setting additional</span>
 
-<span class="sd">    note fields.</span>
+<span class="s2">    note fields.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span>
 
-        <span class="p">{</span>
+<span class="w">        </span><span class="p">{</span>
 
-            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;original-id&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;original-id&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;article-journal&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;article-journal&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;note&quot;</span><span class="p">:</span> <span class="s2">&quot;standard_id: doi:10.1371/journal.PPAT.1006256&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;note&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;standard_id: doi:10.1371/journal.PPAT.1006256&quot;</span><span class="p">,</span>
 
-        <span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
 
-    <span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
 
-    <span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">()</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">()</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;doi:10.1371/journal.ppat.1006256&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;doi:10.1371/journal.ppat.1006256&quot;</span>
 
-    <span class="n">note_dict</span> <span class="o">=</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span>
+<span class="w">    </span><span class="n">note_dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span>
 
-    <span class="k">assert</span> <span class="n">note_dict</span><span class="p">[</span><span class="s2">&quot;original_id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;original-id&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">note_dict</span><span class="p">[</span><span class="s2">&quot;original_id&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;original-id&quot;</span>
 
-    <span class="k">assert</span> <span class="n">note_dict</span><span class="p">[</span><span class="s2">&quot;original_standard_id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;doi:10.1371/journal.PPAT.1006256&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">note_dict</span><span class="p">[</span><span class="s2">&quot;original_standard_id&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;doi:10.1371/journal.PPAT.1006256&quot;</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-    <span class="p">[</span><span class="s2">&quot;input_note&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;dictionary&quot;</span><span class="p">,</span> <span class="s2">&quot;expected_note&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="p">[</span><span class="s2">&quot;input_note&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;dictionary&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;expected_note&quot;</span><span class="p">],</span>
 
-    <span class="p">[</span>
+<span class="w">    </span><span class="p">[</span>
 
-        <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="p">{},</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="p">{},</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;preexisting note&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="p">{},</span> <span class="s2">&quot;preexisting note&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;preexisting note&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="s2">&quot;preexisting note&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;preexisting note&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;preexisting note&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;the value&quot;</span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;the value&quot;</span><span class="p">},</span>
 
-            <span class="s2">&quot;preexisting note</span><span class="se">\n</span><span class="s2">key: the value&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;preexisting note</span><span class="se">\n</span><span class="s2">key: the value&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;KEYOKAY&quot;</span><span class="p">:</span> <span class="s2">&quot;the value&quot;</span><span class="p">},</span> <span class="s2">&quot;KEYOKAY: the value&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;KEYOKAY&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;the value&quot;</span><span class="p">},</span><span class="w"> </span><span class="s2">&quot;KEYOKAY: the value&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;preexisting note&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;KEY-NOT-OKAY&quot;</span><span class="p">:</span> <span class="s2">&quot;the value&quot;</span><span class="p">},</span> <span class="s2">&quot;preexisting note&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;preexisting note&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;KEY-NOT-OKAY&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;the value&quot;</span><span class="p">},</span><span class="w"> </span><span class="s2">&quot;preexisting note&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span><span class="s2">&quot;standard_citation&quot;</span><span class="p">:</span> <span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="s2">&quot;standard_citation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">},</span>
 
-            <span class="s2">&quot;standard_citation: doi:10.7554/elife.32822&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;standard_citation: doi:10.7554/elife.32822&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;This CSL Item was produced using Manubot.&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;This CSL Item was produced using Manubot.&quot;</span><span class="p">,</span>
 
-            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span><span class="s2">&quot;standard_citation&quot;</span><span class="p">:</span> <span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="s2">&quot;standard_citation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">},</span>
 
-            <span class="s2">&quot;This CSL Item was produced using Manubot.</span><span class="se">\n</span><span class="s2">standard_citation: doi:10.7554/elife.32822&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;This CSL Item was produced using Manubot.</span><span class="se">\n</span><span class="s2">standard_citation: doi:10.7554/elife.32822&quot;</span><span class="p">,</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="c1"># do not append duplicate lines to a note</span>
+<span class="w">        </span><span class="c1"># do not append duplicate lines to a note</span>
 
-        <span class="c1"># https://github.com/manubot/manubot/issues/258</span>
+<span class="w">        </span><span class="c1"># https://github.com/manubot/manubot/issues/258</span>
 
-        <span class="p">(</span><span class="s2">&quot;Already exists.&quot;</span><span class="p">,</span> <span class="s2">&quot;Already exists.&quot;</span><span class="p">,</span> <span class="p">{},</span> <span class="s2">&quot;Already exists.&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;Already exists.&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Already exists.&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="s2">&quot;Already exists.&quot;</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;exists: yes&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;exists&quot;</span><span class="p">:</span> <span class="s2">&quot;yes&quot;</span><span class="p">},</span> <span class="s2">&quot;exists: yes&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;exists: yes&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;exists&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;yes&quot;</span><span class="p">},</span><span class="w"> </span><span class="s2">&quot;exists: yes&quot;</span><span class="p">),</span>
 
-    <span class="p">],</span>
+<span class="w">    </span><span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_csl_item_note_append</span><span class="p">(</span><span class="n">input_note</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">,</span> <span class="n">expected_note</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_csl_item_note_append</span><span class="p">(</span><span class="n">input_note</span><span class="p">,</span><span class="w"> </span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="n">dictionary</span><span class="p">,</span><span class="w"> </span><span class="n">expected_note</span><span class="p">):</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;test_csl_item&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;entry&quot;</span><span class="p">,</span> <span class="s2">&quot;note&quot;</span><span class="p">:</span> <span class="n">input_note</span><span class="p">})</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;test_csl_item&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;entry&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;note&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">input_note</span><span class="p">})</span>
 
-    <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-    <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">note</span> <span class="o">==</span> <span class="n">expected_note</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="o">.</span><span class="n">note</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected_note</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-    <span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">,</span> <span class="s2">&quot;dictionary&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;dictionary&quot;</span><span class="p">],</span>
 
-    <span class="p">[</span>
+<span class="w">    </span><span class="p">[</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;This is a note</span><span class="se">\n</span><span class="s2">key_one: value</span><span class="se">\n</span><span class="s2">KEYTWO: value 2 &quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;This is a note</span><span class="se">\n</span><span class="s2">key_one: value</span><span class="se">\n</span><span class="s2">KEYTWO: value 2 &quot;</span><span class="p">,</span>
 
-            <span class="p">{</span><span class="s2">&quot;key_one&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;KEYTWO&quot;</span><span class="p">:</span> <span class="s2">&quot;value 2&quot;</span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="s2">&quot;key_one&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;KEYTWO&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value 2&quot;</span><span class="p">},</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;BAD_KEY: good value</span><span class="se">\n</span><span class="s2">good-key: good value&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;good-key&quot;</span><span class="p">:</span> <span class="s2">&quot;good value&quot;</span><span class="p">}),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;BAD_KEY: good value</span><span class="se">\n</span><span class="s2">good-key: good value&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;good-key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;good value&quot;</span><span class="p">}),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;This is a note {:key_one: value} {:KEYTWO: value 2 } &quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;This is a note {:key_one: value} {:KEYTWO: value 2 } &quot;</span><span class="p">,</span>
 
-            <span class="p">{</span><span class="s2">&quot;key_one&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;KEYTWO&quot;</span><span class="p">:</span> <span class="s2">&quot;value 2&quot;</span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="s2">&quot;key_one&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;KEYTWO&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value 2&quot;</span><span class="p">},</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;{:BAD_KEY: good value}</span><span class="se">\n</span><span class="s2">{:good-key: good value}&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;good-key&quot;</span><span class="p">:</span> <span class="s2">&quot;good value&quot;</span><span class="p">}),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;{:BAD_KEY: good value}</span><span class="se">\n</span><span class="s2">{:good-key: good value}&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;good-key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;good value&quot;</span><span class="p">}),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;Mixed line-entry and braced-entry syntax</span><span class="se">\n</span><span class="s2">GOODKEY: good value</span><span class="se">\n</span><span class="s2">{:good-key: good value}&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;Mixed line-entry and braced-entry syntax</span><span class="se">\n</span><span class="s2">GOODKEY: good value</span><span class="se">\n</span><span class="s2">{:good-key: good value}&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span><span class="s2">&quot;GOODKEY&quot;</span><span class="p">:</span> <span class="s2">&quot;good value&quot;</span><span class="p">,</span> <span class="s2">&quot;good-key&quot;</span><span class="p">:</span> <span class="s2">&quot;good value&quot;</span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="s2">&quot;GOODKEY&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;good value&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;good-key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;good value&quot;</span><span class="p">},</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;Note without any key-value pairs&quot;</span><span class="p">,</span> <span class="p">{}),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;Note without any key-value pairs&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{}),</span>
 
-        <span class="p">(</span>
+<span class="w">        </span><span class="p">(</span>
 
-            <span class="s2">&quot;Other text</span><span class="se">\n</span><span class="s2">standard_citation: doi:10/ckcj</span><span class="se">\n</span><span class="s2">More other text&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;Other text</span><span class="se">\n</span><span class="s2">standard_citation: doi:10/ckcj</span><span class="se">\n</span><span class="s2">More other text&quot;</span><span class="p">,</span>
 
-            <span class="p">{</span><span class="s2">&quot;standard_citation&quot;</span><span class="p">:</span> <span class="s2">&quot;doi:10/ckcj&quot;</span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="s2">&quot;standard_citation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;doi:10/ckcj&quot;</span><span class="p">},</span>
 
-        <span class="p">),</span>
+<span class="w">        </span><span class="p">),</span>
 
-    <span class="p">],</span>
+<span class="w">    </span><span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_csl_item_note_dict</span><span class="p">(</span><span class="n">note</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_csl_item_note_dict</span><span class="p">(</span><span class="n">note</span><span class="p">,</span><span class="w"> </span><span class="n">dictionary</span><span class="p">):</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">note</span><span class="o">=</span><span class="n">note</span><span class="p">)</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">note</span><span class="o">=</span><span class="n">note</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span> <span class="o">==</span> <span class="n">dictionary</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">dictionary</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-    <span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;expected&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;expected&quot;</span><span class="p">],</span>
 
-    <span class="p">[</span>
+<span class="w">    </span><span class="p">[</span>
 
-        <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">]),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">]),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-12&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">]),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-12&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">]),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">]),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">]),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-12-99&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">]),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-12-99&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">]),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-12-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-12-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]),</span>
 
-        <span class="p">(</span><span class="s2">&quot; 2019-12-01 &quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot; 2019-12-01 &quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-12-30T23:32:16Z&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">30</span><span class="p">]),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-12-30T23:32:16Z&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">]),</span>
 
-        <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">),</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">]),</span>
+<span class="w">        </span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">),</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">]),</span>
 
-        <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">]),</span>
+<span class="w">        </span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">,</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">),</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">]),</span>
 
-    <span class="p">],</span>
+<span class="w">    </span><span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_date_to_date_parts</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_date_to_date_parts</span><span class="p">(</span><span class="n">date</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p">):</span>
 
-    <span class="k">assert</span> <span class="n">date_to_date_parts</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">==</span> <span class="n">expected</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">date_to_date_parts</span><span class="p">(</span><span class="n">date</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-    <span class="p">[</span><span class="s2">&quot;expected&quot;</span><span class="p">,</span> <span class="s2">&quot;date_parts&quot;</span><span class="p">,</span> <span class="s2">&quot;fill&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="p">[</span><span class="s2">&quot;expected&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;date_parts&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fill&quot;</span><span class="p">],</span>
 
-    <span class="p">[</span>
+<span class="w">    </span><span class="p">[</span>
 
-        <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="kc">False</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[],</span> <span class="kc">True</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="kc">True</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[],</span> <span class="kc">False</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="kc">False</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="kc">True</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">],</span> <span class="kc">False</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">],</span><span class="w"> </span><span class="kc">False</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-01-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">],</span> <span class="kc">True</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-01-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">],</span><span class="w"> </span><span class="kc">True</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="kc">False</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="kc">False</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-12&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span> <span class="kc">False</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-12&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">],</span><span class="w"> </span><span class="kc">False</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-12-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span> <span class="kc">True</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-12-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">],</span><span class="w"> </span><span class="kc">True</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span> <span class="kc">False</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">],</span><span class="w"> </span><span class="kc">False</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span> <span class="kc">True</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">],</span><span class="w"> </span><span class="kc">True</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-12&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="s2">&quot;bad day&quot;</span><span class="p">],</span> <span class="kc">False</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-12&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;bad day&quot;</span><span class="p">],</span><span class="w"> </span><span class="kc">False</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-12-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="kc">False</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-12-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="kc">False</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-12-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;2019&quot;</span><span class="p">,</span> <span class="s2">&quot;12&quot;</span><span class="p">,</span> <span class="s2">&quot;01&quot;</span><span class="p">],</span> <span class="kc">False</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-12-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;2019&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;12&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;01&quot;</span><span class="p">],</span><span class="w"> </span><span class="kc">False</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-02-01&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;2019&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">],</span> <span class="kc">False</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-02-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;2019&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">],</span><span class="w"> </span><span class="kc">False</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="kc">False</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">,</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">],</span><span class="w"> </span><span class="kc">False</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="kc">True</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">,</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">],</span><span class="w"> </span><span class="kc">True</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;0080-07-14&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">80</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span> <span class="kc">False</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;0080-07-14&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">],</span><span class="w"> </span><span class="kc">False</span><span class="p">),</span>
 
-        <span class="p">(</span><span class="s2">&quot;0080-07-14&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;80&quot;</span><span class="p">,</span> <span class="s2">&quot;07&quot;</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span> <span class="kc">False</span><span class="p">),</span>
+<span class="w">        </span><span class="p">(</span><span class="s2">&quot;0080-07-14&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;80&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;07&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">],</span><span class="w"> </span><span class="kc">False</span><span class="p">),</span>
 
-    <span class="p">],</span>
+<span class="w">    </span><span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_date_parts_to_string</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">date_parts</span><span class="p">,</span> <span class="n">fill</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_date_parts_to_string</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span><span class="w"> </span><span class="n">date_parts</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="p">):</span>
 
-    <span class="k">assert</span> <span class="n">expected</span> <span class="o">==</span> <span class="n">date_parts_to_string</span><span class="p">(</span><span class="n">date_parts</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">fill</span><span class="p">)</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">date_parts_to_string</span><span class="p">(</span><span class="n">date_parts</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">fill</span><span class="p">)</span>
 </code></pre></div>
 
 </details>

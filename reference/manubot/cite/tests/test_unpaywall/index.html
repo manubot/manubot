@@ -1631,99 +1631,99 @@
 <h1 id="module-manubotciteteststest_unpaywall">Module manubot.cite.tests.test_unpaywall</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">..unpaywall</span> <span class="kn">import</span> <span class="n">Unpaywall</span><span class="p">,</span> <span class="n">Unpaywall_arXiv</span><span class="p">,</span> <span class="n">Unpaywall_DOI</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">..unpaywall</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">Unpaywall</span><span class="p">,</span><span class="w"> </span><span class="n">Unpaywall_arXiv</span><span class="p">,</span><span class="w"> </span><span class="n">Unpaywall_DOI</span>
 
-<span class="k">def</span> <span class="nf">test_unpaywall_doi</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_unpaywall_doi</span><span class="p">():</span>
 
-    <span class="n">doi</span> <span class="o">=</span> <span class="s2">&quot;10.1371/journal.pcbi.1007250&quot;</span>
+<span class="w">    </span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.1371/journal.pcbi.1007250&quot;</span>
 
-    <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">Unpaywall_DOI</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+<span class="w">    </span><span class="n">unpaywall</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Unpaywall_DOI</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">unpaywall</span><span class="o">.</span><span class="n">oa_locations</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">unpaywall</span><span class="o">.</span><span class="n">oa_locations</span><span class="p">,</span><span class="w"> </span><span class="nb">list</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">unpaywall</span><span class="o">.</span><span class="n">best_pdf</span><span class="o">.</span><span class="n">has_creative_commons_license</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">unpaywall</span><span class="o">.</span><span class="n">best_pdf</span><span class="o">.</span><span class="n">has_creative_commons_license</span>
 
-<span class="k">def</span> <span class="nf">test_unpaywall_arxiv</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_unpaywall_arxiv</span><span class="p">():</span>
 
-    <span class="n">arxiv_id</span> <span class="o">=</span> <span class="s2">&quot;1912.04616&quot;</span>
+<span class="w">    </span><span class="n">arxiv_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1912.04616&quot;</span>
 
-    <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">Unpaywall_arXiv</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">,</span> <span class="n">use_doi</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="w">    </span><span class="n">unpaywall</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Unpaywall_arXiv</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">,</span><span class="w"> </span><span class="n">use_doi</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">unpaywall</span><span class="o">.</span><span class="n">oa_locations</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">unpaywall</span><span class="o">.</span><span class="n">oa_locations</span><span class="p">,</span><span class="w"> </span><span class="nb">list</span><span class="p">)</span>
 
-    <span class="n">best_pdf</span> <span class="o">=</span> <span class="n">unpaywall</span><span class="o">.</span><span class="n">best_pdf</span>
+<span class="w">    </span><span class="n">best_pdf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unpaywall</span><span class="o">.</span><span class="n">best_pdf</span>
 
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">best_pdf</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">best_pdf</span><span class="p">,</span><span class="w"> </span><span class="nb">dict</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">best_pdf</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://arxiv.org/pdf/1912.04616.pdf&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">best_pdf</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;https://arxiv.org/pdf/1912.04616.pdf&quot;</span>
 
-    <span class="k">assert</span> <span class="n">best_pdf</span><span class="p">[</span><span class="s2">&quot;url_for_landing_page&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://arxiv.org/abs/1912.04616&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">best_pdf</span><span class="p">[</span><span class="s2">&quot;url_for_landing_page&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;https://arxiv.org/abs/1912.04616&quot;</span>
 
-    <span class="k">assert</span> <span class="n">best_pdf</span><span class="p">[</span><span class="s2">&quot;license&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cc-by-sa&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">best_pdf</span><span class="p">[</span><span class="s2">&quot;license&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;cc-by-sa&quot;</span>
 
-<span class="k">def</span> <span class="nf">test_unpaywall_from_citekey</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_unpaywall_from_citekey</span><span class="p">():</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    https://arxiv.org/abs/1906.11964 is now published in https://doi.org/10.1162/qss_a_00023.</span>
+<span class="s2">    https://arxiv.org/abs/1906.11964 is now published in https://doi.org/10.1162/qss_a_00023.</span>
 
-<span class="sd">    Therefore, locations are coming from Unpaywall_DOI since defaulting to use_doi=True.</span>
+<span class="s2">    Therefore, locations are coming from Unpaywall_DOI since defaulting to use_doi=True.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">Unpaywall</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="s2">&quot;arxiv:1906.11964v3&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">unpaywall</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Unpaywall</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="s2">&quot;arxiv:1906.11964v3&quot;</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">unpaywall</span><span class="p">,</span> <span class="n">Unpaywall_arXiv</span><span class="p">)</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">unpaywall</span><span class="p">,</span><span class="w"> </span><span class="n">Unpaywall_arXiv</span><span class="p">)</span>
 
-    <span class="n">best_pdf</span> <span class="o">=</span> <span class="n">unpaywall</span><span class="o">.</span><span class="n">best_pdf</span>
+<span class="w">    </span><span class="n">best_pdf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unpaywall</span><span class="o">.</span><span class="n">best_pdf</span>
 
-    <span class="k">assert</span> <span class="n">best_pdf</span><span class="p">[</span><span class="s2">&quot;url_for_landing_page&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://doi.org/10.1162/qss_a_00023&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">best_pdf</span><span class="p">[</span><span class="s2">&quot;url_for_landing_page&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;https://doi.org/10.1162/qss_a_00023&quot;</span>
 
-<span class="k">def</span> <span class="nf">test_unpaywall_from_csl_item</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_unpaywall_from_csl_item</span><span class="p">():</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="p">{</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 
-        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;ijxfHyzg&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ijxfHyzg&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;URL&quot;</span><span class="p">:</span> <span class="s2">&quot;https://arxiv.org/abs/1908.11459&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://arxiv.org/abs/1908.11459&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Introducing: The Game Jam License&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Introducing: The Game Jam License&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;note&quot;</span><span class="p">:</span> <span class="s2">&quot;license: http://arxiv.org/licenses/nonexclusive-distrib/1.0/</span><span class="se">\n</span><span class="s2">standard_id: arxiv:1908.11459&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;note&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;license: http://arxiv.org/licenses/nonexclusive-distrib/1.0/</span><span class="se">\n</span><span class="s2">standard_id: arxiv:1908.11459&quot;</span><span class="p">,</span>
 
-    <span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
 
-    <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">Unpaywall</span><span class="o">.</span><span class="n">from_csl_item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+<span class="w">    </span><span class="n">unpaywall</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Unpaywall</span><span class="o">.</span><span class="n">from_csl_item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">unpaywall</span><span class="p">,</span> <span class="n">Unpaywall_arXiv</span><span class="p">)</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">unpaywall</span><span class="p">,</span><span class="w"> </span><span class="n">Unpaywall_arXiv</span><span class="p">)</span>
 
-    <span class="n">best_pdf</span> <span class="o">=</span> <span class="n">unpaywall</span><span class="o">.</span><span class="n">best_pdf</span>
+<span class="w">    </span><span class="n">best_pdf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unpaywall</span><span class="o">.</span><span class="n">best_pdf</span>
 
-    <span class="k">assert</span> <span class="n">best_pdf</span><span class="p">[</span><span class="s2">&quot;url_for_landing_page&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://arxiv.org/abs/1908.11459&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">best_pdf</span><span class="p">[</span><span class="s2">&quot;url_for_landing_page&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;https://arxiv.org/abs/1908.11459&quot;</span>
 
-<span class="k">def</span> <span class="nf">test_unpaywall_from_csl_item_with_doi</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_unpaywall_from_csl_item_with_doi</span><span class="p">():</span>
 
-    <span class="n">csl_item</span> <span class="o">=</span> <span class="p">{</span>
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 
-        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;ijxfHyzg&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ijxfHyzg&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;URL&quot;</span><span class="p">:</span> <span class="s2">&quot;https://arxiv.org/abs/1908.11459&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://arxiv.org/abs/1908.11459&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Introducing: The Game Jam License&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Introducing: The Game Jam License&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;note&quot;</span><span class="p">:</span> <span class="s2">&quot;license: http://arxiv.org/licenses/nonexclusive-distrib/1.0/</span><span class="se">\n</span><span class="s2">standard_id: arxiv:1908.11459&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;note&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;license: http://arxiv.org/licenses/nonexclusive-distrib/1.0/</span><span class="se">\n</span><span class="s2">standard_id: arxiv:1908.11459&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;DOI&quot;</span><span class="p">:</span> <span class="s2">&quot;10.1145/3337722.3341844&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;DOI&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10.1145/3337722.3341844&quot;</span><span class="p">,</span>
 
-    <span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
 
-    <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">Unpaywall</span><span class="o">.</span><span class="n">from_csl_item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+<span class="w">    </span><span class="n">unpaywall</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Unpaywall</span><span class="o">.</span><span class="n">from_csl_item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-    <span class="c1"># Unpaywall.from_csl_item uses DOI lookup when available</span>
+<span class="w">    </span><span class="c1"># Unpaywall.from_csl_item uses DOI lookup when available</span>
 
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">unpaywall</span><span class="p">,</span> <span class="n">Unpaywall_DOI</span><span class="p">)</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">unpaywall</span><span class="p">,</span><span class="w"> </span><span class="n">Unpaywall_DOI</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">unpaywall</span><span class="o">.</span><span class="n">best_pdf</span><span class="p">[</span><span class="s2">&quot;url_for_pdf&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">unpaywall</span><span class="o">.</span><span class="n">best_pdf</span><span class="p">[</span><span class="s2">&quot;url_for_pdf&quot;</span><span class="p">]</span>
 </code></pre></div>
 
 </details>

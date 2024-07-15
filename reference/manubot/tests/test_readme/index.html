@@ -1587,23 +1587,23 @@
 <h1 id="module-manubotteststest_readme">Module manubot.tests.test_readme</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pathlib</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
 
-<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
-<span class="kn">import</span> <span class="nn">shlex</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shlex</span>
 
-<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 
-<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
-<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
 
-<span class="n">readme_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;README.md&quot;</span>
+<span class="n">readme_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="s2">&quot;README.md&quot;</span>
 
-<span class="n">readme</span> <span class="o">=</span> <span class="n">readme_path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+<span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readme_path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
 
-<span class="n">template</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="n">template</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
 
 <span class="s2">&lt;!-- test codeblock contains output of `</span><span class="si">{command}</span><span class="s2">` --&gt;</span>
 
@@ -1613,79 +1613,79 @@
 
 <span class="s2">&quot;&quot;&quot;</span>
 
-<span class="n">pattern</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(?P&lt;command&gt;.+?)&quot;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(?P&lt;output&gt;.+?)&quot;</span><span class="p">)</span>
+<span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(?P&lt;command&gt;.+?)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(?P&lt;output&gt;.+?)&quot;</span><span class="p">)</span>
 
-<span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+<span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span><span class="w"> </span><span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
 
-<span class="n">matches</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pattern</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">readme</span><span class="p">))</span>
+<span class="n">matches</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">list</span><span class="p">(</span><span class="n">pattern</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">readme</span><span class="p">))</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-    <span class="n">argnames</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">,</span> <span class="s2">&quot;expected&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="n">argnames</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;expected&quot;</span><span class="p">],</span>
 
-    <span class="n">argvalues</span><span class="o">=</span><span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span> <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">],</span>
+<span class="w">    </span><span class="n">argvalues</span><span class="o">=</span><span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">match</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">matches</span><span class="p">],</span>
 
-    <span class="n">ids</span><span class="o">=</span><span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;command&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">],</span>
+<span class="w">    </span><span class="n">ids</span><span class="o">=</span><span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;command&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">match</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">matches</span><span class="p">],</span>
 
 <span class="p">)</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skipif</span><span class="p">(</span>
 
-    <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+<span class="w">    </span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">),</span>
 
-    <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Python 3.10 changed &#39;optional arguments&#39; to &#39;options&#39; in argparse usage output.&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Python 3.10 changed &#39;optional arguments&#39; to &#39;options&#39; in argparse usage output.&quot;</span><span class="p">,</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_readme_codeblock_contains_output_from</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_readme_codeblock_contains_output_from</span><span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    If this test fails, ensure that codeblocks in README.md have the correct</span>
+<span class="s2">    If this test fails, ensure that codeblocks in README.md have the correct</span>
 
-<span class="sd">    output. To enable this check for output in a codeblock, use the following</span>
+<span class="s2">    output. To enable this check for output in a codeblock, use the following</span>
 
-<span class="sd">    construct:</span>
+<span class="s2">    construct:</span>
 
-<span class="sd">    &lt;!-- test codeblock contains output of `{command}` --&gt;</span>
+<span class="s2">    &lt;!-- test codeblock contains output of `</span><span class="si">{command}</span><span class="s2">` --&gt;</span>
 
-<span class="sd">    ```</span>
+<span class="s2">    ```</span>
 
-<span class="sd">    {expected}</span>
+<span class="s2">    </span><span class="si">{expected}</span>
 
-<span class="sd">    ```</span>
+<span class="s2">    ```</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">output</span> <span class="o">=</span> <span class="n">_get_output_from</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_get_output_from</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">output</span> <span class="o">==</span> <span class="n">expected</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span>
 
-<span class="k">def</span> <span class="nf">_get_output_from</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_output_from</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
 
-    <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">command</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">command</span><span class="p">),</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">_match_to_repl</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_match_to_repl</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
 
-    <span class="n">template_dict</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+<span class="w">    </span><span class="n">template_dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
 
-    <span class="n">template_dict</span><span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_output_from</span><span class="p">(</span><span class="n">template_dict</span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">])</span>
+<span class="w">    </span><span class="n">template_dict</span><span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_get_output_from</span><span class="p">(</span><span class="n">template_dict</span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">])</span>
 
-    <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">template_dict</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">template_dict</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">if</span><span class="w"> </span><span class="vm">__name__</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Run `python manubot/tests/test_readme.py` to populate README</span>
+<span class="s2">    Run `python manubot/tests/test_readme.py` to populate README</span>
 
-<span class="sd">    codeblocks with output from the specified commands.</span>
+<span class="s2">    codeblocks with output from the specified commands.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">repl_readme</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">repl</span><span class="o">=</span><span class="n">_match_to_repl</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">readme</span><span class="p">)</span>
+<span class="w">    </span><span class="n">repl_readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">repl</span><span class="o">=</span><span class="n">_match_to_repl</span><span class="p">,</span><span class="w"> </span><span class="n">string</span><span class="o">=</span><span class="n">readme</span><span class="p">)</span>
 
-    <span class="n">readme_path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">repl_readme</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">readme_path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">repl_readme</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 </details>

@@ -1587,133 +1587,149 @@
 <h1 id="module-manubotai_revisionai_revision_command">Module manubot.ai_revision.ai_revision_command</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
-<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 
-<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">Path</span>
 
-<span class="k">def</span> <span class="nf">cli_process</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cli_process</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-    <span class="k">try</span><span class="p">:</span>
+<span class="w">    </span><span class="k">try</span><span class="p">:</span>
 
-        <span class="kn">from</span> <span class="nn">manubot_ai_editor</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot_ai_editor</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">models</span>
 
-        <span class="kn">from</span> <span class="nn">manubot_ai_editor.editor</span> <span class="kn">import</span> <span class="n">ManuscriptEditor</span>
+<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot_ai_editor.editor</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">ManuscriptEditor</span>
 
-    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+<span class="w">    </span><span class="k">except</span><span class="w"> </span><span class="n">ImportError</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">err</span><span class="p">:</span>
 
-        <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span>
+<span class="w">        </span><span class="k">raise</span><span class="w"> </span><span class="n">ModuleNotFoundError</span><span class="p">(</span>
 
-            <span class="s2">&quot;Install manubot with: pip install manubot[ai-rev]&quot;</span>
+<span class="w">            </span><span class="s2">&quot;Install manubot with: pip install manubot[ai-rev]&quot;</span>
 
-        <span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span>
+<span class="w">        </span><span class="p">)</span><span class="w"> </span><span class="kn">from</span><span class="w"> </span><span class="nn">err</span>
 
-    <span class="c1"># set paths for content</span>
+<span class="w">    </span><span class="c1"># set paths for content</span>
 
-    <span class="n">content_dir</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">content_directory</span>
+<span class="w">    </span><span class="n">content_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">content_directory</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">content_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">content_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
 
-        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span>
+<span class="w">        </span><span class="k">raise</span><span class="w"> </span><span class="n">SystemExit</span><span class="p">(</span>
 
-            <span class="sa">f</span><span class="s2">&quot;content directory is not a directory or does not exist: </span><span class="si">{</span><span class="n">content_dir</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;content directory is not a directory or does not exist: </span><span class="si">{</span><span class="n">content_dir</span><span class="si">}</span><span class="s2">&quot;</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-    <span class="c1"># set paths for temporary output</span>
+<span class="w">    </span><span class="c1"># set paths for config</span>
 
-    <span class="n">tmp_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;_manubot_ai_revision&quot;</span><span class="p">))</span>
+<span class="w">    </span><span class="c1"># (the config directory is optional, but if it is provided, it must be a directory)</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;using temporary directory: </span><span class="si">{</span><span class="n">tmp_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">config_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">config_directory</span>
 
-    <span class="c1"># create a manuscript editor and model to revise</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">config_dir</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">config_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
 
-    <span class="n">me</span> <span class="o">=</span> <span class="n">ManuscriptEditor</span><span class="p">(</span>
+<span class="w">        </span><span class="k">raise</span><span class="w"> </span><span class="n">SystemExit</span><span class="p">(</span>
 
-        <span class="n">content_dir</span><span class="o">=</span><span class="n">content_dir</span><span class="p">,</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;config directory is not a directory or does not exist: </span><span class="si">{</span><span class="n">config_dir</span><span class="si">}</span><span class="s2">&quot;</span>
 
-    <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-    <span class="c1"># instantiate a model</span>
+<span class="w">    </span><span class="c1"># set paths for temporary output</span>
 
-    <span class="n">module_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">model_type</span><span class="p">)</span>
+<span class="w">    </span><span class="n">tmp_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Path</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;_manubot_ai_revision&quot;</span><span class="p">))</span>
 
-    <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">module_class</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">GPT3CompletionModel</span><span class="p">):</span>
+<span class="w">    </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;using temporary directory: </span><span class="si">{</span><span class="n">tmp_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="n">model</span> <span class="o">=</span> <span class="n">module_class</span><span class="p">(</span>
+<span class="w">    </span><span class="c1"># create a manuscript editor and model to revise</span>
 
-            <span class="n">title</span><span class="o">=</span><span class="n">me</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+<span class="w">    </span><span class="n">me</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ManuscriptEditor</span><span class="p">(</span>
 
-            <span class="n">keywords</span><span class="o">=</span><span class="n">me</span><span class="o">.</span><span class="n">keywords</span><span class="p">,</span>
+<span class="w">        </span><span class="n">content_dir</span><span class="o">=</span><span class="n">content_dir</span><span class="p">,</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="n">config_dir</span><span class="o">=</span><span class="n">config_dir</span><span class="p">,</span>
 
-    <span class="k">else</span><span class="p">:</span>
+<span class="w">    </span><span class="p">)</span>
 
-        <span class="n">model_kwargs</span> <span class="o">=</span> <span class="n">parse_kwargs</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">model_kwargs</span><span class="p">)</span>
+<span class="w">    </span><span class="c1"># instantiate a model</span>
 
-        <span class="n">model</span> <span class="o">=</span> <span class="n">module_class</span><span class="p">(</span>
+<span class="w">    </span><span class="n">module_class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">getattr</span><span class="p">(</span><span class="n">models</span><span class="p">,</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">model_type</span><span class="p">)</span>
 
-            <span class="o">**</span><span class="n">model_kwargs</span><span class="p">,</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nb">issubclass</span><span class="p">(</span><span class="n">module_class</span><span class="p">,</span><span class="w"> </span><span class="n">models</span><span class="o">.</span><span class="n">GPT3CompletionModel</span><span class="p">):</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">module_class</span><span class="p">(</span>
 
-    <span class="c1"># revise</span>
+<span class="w">            </span><span class="n">title</span><span class="o">=</span><span class="n">me</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
 
-    <span class="n">me</span><span class="o">.</span><span class="n">revise_manuscript</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="w">            </span><span class="n">keywords</span><span class="o">=</span><span class="n">me</span><span class="o">.</span><span class="n">keywords</span><span class="p">,</span>
 
-    <span class="c1"># copy the revised manuscript back to the content folder</span>
+<span class="w">        </span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">tmp_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="k">else</span><span class="p">:</span>
 
-        <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">content_dir</span> <span class="o">/</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="w">        </span><span class="n">model_kwargs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parse_kwargs</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">model_kwargs</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">parse_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]:</span>
+<span class="w">        </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">module_class</span><span class="p">(</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="o">**</span><span class="n">model_kwargs</span><span class="p">,</span>
 
-<span class="sd">    Parse a list of keyword arguments into a dictionary. Values are converted to int or bool if possible.</span>
+<span class="w">        </span><span class="p">)</span>
 
-<span class="sd">    Args:</span>
+<span class="w">    </span><span class="c1"># revise</span>
 
-<span class="sd">        kwargs: A list of keyword arguments with format &quot;key=value&quot;.</span>
+<span class="w">    </span><span class="n">me</span><span class="o">.</span><span class="n">revise_manuscript</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="sd">    Returns:</span>
+<span class="w">    </span><span class="c1"># copy the revised manuscript back to the content folder</span>
 
-<span class="sd">        A dictionary of keyword arguments. Returns an empty dictionary if kwargs is None.</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">content_dir</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-    <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="p">:</span><span class="w"> </span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="nb">object</span><span class="p">]:</span>
 
-    <span class="k">if</span> <span class="n">kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">out</span>
+<span class="s2">    Parse a list of keyword arguments into a dictionary. Values are converted to int or bool if possible.</span>
 
-    <span class="k">for</span> <span class="n">kwarg</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+<span class="s2">    Args:</span>
 
-        <span class="k">if</span> <span class="s2">&quot;=&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwarg</span><span class="p">:</span>
+<span class="s2">        kwargs: A list of keyword arguments with format &quot;key=value&quot;.</span>
 
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid keyword argument: </span><span class="si">{</span><span class="n">kwarg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="s2">    Returns:</span>
 
-        <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">kwarg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="s2">        A dictionary of keyword arguments. Returns an empty dictionary if kwargs is None.</span>
 
-        <span class="c1"># try to convert values to int or bool if possible</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+<span class="w">    </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
 
-            <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">kwargs</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
 
-        <span class="k">elif</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">out</span>
 
-            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">kwarg</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">kwargs</span><span class="p">:</span>
 
-        <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;=&quot;</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">kwarg</span><span class="p">:</span>
 
-    <span class="k">return</span> <span class="n">out</span>
+<span class="w">            </span><span class="k">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid keyword argument: </span><span class="si">{</span><span class="n">kwarg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="w">        </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kwarg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="w">        </span><span class="c1"># try to convert values to int or bool if possible</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">value</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+
+<span class="w">            </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<span class="w">        </span><span class="k">elif</span><span class="w"> </span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;true&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="p">]:</span>
+
+<span class="w">            </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;true&quot;</span>
+
+<span class="w">        </span><span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">out</span>
 </code></pre></div>
 
 </details>
@@ -1726,81 +1742,97 @@
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">cli_process</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cli_process</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 
-    <span class="k">try</span><span class="p">:</span>
+<span class="w">    </span><span class="k">try</span><span class="p">:</span>
 
-        <span class="kn">from</span> <span class="nn">manubot_ai_editor</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot_ai_editor</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">models</span>
 
-        <span class="kn">from</span> <span class="nn">manubot_ai_editor.editor</span> <span class="kn">import</span> <span class="n">ManuscriptEditor</span>
+<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot_ai_editor.editor</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">ManuscriptEditor</span>
 
-    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+<span class="w">    </span><span class="k">except</span><span class="w"> </span><span class="n">ImportError</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">err</span><span class="p">:</span>
 
-        <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span>
+<span class="w">        </span><span class="k">raise</span><span class="w"> </span><span class="n">ModuleNotFoundError</span><span class="p">(</span>
 
-            <span class="s2">&quot;Install manubot with: pip install manubot[ai-rev]&quot;</span>
+<span class="w">            </span><span class="s2">&quot;Install manubot with: pip install manubot[ai-rev]&quot;</span>
 
-        <span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span>
+<span class="w">        </span><span class="p">)</span><span class="w"> </span><span class="kn">from</span><span class="w"> </span><span class="nn">err</span>
 
-    <span class="c1"># set paths for content</span>
+<span class="w">    </span><span class="c1"># set paths for content</span>
 
-    <span class="n">content_dir</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">content_directory</span>
+<span class="w">    </span><span class="n">content_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">content_directory</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">content_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">content_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
 
-        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span>
+<span class="w">        </span><span class="k">raise</span><span class="w"> </span><span class="n">SystemExit</span><span class="p">(</span>
 
-            <span class="sa">f</span><span class="s2">&quot;content directory is not a directory or does not exist: </span><span class="si">{</span><span class="n">content_dir</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;content directory is not a directory or does not exist: </span><span class="si">{</span><span class="n">content_dir</span><span class="si">}</span><span class="s2">&quot;</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-    <span class="c1"># set paths for temporary output</span>
+<span class="w">    </span><span class="c1"># set paths for config</span>
 
-    <span class="n">tmp_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;_manubot_ai_revision&quot;</span><span class="p">))</span>
+<span class="w">    </span><span class="c1"># (the config directory is optional, but if it is provided, it must be a directory)</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;using temporary directory: </span><span class="si">{</span><span class="n">tmp_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">config_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">config_directory</span>
 
-    <span class="c1"># create a manuscript editor and model to revise</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">config_dir</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">config_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
 
-    <span class="n">me</span> <span class="o">=</span> <span class="n">ManuscriptEditor</span><span class="p">(</span>
+<span class="w">        </span><span class="k">raise</span><span class="w"> </span><span class="n">SystemExit</span><span class="p">(</span>
 
-        <span class="n">content_dir</span><span class="o">=</span><span class="n">content_dir</span><span class="p">,</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;config directory is not a directory or does not exist: </span><span class="si">{</span><span class="n">config_dir</span><span class="si">}</span><span class="s2">&quot;</span>
 
-    <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-    <span class="c1"># instantiate a model</span>
+<span class="w">    </span><span class="c1"># set paths for temporary output</span>
 
-    <span class="n">module_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">model_type</span><span class="p">)</span>
+<span class="w">    </span><span class="n">tmp_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Path</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;_manubot_ai_revision&quot;</span><span class="p">))</span>
 
-    <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">module_class</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">GPT3CompletionModel</span><span class="p">):</span>
+<span class="w">    </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;using temporary directory: </span><span class="si">{</span><span class="n">tmp_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="n">model</span> <span class="o">=</span> <span class="n">module_class</span><span class="p">(</span>
+<span class="w">    </span><span class="c1"># create a manuscript editor and model to revise</span>
 
-            <span class="n">title</span><span class="o">=</span><span class="n">me</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+<span class="w">    </span><span class="n">me</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ManuscriptEditor</span><span class="p">(</span>
 
-            <span class="n">keywords</span><span class="o">=</span><span class="n">me</span><span class="o">.</span><span class="n">keywords</span><span class="p">,</span>
+<span class="w">        </span><span class="n">content_dir</span><span class="o">=</span><span class="n">content_dir</span><span class="p">,</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="n">config_dir</span><span class="o">=</span><span class="n">config_dir</span><span class="p">,</span>
 
-    <span class="k">else</span><span class="p">:</span>
+<span class="w">    </span><span class="p">)</span>
 
-        <span class="n">model_kwargs</span> <span class="o">=</span> <span class="n">parse_kwargs</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">model_kwargs</span><span class="p">)</span>
+<span class="w">    </span><span class="c1"># instantiate a model</span>
 
-        <span class="n">model</span> <span class="o">=</span> <span class="n">module_class</span><span class="p">(</span>
+<span class="w">    </span><span class="n">module_class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">getattr</span><span class="p">(</span><span class="n">models</span><span class="p">,</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">model_type</span><span class="p">)</span>
 
-            <span class="o">**</span><span class="n">model_kwargs</span><span class="p">,</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nb">issubclass</span><span class="p">(</span><span class="n">module_class</span><span class="p">,</span><span class="w"> </span><span class="n">models</span><span class="o">.</span><span class="n">GPT3CompletionModel</span><span class="p">):</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">module_class</span><span class="p">(</span>
 
-    <span class="c1"># revise</span>
+<span class="w">            </span><span class="n">title</span><span class="o">=</span><span class="n">me</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
 
-    <span class="n">me</span><span class="o">.</span><span class="n">revise_manuscript</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="w">            </span><span class="n">keywords</span><span class="o">=</span><span class="n">me</span><span class="o">.</span><span class="n">keywords</span><span class="p">,</span>
 
-    <span class="c1"># copy the revised manuscript back to the content folder</span>
+<span class="w">        </span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">tmp_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="k">else</span><span class="p">:</span>
 
-        <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">content_dir</span> <span class="o">/</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="w">        </span><span class="n">model_kwargs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parse_kwargs</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">model_kwargs</span><span class="p">)</span>
+
+<span class="w">        </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">module_class</span><span class="p">(</span>
+
+<span class="w">            </span><span class="o">**</span><span class="n">model_kwargs</span><span class="p">,</span>
+
+<span class="w">        </span><span class="p">)</span>
+
+<span class="w">    </span><span class="c1"># revise</span>
+
+<span class="w">    </span><span class="n">me</span><span class="o">.</span><span class="n">revise_manuscript</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c1"># copy the revised manuscript back to the content folder</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
+
+<span class="w">        </span><span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">content_dir</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </code></pre></div>
 
 </details>

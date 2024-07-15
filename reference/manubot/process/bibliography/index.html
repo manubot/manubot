@@ -1587,167 +1587,167 @@
 <h1 id="module-manubotprocessbibliography">Module manubot.process.bibliography</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
 
-<span class="kn">from</span> <span class="nn">manubot.cite.citekey</span> <span class="kn">import</span> <span class="n">shorten_citekey</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.citekey</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">shorten_citekey</span>
 
-<span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">read_serialized_data</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.util</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">read_serialized_data</span>
 
-<span class="k">def</span> <span class="nf">load_bibliography</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_bibliography</span><span class="p">(</span><span class="n">path</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">list</span><span class="p">:</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Load a bibliography as CSL Items (a CSL JSON Python object).</span>
+<span class="s2">    Load a bibliography as CSL Items (a CSL JSON Python object).</span>
 
-<span class="sd">    For paths that already contain CSL Items (inferred from a .json or .yaml extension),</span>
+<span class="s2">    For paths that already contain CSL Items (inferred from a .json or .yaml extension),</span>
 
-<span class="sd">    parse these files directly (URLs supported).</span>
+<span class="s2">    parse these files directly (URLs supported).</span>
 
-<span class="sd">    Otherwise, delegate conversion to CSL Items to pandoc-citeproc (URLs not supported).</span>
+<span class="s2">    Otherwise, delegate conversion to CSL Items to pandoc-citeproc (URLs not supported).</span>
 
-<span class="sd">    If loading fails, log an error and return an empty list.</span>
+<span class="s2">    If loading fails, log an error and return an empty list.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">path_obj</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">    </span><span class="n">path_obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">path_obj</span><span class="o">.</span><span class="n">suffix</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">}:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">path_obj</span><span class="o">.</span><span class="n">suffix</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;.yaml&quot;</span><span class="p">}:</span>
 
-        <span class="k">try</span><span class="p">:</span>
+<span class="w">        </span><span class="k">try</span><span class="p">:</span>
 
-            <span class="n">csl_items</span> <span class="o">=</span> <span class="n">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">            </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">error</span><span class="p">:</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;load_bibliography: error reading </span><span class="si">{</span><span class="n">path</span><span class="si">!r}</span><span class="s2">.</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;load_bibliography: error reading </span><span class="si">{</span><span class="n">path</span><span class="si">!r}</span><span class="s2">.</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;load_bibliography exception info&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;load_bibliography exception info&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-            <span class="n">csl_items</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">            </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
 
-    <span class="k">else</span><span class="p">:</span>
+<span class="w">    </span><span class="k">else</span><span class="p">:</span>
 
-        <span class="kn">from</span> <span class="nn">manubot.pandoc.bibliography</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.pandoc.bibliography</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
 
-            <span class="n">load_bibliography</span> <span class="k">as</span> <span class="n">load_bibliography_pandoc</span><span class="p">,</span>
+<span class="w">            </span><span class="n">load_bibliography</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">load_bibliography_pandoc</span><span class="p">,</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-        <span class="n">csl_items</span> <span class="o">=</span> <span class="n">load_bibliography_pandoc</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">        </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_bibliography_pandoc</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">csl_items</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">csl_items</span><span class="p">,</span><span class="w"> </span><span class="nb">list</span><span class="p">):</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
 
-            <span class="sa">f</span><span class="s2">&quot;process.load_bibliography: csl_items read from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> are of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">csl_items</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;process.load_bibliography: csl_items read from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> are of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">csl_items</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
 
-            <span class="s2">&quot;Setting csl_items to an empty list.&quot;</span>
+<span class="w">            </span><span class="s2">&quot;Setting csl_items to an empty list.&quot;</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-        <span class="n">csl_items</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">        </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
 
-    <span class="kn">from</span> <span class="nn">manubot.cite.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
+<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.csl_item</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CSL_Item</span>
 
-    <span class="n">csl_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span> <span class="k">for</span> <span class="n">csl_item</span> <span class="ow">in</span> <span class="n">csl_items</span><span class="p">]</span>
+<span class="w">    </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">csl_item</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_items</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">csl_items</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">csl_items</span>
 
-<span class="k">def</span> <span class="nf">load_manual_references</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_csl_items</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_manual_references</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="n">extra_csl_items</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">dict</span><span class="p">:</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Read manual references from bibliography text files specified by a list of paths.</span>
+<span class="s2">    Read manual references from bibliography text files specified by a list of paths.</span>
 
-<span class="sd">    Returns a standard_citation to CSL Item dictionary.</span>
+<span class="s2">    Returns a standard_citation to CSL Item dictionary.</span>
 
-<span class="sd">    `extra_csl_items` specifies CSL Items stored as a Python object,</span>
+<span class="s2">    `extra_csl_items` specifies CSL Items stored as a Python object,</span>
 
-<span class="sd">    to be used in addition to the CSL Items stored as text in the files specified by `paths`.</span>
+<span class="s2">    to be used in addition to the CSL Items stored as text in the files specified by `paths`.</span>
 
-<span class="sd">    Set `paths=[]` to only use extra_csl_items.</span>
+<span class="s2">    Set `paths=[]` to only use extra_csl_items.</span>
 
-<span class="sd">    When multiple references have the same standard_id,</span>
+<span class="s2">    When multiple references have the same standard_id,</span>
 
-<span class="sd">    precedence is given to reference defined last.</span>
+<span class="s2">    precedence is given to reference defined last.</span>
 
-<span class="sd">    References in `extra_csl_items` take precedence over those from `paths`.</span>
+<span class="s2">    References in `extra_csl_items` take precedence over those from `paths`.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">paths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">paths</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
 
-        <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">        </span><span class="n">paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
 
-    <span class="k">if</span> <span class="n">extra_csl_items</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">extra_csl_items</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
 
-        <span class="n">extra_csl_items</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">        </span><span class="n">extra_csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
 
-    <span class="kn">from</span> <span class="nn">manubot.cite.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
+<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.csl_item</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CSL_Item</span>
 
-    <span class="n">csl_items</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">    </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
 
-    <span class="n">paths</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">paths</span><span class="p">))</span>  <span class="c1"># remove duplicates</span>
+<span class="w">    </span><span class="n">paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">paths</span><span class="p">))</span><span class="w">  </span><span class="c1"># remove duplicates</span>
 
-    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">paths</span><span class="p">:</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">        </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-        <span class="n">path_obj</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">        </span><span class="n">path_obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-        <span class="n">bibliography</span> <span class="o">=</span> <span class="n">load_bibliography</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">        </span><span class="n">bibliography</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_bibliography</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">csl_item</span> <span class="ow">in</span> <span class="n">bibliography</span><span class="p">:</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">csl_item</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">bibliography</span><span class="p">:</span>
 
-            <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span>
+<span class="w">            </span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span>
 
-                <span class="s2">&quot;Loaded from an external bibliography file by Manubot.&quot;</span>
+<span class="w">                </span><span class="s2">&quot;Loaded from an external bibliography file by Manubot.&quot;</span>
 
-            <span class="p">)</span>
+<span class="w">            </span><span class="p">)</span>
 
-            <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">({</span><span class="s2">&quot;source_bibliography&quot;</span><span class="p">:</span> <span class="n">path_obj</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
+<span class="w">            </span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">({</span><span class="s2">&quot;source_bibliography&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">path_obj</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
 
-            <span class="n">csl_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+<span class="w">            </span><span class="n">csl_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-    <span class="n">csl_items</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">CSL_Item</span><span class="p">,</span> <span class="n">extra_csl_items</span><span class="p">))</span>
+<span class="w">    </span><span class="n">csl_items</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">CSL_Item</span><span class="p">,</span><span class="w"> </span><span class="n">extra_csl_items</span><span class="p">))</span>
 
-    <span class="n">manual_refs</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="w">    </span><span class="n">manual_refs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
 
-    <span class="k">for</span> <span class="n">csl_item</span> <span class="ow">in</span> <span class="n">csl_items</span><span class="p">:</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">csl_item</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_items</span><span class="p">:</span>
 
-        <span class="k">try</span><span class="p">:</span>
+<span class="w">        </span><span class="k">try</span><span class="p">:</span>
 
-            <span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">()</span>
+<span class="w">            </span><span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">()</span>
 
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">Exception</span><span class="p">:</span>
 
-            <span class="n">csl_item_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">            </span><span class="n">csl_item_str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span><span class="w"> </span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
-                <span class="sa">f</span><span class="s2">&quot;Skipping csl_item where setting standard_id failed:</span><span class="se">\n</span><span class="si">{</span><span class="n">csl_item_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;Skipping csl_item where setting standard_id failed:</span><span class="se">\n</span><span class="si">{</span><span class="n">csl_item_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
 
-                <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="w">                </span><span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 
-            <span class="p">)</span>
+<span class="w">            </span><span class="p">)</span>
 
-            <span class="k">continue</span>
+<span class="w">            </span><span class="k">continue</span>
 
-        <span class="n">standard_id</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">standard_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
 
-        <span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">shorten_citekey</span><span class="p">(</span><span class="n">standard_id</span><span class="p">))</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">shorten_citekey</span><span class="p">(</span><span class="n">standard_id</span><span class="p">))</span>
 
-        <span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
 
-        <span class="n">manual_refs</span><span class="p">[</span><span class="n">standard_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">csl_item</span>
+<span class="w">        </span><span class="n">manual_refs</span><span class="p">[</span><span class="n">standard_id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span>
 
-    <span class="k">return</span> <span class="n">manual_refs</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">manual_refs</span>
 </code></pre></div>
 
 </details>
@@ -1765,65 +1765,65 @@ Otherwise, delegate conversion to CSL Items to pandoc-citeproc (URLs not support
 If loading fails, log an error and return an empty list.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">load_bibliography</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">load_bibliography</span><span class="p">(</span><span class="n">path</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">list</span><span class="p">:</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Load a bibliography as CSL Items (a CSL JSON Python object).</span>
+<span class="s2">    Load a bibliography as CSL Items (a CSL JSON Python object).</span>
 
-<span class="sd">    For paths that already contain CSL Items (inferred from a .json or .yaml extension),</span>
+<span class="s2">    For paths that already contain CSL Items (inferred from a .json or .yaml extension),</span>
 
-<span class="sd">    parse these files directly (URLs supported).</span>
+<span class="s2">    parse these files directly (URLs supported).</span>
 
-<span class="sd">    Otherwise, delegate conversion to CSL Items to pandoc-citeproc (URLs not supported).</span>
+<span class="s2">    Otherwise, delegate conversion to CSL Items to pandoc-citeproc (URLs not supported).</span>
 
-<span class="sd">    If loading fails, log an error and return an empty list.</span>
+<span class="s2">    If loading fails, log an error and return an empty list.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">path_obj</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">    </span><span class="n">path_obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">path_obj</span><span class="o">.</span><span class="n">suffix</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">}:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">path_obj</span><span class="o">.</span><span class="n">suffix</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;.yaml&quot;</span><span class="p">}:</span>
 
-        <span class="k">try</span><span class="p">:</span>
+<span class="w">        </span><span class="k">try</span><span class="p">:</span>
 
-            <span class="n">csl_items</span> <span class="o">=</span> <span class="n">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">            </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_serialized_data</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">error</span><span class="p">:</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;load_bibliography: error reading </span><span class="si">{</span><span class="n">path</span><span class="si">!r}</span><span class="s2">.</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;load_bibliography: error reading </span><span class="si">{</span><span class="n">path</span><span class="si">!r}</span><span class="s2">.</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;load_bibliography exception info&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;load_bibliography exception info&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-            <span class="n">csl_items</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">            </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
 
-    <span class="k">else</span><span class="p">:</span>
+<span class="w">    </span><span class="k">else</span><span class="p">:</span>
 
-        <span class="kn">from</span> <span class="nn">manubot.pandoc.bibliography</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.pandoc.bibliography</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
 
-            <span class="n">load_bibliography</span> <span class="k">as</span> <span class="n">load_bibliography_pandoc</span><span class="p">,</span>
+<span class="w">            </span><span class="n">load_bibliography</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">load_bibliography_pandoc</span><span class="p">,</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-        <span class="n">csl_items</span> <span class="o">=</span> <span class="n">load_bibliography_pandoc</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">        </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_bibliography_pandoc</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">csl_items</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">csl_items</span><span class="p">,</span><span class="w"> </span><span class="nb">list</span><span class="p">):</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
 
-            <span class="sa">f</span><span class="s2">&quot;process.load_bibliography: csl_items read from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> are of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">csl_items</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
+<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;process.load_bibliography: csl_items read from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> are of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">csl_items</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
 
-            <span class="s2">&quot;Setting csl_items to an empty list.&quot;</span>
+<span class="w">            </span><span class="s2">&quot;Setting csl_items to an empty list.&quot;</span>
 
-        <span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
 
-        <span class="n">csl_items</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">        </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
 
-    <span class="kn">from</span> <span class="nn">manubot.cite.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
+<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.csl_item</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CSL_Item</span>
 
-    <span class="n">csl_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span> <span class="k">for</span> <span class="n">csl_item</span> <span class="ow">in</span> <span class="n">csl_items</span><span class="p">]</span>
+<span class="w">    </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">csl_item</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_items</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">csl_items</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">csl_items</span>
 </code></pre></div>
 
 </details>
@@ -1844,95 +1844,95 @@ precedence is given to reference defined last.
 References in <code>extra_csl_items</code> take precedence over those from <code>paths</code>.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">load_manual_references</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_csl_items</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">load_manual_references</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="n">extra_csl_items</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">dict</span><span class="p">:</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="sd">    Read manual references from bibliography text files specified by a list of paths.</span>
+<span class="s2">    Read manual references from bibliography text files specified by a list of paths.</span>
 
-<span class="sd">    Returns a standard_citation to CSL Item dictionary.</span>
+<span class="s2">    Returns a standard_citation to CSL Item dictionary.</span>
 
-<span class="sd">    `extra_csl_items` specifies CSL Items stored as a Python object,</span>
+<span class="s2">    `extra_csl_items` specifies CSL Items stored as a Python object,</span>
 
-<span class="sd">    to be used in addition to the CSL Items stored as text in the files specified by `paths`.</span>
+<span class="s2">    to be used in addition to the CSL Items stored as text in the files specified by `paths`.</span>
 
-<span class="sd">    Set `paths=[]` to only use extra_csl_items.</span>
+<span class="s2">    Set `paths=[]` to only use extra_csl_items.</span>
 
-<span class="sd">    When multiple references have the same standard_id,</span>
+<span class="s2">    When multiple references have the same standard_id,</span>
 
-<span class="sd">    precedence is given to reference defined last.</span>
+<span class="s2">    precedence is given to reference defined last.</span>
 
-<span class="sd">    References in `extra_csl_items` take precedence over those from `paths`.</span>
+<span class="s2">    References in `extra_csl_items` take precedence over those from `paths`.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">paths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">paths</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
 
-        <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">        </span><span class="n">paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
 
-    <span class="k">if</span> <span class="n">extra_csl_items</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">extra_csl_items</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
 
-        <span class="n">extra_csl_items</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">        </span><span class="n">extra_csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
 
-    <span class="kn">from</span> <span class="nn">manubot.cite.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
+<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.csl_item</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CSL_Item</span>
 
-    <span class="n">csl_items</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">    </span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
 
-    <span class="n">paths</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">paths</span><span class="p">))</span>  <span class="c1"># remove duplicates</span>
+<span class="w">    </span><span class="n">paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">paths</span><span class="p">))</span><span class="w">  </span><span class="c1"># remove duplicates</span>
 
-    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">paths</span><span class="p">:</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">        </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-        <span class="n">path_obj</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">        </span><span class="n">path_obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-        <span class="n">bibliography</span> <span class="o">=</span> <span class="n">load_bibliography</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">        </span><span class="n">bibliography</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_bibliography</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">csl_item</span> <span class="ow">in</span> <span class="n">bibliography</span><span class="p">:</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">csl_item</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">bibliography</span><span class="p">:</span>
 
-            <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span>
+<span class="w">            </span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span>
 
-                <span class="s2">&quot;Loaded from an external bibliography file by Manubot.&quot;</span>
+<span class="w">                </span><span class="s2">&quot;Loaded from an external bibliography file by Manubot.&quot;</span>
 
-            <span class="p">)</span>
+<span class="w">            </span><span class="p">)</span>
 
-            <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">({</span><span class="s2">&quot;source_bibliography&quot;</span><span class="p">:</span> <span class="n">path_obj</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
+<span class="w">            </span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">({</span><span class="s2">&quot;source_bibliography&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">path_obj</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
 
-            <span class="n">csl_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+<span class="w">            </span><span class="n">csl_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-    <span class="n">csl_items</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">CSL_Item</span><span class="p">,</span> <span class="n">extra_csl_items</span><span class="p">))</span>
+<span class="w">    </span><span class="n">csl_items</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">CSL_Item</span><span class="p">,</span><span class="w"> </span><span class="n">extra_csl_items</span><span class="p">))</span>
 
-    <span class="n">manual_refs</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="w">    </span><span class="n">manual_refs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
 
-    <span class="k">for</span> <span class="n">csl_item</span> <span class="ow">in</span> <span class="n">csl_items</span><span class="p">:</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">csl_item</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_items</span><span class="p">:</span>
 
-        <span class="k">try</span><span class="p">:</span>
+<span class="w">        </span><span class="k">try</span><span class="p">:</span>
 
-            <span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">()</span>
+<span class="w">            </span><span class="n">csl_item</span><span class="o">.</span><span class="n">standardize_id</span><span class="p">()</span>
 
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">Exception</span><span class="p">:</span>
 
-            <span class="n">csl_item_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">            </span><span class="n">csl_item_str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span><span class="w"> </span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 
-                <span class="sa">f</span><span class="s2">&quot;Skipping csl_item where setting standard_id failed:</span><span class="se">\n</span><span class="si">{</span><span class="n">csl_item_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;Skipping csl_item where setting standard_id failed:</span><span class="se">\n</span><span class="si">{</span><span class="n">csl_item_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
 
-                <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="w">                </span><span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 
-            <span class="p">)</span>
+<span class="w">            </span><span class="p">)</span>
 
-            <span class="k">continue</span>
+<span class="w">            </span><span class="k">continue</span>
 
-        <span class="n">standard_id</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="n">standard_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
 
-        <span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">shorten_citekey</span><span class="p">(</span><span class="n">standard_id</span><span class="p">))</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">shorten_citekey</span><span class="p">(</span><span class="n">standard_id</span><span class="p">))</span>
 
-        <span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+<span class="w">        </span><span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
 
-        <span class="n">manual_refs</span><span class="p">[</span><span class="n">standard_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">csl_item</span>
+<span class="w">        </span><span class="n">manual_refs</span><span class="p">[</span><span class="n">standard_id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span>
 
-    <span class="k">return</span> <span class="n">manual_refs</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">manual_refs</span>
 </code></pre></div>
 
 </details>
