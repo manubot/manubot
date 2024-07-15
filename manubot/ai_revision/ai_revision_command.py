@@ -20,6 +20,14 @@ def cli_process(args):
             f"content directory is not a directory or does not exist: {content_dir}"
         )
 
+    # set paths for config
+    # (the config directory is optional, but if it is provided, it must be a directory)
+    config_dir = args.config_directory
+    if config_dir is not None and not config_dir.is_dir():
+        raise SystemExit(
+            f"config directory is not a directory or does not exist: {config_dir}"
+        )
+
     # set paths for temporary output
     tmp_dir = Path(tempfile.mkdtemp(suffix="_manubot_ai_revision"))
     logging.info(f"using temporary directory: {tmp_dir}")
@@ -27,6 +35,7 @@ def cli_process(args):
     # create a manuscript editor and model to revise
     me = ManuscriptEditor(
         content_dir=content_dir,
+        config_dir=config_dir,
     )
 
     # instantiate a model
