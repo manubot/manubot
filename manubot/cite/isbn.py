@@ -16,7 +16,6 @@ def set_isbnlib_timeout(seconds=default_timeout):
 
 
 class Handler_ISBN(Handler):
-
     standard_prefix = "isbn"
 
     prefixes = [

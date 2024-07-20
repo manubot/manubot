@@ -215,9 +215,9 @@ def load_variables(args) -> dict:
         )
     variables["pandoc"]["date-meta"] = manuscript_date.isoformat()
     variables["manubot"]["date"] = manuscript_date.isoformat()
-    variables["manubot"][
-        "date_long"
-    ] = f"{manuscript_date:%B} {manuscript_date.day}, {manuscript_date.year}"
+    variables["manubot"]["date_long"] = (
+        f"{manuscript_date:%B} {manuscript_date.day}, {manuscript_date.year}"
+    )
     variables["manubot"]["generated"] = now.isoformat(timespec="seconds")
     variables["manubot"]["generated_date_long"] = f"{now:%B} {now.day}, {now.year}"
 
