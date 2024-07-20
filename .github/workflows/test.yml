@@ -38,7 +38,7 @@ jobs:
           
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Install Pandoc
       uses: r-lib/actions/setup-pandoc@v2
       with:
@@ -46,7 +46,7 @@ jobs:
         # https://github.com/jgm/pandoc/issues/6071
         pandoc-version: ${{ matrix.pandoc-version }}
     - name: Install Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -70,7 +70,7 @@ jobs:
       with:
         python-version: '3.11'  # should match default_language_version in .pre-commit-config.yaml
     - name: Run checks
-      uses: pre-commit/action@v3.0.0
+      uses: pre-commit/action@v3.0.1
 
   docs:
     name: Build Docs
@@ -91,7 +91,7 @@ jobs:
         portray as_html --overwrite --output_dir=docs
     - name: Deploy docs
       if: github.ref == 'refs/heads/main' && github.event_name == 'push' && !github.event.repository.fork
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: docs

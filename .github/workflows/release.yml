@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Install Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
     - name: Install dependencies
       run: |
         pip install --upgrade pip
@@ -22,8 +22,8 @@ jobs:
       run: python -m build --sdist --wheel --outdir=dist
     - name: Deploy package
       if: '!github.event.repository.fork'
-      uses: pypa/gh-action-pypi-publish@v1.5.1
+      uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__
         password: ${{ secrets.pypi_password }}
-        packages_dir: dist
+        packages-dir: dist
