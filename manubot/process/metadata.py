@@ -1,6 +1,7 @@
 """
 Tools for manuscript metadata processing including thumbnail detection and processing.
 """
+
 import functools
 import logging
 import pathlib

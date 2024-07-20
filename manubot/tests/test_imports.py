@@ -6,4 +6,4 @@ def test_imports():
     import manubot.cite.url
     import manubot.process.manuscript
 
-    manubot
+    _ensure_manubot = manubot

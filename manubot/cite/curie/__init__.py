@@ -30,6 +30,7 @@ References:
 - [On the road to robust data citation](https://doi.org/10.1038/sdata.2018.95)
 - [Uniform Resolution of Compact Identifiers for Biomedical Data](https://doi.org/10.1038/sdata.2018.29)
 """
+
 import dataclasses
 import functools
 import json

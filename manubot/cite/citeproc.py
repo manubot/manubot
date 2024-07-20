@@ -6,6 +6,7 @@ the cited objects and the formatting instructions provided by
 Citation Style Language (CSL) styles.
 -- https://en.wikipedia.org/wiki/CiteProc
 """
+
 import copy
 import functools
 import logging
