@@ -7,6 +7,11 @@ jobs:
   release:
     name: Create release
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/manubot/
+    permissions:
+      id-token: write  
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -24,6 +29,4 @@ jobs:
       if: '!github.event.repository.fork'
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        user: __token__
-        password: ${{ secrets.pypi_password }}
         packages-dir: dist
