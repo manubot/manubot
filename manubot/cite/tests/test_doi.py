@@ -33,18 +33,13 @@ def test_get_doi_csl_item_default():
 
 def test_get_doi_csl_item_zotero():
     """
-    As of 2019-10-25, DOI Content Negotiation (i.e. crosscite) encodes the consortium
-    in author.name rather than author.literal. Zotero translation-server encodes
-    the consortium in author.family, which is better than nothing since it's a valid
-    CSL JSON field.
+    Test how get_doi_csl_item_zotero handles a DOI with a consortium author.
     https://github.com/manubot/manubot/issues/158
     """
     doi = "10.1038/ng.3834"
     csl_item = get_doi_csl_item_zotero(doi)
     assert isinstance(csl_item, dict)
-    # for an unknown reason, GTEx Consortium becomes the first author
-    # which differs from the publisher HTML and Crossref metadata ordering.
-    assert csl_item["author"][0]["family"] == "GTEx Consortium"
+    assert csl_item["author"][0]["literal"] == "GTEx Consortium"
 
 
 def test_get_doi_csl_item():

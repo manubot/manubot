@@ -323,7 +323,8 @@ options:
                         Directory where manuscript content files are located.
   --config-directory CONFIG_DIRECTORY
                         Directory where AI revision configuration files are
-                        located. If unspecified, disables custom configuration.
+                        located. If unspecified, disables custom
+                        configuration.
   --model-type MODEL_TYPE
                         Model type used to revise the manuscript. Default is
                         GPT3CompletionModel. It can be any subclass of
