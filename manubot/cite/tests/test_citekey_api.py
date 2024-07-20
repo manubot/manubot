@@ -208,4 +208,4 @@ def test_citekey_to_csl_item_clinical_trial():
     csl_item = citekey_to_csl_item("clinicaltrials:NCT04292899")
     assert csl_item["title"].startswith("A Phase 3 Randomized Study")
     assert csl_item["source"].startswith("clinicaltrials.gov")
-    assert csl_item["URL"] == "https://clinicaltrials.gov/ct2/show/NCT04292899"
+    assert csl_item["URL"] == "https://www.clinicaltrials.gov/study/NCT04292899"
