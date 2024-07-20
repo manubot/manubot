@@ -74,9 +74,9 @@ def get_pmc_csl_item(pmcid: str) -> Dict[str, Any]:
     assert pmcid.startswith("PMC")
     csl_item = _get_literature_citation_exporter_csl_item("pmc", pmcid[3:])
     if "URL" not in csl_item:
-        csl_item[
-            "URL"
-        ] = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{csl_item.get('PMCID', pmcid)}/"
+        csl_item["URL"] = (
+            f"https://www.ncbi.nlm.nih.gov/pmc/articles/{csl_item.get('PMCID', pmcid)}/"
+        )
     return csl_item
 
 

@@ -96,7 +96,6 @@ def _load_bibliography_pandoc(
     path: Optional[str] = None,
     text: Optional[str] = None,
 ) -> List[Dict[str, Any]]:
-
     """
     Convert a biblatex (.bib) bibliography to CSL JSON data using pandoc directly.
     Pandoc support for csljson output requires pandoc >= 2.11.

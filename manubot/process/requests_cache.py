@@ -17,7 +17,7 @@ class RequestsCache:
 
     def install(self):
         """install cache"""
-        requests  # require `import requests` in case this is essential for monkey patching by requests_cache.
+        _ensure_requests = requests  # require `import requests` in case this is essential for monkey patching by requests_cache.
         requests_cache.install_cache(self.path, include_get_headers=True)
         self.cache = requests_cache.get_cache()
         logging.info(

@@ -81,9 +81,9 @@ def _generate_prefix_to_handler() -> Dict[str, str]:
         if isinstance(handler, str):
             handler = import_function(handler)("dummy_prefix_lower")
         for prefix in handler.prefixes:
-            pth[
-                prefix
-            ] = f"{inspect.getmodule(handler).__name__}.{handler.__class__.__name__}"
+            pth[prefix] = (
+                f"{inspect.getmodule(handler).__name__}.{handler.__class__.__name__}"
+            )
     pth = dict(sorted(pth.items()))  # sort for clean diffs of serialized dict
     return pth
 

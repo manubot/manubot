@@ -1,6 +1,7 @@
 """
 Manubot's command line interface
 """
+
 import argparse
 import logging
 import pathlib

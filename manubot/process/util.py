@@ -114,6 +114,7 @@ def _convert_field_to_list(
                 )
                 + f"Please switch {field} to a list.",
                 category=DeprecationWarning,
+                stacklevel=2,
             )
         return dictionary
     raise ValueError("Unsupported value type {value.__class__.__name__}")
@@ -226,6 +227,7 @@ def load_variables(args) -> dict:
         warnings.warn(
             "metadata.yaml: 'author_info' is deprecated. Use 'authors' instead.",
             category=DeprecationWarning,
+            stacklevel=2,
         )
     else:
         authors = metadata.pop("authors", [])

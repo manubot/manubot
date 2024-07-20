@@ -1,6 +1,7 @@
 """
 Utilities for representing and processing citation keys.
 """
+
 import dataclasses
 import functools
 import logging
