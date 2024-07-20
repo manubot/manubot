@@ -1857,6 +1857,8 @@
 
 <span class="w">                </span><span class="n">category</span><span class="o">=</span><span class="n">DeprecationWarning</span><span class="p">,</span>
 
+<span class="w">                </span><span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+
 <span class="w">            </span><span class="p">)</span>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">dictionary</span>
@@ -2035,11 +2037,11 @@
 
 <span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">manuscript_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span>
+<span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;date_long&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span>
 
-<span class="w">        </span><span class="s2">&quot;date_long&quot;</span>
+<span class="w">        </span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">manuscript_date</span><span class="si">:</span><span class="s2">%B</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">manuscript_date</span><span class="o">.</span><span class="n">day</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">manuscript_date</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">    </span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">manuscript_date</span><span class="si">:</span><span class="s2">%B</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">manuscript_date</span><span class="o">.</span><span class="n">day</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">manuscript_date</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="p">)</span>
 
 <span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;generated&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
 
@@ -2056,6 +2058,8 @@
 <span class="w">            </span><span class="s2">&quot;metadata.yaml: &#39;author_info&#39; is deprecated. Use &#39;authors&#39; instead.&quot;</span><span class="p">,</span>
 
 <span class="w">            </span><span class="n">category</span><span class="o">=</span><span class="n">DeprecationWarning</span><span class="p">,</span>
+
+<span class="w">            </span><span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 
 <span class="w">        </span><span class="p">)</span>
 
@@ -2487,11 +2491,11 @@ affiliations, variables is left unmodified.</p>
 
 <span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">manuscript_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span>
+<span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;date_long&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span>
 
-<span class="w">        </span><span class="s2">&quot;date_long&quot;</span>
+<span class="w">        </span><span class="n">f</span><span class="s2">&quot;{manuscript_date:%B} {manuscript_date.day}, {manuscript_date.year}&quot;</span>
 
-<span class="w">    </span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="s2">&quot;{manuscript_date:%B} {manuscript_date.day}, {manuscript_date.year}&quot;</span>
+<span class="w">    </span><span class="p">)</span>
 
 <span class="w">    </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;generated&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
 
@@ -2508,6 +2512,8 @@ affiliations, variables is left unmodified.</p>
 <span class="w">            </span><span class="s2">&quot;metadata.yaml: &#39;author_info&#39; is deprecated. Use &#39;authors&#39; instead.&quot;</span><span class="p">,</span>
 
 <span class="w">            </span><span class="n">category</span><span class="o">=</span><span class="n">DeprecationWarning</span><span class="p">,</span>
+
+<span class="w">            </span><span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 
 <span class="w">        </span><span class="p">)</span>
 

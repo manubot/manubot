@@ -1655,21 +1655,21 @@
 
 <span class="w">    </span><span class="n">_check_pandoc_version</span><span class="p">(</span><span class="n">info</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="nb">format</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">metadata_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;---</span><span class="se">\n</span><span class="si">{yaml}</span><span class="se">\n</span><span class="s2">...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-
-<span class="w">        </span><span class="n">yaml</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="w"> </span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="w">    </span><span class="p">)</span>
+<span class="w">    </span><span class="n">metadata_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;---</span><span class="se">\n</span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="w"> </span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">...</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <span class="w">    </span><span class="n">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 
 <span class="w">        </span><span class="s2">&quot;pandoc&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;--citeproc&quot;</span>
+<span class="w">        </span><span class="p">(</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;pandoc version&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">11</span><span class="p">)</span>
+<span class="w">            </span><span class="s2">&quot;--citeproc&quot;</span>
 
-<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="s2">&quot;--filter=pandoc-citeproc&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;pandoc version&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">11</span><span class="p">)</span>
+
+<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="s2">&quot;--filter=pandoc-citeproc&quot;</span>
+
+<span class="w">        </span><span class="p">),</span>
 
 <span class="w">        </span><span class="sa">f</span><span class="s2">&quot;--output=</span><span class="si">{</span><span class="n">path</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
 
@@ -1899,21 +1899,21 @@
 
 <span class="n">    _check_pandoc_version(info, metadata, format)</span>
 
-<span class="n">    metadata_block = &quot;---\n{yaml}\n...\n&quot;.format(</span>
-
-<span class="n">        yaml=json.dumps(metadata, ensure_ascii=False, indent=2)</span>
-
-<span class="n">    )</span>
+<span class="n">    metadata_block = f&quot;---\n{json.dumps(metadata, ensure_ascii=False, indent=2)}\n...\n&quot;</span>
 
 <span class="n">    args = [</span>
 
 <span class="n">        &quot;pandoc&quot;,</span>
 
-<span class="n">        &quot;--citeproc&quot;</span>
+<span class="n">        (</span>
 
-<span class="n">        if info[&quot;pandoc version&quot;] &gt;= (2, 11)</span>
+<span class="n">            &quot;--citeproc&quot;</span>
 
-<span class="n">        else &quot;--filter=pandoc-citeproc&quot;,</span>
+<span class="n">            if info[&quot;pandoc version&quot;] &gt;= (2, 11)</span>
+
+<span class="n">            else &quot;--filter=pandoc-citeproc&quot;</span>
+
+<span class="n">        ),</span>
 
 <span class="n">        f&quot;--output={path or &#39;-&#39;}&quot;,</span>
 

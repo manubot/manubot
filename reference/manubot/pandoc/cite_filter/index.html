@@ -1964,7 +1964,7 @@ pandoc<span class="w">   </span>--to<span class="o">=</span>json<span class="w">
 
 <span class="w">    </span><span class="s">&quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">pf</span><span class="p">.</span><span class="n">Para</span><span class="o">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">pf</span><span class="p">.</span><span class="n">Para</span><span class="o">:</span>
 
 <span class="w">        </span><span class="cp"># require link reference definitions to be in their own paragraph</span>
 
@@ -1974,11 +1974,11 @@ pandoc<span class="w">   </span>--to<span class="o">=</span>json<span class="w">
 
 <span class="w">        </span><span class="n">len</span><span class="p">(</span><span class="n">elem</span><span class="p">.</span><span class="n">content</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">3</span>
 
-<span class="w">        </span><span class="n">and</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">elem</span><span class="p">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">pf</span><span class="p">.</span><span class="n">Cite</span>
+<span class="w">        </span><span class="n">and</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">elem</span><span class="p">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">pf</span><span class="p">.</span><span class="n">Cite</span>
 
 <span class="w">        </span><span class="n">and</span><span class="w"> </span><span class="n">len</span><span class="p">(</span><span class="n">elem</span><span class="p">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">citations</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span>
 
-<span class="w">        </span><span class="n">and</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">elem</span><span class="p">.</span><span class="n">content</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">pf</span><span class="p">.</span><span class="n">Str</span>
+<span class="w">        </span><span class="n">and</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">elem</span><span class="p">.</span><span class="n">content</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">pf</span><span class="p">.</span><span class="n">Str</span>
 
 <span class="w">        </span><span class="n">and</span><span class="w"> </span><span class="n">elem</span><span class="p">.</span><span class="n">content</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">text</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;:&quot;</span>
 
@@ -1994,7 +1994,7 @@ pandoc<span class="w">   </span>--to<span class="o">=</span>json<span class="w">
 
 <span class="w">        </span><span class="n">destination</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">elem</span><span class="p">.</span><span class="n">content</span><span class="p">[</span><span class="n">dest_index</span><span class="p">]</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">pf</span><span class="p">.</span><span class="n">Str</span><span class="o">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">pf</span><span class="p">.</span><span class="n">Str</span><span class="o">:</span>
 
 <span class="w">            </span><span class="cp"># prevent infinite loop as per https:</span><span class="c1">//github.com/manubot/manubot/pull/302#issuecomment-906743300</span>
 
@@ -2026,7 +2026,7 @@ pandoc<span class="w">   </span>--to<span class="o">=</span>json<span class="w">
 
 <span class="w">        </span><span class="cp"># remove leading SoftBreak, before continuing</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">len</span><span class="p">(</span><span class="n">elem</span><span class="p">.</span><span class="n">content</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">elem</span><span class="p">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">pf</span><span class="p">.</span><span class="n">SoftBreak</span><span class="o">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">len</span><span class="p">(</span><span class="n">elem</span><span class="p">.</span><span class="n">content</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">elem</span><span class="p">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">pf</span><span class="p">.</span><span class="n">SoftBreak</span><span class="o">:</span>
 
 <span class="w">            </span><span class="n">elem</span><span class="p">.</span><span class="n">content</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 

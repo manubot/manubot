@@ -1707,13 +1707,7 @@
 
 <span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 
-<span class="s2">    As of 2019-10-25, DOI Content Negotiation (i.e. crosscite) encodes the consortium</span>
-
-<span class="s2">    in author.name rather than author.literal. Zotero translation-server encodes</span>
-
-<span class="s2">    the consortium in author.family, which is better than nothing since it&#39;s a valid</span>
-
-<span class="s2">    CSL JSON field.</span>
+<span class="s2">    Test how get_doi_csl_item_zotero handles a DOI with a consortium author.</span>
 
 <span class="s2">    https://github.com/manubot/manubot/issues/158</span>
 
@@ -1725,11 +1719,7 @@
 
 <span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span><span class="w"> </span><span class="nb">dict</span><span class="p">)</span>
 
-<span class="w">    </span><span class="c1"># for an unknown reason, GTEx Consortium becomes the first author</span>
-
-<span class="w">    </span><span class="c1"># which differs from the publisher HTML and Crossref metadata ordering.</span>
-
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;GTEx Consortium&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;literal&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;GTEx Consortium&quot;</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">test_get_doi_csl_item</span><span class="p">():</span>
 
@@ -1936,24 +1926,15 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<p>As of 2019-10-25, DOI Content Negotiation (i.e. crosscite) encodes the consortium</p>
-<p>in author.name rather than author.literal. Zotero translation-server encodes
-the consortium in author.family, which is better than nothing since it's a valid
-CSL JSON field.
-https://github.com/manubot/manubot/issues/158</p>
+<p>Test how get_doi_csl_item_zotero handles a DOI with a consortium author.</p>
+<p>https://github.com/manubot/manubot/issues/158</p>
 <details class="example">
 <summary>View Source</summary>
 <div class="codehilite"><pre><span></span><code>def test_get_doi_csl_item_zotero():
 
     &quot;&quot;&quot;
 
-    As of 2019-10-25, DOI Content Negotiation (i.e. crosscite) encodes the consortium
-
-    in author.name rather than author.literal. Zotero translation-server encodes
-
-    the consortium in author.family, which is better than nothing since it&#39;s a valid
-
-    CSL JSON field.
+    Test how get_doi_csl_item_zotero handles a DOI with a consortium author.
 
     https://github.com/manubot/manubot/issues/158
 
@@ -1965,11 +1946,7 @@ https://github.com/manubot/manubot/issues/158</p>
 
     assert isinstance(csl_item, dict)
 
-    # for an unknown reason, GTEx Consortium becomes the first author
-
-    # which differs from the publisher HTML and Crossref metadata ordering.
-
-    assert csl_item[&quot;author&quot;][0][&quot;family&quot;] == &quot;GTEx Consortium&quot;
+    assert csl_item[&quot;author&quot;][0][&quot;literal&quot;] == &quot;GTEx Consortium&quot;
 </code></pre></div>
 
 </details>

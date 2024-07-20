@@ -2082,6 +2082,14 @@
 
 <span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Complex analysis&quot;</span>
 
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span>
+
+<span class="w">    </span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;On 2024-07-20, title was &#39;ClinicalTrials.gov&#39; instead of &#39;A Phase 3 Randomized Study...&#39;. &quot;</span>
+
+<span class="w">    </span><span class="s2">&quot;This is wrong so FIXME in the future.&quot;</span>
+
+<span class="p">)</span>
+
 <span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_to_csl_item_clinical_trial</span><span class="p">():</span>
 
 <span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
@@ -2098,7 +2106,7 @@
 
 <span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;clinicaltrials.gov&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;https://clinicaltrials.gov/ct2/show/NCT04292899&quot;</span>
+<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;https://www.clinicaltrials.gov/study/NCT04292899&quot;</span>
 </code></pre></div>
 
 </details>
@@ -2261,23 +2269,31 @@
 <p>https://github.com/manubot/manubot/issues/216</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>def test_citekey_to_csl_item_clinical_trial():
+<div class="codehilite"><pre><span></span><code><span class="nv">@pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">xfail</span><span class="p">(</span>
 
-    &quot;&quot;&quot;
+<span class="w">    </span><span class="n">reason</span><span class="o">=</span><span class="ss">&quot;On 2024-07-20, title was &#39;ClinicalTrials.gov&#39; instead of &#39;A Phase 3 Randomized Study...&#39;. &quot;</span>
 
-    Test clinicaltrials.gov citation support using CURIEs.
+<span class="w">    </span><span class="ss">&quot;This is wrong so FIXME in the future.&quot;</span>
 
-    https://github.com/manubot/manubot/issues/216
+<span class="p">)</span>
 
-    &quot;&quot;&quot;
+<span class="n">def</span><span class="w"> </span><span class="n">test_citekey_to_csl_item_clinical_trial</span><span class="p">()</span><span class="err">:</span>
 
-    csl_item = citekey_to_csl_item(&quot;clinicaltrials:NCT04292899&quot;)
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
-    assert csl_item[&quot;title&quot;].startswith(&quot;A Phase 3 Randomized Study&quot;)
+<span class="ss">    Test clinicaltrials.gov citation support using CURIEs.</span>
 
-    assert csl_item[&quot;source&quot;].startswith(&quot;clinicaltrials.gov&quot;)
+<span class="ss">    https://github.com/manubot/manubot/issues/216</span>
 
-    assert csl_item[&quot;URL&quot;] == &quot;https://clinicaltrials.gov/ct2/show/NCT04292899&quot;
+<span class="ss">    &quot;&quot;&quot;</span>
+
+<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="ss">&quot;clinicaltrials:NCT04292899&quot;</span><span class="p">)</span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;title&quot;</span><span class="o">]</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;A Phase 3 Randomized Study&quot;</span><span class="p">)</span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;source&quot;</span><span class="o">]</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="ss">&quot;clinicaltrials.gov&quot;</span><span class="p">)</span>
+
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="o">[</span><span class="n">&quot;URL&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;https://www.clinicaltrials.gov/study/NCT04292899&quot;</span>
 </code></pre></div>
 
 </details>
