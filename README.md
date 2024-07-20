@@ -2,7 +2,6 @@
 
 [![documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs&logoColor=white&style=for-the-badge)](https://manubot.github.io/manubot/)
 [![PyPI](https://img.shields.io/pypi/v/manubot.svg?logo=PyPI&logoColor=white&style=for-the-badge)](https://pypi.org/project/manubot/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge&logo=Python&logoColor=white)](https://github.com/psf/black)
 
 [![GitHub Actions CI Tests Status](https://img.shields.io/github/actions/workflow/status/manubot/manubot/test.yml?branch=main&label=actions&style=for-the-badge&logo=github&logoColor=white)](https://github.com/manubot/manubot/actions)
 [![AppVeyor Windows Build Status](https://img.shields.io/appveyor/build/manubot/manubot/main?style=for-the-badge&logo=appveyor&logoColor=white&label=AppVeyor)](https://ci.appveyor.com/project/manubot/manubot/branch/main)

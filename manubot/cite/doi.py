@@ -13,7 +13,6 @@ from .pubmed import get_pubmed_ids_for_doi
 
 
 class Handler_DOI(Handler):
-
     standard_prefix = "doi"
     prefixes = [
         "doi",

@@ -14,7 +14,6 @@ from .handlers import Handler
 
 
 class Handler_PubMed(Handler):
-
     standard_prefix = "pubmed"
 
     prefixes = [
@@ -39,7 +38,6 @@ class Handler_PubMed(Handler):
 
 
 class Handler_PMC(Handler):
-
     standard_prefix = "pmc"
     prefixes = [
         "pmc",

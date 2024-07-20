@@ -9,7 +9,6 @@ CSLItem = Dict[str, Any]
 
 
 class Handler_URL(Handler):
-
     standard_prefix = "url"
 
     prefixes = [

@@ -11,7 +11,6 @@ from .handlers import Handler
 
 
 class Handler_arXiv(Handler):
-
     standard_prefix = "arxiv"
 
     prefixes = [

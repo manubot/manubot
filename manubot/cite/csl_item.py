@@ -308,7 +308,7 @@ def assert_csl_item_type(x) -> None:
 
 
 def date_to_date_parts(
-    date: Union[None, str, datetime.date, datetime.datetime]
+    date: Union[None, str, datetime.date, datetime.datetime],
 ) -> Optional[List[int]]:
     """
     Convert a date string or object to a date parts list.
