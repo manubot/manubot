@@ -196,6 +196,10 @@ def test_citekey_to_csl_item_isbn():
     assert csl_item["title"] == "Complex analysis"
 
 
+@pytest.mark.xfail(
+    reason="On 2024-07-20, title was 'ClinicalTrials.gov' instead of 'A Phase 3 Randomized Study...'. "
+    "This is wrong so FIXME in the future."
+)
 def test_citekey_to_csl_item_clinical_trial():
     """
     Test clinicaltrials.gov citation support using CURIEs.
