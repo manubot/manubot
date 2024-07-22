@@ -13,6 +13,7 @@ Unpaywall license choices used by Location.has_open_license.
 Defaults to licenses that conform to <https://opendefinition.org/>.
 """
 open_licenses = {"cc0", "cc-by", "cc-by-sa", "pd"}
+default_timeout = (3, 15)
 
 
 class Unpaywall:
@@ -25,7 +26,7 @@ class Unpaywall:
     csl_item = None
 
     @abc.abstractmethod
-    def set_oa_locations(self):
+    def set_oa_locations(self, timeout_seconds: int = default_timeout):
         """
         Set `self.oa_locations`, which is a list of `Unpaywall_Location` objects.
         """
@@ -101,12 +102,12 @@ class Unpaywall_DOI(Unpaywall):
         if set_oa_locations:
             self.set_oa_locations()
 
-    def set_oa_locations(self):
+    def set_oa_locations(self, timeout_seconds: int = default_timeout):
         from manubot.util import contact_email
 
         url = f"https://api.unpaywall.org/v2/{self.doi}"
         params = {"email": contact_email}
-        response = requests.get(url, params=params)
+        response = requests.get(url, params=params, timeout=timeout_seconds)
         response.raise_for_status()
         self.results = response.json()
         self.oa_locations = [
@@ -125,11 +126,13 @@ class Unpaywall_arXiv(Unpaywall):
         if set_oa_locations:
             self.set_oa_locations()
 
-    def set_oa_locations(self):
+    def set_oa_locations(self, timeout_seconds: int = default_timeout):
         from .arxiv import get_arxiv_csl_item
 
         if not self.csl_item:
-            self.csl_item = get_arxiv_csl_item(self.arxiv_id)
+            self.csl_item = get_arxiv_csl_item(
+                self.arxiv_id, timeout_seconds=timeout_seconds
+            )
         doi = self.csl_item.get("DOI")
         if self.use_doi and doi:
             unpaywall_doi = Unpaywall_DOI(doi)

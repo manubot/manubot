@@ -1,10 +1,11 @@
 import json
 import logging
 import re
+import typing as tp
 
 from .handlers import Handler
 
-default_timeout = 3
+default_timeout = (3.05, 15)
 
 
 def set_isbnlib_timeout(seconds=default_timeout):
@@ -22,8 +23,12 @@ class Handler_ISBN(Handler):
         "isbn",
     ]
 
-    def inspect(self, citekey):
-        isbnlib = set_isbnlib_timeout()
+    def inspect(self, citekey, timeout_seconds: int = default_timeout[0]):
+        import isbnlib
+
+        isbnlib.config.setthreadstimeout(seconds=timeout_seconds)
+        isbnlib.config.seturlopentimeout(seconds=timeout_seconds)
+
         fail = isbnlib.notisbn(citekey.accession, level="strict")
         if fail:
             return f"identifier violates the ISBN syntax according to isbnlib v{isbnlib.__version__}"
@@ -34,11 +39,14 @@ class Handler_ISBN(Handler):
         accession = to_isbn13(accession)
         return self.standard_prefix, accession
 
-    def get_csl_item(self, citekey):
-        return get_isbn_csl_item(citekey.standard_accession)
+    def get_csl_item(self, citekey, timeout_seconds: int = default_timeout[0]):
+
+        return get_isbn_csl_item(
+            citekey.standard_accession, timeout_seconds=timeout_seconds
+        )
 
 
-def get_isbn_csl_item(isbn: str):
+def get_isbn_csl_item(isbn: str, timeout_seconds: int = default_timeout[0]):
     """
     Generate CSL JSON Data for an ISBN. Converts all ISBNs to 13-digit format.
 
@@ -62,16 +70,18 @@ def get_isbn_csl_item(isbn: str):
     raise Exception(f"all get_isbn_csl_item methods failed for {isbn}")
 
 
-def get_isbn_csl_item_zotero(isbn: str):
+def get_isbn_csl_item_zotero(isbn: str, timeout_seconds: int = default_timeout):
     """
     Generate CSL JSON Data for an ISBN using Zotero's translation-server.
     """
     from manubot.cite.zotero import get_csl_item
 
-    return get_csl_item(f"isbn:{isbn}")
+    return get_csl_item(f"isbn:{isbn}", timeout_seconds=timeout_seconds)
 
 
-def get_isbn_csl_item_citoid(isbn: str):
+def get_isbn_csl_item_citoid(
+    isbn: str, timeout_seconds: tp.Union[tuple, int, float, None] = default_timeout
+):
     """
     Return CSL JSON Data for an ISBN using the Wikipedia Citoid API.
     https://en.wikipedia.org/api/rest_v1/#!/Citation/getCitation
@@ -82,7 +92,7 @@ def get_isbn_csl_item_citoid(isbn: str):
 
     headers = {"User-Agent": get_manubot_user_agent()}
     url = f"https://en.wikipedia.org/api/rest_v1/data/citation/mediawiki/{isbn}"
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, timeout=timeout_seconds)
     result = response.json()
     if isinstance(result, dict):
         if result["title"] == "Not found.":
@@ -133,7 +143,7 @@ def get_isbn_csl_item_citoid(isbn: str):
     return csl_item
 
 
-def get_isbn_csl_item_isbnlib(isbn: str):
+def get_isbn_csl_item_isbnlib(isbn: str, timeout_seconds: int = default_timeout[0]):
     """
     Generate CSL JSON Data for an ISBN using isbnlib.
     """

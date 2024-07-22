@@ -7,6 +7,8 @@ from .handlers import Handler
 
 CSLItem = Dict[str, Any]
 
+default_timeout = (3, 15)
+
 
 class Handler_URL(Handler):
     standard_prefix = "url"
@@ -22,11 +24,13 @@ class Handler_URL(Handler):
             accession = f"{self.prefix_lower}:{accession}"
         return self.standard_prefix, accession
 
-    def get_csl_item(self, citekey):
-        return get_url_csl_item(citekey.standard_accession)
+    def get_csl_item(self, citekey, timeout_seconds: int = default_timeout):
+        return get_url_csl_item(
+            citekey.standard_accession, timeout_seconds=timeout_seconds
+        )
 
 
-def get_url_csl_item(url: str) -> CSLItem:
+def get_url_csl_item(url: str, timeout_seconds: int = default_timeout) -> CSLItem:
     """
     Get csl_item for a URL trying a sequence of strategies.
 
@@ -37,7 +41,7 @@ def get_url_csl_item(url: str) -> CSLItem:
     """
     for retriever in url_retrievers:
         try:
-            return retriever(url)
+            return retriever(url, timeout_seconds=timeout_seconds)
         except Exception as error:
             logging.warning(
                 f"Error in {retriever.__name__} for {url} "
@@ -47,14 +51,16 @@ def get_url_csl_item(url: str) -> CSLItem:
     raise Exception(f"all get_url_csl_item methods failed for {url}")
 
 
-def get_url_csl_item_zotero(url: str) -> CSLItem:
+def get_url_csl_item_zotero(
+    url: str, timeout_seconds: int = default_timeout
+) -> CSLItem:
     """
     Use Zotero's translation-server to generate a CSL Item for the specified URL.
     """
     from manubot.cite.zotero import export_as_csl, web_query
 
     zotero_data = web_query(url)
-    csl_data = export_as_csl(zotero_data)
+    csl_data = export_as_csl(zotero_data, timeout_seconds=timeout_seconds)
     (csl_item,) = csl_data
     if not csl_item.get("URL"):
         # some Zotero translators don't set URL. https://github.com/manubot/manubot/issues/244
@@ -62,7 +68,9 @@ def get_url_csl_item_zotero(url: str) -> CSLItem:
     return csl_item
 
 
-def get_url_csl_item_greycite(url: str) -> CSLItem:
+def get_url_csl_item_greycite(
+    url: str, timeout_seconds: int = default_timeout
+) -> CSLItem:
     """
     Uses Greycite which has experiened uptime problems in the past.
     API calls seem to take at least 15 seconds. Browser requests are much
@@ -84,7 +92,10 @@ def get_url_csl_item_greycite(url: str) -> CSLItem:
         "User-Agent": get_manubot_user_agent(),
     }
     response = requests.get(
-        "http://greycite.knowledgeblog.org/json", params={"uri": url}, headers=headers
+        "http://greycite.knowledgeblog.org/json",
+        params={"uri": url},
+        headers=headers,
+        timeout=timeout_seconds,
     )
     response.raise_for_status()
     # Some Greycite responses were valid JSON besides for an error appended
@@ -96,7 +107,9 @@ def get_url_csl_item_greycite(url: str) -> CSLItem:
     return csl_item
 
 
-def get_url_csl_item_manual(url: str) -> CSLItem:
+def get_url_csl_item_manual(
+    url: str, timeout_seconds: int = default_timeout
+) -> CSLItem:
     """
     Manually create csl_item for a URL.
     """

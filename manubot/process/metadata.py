@@ -9,6 +9,8 @@ import subprocess
 from typing import Optional
 from urllib.parse import urljoin
 
+default_timeout = 3
+
 
 def get_header_includes(variables: dict) -> str:
     """
@@ -161,7 +163,7 @@ def get_manuscript_urls(html_url: Optional[str] = None) -> dict:
         return urls
     urls["html_url_versioned"] = urljoin(html_url, "v/{commit}/".format(**ci_params))
     urls["pdf_url_versioned"] = urljoin(urls["html_url_versioned"], "manuscript.pdf")
-    response = requests.head(html_url, allow_redirects=True)
+    response = requests.head(html_url, allow_redirects=True, timeout=default_timeout)
     if not response.ok:
         logging.warning(
             "html_url is not web accessible. "

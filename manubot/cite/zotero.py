@@ -9,7 +9,7 @@ https://github.com/manubot/manubot/issues/82.
 
 import json
 import logging
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 import requests
 
@@ -24,8 +24,12 @@ CSLItems = ZoteroData
 base_url = "https://translate.manubot.org"
 """URL that provides access to the Zotero translation-server API"""
 
+default_timeout = (3, 15)
 
-def web_query(url: str) -> ZoteroData:
+
+def web_query(
+    url: str, timeout_seconds: Union[tuple, int, float, None] = default_timeout
+) -> ZoteroData:
     """
     Return Zotero citation metadata for a URL as a list containing a single element that
     is a dictionary with the URL's metadata.
@@ -33,7 +37,9 @@ def web_query(url: str) -> ZoteroData:
     headers = {"User-Agent": get_manubot_user_agent(), "Content-Type": "text/plain"}
     params = {"single": 1}
     api_url = f"{base_url}/web"
-    response = requests.post(api_url, params=params, headers=headers, data=str(url))
+    response = requests.post(
+        api_url, params=params, headers=headers, data=str(url), timeout=timeout_seconds
+    )
     try:
         zotero_data = response.json()
     except Exception as error:
@@ -52,7 +58,9 @@ def web_query(url: str) -> ZoteroData:
     return zotero_data
 
 
-def search_query(identifier: str) -> ZoteroData:
+def search_query(
+    identifier: str, timeout_seconds: Union[tuple, int, float, None] = default_timeout
+) -> ZoteroData:
     """
     Retrive Zotero metadata for a DOI, ISBN, PMID, or arXiv ID.
     Example usage:
@@ -66,7 +74,9 @@ def search_query(identifier: str) -> ZoteroData:
     """
     api_url = f"{base_url}/search"
     headers = {"User-Agent": get_manubot_user_agent(), "Content-Type": "text/plain"}
-    response = requests.post(api_url, headers=headers, data=str(identifier))
+    response = requests.post(
+        api_url, headers=headers, data=str(identifier), timeout=timeout_seconds
+    )
     try:
         zotero_data = response.json()
     except Exception as error:
@@ -93,7 +103,10 @@ def _passthrough_zotero_data(zotero_data: ZoteroData) -> ZoteroData:
     return zotero_data
 
 
-def export_as_csl(zotero_data: ZoteroData) -> CSLItems:
+def export_as_csl(
+    zotero_data: ZoteroData,
+    timeout_seconds: Union[tuple, int, float, None] = default_timeout,
+) -> CSLItems:
     """
     Export Zotero JSON data to CSL JSON using a translation-server /export query.
     Performs a similar query to the following curl command:
@@ -107,7 +120,13 @@ def export_as_csl(zotero_data: ZoteroData) -> CSLItems:
     api_url = f"{base_url}/export"
     params = {"format": "csljson"}
     headers = {"User-Agent": get_manubot_user_agent()}
-    response = requests.post(api_url, params=params, headers=headers, json=zotero_data)
+    response = requests.post(
+        api_url,
+        params=params,
+        headers=headers,
+        json=zotero_data,
+        timeout=timeout_seconds,
+    )
     if not response.ok:
         message = f"export_as_csl: translation-server returned status code {response.status_code}"
         logging.warning(f"{message} with the following output:\n{response.text}")
@@ -120,25 +139,29 @@ def export_as_csl(zotero_data: ZoteroData) -> CSLItems:
     return csl_items
 
 
-def get_csl_item(identifier: str) -> CSLItem:
+def get_csl_item(
+    identifier: str, timeout_seconds: Union[tuple, int, float, None] = default_timeout
+) -> CSLItem:
     """
     Use a translation-server search query followed by an export query
     to return a CSL Item (the first & only record of the returned CSL JSON).
     """
-    zotero_data = search_query(identifier)
-    csl_items = export_as_csl(zotero_data)
+    zotero_data = search_query(identifier, timeout_seconds=timeout_seconds)
+    csl_items = export_as_csl(zotero_data, timeout_seconds=timeout_seconds)
     (csl_item,) = csl_items
     return csl_item
 
 
-def search_or_web_query(identifier: str) -> ZoteroData:
+def search_or_web_query(
+    identifier: str, timeout_seconds: Union[tuple, int, float, None] = default_timeout
+) -> ZoteroData:
     """
     Detect whether `identifier` is a URL. If so,
     retrieve zotero metadata using a /web query.
     Otherwise, retrieve zotero metadata using a /search query.
     """
     if is_http_url(identifier):
-        zotero_data = web_query(identifier)
+        zotero_data = web_query(identifier, timeout_seconds=timeout_seconds)
     else:
-        zotero_data = search_query(identifier)
+        zotero_data = search_query(identifier, timeout_seconds=timeout_seconds)
     return zotero_data

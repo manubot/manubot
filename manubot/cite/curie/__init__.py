@@ -51,7 +51,7 @@ _keep_bioregistry_fields = {
     "synonyms",
 }
 
-
+default_timeout = (3, 15)
 bioregistry_path = pathlib.Path(__file__).parent.joinpath("bioregistry.json")
 
 
@@ -79,11 +79,15 @@ class Handler_CURIE(Handler):
         if "pattern" in self.resource:
             self.accession_pattern = self.resource["pattern"]
 
-    def get_csl_item(self, citekey: CiteKey):
+    def get_csl_item(
+        self,
+        citekey: CiteKey,
+        timeout_seconds: typing.Union[tuple, int, float, None] = default_timeout,
+    ):
         from ..url import get_url_csl_item
 
         url = self.get_url(accession=citekey.standard_accession)
-        return get_url_csl_item(url)
+        return get_url_csl_item(url, timeout_seconds=timeout_seconds)
 
     def inspect(self, citekey: CiteKey) -> typing.Optional[str]:
         pattern = self._get_pattern("accession_pattern")
@@ -112,7 +116,7 @@ def _download_bioregistry() -> None:
     import requests
 
     url = "https://github.com/biopragmatics/bioregistry/raw/main/exports/registry/registry.json"
-    response = requests.get(url)
+    response = requests.get(url, timeout=default_timeout)
     response.raise_for_status()
     results = response.json()
     assert isinstance(results, dict)

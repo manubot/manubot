@@ -12,6 +12,8 @@ from manubot.util import get_manubot_user_agent
 from .citekey import CiteKey
 from .handlers import Handler
 
+default_timeout = (3, 15)
+
 
 class Handler_PubMed(Handler):
     standard_prefix = "pubmed"
@@ -33,8 +35,12 @@ class Handler_PubMed(Handler):
         elif not self._get_pattern().fullmatch(identifier):
             return "PubMed Identifiers should be 1-8 digits with no leading zeros."
 
-    def get_csl_item(self, citekey: CiteKey) -> Dict[str, Any]:
-        return get_pubmed_csl_item(citekey.standard_accession)
+    def get_csl_item(
+        self, citekey: CiteKey, timeout_seconds=default_timeout
+    ) -> Dict[str, Any]:
+        return get_pubmed_csl_item(
+            citekey.standard_accession, timeout_seconds=timeout_seconds
+        )
 
 
 class Handler_PMC(Handler):
@@ -56,11 +62,15 @@ class Handler_PMC(Handler):
                 "Double check the PMCID."
             )
 
-    def get_csl_item(self, citekey: CiteKey):
-        return get_pmc_csl_item(citekey.standard_accession)
+    def get_csl_item(self, citekey: CiteKey, timeout_seconds: int = default_timeout):
+        return get_pmc_csl_item(
+            citekey.standard_accession, timeout_seconds=timeout_seconds
+        )
 
 
-def get_pmc_csl_item(pmcid: str) -> Dict[str, Any]:
+def get_pmc_csl_item(
+    pmcid: str, timeout_seconds: int = default_timeout
+) -> Dict[str, Any]:
     """
     Get the CSL Item for a PubMed Central record by its PMID, PMCID, or
     DOI, using the NCBI Citation Exporter API.
@@ -79,7 +89,7 @@ def get_pmc_csl_item(pmcid: str) -> Dict[str, Any]:
 
 
 def _get_literature_citation_exporter_csl_item(
-    database: str, identifier: str
+    database: str, identifier: str, timeout_seconds: int = default_timeout
 ) -> Dict[str, Any]:
     """
     https://api.ncbi.nlm.nih.gov/lit/ctxp
@@ -99,7 +109,7 @@ def _get_literature_citation_exporter_csl_item(
     params = {"format": "csl", "id": identifier}
     headers = {"User-Agent": get_manubot_user_agent()}
     url = f"https://api.ncbi.nlm.nih.gov/lit/ctxp/v1/{database}/"
-    response = requests.get(url, params, headers=headers)
+    response = requests.get(url, params, headers=headers, timeout=timeout_seconds)
     try:
         csl_item = response.json()
     except Exception as error:
@@ -119,7 +129,10 @@ def _get_literature_citation_exporter_csl_item(
     return csl_item
 
 
-def get_pubmed_csl_item(pmid: Union[str, int]) -> Dict[str, Any]:
+def get_pubmed_csl_item(
+    pmid: Union[str, int],
+    timeout_seconds: Union[tuple, int, float, None] = default_timeout,
+) -> Dict[str, Any]:
     """
     Query NCBI E-Utilities to create CSL Items for PubMed IDs.
 
@@ -131,7 +144,7 @@ def get_pubmed_csl_item(pmid: Union[str, int]) -> Dict[str, Any]:
     headers = {"User-Agent": get_manubot_user_agent()}
     url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
     with _get_eutils_rate_limiter():
-        response = requests.get(url, params, headers=headers)
+        response = requests.get(url, params, headers=headers, timeout=timeout_seconds)
     try:
         xml_article_set = ElementTree.fromstring(response.text)
         assert isinstance(xml_article_set, ElementTree.Element)
@@ -279,7 +292,9 @@ def extract_publication_date_parts(article: ElementTree.Element) -> List[int]:
     return date_parts
 
 
-def get_pmcid_and_pmid_for_doi(doi: str) -> Dict[str, str]:
+def get_pmcid_and_pmid_for_doi(
+    doi: str, timeout_seconds: int = default_timeout
+) -> Dict[str, str]:
     """
     Query PMC's ID Converter API to retrieve the PMCID and PMID for a DOI.
     Does not work for DOIs that are in Pubmed but not PubMed Central.
@@ -289,7 +304,7 @@ def get_pmcid_and_pmid_for_doi(doi: str) -> Dict[str, str]:
     assert doi.startswith("10.")
     params = {"ids": doi, "tool": "manubot"}
     url = "https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/"
-    response = requests.get(url, params)
+    response = requests.get(url, params, timeout=timeout_seconds)
     if not response.ok:
         logging.warning(f"Status code {response.status_code} querying {response.url}\n")
         return {}
@@ -320,7 +335,7 @@ def get_pmcid_and_pmid_for_doi(doi: str) -> Dict[str, str]:
     return id_dict
 
 
-def get_pmid_for_doi(doi: str) -> Optional[str]:
+def get_pmid_for_doi(doi: str, timeout_seconds: int = default_timeout) -> Optional[str]:
     """
     Query NCBI's E-utilities to retrieve the PMID for a DOI.
     """
@@ -330,7 +345,7 @@ def get_pmid_for_doi(doi: str) -> Optional[str]:
     headers = {"User-Agent": get_manubot_user_agent()}
     url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
     with _get_eutils_rate_limiter():
-        response = requests.get(url, params, headers=headers)
+        response = requests.get(url, params, headers=headers, timeout=timeout_seconds)
     if not response.ok:
         logging.warning(f"Status code {response.status_code} querying {response.url}\n")
         return None
@@ -355,14 +370,16 @@ def get_pmid_for_doi(doi: str) -> Optional[str]:
     return id_elem.text
 
 
-def get_pubmed_ids_for_doi(doi: str) -> Dict[str, str]:
+def get_pubmed_ids_for_doi(
+    doi: str, timeout_seconds: int = default_timeout
+) -> Dict[str, str]:
     """
     Return a dictionary with PMCID and PMID, if they exist, for the specified
     DOI. See https://github.com/manubot/manubot/issues/45.
     """
-    pubmed_ids = get_pmcid_and_pmid_for_doi(doi)
+    pubmed_ids = get_pmcid_and_pmid_for_doi(doi, timeout_seconds=timeout_seconds)
     if not pubmed_ids:
-        pmid = get_pmid_for_doi(doi)
+        pmid = get_pmid_for_doi(doi, timeout_seconds=timeout_seconds)
         if pmid:
             pubmed_ids["PMID"] = pmid
     return pubmed_ids

@@ -2,6 +2,8 @@ from typing import Any, Dict
 
 from .handlers import Handler
 
+default_timeout = (3, 15)
+
 
 class Handler_Wikidata(Handler):
     prefixes = ["wikidata"]
@@ -21,11 +23,15 @@ class Handler_Wikidata(Handler):
                 "Double check the entity ID."
             )
 
-    def get_csl_item(self, citekey):
-        return get_wikidata_csl_item(citekey.standard_accession)
+    def get_csl_item(self, citekey, timeout_seconds: int = default_timeout):
+        return get_wikidata_csl_item(
+            citekey.standard_accession, timeout_seconds=timeout_seconds
+        )
 
 
-def get_wikidata_csl_item(identifier: str) -> Dict[str, Any]:
+def get_wikidata_csl_item(
+    identifier: str, timeout_seconds: int = default_timeout
+) -> Dict[str, Any]:
     """
     Get a CSL JSON item with the citation metadata for a Wikidata item.
     identifier should be a Wikidata item ID corresponding to a citeable
@@ -34,7 +40,7 @@ def get_wikidata_csl_item(identifier: str) -> Dict[str, Any]:
     url = f"https://www.wikidata.org/wiki/{identifier}"
     from manubot.cite.url import get_url_csl_item_zotero
 
-    csl_item = get_url_csl_item_zotero(url)
+    csl_item = get_url_csl_item_zotero(url, timeout_seconds=timeout_seconds)
     if "DOI" in csl_item:
         csl_item["DOI"] = csl_item["DOI"].lower()
     if "URL" not in csl_item:
