@@ -1607,229 +1607,229 @@ Citation Style Language (CSL) styles.
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">copy</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">functools</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.util</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">read_serialized_data</span>
+<span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">read_serialized_data</span>
 
 <span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">get_jsonschema_csl_validator</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">get_jsonschema_csl_validator</span><span class="p">():</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Return a jsonschema validator for the CSL Item JSON Schema</span>
+<span class="sd">    Return a jsonschema validator for the CSL Item JSON Schema</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">jsonschema</span>
+    <span class="kn">import</span> <span class="nn">jsonschema</span>
 
-<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/citation-style-language/schema/raw/v1.0.2/schemas/input/csl-data.json&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/citation-style-language/schema/raw/v1.0.2/schemas/input/csl-data.json&quot;</span>
 
-<span class="w">    </span><span class="n">schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_serialized_data</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">schema</span> <span class="o">=</span> <span class="n">read_serialized_data</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">Validator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jsonschema</span><span class="o">.</span><span class="n">validators</span><span class="o">.</span><span class="n">validator_for</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+    <span class="n">Validator</span> <span class="o">=</span> <span class="n">jsonschema</span><span class="o">.</span><span class="n">validators</span><span class="o">.</span><span class="n">validator_for</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">Validator</span><span class="o">.</span><span class="n">check_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+    <span class="n">Validator</span><span class="o">.</span><span class="n">check_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Validator</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Validator</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">remove_jsonschema_errors</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span><span class="w"> </span><span class="n">recurse_depth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">in_place</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">remove_jsonschema_errors</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">recurse_depth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Remove fields in CSL Items that produce JSON Schema errors. Should errors</span>
+<span class="sd">    Remove fields in CSL Items that produce JSON Schema errors. Should errors</span>
 
-<span class="s2">    be removed, but the JSON instance still fails to validate, recursively call</span>
+<span class="sd">    be removed, but the JSON instance still fails to validate, recursively call</span>
 
-<span class="s2">    remove_jsonschema_errors until the instance validates or the recursion</span>
+<span class="sd">    remove_jsonschema_errors until the instance validates or the recursion</span>
 
-<span class="s2">    depth limit is reached.</span>
+<span class="sd">    depth limit is reached.</span>
 
-<span class="s2">    Note that this method may not be work for all types of JSON Schema errors</span>
+<span class="sd">    Note that this method may not be work for all types of JSON Schema errors</span>
 
-<span class="s2">    and users looking to adapt it for other applications should write</span>
+<span class="sd">    and users looking to adapt it for other applications should write</span>
 
-<span class="s2">    task-specific tests to provide empirical evaluate that it works as</span>
+<span class="sd">    task-specific tests to provide empirical evaluate that it works as</span>
 
-<span class="s2">    intended.</span>
+<span class="sd">    intended.</span>
 
-<span class="s2">    The default in_place=False creates a deepcopy of instance before pruning it,</span>
+<span class="sd">    The default in_place=False creates a deepcopy of instance before pruning it,</span>
 
-<span class="s2">    such that a new dictionary is returned and instance is not edited.</span>
+<span class="sd">    such that a new dictionary is returned and instance is not edited.</span>
 
-<span class="s2">    Set in_place=True to edit instance in-place. The inital implementation of</span>
+<span class="sd">    Set in_place=True to edit instance in-place. The inital implementation of</span>
 
-<span class="s2">    remove_jsonschema_errors always deepcopied instance, and it is possible deepcopying</span>
+<span class="sd">    remove_jsonschema_errors always deepcopied instance, and it is possible deepcopying</span>
 
-<span class="s2">    is important to prevent malfunction when encountering certain edge cases.</span>
+<span class="sd">    is important to prevent malfunction when encountering certain edge cases.</span>
 
-<span class="s2">    Please report if you observe any in_place dependent behaviors.</span>
+<span class="sd">    Please report if you observe any in_place dependent behaviors.</span>
 
-<span class="s2">    See also:</span>
+<span class="sd">    See also:</span>
 
-<span class="s2">    https://github.com/Julian/jsonschema/issues/448</span>
+<span class="sd">    https://github.com/Julian/jsonschema/issues/448</span>
 
-<span class="s2">    https://stackoverflow.com/questions/44694835</span>
+<span class="sd">    https://stackoverflow.com/questions/44694835</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">validator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_jsonschema_csl_validator</span><span class="p">()</span>
+    <span class="n">validator</span> <span class="o">=</span> <span class="n">get_jsonschema_csl_validator</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">list</span><span class="p">(</span><span class="n">validator</span><span class="o">.</span><span class="n">iter_errors</span><span class="p">(</span><span class="n">instance</span><span class="p">))</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">validator</span><span class="o">.</span><span class="n">iter_errors</span><span class="p">(</span><span class="n">instance</span><span class="p">))</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">in_place</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">in_place</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">sorted</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span><span class="w"> </span><span class="n">e</span><span class="p">:</span><span class="w"> </span><span class="n">e</span><span class="o">.</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">errors</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">_remove_error</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
+        <span class="n">_remove_error</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">validator</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">recurse_depth</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">validator</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span> <span class="ow">or</span> <span class="n">recurse_depth</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">instance</span>
+        <span class="k">return</span> <span class="n">instance</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">remove_jsonschema_errors</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span><span class="w"> </span><span class="n">recurse_depth</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">in_place</span><span class="o">=</span><span class="n">in_place</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">remove_jsonschema_errors</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">recurse_depth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="n">in_place</span><span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_delete_elem</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">absolute_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_delete_elem</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">absolute_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Helper function for remove_jsonschema_errors that deletes an element in the</span>
+<span class="sd">    Helper function for remove_jsonschema_errors that deletes an element in the</span>
 
-<span class="s2">    JSON-like input instance at the specified path. absolute_path is relative</span>
+<span class="sd">    JSON-like input instance at the specified path. absolute_path is relative</span>
 
-<span class="s2">    to the original validated instance for logging purposes. Defaults to path,</span>
+<span class="sd">    to the original validated instance for logging purposes. Defaults to path,</span>
 
-<span class="s2">    if not specified. message is an optional string with additional error</span>
+<span class="sd">    if not specified. message is an optional string with additional error</span>
 
-<span class="s2">    information to log.</span>
+<span class="sd">    information to log.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">absolute_path</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">absolute_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">absolute_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">path</span>
+        <span class="n">absolute_path</span> <span class="o">=</span> <span class="n">path</span>
 
-<span class="w">    </span><span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
 
-<span class="w">        </span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">message</span><span class="p">)</span>
+        <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">message</span> <span class="k">else</span> <span class="n">message</span><span class="p">)</span>
 
-<span class="w">        </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;_delete_elem deleting CSL element at: &quot;</span>
+        <span class="o">+</span> <span class="s2">&quot;_delete_elem deleting CSL element at: &quot;</span>
 
-<span class="w">        </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">absolute_path</span><span class="p">))</span>
+        <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">absolute_path</span><span class="p">))</span>
 
-<span class="w">    </span><span class="p">)</span>
+    <span class="p">)</span>
 
-<span class="w">    </span><span class="o">*</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="n">tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">path</span>
+    <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">path</span>
 
-<span class="w">    </span><span class="k">try</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">del</span><span class="w"> </span><span class="n">_deep_get</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span><span class="w"> </span><span class="n">head</span><span class="p">)[</span><span class="n">tail</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">_deep_get</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">head</span><span class="p">)[</span><span class="n">tail</span><span class="p">]</span>
 
-<span class="w">    </span><span class="k">except</span><span class="w"> </span><span class="n">KeyError</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">pass</span>
+        <span class="k">pass</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_deep_get</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_deep_get</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Descend path to return a deep element in the JSON object instance.</span>
+<span class="sd">    Descend path to return a deep element in the JSON object instance.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">path</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instance</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">instance</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">instance</span>
+    <span class="k">return</span> <span class="n">instance</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_remove_error</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_remove_error</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Remove a jsonschema ValidationError from the JSON-like instance.</span>
+<span class="sd">    Remove a jsonschema ValidationError from the JSON-like instance.</span>
 
-<span class="s2">    See ValidationError documentation at</span>
+<span class="sd">    See ValidationError documentation at</span>
 
-<span class="s2">    https://python-jsonschema.readthedocs.io/en/latest/errors/#jsonschema.exceptions.ValidationError</span>
+<span class="sd">    https://python-jsonschema.readthedocs.io/en/latest/errors/#jsonschema.exceptions.ValidationError</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">sub_errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">error</span><span class="o">.</span><span class="n">context</span>
+    <span class="n">sub_errors</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">context</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">sub_errors</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">sub_errors</span><span class="p">:</span>
 
-<span class="w">        </span><span class="c1"># already_removed_additional was neccessary to workaround</span>
+        <span class="c1"># already_removed_additional was neccessary to workaround</span>
 
-<span class="w">        </span><span class="c1"># https://github.com/citation-style-language/schema/issues/154</span>
+        <span class="c1"># https://github.com/citation-style-language/schema/issues/154</span>
 
-<span class="w">        </span><span class="n">already_removed_additional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">False</span>
+        <span class="n">already_removed_additional</span> <span class="o">=</span> <span class="kc">False</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">sub_error</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">sub_errors</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">sub_error</span> <span class="ow">in</span> <span class="n">sub_errors</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">sub_error</span><span class="o">.</span><span class="n">validator</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;additionalProperties&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">sub_error</span><span class="o">.</span><span class="n">validator</span> <span class="o">==</span> <span class="s2">&quot;additionalProperties&quot;</span><span class="p">:</span>
 
-<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="n">already_removed_additional</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">already_removed_additional</span><span class="p">:</span>
 
-<span class="w">                    </span><span class="k">continue</span>
+                    <span class="k">continue</span>
 
-<span class="w">                </span><span class="n">already_removed_additional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">True</span>
+                <span class="n">already_removed_additional</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="w">            </span><span class="n">sub_instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_deep_get</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">sub_instance</span> <span class="o">=</span> <span class="n">_deep_get</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">error</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
-<span class="w">            </span><span class="n">_remove_error</span><span class="p">(</span><span class="n">sub_instance</span><span class="p">,</span><span class="w"> </span><span class="n">sub_error</span><span class="p">)</span>
+            <span class="n">_remove_error</span><span class="p">(</span><span class="n">sub_instance</span><span class="p">,</span> <span class="n">sub_error</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">elif</span><span class="w"> </span><span class="n">error</span><span class="o">.</span><span class="n">validator</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;additionalProperties&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">validator</span> <span class="o">==</span> <span class="s2">&quot;additionalProperties&quot;</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">set</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">instance</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">set</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">])</span>
+        <span class="n">extras</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">instance</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">])</span>
 
-<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
 
-<span class="w">            </span><span class="n">error</span><span class="o">.</span><span class="n">message</span>
+            <span class="n">error</span><span class="o">.</span><span class="n">message</span>
 
-<span class="w">            </span><span class="o">+</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Will now remove these </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">extras</span><span class="p">)</span><span class="si">}</span><span class="s2"> additional properties.&quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Will now remove these </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">extras</span><span class="p">)</span><span class="si">}</span><span class="s2"> additional properties.&quot;</span>
 
-<span class="w">        </span><span class="p">)</span>
+        <span class="p">)</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">extras</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">extras</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">_delete_elem</span><span class="p">(</span>
+            <span class="n">_delete_elem</span><span class="p">(</span>
 
-<span class="w">                </span><span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
+                <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
 
-<span class="w">                </span><span class="n">path</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
+                <span class="n">path</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">key</span><span class="p">],</span>
 
-<span class="w">                </span><span class="n">absolute_path</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">absolute_path</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
+                <span class="n">absolute_path</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">absolute_path</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">key</span><span class="p">],</span>
 
-<span class="w">            </span><span class="p">)</span>
+            <span class="p">)</span>
 
-<span class="w">    </span><span class="k">elif</span><span class="w"> </span><span class="n">error</span><span class="o">.</span><span class="n">validator</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;enum&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;minItems&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;maxItems&quot;</span><span class="p">}:</span>
+    <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">validator</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;enum&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;minItems&quot;</span><span class="p">,</span> <span class="s2">&quot;maxItems&quot;</span><span class="p">}:</span>
 
-<span class="w">        </span><span class="n">_delete_elem</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="o">.</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="o">.</span><span class="n">absolute_path</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+        <span class="n">_delete_elem</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">error</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">error</span><span class="o">.</span><span class="n">absolute_path</span><span class="p">,</span> <span class="n">error</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">elif</span><span class="w"> </span><span class="n">error</span><span class="o">.</span><span class="n">validator</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;required&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">validator</span> <span class="o">==</span> <span class="s2">&quot;required&quot;</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-<span class="w">            </span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">error</span><span class="o">.</span><span class="n">message</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">error</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+            <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">message</span> <span class="k">else</span> <span class="n">error</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
 
-<span class="w">            </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;required element missing at: &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;required element missing at: &quot;</span>
 
-<span class="w">            </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="o">.</span><span class="n">absolute_path</span><span class="p">))</span>
+            <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">error</span><span class="o">.</span><span class="n">absolute_path</span><span class="p">))</span>
 
-<span class="w">        </span><span class="p">)</span>
+        <span class="p">)</span>
 
-<span class="w">    </span><span class="k">else</span><span class="p">:</span>
+    <span class="k">else</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">raise</span><span class="w"> </span><span class="n">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">validator</span><span class="si">}</span><span class="s2"> is not yet supported&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">validator</span><span class="si">}</span><span class="s2"> is not yet supported&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 </details>
@@ -1845,25 +1845,25 @@ Citation Style Language (CSL) styles.
 <summary>View Source</summary>
 <div class="codehilite"><pre><span></span><code><span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">get_jsonschema_csl_validator</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">get_jsonschema_csl_validator</span><span class="p">():</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Return a jsonschema validator for the CSL Item JSON Schema</span>
+<span class="sd">    Return a jsonschema validator for the CSL Item JSON Schema</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">jsonschema</span>
+    <span class="kn">import</span> <span class="nn">jsonschema</span>
 
-<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/citation-style-language/schema/raw/v1.0.2/schemas/input/csl-data.json&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/citation-style-language/schema/raw/v1.0.2/schemas/input/csl-data.json&quot;</span>
 
-<span class="w">    </span><span class="n">schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_serialized_data</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">schema</span> <span class="o">=</span> <span class="n">read_serialized_data</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">Validator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jsonschema</span><span class="o">.</span><span class="n">validators</span><span class="o">.</span><span class="n">validator_for</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+    <span class="n">Validator</span> <span class="o">=</span> <span class="n">jsonschema</span><span class="o">.</span><span class="n">validators</span><span class="o">.</span><span class="n">validator_for</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">Validator</span><span class="o">.</span><span class="n">check_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+    <span class="n">Validator</span><span class="o">.</span><span class="n">check_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Validator</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Validator</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
 </code></pre></div>
 
 </details>

@@ -1617,247 +1617,247 @@
 <h1 id="module-manubotprocessteststest_metadata">Module manubot.process.tests.test_metadata</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">copy</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">..ci</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">get_continuous_integration_parameters</span>
+<span class="kn">from</span> <span class="nn">..ci</span> <span class="kn">import</span> <span class="n">get_continuous_integration_parameters</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">..metadata</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="kn">from</span> <span class="nn">..metadata</span> <span class="kn">import</span> <span class="p">(</span>
 
-<span class="w">    </span><span class="n">get_header_includes</span><span class="p">,</span>
+    <span class="n">get_header_includes</span><span class="p">,</span>
 
-<span class="w">    </span><span class="n">get_manuscript_urls</span><span class="p">,</span>
+    <span class="n">get_manuscript_urls</span><span class="p">,</span>
 
-<span class="w">    </span><span class="n">get_thumbnail_url</span><span class="p">,</span>
-
-<span class="p">)</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_get_header_includes_description_abstract</span><span class="p">():</span>
-
-<span class="w">    </span><span class="c1"># test that abstract and description set different fields if both supplied</span>
-
-<span class="w">    </span><span class="n">variables</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">        </span><span class="s2">&quot;pandoc&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;abstract&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value for abstract&quot;</span><span class="p">},</span>
-
-<span class="w">        </span><span class="s2">&quot;manubot&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value for description&quot;</span><span class="p">},</span>
-
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="n">header_includes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_header_includes</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">variables</span><span class="p">))</span>
-
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="p">(</span>
-
-<span class="w">        </span><span class="s1">&#39;&lt;meta name=&quot;citation_abstract&quot; content=&quot;value for abstract&quot; /&gt;&#39;</span>
-
-<span class="w">        </span><span class="ow">in</span><span class="w"> </span><span class="n">header_includes</span>
-
-<span class="w">    </span><span class="p">)</span>
-
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="p">(</span>
-
-<span class="w">        </span><span class="s1">&#39;&lt;meta name=&quot;description&quot; content=&quot;value for description&quot; /&gt;&#39;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">header_includes</span>
-
-<span class="w">    </span><span class="p">)</span>
-
-<span class="w">    </span><span class="c1"># test that abstract is used for description if description is not defined</span>
-
-<span class="w">    </span><span class="k">del</span><span class="w"> </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;description&quot;</span><span class="p">]</span>
-
-<span class="w">    </span><span class="n">header_includes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_header_includes</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">variables</span><span class="p">))</span>
-
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="p">(</span>
-
-<span class="w">        </span><span class="s1">&#39;&lt;meta name=&quot;citation_abstract&quot; content=&quot;value for abstract&quot; /&gt;&#39;</span>
-
-<span class="w">        </span><span class="ow">in</span><span class="w"> </span><span class="n">header_includes</span>
-
-<span class="w">    </span><span class="p">)</span>
-
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s1">&#39;&lt;meta name=&quot;description&quot; content=&quot;value for abstract&quot; /&gt;&#39;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">header_includes</span>
-
-<span class="w">    </span><span class="c1"># test that if neither abstract nor description is defined, neither are inserted</span>
-
-<span class="w">    </span><span class="k">del</span><span class="w"> </span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;abstract&quot;</span><span class="p">]</span>
-
-<span class="w">    </span><span class="n">header_includes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_header_includes</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">variables</span><span class="p">))</span>
-
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s1">&#39;meta name=&quot;citation_abstract&quot;&#39;</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">header_includes</span>
-
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s1">&#39;meta name=&quot;description&quot;&#39;</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">header_includes</span>
-
-<span class="n">ci_params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_continuous_integration_parameters</span><span class="p">()</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="p">{}</span>
-
-<span class="n">local_only</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skipif</span><span class="p">(</span>
-
-<span class="w">    </span><span class="n">ci_params</span><span class="p">,</span><span class="w"> </span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;skipping on CI build since test assumes local behavior&quot;</span>
+    <span class="n">get_thumbnail_url</span><span class="p">,</span>
 
 <span class="p">)</span>
 
-<span class="n">ci_only</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skipif</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">test_get_header_includes_description_abstract</span><span class="p">():</span>
 
-<span class="w">    </span><span class="ow">not</span><span class="w"> </span><span class="n">ci_params</span><span class="p">,</span>
+    <span class="c1"># test that abstract and description set different fields if both supplied</span>
 
-<span class="w">    </span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;skipping on local build since test assumes supported CI behavior&quot;</span><span class="p">,</span>
+    <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="s2">&quot;pandoc&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;abstract&quot;</span><span class="p">:</span> <span class="s2">&quot;value for abstract&quot;</span><span class="p">},</span>
+
+        <span class="s2">&quot;manubot&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;value for description&quot;</span><span class="p">},</span>
+
+    <span class="p">}</span>
+
+    <span class="n">header_includes</span> <span class="o">=</span> <span class="n">get_header_includes</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">variables</span><span class="p">))</span>
+
+    <span class="k">assert</span> <span class="p">(</span>
+
+        <span class="s1">&#39;&lt;meta name=&quot;citation_abstract&quot; content=&quot;value for abstract&quot; /&gt;&#39;</span>
+
+        <span class="ow">in</span> <span class="n">header_includes</span>
+
+    <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="p">(</span>
+
+        <span class="s1">&#39;&lt;meta name=&quot;description&quot; content=&quot;value for description&quot; /&gt;&#39;</span> <span class="ow">in</span> <span class="n">header_includes</span>
+
+    <span class="p">)</span>
+
+    <span class="c1"># test that abstract is used for description if description is not defined</span>
+
+    <span class="k">del</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;manubot&quot;</span><span class="p">][</span><span class="s2">&quot;description&quot;</span><span class="p">]</span>
+
+    <span class="n">header_includes</span> <span class="o">=</span> <span class="n">get_header_includes</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">variables</span><span class="p">))</span>
+
+    <span class="k">assert</span> <span class="p">(</span>
+
+        <span class="s1">&#39;&lt;meta name=&quot;citation_abstract&quot; content=&quot;value for abstract&quot; /&gt;&#39;</span>
+
+        <span class="ow">in</span> <span class="n">header_includes</span>
+
+    <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="s1">&#39;&lt;meta name=&quot;description&quot; content=&quot;value for abstract&quot; /&gt;&#39;</span> <span class="ow">in</span> <span class="n">header_includes</span>
+
+    <span class="c1"># test that if neither abstract nor description is defined, neither are inserted</span>
+
+    <span class="k">del</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pandoc&quot;</span><span class="p">][</span><span class="s2">&quot;abstract&quot;</span><span class="p">]</span>
+
+    <span class="n">header_includes</span> <span class="o">=</span> <span class="n">get_header_includes</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">variables</span><span class="p">))</span>
+
+    <span class="k">assert</span> <span class="s1">&#39;meta name=&quot;citation_abstract&quot;&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">header_includes</span>
+
+    <span class="k">assert</span> <span class="s1">&#39;meta name=&quot;description&quot;&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">header_includes</span>
+
+<span class="n">ci_params</span> <span class="o">=</span> <span class="n">get_continuous_integration_parameters</span><span class="p">()</span> <span class="ow">or</span> <span class="p">{}</span>
+
+<span class="n">local_only</span> <span class="o">=</span> <span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skipif</span><span class="p">(</span>
+
+    <span class="n">ci_params</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;skipping on CI build since test assumes local behavior&quot;</span>
 
 <span class="p">)</span>
 
-<span class="n">repo_raw_url_template</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span>
+<span class="n">ci_only</span> <span class="o">=</span> <span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skipif</span><span class="p">(</span>
 
-<span class="w">    </span><span class="sa">f</span><span class="s2">&quot;https://github.com/</span><span class="si">{</span><span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;repo_slug&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="ow">not</span> <span class="n">ci_params</span><span class="p">,</span>
 
-<span class="w">    </span><span class="sa">f</span><span class="s2">&quot;/raw/</span><span class="si">{</span><span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;triggering_commit&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">/&quot;</span>
+    <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;skipping on local build since test assumes supported CI behavior&quot;</span><span class="p">,</span>
 
 <span class="p">)</span>
 
-<span class="n">example_thumbnail_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span>
+<span class="n">repo_raw_url_template</span> <span class="o">=</span> <span class="p">(</span>
 
-<span class="w">    </span><span class="n">repo_raw_url_template</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;manubot/process/tests/manuscripts/example/thumbnail.png&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;https://github.com/</span><span class="si">{</span><span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;repo_slug&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="sa">f</span><span class="s2">&quot;/raw/</span><span class="si">{</span><span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;triggering_commit&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">/&quot;</span>
+
+<span class="p">)</span>
+
+<span class="n">example_thumbnail_url</span> <span class="o">=</span> <span class="p">(</span>
+
+    <span class="n">repo_raw_url_template</span> <span class="o">+</span> <span class="s2">&quot;manubot/process/tests/manuscripts/example/thumbnail.png&quot;</span>
 
 <span class="p">)</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-<span class="w">    </span><span class="p">(</span><span class="s2">&quot;thumbnail&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;expected&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;thumbnail&quot;</span><span class="p">,</span> <span class="s2">&quot;expected&quot;</span><span class="p">),</span>
 
-<span class="w">    </span><span class="p">[</span>
+    <span class="p">[</span>
 
-<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;None-on-local&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">marks</span><span class="o">=</span><span class="n">local_only</span><span class="p">),</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;None-on-local&quot;</span><span class="p">,</span> <span class="n">marks</span><span class="o">=</span><span class="n">local_only</span><span class="p">),</span>
 
-<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;empty-on-local&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">marks</span><span class="o">=</span><span class="n">local_only</span><span class="p">),</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;empty-on-local&quot;</span><span class="p">,</span> <span class="n">marks</span><span class="o">=</span><span class="n">local_only</span><span class="p">),</span>
 
-<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="n">example_thumbnail_url</span><span class="p">,</span><span class="w"> </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;None-on-ci&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">marks</span><span class="o">=</span><span class="n">ci_only</span><span class="p">),</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">example_thumbnail_url</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;None-on-ci&quot;</span><span class="p">,</span> <span class="n">marks</span><span class="o">=</span><span class="n">ci_only</span><span class="p">),</span>
 
-<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">example_thumbnail_url</span><span class="p">,</span><span class="w"> </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;empty-on-ci&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">marks</span><span class="o">=</span><span class="n">ci_only</span><span class="p">),</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">example_thumbnail_url</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;empty-on-ci&quot;</span><span class="p">,</span> <span class="n">marks</span><span class="o">=</span><span class="n">ci_only</span><span class="p">),</span>
 
-<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-<span class="w">            </span><span class="s2">&quot;path/to/thumbnail.png&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;local-path-on-local&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">marks</span><span class="o">=</span><span class="n">local_only</span>
+            <span class="s2">&quot;path/to/thumbnail.png&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;local-path-on-local&quot;</span><span class="p">,</span> <span class="n">marks</span><span class="o">=</span><span class="n">local_only</span>
 
-<span class="w">        </span><span class="p">),</span>
+        <span class="p">),</span>
 
-<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-<span class="w">            </span><span class="s2">&quot;path/to/thumbnail.png&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;path/to/thumbnail.png&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="n">repo_raw_url_template</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;path/to/thumbnail.png&quot;</span><span class="p">,</span>
+            <span class="n">repo_raw_url_template</span> <span class="o">+</span> <span class="s2">&quot;path/to/thumbnail.png&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;local-path-on-ci&quot;</span><span class="p">,</span>
+            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;local-path-on-ci&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="n">marks</span><span class="o">=</span><span class="n">ci_only</span><span class="p">,</span>
+            <span class="n">marks</span><span class="o">=</span><span class="n">ci_only</span><span class="p">,</span>
 
-<span class="w">        </span><span class="p">),</span>
+        <span class="p">),</span>
 
-<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-<span class="w">            </span><span class="s2">&quot;http://example.com/thumbnail.png&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;http://example.com/thumbnail.png&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="s2">&quot;http://example.com/thumbnail.png&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;http://example.com/thumbnail.png&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;url-http&quot;</span><span class="p">,</span>
+            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;url-http&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="p">),</span>
+        <span class="p">),</span>
 
-<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-<span class="w">            </span><span class="s2">&quot;https://example.com/thumbnail.png&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;https://example.com/thumbnail.png&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="s2">&quot;https://example.com/thumbnail.png&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;https://example.com/thumbnail.png&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;url-https&quot;</span><span class="p">,</span>
+            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;url-https&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="p">),</span>
+        <span class="p">),</span>
 
-<span class="w">    </span><span class="p">],</span>
+    <span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_get_thumbnail_url</span><span class="p">(</span><span class="n">thumbnail</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_get_thumbnail_url</span><span class="p">(</span><span class="n">thumbnail</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
 
-<span class="w">    </span><span class="n">thumbnail_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_thumbnail_url</span><span class="p">(</span><span class="n">thumbnail</span><span class="p">)</span>
+    <span class="n">thumbnail_url</span> <span class="o">=</span> <span class="n">get_thumbnail_url</span><span class="p">(</span><span class="n">thumbnail</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">thumbnail_url</span>
+    <span class="k">assert</span> <span class="n">expected</span> <span class="o">==</span> <span class="n">thumbnail_url</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-<span class="w">    </span><span class="p">(</span><span class="s2">&quot;html_url&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;expected&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;html_url&quot;</span><span class="p">,</span> <span class="s2">&quot;expected&quot;</span><span class="p">),</span>
 
-<span class="w">    </span><span class="p">[</span>
+    <span class="p">[</span>
 
-<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;html_url-none-local&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">marks</span><span class="o">=</span><span class="n">local_only</span><span class="p">),</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">{},</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;html_url-none-local&quot;</span><span class="p">,</span> <span class="n">marks</span><span class="o">=</span><span class="n">local_only</span><span class="p">),</span>
 
-<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-<span class="w">            </span><span class="s2">&quot;https://example.com/manuscript/&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;https://example.com/manuscript/&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="p">{</span>
+            <span class="p">{</span>
 
-<span class="w">                </span><span class="s2">&quot;html_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/manuscript/&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;html_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.com/manuscript/&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;pdf_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/manuscript/manuscript.pdf&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;pdf_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.com/manuscript/manuscript.pdf&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="p">},</span>
+            <span class="p">},</span>
 
-<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;html_url-set-local&quot;</span><span class="p">,</span>
+            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;html_url-set-local&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="n">marks</span><span class="o">=</span><span class="n">local_only</span><span class="p">,</span>
+            <span class="n">marks</span><span class="o">=</span><span class="n">local_only</span><span class="p">,</span>
 
-<span class="w">        </span><span class="p">),</span>
+        <span class="p">),</span>
 
-<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-<span class="w">            </span><span class="kc">None</span><span class="p">,</span>
+            <span class="kc">None</span><span class="p">,</span>
 
-<span class="w">            </span><span class="p">{</span>
+            <span class="p">{</span>
 
-<span class="w">                </span><span class="s2">&quot;html_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://manubot.github.io/manubot/&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;html_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://manubot.github.io/manubot/&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;pdf_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://manubot.github.io/manubot/manuscript.pdf&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;pdf_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://manubot.github.io/manubot/manuscript.pdf&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;html_url_versioned&quot;</span><span class="p">:</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://manubot.github.io/manubot/v/</span><span class="si">{</span><span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;commit&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;html_url_versioned&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;https://manubot.github.io/manubot/v/</span><span class="si">{</span><span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;commit&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;pdf_url_versioned&quot;</span><span class="p">:</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://manubot.github.io/manubot/v/</span><span class="si">{</span><span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;commit&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">/manuscript.pdf&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;pdf_url_versioned&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;https://manubot.github.io/manubot/v/</span><span class="si">{</span><span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;commit&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">/manuscript.pdf&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="p">},</span>
+            <span class="p">},</span>
 
-<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;html_url-none-ci&quot;</span><span class="p">,</span>
+            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;html_url-none-ci&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="n">marks</span><span class="o">=</span><span class="n">ci_only</span><span class="p">,</span>
+            <span class="n">marks</span><span class="o">=</span><span class="n">ci_only</span><span class="p">,</span>
 
-<span class="w">        </span><span class="p">),</span>
+        <span class="p">),</span>
 
-<span class="w">        </span><span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
 
-<span class="w">            </span><span class="s2">&quot;https://example.com/manuscript/&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;https://example.com/manuscript/&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="p">{</span>
+            <span class="p">{</span>
 
-<span class="w">                </span><span class="s2">&quot;html_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/manuscript/&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;html_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.com/manuscript/&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;pdf_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/manuscript/manuscript.pdf&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;pdf_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.com/manuscript/manuscript.pdf&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;html_url_versioned&quot;</span><span class="p">:</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://example.com/manuscript/v/</span><span class="si">{</span><span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;commit&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;html_url_versioned&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;https://example.com/manuscript/v/</span><span class="si">{</span><span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;commit&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;pdf_url_versioned&quot;</span><span class="p">:</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://example.com/manuscript/v/</span><span class="si">{</span><span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;commit&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">/manuscript.pdf&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;pdf_url_versioned&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;https://example.com/manuscript/v/</span><span class="si">{</span><span class="n">ci_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;commit&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">/manuscript.pdf&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="p">},</span>
+            <span class="p">},</span>
 
-<span class="w">            </span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;html_url-set-ci&quot;</span><span class="p">,</span>
+            <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;html_url-set-ci&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="n">marks</span><span class="o">=</span><span class="n">ci_only</span><span class="p">,</span>
+            <span class="n">marks</span><span class="o">=</span><span class="n">ci_only</span><span class="p">,</span>
 
-<span class="w">        </span><span class="p">),</span>
+        <span class="p">),</span>
 
-<span class="w">    </span><span class="p">],</span>
+    <span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_get_manuscript_urls</span><span class="p">(</span><span class="n">html_url</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_get_manuscript_urls</span><span class="p">(</span><span class="n">html_url</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
 
-<span class="w">    </span><span class="n">urls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_manuscript_urls</span><span class="p">(</span><span class="n">html_url</span><span class="p">)</span>
+    <span class="n">urls</span> <span class="o">=</span> <span class="n">get_manuscript_urls</span><span class="p">(</span><span class="n">html_url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">urls</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span>
+    <span class="k">assert</span> <span class="n">urls</span> <span class="o">==</span> <span class="n">expected</span>
 </code></pre></div>
 
 </details>

@@ -1765,179 +1765,179 @@
 <h1 id="module-manubotciteurl">Module manubot.cite.url</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">re</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">Any</span><span class="p">,</span><span class="w"> </span><span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.handlers</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">Handler</span>
+<span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="n">Handler</span>
 
-<span class="n">CSLItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">Any</span><span class="p">]</span>
+<span class="n">CSLItem</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">Handler_URL</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Handler_URL</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
 
-<span class="w">    </span><span class="n">standard_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;url&quot;</span>
+    <span class="n">standard_prefix</span> <span class="o">=</span> <span class="s2">&quot;url&quot;</span>
 
-<span class="w">    </span><span class="n">prefixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+    <span class="n">prefixes</span> <span class="o">=</span> <span class="p">[</span>
 
-<span class="w">        </span><span class="s2">&quot;url&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;http&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;http&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https&quot;</span><span class="p">,</span>
 
-<span class="w">    </span><span class="p">]</span>
+    <span class="p">]</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">standardize_prefix_accession</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">accession</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">standardize_prefix_accession</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">):</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s2">&quot;url&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span> <span class="o">!=</span> <span class="s2">&quot;url&quot;</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">accession</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">accession</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">accession</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">standard_prefix</span><span class="p">,</span><span class="w"> </span><span class="n">accession</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">standard_prefix</span><span class="p">,</span> <span class="n">accession</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">get_url_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">CSLItem</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">get_url_csl_item</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Get csl_item for a URL trying a sequence of strategies.</span>
+<span class="sd">    Get csl_item for a URL trying a sequence of strategies.</span>
 
-<span class="s2">    This function uses a list of CSL JSON Item metadata retrievers, specified</span>
+<span class="sd">    This function uses a list of CSL JSON Item metadata retrievers, specified</span>
 
-<span class="s2">    by the module-level variable `url_retrievers`. The methods are attempted</span>
+<span class="sd">    by the module-level variable `url_retrievers`. The methods are attempted</span>
 
-<span class="s2">    in order, with this function returning the metadata from the first</span>
+<span class="sd">    in order, with this function returning the metadata from the first</span>
 
-<span class="s2">    non-failing method.</span>
+<span class="sd">    non-failing method.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">retriever</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">url_retrievers</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">retriever</span> <span class="ow">in</span> <span class="n">url_retrievers</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">try</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">retriever</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">retriever</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">error</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;Error in </span><span class="si">{</span><span class="n">retriever</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Error in </span><span class="si">{</span><span class="n">retriever</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> &quot;</span>
 
-<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;due to a </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;due to a </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">            </span><span class="p">)</span>
+            <span class="p">)</span>
 
-<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span><span class="w"> </span><span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">raise</span><span class="w"> </span><span class="n">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;all get_url_csl_item methods failed for </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;all get_url_csl_item methods failed for </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">CSLItem</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Use Zotero&#39;s translation-server to generate a CSL Item for the specified URL.</span>
+<span class="sd">    Use Zotero&#39;s translation-server to generate a CSL Item for the specified URL.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.zotero</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">export_as_csl</span><span class="p">,</span><span class="w"> </span><span class="n">web_query</span>
+    <span class="kn">from</span> <span class="nn">manubot.cite.zotero</span> <span class="kn">import</span> <span class="n">export_as_csl</span><span class="p">,</span> <span class="n">web_query</span>
 
-<span class="w">    </span><span class="n">zotero_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">web_query</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">zotero_data</span> <span class="o">=</span> <span class="n">web_query</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span>
+    <span class="n">csl_data</span> <span class="o">=</span> <span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span>
 
-<span class="w">    </span><span class="p">(</span><span class="n">csl_item</span><span class="p">,)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_data</span>
+    <span class="p">(</span><span class="n">csl_item</span><span class="p">,)</span> <span class="o">=</span> <span class="n">csl_data</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;URL&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;URL&quot;</span><span class="p">):</span>
 
-<span class="w">        </span><span class="c1"># some Zotero translators don&#39;t set URL. https://github.com/manubot/manubot/issues/244</span>
+        <span class="c1"># some Zotero translators don&#39;t set URL. https://github.com/manubot/manubot/issues/244</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">url</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">csl_item</span>
+    <span class="k">return</span> <span class="n">csl_item</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">get_url_csl_item_greycite</span><span class="p">(</span><span class="n">url</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">CSLItem</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">get_url_csl_item_greycite</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Uses Greycite which has experiened uptime problems in the past.</span>
+<span class="sd">    Uses Greycite which has experiened uptime problems in the past.</span>
 
-<span class="s2">    API calls seem to take at least 15 seconds. Browser requests are much</span>
+<span class="sd">    API calls seem to take at least 15 seconds. Browser requests are much</span>
 
-<span class="s2">    faster. Setting header did not have an effect. Consider mimicking browser</span>
+<span class="sd">    faster. Setting header did not have an effect. Consider mimicking browser</span>
 
-<span class="s2">    using selenium.</span>
+<span class="sd">    using selenium.</span>
 
-<span class="s2">    More information on Greycite at:</span>
+<span class="sd">    More information on Greycite at:</span>
 
-<span class="s2">    http://greycite.knowledgeblog.org/</span>
+<span class="sd">    http://greycite.knowledgeblog.org/</span>
 
-<span class="s2">    http://knowledgeblog.org/greycite</span>
+<span class="sd">    http://knowledgeblog.org/greycite</span>
 
-<span class="s2">    https://arxiv.org/abs/1304.7151</span>
+<span class="sd">    https://arxiv.org/abs/1304.7151</span>
 
-<span class="s2">    https://git.io/v9N2C</span>
+<span class="sd">    https://git.io/v9N2C</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+    <span class="kn">import</span> <span class="nn">requests</span>
 
-<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.util</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">get_manubot_user_agent</span>
+    <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">get_manubot_user_agent</span>
 
-<span class="w">    </span><span class="n">headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
 
-<span class="w">        </span><span class="s2">&quot;Connection&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;close&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># https://github.com/kennethreitz/requests/issues/4023</span>
+        <span class="s2">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;close&quot;</span><span class="p">,</span>  <span class="c1"># https://github.com/kennethreitz/requests/issues/4023</span>
 
-<span class="w">        </span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">get_manubot_user_agent</span><span class="p">(),</span>
+        <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span>
 
-<span class="w">    </span><span class="p">}</span>
+    <span class="p">}</span>
 
-<span class="w">    </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
 
-<span class="w">        </span><span class="s2">&quot;http://greycite.knowledgeblog.org/json&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;uri&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">url</span><span class="p">},</span><span class="w"> </span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span>
+        <span class="s2">&quot;http://greycite.knowledgeblog.org/json&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">},</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span>
 
-<span class="w">    </span><span class="p">)</span>
+    <span class="p">)</span>
 
-<span class="w">    </span><span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
 
-<span class="w">    </span><span class="c1"># Some Greycite responses were valid JSON besides for an error appended</span>
+    <span class="c1"># Some Greycite responses were valid JSON besides for an error appended</span>
 
-<span class="w">    </span><span class="c1"># like &quot;&lt;p&gt;*** Date set from uri&lt;p&gt;&quot; or &quot;&lt;p&gt;*** fetch error : 404&lt;p&gt;&quot;.</span>
+    <span class="c1"># like &quot;&lt;p&gt;*** Date set from uri&lt;p&gt;&quot; or &quot;&lt;p&gt;*** fetch error : 404&lt;p&gt;&quot;.</span>
 
-<span class="w">    </span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;p&gt;\*\*\*.*&lt;p&gt;&quot;</span><span class="p">)</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;p&gt;\*\*\*.*&lt;p&gt;&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;webpage&quot;</span>
+    <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;webpage&quot;</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">csl_item</span>
+    <span class="k">return</span> <span class="n">csl_item</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">get_url_csl_item_manual</span><span class="p">(</span><span class="n">url</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">CSLItem</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">get_url_csl_item_manual</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Manually create csl_item for a URL.</span>
+<span class="sd">    Manually create csl_item for a URL.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;webpage&quot;</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;URL&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;webpage&quot;</span><span class="p">}</span>
 
-<span class="n">url_retrievers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="n">url_retrievers</span> <span class="o">=</span> <span class="p">[</span>
 
-<span class="w">    </span><span class="n">get_url_csl_item_zotero</span><span class="p">,</span>
+    <span class="n">get_url_csl_item_zotero</span><span class="p">,</span>
 
-<span class="w">    </span><span class="n">get_url_csl_item_greycite</span><span class="p">,</span>
+    <span class="n">get_url_csl_item_greycite</span><span class="p">,</span>
 
-<span class="w">    </span><span class="n">get_url_csl_item_manual</span><span class="p">,</span>
+    <span class="n">get_url_csl_item_manual</span><span class="p">,</span>
 
 <span class="p">]</span>
 </code></pre></div>
@@ -2019,63 +2019,63 @@ https://arxiv.org/abs/1304.7151
 https://git.io/v9N2C</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_url_csl_item_greycite</span><span class="p">(</span><span class="n">url</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">CSLItem</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_greycite</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Uses Greycite which has experiened uptime problems in the past.</span>
+<span class="sd">    Uses Greycite which has experiened uptime problems in the past.</span>
 
-<span class="s2">    API calls seem to take at least 15 seconds. Browser requests are much</span>
+<span class="sd">    API calls seem to take at least 15 seconds. Browser requests are much</span>
 
-<span class="s2">    faster. Setting header did not have an effect. Consider mimicking browser</span>
+<span class="sd">    faster. Setting header did not have an effect. Consider mimicking browser</span>
 
-<span class="s2">    using selenium.</span>
+<span class="sd">    using selenium.</span>
 
-<span class="s2">    More information on Greycite at:</span>
+<span class="sd">    More information on Greycite at:</span>
 
-<span class="s2">    http://greycite.knowledgeblog.org/</span>
+<span class="sd">    http://greycite.knowledgeblog.org/</span>
 
-<span class="s2">    http://knowledgeblog.org/greycite</span>
+<span class="sd">    http://knowledgeblog.org/greycite</span>
 
-<span class="s2">    https://arxiv.org/abs/1304.7151</span>
+<span class="sd">    https://arxiv.org/abs/1304.7151</span>
 
-<span class="s2">    https://git.io/v9N2C</span>
+<span class="sd">    https://git.io/v9N2C</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+    <span class="kn">import</span> <span class="nn">requests</span>
 
-<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.util</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">get_manubot_user_agent</span>
+    <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">get_manubot_user_agent</span>
 
-<span class="w">    </span><span class="n">headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
 
-<span class="w">        </span><span class="s2">&quot;Connection&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;close&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># https://github.com/kennethreitz/requests/issues/4023</span>
+        <span class="s2">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;close&quot;</span><span class="p">,</span>  <span class="c1"># https://github.com/kennethreitz/requests/issues/4023</span>
 
-<span class="w">        </span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">get_manubot_user_agent</span><span class="p">(),</span>
+        <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span>
 
-<span class="w">    </span><span class="p">}</span>
+    <span class="p">}</span>
 
-<span class="w">    </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
 
-<span class="w">        </span><span class="s2">&quot;http://greycite.knowledgeblog.org/json&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;uri&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">url</span><span class="p">},</span><span class="w"> </span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span>
+        <span class="s2">&quot;http://greycite.knowledgeblog.org/json&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">},</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span>
 
-<span class="w">    </span><span class="p">)</span>
+    <span class="p">)</span>
 
-<span class="w">    </span><span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
 
-<span class="w">    </span><span class="c1"># Some Greycite responses were valid JSON besides for an error appended</span>
+    <span class="c1"># Some Greycite responses were valid JSON besides for an error appended</span>
 
-<span class="w">    </span><span class="c1"># like &quot;&lt;p&gt;*** Date set from uri&lt;p&gt;&quot; or &quot;&lt;p&gt;*** fetch error : 404&lt;p&gt;&quot;.</span>
+    <span class="c1"># like &quot;&lt;p&gt;*** Date set from uri&lt;p&gt;&quot; or &quot;&lt;p&gt;*** fetch error : 404&lt;p&gt;&quot;.</span>
 
-<span class="w">    </span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;p&gt;\*\*\*.*&lt;p&gt;&quot;</span><span class="p">)</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;p&gt;\*\*\*.*&lt;p&gt;&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;webpage&quot;</span>
+    <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;webpage&quot;</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">csl_item</span>
+    <span class="k">return</span> <span class="n">csl_item</span>
 </code></pre></div>
 
 </details>
@@ -2109,29 +2109,29 @@ https://git.io/v9N2C</p>
 <p>Use Zotero's translation-server to generate a CSL Item for the specified URL.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">CSLItem</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSLItem</span><span class="p">:</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Use Zotero&#39;s translation-server to generate a CSL Item for the specified URL.</span>
+<span class="sd">    Use Zotero&#39;s translation-server to generate a CSL Item for the specified URL.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.zotero</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">export_as_csl</span><span class="p">,</span><span class="w"> </span><span class="n">web_query</span>
+    <span class="kn">from</span> <span class="nn">manubot.cite.zotero</span> <span class="kn">import</span> <span class="n">export_as_csl</span><span class="p">,</span> <span class="n">web_query</span>
 
-<span class="w">    </span><span class="n">zotero_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">web_query</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">zotero_data</span> <span class="o">=</span> <span class="n">web_query</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span>
+    <span class="n">csl_data</span> <span class="o">=</span> <span class="n">export_as_csl</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span>
 
-<span class="w">    </span><span class="p">(</span><span class="n">csl_item</span><span class="p">,)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_data</span>
+    <span class="p">(</span><span class="n">csl_item</span><span class="p">,)</span> <span class="o">=</span> <span class="n">csl_data</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;URL&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;URL&quot;</span><span class="p">):</span>
 
-<span class="w">        </span><span class="c1"># some Zotero translators don&#39;t set URL. https://github.com/manubot/manubot/issues/244</span>
+        <span class="c1"># some Zotero translators don&#39;t set URL. https://github.com/manubot/manubot/issues/244</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">url</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">csl_item</span>
+    <span class="k">return</span> <span class="n">csl_item</span>
 </code></pre></div>
 
 </details>

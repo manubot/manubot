@@ -1781,403 +1781,403 @@
 <h1 id="module-manubotcitecitations">Module manubot.cite.citations</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">dataclasses</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">dataclasses</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tp</span>
+<span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">tp</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.citekey</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">,</span><span class="w"> </span><span class="n">citekey_to_csl_item</span>
+<span class="kn">from</span> <span class="nn">manubot.cite.citekey</span> <span class="kn">import</span> <span class="n">CiteKey</span><span class="p">,</span> <span class="n">citekey_to_csl_item</span>
 
 <span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">Citations</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">Citations</span><span class="p">:</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Class for operating on a set of citations provided by</span>
+<span class="sd">    Class for operating on a set of citations provided by</span>
 
-<span class="s2">    their citekey input_ids.</span>
+<span class="sd">    their citekey input_ids.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="c1"># Input citekey IDs as strings</span>
+    <span class="c1"># Input citekey IDs as strings</span>
 
-<span class="w">    </span><span class="n">input_ids</span><span class="p">:</span><span class="w"> </span><span class="nb">list</span>
+    <span class="n">input_ids</span><span class="p">:</span> <span class="nb">list</span>
 
-<span class="w">    </span><span class="c1"># Citation key aliases</span>
+    <span class="c1"># Citation key aliases</span>
 
-<span class="w">    </span><span class="n">aliases</span><span class="p">:</span><span class="w"> </span><span class="nb">dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">aliases</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
 
-<span class="w">    </span><span class="c1"># infer prefixes for citekeys (e.g. support DOIs without a &quot;doi:&quot; prefix)</span>
+    <span class="c1"># infer prefixes for citekeys (e.g. support DOIs without a &quot;doi:&quot; prefix)</span>
 
-<span class="w">    </span><span class="n">infer_citekey_prefixes</span><span class="p">:</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">True</span>
+    <span class="n">infer_citekey_prefixes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="w">    </span><span class="c1"># manual references dictionary of standard_id to CSL_Item.</span>
+    <span class="c1"># manual references dictionary of standard_id to CSL_Item.</span>
 
-<span class="w">    </span><span class="n">manual_refs</span><span class="p">:</span><span class="w"> </span><span class="nb">dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">manual_refs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
 
-<span class="w">    </span><span class="c1"># level to log failures related to CSL Item generation</span>
+    <span class="c1"># level to log failures related to CSL Item generation</span>
 
-<span class="w">    </span><span class="n">csl_item_failure_log_level</span><span class="p">:</span><span class="w"> </span><span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="nb">int</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;WARNING&quot;</span>
+    <span class="n">csl_item_failure_log_level</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;WARNING&quot;</span>
 
-<span class="w">    </span><span class="c1"># whether to prune csl items according to the JSON Schema</span>
+    <span class="c1"># whether to prune csl items according to the JSON Schema</span>
 
-<span class="w">    </span><span class="n">prune_csl_items</span><span class="p">:</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">True</span>
+    <span class="n">prune_csl_items</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="w">    </span><span class="c1"># whether to sort csl items by standard_id</span>
+    <span class="c1"># whether to sort csl items by standard_id</span>
 
-<span class="w">    </span><span class="c1"># `sort_csl_items=False` retains order of input_ids in get_csl_items.</span>
+    <span class="c1"># `sort_csl_items=False` retains order of input_ids in get_csl_items.</span>
 
-<span class="w">    </span><span class="c1"># (input_ids with the same standard_id will still be deduplicated).</span>
+    <span class="c1"># (input_ids with the same standard_id will still be deduplicated).</span>
 
-<span class="w">    </span><span class="n">sort_csl_items</span><span class="p">:</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">True</span>
+    <span class="n">sort_csl_items</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="n">input_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_ids</span><span class="p">))</span><span class="w">  </span><span class="c1"># deduplicate</span>
+        <span class="n">input_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_ids</span><span class="p">))</span>  <span class="c1"># deduplicate</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span> <span class="o">=</span> <span class="p">[</span>
 
-<span class="w">            </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">aliases</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">aliases</span><span class="p">,</span><span class="w"> </span><span class="n">infer_prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">infer_citekey_prefixes</span><span class="p">)</span>
+            <span class="n">CiteKey</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">aliases</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">aliases</span><span class="p">,</span> <span class="n">infer_prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">infer_citekey_prefixes</span><span class="p">)</span>
 
-<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">input_ids</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">input_ids</span>
 
-<span class="w">        </span><span class="p">]</span>
+        <span class="p">]</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">filter_pandoc_xnos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">list</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">filter_pandoc_xnos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Filter self.citekeys to remove pandoc-xnos style citekeys.</span>
+<span class="sd">        Filter self.citekeys to remove pandoc-xnos style citekeys.</span>
 
-<span class="s2">        Return removed citekeys.</span>
+<span class="sd">        Return removed citekeys.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="n">keep</span><span class="p">,</span><span class="w"> </span><span class="n">remove</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[]</span>
+        <span class="n">keep</span><span class="p">,</span> <span class="n">remove</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">citekey</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">citekey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">remove_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">is_pandoc_xnos_prefix</span><span class="p">(</span><span class="n">log_case_warning</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">remove_</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">is_pandoc_xnos_prefix</span><span class="p">(</span><span class="n">log_case_warning</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="w">            </span><span class="p">(</span><span class="n">keep</span><span class="p">,</span><span class="w"> </span><span class="n">remove</span><span class="p">)[</span><span class="n">remove_</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">keep</span><span class="p">,</span> <span class="n">remove</span><span class="p">)[</span><span class="n">remove_</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span> <span class="o">=</span> <span class="n">keep</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">remove</span>
+        <span class="k">return</span> <span class="n">remove</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">filter_unhandled</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">list</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">filter_unhandled</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Filter self.citekeys to remove unhandled citekeys.</span>
+<span class="sd">        Filter self.citekeys to remove unhandled citekeys.</span>
 
-<span class="s2">        Return removed citekeys.</span>
+<span class="sd">        Return removed citekeys.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="n">keep</span><span class="p">,</span><span class="w"> </span><span class="n">remove</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[]</span>
+        <span class="n">keep</span><span class="p">,</span> <span class="n">remove</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">citekey</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">citekey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span><span class="p">:</span>
 
-<span class="w">            </span><span class="p">(</span><span class="n">remove</span><span class="p">,</span><span class="w"> </span><span class="n">keep</span><span class="p">)[</span><span class="n">citekey</span><span class="o">.</span><span class="n">is_handled_prefix</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">remove</span><span class="p">,</span> <span class="n">keep</span><span class="p">)[</span><span class="n">citekey</span><span class="o">.</span><span class="n">is_handled_prefix</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span> <span class="o">=</span> <span class="n">keep</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">remove</span>
+        <span class="k">return</span> <span class="n">remove</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">group_citekeys_by</span><span class="p">(</span>
+    <span class="k">def</span> <span class="nf">group_citekeys_by</span><span class="p">(</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
 
-<span class="w">        </span><span class="n">attribute</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;standard_id&quot;</span><span class="p">,</span>
+        <span class="n">attribute</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;standard_id&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="n">sort</span><span class="p">:</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">sort</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 
-<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tp</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">tp</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="nb">list</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">tp</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]]:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Group `self.citekeys` by `attribute`.</span>
+<span class="sd">        Group `self.citekeys` by `attribute`.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">def</span><span class="w"> </span><span class="nf">get_key</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">get_key</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">attribute</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">key_to_indices</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+        <span class="n">key_to_indices</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">citekey</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span><span class="p">):</span>
 
-<span class="w">            </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_key</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">get_key</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">            </span><span class="n">key_to_indices</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">key_to_indices</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">list</span><span class="p">(</span><span class="n">key_to_indices</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">key_to_indices</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">sort</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sort</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">items</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span><span class="w"> </span><span class="n">item</span><span class="p">:</span><span class="w"> </span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">items</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">[(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">indices</span><span class="p">])</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">indices</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">items</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">key</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">indices</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">unique_citekeys_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">attribute</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;standard_id&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">list</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">unique_citekeys_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;standard_id&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">[</span><span class="n">citekeys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">citekeys</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">group_citekeys_by</span><span class="p">(</span><span class="n">attribute</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">citekeys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">citekeys</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_citekeys_by</span><span class="p">(</span><span class="n">attribute</span><span class="p">)]</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">check_collisions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">check_collisions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Check for short_id hash collisions</span>
+<span class="sd">        Check for short_id hash collisions</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">short_id</span><span class="p">,</span><span class="w"> </span><span class="n">citekeys</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">group_citekeys_by</span><span class="p">(</span><span class="s2">&quot;short_id&quot;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">short_id</span><span class="p">,</span> <span class="n">citekeys</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_citekeys_by</span><span class="p">(</span><span class="s2">&quot;short_id&quot;</span><span class="p">):</span>
 
-<span class="w">            </span><span class="n">standard_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">sorted</span><span class="p">({</span><span class="n">x</span><span class="o">.</span><span class="n">standard_id</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">citekeys</span><span class="p">})</span>
+            <span class="n">standard_ids</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">({</span><span class="n">x</span><span class="o">.</span><span class="n">standard_id</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">citekeys</span><span class="p">})</span>
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">standard_ids</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">standard_ids</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
 
-<span class="w">                </span><span class="k">continue</span>
+                <span class="k">continue</span>
 
-<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
 
-<span class="w">                </span><span class="s2">&quot;Congratulations! Hash collision. Please report to https://git.io/JfuhH.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;Congratulations! Hash collision. Please report to https://git.io/JfuhH.</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;Multiple standard_ids hashed to </span><span class="si">{</span><span class="n">short_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">standard_ids</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Multiple standard_ids hashed to </span><span class="si">{</span><span class="n">short_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">standard_ids</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">            </span><span class="p">)</span>
+            <span class="p">)</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">check_multiple_input_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">check_multiple_input_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Identify different input_ids referring to the same reference.</span>
+<span class="sd">        Identify different input_ids referring to the same reference.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">standard_id</span><span class="p">,</span><span class="w"> </span><span class="n">citekeys</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">group_citekeys_by</span><span class="p">(</span><span class="s2">&quot;standard_id&quot;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">standard_id</span><span class="p">,</span> <span class="n">citekeys</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_citekeys_by</span><span class="p">(</span><span class="s2">&quot;standard_id&quot;</span><span class="p">):</span>
 
-<span class="w">            </span><span class="n">input_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">input_id</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">citekeys</span><span class="p">]</span>
+            <span class="n">input_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">input_id</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">citekeys</span><span class="p">]</span>
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
 
-<span class="w">                </span><span class="k">continue</span>
+                <span class="k">continue</span>
 
-<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;Multiple citekey input_ids refer to the same standard_id </span><span class="si">{</span><span class="n">standard_id</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">input_ids</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Multiple citekey input_ids refer to the same standard_id </span><span class="si">{</span><span class="n">standard_id</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">input_ids</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">            </span><span class="p">)</span>
+            <span class="p">)</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">log_level</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_level</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        If log_level is not None, log combined inspection report at this level.</span>
+<span class="sd">        If log_level is not None, log combined inspection report at this level.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="n">citekeys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">unique_citekeys_by</span><span class="p">(</span><span class="s2">&quot;dealiased_id&quot;</span><span class="p">)</span>
+        <span class="n">citekeys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_citekeys_by</span><span class="p">(</span><span class="s2">&quot;dealiased_id&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">reports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
+        <span class="n">reports</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">citekey</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">citekeys</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">citekey</span> <span class="ow">in</span> <span class="n">citekeys</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">report</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span>
+            <span class="n">report</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span>
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">report</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">report</span><span class="p">:</span>
 
-<span class="w">                </span><span class="k">continue</span>
+                <span class="k">continue</span>
 
-<span class="w">            </span><span class="n">reports</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">dealiased_id</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="n">report</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">reports</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">dealiased_id</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="n">report</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">report</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">reports</span><span class="p">)</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">reports</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">reports</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">log_level</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">reports</span> <span class="ow">and</span> <span class="n">log_level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">log_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logging</span><span class="o">.</span><span class="n">_checkLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
+            <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">_checkLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
 
-<span class="w">            </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;Inspection of dealiased citekeys revealed potential problems:</span><span class="se">\n</span><span class="si">{</span><span class="n">report</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Inspection of dealiased citekeys revealed potential problems:</span><span class="se">\n</span><span class="si">{</span><span class="n">report</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">log_level</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">log_level</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">report</span>
+        <span class="k">return</span> <span class="n">report</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">load_manual_references</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">load_manual_references</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Load manual references</span>
+<span class="sd">        Load manual references</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.process.bibliography</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">load_manual_references</span>
+        <span class="kn">from</span> <span class="nn">manubot.process.bibliography</span> <span class="kn">import</span> <span class="n">load_manual_references</span>
 
-<span class="w">        </span><span class="n">manual_refs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_manual_references</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">manual_refs</span> <span class="o">=</span> <span class="n">load_manual_references</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">manual_refs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">manual_refs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manual_refs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">manual_refs</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">get_csl_items</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tp</span><span class="o">.</span><span class="n">List</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_csl_items</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="o">.</span><span class="n">List</span><span class="p">:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Produce a list of CSL_Items. I.e. a references list / bibliography</span>
+<span class="sd">        Produce a list of CSL_Items. I.e. a references list / bibliography</span>
 
-<span class="s2">        for `self.citekeys`.</span>
+<span class="sd">        for `self.citekeys`.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="c1"># dictionary of input_id to CSL_Item ID (i.e. short_id),</span>
+        <span class="c1"># dictionary of input_id to CSL_Item ID (i.e. short_id),</span>
 
-<span class="w">        </span><span class="c1"># excludes standard_ids for which CSL Items could not be generated.</span>
+        <span class="c1"># excludes standard_ids for which CSL Items could not be generated.</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">input_to_csl_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_to_csl_id</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">csl_items</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">_standard_id</span><span class="p">,</span><span class="w"> </span><span class="n">citekeys</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">group_citekeys_by</span><span class="p">(</span>
+        <span class="k">for</span> <span class="n">_standard_id</span><span class="p">,</span> <span class="n">citekeys</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_citekeys_by</span><span class="p">(</span>
 
-<span class="w">            </span><span class="s2">&quot;standard_id&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sort</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_csl_items</span>
+            <span class="s2">&quot;standard_id&quot;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_csl_items</span>
 
-<span class="w">        </span><span class="p">):</span>
+        <span class="p">):</span>
 
-<span class="w">            </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey_to_csl_item</span><span class="p">(</span>
+            <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span>
 
-<span class="w">                </span><span class="n">citekey</span><span class="o">=</span><span class="n">citekeys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">citekey</span><span class="o">=</span><span class="n">citekeys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
 
-<span class="w">                </span><span class="n">prune</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prune_csl_items</span><span class="p">,</span>
+                <span class="n">prune</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prune_csl_items</span><span class="p">,</span>
 
-<span class="w">                </span><span class="n">log_level</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">csl_item_failure_log_level</span><span class="p">,</span>
+                <span class="n">log_level</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">csl_item_failure_log_level</span><span class="p">,</span>
 
-<span class="w">                </span><span class="n">manual_refs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">manual_refs</span><span class="p">,</span>
+                <span class="n">manual_refs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">manual_refs</span><span class="p">,</span>
 
-<span class="w">            </span><span class="p">)</span>
+            <span class="p">)</span>
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">csl_item</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">csl_item</span><span class="p">:</span>
 
-<span class="w">                </span><span class="k">for</span><span class="w"> </span><span class="n">ck</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">citekeys</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">ck</span> <span class="ow">in</span> <span class="n">citekeys</span><span class="p">:</span>
 
-<span class="w">                    </span><span class="bp">self</span><span class="o">.</span><span class="n">input_to_csl_id</span><span class="p">[</span><span class="n">ck</span><span class="o">.</span><span class="n">input_id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">input_to_csl_id</span><span class="p">[</span><span class="n">ck</span><span class="o">.</span><span class="n">input_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
 
-<span class="w">                </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">csl_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_items</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_items</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">citekeys_tsv</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">citekeys_tsv</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
-<span class="w">        </span><span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+        <span class="kn">import</span> <span class="nn">csv</span>
 
-<span class="w">        </span><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+        <span class="kn">import</span> <span class="nn">io</span>
 
-<span class="w">        </span><span class="n">fields</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;input_id&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;dealiased_id&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;standard_id&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;short_id&quot;</span><span class="p">]</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;input_id&quot;</span><span class="p">,</span> <span class="s2">&quot;dealiased_id&quot;</span><span class="p">,</span> <span class="s2">&quot;standard_id&quot;</span><span class="p">,</span> <span class="s2">&quot;short_id&quot;</span><span class="p">]</span>
 
-<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
 
-<span class="w">        </span><span class="n">writer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="n">fieldnames</span><span class="o">=</span><span class="n">fields</span><span class="p">,</span><span class="w"> </span><span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="n">fields</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">citekey</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">citekey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">citekeys</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="nb">getattr</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">fields</span><span class="p">}</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">}</span>
 
-<span class="w">            </span><span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">output</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">output</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">csl_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">csl_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;csl_items&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;csl_items&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">json_str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">csl_items</span><span class="p">,</span><span class="w"> </span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">json_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">csl_items</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">json_str</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">json_str</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">json_str</span>
+        <span class="k">return</span> <span class="n">json_str</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">csl_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">csl_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.util</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">get_configured_yaml</span>
+        <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">get_configured_yaml</span>
 
-<span class="w">        </span><span class="n">yaml</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_configured_yaml</span><span class="p">()</span>
+        <span class="n">yaml</span> <span class="o">=</span> <span class="n">get_configured_yaml</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;csl_items&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;csl_items&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="c1"># dump rather than safe_dump is required for</span>
+        <span class="c1"># dump rather than safe_dump is required for</span>
 
-<span class="w">        </span><span class="c1"># pyyaml to use custom representers.</span>
+        <span class="c1"># pyyaml to use custom representers.</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
 
-<span class="w">            </span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">csl_items</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">csl_items</span><span class="p">,</span>
 
-<span class="w">            </span><span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 
-<span class="w">            </span><span class="n">width</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
+            <span class="n">width</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
 
-<span class="w">            </span><span class="n">allow_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">allow_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 
-<span class="w">            </span><span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 
-<span class="w">        </span><span class="p">)</span>
+        <span class="p">)</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">write_csl_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="p">:</span><span class="w"> </span><span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">])</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">write_csl_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Write CSL Items to a JSON or YAML file at `path`.</span>
+<span class="sd">        Write CSL Items to a JSON or YAML file at `path`.</span>
 
-<span class="s2">        If path ends with a .yml or .yaml extension, write as CSL YAML.</span>
+<span class="sd">        If path ends with a .yml or .yaml extension, write as CSL YAML.</span>
 
-<span class="s2">        Otherwise write CSL JSON.</span>
+<span class="sd">        Otherwise write CSL JSON.</span>
 
-<span class="s2">        If `path` evaluates as False, do nothing.</span>
+<span class="sd">        If `path` evaluates as False, do nothing.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">path</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span>
+            <span class="k">return</span>
 
-<span class="w">        </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_yaml</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;.yml&quot;</span><span class="p">]</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_json</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_yaml</span> <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_json</span>
 
-<span class="w">        </span><span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">write_citekeys_tsv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="p">:</span><span class="w"> </span><span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="nf">write_citekeys_tsv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Write `self.citekeys_tsv` to a file.</span>
+<span class="sd">        Write `self.citekeys_tsv` to a file.</span>
 
-<span class="s2">        If `path` evaluates as False, do nothing.</span>
+<span class="sd">        If `path` evaluates as False, do nothing.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">path</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span>
+            <span class="k">return</span>
 
-<span class="w">        </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">citekeys_tsv</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">citekeys_tsv</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 </details>
@@ -2907,19 +2907,19 @@
 <p>Load manual references</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">load_manual_references</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">load_manual_references</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Load manual references</span>
+<span class="sd">        Load manual references</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.process.bibliography</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">load_manual_references</span>
+        <span class="kn">from</span> <span class="nn">manubot.process.bibliography</span> <span class="kn">import</span> <span class="n">load_manual_references</span>
 
-<span class="w">        </span><span class="n">manual_refs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_manual_references</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">manual_refs</span> <span class="o">=</span> <span class="n">load_manual_references</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">manual_refs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">manual_refs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manual_refs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">manual_refs</span><span class="p">)</span>
 </code></pre></div>
 
 </details>

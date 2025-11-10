@@ -1629,59 +1629,59 @@
 <h1 id="module-manubotteststest_util">Module manubot.tests.test_util</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pytest</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">manubot.util</span>
+<span class="kn">import</span> <span class="nn">manubot.util</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_shlex_join</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_shlex_join</span><span class="p">():</span>
 
-<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+    <span class="kn">import</span> <span class="nn">pathlib</span>
 
-<span class="w">    </span><span class="n">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;positional arg&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;path_arg&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)]</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">,</span> <span class="s2">&quot;positional arg&quot;</span><span class="p">,</span> <span class="s2">&quot;path_arg&quot;</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)]</span>
 
-<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">manubot</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">manubot</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;command &#39;positional arg&#39; path_arg path&quot;</span>
+    <span class="k">assert</span> <span class="n">output</span> <span class="o">==</span> <span class="s2">&quot;command &#39;positional arg&#39; path_arg path&quot;</span>
 
-<span class="n">raw_repo_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span>
+<span class="n">raw_repo_url</span> <span class="o">=</span> <span class="p">(</span>
 
-<span class="w">    </span><span class="s2">&quot;https://github.com/manubot/manubot/raw/ebac7abd754015a5ec24a6fff39c35a72d4dffb0/&quot;</span>
+    <span class="s2">&quot;https://github.com/manubot/manubot/raw/ebac7abd754015a5ec24a6fff39c35a72d4dffb0/&quot;</span>
 
 <span class="p">)</span>
 
-<span class="n">raw_manuscript_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">raw_repo_url</span><span class="si">}</span><span class="s2">manubot/process/tests/manuscripts/example/&quot;</span>
+<span class="n">raw_manuscript_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">raw_repo_url</span><span class="si">}</span><span class="s2">manubot/process/tests/manuscripts/example/&quot;</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_read_serialized_data_url_yaml</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_read_serialized_data_url_yaml</span><span class="p">():</span>
 
-<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">raw_manuscript_url</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;content/metadata.yaml&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">raw_manuscript_url</span> <span class="o">+</span> <span class="s2">&quot;content/metadata.yaml&quot;</span>
 
-<span class="w">    </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">manubot</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">read_serialized_data</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">manubot</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">read_serialized_data</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">obj</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Example manuscript for testing&quot;</span>
+    <span class="k">assert</span> <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Example manuscript for testing&quot;</span>
 
-<span class="w">    </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">manubot</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">read_serialized_dict</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">manubot</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">read_serialized_dict</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">obj</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Example manuscript for testing&quot;</span>
+    <span class="k">assert</span> <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Example manuscript for testing&quot;</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_read_serialized_data_url_json</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_read_serialized_data_url_json</span><span class="p">():</span>
 
-<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">raw_manuscript_url</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;content/manual-references.json&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">raw_manuscript_url</span> <span class="o">+</span> <span class="s2">&quot;content/manual-references.json&quot;</span>
 
-<span class="w">    </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">manubot</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">read_serialized_data</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">manubot</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">read_serialized_data</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">obj</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;container-title&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Engineuring&quot;</span>
+    <span class="k">assert</span> <span class="n">obj</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;container-title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Engineuring&quot;</span>
 
-<span class="w">    </span><span class="k">with</span><span class="w"> </span><span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">TypeError</span><span class="p">,</span><span class="w"> </span><span class="n">match</span><span class="o">=</span><span class="s2">&quot;Received &#39;list&#39; instead&quot;</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s2">&quot;Received &#39;list&#39; instead&quot;</span><span class="p">):</span>
 
-<span class="w">        </span><span class="n">manubot</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">read_serialized_dict</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">manubot</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">read_serialized_dict</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_read_serialized_dict_url_toml</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_read_serialized_dict_url_toml</span><span class="p">():</span>
 
-<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">raw_repo_url</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;pyproject.toml&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">raw_repo_url</span> <span class="o">+</span> <span class="s2">&quot;pyproject.toml&quot;</span>
 
-<span class="w">    </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">manubot</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">read_serialized_dict</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">manubot</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">read_serialized_dict</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;black&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">obj</span><span class="p">[</span><span class="s2">&quot;tool&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="s2">&quot;black&quot;</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;tool&quot;</span><span class="p">]</span>
 </code></pre></div>
 
 </details>
@@ -1763,15 +1763,15 @@
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_shlex_join</span><span class="p">():</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_shlex_join</span><span class="p">():</span>
 
-<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+    <span class="kn">import</span> <span class="nn">pathlib</span>
 
-<span class="w">    </span><span class="n">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;positional arg&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;path_arg&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)]</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">,</span> <span class="s2">&quot;positional arg&quot;</span><span class="p">,</span> <span class="s2">&quot;path_arg&quot;</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)]</span>
 
-<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">manubot</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">manubot</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">shlex_join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;command &#39;positional arg&#39; path_arg path&quot;</span>
+    <span class="k">assert</span> <span class="n">output</span> <span class="o">==</span> <span class="s2">&quot;command &#39;positional arg&#39; path_arg path&quot;</span>
 </code></pre></div>
 
 </details>

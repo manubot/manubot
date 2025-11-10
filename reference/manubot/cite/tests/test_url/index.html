@@ -1617,225 +1617,225 @@
 <h1 id="module-manubotciteteststest_url">Module manubot.cite.tests.test_url</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pytest</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.url</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">get_url_csl_item_zotero</span>
+<span class="kn">from</span> <span class="nn">manubot.cite.url</span> <span class="kn">import</span> <span class="n">get_url_csl_item_zotero</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span>
 
-<span class="w">    </span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Fails due to ratelimiting https://github.com/zotero/translation-server/issues/133&quot;</span>
+    <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Fails due to ratelimiting https://github.com/zotero/translation-server/issues/133&quot;</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_get_url_csl_item_zotero_nyt</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_get_url_csl_item_zotero_nyt</span><span class="p">():</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    This command creates two translation-server queries.</span>
+<span class="sd">    This command creates two translation-server queries.</span>
 
-<span class="s2">    The first query is equivalent to:</span>
+<span class="sd">    The first query is equivalent to:</span>
 
-<span class="s2">    ```</span>
+<span class="sd">    ```</span>
 
-<span class="s2">    curl --verbose </span><span class="se">\</span>
+<span class="sd">    curl --verbose \</span>
 
-<span class="s2">      --header &quot;Content-Type: text/plain&quot; </span><span class="se">\</span>
+<span class="sd">      --header &quot;Content-Type: text/plain&quot; \</span>
 
-<span class="s2">      --data &#39;https://nyti.ms/1NuB0WJ&#39; </span><span class="se">\</span>
+<span class="sd">      --data &#39;https://nyti.ms/1NuB0WJ&#39; \</span>
 
-<span class="s2">      &#39;https://translate.manubot.org/web&#39;</span>
+<span class="sd">      &#39;https://translate.manubot.org/web&#39;</span>
 
-<span class="s2">    ```</span>
+<span class="sd">    ```</span>
 
-<span class="s2">    Can fail due to NYT ratelimiting, see</span>
+<span class="sd">    Can fail due to NYT ratelimiting, see</span>
 
-<span class="s2">    https://github.com/zotero/translation-server/issues/133</span>
+<span class="sd">    https://github.com/zotero/translation-server/issues/133</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://nyti.ms/1NuB0WJ&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://nyti.ms/1NuB0WJ&quot;</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
 
-<span class="w">        </span><span class="s2">&quot;Unraveling the Ties of Altitude, Oxygen and Lung Cancer&quot;</span>
+        <span class="s2">&quot;Unraveling the Ties of Altitude, Oxygen and Lung Cancer&quot;</span>
 
-<span class="w">    </span><span class="p">)</span>
+    <span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Johnson&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Johnson&quot;</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_get_url_csl_item_zotero_manubot</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_get_url_csl_item_zotero_manubot</span><span class="p">():</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    This command creates two translation-server queries. The first query is</span>
+<span class="sd">    This command creates two translation-server queries. The first query is</span>
 
-<span class="s2">    equivalent to:</span>
+<span class="sd">    equivalent to:</span>
 
-<span class="s2">    ```</span>
+<span class="sd">    ```</span>
 
-<span class="s2">    curl --verbose </span><span class="se">\</span>
+<span class="sd">    curl --verbose \</span>
 
-<span class="s2">      --header &quot;Content-Type: text/plain&quot; </span><span class="se">\</span>
+<span class="sd">      --header &quot;Content-Type: text/plain&quot; \</span>
 
-<span class="s2">      --data &#39;https://greenelab.github.io/meta-review/v/0770300e1d5490a1ae8ff3a85ddca2cdc4ae0613/&#39; </span><span class="se">\</span>
+<span class="sd">      --data &#39;https://greenelab.github.io/meta-review/v/0770300e1d5490a1ae8ff3a85ddca2cdc4ae0613/&#39; \</span>
 
-<span class="s2">      &#39;https://translate.manubot.org/web&#39;</span>
+<span class="sd">      &#39;https://translate.manubot.org/web&#39;</span>
 
-<span class="s2">    ```</span>
+<span class="sd">    ```</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://greenelab.github.io/meta-review/v/0770300e1d5490a1ae8ff3a85ddca2cdc4ae0613/&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://greenelab.github.io/meta-review/v/0770300e1d5490a1ae8ff3a85ddca2cdc4ae0613/&quot;</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Open collaborative writing with Manubot&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Open collaborative writing with Manubot&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Slochower&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Slochower&quot;</span>
 
-<span class="w">    </span><span class="c1"># Zotero CSL exporter returns mixed string/int date-parts</span>
+    <span class="c1"># Zotero CSL exporter returns mixed string/int date-parts</span>
 
-<span class="w">    </span><span class="c1"># https://github.com/zotero/zotero/issues/1603</span>
+    <span class="c1"># https://github.com/zotero/zotero/issues/1603</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">][</span><span class="s2">&quot;date-parts&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span><span class="mi">2018</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">18</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">][</span><span class="s2">&quot;date-parts&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">==</span> <span class="p">[</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span>
 
-<span class="w">    </span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;test intermittently fails as metadata varies between two states&quot;</span>
+    <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;test intermittently fails as metadata varies between two states&quot;</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_get_url_csl_item_zotero_github</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_get_url_csl_item_zotero_github</span><span class="p">():</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    This command creates two translation-server queries. The first query is</span>
+<span class="sd">    This command creates two translation-server queries. The first query is</span>
 
-<span class="s2">    equivalent to:</span>
+<span class="sd">    equivalent to:</span>
 
-<span class="s2">    ```</span>
+<span class="sd">    ```</span>
 
-<span class="s2">    curl --verbose </span><span class="se">\</span>
+<span class="sd">    curl --verbose \</span>
 
-<span class="s2">      --header &quot;Content-Type: text/plain&quot; </span><span class="se">\</span>
+<span class="sd">      --header &quot;Content-Type: text/plain&quot; \</span>
 
-<span class="s2">      --data &#39;https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927&#39; </span><span class="se">\</span>
+<span class="sd">      --data &#39;https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927&#39; \</span>
 
-<span class="s2">      &#39;https://translate.manubot.org/web&#39;</span>
+<span class="sd">      &#39;https://translate.manubot.org/web&#39;</span>
 
-<span class="s2">    ```</span>
+<span class="sd">    ```</span>
 
-<span class="s2">    Note: this test may have temporary failures, due to performance of</span>
+<span class="sd">    Note: this test may have temporary failures, due to performance of</span>
 
-<span class="s2">          translation-server. It seems that sometimes translation-server</span>
+<span class="sd">          translation-server. It seems that sometimes translation-server</span>
 
-<span class="s2">          returns a different title for the same URL. A real mystery.</span>
+<span class="sd">          returns a different title for the same URL. A real mystery.</span>
 
-<span class="s2">    See also:</span>
+<span class="sd">    See also:</span>
 
-<span class="s2">        https://github.com/manubot/manubot/pull/139#discussion_r328703233</span>
+<span class="sd">        https://github.com/manubot/manubot/pull/139#discussion_r328703233</span>
 
-<span class="s2">    Proposed action:</span>
+<span class="sd">    Proposed action:</span>
 
-<span class="s2">        Probably should inquire upstream or change the test.</span>
+<span class="sd">        Probably should inquire upstream or change the test.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/pandas-dev/pandas/tree/d5e5bf761092c59eeb9b8750f05f2bc29fb45927&quot;</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="c1"># FIXME: arbitrarily, csl_item[&#39;abstract&#39;], and not csl_item[&#39;title&#39;] contains the title.</span>
+    <span class="c1"># FIXME: arbitrarily, csl_item[&#39;abstract&#39;], and not csl_item[&#39;title&#39;] contains the title.</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Flexible and powerful data analysis&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Flexible and powerful data analysis&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;GitHub&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;GitHub&quot;</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_get_url_csl_item_zotero_no_url</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_get_url_csl_item_zotero_no_url</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">):</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Ensure get_url_csl_item_zotero sets URL to the query URL,</span>
+<span class="sd">    Ensure get_url_csl_item_zotero sets URL to the query URL,</span>
 
-<span class="s2">    when the Zotero translator does not return it.</span>
+<span class="sd">    when the Zotero translator does not return it.</span>
 
-<span class="s2">    https://github.com/manubot/manubot/issues/244</span>
+<span class="sd">    https://github.com/manubot/manubot/issues/244</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">query_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;http://icbo2016.cgrb.oregonstate.edu/node/251&quot;</span>
+    <span class="n">query_url</span> <span class="o">=</span> <span class="s2">&quot;http://icbo2016.cgrb.oregonstate.edu/node/251&quot;</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">mock_web_query</span><span class="p">(</span><span class="n">url</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">mock_web_query</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">query_url</span>
+        <span class="k">assert</span> <span class="n">url</span> <span class="o">==</span> <span class="n">query_url</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">[</span>
+        <span class="k">return</span> <span class="p">[</span>
 
-<span class="w">            </span><span class="p">{</span>
+            <span class="p">{</span>
 
-<span class="w">                </span><span class="s2">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;J86G3MS7&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;J86G3MS7&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;itemType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;webpage&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;itemType&quot;</span><span class="p">:</span> <span class="s2">&quot;webpage&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;creators&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+                <span class="s2">&quot;creators&quot;</span><span class="p">:</span> <span class="p">[</span>
 
-<span class="w">                    </span><span class="p">{</span>
+                    <span class="p">{</span>
 
-<span class="w">                        </span><span class="s2">&quot;firstName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Senay&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;Senay&quot;</span><span class="p">,</span>
 
-<span class="w">                        </span><span class="s2">&quot;lastName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Kafkas&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Kafkas&quot;</span><span class="p">,</span>
 
-<span class="w">                        </span><span class="s2">&quot;creatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;author&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;creatorType&quot;</span><span class="p">:</span> <span class="s2">&quot;author&quot;</span><span class="p">,</span>
 
-<span class="w">                    </span><span class="p">},</span>
+                    <span class="p">},</span>
 
-<span class="w">                    </span><span class="p">{</span><span class="s2">&quot;firstName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ian&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;lastName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dunham&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;creatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;author&quot;</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;Ian&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Dunham&quot;</span><span class="p">,</span> <span class="s2">&quot;creatorType&quot;</span><span class="p">:</span> <span class="s2">&quot;author&quot;</span><span class="p">},</span>
 
-<span class="w">                    </span><span class="p">{</span>
+                    <span class="p">{</span>
 
-<span class="w">                        </span><span class="s2">&quot;firstName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Helen&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;Helen&quot;</span><span class="p">,</span>
 
-<span class="w">                        </span><span class="s2">&quot;lastName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Parkinson&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Parkinson&quot;</span><span class="p">,</span>
 
-<span class="w">                        </span><span class="s2">&quot;creatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;author&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;creatorType&quot;</span><span class="p">:</span> <span class="s2">&quot;author&quot;</span><span class="p">,</span>
 
-<span class="w">                    </span><span class="p">},</span>
+                    <span class="p">},</span>
 
-<span class="w">                    </span><span class="p">{</span>
+                    <span class="p">{</span>
 
-<span class="w">                        </span><span class="s2">&quot;firstName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Johanna&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;Johanna&quot;</span><span class="p">,</span>
 
-<span class="w">                        </span><span class="s2">&quot;lastName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mcentyre&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Mcentyre&quot;</span><span class="p">,</span>
 
-<span class="w">                        </span><span class="s2">&quot;creatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;author&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;creatorType&quot;</span><span class="p">:</span> <span class="s2">&quot;author&quot;</span><span class="p">,</span>
 
-<span class="w">                    </span><span class="p">},</span>
+                    <span class="p">},</span>
 
-<span class="w">                </span><span class="p">],</span>
+                <span class="p">],</span>
 
-<span class="w">                </span><span class="s2">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+                <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[],</span>
 
-<span class="w">                </span><span class="s2">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BIT106: Use of text mining for Experimental Factor Ontology coverage expansion in the scope of target validation&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;BIT106: Use of text mining for Experimental Factor Ontology coverage expansion in the scope of target validation&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2016&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;2016&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;shortTitle&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BIT106&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;shortTitle&quot;</span><span class="p">:</span> <span class="s2">&quot;BIT106&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="p">}</span>
+            <span class="p">}</span>
 
-<span class="w">        </span><span class="p">]</span>
+        <span class="p">]</span>
 
-<span class="w">    </span><span class="n">monkeypatch</span><span class="o">.</span><span class="n">setattr</span><span class="p">(</span><span class="s2">&quot;manubot.cite.zotero.web_query&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">mock_web_query</span><span class="p">)</span>
+    <span class="n">monkeypatch</span><span class="o">.</span><span class="n">setattr</span><span class="p">(</span><span class="s2">&quot;manubot.cite.zotero.web_query&quot;</span><span class="p">,</span> <span class="n">mock_web_query</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">query_url</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">query_url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;URL&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item</span>
+    <span class="k">assert</span> <span class="s2">&quot;URL&quot;</span> <span class="ow">in</span> <span class="n">csl_item</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">query_url</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">query_url</span>
 </code></pre></div>
 
 </details>

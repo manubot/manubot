@@ -1709,73 +1709,73 @@
 <h1 id="module-manubotcitewikidata">Module manubot.cite.wikidata</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">Any</span><span class="p">,</span><span class="w"> </span><span class="n">Dict</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.handlers</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">Handler</span>
+<span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="n">Handler</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">Handler_Wikidata</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Handler_Wikidata</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
 
-<span class="w">    </span><span class="n">prefixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;wikidata&quot;</span><span class="p">]</span>
+    <span class="n">prefixes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;wikidata&quot;</span><span class="p">]</span>
 
-<span class="w">    </span><span class="n">standard_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wikidata&quot;</span>
+    <span class="n">standard_prefix</span> <span class="o">=</span> <span class="s2">&quot;wikidata&quot;</span>
 
-<span class="w">    </span><span class="n">accession_pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">r</span><span class="s2">&quot;Q[0-9]+&quot;</span>
+    <span class="n">accession_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;Q[0-9]+&quot;</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        https://www.wikidata.org/wiki/Wikidata:Identifiers</span>
+<span class="sd">        https://www.wikidata.org/wiki/Wikidata:Identifiers</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="n">accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">accession</span>
+        <span class="n">accession</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">accession</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">accession</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Q&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">accession</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Q&quot;</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s2">&quot;Wikidata item IDs must start with &#39;Q&#39;.&quot;</span>
+            <span class="k">return</span> <span class="s2">&quot;Wikidata item IDs must start with &#39;Q&#39;.&quot;</span>
 
-<span class="w">        </span><span class="k">elif</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_get_pattern</span><span class="p">()</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">accession</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_pattern</span><span class="p">()</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">accession</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+            <span class="k">return</span> <span class="p">(</span>
 
-<span class="w">                </span><span class="s2">&quot;Accession does not conform to the Wikidata regex. &quot;</span>
+                <span class="s2">&quot;Accession does not conform to the Wikidata regex. &quot;</span>
 
-<span class="w">                </span><span class="s2">&quot;Double check the entity ID.&quot;</span>
+                <span class="s2">&quot;Double check the entity ID.&quot;</span>
 
-<span class="w">            </span><span class="p">)</span>
+            <span class="p">)</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">citekey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citekey</span><span class="p">):</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">get_wikidata_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">get_wikidata_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">get_wikidata_csl_item</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">Any</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">get_wikidata_csl_item</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Get a CSL JSON item with the citation metadata for a Wikidata item.</span>
+<span class="sd">    Get a CSL JSON item with the citation metadata for a Wikidata item.</span>
 
-<span class="s2">    identifier should be a Wikidata item ID corresponding to a citeable</span>
+<span class="sd">    identifier should be a Wikidata item ID corresponding to a citeable</span>
 
-<span class="s2">    work, such as Q50051684.</span>
+<span class="sd">    work, such as Q50051684.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://www.wikidata.org/wiki/</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://www.wikidata.org/wiki/</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.url</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">get_url_csl_item_zotero</span>
+    <span class="kn">from</span> <span class="nn">manubot.cite.url</span> <span class="kn">import</span> <span class="n">get_url_csl_item_zotero</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;DOI&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;DOI&quot;</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;URL&quot;</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;URL&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">url</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">csl_item</span>
+    <span class="k">return</span> <span class="n">csl_item</span>
 </code></pre></div>
 
 </details>
@@ -1791,33 +1791,33 @@
 work, such as Q50051684.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_wikidata_csl_item</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">Any</span><span class="p">]:</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_wikidata_csl_item</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Get a CSL JSON item with the citation metadata for a Wikidata item.</span>
+<span class="sd">    Get a CSL JSON item with the citation metadata for a Wikidata item.</span>
 
-<span class="s2">    identifier should be a Wikidata item ID corresponding to a citeable</span>
+<span class="sd">    identifier should be a Wikidata item ID corresponding to a citeable</span>
 
-<span class="s2">    work, such as Q50051684.</span>
+<span class="sd">    work, such as Q50051684.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://www.wikidata.org/wiki/</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://www.wikidata.org/wiki/</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.url</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">get_url_csl_item_zotero</span>
+    <span class="kn">from</span> <span class="nn">manubot.cite.url</span> <span class="kn">import</span> <span class="n">get_url_csl_item_zotero</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_url_csl_item_zotero</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;DOI&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;DOI&quot;</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;URL&quot;</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;URL&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">url</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">csl_item</span>
+    <span class="k">return</span> <span class="n">csl_item</span>
 </code></pre></div>
 
 </details>

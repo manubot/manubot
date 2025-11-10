@@ -1659,185 +1659,185 @@
 <h1 id="module-manubotciteteststest_citations">Module manubot.cite.tests.test_citations</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pathlib</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.citations</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">Citations</span>
+<span class="kn">from</span> <span class="nn">manubot.cite.citations</span> <span class="kn">import</span> <span class="n">Citations</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citations_filter_pandoc_xnos</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_citations_filter_pandoc_xnos</span><span class="p">():</span>
 
-<span class="w">    </span><span class="n">input_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+    <span class="n">input_ids</span> <span class="o">=</span> <span class="p">[</span>
 
-<span class="w">        </span><span class="s2">&quot;fig:pandoc-fignos-key&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># should filter</span>
+        <span class="s2">&quot;fig:pandoc-fignos-key&quot;</span><span class="p">,</span>  <span class="c1"># should filter</span>
 
-<span class="w">        </span><span class="s2">&quot;eq:pandoc-eqnos-key&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># should filter</span>
+        <span class="s2">&quot;eq:pandoc-eqnos-key&quot;</span><span class="p">,</span>  <span class="c1"># should filter</span>
 
-<span class="w">        </span><span class="s2">&quot;tbl:pandoc-tablenos-key&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># should filter</span>
+        <span class="s2">&quot;tbl:pandoc-tablenos-key&quot;</span><span class="p">,</span>  <span class="c1"># should filter</span>
 
-<span class="w">        </span><span class="s2">&quot;sec:pandoc-secnos-key&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># should filter</span>
+        <span class="s2">&quot;sec:pandoc-secnos-key&quot;</span><span class="p">,</span>  <span class="c1"># should filter</span>
 
-<span class="w">        </span><span class="s2">&quot;not-pandoc-xnos-key&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># should keep</span>
+        <span class="s2">&quot;not-pandoc-xnos-key&quot;</span><span class="p">,</span>  <span class="c1"># should keep</span>
 
-<span class="w">    </span><span class="p">]</span>
+    <span class="p">]</span>
 
-<span class="w">    </span><span class="n">citations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">citations</span><span class="o">.</span><span class="n">filter_pandoc_xnos</span><span class="p">()</span>
+    <span class="n">citations</span><span class="o">.</span><span class="n">filter_pandoc_xnos</span><span class="p">()</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">citations</span><span class="o">.</span><span class="n">citekeys</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">citations</span><span class="o">.</span><span class="n">citekeys</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">citations</span><span class="o">.</span><span class="n">citekeys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input_id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;not-pandoc-xnos-key&quot;</span>
+    <span class="k">assert</span> <span class="n">citations</span><span class="o">.</span><span class="n">citekeys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input_id</span> <span class="o">==</span> <span class="s2">&quot;not-pandoc-xnos-key&quot;</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citations_filter_unhandled</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_citations_filter_unhandled</span><span class="p">():</span>
 
-<span class="w">    </span><span class="n">input_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+    <span class="n">input_ids</span> <span class="o">=</span> <span class="p">[</span>
 
-<span class="w">        </span><span class="s2">&quot;citekey-with-no-prefix&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;citekey-with-no-prefix&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;bad-prefix:citekey&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bad-prefix:citekey&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;:empty-prefix&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;:empty-prefix&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;doi:handled-prefix&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;doi:handled-prefix&quot;</span><span class="p">,</span>
 
-<span class="w">    </span><span class="p">]</span>
+    <span class="p">]</span>
 
-<span class="w">    </span><span class="n">citations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">citations</span><span class="o">.</span><span class="n">filter_unhandled</span><span class="p">()</span>
+    <span class="n">citations</span><span class="o">.</span><span class="n">filter_unhandled</span><span class="p">()</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">citations</span><span class="o">.</span><span class="n">citekeys</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">citations</span><span class="o">.</span><span class="n">citekeys</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">citations</span><span class="o">.</span><span class="n">citekeys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input_id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;doi:handled-prefix&quot;</span>
+    <span class="k">assert</span> <span class="n">citations</span><span class="o">.</span><span class="n">citekeys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input_id</span> <span class="o">==</span> <span class="s2">&quot;doi:handled-prefix&quot;</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citations_check_collisions</span><span class="p">(</span><span class="n">caplog</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_citations_check_collisions</span><span class="p">(</span><span class="n">caplog</span><span class="p">):</span>
 
-<span class="w">    </span><span class="n">input_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+    <span class="n">input_ids</span> <span class="o">=</span> <span class="p">[</span>
 
-<span class="w">        </span><span class="s2">&quot;citekey-1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;citekey-1&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;citekey-1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;citekey-1&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;citekey-2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;citekey-2&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;Citekey-2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Citekey-2&quot;</span><span class="p">,</span>
 
-<span class="w">    </span><span class="p">]</span>
+    <span class="p">]</span>
 
-<span class="w">    </span><span class="n">citations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">citations</span><span class="o">.</span><span class="n">check_collisions</span><span class="p">()</span>
+    <span class="n">citations</span><span class="o">.</span><span class="n">check_collisions</span><span class="p">()</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">caplog</span><span class="o">.</span><span class="n">records</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">caplog</span><span class="o">.</span><span class="n">records</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citations_check_multiple_input_ids</span><span class="p">(</span><span class="n">caplog</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_citations_check_multiple_input_ids</span><span class="p">(</span><span class="n">caplog</span><span class="p">):</span>
 
-<span class="w">    </span><span class="n">input_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+    <span class="n">input_ids</span> <span class="o">=</span> <span class="p">[</span>
 
-<span class="w">        </span><span class="s2">&quot;doi:10/b6vnmd&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;doi:10/b6vnmd&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;DOI:10/B6VNMD&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DOI:10/B6VNMD&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;doi:10.1016/s0933-3657(96)00367-3&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;doi:10.1016/s0933-3657(96)00367-3&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;ugly-doi-alias&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ugly-doi-alias&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;other-citekey&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;other-citekey&quot;</span><span class="p">,</span>
 
-<span class="w">    </span><span class="p">]</span>
+    <span class="p">]</span>
 
-<span class="w">    </span><span class="n">citekey_aliases</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;ugly-doi-alias&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DOI:10.1016/s0933-3657(96)00367-3&quot;</span><span class="p">}</span>
+    <span class="n">citekey_aliases</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ugly-doi-alias&quot;</span><span class="p">:</span> <span class="s2">&quot;DOI:10.1016/s0933-3657(96)00367-3&quot;</span><span class="p">}</span>
 
-<span class="w">    </span><span class="n">citations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span><span class="w"> </span><span class="n">citekey_aliases</span><span class="p">)</span>
+    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">citekey_aliases</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">citations</span><span class="o">.</span><span class="n">check_multiple_input_ids</span><span class="p">()</span>
+    <span class="n">citations</span><span class="o">.</span><span class="n">check_multiple_input_ids</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Multiple citekey input_ids refer to the same standard_id doi:10.1016/s0933-3657(96)00367-3:&quot;</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="s2">&quot;Multiple citekey input_ids refer to the same standard_id doi:10.1016/s0933-3657(96)00367-3:&quot;</span>
 
-<span class="w">    </span><span class="s2">&quot;[&#39;doi:10/b6vnmd&#39;, &#39;DOI:10/B6VNMD&#39;, &#39;doi:10.1016/s0933-3657(96)00367-3&#39;, &#39;ugly-doi-alias&#39;]&quot;</span>
+    <span class="s2">&quot;[&#39;doi:10/b6vnmd&#39;, &#39;DOI:10/B6VNMD&#39;, &#39;doi:10.1016/s0933-3657(96)00367-3&#39;, &#39;ugly-doi-alias&#39;]&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">caplog</span><span class="o">.</span><span class="n">text</span>
+    <span class="k">assert</span> <span class="n">expected</span> <span class="ow">in</span> <span class="n">caplog</span><span class="o">.</span><span class="n">text</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citations_citekeys_tsv</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_citations_citekeys_tsv</span><span class="p">():</span>
 
-<span class="w">    </span><span class="n">input_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+    <span class="n">input_ids</span> <span class="o">=</span> <span class="p">[</span>
 
-<span class="w">        </span><span class="s2">&quot;citekey-1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;citekey-1&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;arXiv:1806.05726v1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;arXiv:1806.05726v1&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;DOI:10.7717/peerj.338&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DOI:10.7717/peerj.338&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;pmid:29618526&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pmid:29618526&quot;</span><span class="p">,</span>
 
-<span class="w">    </span><span class="p">]</span>
+    <span class="p">]</span>
 
-<span class="w">    </span><span class="n">citations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">citekeys_tsv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citations</span><span class="o">.</span><span class="n">citekeys_tsv</span>
+    <span class="n">citekeys_tsv</span> <span class="o">=</span> <span class="n">citations</span><span class="o">.</span><span class="n">citekeys_tsv</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">citekeys_tsv</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekeys_tsv</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">citekeys_tsv</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;arxiv:1806.05726v1&quot;</span> <span class="ow">in</span> <span class="n">citekeys_tsv</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citations_inspect</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_citations_inspect</span><span class="p">():</span>
 
-<span class="w">    </span><span class="n">input_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+    <span class="n">input_ids</span> <span class="o">=</span> <span class="p">[</span>
 
-<span class="w">        </span><span class="s2">&quot;citekey-1&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># passes inspection</span>
+        <span class="s2">&quot;citekey-1&quot;</span><span class="p">,</span>  <span class="c1"># passes inspection</span>
 
-<span class="w">        </span><span class="s2">&quot;arXiv:1806.05726v1&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># passes inspection</span>
+        <span class="s2">&quot;arXiv:1806.05726v1&quot;</span><span class="p">,</span>  <span class="c1"># passes inspection</span>
 
-<span class="w">        </span><span class="s2">&quot;arXiv:bad-id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;arXiv:bad-id&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;DOI:bad-id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DOI:bad-id&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;pmid:bad-id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pmid:bad-id&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="s2">&quot;DOID:not-disease-ontology-id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DOID:not-disease-ontology-id&quot;</span><span class="p">,</span>
 
-<span class="w">    </span><span class="p">]</span>
+    <span class="p">]</span>
 
-<span class="w">    </span><span class="n">citations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">report</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citations</span><span class="o">.</span><span class="n">inspect</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">citations</span><span class="o">.</span><span class="n">inspect</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span> <span class="o">==</span> <span class="mi">4</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;pmid:bad-id -- PubMed Identifiers should be 1-8 digits&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;pmid:bad-id -- PubMed Identifiers should be 1-8 digits&quot;</span> <span class="ow">in</span> <span class="n">report</span>
 
-<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;csl_format&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;yaml&quot;</span><span class="p">])</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;csl_format&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="s2">&quot;yaml&quot;</span><span class="p">])</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citations_csl_serialization</span><span class="p">(</span><span class="n">csl_format</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_citations_csl_serialization</span><span class="p">(</span><span class="n">csl_format</span><span class="p">):</span>
 
-<span class="w">    </span><span class="n">ccr_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;cite-command-rendered&quot;</span><span class="p">)</span>
+    <span class="n">ccr_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;cite-command-rendered&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">citations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Citations</span><span class="p">(</span>
+    <span class="n">citations</span> <span class="o">=</span> <span class="n">Citations</span><span class="p">(</span>
 
-<span class="w">        </span><span class="p">[</span><span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doi:10.7717/peerj.338&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;pubmed:29618526&quot;</span><span class="p">]</span>
+        <span class="p">[</span><span class="s2">&quot;arxiv:1806.05726v1&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.7717/peerj.338&quot;</span><span class="p">,</span> <span class="s2">&quot;pubmed:29618526&quot;</span><span class="p">]</span>
 
-<span class="w">    </span><span class="p">)</span>
+    <span class="p">)</span>
 
-<span class="w">    </span><span class="n">citations</span><span class="o">.</span><span class="n">load_manual_references</span><span class="p">(</span>
+    <span class="n">citations</span><span class="o">.</span><span class="n">load_manual_references</span><span class="p">(</span>
 
-<span class="w">        </span><span class="n">paths</span><span class="o">=</span><span class="p">[</span><span class="n">ccr_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;input-bibliography.json&quot;</span><span class="p">)]</span>
+        <span class="n">paths</span><span class="o">=</span><span class="p">[</span><span class="n">ccr_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;input-bibliography.json&quot;</span><span class="p">)]</span>
 
-<span class="w">    </span><span class="p">)</span>
+    <span class="p">)</span>
 
-<span class="w">    </span><span class="n">citations</span><span class="o">.</span><span class="n">get_csl_items</span><span class="p">()</span>
+    <span class="n">citations</span><span class="o">.</span><span class="n">get_csl_items</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">path_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ccr_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;output-bibliography.</span><span class="si">{</span><span class="n">csl_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">path_out</span> <span class="o">=</span> <span class="n">ccr_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;output-bibliography.</span><span class="si">{</span><span class="n">csl_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="c1"># uncomment the following line to regenerate test output</span>
+    <span class="c1"># uncomment the following line to regenerate test output</span>
 
-<span class="w">    </span><span class="c1"># citations.write_csl_items(path_out)</span>
+    <span class="c1"># citations.write_csl_items(path_out)</span>
 
-<span class="w">    </span><span class="n">csl_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">getattr</span><span class="p">(</span><span class="n">citations</span><span class="p">,</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;csl_</span><span class="si">{</span><span class="n">csl_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">csl_out</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">citations</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;csl_</span><span class="si">{</span><span class="n">csl_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_out</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">path_out</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">csl_out</span> <span class="o">==</span> <span class="n">path_out</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
 </code></pre></div>
 
 </details>

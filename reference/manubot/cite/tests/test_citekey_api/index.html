@@ -1746,367 +1746,367 @@
 <summary>View Source</summary>
 <div class="codehilite"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Tests API-level functions in manubot.cite. Both functions are found in citekey.py&quot;&quot;&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">citekey_to_csl_item</span>
+<span class="kn">from</span> <span class="nn">manubot.cite</span> <span class="kn">import</span> <span class="n">citekey_to_csl_item</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.citekey</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CiteKey</span>
+<span class="kn">from</span> <span class="nn">manubot.cite.citekey</span> <span class="kn">import</span> <span class="n">CiteKey</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
 
-<span class="w">    </span><span class="s2">&quot;input_id,expected&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;input_id,expected&quot;</span><span class="p">,</span>
 
-<span class="w">    </span><span class="p">[</span>
+    <span class="p">[</span>
 
-<span class="w">        </span><span class="p">(</span><span class="s2">&quot;doi:10.5061/DRYAD.q447c/1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;doi:10.5061/DRYAD.q447c/1&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">),</span>
 
-<span class="w">        </span><span class="p">(</span><span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">),</span>
 
-<span class="w">        </span><span class="c1"># infers by default</span>
+        <span class="c1"># infers by default</span>
 
-<span class="w">        </span><span class="p">(</span><span class="s2">&quot;10.5061/dryad.q447c/1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;10.5061/dryad.q447c/1&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.5061/dryad.q447c/1&quot;</span><span class="p">),</span>
 
-<span class="w">        </span><span class="p">(</span><span class="s2">&quot;doi:10/b6vnmd&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doi:10.1016/s0933-3657(96)00367-3&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;doi:10/b6vnmd&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.1016/s0933-3657(96)00367-3&quot;</span><span class="p">),</span>
 
-<span class="w">        </span><span class="p">(</span><span class="s2">&quot;doi:10/B6VNMD&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doi:10.1016/s0933-3657(96)00367-3&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;doi:10/B6VNMD&quot;</span><span class="p">,</span> <span class="s2">&quot;doi:10.1016/s0933-3657(96)00367-3&quot;</span><span class="p">),</span>
 
-<span class="w">        </span><span class="p">(</span>
+        <span class="p">(</span>
 
-<span class="w">            </span><span class="s2">&quot;doi:10/xxxxxxxxxxxxxYY&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;doi:10/xxxxxxxxxxxxxYY&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="s2">&quot;doi:10/xxxxxxxxxxxxxyy&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;doi:10/xxxxxxxxxxxxxyy&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="p">),</span><span class="w">  </span><span class="c1"># passthrough non-existent shortDOI</span>
+        <span class="p">),</span>  <span class="c1"># passthrough non-existent shortDOI</span>
 
-<span class="w">        </span><span class="p">(</span><span class="s2">&quot;pmid:24159271&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;pubmed:24159271&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;pmid:24159271&quot;</span><span class="p">,</span> <span class="s2">&quot;pubmed:24159271&quot;</span><span class="p">),</span>
 
-<span class="w">        </span><span class="p">(</span><span class="s2">&quot;isbn:1339919885&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;isbn:9781339919881&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;isbn:1339919885&quot;</span><span class="p">,</span> <span class="s2">&quot;isbn:9781339919881&quot;</span><span class="p">),</span>
 
-<span class="w">        </span><span class="p">(</span><span class="s2">&quot;isbn:1-339-91988-5&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;isbn:9781339919881&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;isbn:1-339-91988-5&quot;</span><span class="p">,</span> <span class="s2">&quot;isbn:9781339919881&quot;</span><span class="p">),</span>
 
-<span class="w">        </span><span class="p">(</span><span class="s2">&quot;isbn:978-0-387-95069-3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;isbn:9780387950693&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;isbn:978-0-387-95069-3&quot;</span><span class="p">,</span> <span class="s2">&quot;isbn:9780387950693&quot;</span><span class="p">),</span>
 
-<span class="w">        </span><span class="p">(</span><span class="s2">&quot;isbn:9780387950938&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;isbn:9780387950938&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;isbn:9780387950938&quot;</span><span class="p">,</span> <span class="s2">&quot;isbn:9780387950938&quot;</span><span class="p">),</span>
 
-<span class="w">        </span><span class="p">(</span><span class="s2">&quot;isbn:1-55860-510-X&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;isbn:9781558605107&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;isbn:1-55860-510-X&quot;</span><span class="p">,</span> <span class="s2">&quot;isbn:9781558605107&quot;</span><span class="p">),</span>
 
-<span class="w">        </span><span class="p">(</span><span class="s2">&quot;isbn:1-55860-510-x&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;isbn:9781558605107&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;isbn:1-55860-510-x&quot;</span><span class="p">,</span> <span class="s2">&quot;isbn:9781558605107&quot;</span><span class="p">),</span>
 
-<span class="w">    </span><span class="p">],</span>
+    <span class="p">],</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_standard_id</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_citekey_standard_id</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Test CiteKey.standard_id property for common prefixes.</span>
+<span class="sd">    Test CiteKey.standard_id property for common prefixes.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span>
+    <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span>
+    <span class="k">assert</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span> <span class="o">==</span> <span class="n">expected</span>
 
-<span class="n">test_citekey_infer_prefix_params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="n">test_citekey_infer_prefix_params</span> <span class="o">=</span> <span class="p">[</span>
 
-<span class="w">    </span><span class="p">(</span><span class="s2">&quot;10.5061/dryad.q447c/1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doi&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;10.5061/dryad.q447c/1&quot;</span><span class="p">,</span> <span class="s2">&quot;doi&quot;</span><span class="p">),</span>
 
-<span class="w">    </span><span class="p">(</span><span class="s2">&quot;10/b6vnmd&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;doi&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;10/b6vnmd&quot;</span><span class="p">,</span> <span class="s2">&quot;doi&quot;</span><span class="p">),</span>
 
-<span class="w">    </span><span class="p">(</span><span class="s2">&quot;24159271&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;pubmed&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;24159271&quot;</span><span class="p">,</span> <span class="s2">&quot;pubmed&quot;</span><span class="p">),</span>
 
-<span class="w">    </span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;pubmed&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;pubmed&quot;</span><span class="p">),</span>
 
-<span class="w">    </span><span class="p">(</span><span class="s2">&quot;PMC3041534&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;pmc&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;PMC3041534&quot;</span><span class="p">,</span> <span class="s2">&quot;pmc&quot;</span><span class="p">),</span>
 
-<span class="w">    </span><span class="p">(</span><span class="s2">&quot;Q50051684&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;wikidata&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Q50051684&quot;</span><span class="p">,</span> <span class="s2">&quot;wikidata&quot;</span><span class="p">),</span>
 
-<span class="w">    </span><span class="p">(</span><span class="s2">&quot;1407.3561v1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;arxiv&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;1407.3561v1&quot;</span><span class="p">,</span> <span class="s2">&quot;arxiv&quot;</span><span class="p">),</span>
 
-<span class="w">    </span><span class="p">(</span><span class="s2">&quot;no-prefix-to-infer&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;no-prefix-to-infer&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
 
 <span class="p">]</span>
 
-<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;input_id,prefix&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">test_citekey_infer_prefix_params</span><span class="p">)</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;input_id,prefix&quot;</span><span class="p">,</span> <span class="n">test_citekey_infer_prefix_params</span><span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_infer_prefix</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="n">prefix</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_citekey_infer_prefix</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
 
-<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="n">infer_prefix</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="n">infer_prefix</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">prefix</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">prefix</span>
+    <span class="k">assert</span> <span class="n">citekey</span><span class="o">.</span><span class="n">prefix</span> <span class="o">==</span> <span class="n">prefix</span>
 
-<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;input_id,prefix&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">test_citekey_infer_prefix_params</span><span class="p">)</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;input_id,prefix&quot;</span><span class="p">,</span> <span class="n">test_citekey_infer_prefix_params</span><span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_no_infer_prefix</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="n">prefix</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_citekey_no_infer_prefix</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
 
-<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="n">infer_prefix</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="n">infer_prefix</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">prefix</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">citekey</span><span class="o">.</span><span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">accession</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">citekey</span><span class="o">.</span><span class="n">accession</span> <span class="ow">is</span> <span class="kc">None</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;https://twitter.com/dhimmel/status/950443969313419264&quot;</span><span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_to_csl_item_doi_datacite</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_citekey_to_csl_item_doi_datacite</span><span class="p">():</span>
 
-<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;doi:10.7287/peerj.preprints.3100v1&quot;</span>
+    <span class="n">citekey</span> <span class="o">=</span> <span class="s2">&quot;doi:10.7287/peerj.preprints.3100v1&quot;</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;11cb5HXoY&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;11cb5HXoY&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;https://doi.org/10.7287/peerj.preprints.3100v1&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://doi.org/10.7287/peerj.preprints.3100v1&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;10.7287/peerj.preprints.3100v1&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;10.7287/peerj.preprints.3100v1&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;report&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;report&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="p">(</span>
+    <span class="k">assert</span> <span class="p">(</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
 
-<span class="w">        </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Sci-Hub provides access to nearly all scholarly literature&quot;</span>
+        <span class="o">==</span> <span class="s2">&quot;Sci-Hub provides access to nearly all scholarly literature&quot;</span>
 
-<span class="w">    </span><span class="p">)</span>
+    <span class="p">)</span>
 
-<span class="w">    </span><span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span>
+    <span class="n">authors</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Himmelstein&quot;</span>
+    <span class="k">assert</span> <span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Himmelstein&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">authors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Greene&quot;</span>
+    <span class="k">assert</span> <span class="n">authors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Greene&quot;</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_to_csl_item_arxiv</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_citekey_to_csl_item_arxiv</span><span class="p">():</span>
 
-<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;arxiv:cond-mat/0703470v2&quot;</span>
+    <span class="n">citekey</span> <span class="o">=</span> <span class="s2">&quot;arxiv:cond-mat/0703470v2&quot;</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;ES92tcdg&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ES92tcdg&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;https://arxiv.org/abs/cond-mat/0703470v2&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://arxiv.org/abs/cond-mat/0703470v2&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;number&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;cond-mat/0703470v2&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;number&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cond-mat/0703470v2&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;v2&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;v2&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;report&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;report&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;container-title&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;arXiv&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;container-title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;arXiv&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Portraits of Complex Networks&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Portraits of Complex Networks&quot;</span>
 
-<span class="w">    </span><span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span>
+    <span class="n">authors</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;literal&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;J. P. Bagrow&quot;</span>
+    <span class="k">assert</span> <span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;literal&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;J. P. Bagrow&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;10.1209/0295-5075/81/68004&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;10.1209/0295-5075/81/68004&quot;</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_to_csl_item_pmc</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_citekey_to_csl_item_pmc</span><span class="p">():</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    https://api.ncbi.nlm.nih.gov/lit/ctxp/v1/pmc/?format=csl&amp;id=3041534</span>
+<span class="sd">    https://api.ncbi.nlm.nih.gov/lit/ctxp/v1/pmc/?format=csl&amp;id=3041534</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pmc:PMC3041534&quot;</span>
+    <span class="n">citekey</span> <span class="o">=</span> <span class="s2">&quot;pmc:PMC3041534&quot;</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;1CGP1eifE&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;1CGP1eifE&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3041534/&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3041534/&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;container-title-short&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Summit Transl Bioinform&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;container-title-short&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Summit Transl Bioinform&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="p">(</span>
+    <span class="k">assert</span> <span class="p">(</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
 
-<span class="w">        </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Secondary Use of EHR: Data Quality Issues and Informatics Opportunities&quot;</span>
+        <span class="o">==</span> <span class="s2">&quot;Secondary Use of EHR: Data Quality Issues and Informatics Opportunities&quot;</span>
 
-<span class="w">    </span><span class="p">)</span>
+    <span class="p">)</span>
 
-<span class="w">    </span><span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span>
+    <span class="n">authors</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Botsis&quot;</span>
+    <span class="k">assert</span> <span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Botsis&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;PMID&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;21347133&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;PMID&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;21347133&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;PMCID&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;PMC3041534&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;PMCID&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PMC3041534&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;generated by Manubot&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="s2">&quot;generated by Manubot&quot;</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;standard_id: pmc:PMC3041534&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="s2">&quot;standard_id: pmc:PMC3041534&quot;</span> <span class="ow">in</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_to_csl_item_pubmed_1</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_citekey_to_csl_item_pubmed_1</span><span class="p">():</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Generated from XML returned by</span>
+<span class="sd">    Generated from XML returned by</span>
 
-<span class="s2">    https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&amp;id=21347133&amp;rettype=full</span>
+<span class="sd">    https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&amp;id=21347133&amp;rettype=full</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pubmed:21347133&quot;</span>
+    <span class="n">citekey</span> <span class="o">=</span> <span class="s2">&quot;pubmed:21347133&quot;</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;o7hs4FTC&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;o7hs4FTC&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;article-journal&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;article-journal&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pubmed/21347133&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pubmed/21347133&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;container-title&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Summit on translational bioinformatics&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;container-title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Summit on translational bioinformatics&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="p">(</span>
+    <span class="k">assert</span> <span class="p">(</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
 
-<span class="w">        </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Secondary Use of EHR: Data Quality Issues and Informatics Opportunities.&quot;</span>
+        <span class="o">==</span> <span class="s2">&quot;Secondary Use of EHR: Data Quality Issues and Informatics Opportunities.&quot;</span>
 
-<span class="w">    </span><span class="p">)</span>
+    <span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">][</span><span class="s2">&quot;date-parts&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[[</span><span class="mi">2010</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]]</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">][</span><span class="s2">&quot;date-parts&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[[</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
 
-<span class="w">    </span><span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span>
+    <span class="n">authors</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;given&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Taxiarchis&quot;</span>
+    <span class="k">assert</span> <span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;given&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Taxiarchis&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Botsis&quot;</span>
+    <span class="k">assert</span> <span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Botsis&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;PMID&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;21347133&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;PMID&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;21347133&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;PMCID&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;PMC3041534&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;PMCID&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PMC3041534&quot;</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_to_csl_item_pubmed_2</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_citekey_to_csl_item_pubmed_2</span><span class="p">():</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Generated from XML returned by</span>
+<span class="sd">    Generated from XML returned by</span>
 
-<span class="s2">    https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&amp;id=27094199&amp;rettype=full</span>
+<span class="sd">    https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&amp;id=27094199&amp;rettype=full</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pubmed:27094199&quot;</span>
+    <span class="n">citekey</span> <span class="o">=</span> <span class="s2">&quot;pubmed:27094199&quot;</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;5v0vabZu&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;5v0vabZu&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;article-journal&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;article-journal&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pubmed/27094199&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://www.ncbi.nlm.nih.gov/pubmed/27094199&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;container-title&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Circulation. Cardiovascular genetics&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;container-title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Circulation. Cardiovascular genetics&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;container-title-short&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Circ Cardiovasc Genet&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;container-title-short&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Circ Cardiovasc Genet&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;page&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;179-84&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;page&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;179-84&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="p">(</span>
+    <span class="k">assert</span> <span class="p">(</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+        <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
 
-<span class="w">        </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Genetic Association-Guided Analysis of Gene Networks for the Study of Complex Traits.&quot;</span>
+        <span class="o">==</span> <span class="s2">&quot;Genetic Association-Guided Analysis of Gene Networks for the Study of Complex Traits.&quot;</span>
 
-<span class="w">    </span><span class="p">)</span>
+    <span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">][</span><span class="s2">&quot;date-parts&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[[</span><span class="mi">2016</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">]]</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">][</span><span class="s2">&quot;date-parts&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[[</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span>
 
-<span class="w">    </span><span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span>
+    <span class="n">authors</span> <span class="o">=</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;given&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Casey S&quot;</span>
+    <span class="k">assert</span> <span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;given&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Casey S&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Greene&quot;</span>
+    <span class="k">assert</span> <span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Greene&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;PMID&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;27094199&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;PMID&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;27094199&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;10.1161/circgenetics.115.001181&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;10.1161/circgenetics.115.001181&quot;</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_to_csl_item_pubmed_with_numeric_month</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_citekey_to_csl_item_pubmed_with_numeric_month</span><span class="p">():</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Generated from XML returned by</span>
+<span class="sd">    Generated from XML returned by</span>
 
-<span class="s2">    https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&amp;id=29028984&amp;rettype=full</span>
+<span class="sd">    https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&amp;id=29028984&amp;rettype=full</span>
 
-<span class="s2">    See https://github.com/manubot/manubot/issues/69</span>
+<span class="sd">    See https://github.com/manubot/manubot/issues/69</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pmid:29028984&quot;</span>
+    <span class="n">citekey</span> <span class="o">=</span> <span class="s2">&quot;pmid:29028984&quot;</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">][</span><span class="s2">&quot;date-parts&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[[</span><span class="mi">2018</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">]]</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">][</span><span class="s2">&quot;date-parts&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[[</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">15</span><span class="p">]]</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_to_csl_item_pubmed_book</span><span class="p">(</span><span class="n">caplog</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_citekey_to_csl_item_pubmed_book</span><span class="p">(</span><span class="n">caplog</span><span class="p">):</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Extracting CSL metadata from books in PubMed is not supported.</span>
+<span class="sd">    Extracting CSL metadata from books in PubMed is not supported.</span>
 
-<span class="s2">    Logic not implemented to parse XML returned by</span>
+<span class="sd">    Logic not implemented to parse XML returned by</span>
 
-<span class="s2">    https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&amp;id=29227604&amp;rettype=full</span>
+<span class="sd">    https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&amp;id=29227604&amp;rettype=full</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="s2">&quot;pmid:29227604&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;ERROR&quot;</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="s2">&quot;pmid:29227604&quot;</span><span class="p">,</span> <span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;ERROR&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">csl_item</span> <span class="ow">is</span> <span class="kc">None</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="p">(</span>
+    <span class="k">assert</span> <span class="p">(</span>
 
-<span class="w">        </span><span class="s2">&quot;Expected article to be an XML element with tag PubmedArticle, received tag &#39;PubmedBookArticle&#39;&quot;</span>
+        <span class="s2">&quot;Expected article to be an XML element with tag PubmedArticle, received tag &#39;PubmedBookArticle&#39;&quot;</span>
 
-<span class="w">        </span><span class="ow">in</span><span class="w"> </span><span class="n">caplog</span><span class="o">.</span><span class="n">text</span>
+        <span class="ow">in</span> <span class="n">caplog</span><span class="o">.</span><span class="n">text</span>
 
-<span class="w">    </span><span class="p">)</span>
+    <span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_to_csl_item_isbn</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_citekey_to_csl_item_isbn</span><span class="p">():</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="s2">&quot;isbn:9780387950693&quot;</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="s2">&quot;isbn:9780387950693&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;book&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;book&quot;</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Complex analysis&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Complex analysis&quot;</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span>
 
-<span class="w">    </span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;On 2024-07-20, title was &#39;ClinicalTrials.gov&#39; instead of &#39;A Phase 3 Randomized Study...&#39;. &quot;</span>
+    <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;On 2024-07-20, title was &#39;ClinicalTrials.gov&#39; instead of &#39;A Phase 3 Randomized Study...&#39;. &quot;</span>
 
-<span class="w">    </span><span class="s2">&quot;This is wrong so FIXME in the future.&quot;</span>
+    <span class="s2">&quot;This is wrong so FIXME in the future.&quot;</span>
 
 <span class="p">)</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_citekey_to_csl_item_clinical_trial</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">test_citekey_to_csl_item_clinical_trial</span><span class="p">():</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Test clinicaltrials.gov citation support using CURIEs.</span>
+<span class="sd">    Test clinicaltrials.gov citation support using CURIEs.</span>
 
-<span class="s2">    https://github.com/manubot/manubot/issues/216</span>
+<span class="sd">    https://github.com/manubot/manubot/issues/216</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="s2">&quot;clinicaltrials:NCT04292899&quot;</span><span class="p">)</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey_to_csl_item</span><span class="p">(</span><span class="s2">&quot;clinicaltrials:NCT04292899&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;A Phase 3 Randomized Study&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;A Phase 3 Randomized Study&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;clinicaltrials.gov&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;clinicaltrials.gov&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;https://www.clinicaltrials.gov/study/NCT04292899&quot;</span>
+    <span class="k">assert</span> <span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;https://www.clinicaltrials.gov/study/NCT04292899&quot;</span>
 </code></pre></div>
 
 </details>

@@ -1587,13 +1587,13 @@
 <h1 id="module-manubotcite">Module manubot.cite</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="n">__all__</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<div class="codehilite"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
 
-<span class="w">    </span><span class="s2">&quot;citekey_to_csl_item&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;citekey_to_csl_item&quot;</span><span class="p">,</span>
 
 <span class="p">]</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.cite.citekey</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">citekey_to_csl_item</span>
+<span class="kn">from</span> <span class="nn">manubot.cite.citekey</span> <span class="kn">import</span> <span class="n">citekey_to_csl_item</span>
 </code></pre></div>
 
 </details>
@@ -1629,71 +1629,71 @@
 <p>Generate a CSL_Item for the input citekey.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">citekey_to_csl_item</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">citekey_to_csl_item</span><span class="p">(</span>
 
-<span class="w">    </span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="w"> </span><span class="n">manual_refs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="n">log_level</span><span class="p">:</span><span class="w"> </span><span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="nb">int</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;WARNING&quot;</span>
+    <span class="n">citekey</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">manual_refs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_level</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;WARNING&quot;</span>
 
 <span class="p">):</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Generate a CSL_Item for the input citekey.</span>
+<span class="sd">    Generate a CSL_Item for the input citekey.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">__version__</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">manubot_version</span>
+    <span class="kn">from</span> <span class="nn">manubot</span> <span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">manubot_version</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">manual_refs</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">manual_refs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">manual_refs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+        <span class="n">manual_refs</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="w">    </span><span class="c1"># https://stackoverflow.com/a/35704430/4651668</span>
+    <span class="c1"># https://stackoverflow.com/a/35704430/4651668</span>
 
-<span class="w">    </span><span class="n">log_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logging</span><span class="o">.</span><span class="n">_checkLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
+    <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">_checkLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">CiteKey</span><span class="p">):</span>
 
-<span class="w">        </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+        <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">manual_refs</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span> <span class="ow">in</span> <span class="n">manual_refs</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">manual_refs</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">manual_refs</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">]</span>
 
-<span class="w">    </span><span class="k">try</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">csl_item</span>
+        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">csl_item</span>
 
-<span class="w">    </span><span class="k">except</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">error</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
 
-<span class="w">            </span><span class="n">log_level</span><span class="p">,</span>
+            <span class="n">log_level</span><span class="p">,</span>
 
-<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;Generating csl_item for </span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="si">!r}</span><span class="s2"> failed &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Generating csl_item for </span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="si">!r}</span><span class="s2"> failed &quot;</span>
 
-<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;due to a </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;due to a </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="p">)</span>
+        <span class="p">)</span>
 
-<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span><span class="w"> </span><span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
-<span class="w">    </span><span class="c1"># update csl_item with manubot generated metadata</span>
+    <span class="c1"># update csl_item with manubot generated metadata</span>
 
-<span class="w">    </span><span class="n">note_text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;This CSL Item was generated by Manubot v</span><span class="si">{</span><span class="n">manubot_version</span><span class="si">}</span><span class="s2"> from its persistent identifier (standard_id).&quot;</span>
+    <span class="n">note_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;This CSL Item was generated by Manubot v</span><span class="si">{</span><span class="n">manubot_version</span><span class="si">}</span><span class="s2"> from its persistent identifier (standard_id).&quot;</span>
 
-<span class="w">    </span><span class="n">note_dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">}</span>
+    <span class="n">note_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">}</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">note_text</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">note_text</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">(</span><span class="n">note_dict</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">(</span><span class="n">note_dict</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">short_id</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">short_id</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">prune</span><span class="o">=</span><span class="n">prune</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">prune</span><span class="o">=</span><span class="n">prune</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">csl_item</span>
+    <span class="k">return</span> <span class="n">csl_item</span>
 </code></pre></div>
 
 </details>

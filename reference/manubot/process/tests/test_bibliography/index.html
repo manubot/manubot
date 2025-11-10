@@ -1657,87 +1657,87 @@
 <h1 id="module-manubotprocessteststest_bibliography">Module manubot.process.tests.test_bibliography</h1>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.pandoc.tests.test_bibliography</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">manubot.pandoc.tests.test_bibliography</span> <span class="kn">import</span> <span class="p">(</span>
 
-<span class="w">    </span><span class="n">directory</span><span class="p">,</span>
+    <span class="n">directory</span><span class="p">,</span>
 
-<span class="w">    </span><span class="n">skipif_no_pandoc</span><span class="p">,</span>
+    <span class="n">skipif_no_pandoc</span><span class="p">,</span>
 
-<span class="w">    </span><span class="n">skipif_no_pandoc_citeproc</span><span class="p">,</span>
+    <span class="n">skipif_no_pandoc_citeproc</span><span class="p">,</span>
 
 <span class="p">)</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">manubot.process.bibliography</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">load_manual_references</span>
+<span class="kn">from</span> <span class="nn">manubot.process.bibliography</span> <span class="kn">import</span> <span class="n">load_manual_references</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">Test_load_manual_references</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">Test_load_manual_references</span><span class="p">:</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Tests loading multiple bibliography paths</span>
+<span class="sd">    Tests loading multiple bibliography paths</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">setup_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">setup_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="n">bibliography_paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">sorted</span><span class="p">(</span>
+        <span class="n">bibliography_paths</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
 
-<span class="w">            </span><span class="n">directory</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">directory</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;bibliographies/bibliography.*&quot;</span><span class="p">)</span>
+            <span class="n">directory</span> <span class="o">/</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">directory</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;bibliographies/bibliography.*&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="p">)</span>
+        <span class="p">)</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_manual_references</span><span class="p">(</span><span class="n">bibliography_paths</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span> <span class="o">=</span> <span class="n">load_manual_references</span><span class="p">(</span><span class="n">bibliography_paths</span><span class="p">)</span>
 
-<span class="w">        </span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span><span class="p">))</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">test_csl_item_1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_csl_item_1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span>
+        <span class="k">assert</span> <span class="s2">&quot;doi:10.7554/elife.32822&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span>
 
-<span class="w">        </span><span class="n">csl_item_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span><span class="p">[</span><span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">]</span>
+        <span class="n">csl_item_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span><span class="p">[</span><span class="s2">&quot;doi:10.7554/elife.32822&quot;</span><span class="p">]</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item_1</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Sci-Hub&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">csl_item_1</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Sci-Hub&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="p">(</span>
+        <span class="k">assert</span> <span class="p">(</span>
 
-<span class="w">            </span><span class="s2">&quot;Loaded from an external bibliography file by Manubot.&quot;</span>
+            <span class="s2">&quot;Loaded from an external bibliography file by Manubot.&quot;</span>
 
-<span class="w">            </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item_1</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
+            <span class="ow">in</span> <span class="n">csl_item_1</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
 
-<span class="w">        </span><span class="p">)</span>
+        <span class="p">)</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;source_bibliography: bibliography.json&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item_1</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="s2">&quot;source_bibliography: bibliography.json&quot;</span> <span class="ow">in</span> <span class="n">csl_item_1</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;standard_id: doi:10.7554/elife.32822&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item_1</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="s2">&quot;standard_id: doi:10.7554/elife.32822&quot;</span> <span class="ow">in</span> <span class="n">csl_item_1</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
 
-<span class="w">    </span><span class="nd">@skipif_no_pandoc</span>
+    <span class="nd">@skipif_no_pandoc</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">test_csl_item_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_csl_item_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="c1"># raw id corresponding to bibliography.bib</span>
+        <span class="c1"># raw id corresponding to bibliography.bib</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;noauthor_techblog:_nodate&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span>
+        <span class="k">assert</span> <span class="s2">&quot;noauthor_techblog:_nodate&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span>
 
-<span class="w">        </span><span class="n">csl_item_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span><span class="p">[</span><span class="s2">&quot;noauthor_techblog:_nodate&quot;</span><span class="p">]</span>
+        <span class="n">csl_item_2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span><span class="p">[</span><span class="s2">&quot;noauthor_techblog:_nodate&quot;</span><span class="p">]</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item_2</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;TechBlog&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">csl_item_2</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;TechBlog&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;source_bibliography: bibliography.bib&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item_2</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="s2">&quot;source_bibliography: bibliography.bib&quot;</span> <span class="ow">in</span> <span class="n">csl_item_2</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;standard_id: noauthor_techblog:_nodate&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item_2</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="s2">&quot;standard_id: noauthor_techblog:_nodate&quot;</span> <span class="ow">in</span> <span class="n">csl_item_2</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
 
-<span class="w">    </span><span class="nd">@skipif_no_pandoc_citeproc</span>
+    <span class="nd">@skipif_no_pandoc_citeproc</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">test_csl_item_3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_csl_item_3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;Beaulieu-Jones2017&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span>
+        <span class="k">assert</span> <span class="s2">&quot;Beaulieu-Jones2017&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span>
 
-<span class="w">        </span><span class="n">csl_item_3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span><span class="p">[</span><span class="s2">&quot;Beaulieu-Jones2017&quot;</span><span class="p">]</span>
+        <span class="n">csl_item_3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">citation_to_csl_item</span><span class="p">[</span><span class="s2">&quot;Beaulieu-Jones2017&quot;</span><span class="p">]</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="n">csl_item_3</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Beaulieu-Jones&quot;</span>
+        <span class="k">assert</span> <span class="n">csl_item_3</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Beaulieu-Jones&quot;</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;source_bibliography: bibliography.nbib&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item_3</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="s2">&quot;source_bibliography: bibliography.nbib&quot;</span> <span class="ow">in</span> <span class="n">csl_item_3</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
 
-<span class="w">        </span><span class="k">assert</span><span class="w"> </span><span class="s2">&quot;standard_id: Beaulieu-Jones2017&quot;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">csl_item_3</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="s2">&quot;standard_id: Beaulieu-Jones2017&quot;</span> <span class="ow">in</span> <span class="n">csl_item_3</span><span class="p">[</span><span class="s2">&quot;note&quot;</span><span class="p">]</span>
 </code></pre></div>
 
 </details>

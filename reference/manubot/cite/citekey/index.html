@@ -1842,613 +1842,613 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">dataclasses</span>
+<span class="kn">import</span> <span class="nn">dataclasses</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">functools</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">re</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tp</span>
+<span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">tp</span>
 
 <span class="k">try</span><span class="p">:</span>
 
-<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">cached_property</span>
+    <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span>
 
-<span class="k">except</span><span class="w"> </span><span class="n">ImportError</span><span class="p">:</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
 
-<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">backports.cached_property</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">cached_property</span>
+    <span class="kn">from</span> <span class="nn">backports.cached_property</span> <span class="kn">import</span> <span class="n">cached_property</span>
 
 <span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">CiteKey</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">CiteKey</span><span class="p">:</span>
 
-<span class="w">    </span><span class="n">input_id</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span>
+    <span class="n">input_id</span><span class="p">:</span> <span class="nb">str</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;Input identifier for the citekey&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Input identifier for the citekey&quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">aliases</span><span class="p">:</span><span class="w"> </span><span class="nb">dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">aliases</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;Mapping from input identifier to aliases&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapping from input identifier to aliases&quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">infer_prefix</span><span class="p">:</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">True</span>
+    <span class="n">infer_prefix</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;Whether to infer the citekey&#39;s prefix when a prefix is missing or unhandled&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether to infer the citekey&#39;s prefix when a prefix is missing or unhandled&quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">check_input_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_input_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_id</span><span class="p">)</span>
 
-<span class="w">    </span><span class="nd">@staticmethod</span>
+    <span class="nd">@staticmethod</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">check_input_id</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">check_input_id</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">raise</span><span class="w"> </span><span class="n">TypeError</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
 
-<span class="w">                </span><span class="s2">&quot;input_id should be type &#39;str&#39; not &quot;</span>
+                <span class="s2">&quot;input_id should be type &#39;str&#39; not &quot;</span>
 
-<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">: </span><span class="si">{</span><span class="n">input_id</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">input_id</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">: </span><span class="si">{</span><span class="n">input_id</span><span class="si">!r}</span><span class="s2">&quot;</span>
 
-<span class="w">            </span><span class="p">)</span>
+            <span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">input_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">input_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid citekey input_id: </span><span class="si">{</span><span class="n">input_id</span><span class="si">!r}</span><span class="se">\n</span><span class="s2">starts with &#39;@&#39;&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid citekey input_id: </span><span class="si">{</span><span class="n">input_id</span><span class="si">!r}</span><span class="se">\n</span><span class="s2">starts with &#39;@&#39;&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
 
-<span class="w">    </span><span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">from_input_id</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s2">&quot;CiteKey&quot;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">from_input_id</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CiteKey&quot;</span><span class="p">:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;Cached constructor&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cached constructor&quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="w">    </span><span class="nd">@cached_property</span>
+    <span class="nd">@cached_property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">dealiased_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">dealiased_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        If `self.input_id` is in `self.aliases`, the value specified by</span>
+<span class="sd">        If `self.input_id` is in `self.aliases`, the value specified by</span>
 
-<span class="s2">        `self.aliases`. Otherwise, `self.input_id`.</span>
+<span class="sd">        `self.aliases`. Otherwise, `self.input_id`.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">aliases</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">input_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aliases</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_id</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">_set_prefix_accession</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_set_prefix_accession</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">_accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accession</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="w">        </span><span class="n">split_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">dealiased_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">split_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dealiased_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">split_id</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_id</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">split_id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_accession</span> <span class="o">=</span> <span class="n">split_id</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">infer_prefix</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">is_known_prefix</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">infer_prefix</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_known_prefix</span><span class="p">:</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">_infer_prefix</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_infer_prefix</span><span class="p">()</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">_infer_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_infer_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Treat `self.dealiased_id` as missing a prefix.</span>
+<span class="sd">        Treat `self.dealiased_id` as missing a prefix.</span>
 
-<span class="s2">        If the prefix can be inferred, set `self._prefix` and `self._accession`.</span>
+<span class="sd">        If the prefix can be inferred, set `self._prefix` and `self._accession`.</span>
 
-<span class="s2">        Only call this function from _set_prefix_accession,</span>
+<span class="sd">        Only call this function from _set_prefix_accession,</span>
 
-<span class="s2">        since it is not safe after instance attributes or properties have been cached.</span>
+<span class="sd">        since it is not safe after instance attributes or properties have been cached.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.handlers</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">infer_prefix</span>
+        <span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="n">infer_prefix</span>
 
-<span class="w">        </span><span class="n">prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">infer_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dealiased_id</span><span class="p">)</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">infer_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dealiased_id</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">prefix</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">prefix</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span>
+            <span class="k">return</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prefix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span> <span class="o">=</span> <span class="n">prefix</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">_accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">dealiased_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accession</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dealiased_id</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tp</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        If `self.input_id` contains a colon, the substring up to the first colon.</span>
+<span class="sd">        If `self.input_id` contains a colon, the substring up to the first colon.</span>
 
-<span class="s2">        Otherwise, None.</span>
+<span class="sd">        Otherwise, None.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;_prefix&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_prefix&quot;</span><span class="p">):</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">_set_prefix_accession</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_prefix_accession</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">prefix_lower</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tp</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">prefix_lower</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        A lowercase version of `self.prefix` or None.</span>
+<span class="sd">        A lowercase version of `self.prefix` or None.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">None</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">accession</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tp</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">accession</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        If `self.prefix`, the remainder of `self.input_id` following the first colon.</span>
+<span class="sd">        If `self.prefix`, the remainder of `self.input_id` following the first colon.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;_accession&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_accession&quot;</span><span class="p">):</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">_set_prefix_accession</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_prefix_accession</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_accession</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_accession</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">standard_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tp</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">standard_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        If the citekey is handled, the standard prefix specified by the handler.</span>
+<span class="sd">        If the citekey is handled, the standard prefix specified by the handler.</span>
 
-<span class="s2">        Otherwise, None.</span>
+<span class="sd">        Otherwise, None.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;_standard_prefix&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_standard_prefix&quot;</span><span class="p">):</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">_standardize</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_standardize</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_standard_prefix</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_standard_prefix</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">standard_accession</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tp</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">standard_accession</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        If the citekey is handled, the standard accession specified by the handler.</span>
+<span class="sd">        If the citekey is handled, the standard accession specified by the handler.</span>
 
-<span class="s2">        Otherwise, None.</span>
+<span class="sd">        Otherwise, None.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;_standard_accession&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_standard_accession&quot;</span><span class="p">):</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">_standardize</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_standardize</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_standard_accession</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_standard_accession</span>
 
-<span class="w">    </span><span class="nd">@cached_property</span>
+    <span class="nd">@cached_property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.handlers</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">Handler</span><span class="p">,</span><span class="w"> </span><span class="n">get_handler</span>
+        <span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="n">Handler</span><span class="p">,</span> <span class="n">get_handler</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">is_handled_prefix</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_handled_prefix</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">get_handler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">get_handler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Handler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Handler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="p">)</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">is_handled_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">is_handled_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.handlers</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">prefix_to_handler</span>
+        <span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="n">prefix_to_handler</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">prefix_to_handler</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span> <span class="ow">in</span> <span class="n">prefix_to_handler</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">is_known_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">is_known_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">is_handled_prefix</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">is_pandoc_xnos_prefix</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_handled_prefix</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_pandoc_xnos_prefix</span><span class="p">()</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tp</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Inspect citekey for potential problems.</span>
+<span class="sd">        Inspect citekey for potential problems.</span>
 
-<span class="s2">        If no problems are found, return None.</span>
+<span class="sd">        If no problems are found, return None.</span>
 
-<span class="s2">        Otherwise, returns a string describing the problem.</span>
+<span class="sd">        Otherwise, returns a string describing the problem.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">_standardize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_standardize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Set `self._standard_prefix`, `self._standard_accession`, and `self._standard_id`.</span>
+<span class="sd">        Set `self._standard_prefix`, `self._standard_accession`, and `self._standard_id`.</span>
 
-<span class="s2">        For citekeys without a prefix or with an unhandled prefix, _standard_prefix</span>
+<span class="sd">        For citekeys without a prefix or with an unhandled prefix, _standard_prefix</span>
 
-<span class="s2">        and _standard_accession are set to None.</span>
+<span class="sd">        and _standard_accession are set to None.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">is_handled_prefix</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_handled_prefix</span><span class="p">:</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">_standard_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_standard_prefix</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">_standard_accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_standard_accession</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">_standard_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">dealiased_id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_standard_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dealiased_id</span>
 
-<span class="w">            </span><span class="k">return</span>
+            <span class="k">return</span>
 
-<span class="w">        </span><span class="n">fxn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">standardize_prefix_accession</span>
+        <span class="n">fxn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">standardize_prefix_accession</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">_standard_prefix</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_standard_accession</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fxn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">accession</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_standard_prefix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_standard_accession</span> <span class="o">=</span> <span class="n">fxn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">accession</span><span class="p">)</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">_standard_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_standard_prefix</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_standard_accession</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_standard_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_standard_prefix</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_standard_accession</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">standard_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">standard_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        If the citekey is handled, the standard_id specified by the handler.</span>
+<span class="sd">        If the citekey is handled, the standard_id specified by the handler.</span>
 
-<span class="s2">        Otherwise, `self.dealiased_id`.</span>
+<span class="sd">        Otherwise, `self.dealiased_id`.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;_standard_id&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_standard_id&quot;</span><span class="p">):</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">_standardize</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_standardize</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_standard_id</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_standard_id</span>
 
-<span class="w">    </span><span class="nd">@cached_property</span>
+    <span class="nd">@cached_property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">short_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">short_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        A hashed version of standard_id whose characters are</span>
+<span class="sd">        A hashed version of standard_id whose characters are</span>
 
-<span class="s2">        within the ranges 0-9, a-z and A-Z.</span>
+<span class="sd">        within the ranges 0-9, a-z and A-Z.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">shorten_citekey</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">standard_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">shorten_citekey</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">standard_id</span><span class="p">)</span>
 
-<span class="w">    </span><span class="nd">@cached_property</span>
+    <span class="nd">@cached_property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">all_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tp</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">all_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 
-<span class="w">        </span><span class="n">ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">dealiased_id</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">standard_id</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">short_id</span><span class="p">]</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">input_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dealiased_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">standard_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">short_id</span><span class="p">]</span>
 
-<span class="w">        </span><span class="n">ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">ids</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x</span><span class="p">]</span><span class="w">  </span><span class="c1"># remove None</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ids</span> <span class="k">if</span> <span class="n">x</span><span class="p">]</span>  <span class="c1"># remove None</span>
 
-<span class="w">        </span><span class="n">ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span><span class="w">  </span><span class="c1"># deduplicate</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span>  <span class="c1"># deduplicate</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ids</span>
+        <span class="k">return</span> <span class="n">ids</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">dealiased_id</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">input_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dealiased_id</span><span class="p">))</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s2">&quot; --&gt; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="k">return</span> <span class="s2">&quot; --&gt; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
 
-<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p">)</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p">)</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">)&quot;</span>
 
-<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="p">(</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span>
 
-<span class="w">                </span><span class="s2">&quot;input_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;input_id&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;dealiased_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;dealiased_id&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;prefix_lower&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;prefix_lower&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;accession&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;standard_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;standard_id&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;short_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;short_id&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="p">)</span>
+            <span class="p">)</span>
 
-<span class="w">        </span><span class="p">)</span>
+        <span class="p">)</span>
 
-<span class="w">    </span><span class="nd">@cached_property</span>
+    <span class="nd">@cached_property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.csl_item</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CSL_Item</span>
+        <span class="kn">from</span> <span class="nn">.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">csl_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">get_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">csl_item</span><span class="p">,</span> <span class="n">CSL_Item</span><span class="p">):</span>
 
-<span class="w">            </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+            <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">standard_id</span><span class="p">)</span>
+        <span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">standard_id</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">csl_item</span>
+        <span class="k">return</span> <span class="n">csl_item</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">is_pandoc_xnos_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">log_case_warning</span><span class="p">:</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">False</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">is_pandoc_xnos_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_case_warning</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.handlers</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">_pandoc_xnos_prefixes</span>
+        <span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="n">_pandoc_xnos_prefixes</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_pandoc_xnos_prefixes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="ow">in</span> <span class="n">_pandoc_xnos_prefixes</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">True</span>
+            <span class="k">return</span> <span class="kc">True</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">log_case_warning</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_pandoc_xnos_prefixes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">log_case_warning</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span> <span class="ow">in</span> <span class="n">_pandoc_xnos_prefixes</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-<span class="w">                </span><span class="s2">&quot;pandoc-xnos prefixes should be all lowercase.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;pandoc-xnos prefixes should be all lowercase.</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-<span class="w">                </span><span class="sa">f</span><span class="s1">&#39;Should </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">input_id</span><span class="si">!r}</span><span class="s1"> use </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="si">!r}</span><span class="s1"> rather than &quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="si">!r}</span><span class="s1">&quot;?&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;Should </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">input_id</span><span class="si">!r}</span><span class="s1"> use </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="si">!r}</span><span class="s1"> rather than &quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="si">!r}</span><span class="s1">&quot;?&#39;</span>
 
-<span class="w">            </span><span class="p">)</span>
+            <span class="p">)</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">False</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">shorten_citekey</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">shorten_citekey</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Return a shortened citekey derived from the input citekey.</span>
+<span class="sd">    Return a shortened citekey derived from the input citekey.</span>
 
-<span class="s2">    The input citekey should be standardized prior to this function,</span>
+<span class="sd">    The input citekey should be standardized prior to this function,</span>
 
-<span class="s2">    since differences in the input citekey will result in different shortened citekeys.</span>
+<span class="sd">    since differences in the input citekey will result in different shortened citekeys.</span>
 
-<span class="s2">    Short citekeys are generated by converting the input citekey to a 6 byte hash,</span>
+<span class="sd">    Short citekeys are generated by converting the input citekey to a 6 byte hash,</span>
 
-<span class="s2">    and then converting this digest to a base62 ASCII str. Shortened</span>
+<span class="sd">    and then converting this digest to a base62 ASCII str. Shortened</span>
 
-<span class="s2">    citekeys consist of characters in the following ranges: 0-9, a-z and A-Z.</span>
+<span class="sd">    citekeys consist of characters in the following ranges: 0-9, a-z and A-Z.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+    <span class="kn">import</span> <span class="nn">hashlib</span>
 
-<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">base62</span>
+    <span class="kn">import</span> <span class="nn">base62</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">standard_citekey</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">as_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+    <span class="n">as_bytes</span> <span class="o">=</span> <span class="n">standard_citekey</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">blake_hash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hashlib</span><span class="o">.</span><span class="n">blake2b</span><span class="p">(</span><span class="n">as_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">digest_size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">blake_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">blake2b</span><span class="p">(</span><span class="n">as_bytes</span><span class="p">,</span> <span class="n">digest_size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">digest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blake_hash</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+    <span class="n">digest</span> <span class="o">=</span> <span class="n">blake_hash</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">short_citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">base62</span><span class="o">.</span><span class="n">encodebytes</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span>
+    <span class="n">short_citekey</span> <span class="o">=</span> <span class="n">base62</span><span class="o">.</span><span class="n">encodebytes</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">short_citekey</span>
+    <span class="k">return</span> <span class="n">short_citekey</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">citekey_to_csl_item</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">citekey_to_csl_item</span><span class="p">(</span>
 
-<span class="w">    </span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="w"> </span><span class="n">manual_refs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="n">log_level</span><span class="p">:</span><span class="w"> </span><span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="nb">int</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;WARNING&quot;</span>
+    <span class="n">citekey</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">manual_refs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_level</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;WARNING&quot;</span>
 
 <span class="p">):</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Generate a CSL_Item for the input citekey.</span>
+<span class="sd">    Generate a CSL_Item for the input citekey.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">__version__</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">manubot_version</span>
+    <span class="kn">from</span> <span class="nn">manubot</span> <span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">manubot_version</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">manual_refs</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">manual_refs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">manual_refs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+        <span class="n">manual_refs</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="w">    </span><span class="c1"># https://stackoverflow.com/a/35704430/4651668</span>
+    <span class="c1"># https://stackoverflow.com/a/35704430/4651668</span>
 
-<span class="w">    </span><span class="n">log_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logging</span><span class="o">.</span><span class="n">_checkLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
+    <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">_checkLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">CiteKey</span><span class="p">):</span>
 
-<span class="w">        </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+        <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">manual_refs</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span> <span class="ow">in</span> <span class="n">manual_refs</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">manual_refs</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">manual_refs</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">]</span>
 
-<span class="w">    </span><span class="k">try</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">csl_item</span>
+        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">csl_item</span>
 
-<span class="w">    </span><span class="k">except</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">error</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
 
-<span class="w">            </span><span class="n">log_level</span><span class="p">,</span>
+            <span class="n">log_level</span><span class="p">,</span>
 
-<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;Generating csl_item for </span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="si">!r}</span><span class="s2"> failed &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Generating csl_item for </span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="si">!r}</span><span class="s2"> failed &quot;</span>
 
-<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;due to a </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;due to a </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="p">)</span>
+        <span class="p">)</span>
 
-<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span><span class="w"> </span><span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
-<span class="w">    </span><span class="c1"># update csl_item with manubot generated metadata</span>
+    <span class="c1"># update csl_item with manubot generated metadata</span>
 
-<span class="w">    </span><span class="n">note_text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;This CSL Item was generated by Manubot v</span><span class="si">{</span><span class="n">manubot_version</span><span class="si">}</span><span class="s2"> from its persistent identifier (standard_id).&quot;</span>
+    <span class="n">note_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;This CSL Item was generated by Manubot v</span><span class="si">{</span><span class="n">manubot_version</span><span class="si">}</span><span class="s2"> from its persistent identifier (standard_id).&quot;</span>
 
-<span class="w">    </span><span class="n">note_dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">}</span>
+    <span class="n">note_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">}</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">note_text</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">note_text</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">(</span><span class="n">note_dict</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">(</span><span class="n">note_dict</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">short_id</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">short_id</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">prune</span><span class="o">=</span><span class="n">prune</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">prune</span><span class="o">=</span><span class="n">prune</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">csl_item</span>
+    <span class="k">return</span> <span class="n">csl_item</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">url_to_citekey</span><span class="p">(</span><span class="n">url</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">url_to_citekey</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Convert a HTTP(s) URL into a citekey.</span>
+<span class="sd">    Convert a HTTP(s) URL into a citekey.</span>
 
-<span class="s2">    For supported sources, convert from url citekey to an alternative source like doi.</span>
+<span class="sd">    For supported sources, convert from url citekey to an alternative source like doi.</span>
 
-<span class="s2">    If citekeys fail inspection, revert alternative sources to URLs.</span>
+<span class="sd">    If citekeys fail inspection, revert alternative sources to URLs.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">unquote</span><span class="p">,</span><span class="w"> </span><span class="n">urlparse</span>
+    <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">unquote</span><span class="p">,</span> <span class="n">urlparse</span>
 
-<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">None</span>
+    <span class="n">citekey</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="w">    </span><span class="n">parsed_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">domain_levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+    <span class="n">domain_levels</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;org&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;org&quot;</span><span class="p">]:</span>
 
-<span class="w">        </span><span class="c1"># DOI URLs</span>
+        <span class="c1"># DOI URLs</span>
 
-<span class="w">        </span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unquote</span><span class="p">(</span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))</span>
+        <span class="n">doi</span> <span class="o">=</span> <span class="n">unquote</span><span class="p">(</span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))</span>
 
-<span class="w">        </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;sci-hub&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;sci-hub&quot;</span><span class="p">:</span>
 
-<span class="w">        </span><span class="c1"># Sci-Hub domains</span>
+        <span class="c1"># Sci-Hub domains</span>
 
-<span class="w">        </span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">doi</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;biorxiv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;org&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;biorxiv&quot;</span><span class="p">,</span> <span class="s2">&quot;org&quot;</span><span class="p">]:</span>
 
-<span class="w">        </span><span class="c1"># bioRxiv URL to DOI. See https://git.io/Je9Hq</span>
+        <span class="c1"># bioRxiv URL to DOI. See https://git.io/Je9Hq</span>
 
-<span class="w">        </span><span class="n">match</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
 
-<span class="w">            </span><span class="sa">r</span><span class="s2">&quot;/(?P&lt;biorxiv_id&gt;([0-9]</span><span class="si">{4}</span><span class="s2">\.[0-9]</span><span class="si">{2}</span><span class="s2">\.[0-9]</span><span class="si">{2}</span><span class="s2">\.)?[0-9]{6,})&quot;</span><span class="p">,</span>
+            <span class="sa">r</span><span class="s2">&quot;/(?P&lt;biorxiv_id&gt;([0-9]</span><span class="si">{4}</span><span class="s2">\.[0-9]</span><span class="si">{2}</span><span class="s2">\.[0-9]</span><span class="si">{2}</span><span class="s2">\.)?[0-9]{6,})&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
 
-<span class="w">        </span><span class="p">)</span>
+        <span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">match</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;doi:10.1101/</span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;biorxiv_id&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;doi:10.1101/</span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;biorxiv_id&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">    </span><span class="n">is_ncbi_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;ncbi.nlm.nih.gov&quot;</span><span class="p">)</span>
+    <span class="n">is_ncbi_url</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;ncbi.nlm.nih.gov&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">is_ncbi_url</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/pubmed/&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">is_ncbi_url</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/pubmed/&quot;</span><span class="p">):</span>
 
-<span class="w">        </span><span class="c1"># PubMed URLs</span>
+        <span class="c1"># PubMed URLs</span>
 
-<span class="w">        </span><span class="k">try</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">pmid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">pmid</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
 
-<span class="w">            </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;pmid:</span><span class="si">{</span><span class="n">pmid</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;pmid:</span><span class="si">{</span><span class="n">pmid</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">IndexError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">pass</span>
+            <span class="k">pass</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">is_ncbi_url</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/pmc/&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">is_ncbi_url</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/pmc/&quot;</span><span class="p">):</span>
 
-<span class="w">        </span><span class="c1"># PubMed Central URLs</span>
+        <span class="c1"># PubMed Central URLs</span>
 
-<span class="w">        </span><span class="k">try</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">pmcid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">pmcid</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
 
-<span class="w">            </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;pmcid:</span><span class="si">{</span><span class="n">pmcid</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;pmcid:</span><span class="si">{</span><span class="n">pmcid</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">IndexError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">pass</span>
+            <span class="k">pass</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;wikidata&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;org&quot;</span><span class="p">]</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
+    <span class="k">if</span> <span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;wikidata&quot;</span><span class="p">,</span> <span class="s2">&quot;org&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
 
-<span class="w">        </span><span class="s2">&quot;/wiki/&quot;</span>
+        <span class="s2">&quot;/wiki/&quot;</span>
 
-<span class="w">    </span><span class="p">):</span>
+    <span class="p">):</span>
 
-<span class="w">        </span><span class="c1"># Wikidata URLs</span>
+        <span class="c1"># Wikidata URLs</span>
 
-<span class="w">        </span><span class="k">try</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">wikidata_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">wikidata_id</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
 
-<span class="w">            </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;wikidata:</span><span class="si">{</span><span class="n">wikidata_id</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;wikidata:</span><span class="si">{</span><span class="n">wikidata_id</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">IndexError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">pass</span>
+            <span class="k">pass</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;arxiv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;org&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;arxiv&quot;</span><span class="p">,</span> <span class="s2">&quot;org&quot;</span><span class="p">]:</span>
 
-<span class="w">        </span><span class="c1"># arXiv identifiers. See https://arxiv.org/help/arxiv_identifier</span>
+        <span class="c1"># arXiv identifiers. See https://arxiv.org/help/arxiv_identifier</span>
 
-<span class="w">        </span><span class="k">try</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">arxiv_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">maxsplit</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">arxiv_id</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">arxiv_id</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.pdf&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">arxiv_id</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.pdf&quot;</span><span class="p">):</span>
 
-<span class="w">                </span><span class="n">arxiv_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arxiv_id</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
+                <span class="n">arxiv_id</span> <span class="o">=</span> <span class="n">arxiv_id</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
 
-<span class="w">            </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;arxiv:</span><span class="si">{</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;arxiv:</span><span class="si">{</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">IndexError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">pass</span>
+            <span class="k">pass</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">citekey</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">citekey</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;url:</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;url:</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">citekey</span>
+    <span class="k">return</span> <span class="n">citekey</span>
 </code></pre></div>
 
 </details>
@@ -2465,71 +2465,71 @@
 <p>Generate a CSL_Item for the input citekey.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">citekey_to_csl_item</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">citekey_to_csl_item</span><span class="p">(</span>
 
-<span class="w">    </span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="w"> </span><span class="n">manual_refs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="w"> </span><span class="n">log_level</span><span class="p">:</span><span class="w"> </span><span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="nb">int</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;WARNING&quot;</span>
+    <span class="n">citekey</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">manual_refs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_level</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;WARNING&quot;</span>
 
 <span class="p">):</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Generate a CSL_Item for the input citekey.</span>
+<span class="sd">    Generate a CSL_Item for the input citekey.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">__version__</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">manubot_version</span>
+    <span class="kn">from</span> <span class="nn">manubot</span> <span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">manubot_version</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">manual_refs</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">manual_refs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">manual_refs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+        <span class="n">manual_refs</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="w">    </span><span class="c1"># https://stackoverflow.com/a/35704430/4651668</span>
+    <span class="c1"># https://stackoverflow.com/a/35704430/4651668</span>
 
-<span class="w">    </span><span class="n">log_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logging</span><span class="o">.</span><span class="n">_checkLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
+    <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">_checkLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">CiteKey</span><span class="p">):</span>
 
-<span class="w">        </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+        <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">manual_refs</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span> <span class="ow">in</span> <span class="n">manual_refs</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">manual_refs</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">manual_refs</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">]</span>
 
-<span class="w">    </span><span class="k">try</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">csl_item</span>
+        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">citekey</span><span class="o">.</span><span class="n">csl_item</span>
 
-<span class="w">    </span><span class="k">except</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">error</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
 
-<span class="w">            </span><span class="n">log_level</span><span class="p">,</span>
+            <span class="n">log_level</span><span class="p">,</span>
 
-<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;Generating csl_item for </span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="si">!r}</span><span class="s2"> failed &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Generating csl_item for </span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="si">!r}</span><span class="s2"> failed &quot;</span>
 
-<span class="w">            </span><span class="sa">f</span><span class="s2">&quot;due to a </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;due to a </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
 
-<span class="w">        </span><span class="p">)</span>
+        <span class="p">)</span>
 
-<span class="w">        </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span><span class="w"> </span><span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
-<span class="w">    </span><span class="c1"># update csl_item with manubot generated metadata</span>
+    <span class="c1"># update csl_item with manubot generated metadata</span>
 
-<span class="w">    </span><span class="n">note_text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;This CSL Item was generated by Manubot v</span><span class="si">{</span><span class="n">manubot_version</span><span class="si">}</span><span class="s2"> from its persistent identifier (standard_id).&quot;</span>
+    <span class="n">note_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;This CSL Item was generated by Manubot v</span><span class="si">{</span><span class="n">manubot_version</span><span class="si">}</span><span class="s2"> from its persistent identifier (standard_id).&quot;</span>
 
-<span class="w">    </span><span class="n">note_dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">}</span>
+    <span class="n">note_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;standard_id&quot;</span><span class="p">:</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_id</span><span class="p">}</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">note_text</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_text</span><span class="p">(</span><span class="n">note_text</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">(</span><span class="n">note_dict</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">note_append_dict</span><span class="p">(</span><span class="n">note_dict</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">short_id</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">short_id</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">prune</span><span class="o">=</span><span class="n">prune</span><span class="p">)</span>
+    <span class="n">csl_item</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">prune</span><span class="o">=</span><span class="n">prune</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">csl_item</span>
+    <span class="k">return</span> <span class="n">csl_item</span>
 </code></pre></div>
 
 </details>
@@ -2547,39 +2547,39 @@ and then converting this digest to a base62 ASCII str. Shortened
 citekeys consist of characters in the following ranges: 0-9, a-z and A-Z.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">shorten_citekey</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">shorten_citekey</span><span class="p">(</span><span class="n">standard_citekey</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Return a shortened citekey derived from the input citekey.</span>
+<span class="sd">    Return a shortened citekey derived from the input citekey.</span>
 
-<span class="s2">    The input citekey should be standardized prior to this function,</span>
+<span class="sd">    The input citekey should be standardized prior to this function,</span>
 
-<span class="s2">    since differences in the input citekey will result in different shortened citekeys.</span>
+<span class="sd">    since differences in the input citekey will result in different shortened citekeys.</span>
 
-<span class="s2">    Short citekeys are generated by converting the input citekey to a 6 byte hash,</span>
+<span class="sd">    Short citekeys are generated by converting the input citekey to a 6 byte hash,</span>
 
-<span class="s2">    and then converting this digest to a base62 ASCII str. Shortened</span>
+<span class="sd">    and then converting this digest to a base62 ASCII str. Shortened</span>
 
-<span class="s2">    citekeys consist of characters in the following ranges: 0-9, a-z and A-Z.</span>
+<span class="sd">    citekeys consist of characters in the following ranges: 0-9, a-z and A-Z.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+    <span class="kn">import</span> <span class="nn">hashlib</span>
 
-<span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nn">base62</span>
+    <span class="kn">import</span> <span class="nn">base62</span>
 
-<span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">standard_citekey</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">as_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">standard_citekey</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+    <span class="n">as_bytes</span> <span class="o">=</span> <span class="n">standard_citekey</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">blake_hash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hashlib</span><span class="o">.</span><span class="n">blake2b</span><span class="p">(</span><span class="n">as_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">digest_size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">blake_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">blake2b</span><span class="p">(</span><span class="n">as_bytes</span><span class="p">,</span> <span class="n">digest_size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">digest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blake_hash</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+    <span class="n">digest</span> <span class="o">=</span> <span class="n">blake_hash</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">short_citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">base62</span><span class="o">.</span><span class="n">encodebytes</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span>
+    <span class="n">short_citekey</span> <span class="o">=</span> <span class="n">base62</span><span class="o">.</span><span class="n">encodebytes</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">short_citekey</span>
+    <span class="k">return</span> <span class="n">short_citekey</span>
 </code></pre></div>
 
 </details>
@@ -2594,129 +2594,129 @@ citekeys consist of characters in the following ranges: 0-9, a-z and A-Z.</p>
 If citekeys fail inspection, revert alternative sources to URLs.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">url_to_citekey</span><span class="p">(</span><span class="n">url</span><span class="p">:</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">str</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">url_to_citekey</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    Convert a HTTP(s) URL into a citekey.</span>
+<span class="sd">    Convert a HTTP(s) URL into a citekey.</span>
 
-<span class="s2">    For supported sources, convert from url citekey to an alternative source like doi.</span>
+<span class="sd">    For supported sources, convert from url citekey to an alternative source like doi.</span>
 
-<span class="s2">    If citekeys fail inspection, revert alternative sources to URLs.</span>
+<span class="sd">    If citekeys fail inspection, revert alternative sources to URLs.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">unquote</span><span class="p">,</span><span class="w"> </span><span class="n">urlparse</span>
+    <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">unquote</span><span class="p">,</span> <span class="n">urlparse</span>
 
-<span class="w">    </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">None</span>
+    <span class="n">citekey</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="w">    </span><span class="n">parsed_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">domain_levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+    <span class="n">domain_levels</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;org&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;org&quot;</span><span class="p">]:</span>
 
-<span class="w">        </span><span class="c1"># DOI URLs</span>
+        <span class="c1"># DOI URLs</span>
 
-<span class="w">        </span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unquote</span><span class="p">(</span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))</span>
+        <span class="n">doi</span> <span class="o">=</span> <span class="n">unquote</span><span class="p">(</span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))</span>
 
-<span class="w">        </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;sci-hub&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;sci-hub&quot;</span><span class="p">:</span>
 
-<span class="w">        </span><span class="c1"># Sci-Hub domains</span>
+        <span class="c1"># Sci-Hub domains</span>
 
-<span class="w">        </span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">doi</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;biorxiv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;org&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;biorxiv&quot;</span><span class="p">,</span> <span class="s2">&quot;org&quot;</span><span class="p">]:</span>
 
-<span class="w">        </span><span class="c1"># bioRxiv URL to DOI. See https://git.io/Je9Hq</span>
+        <span class="c1"># bioRxiv URL to DOI. See https://git.io/Je9Hq</span>
 
-<span class="w">        </span><span class="n">match</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
 
-<span class="w">            </span><span class="sa">r</span><span class="s2">&quot;/(?P&lt;biorxiv_id&gt;([0-9]</span><span class="si">{4}</span><span class="s2">\.[0-9]</span><span class="si">{2}</span><span class="s2">\.[0-9]</span><span class="si">{2}</span><span class="s2">\.)?[0-9]{6,})&quot;</span><span class="p">,</span>
+            <span class="sa">r</span><span class="s2">&quot;/(?P&lt;biorxiv_id&gt;([0-9]</span><span class="si">{4}</span><span class="s2">\.[0-9]</span><span class="si">{2}</span><span class="s2">\.[0-9]</span><span class="si">{2}</span><span class="s2">\.)?[0-9]{6,})&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
 
-<span class="w">        </span><span class="p">)</span>
+        <span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">match</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;doi:10.1101/</span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;biorxiv_id&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;doi:10.1101/</span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;biorxiv_id&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">    </span><span class="n">is_ncbi_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;ncbi.nlm.nih.gov&quot;</span><span class="p">)</span>
+    <span class="n">is_ncbi_url</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;ncbi.nlm.nih.gov&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">is_ncbi_url</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/pubmed/&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">is_ncbi_url</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/pubmed/&quot;</span><span class="p">):</span>
 
-<span class="w">        </span><span class="c1"># PubMed URLs</span>
+        <span class="c1"># PubMed URLs</span>
 
-<span class="w">        </span><span class="k">try</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">pmid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">pmid</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
 
-<span class="w">            </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;pmid:</span><span class="si">{</span><span class="n">pmid</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;pmid:</span><span class="si">{</span><span class="n">pmid</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">IndexError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">pass</span>
+            <span class="k">pass</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">is_ncbi_url</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/pmc/&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">is_ncbi_url</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/pmc/&quot;</span><span class="p">):</span>
 
-<span class="w">        </span><span class="c1"># PubMed Central URLs</span>
+        <span class="c1"># PubMed Central URLs</span>
 
-<span class="w">        </span><span class="k">try</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">pmcid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">pmcid</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
 
-<span class="w">            </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;pmcid:</span><span class="si">{</span><span class="n">pmcid</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;pmcid:</span><span class="si">{</span><span class="n">pmcid</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">IndexError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">pass</span>
+            <span class="k">pass</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;wikidata&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;org&quot;</span><span class="p">]</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
+    <span class="k">if</span> <span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;wikidata&quot;</span><span class="p">,</span> <span class="s2">&quot;org&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
 
-<span class="w">        </span><span class="s2">&quot;/wiki/&quot;</span>
+        <span class="s2">&quot;/wiki/&quot;</span>
 
-<span class="w">    </span><span class="p">):</span>
+    <span class="p">):</span>
 
-<span class="w">        </span><span class="c1"># Wikidata URLs</span>
+        <span class="c1"># Wikidata URLs</span>
 
-<span class="w">        </span><span class="k">try</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">wikidata_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">wikidata_id</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
 
-<span class="w">            </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;wikidata:</span><span class="si">{</span><span class="n">wikidata_id</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;wikidata:</span><span class="si">{</span><span class="n">wikidata_id</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">IndexError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">pass</span>
+            <span class="k">pass</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;arxiv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;org&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">domain_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;arxiv&quot;</span><span class="p">,</span> <span class="s2">&quot;org&quot;</span><span class="p">]:</span>
 
-<span class="w">        </span><span class="c1"># arXiv identifiers. See https://arxiv.org/help/arxiv_identifier</span>
+        <span class="c1"># arXiv identifiers. See https://arxiv.org/help/arxiv_identifier</span>
 
-<span class="w">        </span><span class="k">try</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">arxiv_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">maxsplit</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">arxiv_id</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">arxiv_id</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.pdf&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">arxiv_id</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.pdf&quot;</span><span class="p">):</span>
 
-<span class="w">                </span><span class="n">arxiv_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arxiv_id</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
+                <span class="n">arxiv_id</span> <span class="o">=</span> <span class="n">arxiv_id</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
 
-<span class="w">            </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;arxiv:</span><span class="si">{</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;arxiv:</span><span class="si">{</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">        </span><span class="k">except</span><span class="w"> </span><span class="n">IndexError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">pass</span>
+            <span class="k">pass</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">citekey</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">citekey</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="w">        </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;url:</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">citekey</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;url:</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">citekey</span>
+    <span class="k">return</span> <span class="n">citekey</span>
 </code></pre></div>
 
 </details>
@@ -3254,25 +3254,25 @@ Otherwise, returns a string describing the problem.</p>
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">is_pandoc_xnos_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">log_case_warning</span><span class="p">:</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">False</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">bool</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">is_pandoc_xnos_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_case_warning</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.handlers</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">_pandoc_xnos_prefixes</span>
+        <span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="n">_pandoc_xnos_prefixes</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_pandoc_xnos_prefixes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="ow">in</span> <span class="n">_pandoc_xnos_prefixes</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">True</span>
+            <span class="k">return</span> <span class="kc">True</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">log_case_warning</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_pandoc_xnos_prefixes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">log_case_warning</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span> <span class="ow">in</span> <span class="n">_pandoc_xnos_prefixes</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
-<span class="w">                </span><span class="s2">&quot;pandoc-xnos prefixes should be all lowercase.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;pandoc-xnos prefixes should be all lowercase.</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-<span class="w">                </span><span class="sa">f</span><span class="s1">&#39;Should </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">input_id</span><span class="si">!r}</span><span class="s1"> use </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="si">!r}</span><span class="s1"> rather than &quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="si">!r}</span><span class="s1">&quot;?&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;Should </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">input_id</span><span class="si">!r}</span><span class="s1"> use </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_lower</span><span class="si">!r}</span><span class="s1"> rather than &quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="si">!r}</span><span class="s1">&quot;?&#39;</span>
 
-<span class="w">            </span><span class="p">)</span>
+            <span class="p">)</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div>
 
 </details>

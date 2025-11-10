@@ -2250,9 +2250,9 @@ supported by Unpaywall, such as arXiv IDs.</p>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">abc</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2262,427 +2262,427 @@ supported by Unpaywall, such as arXiv IDs.</p>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">open_licenses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;cc0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;cc-by&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;cc-by-sa&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;pd&quot;</span><span class="p">}</span>
+<span class="n">open_licenses</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cc0&quot;</span><span class="p">,</span> <span class="s2">&quot;cc-by&quot;</span><span class="p">,</span> <span class="s2">&quot;cc-by-sa&quot;</span><span class="p">,</span> <span class="s2">&quot;pd&quot;</span><span class="p">}</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">Unpaywall</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">Unpaywall</span><span class="p">:</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    A class to handle open access locations in the Unpaywall data format.</span>
+<span class="sd">    A class to handle open access locations in the Unpaywall data format.</span>
 
-<span class="s2">    Create new Unpaywall objects using the `from_csl_item` and `from_citekey` methods,</span>
+<span class="sd">    Create new Unpaywall objects using the `from_csl_item` and `from_citekey` methods,</span>
 
-<span class="s2">    or by using __init__ of a subclass like `Unpaywall_DOI`.</span>
+<span class="sd">    or by using __init__ of a subclass like `Unpaywall_DOI`.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">None</span>
+    <span class="n">csl_item</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="w">    </span><span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Set `self.oa_locations`, which is a list of `Unpaywall_Location` objects.</span>
+<span class="sd">        Set `self.oa_locations`, which is a list of `Unpaywall_Location` objects.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">best_openly_licensed_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s2">&quot;Unpaywall_Location&quot;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">best_openly_licensed_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Unpaywall_Location&quot;</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">location</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">location</span><span class="o">.</span><span class="n">has_openly_licensed_pdf</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">location</span><span class="o">.</span><span class="n">has_openly_licensed_pdf</span><span class="p">:</span>
 
-<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">location</span>
+                <span class="k">return</span> <span class="n">location</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">best_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s2">&quot;Unpaywall_Location&quot;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">best_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Unpaywall_Location&quot;</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">location</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">location</span><span class="o">.</span><span class="n">has_pdf</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">location</span><span class="o">.</span><span class="n">has_pdf</span><span class="p">:</span>
 
-<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">location</span>
+                <span class="k">return</span> <span class="n">location</span>
 
-<span class="w">    </span><span class="nd">@staticmethod</span>
+    <span class="nd">@staticmethod</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">from_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">csl_item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">csl_item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Create an Unpaywall object for `citekey`.</span>
+<span class="sd">        Create an Unpaywall object for `citekey`.</span>
 
-<span class="s2">        `csl_item` is an optional field that can avoid an</span>
+<span class="sd">        `csl_item` is an optional field that can avoid an</span>
 
-<span class="s2">        external web request to generate to a new CSL Item.</span>
+<span class="sd">        external web request to generate to a new CSL Item.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.citekey</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CiteKey</span>
+        <span class="kn">from</span> <span class="nn">.citekey</span> <span class="kn">import</span> <span class="n">CiteKey</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
-<span class="w">            </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">CiteKey</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="s2">&quot;citekey must be a str or CiteKey&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;citekey must be a str or CiteKey&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">source_to_unpaywaller</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span> <span class="ow">in</span> <span class="n">source_to_unpaywaller</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">unpaywaller</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="p">]</span>
+            <span class="n">unpaywaller</span> <span class="o">=</span> <span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="p">]</span>
 
-<span class="w">            </span><span class="n">unpaywall</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unpaywaller</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">,</span><span class="w"> </span><span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">unpaywaller</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">else</span><span class="p">:</span>
+        <span class="k">else</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
 
-<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;Cannot Unpaywall </span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">input_id</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot Unpaywall </span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">input_id</span><span class="si">}</span><span class="s2">. &quot;</span>
 
-<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;Supported citations sources are </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">source_to_unpaywaller</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Supported citations sources are </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">source_to_unpaywaller</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
 
-<span class="w">                </span><span class="s2">&quot;Received </span><span class="si">{citekey.standard_prefix!r}</span><span class="s2">.&quot;</span>
+                <span class="s2">&quot;Received </span><span class="si">{citekey.standard_prefix!r}</span><span class="s2">.&quot;</span>
 
-<span class="w">            </span><span class="p">)</span>
+            <span class="p">)</span>
 
-<span class="w">        </span><span class="n">unpaywall</span><span class="o">.</span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span>
+        <span class="n">unpaywall</span><span class="o">.</span><span class="n">csl_item</span> <span class="o">=</span> <span class="n">csl_item</span>
 
-<span class="w">        </span><span class="n">unpaywall</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
+        <span class="n">unpaywall</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">unpaywall</span>
+        <span class="k">return</span> <span class="n">unpaywall</span>
 
-<span class="w">    </span><span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">from_csl_item</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="w"> </span><span class="n">csl_item</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_csl_item</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">csl_item</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Create an Unpaywall object for `csl_item`.</span>
+<span class="sd">        Create an Unpaywall object for `csl_item`.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.csl_item</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CSL_Item</span>
+        <span class="kn">from</span> <span class="nn">.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">)</span>
+        <span class="n">doi</span> <span class="o">=</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">doi</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">doi</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="o">.</span><span class="n">infer_id</span><span class="p">()</span>
+        <span class="n">csl_item</span><span class="o">.</span><span class="n">infer_id</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span><span class="w"> </span><span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">Unpaywall_DOI</span><span class="p">(</span><span class="n">Unpaywall</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Unpaywall_DOI</span><span class="p">(</span><span class="n">Unpaywall</span><span class="p">):</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    From https://unpaywall.org/data-format:</span>
+<span class="sd">    From https://unpaywall.org/data-format:</span>
 
-<span class="s2">    &gt; The DOI object is more or less a row in our main database...</span>
+<span class="sd">    &gt; The DOI object is more or less a row in our main database...</span>
 
-<span class="s2">    it&#39;s everything we know about a given DOI-assigned resource,</span>
+<span class="sd">    it&#39;s everything we know about a given DOI-assigned resource,</span>
 
-<span class="s2">    including metadata about the resource itself,</span>
+<span class="sd">    including metadata about the resource itself,</span>
 
-<span class="s2">    and information about its OA status.</span>
+<span class="sd">    and information about its OA status.</span>
 
-<span class="s2">    It includes a list of zero or more OA Location Objects,</span>
+<span class="sd">    It includes a list of zero or more OA Location Objects,</span>
 
-<span class="s2">    as well as a `best_oa_location` property that&#39;s probably the OA Location you&#39;ll want to use.</span>
+<span class="sd">    as well as a `best_oa_location` property that&#39;s probably the OA Location you&#39;ll want to use.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">doi</span><span class="p">,</span><span class="w"> </span><span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doi</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doi</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">doi</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">set_oa_locations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">set_oa_locations</span><span class="p">:</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.util</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">contact_email</span>
+        <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">contact_email</span>
 
-<span class="w">        </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://api.unpaywall.org/v2/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://api.unpaywall.org/v2/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">        </span><span class="n">params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">contact_email</span><span class="p">}</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">contact_email</span><span class="p">}</span>
 
-<span class="w">        </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span> <span class="o">=</span> <span class="p">[</span>
 
-<span class="w">            </span><span class="n">Unpaywall_Location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+            <span class="n">Unpaywall_Location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
 
-<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="n">location</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;oa_locations&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[])</span>
+            <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;oa_locations&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
-<span class="w">        </span><span class="p">]</span>
+        <span class="p">]</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">Unpaywall_arXiv</span><span class="p">(</span><span class="n">Unpaywall</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Unpaywall_arXiv</span><span class="p">(</span><span class="n">Unpaywall</span><span class="p">):</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">arxiv_id</span><span class="p">,</span><span class="w"> </span><span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="w"> </span><span class="n">use_doi</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arxiv_id</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_doi</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.arxiv</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">split_arxiv_id_version</span>
+        <span class="kn">from</span> <span class="nn">.arxiv</span> <span class="kn">import</span> <span class="n">split_arxiv_id_version</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arxiv_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span> <span class="o">=</span> <span class="n">arxiv_id</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id_latest</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">split_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id_latest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id_version</span> <span class="o">=</span> <span class="n">split_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">)</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">use_doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">use_doi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_doi</span> <span class="o">=</span> <span class="n">use_doi</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">set_oa_locations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">set_oa_locations</span><span class="p">:</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.arxiv</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">get_arxiv_csl_item</span>
+        <span class="kn">from</span> <span class="nn">.arxiv</span> <span class="kn">import</span> <span class="n">get_arxiv_csl_item</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="p">:</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arxiv_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_arxiv_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">)</span>
+        <span class="n">doi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">use_doi</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">doi</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_doi</span> <span class="ow">and</span> <span class="n">doi</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">unpaywall_doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Unpaywall_DOI</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+            <span class="n">unpaywall_doi</span> <span class="o">=</span> <span class="n">Unpaywall_DOI</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unpaywall_doi</span><span class="o">.</span><span class="n">doi</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">unpaywall_doi</span><span class="o">.</span><span class="n">doi</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unpaywall_doi</span><span class="o">.</span><span class="n">oa_locations</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span> <span class="o">=</span> <span class="n">unpaywall_doi</span><span class="o">.</span><span class="n">oa_locations</span>
 
-<span class="w">            </span><span class="k">return</span>
+            <span class="k">return</span>
 
-<span class="w">        </span><span class="n">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">location_from_arvix_id</span><span class="p">()</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_from_arvix_id</span><span class="p">()</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">location</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span> <span class="o">=</span> <span class="p">[</span><span class="n">location</span><span class="p">]</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">location_from_arvix_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">location_from_arvix_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+        <span class="kn">import</span> <span class="nn">datetime</span>
 
-<span class="w">        </span><span class="n">url_for_pdf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://arxiv.org/pdf/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">.pdf&quot;</span>
+        <span class="n">url_for_pdf</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://arxiv.org/pdf/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">.pdf&quot;</span>
 
-<span class="w">        </span><span class="n">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Unpaywall_Location</span><span class="p">(</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">Unpaywall_Location</span><span class="p">(</span>
 
-<span class="w">            </span><span class="p">{</span>
+            <span class="p">{</span>
 
-<span class="w">                </span><span class="s2">&quot;endpoint_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;endpoint_id&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;evidence&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;oa repository&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;evidence&quot;</span><span class="p">:</span> <span class="s2">&quot;oa repository&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;host_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;repository&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;host_type&quot;</span><span class="p">:</span> <span class="s2">&quot;repository&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;is_best&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">True</span><span class="p">,</span>
+                <span class="s2">&quot;is_best&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;license&quot;</span><span class="p">:</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">get_license</span><span class="p">(),</span>
+                <span class="s2">&quot;license&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_license</span><span class="p">(),</span>
 
-<span class="w">                </span><span class="s2">&quot;pmh_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;oai:arXiv.org:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id_latest</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;pmh_id&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;oai:arXiv.org:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id_latest</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;repository_institution&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Cornell University - arXiv&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;repository_institution&quot;</span><span class="p">:</span> <span class="s2">&quot;Cornell University - arXiv&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;updated&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+                <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
 
-<span class="w">                </span><span class="s2">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">url_for_pdf</span><span class="p">,</span>
+                <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">url_for_pdf</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;url_for_landing_page&quot;</span><span class="p">:</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://arxiv.org/abs/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;url_for_landing_page&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;https://arxiv.org/abs/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;url_for_pdf&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">url_for_pdf</span><span class="p">,</span>
+                <span class="s2">&quot;url_for_pdf&quot;</span><span class="p">:</span> <span class="n">url_for_pdf</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;submittedVersion&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;submittedVersion&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="p">}</span>
+            <span class="p">}</span>
 
-<span class="w">        </span><span class="p">)</span>
+        <span class="p">)</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">location</span>
+        <span class="k">return</span> <span class="n">location</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">get_license</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_license</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Return license using choices from the Unpaywall data format.</span>
+<span class="sd">        Return license using choices from the Unpaywall data format.</span>
 
-<span class="s2">        Looks for license metadata in the CSL Item.</span>
+<span class="sd">        Looks for license metadata in the CSL Item.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="n">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;license&quot;</span><span class="p">)</span>
+        <span class="n">license</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;license&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">license</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">license</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span>
+            <span class="k">return</span>
 
-<span class="w">        </span><span class="c1"># Example licenses from https://arxiv.org/help/license</span>
+        <span class="c1"># Example licenses from https://arxiv.org/help/license</span>
 
-<span class="w">        </span><span class="c1"># http://creativecommons.org/publicdomain/zero/1.0/</span>
+        <span class="c1"># http://creativecommons.org/publicdomain/zero/1.0/</span>
 
-<span class="w">        </span><span class="c1"># http://creativecommons.org/licenses/by/4.0/</span>
+        <span class="c1"># http://creativecommons.org/licenses/by/4.0/</span>
 
-<span class="w">        </span><span class="c1"># http://creativecommons.org/licenses/by-sa/4.0/</span>
+        <span class="c1"># http://creativecommons.org/licenses/by-sa/4.0/</span>
 
-<span class="w">        </span><span class="c1"># http://creativecommons.org/licenses/by-nc-sa/4.0/</span>
+        <span class="c1"># http://creativecommons.org/licenses/by-nc-sa/4.0/</span>
 
-<span class="w">        </span><span class="c1"># http://arxiv.org/licenses/nonexclusive-distrib/1.0/license.html</span>
+        <span class="c1"># http://arxiv.org/licenses/nonexclusive-distrib/1.0/license.html</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">urlparse</span>
+        <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
 
-<span class="w">        </span><span class="n">parsed_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">urlparse</span><span class="p">(</span><span class="n">license</span><span class="p">)</span>
+        <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">license</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">return</span>
+            <span class="k">return</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;creativecommons.org&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;creativecommons.org&quot;</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">try</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
 
-<span class="w">                </span><span class="n">abbrev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+                <span class="n">abbrev</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
 
-<span class="w">            </span><span class="k">except</span><span class="w"> </span><span class="n">IndexError</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
 
-<span class="w">                </span><span class="k">return</span>
+                <span class="k">return</span>
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">abbrev</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;zero&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">abbrev</span> <span class="o">==</span> <span class="s2">&quot;zero&quot;</span><span class="p">:</span>
 
-<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="s2">&quot;cc0&quot;</span>
+                <span class="k">return</span> <span class="s2">&quot;cc0&quot;</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;cc-</span><span class="si">{</span><span class="n">abbrev</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;cc-</span><span class="si">{</span><span class="n">abbrev</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="n">source_to_unpaywaller</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="n">source_to_unpaywaller</span> <span class="o">=</span> <span class="p">{</span>
 
-<span class="w">    </span><span class="s2">&quot;doi&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">Unpaywall_DOI</span><span class="p">,</span>
+    <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="n">Unpaywall_DOI</span><span class="p">,</span>
 
-<span class="w">    </span><span class="s2">&quot;arxiv&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">Unpaywall_arXiv</span><span class="p">,</span>
+    <span class="s2">&quot;arxiv&quot;</span><span class="p">:</span> <span class="n">Unpaywall_arXiv</span><span class="p">,</span>
 
 <span class="p">}</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">Unpaywall_Location</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Unpaywall_Location</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    From https://unpaywall.org/data-format</span>
+<span class="sd">    From https://unpaywall.org/data-format</span>
 
-<span class="s2">    &gt; The OA Location object describes particular place where we found a given OA article.</span>
+<span class="sd">    &gt; The OA Location object describes particular place where we found a given OA article.</span>
 
-<span class="s2">    The same article is often available from multiple locations,</span>
+<span class="sd">    The same article is often available from multiple locations,</span>
 
-<span class="s2">    and there may be differences in format, version, and license depending on the location;</span>
+<span class="sd">    and there may be differences in format, version, and license depending on the location;</span>
 
-<span class="s2">    the OA Location object describes these key attributes.</span>
+<span class="sd">    the OA Location object describes these key attributes.</span>
 
-<span class="s2">    An OA Location Object is always a Child of a DOI Object.</span>
+<span class="sd">    An OA Location Object is always a Child of a DOI Object.</span>
 
-<span class="s2">    Example oa_locations from the Unpaywall API are:</span>
+<span class="sd">    Example oa_locations from the Unpaywall API are:</span>
 
-<span class="s2">    ```json</span>
+<span class="sd">    ```json</span>
 
-<span class="s2">    {</span>
+<span class="sd">    {</span>
 
-<span class="s2">        &quot;endpoint_id&quot;: null,</span>
+<span class="sd">        &quot;endpoint_id&quot;: null,</span>
 
-<span class="s2">        &quot;evidence&quot;: &quot;open (via page says license)&quot;,</span>
+<span class="sd">        &quot;evidence&quot;: &quot;open (via page says license)&quot;,</span>
 
-<span class="s2">        &quot;host_type&quot;: &quot;publisher&quot;,</span>
+<span class="sd">        &quot;host_type&quot;: &quot;publisher&quot;,</span>
 
-<span class="s2">        &quot;is_best&quot;: true,</span>
+<span class="sd">        &quot;is_best&quot;: true,</span>
 
-<span class="s2">        &quot;license&quot;: &quot;cc-by&quot;,</span>
+<span class="sd">        &quot;license&quot;: &quot;cc-by&quot;,</span>
 
-<span class="s2">        &quot;pmh_id&quot;: null,</span>
+<span class="sd">        &quot;pmh_id&quot;: null,</span>
 
-<span class="s2">        &quot;repository_institution&quot;: null,</span>
+<span class="sd">        &quot;repository_institution&quot;: null,</span>
 
-<span class="s2">        &quot;updated&quot;: &quot;2020-01-19T08:55:45.548214&quot;,</span>
+<span class="sd">        &quot;updated&quot;: &quot;2020-01-19T08:55:45.548214&quot;,</span>
 
-<span class="s2">        &quot;url&quot;: &quot;https://journals.plos.org/ploscompbiol/article/file?id=10.1371/journal.pcbi.1007250&amp;type=printable&quot;,</span>
+<span class="sd">        &quot;url&quot;: &quot;https://journals.plos.org/ploscompbiol/article/file?id=10.1371/journal.pcbi.1007250&amp;type=printable&quot;,</span>
 
-<span class="s2">        &quot;url_for_landing_page&quot;: &quot;https://doi.org/10.1371/journal.pcbi.1007250&quot;,</span>
+<span class="sd">        &quot;url_for_landing_page&quot;: &quot;https://doi.org/10.1371/journal.pcbi.1007250&quot;,</span>
 
-<span class="s2">        &quot;url_for_pdf&quot;: &quot;https://journals.plos.org/ploscompbiol/article/file?id=10.1371/journal.pcbi.1007250&amp;type=printable&quot;,</span>
+<span class="sd">        &quot;url_for_pdf&quot;: &quot;https://journals.plos.org/ploscompbiol/article/file?id=10.1371/journal.pcbi.1007250&amp;type=printable&quot;,</span>
 
-<span class="s2">        &quot;version&quot;: &quot;publishedVersion&quot;</span>
+<span class="sd">        &quot;version&quot;: &quot;publishedVersion&quot;</span>
 
-<span class="s2">    },</span>
+<span class="sd">    },</span>
 
-<span class="s2">    {</span>
+<span class="sd">    {</span>
 
-<span class="s2">        &quot;endpoint_id&quot;: &quot;ca8f8d56758a80a4f86&quot;,</span>
+<span class="sd">        &quot;endpoint_id&quot;: &quot;ca8f8d56758a80a4f86&quot;,</span>
 
-<span class="s2">        &quot;evidence&quot;: &quot;oa repository (via OAI-PMH doi match)&quot;,</span>
+<span class="sd">        &quot;evidence&quot;: &quot;oa repository (via OAI-PMH doi match)&quot;,</span>
 
-<span class="s2">        &quot;host_type&quot;: &quot;repository&quot;,</span>
+<span class="sd">        &quot;host_type&quot;: &quot;repository&quot;,</span>
 
-<span class="s2">        &quot;is_best&quot;: true,</span>
+<span class="sd">        &quot;is_best&quot;: true,</span>
 
-<span class="s2">        &quot;license&quot;: null,</span>
+<span class="sd">        &quot;license&quot;: null,</span>
 
-<span class="s2">        &quot;pmh_id&quot;: &quot;oai:arXiv.org:1806.05726&quot;,</span>
+<span class="sd">        &quot;pmh_id&quot;: &quot;oai:arXiv.org:1806.05726&quot;,</span>
 
-<span class="s2">        &quot;repository_institution&quot;: &quot;Cornell University - arXiv&quot;,</span>
+<span class="sd">        &quot;repository_institution&quot;: &quot;Cornell University - arXiv&quot;,</span>
 
-<span class="s2">        &quot;updated&quot;: &quot;2019-11-01T00:28:16.784912&quot;,</span>
+<span class="sd">        &quot;updated&quot;: &quot;2019-11-01T00:28:16.784912&quot;,</span>
 
-<span class="s2">        &quot;url&quot;: &quot;http://arxiv.org/pdf/1806.05726&quot;,</span>
+<span class="sd">        &quot;url&quot;: &quot;http://arxiv.org/pdf/1806.05726&quot;,</span>
 
-<span class="s2">        &quot;url_for_landing_page&quot;: &quot;http://arxiv.org/abs/1806.05726&quot;,</span>
+<span class="sd">        &quot;url_for_landing_page&quot;: &quot;http://arxiv.org/abs/1806.05726&quot;,</span>
 
-<span class="s2">        &quot;url_for_pdf&quot;: &quot;http://arxiv.org/pdf/1806.05726&quot;,</span>
+<span class="sd">        &quot;url_for_pdf&quot;: &quot;http://arxiv.org/pdf/1806.05726&quot;,</span>
 
-<span class="s2">        &quot;version&quot;: &quot;submittedVersion&quot;</span>
+<span class="sd">        &quot;version&quot;: &quot;submittedVersion&quot;</span>
 
-<span class="s2">    }</span>
+<span class="sd">    }</span>
 
-<span class="s2">    ```</span>
+<span class="sd">    ```</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">has_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">has_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;url_for_pdf&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;url_for_pdf&quot;</span><span class="p">))</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">has_open_license</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">has_open_license</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="n">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;license&quot;</span><span class="p">)</span>
+        <span class="n">license</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;license&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">license</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">open_licenses</span>
+        <span class="k">return</span> <span class="n">license</span> <span class="ow">in</span> <span class="n">open_licenses</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">has_creative_commons_license</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">has_creative_commons_license</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="n">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;license&quot;</span><span class="p">)</span>
+        <span class="n">license</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;license&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">license</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">license</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">license</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;cc0&quot;</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">license</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;cc-&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">license</span> <span class="o">==</span> <span class="s2">&quot;cc0&quot;</span> <span class="ow">or</span> <span class="n">license</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;cc-&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="nd">@property</span>
+    <span class="nd">@property</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">has_openly_licensed_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">has_openly_licensed_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">has_pdf</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">has_open_license</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_pdf</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_open_license</span>
 </code></pre></div>
 
 </details>
@@ -2850,53 +2850,53 @@ or by using <strong>init</strong> of a subclass like <code>Unpaywall_DOI</code>.
 external web request to generate to a new CSL Item.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nd">@staticmethod</span>
+<div class="codehilite"><pre><span></span><code>    <span class="nd">@staticmethod</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">from_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">csl_item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">csl_item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Create an Unpaywall object for `citekey`.</span>
+<span class="sd">        Create an Unpaywall object for `citekey`.</span>
 
-<span class="s2">        `csl_item` is an optional field that can avoid an</span>
+<span class="sd">        `csl_item` is an optional field that can avoid an</span>
 
-<span class="s2">        external web request to generate to a new CSL Item.</span>
+<span class="sd">        external web request to generate to a new CSL Item.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.citekey</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CiteKey</span>
+        <span class="kn">from</span> <span class="nn">.citekey</span> <span class="kn">import</span> <span class="n">CiteKey</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
-<span class="w">            </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">CiteKey</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="s2">&quot;citekey must be a str or CiteKey&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;citekey must be a str or CiteKey&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">source_to_unpaywaller</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span> <span class="ow">in</span> <span class="n">source_to_unpaywaller</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">unpaywaller</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="p">]</span>
+            <span class="n">unpaywaller</span> <span class="o">=</span> <span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="p">]</span>
 
-<span class="w">            </span><span class="n">unpaywall</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unpaywaller</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">,</span><span class="w"> </span><span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">unpaywaller</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">else</span><span class="p">:</span>
+        <span class="k">else</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
 
-<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;Cannot Unpaywall </span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">input_id</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot Unpaywall </span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">input_id</span><span class="si">}</span><span class="s2">. &quot;</span>
 
-<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;Supported citations sources are </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">source_to_unpaywaller</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Supported citations sources are </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">source_to_unpaywaller</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
 
-<span class="w">                </span><span class="s2">&quot;Received </span><span class="si">{citekey.standard_prefix!r}</span><span class="s2">.&quot;</span>
+                <span class="s2">&quot;Received </span><span class="si">{citekey.standard_prefix!r}</span><span class="s2">.&quot;</span>
 
-<span class="w">            </span><span class="p">)</span>
+            <span class="p">)</span>
 
-<span class="w">        </span><span class="n">unpaywall</span><span class="o">.</span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span>
+        <span class="n">unpaywall</span><span class="o">.</span><span class="n">csl_item</span> <span class="o">=</span> <span class="n">csl_item</span>
 
-<span class="w">        </span><span class="n">unpaywall</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
+        <span class="n">unpaywall</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">unpaywall</span>
+        <span class="k">return</span> <span class="n">unpaywall</span>
 </code></pre></div>
 
 </details>
@@ -2909,29 +2909,29 @@ external web request to generate to a new CSL Item.</p>
 <p>Create an Unpaywall object for <code>csl_item</code>.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nd">@classmethod</span>
+<div class="codehilite"><pre><span></span><code>    <span class="nd">@classmethod</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">from_csl_item</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="w"> </span><span class="n">csl_item</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_csl_item</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">csl_item</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Create an Unpaywall object for `csl_item`.</span>
+<span class="sd">        Create an Unpaywall object for `csl_item`.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.csl_item</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CSL_Item</span>
+        <span class="kn">from</span> <span class="nn">.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">)</span>
+        <span class="n">doi</span> <span class="o">=</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">doi</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">doi</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="o">.</span><span class="n">infer_id</span><span class="p">()</span>
+        <span class="n">csl_item</span><span class="o">.</span><span class="n">infer_id</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span><span class="w"> </span><span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
 </code></pre></div>
 
 </details>
@@ -2984,55 +2984,55 @@ as well as a <code>best_oa_location</code> property that's probably the OA Locat
 </blockquote>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Unpaywall_DOI</span><span class="p">(</span><span class="n">Unpaywall</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">Unpaywall_DOI</span><span class="p">(</span><span class="n">Unpaywall</span><span class="p">):</span>
 
-<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">    From https://unpaywall.org/data-format:</span>
+<span class="sd">    From https://unpaywall.org/data-format:</span>
 
-<span class="s2">    &gt; The DOI object is more or less a row in our main database...</span>
+<span class="sd">    &gt; The DOI object is more or less a row in our main database...</span>
 
-<span class="s2">    it&#39;s everything we know about a given DOI-assigned resource,</span>
+<span class="sd">    it&#39;s everything we know about a given DOI-assigned resource,</span>
 
-<span class="s2">    including metadata about the resource itself,</span>
+<span class="sd">    including metadata about the resource itself,</span>
 
-<span class="s2">    and information about its OA status.</span>
+<span class="sd">    and information about its OA status.</span>
 
-<span class="s2">    It includes a list of zero or more OA Location Objects,</span>
+<span class="sd">    It includes a list of zero or more OA Location Objects,</span>
 
-<span class="s2">    as well as a `best_oa_location` property that&#39;s probably the OA Location you&#39;ll want to use.</span>
+<span class="sd">    as well as a `best_oa_location` property that&#39;s probably the OA Location you&#39;ll want to use.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">doi</span><span class="p">,</span><span class="w"> </span><span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doi</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doi</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">doi</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">set_oa_locations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">set_oa_locations</span><span class="p">:</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.util</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">contact_email</span>
+        <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">contact_email</span>
 
-<span class="w">        </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://api.unpaywall.org/v2/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://api.unpaywall.org/v2/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">        </span><span class="n">params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">contact_email</span><span class="p">}</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">contact_email</span><span class="p">}</span>
 
-<span class="w">        </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span> <span class="o">=</span> <span class="p">[</span>
 
-<span class="w">            </span><span class="n">Unpaywall_Location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+            <span class="n">Unpaywall_Location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
 
-<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="n">location</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;oa_locations&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[])</span>
+            <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;oa_locations&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
-<span class="w">        </span><span class="p">]</span>
+        <span class="p">]</span>
 </code></pre></div>
 
 </details>
@@ -3058,53 +3058,53 @@ as well as a <code>best_oa_location</code> property that's probably the OA Locat
 external web request to generate to a new CSL Item.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nd">@staticmethod</span>
+<div class="codehilite"><pre><span></span><code>    <span class="nd">@staticmethod</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">from_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">csl_item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">csl_item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Create an Unpaywall object for `citekey`.</span>
+<span class="sd">        Create an Unpaywall object for `citekey`.</span>
 
-<span class="s2">        `csl_item` is an optional field that can avoid an</span>
+<span class="sd">        `csl_item` is an optional field that can avoid an</span>
 
-<span class="s2">        external web request to generate to a new CSL Item.</span>
+<span class="sd">        external web request to generate to a new CSL Item.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.citekey</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CiteKey</span>
+        <span class="kn">from</span> <span class="nn">.citekey</span> <span class="kn">import</span> <span class="n">CiteKey</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
-<span class="w">            </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">CiteKey</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="s2">&quot;citekey must be a str or CiteKey&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;citekey must be a str or CiteKey&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">source_to_unpaywaller</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span> <span class="ow">in</span> <span class="n">source_to_unpaywaller</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">unpaywaller</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="p">]</span>
+            <span class="n">unpaywaller</span> <span class="o">=</span> <span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="p">]</span>
 
-<span class="w">            </span><span class="n">unpaywall</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unpaywaller</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">,</span><span class="w"> </span><span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">unpaywaller</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">else</span><span class="p">:</span>
+        <span class="k">else</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
 
-<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;Cannot Unpaywall </span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">input_id</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot Unpaywall </span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">input_id</span><span class="si">}</span><span class="s2">. &quot;</span>
 
-<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;Supported citations sources are </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">source_to_unpaywaller</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Supported citations sources are </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">source_to_unpaywaller</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
 
-<span class="w">                </span><span class="s2">&quot;Received </span><span class="si">{citekey.standard_prefix!r}</span><span class="s2">.&quot;</span>
+                <span class="s2">&quot;Received </span><span class="si">{citekey.standard_prefix!r}</span><span class="s2">.&quot;</span>
 
-<span class="w">            </span><span class="p">)</span>
+            <span class="p">)</span>
 
-<span class="w">        </span><span class="n">unpaywall</span><span class="o">.</span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span>
+        <span class="n">unpaywall</span><span class="o">.</span><span class="n">csl_item</span> <span class="o">=</span> <span class="n">csl_item</span>
 
-<span class="w">        </span><span class="n">unpaywall</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
+        <span class="n">unpaywall</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">unpaywall</span>
+        <span class="k">return</span> <span class="n">unpaywall</span>
 </code></pre></div>
 
 </details>
@@ -3117,29 +3117,29 @@ external web request to generate to a new CSL Item.</p>
 <p>Create an Unpaywall object for <code>csl_item</code>.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nd">@classmethod</span>
+<div class="codehilite"><pre><span></span><code>    <span class="nd">@classmethod</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">from_csl_item</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="w"> </span><span class="n">csl_item</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_csl_item</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">csl_item</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Create an Unpaywall object for `csl_item`.</span>
+<span class="sd">        Create an Unpaywall object for `csl_item`.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.csl_item</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CSL_Item</span>
+        <span class="kn">from</span> <span class="nn">.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">)</span>
+        <span class="n">doi</span> <span class="o">=</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">doi</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">doi</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="o">.</span><span class="n">infer_id</span><span class="p">()</span>
+        <span class="n">csl_item</span><span class="o">.</span><span class="n">infer_id</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span><span class="w"> </span><span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
 </code></pre></div>
 
 </details>
@@ -3160,27 +3160,27 @@ external web request to generate to a new CSL Item.</p>
 <p>Set <code>self.oa_locations</code>, which is a list of <code>Unpaywall_Location</code> objects.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">manubot.util</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">contact_email</span>
+        <span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">contact_email</span>
 
-<span class="w">        </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://api.unpaywall.org/v2/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://api.unpaywall.org/v2/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="w">        </span><span class="n">params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">contact_email</span><span class="p">}</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">contact_email</span><span class="p">}</span>
 
-<span class="w">        </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span> <span class="o">=</span> <span class="p">[</span>
 
-<span class="w">            </span><span class="n">Unpaywall_Location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+            <span class="n">Unpaywall_Location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
 
-<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="n">location</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;oa_locations&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[])</span>
+            <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;oa_locations&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
-<span class="w">        </span><span class="p">]</span>
+        <span class="p">]</span>
 </code></pre></div>
 
 </details>
@@ -3473,137 +3473,137 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 or by using <strong>init</strong> of a subclass like <code>Unpaywall_DOI</code>.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Unpaywall_arXiv</span><span class="p">(</span><span class="n">Unpaywall</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">Unpaywall_arXiv</span><span class="p">(</span><span class="n">Unpaywall</span><span class="p">):</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">arxiv_id</span><span class="p">,</span><span class="w"> </span><span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="w"> </span><span class="n">use_doi</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arxiv_id</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_doi</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.arxiv</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">split_arxiv_id_version</span>
+        <span class="kn">from</span> <span class="nn">.arxiv</span> <span class="kn">import</span> <span class="n">split_arxiv_id_version</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arxiv_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span> <span class="o">=</span> <span class="n">arxiv_id</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id_latest</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">split_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id_latest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id_version</span> <span class="o">=</span> <span class="n">split_arxiv_id_version</span><span class="p">(</span><span class="n">arxiv_id</span><span class="p">)</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">use_doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">use_doi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_doi</span> <span class="o">=</span> <span class="n">use_doi</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">set_oa_locations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">set_oa_locations</span><span class="p">:</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.arxiv</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">get_arxiv_csl_item</span>
+        <span class="kn">from</span> <span class="nn">.arxiv</span> <span class="kn">import</span> <span class="n">get_arxiv_csl_item</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="p">:</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arxiv_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_arxiv_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">)</span>
+        <span class="n">doi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">use_doi</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">doi</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_doi</span> <span class="ow">and</span> <span class="n">doi</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">unpaywall_doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Unpaywall_DOI</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+            <span class="n">unpaywall_doi</span> <span class="o">=</span> <span class="n">Unpaywall_DOI</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unpaywall_doi</span><span class="o">.</span><span class="n">doi</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">unpaywall_doi</span><span class="o">.</span><span class="n">doi</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unpaywall_doi</span><span class="o">.</span><span class="n">oa_locations</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span> <span class="o">=</span> <span class="n">unpaywall_doi</span><span class="o">.</span><span class="n">oa_locations</span>
 
-<span class="w">            </span><span class="k">return</span>
+            <span class="k">return</span>
 
-<span class="w">        </span><span class="n">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">location_from_arvix_id</span><span class="p">()</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_from_arvix_id</span><span class="p">()</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">location</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span> <span class="o">=</span> <span class="p">[</span><span class="n">location</span><span class="p">]</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">location_from_arvix_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">location_from_arvix_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+        <span class="kn">import</span> <span class="nn">datetime</span>
 
-<span class="w">        </span><span class="n">url_for_pdf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://arxiv.org/pdf/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">.pdf&quot;</span>
+        <span class="n">url_for_pdf</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://arxiv.org/pdf/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">.pdf&quot;</span>
 
-<span class="w">        </span><span class="n">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Unpaywall_Location</span><span class="p">(</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">Unpaywall_Location</span><span class="p">(</span>
 
-<span class="w">            </span><span class="p">{</span>
+            <span class="p">{</span>
 
-<span class="w">                </span><span class="s2">&quot;endpoint_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;endpoint_id&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;evidence&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;oa repository&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;evidence&quot;</span><span class="p">:</span> <span class="s2">&quot;oa repository&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;host_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;repository&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;host_type&quot;</span><span class="p">:</span> <span class="s2">&quot;repository&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;is_best&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">True</span><span class="p">,</span>
+                <span class="s2">&quot;is_best&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;license&quot;</span><span class="p">:</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">get_license</span><span class="p">(),</span>
+                <span class="s2">&quot;license&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_license</span><span class="p">(),</span>
 
-<span class="w">                </span><span class="s2">&quot;pmh_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;oai:arXiv.org:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id_latest</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;pmh_id&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;oai:arXiv.org:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id_latest</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;repository_institution&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Cornell University - arXiv&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;repository_institution&quot;</span><span class="p">:</span> <span class="s2">&quot;Cornell University - arXiv&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;updated&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+                <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
 
-<span class="w">                </span><span class="s2">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">url_for_pdf</span><span class="p">,</span>
+                <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">url_for_pdf</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;url_for_landing_page&quot;</span><span class="p">:</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://arxiv.org/abs/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;url_for_landing_page&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;https://arxiv.org/abs/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;url_for_pdf&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">url_for_pdf</span><span class="p">,</span>
+                <span class="s2">&quot;url_for_pdf&quot;</span><span class="p">:</span> <span class="n">url_for_pdf</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;submittedVersion&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;submittedVersion&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="p">}</span>
+            <span class="p">}</span>
 
-<span class="w">        </span><span class="p">)</span>
+        <span class="p">)</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">location</span>
+        <span class="k">return</span> <span class="n">location</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">get_license</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_license</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Return license using choices from the Unpaywall data format.</span>
+<span class="sd">        Return license using choices from the Unpaywall data format.</span>
 
-<span class="s2">        Looks for license metadata in the CSL Item.</span>
+<span class="sd">        Looks for license metadata in the CSL Item.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="n">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;license&quot;</span><span class="p">)</span>
+        <span class="n">license</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;license&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">license</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">license</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span>
+            <span class="k">return</span>
 
-<span class="w">        </span><span class="c1"># Example licenses from https://arxiv.org/help/license</span>
+        <span class="c1"># Example licenses from https://arxiv.org/help/license</span>
 
-<span class="w">        </span><span class="c1"># http://creativecommons.org/publicdomain/zero/1.0/</span>
+        <span class="c1"># http://creativecommons.org/publicdomain/zero/1.0/</span>
 
-<span class="w">        </span><span class="c1"># http://creativecommons.org/licenses/by/4.0/</span>
+        <span class="c1"># http://creativecommons.org/licenses/by/4.0/</span>
 
-<span class="w">        </span><span class="c1"># http://creativecommons.org/licenses/by-sa/4.0/</span>
+        <span class="c1"># http://creativecommons.org/licenses/by-sa/4.0/</span>
 
-<span class="w">        </span><span class="c1"># http://creativecommons.org/licenses/by-nc-sa/4.0/</span>
+        <span class="c1"># http://creativecommons.org/licenses/by-nc-sa/4.0/</span>
 
-<span class="w">        </span><span class="c1"># http://arxiv.org/licenses/nonexclusive-distrib/1.0/license.html</span>
+        <span class="c1"># http://arxiv.org/licenses/nonexclusive-distrib/1.0/license.html</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">urlparse</span>
+        <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
 
-<span class="w">        </span><span class="n">parsed_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">urlparse</span><span class="p">(</span><span class="n">license</span><span class="p">)</span>
+        <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">license</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">return</span>
+            <span class="k">return</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;creativecommons.org&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;creativecommons.org&quot;</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">try</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
 
-<span class="w">                </span><span class="n">abbrev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+                <span class="n">abbrev</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
 
-<span class="w">            </span><span class="k">except</span><span class="w"> </span><span class="n">IndexError</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
 
-<span class="w">                </span><span class="k">return</span>
+                <span class="k">return</span>
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">abbrev</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;zero&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">abbrev</span> <span class="o">==</span> <span class="s2">&quot;zero&quot;</span><span class="p">:</span>
 
-<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="s2">&quot;cc0&quot;</span>
+                <span class="k">return</span> <span class="s2">&quot;cc0&quot;</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;cc-</span><span class="si">{</span><span class="n">abbrev</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;cc-</span><span class="si">{</span><span class="n">abbrev</span><span class="si">}</span><span class="s2">&quot;</span>
 </code></pre></div>
 
 </details>
@@ -3629,53 +3629,53 @@ or by using <strong>init</strong> of a subclass like <code>Unpaywall_DOI</code>.
 external web request to generate to a new CSL Item.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nd">@staticmethod</span>
+<div class="codehilite"><pre><span></span><code>    <span class="nd">@staticmethod</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">from_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">csl_item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_citekey</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">csl_item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Create an Unpaywall object for `citekey`.</span>
+<span class="sd">        Create an Unpaywall object for `citekey`.</span>
 
-<span class="s2">        `csl_item` is an optional field that can avoid an</span>
+<span class="sd">        `csl_item` is an optional field that can avoid an</span>
 
-<span class="s2">        external web request to generate to a new CSL Item.</span>
+<span class="sd">        external web request to generate to a new CSL Item.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.citekey</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CiteKey</span>
+        <span class="kn">from</span> <span class="nn">.citekey</span> <span class="kn">import</span> <span class="n">CiteKey</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
-<span class="w">            </span><span class="n">citekey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
+            <span class="n">citekey</span> <span class="o">=</span> <span class="n">CiteKey</span><span class="p">(</span><span class="n">citekey</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span><span class="w"> </span><span class="n">CiteKey</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citekey</span><span class="p">,</span> <span class="n">CiteKey</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="s2">&quot;citekey must be a str or CiteKey&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;citekey must be a str or CiteKey&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">source_to_unpaywaller</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span> <span class="ow">in</span> <span class="n">source_to_unpaywaller</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">unpaywaller</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="p">]</span>
+            <span class="n">unpaywaller</span> <span class="o">=</span> <span class="n">source_to_unpaywaller</span><span class="p">[</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_prefix</span><span class="p">]</span>
 
-<span class="w">            </span><span class="n">unpaywall</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unpaywaller</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">,</span><span class="w"> </span><span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">unpaywaller</span><span class="p">(</span><span class="n">citekey</span><span class="o">.</span><span class="n">standard_accession</span><span class="p">,</span> <span class="n">set_oa_locations</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">else</span><span class="p">:</span>
+        <span class="k">else</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
 
-<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;Cannot Unpaywall </span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">input_id</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot Unpaywall </span><span class="si">{</span><span class="n">citekey</span><span class="o">.</span><span class="n">input_id</span><span class="si">}</span><span class="s2">. &quot;</span>
 
-<span class="w">                </span><span class="sa">f</span><span class="s2">&quot;Supported citations sources are </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">source_to_unpaywaller</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Supported citations sources are </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">source_to_unpaywaller</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
 
-<span class="w">                </span><span class="s2">&quot;Received </span><span class="si">{citekey.standard_prefix!r}</span><span class="s2">.&quot;</span>
+                <span class="s2">&quot;Received </span><span class="si">{citekey.standard_prefix!r}</span><span class="s2">.&quot;</span>
 
-<span class="w">            </span><span class="p">)</span>
+            <span class="p">)</span>
 
-<span class="w">        </span><span class="n">unpaywall</span><span class="o">.</span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span>
+        <span class="n">unpaywall</span><span class="o">.</span><span class="n">csl_item</span> <span class="o">=</span> <span class="n">csl_item</span>
 
-<span class="w">        </span><span class="n">unpaywall</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
+        <span class="n">unpaywall</span><span class="o">.</span><span class="n">set_oa_locations</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">unpaywall</span>
+        <span class="k">return</span> <span class="n">unpaywall</span>
 </code></pre></div>
 
 </details>
@@ -3688,29 +3688,29 @@ external web request to generate to a new CSL Item.</p>
 <p>Create an Unpaywall object for <code>csl_item</code>.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nd">@classmethod</span>
+<div class="codehilite"><pre><span></span><code>    <span class="nd">@classmethod</span>
 
-<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">from_csl_item</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="w"> </span><span class="n">csl_item</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_csl_item</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">csl_item</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Create an Unpaywall object for `csl_item`.</span>
+<span class="sd">        Create an Unpaywall object for `csl_item`.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.csl_item</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">CSL_Item</span>
+        <span class="kn">from</span> <span class="nn">.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
+        <span class="n">csl_item</span> <span class="o">=</span> <span class="n">CSL_Item</span><span class="p">(</span><span class="n">csl_item</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">)</span>
+        <span class="n">doi</span> <span class="o">=</span> <span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">doi</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">doi</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;doi:</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">csl_item</span><span class="o">.</span><span class="n">infer_id</span><span class="p">()</span>
+        <span class="n">csl_item</span><span class="o">.</span><span class="n">infer_id</span><span class="p">()</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span><span class="w"> </span><span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_citekey</span><span class="p">(</span><span class="n">csl_item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">csl_item</span><span class="o">=</span><span class="n">csl_item</span><span class="p">)</span>
 </code></pre></div>
 
 </details>
@@ -3732,57 +3732,57 @@ external web request to generate to a new CSL Item.</p>
 <p>Looks for license metadata in the CSL Item.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">get_license</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">get_license</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="s2">        Return license using choices from the Unpaywall data format.</span>
+<span class="sd">        Return license using choices from the Unpaywall data format.</span>
 
-<span class="s2">        Looks for license metadata in the CSL Item.</span>
+<span class="sd">        Looks for license metadata in the CSL Item.</span>
 
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="n">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;license&quot;</span><span class="p">)</span>
+        <span class="n">license</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="o">.</span><span class="n">note_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;license&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">license</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">license</span><span class="p">:</span>
 
-<span class="w">            </span><span class="k">return</span>
+            <span class="k">return</span>
 
-<span class="w">        </span><span class="c1"># Example licenses from https://arxiv.org/help/license</span>
+        <span class="c1"># Example licenses from https://arxiv.org/help/license</span>
 
-<span class="w">        </span><span class="c1"># http://creativecommons.org/publicdomain/zero/1.0/</span>
+        <span class="c1"># http://creativecommons.org/publicdomain/zero/1.0/</span>
 
-<span class="w">        </span><span class="c1"># http://creativecommons.org/licenses/by/4.0/</span>
+        <span class="c1"># http://creativecommons.org/licenses/by/4.0/</span>
 
-<span class="w">        </span><span class="c1"># http://creativecommons.org/licenses/by-sa/4.0/</span>
+        <span class="c1"># http://creativecommons.org/licenses/by-sa/4.0/</span>
 
-<span class="w">        </span><span class="c1"># http://creativecommons.org/licenses/by-nc-sa/4.0/</span>
+        <span class="c1"># http://creativecommons.org/licenses/by-nc-sa/4.0/</span>
 
-<span class="w">        </span><span class="c1"># http://arxiv.org/licenses/nonexclusive-distrib/1.0/license.html</span>
+        <span class="c1"># http://arxiv.org/licenses/nonexclusive-distrib/1.0/license.html</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">urlparse</span>
+        <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
 
-<span class="w">        </span><span class="n">parsed_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">urlparse</span><span class="p">(</span><span class="n">license</span><span class="p">)</span>
+        <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">license</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">return</span>
+            <span class="k">return</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;creativecommons.org&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;creativecommons.org&quot;</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">try</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
 
-<span class="w">                </span><span class="n">abbrev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+                <span class="n">abbrev</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
 
-<span class="w">            </span><span class="k">except</span><span class="w"> </span><span class="n">IndexError</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
 
-<span class="w">                </span><span class="k">return</span>
+                <span class="k">return</span>
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">abbrev</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;zero&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">abbrev</span> <span class="o">==</span> <span class="s2">&quot;zero&quot;</span><span class="p">:</span>
 
-<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="s2">&quot;cc0&quot;</span>
+                <span class="k">return</span> <span class="s2">&quot;cc0&quot;</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;cc-</span><span class="si">{</span><span class="n">abbrev</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;cc-</span><span class="si">{</span><span class="n">abbrev</span><span class="si">}</span><span class="s2">&quot;</span>
 </code></pre></div>
 
 </details>
@@ -3794,45 +3794,45 @@ external web request to generate to a new CSL Item.</p>
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">location_from_arvix_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">location_from_arvix_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+        <span class="kn">import</span> <span class="nn">datetime</span>
 
-<span class="w">        </span><span class="n">url_for_pdf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://arxiv.org/pdf/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">.pdf&quot;</span>
+        <span class="n">url_for_pdf</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://arxiv.org/pdf/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">.pdf&quot;</span>
 
-<span class="w">        </span><span class="n">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Unpaywall_Location</span><span class="p">(</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">Unpaywall_Location</span><span class="p">(</span>
 
-<span class="w">            </span><span class="p">{</span>
+            <span class="p">{</span>
 
-<span class="w">                </span><span class="s2">&quot;endpoint_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;endpoint_id&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;evidence&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;oa repository&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;evidence&quot;</span><span class="p">:</span> <span class="s2">&quot;oa repository&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;host_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;repository&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;host_type&quot;</span><span class="p">:</span> <span class="s2">&quot;repository&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;is_best&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">True</span><span class="p">,</span>
+                <span class="s2">&quot;is_best&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;license&quot;</span><span class="p">:</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">get_license</span><span class="p">(),</span>
+                <span class="s2">&quot;license&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_license</span><span class="p">(),</span>
 
-<span class="w">                </span><span class="s2">&quot;pmh_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;oai:arXiv.org:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id_latest</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;pmh_id&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;oai:arXiv.org:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id_latest</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;repository_institution&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Cornell University - arXiv&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;repository_institution&quot;</span><span class="p">:</span> <span class="s2">&quot;Cornell University - arXiv&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;updated&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+                <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
 
-<span class="w">                </span><span class="s2">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">url_for_pdf</span><span class="p">,</span>
+                <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">url_for_pdf</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;url_for_landing_page&quot;</span><span class="p">:</span><span class="w"> </span><span class="sa">f</span><span class="s2">&quot;https://arxiv.org/abs/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;url_for_landing_page&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;https://arxiv.org/abs/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;url_for_pdf&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">url_for_pdf</span><span class="p">,</span>
+                <span class="s2">&quot;url_for_pdf&quot;</span><span class="p">:</span> <span class="n">url_for_pdf</span><span class="p">,</span>
 
-<span class="w">                </span><span class="s2">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;submittedVersion&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;submittedVersion&quot;</span><span class="p">,</span>
 
-<span class="w">            </span><span class="p">}</span>
+            <span class="p">}</span>
 
-<span class="w">        </span><span class="p">)</span>
+        <span class="p">)</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">location</span>
+        <span class="k">return</span> <span class="n">location</span>
 </code></pre></div>
 
 </details>
@@ -3845,29 +3845,29 @@ external web request to generate to a new CSL Item.</p>
 <p>Set <code>self.oa_locations</code>, which is a list of <code>Unpaywall_Location</code> objects.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">set_oa_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="kn">from</span><span class="w"> </span><span class="nn">.arxiv</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="n">get_arxiv_csl_item</span>
+        <span class="kn">from</span> <span class="nn">.arxiv</span> <span class="kn">import</span> <span class="n">get_arxiv_csl_item</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="p">:</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arxiv_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span> <span class="o">=</span> <span class="n">get_arxiv_csl_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arxiv_id</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">)</span>
+        <span class="n">doi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">csl_item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">use_doi</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">doi</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_doi</span> <span class="ow">and</span> <span class="n">doi</span><span class="p">:</span>
 
-<span class="w">            </span><span class="n">unpaywall_doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Unpaywall_DOI</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+            <span class="n">unpaywall_doi</span> <span class="o">=</span> <span class="n">Unpaywall_DOI</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unpaywall_doi</span><span class="o">.</span><span class="n">doi</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">unpaywall_doi</span><span class="o">.</span><span class="n">doi</span>
 
-<span class="w">            </span><span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unpaywall_doi</span><span class="o">.</span><span class="n">oa_locations</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span> <span class="o">=</span> <span class="n">unpaywall_doi</span><span class="o">.</span><span class="n">oa_locations</span>
 
-<span class="w">            </span><span class="k">return</span>
+            <span class="k">return</span>
 
-<span class="w">        </span><span class="n">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">location_from_arvix_id</span><span class="p">()</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_from_arvix_id</span><span class="p">()</span>
 
-<span class="w">        </span><span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">location</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oa_locations</span> <span class="o">=</span> <span class="p">[</span><span class="n">location</span><span class="p">]</span>
 </code></pre></div>
 
 </details>
