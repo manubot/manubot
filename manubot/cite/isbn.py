@@ -85,7 +85,7 @@ def get_isbn_csl_item_citoid(isbn: str):
     response = requests.get(url, headers=headers)
     result = response.json()
     if isinstance(result, dict):
-        if result["title"] == "Not found.":
+        if "error" in result or result["title"] == "Not found.":
             raise KeyError(f"Metadata for ISBN {isbn} not found at {url}")
         else:
             raise Exception(
