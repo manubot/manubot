@@ -25,7 +25,7 @@ def test_get_pmid_for_doi(doi, pmid):
     ("doi", "id_dict"),
     [
         ("10.1098/rsif.2017.0387", {"PMCID": "PMC5938574", "PMID": "29618526"}),
-        ("10.7554/ELIFE.32822", {"PMCID": "PMC5832410", "PMID": "29424689"}),
+        ("10.7554/eLife.32822", {"PMCID": "PMC5832410", "PMID": "29424689"}),
         ("10.1161/CIRCGENETICS.115.001181", {}),  # only in PubMed, not in PMC
         ("10.7717/peerj.000", {}),  # Non-existent DOI
         ("10.peerj.000", {}),  # malformed DOI
@@ -40,7 +40,7 @@ def test_get_pmcid_and_pmid_for_doi(doi, id_dict):
     ("doi", "id_dict"),
     [
         ("10.1098/rsif.2017.0387", {"PMCID": "PMC5938574", "PMID": "29618526"}),
-        ("10.7554/ELIFE.32822", {"PMCID": "PMC5832410", "PMID": "29424689"}),
+        ("10.7554/eLife.32822", {"PMCID": "PMC5832410", "PMID": "29424689"}),
         (
             "10.1161/CIRCGENETICS.115.001181",
             {"PMID": "27094199"},
