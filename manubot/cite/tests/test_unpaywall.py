@@ -2,7 +2,8 @@ from ..unpaywall import Unpaywall, Unpaywall_arXiv, Unpaywall_DOI
 
 
 def test_unpaywall_doi():
-    doi = "10.1371/journal.pcbi.1007250"
+    # must be an article with a creative commons license
+    doi = "10.3390/ijerph20043022"
     unpaywall = Unpaywall_DOI(doi)
     assert isinstance(unpaywall.oa_locations, list)
     assert unpaywall.best_pdf.has_creative_commons_license
@@ -45,11 +46,15 @@ def test_unpaywall_from_csl_item():
 
 def test_unpaywall_from_csl_item_with_doi():
     csl_item = {
-        "id": "ijxfHyzg",
-        "URL": "https://arxiv.org/abs/1908.11459",
-        "title": "Introducing: The Game Jam License",
-        "note": "license: http://arxiv.org/licenses/nonexclusive-distrib/1.0/\nstandard_id: arxiv:1908.11459",
-        "DOI": "10.1145/3337722.3341844",
+        "id": "s12864-016-2566-9",
+        "type": "article-journal",
+        "title": (
+            "Rapid gene identification in sugar beet using deep "
+            "sequencing of DNA from phenotypic pools selected"
+            "from breeding panels"
+        ),
+        "URL": "https://doi.org/10.1186/s12864-016-2566-9",
+        "DOI": "10.1186/s12864-016-2566-9",
     }
     unpaywall = Unpaywall.from_csl_item(csl_item)
     # Unpaywall.from_csl_item uses DOI lookup when available
