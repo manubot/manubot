@@ -1635,7 +1635,9 @@
 
 <span class="k">def</span> <span class="nf">test_unpaywall_doi</span><span class="p">():</span>
 
-    <span class="n">doi</span> <span class="o">=</span> <span class="s2">&quot;10.1371/journal.pcbi.1007250&quot;</span>
+    <span class="c1"># must be an article with a creative commons license</span>
+
+    <span class="n">doi</span> <span class="o">=</span> <span class="s2">&quot;10.3390/ijerph20043022&quot;</span>
 
     <span class="n">unpaywall</span> <span class="o">=</span> <span class="n">Unpaywall_DOI</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
 
@@ -1705,15 +1707,23 @@
 
     <span class="n">csl_item</span> <span class="o">=</span> <span class="p">{</span>
 
-        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;ijxfHyzg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;s12864-016-2566-9&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;URL&quot;</span><span class="p">:</span> <span class="s2">&quot;https://arxiv.org/abs/1908.11459&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;article-journal&quot;</span><span class="p">,</span>
 
-        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Introducing: The Game Jam License&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="p">(</span>
 
-        <span class="s2">&quot;note&quot;</span><span class="p">:</span> <span class="s2">&quot;license: http://arxiv.org/licenses/nonexclusive-distrib/1.0/</span><span class="se">\n</span><span class="s2">standard_id: arxiv:1908.11459&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Rapid gene identification in sugar beet using deep &quot;</span>
 
-        <span class="s2">&quot;DOI&quot;</span><span class="p">:</span> <span class="s2">&quot;10.1145/3337722.3341844&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;sequencing of DNA from phenotypic pools selected&quot;</span>
+
+            <span class="s2">&quot;from breeding panels&quot;</span>
+
+        <span class="p">),</span>
+
+        <span class="s2">&quot;URL&quot;</span><span class="p">:</span> <span class="s2">&quot;https://doi.org/10.1186/s12864-016-2566-9&quot;</span><span class="p">,</span>
+
+        <span class="s2">&quot;DOI&quot;</span><span class="p">:</span> <span class="s2">&quot;10.1186/s12864-016-2566-9&quot;</span><span class="p">,</span>
 
     <span class="p">}</span>
 
@@ -1766,7 +1776,9 @@
 <summary>View Source</summary>
 <div class="codehilite"><pre><span></span><code>def test_unpaywall_doi():
 
-    doi = &quot;10.1371/journal.pcbi.1007250&quot;
+    # must be an article with a creative commons license
+
+    doi = &quot;10.3390/ijerph20043022&quot;
 
     unpaywall = Unpaywall_DOI(doi)
 
@@ -1846,29 +1858,37 @@
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>def test_unpaywall_from_csl_item_with_doi():
+<div class="codehilite"><pre><span></span><code><span class="nx">def</span><span class="w"> </span><span class="nx">test_unpaywall_from_csl_item_with_doi</span><span class="p">():</span>
 
-    csl_item = {
+<span class="w">    </span><span class="nx">csl_item</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span>
 
-        &quot;id&quot;: &quot;ijxfHyzg&quot;,
+<span class="w">        </span><span class="s">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;s12864-016-2566-9&quot;</span><span class="p">,</span>
 
-        &quot;URL&quot;: &quot;https://arxiv.org/abs/1908.11459&quot;,
+<span class="w">        </span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;article-journal&quot;</span><span class="p">,</span>
 
-        &quot;title&quot;: &quot;Introducing: The Game Jam License&quot;,
+<span class="w">        </span><span class="s">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">(</span>
 
-        &quot;note&quot;: &quot;license: http://arxiv.org/licenses/nonexclusive-distrib/1.0/\nstandard_id: arxiv:1908.11459&quot;,
+<span class="w">            </span><span class="s">&quot;Rapid gene identification in sugar beet using deep &quot;</span>
 
-        &quot;DOI&quot;: &quot;10.1145/3337722.3341844&quot;,
+<span class="w">            </span><span class="s">&quot;sequencing of DNA from phenotypic pools selected&quot;</span>
 
-    }
+<span class="w">            </span><span class="s">&quot;from breeding panels&quot;</span>
 
-    unpaywall = Unpaywall.from_csl_item(csl_item)
+<span class="w">        </span><span class="p">),</span>
 
-    # Unpaywall.from_csl_item uses DOI lookup when available
+<span class="w">        </span><span class="s">&quot;URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://doi.org/10.1186/s12864-016-2566-9&quot;</span><span class="p">,</span>
 
-    assert isinstance(unpaywall, Unpaywall_DOI)
+<span class="w">        </span><span class="s">&quot;DOI&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10.1186/s12864-016-2566-9&quot;</span><span class="p">,</span>
 
-    assert unpaywall.best_pdf[&quot;url_for_pdf&quot;]
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nx">unpaywall</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">Unpaywall</span><span class="p">.</span><span class="nx">from_csl_item</span><span class="p">(</span><span class="nx">csl_item</span><span class="p">)</span>
+
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="nx">Unpaywall</span><span class="p">.</span><span class="nx">from_csl_item</span><span class="w"> </span><span class="nx">uses</span><span class="w"> </span><span class="nx">DOI</span><span class="w"> </span><span class="nx">lookup</span><span class="w"> </span><span class="nx">when</span><span class="w"> </span><span class="nx">available</span>
+
+<span class="w">    </span><span class="nx">assert</span><span class="w"> </span><span class="nx">isinstance</span><span class="p">(</span><span class="nx">unpaywall</span><span class="p">,</span><span class="w"> </span><span class="nx">Unpaywall_DOI</span><span class="p">)</span>
+
+<span class="w">    </span><span class="nx">assert</span><span class="w"> </span><span class="nx">unpaywall</span><span class="p">.</span><span class="nx">best_pdf</span><span class="p">[</span><span class="s">&quot;url_for_pdf&quot;</span><span class="p">]</span>
 </code></pre></div>
 
 </details>
