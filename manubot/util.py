@@ -128,11 +128,11 @@ def request_with_retry(
     method: str = "get",
     params: typing.Optional[dict] = None,
     headers: typing.Optional[dict] = None,
-    retries: int = 3,
+    retries: int = 10,
     retry_statuses: typing.Tuple[int, ...] = (429, 503),
     backoff: float = 1.0,
     backoff_factor: float = 2.0,
-    max_backoff: float = 8.0,
+    max_backoff: float = 200.0,
     **kwargs,
 ):
     """
