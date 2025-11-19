@@ -128,25 +128,37 @@ def request_with_retry(
     method: str = "get",
     params: typing.Optional[dict] = None,
     headers: typing.Optional[dict] = None,
-    retries: int = 10,
-    retry_statuses: typing.Tuple[int, ...] = (429,),
-    delay: float = 10.0,
+    retries: int = 3,
+    retry_statuses: typing.Tuple[int, ...] = (429, 503),
+    backoff: float = 1.0,
+    backoff_factor: float = 2.0,
+    max_backoff: float = 8.0,
     **kwargs,
 ):
     """
-    Issue an HTTP request that retries on transient status codes.
+    Issue an HTTP request that retries on transient status codes using exponential backoff.
     """
+    delay = backoff
     for attempt in range(retries + 1):
         response = requests.request(
             method=method, url=url, params=params, headers=headers, **kwargs
         )
         if response.status_code not in retry_statuses or attempt == retries:
             return response
+        retry_after = response.headers.get("Retry-After")
+        if retry_after:
+            try:
+                wait = float(retry_after)
+            except ValueError:
+                wait = delay
+        else:
+            wait = delay
         logging.warning(
             f"Status code {response.status_code} querying {response.url} "
             f"(attempt {attempt + 1}), retrying..."
         )
-        time.sleep(delay)
+        time.sleep(wait)
+        delay = min(delay * backoff_factor, max_backoff)
     return response
 
 
