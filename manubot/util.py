@@ -128,9 +128,9 @@ def request_with_retry(
     method: str = "get",
     params: typing.Optional[dict] = None,
     headers: typing.Optional[dict] = None,
-    retries: int = 5,
+    retries: int = 10,
     retry_statuses: typing.Tuple[int, ...] = (429,),
-    delay: float = 3.0,
+    delay: float = 10.0,
     **kwargs,
 ):
     """
