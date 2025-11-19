@@ -8,8 +8,11 @@ import shlex
 import shutil
 import subprocess
 import sys
+import time
 import typing
 from types import ModuleType
+
+import requests
 
 if typing.TYPE_CHECKING:
     # allow type annotations of lazy-imported packages
@@ -117,6 +120,34 @@ def read_serialized_data(path: str):
             "Assuming JSON."
         )
     return json.loads(text)
+
+
+def request_with_retry(
+    url: str,
+    *,
+    method: str = "get",
+    params: typing.Optional[dict] = None,
+    headers: typing.Optional[dict] = None,
+    retries: int = 1,
+    retry_statuses: typing.Tuple[int, ...] = (429,),
+    delay: float = 1.0,
+    **kwargs,
+):
+    """
+    Issue an HTTP request that retries on transient status codes.
+    """
+    for attempt in range(retries + 1):
+        response = requests.request(
+            method=method, url=url, params=params, headers=headers, **kwargs
+        )
+        if response.status_code not in retry_statuses or attempt == retries:
+            return response
+        logging.warning(
+            f"Status code {response.status_code} querying {response.url} "
+            f"(attempt {attempt + 1}), retrying..."
+        )
+        time.sleep(delay)
+    return response
 
 
 """

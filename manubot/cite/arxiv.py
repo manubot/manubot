@@ -2,9 +2,7 @@ import logging
 import re
 import xml.etree.ElementTree
 
-import requests
-
-from manubot.util import get_manubot_user_agent
+from manubot.util import get_manubot_user_agent, request_with_retry
 
 from .csl_item import CSL_Item
 from .handlers import Handler
@@ -78,7 +76,7 @@ def get_arxiv_csl_item(arxiv_id: str):
 
 def query_arxiv_api(url, params):
     headers = {"User-Agent": get_manubot_user_agent()}
-    response = requests.get(url, params, headers=headers)
+    response = request_with_retry(url, params=params, headers=headers, retries=1)
     response.raise_for_status()
     xml_tree = xml.etree.ElementTree.fromstring(response.text)
     return xml_tree
