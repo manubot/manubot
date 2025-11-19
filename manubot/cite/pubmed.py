@@ -289,7 +289,7 @@ def get_pmcid_and_pmid_for_doi(doi: str) -> Dict[str, str]:
     assert doi.startswith("10.")
     params = {"ids": doi, "tool": "manubot"}
     url = "https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/"
-    response = request_with_retry(url, params=params, retries=1)
+    response = request_with_retry(url, params=params)
     if not response.ok:
         logging.warning(f"Status code {response.status_code} querying {response.url}\n")
         return {}
