@@ -128,7 +128,7 @@ def request_with_retry(
     method: str = "get",
     params: typing.Optional[dict] = None,
     headers: typing.Optional[dict] = None,
-    retries: int = 10,
+    retries: int = 5,
     retry_statuses: typing.Tuple[int, ...] = (429, 503),
     backoff: float = 1.0,
     backoff_factor: float = 2.0,
