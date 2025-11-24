@@ -12,9 +12,9 @@ import logging
 from typing import Any, Dict, List
 
 import requests
+from requests.exceptions import JSONDecodeError as RequestsJSONDecodeError
 
 from manubot.util import get_manubot_user_agent, is_http_url, request_with_retry
-from requests.exceptions import JSONDecodeError as RequestsJSONDecodeError
 
 ZoteroRecord = Dict[str, Any]
 ZoteroData = List[ZoteroRecord]
