@@ -13,7 +13,8 @@ from typing import Any, Dict, List
 
 import requests
 
-from manubot.util import get_manubot_user_agent, is_http_url
+from manubot.util import get_manubot_user_agent, is_http_url, request_with_retry
+from requests.exceptions import JSONDecodeError as RequestsJSONDecodeError
 
 ZoteroRecord = Dict[str, Any]
 ZoteroData = List[ZoteroRecord]
@@ -33,14 +34,25 @@ def web_query(url: str) -> ZoteroData:
     headers = {"User-Agent": get_manubot_user_agent(), "Content-Type": "text/plain"}
     params = {"single": 1}
     api_url = f"{base_url}/web"
-    response = requests.post(api_url, params=params, headers=headers, data=str(url))
+    response = request_with_retry(
+        api_url, method="post", params=params, headers=headers, data=str(url)
+    )
+    try:
+        response.raise_for_status()
+    except requests.HTTPError as error:
+        logging.warning(
+            f"web_query returned HTTP {response.status_code} for {url}:\n{response.text}"
+        )
+        raise error
     try:
         zotero_data = response.json()
-    except Exception as error:
+    except RequestsJSONDecodeError as error:
         logging.warning(
             f"Error parsing web_query output as JSON for {url}:\n{response.text}"
         )
-        raise error
+        raise requests.HTTPError(
+            f"Zotero web_query returned non-JSON response for {url}"
+        ) from error
     if response.status_code == 300:
         # When single=1 is specified, multiple results should never be returned
         logging.warning(
@@ -66,14 +78,25 @@ def search_query(identifier: str) -> ZoteroData:
     """
     api_url = f"{base_url}/search"
     headers = {"User-Agent": get_manubot_user_agent(), "Content-Type": "text/plain"}
-    response = requests.post(api_url, headers=headers, data=str(identifier))
+    response = request_with_retry(
+        api_url, method="post", headers=headers, data=str(identifier)
+    )
+    try:
+        response.raise_for_status()
+    except requests.HTTPError as error:
+        logging.warning(
+            f"search_query returned HTTP {response.status_code} for {identifier}:\n{response.text}"
+        )
+        raise error
     try:
         zotero_data = response.json()
-    except Exception as error:
+    except RequestsJSONDecodeError as error:
         logging.warning(
             f"Error parsing search_query output as JSON for {identifier}:\n{response.text}"
         )
-        raise error
+        raise requests.HTTPError(
+            f"Zotero search_query returned non-JSON response for {identifier}"
+        ) from error
     zotero_data = _passthrough_zotero_data(zotero_data)
     return zotero_data
 
