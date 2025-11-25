@@ -1670,7 +1670,9 @@ https://github.com/manubot/manubot/issues/82.</p>
 
 <span class="kn">import</span> <span class="nn">requests</span>
 
-<span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">get_manubot_user_agent</span><span class="p">,</span> <span class="n">is_http_url</span>
+<span class="kn">from</span> <span class="nn">requests.exceptions</span> <span class="kn">import</span> <span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">RequestsJSONDecodeError</span>
+
+<span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">get_manubot_user_agent</span><span class="p">,</span> <span class="n">is_http_url</span><span class="p">,</span> <span class="n">request_with_retry</span>
 
 <span class="n">ZoteroRecord</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 
@@ -1702,13 +1704,31 @@ https://github.com/manubot/manubot/issues/82.</p>
 
     <span class="n">api_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/web&quot;</span>
 
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">request_with_retry</span><span class="p">(</span>
+
+        <span class="n">api_url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+
+    <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">HTTPError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+            <span class="sa">f</span><span class="s2">&quot;web_query returned HTTP </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="p">)</span>
+
+        <span class="k">raise</span> <span class="n">error</span>
 
     <span class="k">try</span><span class="p">:</span>
 
         <span class="n">zotero_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="k">except</span> <span class="n">RequestsJSONDecodeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
@@ -1716,7 +1736,11 @@ https://github.com/manubot/manubot/issues/82.</p>
 
         <span class="p">)</span>
 
-        <span class="k">raise</span> <span class="n">error</span>
+        <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">(</span>
+
+            <span class="sa">f</span><span class="s2">&quot;Zotero web_query returned non-JSON response for </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">300</span><span class="p">:</span>
 
@@ -1762,13 +1786,31 @@ https://github.com/manubot/manubot/issues/82.</p>
 
     <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">(),</span> <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">}</span>
 
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">identifier</span><span class="p">))</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">request_with_retry</span><span class="p">(</span>
+
+        <span class="n">api_url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+
+    <span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+
+    <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">HTTPError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+
+            <span class="sa">f</span><span class="s2">&quot;search_query returned HTTP </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="p">)</span>
+
+        <span class="k">raise</span> <span class="n">error</span>
 
     <span class="k">try</span><span class="p">:</span>
 
         <span class="n">zotero_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="k">except</span> <span class="n">RequestsJSONDecodeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
 
@@ -1776,7 +1818,11 @@ https://github.com/manubot/manubot/issues/82.</p>
 
         <span class="p">)</span>
 
-        <span class="k">raise</span> <span class="n">error</span>
+        <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">(</span>
+
+            <span class="sa">f</span><span class="s2">&quot;Zotero search_query returned non-JSON response for </span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="n">zotero_data</span> <span class="o">=</span> <span class="n">_passthrough_zotero_data</span><span class="p">(</span><span class="n">zotero_data</span><span class="p">)</span>
 
@@ -2087,13 +2133,31 @@ Otherwise, retrieve zotero metadata using a /search query.</p>
 
     <span class="ss">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> get_manubot_user_agent<span class="p">(),</span> <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">}</span>
 
-    <span class="ss">response</span> <span class="o">=</span> requests<span class="o">.</span>post<span class="p">(</span>api_url<span class="p">,</span> <span class="ss">headers</span><span class="o">=</span>headers<span class="p">,</span> <span class="ss">data</span><span class="o">=</span>str<span class="p">(</span>identifier<span class="p">))</span>
+    <span class="ss">response</span> <span class="o">=</span> request_with_retry<span class="p">(</span>
+
+        api_url<span class="p">,</span> <span class="ss">method</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="ss">headers</span><span class="o">=</span>headers<span class="p">,</span> <span class="ss">data</span><span class="o">=</span>str<span class="p">(</span>identifier<span class="p">)</span>
+
+    <span class="p">)</span>
+
+    try<span class="p">:</span>
+
+        response<span class="o">.</span>raise_for_status<span class="p">()</span>
+
+    except requests<span class="o">.</span>HTTPError as error<span class="p">:</span>
+
+        logging<span class="o">.</span>warning<span class="p">(</span>
+
+            f<span class="s2">&quot;search_query returned HTTP {response.status_code} for {identifier}:</span><span class="se">\n</span><span class="s2">{response.text}&quot;</span>
+
+        <span class="p">)</span>
+
+        raise error
 
     try<span class="p">:</span>
 
         <span class="ss">zotero_data</span> <span class="o">=</span> response<span class="o">.</span>json<span class="p">()</span>
 
-    except Exception as error<span class="p">:</span>
+    except RequestsJSONDecodeError as error<span class="p">:</span>
 
         logging<span class="o">.</span>warning<span class="p">(</span>
 
@@ -2101,7 +2165,11 @@ Otherwise, retrieve zotero metadata using a /search query.</p>
 
         <span class="p">)</span>
 
-        raise error
+        raise requests<span class="o">.</span>HTTPError<span class="p">(</span>
+
+            f<span class="s2">&quot;Zotero search_query returned non-JSON response for {identifier}&quot;</span>
+
+        <span class="p">)</span> from error
 
     <span class="ss">zotero_data</span> <span class="o">=</span> _passthrough_zotero_data<span class="p">(</span>zotero_data<span class="p">)</span>
 
@@ -2135,13 +2203,31 @@ Otherwise, retrieve zotero metadata using a /search query.</p>
 
     <span class="ss">api_url</span> <span class="o">=</span> f<span class="s2">&quot;{base_url}/web&quot;</span>
 
-    <span class="ss">response</span> <span class="o">=</span> requests<span class="o">.</span>post<span class="p">(</span>api_url<span class="p">,</span> <span class="ss">params</span><span class="o">=</span>params<span class="p">,</span> <span class="ss">headers</span><span class="o">=</span>headers<span class="p">,</span> <span class="ss">data</span><span class="o">=</span>str<span class="p">(</span>url<span class="p">))</span>
+    <span class="ss">response</span> <span class="o">=</span> request_with_retry<span class="p">(</span>
+
+        api_url<span class="p">,</span> <span class="ss">method</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="ss">params</span><span class="o">=</span>params<span class="p">,</span> <span class="ss">headers</span><span class="o">=</span>headers<span class="p">,</span> <span class="ss">data</span><span class="o">=</span>str<span class="p">(</span>url<span class="p">)</span>
+
+    <span class="p">)</span>
+
+    try<span class="p">:</span>
+
+        response<span class="o">.</span>raise_for_status<span class="p">()</span>
+
+    except requests<span class="o">.</span>HTTPError as error<span class="p">:</span>
+
+        logging<span class="o">.</span>warning<span class="p">(</span>
+
+            f<span class="s2">&quot;web_query returned HTTP {response.status_code} for {url}:</span><span class="se">\n</span><span class="s2">{response.text}&quot;</span>
+
+        <span class="p">)</span>
+
+        raise error
 
     try<span class="p">:</span>
 
         <span class="ss">zotero_data</span> <span class="o">=</span> response<span class="o">.</span>json<span class="p">()</span>
 
-    except Exception as error<span class="p">:</span>
+    except RequestsJSONDecodeError as error<span class="p">:</span>
 
         logging<span class="o">.</span>warning<span class="p">(</span>
 
@@ -2149,7 +2235,11 @@ Otherwise, retrieve zotero metadata using a /search query.</p>
 
         <span class="p">)</span>
 
-        raise error
+        raise requests<span class="o">.</span>HTTPError<span class="p">(</span>
+
+            f<span class="s2">&quot;Zotero web_query returned non-JSON response for {url}&quot;</span>
+
+        <span class="p">)</span> from error
 
     <span class="k">if</span> response<span class="o">.</span><span class="ss">status_code</span> <span class="o">==</span> <span class="mi">300</span><span class="p">:</span>
 

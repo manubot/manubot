@@ -2231,9 +2231,7 @@
 
 <span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span>
 
-<span class="kn">import</span> <span class="nn">requests</span>
-
-<span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">get_manubot_user_agent</span>
+<span class="kn">from</span> <span class="nn">manubot.util</span> <span class="kn">import</span> <span class="n">get_manubot_user_agent</span><span class="p">,</span> <span class="n">request_with_retry</span>
 
 <span class="kn">from</span> <span class="nn">.csl_item</span> <span class="kn">import</span> <span class="n">CSL_Item</span>
 
@@ -2349,7 +2347,7 @@
 
     <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">get_manubot_user_agent</span><span class="p">()}</span>
 
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">request_with_retry</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
     <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
 
@@ -2975,7 +2973,7 @@ This endpoint does not support versioned <code>arxiv_id</code>.</p>
 
     headers = {&quot;User-Agent&quot;: get_manubot_user_agent()}
 
-    response = requests.get(url, params, headers=headers)
+    response = request_with_retry(url, params=params, headers=headers)
 
     response.raise_for_status()
 
