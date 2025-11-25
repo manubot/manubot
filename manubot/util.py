@@ -8,8 +8,11 @@ import shlex
 import shutil
 import subprocess
 import sys
+import time
 import typing
 from types import ModuleType
+
+import requests
 
 if typing.TYPE_CHECKING:
     # allow type annotations of lazy-imported packages
@@ -117,6 +120,46 @@ def read_serialized_data(path: str):
             "Assuming JSON."
         )
     return json.loads(text)
+
+
+def request_with_retry(
+    url: str,
+    *,
+    method: str = "get",
+    params: typing.Optional[dict] = None,
+    headers: typing.Optional[dict] = None,
+    retries: int = 5,
+    retry_statuses: typing.Tuple[int, ...] = (429, 503),
+    backoff: float = 1.0,
+    backoff_factor: float = 2.0,
+    max_backoff: float = 200.0,
+    **kwargs,
+):
+    """
+    Issue an HTTP request that retries on transient status codes using exponential backoff.
+    """
+    delay = backoff
+    for attempt in range(retries + 1):
+        response = requests.request(
+            method=method, url=url, params=params, headers=headers, **kwargs
+        )
+        if response.status_code not in retry_statuses or attempt == retries:
+            return response
+        retry_after = response.headers.get("Retry-After")
+        if retry_after:
+            try:
+                wait = float(retry_after)
+            except ValueError:
+                wait = delay
+        else:
+            wait = delay
+        logging.warning(
+            f"Status code {response.status_code} querying {response.url} "
+            f"(attempt {attempt + 1}), retrying..."
+        )
+        time.sleep(wait)
+        delay = min(delay * backoff_factor, max_backoff)
+    return response
 
 
 """

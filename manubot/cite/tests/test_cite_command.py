@@ -2,6 +2,7 @@ import json
 import pathlib
 import shutil
 import subprocess
+import time
 
 import pytest
 
@@ -158,10 +159,10 @@ def test_cite_command_render_stdout(args, filename):
         # https://github.com/manubot/manubot/pull/146#discussion_r333132261
         print(
             f"Missing expected output at {path}\n"
-            "Writing output to file such that future tests will pass."
+            "Writing output to file and waiting for it to become available."
         )
         path.write_text(process.stdout, encoding="utf-8")
-        raise AssertionError()
+        _wait_for_file(path)
     expected = path.read_text(encoding="utf-8-sig")
     assert process.stdout == expected
 
@@ -190,6 +191,17 @@ def teardown_module(module):
     capped at 3 per second, which is usually controlled by _get_eutils_rate_limiter,
     but this does not seem to work across test modules.
     """
-    import time
-
     time.sleep(1)
+
+
+def _wait_for_file(path: pathlib.Path, timeout: float = 5.0, interval: float = 0.1):
+    """
+    Poll for `path` to exist so the newly generated file can be consumed immediately.
+    """
+    deadline = time.time() + timeout
+    while not path.exists():
+        if time.time() > deadline:
+            pytest.fail(
+                f"Expected output file {path} was not created within {timeout} seconds."
+            )
+        time.sleep(interval)

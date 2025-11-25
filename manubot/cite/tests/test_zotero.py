@@ -108,6 +108,7 @@ def test_search_query_isbn():
     """
     identifier = "isbn:9781339919881"
     zotero_data = search_query(identifier)
+    assert zotero_data
     assert zotero_data[0]["title"].startswith("The hetnet awakens")
 
 

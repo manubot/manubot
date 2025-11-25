@@ -61,4 +61,18 @@ def test_cite_pandoc_filter():
     print(shlex_join(process.args))
     print(process.stdout)
     print(process.stderr)
+    # check for execution errors we can skip
+    if process.returncode != 0:
+        stderr_lower = process.stderr.lower()
+        # if we're using incompatible architecture, skip the test
+        if "incompatible architecture" in stderr_lower:
+            pytest.skip(
+                "pandoc-manubot-cite is unavailable for this architecture:\n"
+                f"{process.stderr}"
+            )
+        # otherwise, fail the test
+        pytest.fail(
+            "pandoc-manubot-cite filter execution failed:\n"
+            f"{process.stderr}\n{process.stdout}"
+        )
     assert process.stdout.lower() == expected.lower()
